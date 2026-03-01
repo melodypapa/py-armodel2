@@ -100,11 +100,13 @@ class ConstantReference(ValueSpecification):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConstantReference, cls).deserialize(element)
 
-        # Parse constant_ref
-        child = SerializationHelper.find_child_element(element, "CONSTANT-REF")
-        if child is not None:
-            constant_ref_value = ARRef.deserialize(child)
-            obj.constant_ref = constant_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONSTANT-REF":
+                setattr(obj, "constant_ref", ARRef.deserialize(child))
 
         return obj
 

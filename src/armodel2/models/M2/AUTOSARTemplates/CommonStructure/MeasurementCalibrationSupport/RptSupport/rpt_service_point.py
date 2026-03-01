@@ -40,8 +40,8 @@ class RptServicePoint(Identifiable):
     service_id: Optional[PositiveInteger]
     symbol: Optional[CIdentifier]
     _DESERIALIZE_DISPATCH = {
-        "SERVICE-ID": lambda obj, elem: setattr(obj, "service_id", elem.text),
-        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", elem.text),
+        "SERVICE-ID": lambda obj, elem: setattr(obj, "service_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
     }
 
 
@@ -117,17 +117,15 @@ class RptServicePoint(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptServicePoint, cls).deserialize(element)
 
-        # Parse service_id
-        child = SerializationHelper.find_child_element(element, "SERVICE-ID")
-        if child is not None:
-            service_id_value = child.text
-            obj.service_id = service_id_value
-
-        # Parse symbol
-        child = SerializationHelper.find_child_element(element, "SYMBOL")
-        if child is not None:
-            symbol_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
-            obj.symbol = symbol_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SERVICE-ID":
+                setattr(obj, "service_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SYMBOL":
+                setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
 
         return obj
 

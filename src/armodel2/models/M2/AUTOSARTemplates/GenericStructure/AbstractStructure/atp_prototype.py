@@ -37,7 +37,7 @@ class AtpPrototype(Identifiable, ABC):
 
     atp_type_ref: ARRef
     _DESERIALIZE_DISPATCH = {
-        "ATP-TYPE-REF": lambda obj, elem: setattr(obj, "atp_type_ref", ARRef.deserialize(elem)),
+        "ATP-TYPE-REF": ("_POLYMORPHIC", "atp_type_ref", ["AutosarDataType", "ModeDeclarationGroup", "ModeDeclarationMappingSet", "PortInterface", "SwComponentType"]),
     }
 
 
@@ -98,11 +98,25 @@ class AtpPrototype(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AtpPrototype, cls).deserialize(element)
 
-        # Parse atp_type_ref
-        child = SerializationHelper.find_child_element(element, "ATP-TYPE-REF")
-        if child is not None:
-            atp_type_ref_value = ARRef.deserialize(child)
-            obj.atp_type_ref = atp_type_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ATP-TYPE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "AUTOSAR-DATA-TYPE":
+                        setattr(obj, "atp_type_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataType"))
+                    elif concrete_tag == "MODE-DECLARATION-GROUP":
+                        setattr(obj, "atp_type_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeDeclarationGroup"))
+                    elif concrete_tag == "MODE-DECLARATION-MAPPING-SET":
+                        setattr(obj, "atp_type_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeDeclarationMappingSet"))
+                    elif concrete_tag == "PORT-INTERFACE":
+                        setattr(obj, "atp_type_ref", SerializationHelper.deserialize_by_tag(child[0], "PortInterface"))
+                    elif concrete_tag == "SW-COMPONENT-TYPE":
+                        setattr(obj, "atp_type_ref", SerializationHelper.deserialize_by_tag(child[0], "SwComponentType"))
 
         return obj
 

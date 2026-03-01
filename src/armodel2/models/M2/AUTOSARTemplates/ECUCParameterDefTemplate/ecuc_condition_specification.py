@@ -42,9 +42,9 @@ class EcucConditionSpecification(ARObject):
     ecuc_queries: list[EcucQuery]
     informal_formula: Optional[MlFormula]
     _DESERIALIZE_DISPATCH = {
-        "CONDITION": lambda obj, elem: setattr(obj, "condition", EcucConditionFormula.deserialize(elem)),
-        "ECUC-QUERIES": lambda obj, elem: obj.ecuc_queries.append(EcucQuery.deserialize(elem)),
-        "INFORMAL-FORMULA": lambda obj, elem: setattr(obj, "informal_formula", MlFormula.deserialize(elem)),
+        "CONDITION": lambda obj, elem: setattr(obj, "condition", SerializationHelper.deserialize_by_tag(elem, "EcucConditionFormula")),
+        "ECUC-QUERIES": lambda obj, elem: obj.ecuc_queries.append(SerializationHelper.deserialize_by_tag(elem, "EcucQuery")),
+        "INFORMAL-FORMULA": lambda obj, elem: setattr(obj, "informal_formula", SerializationHelper.deserialize_by_tag(elem, "MlFormula")),
     }
 
 
@@ -131,27 +131,17 @@ class EcucConditionSpecification(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucConditionSpecification, cls).deserialize(element)
 
-        # Parse condition
-        child = SerializationHelper.find_child_element(element, "CONDITION")
-        if child is not None:
-            condition_value = SerializationHelper.deserialize_by_tag(child, "EcucConditionFormula")
-            obj.condition = condition_value
-
-        # Parse ecuc_queries (list from container "ECUC-QUERIES")
-        obj.ecuc_queries = []
-        container = SerializationHelper.find_child_element(element, "ECUC-QUERIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ecuc_queries.append(child_value)
-
-        # Parse informal_formula
-        child = SerializationHelper.find_child_element(element, "INFORMAL-FORMULA")
-        if child is not None:
-            informal_formula_value = SerializationHelper.deserialize_by_tag(child, "MlFormula")
-            obj.informal_formula = informal_formula_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONDITION":
+                setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child, "EcucConditionFormula"))
+            elif tag == "ECUC-QUERIES":
+                obj.ecuc_queries.append(SerializationHelper.deserialize_by_tag(child, "EcucQuery"))
+            elif tag == "INFORMAL-FORMULA":
+                setattr(obj, "informal_formula", SerializationHelper.deserialize_by_tag(child, "MlFormula"))
 
         return obj
 

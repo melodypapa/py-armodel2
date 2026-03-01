@@ -119,17 +119,15 @@ class SwVariableRefProxy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwVariableRefProxy, cls).deserialize(element)
 
-        # Parse autosar_variable_ref
-        child = SerializationHelper.find_child_element(element, "AUTOSAR-VARIABLE-REF-REF")
-        if child is not None:
-            autosar_variable_ref_value = ARRef.deserialize(child)
-            obj.autosar_variable_ref = autosar_variable_ref_value
-
-        # Parse mc_data_instance_ref
-        child = SerializationHelper.find_child_element(element, "MC-DATA-INSTANCE-REF")
-        if child is not None:
-            mc_data_instance_ref_value = ARRef.deserialize(child)
-            obj.mc_data_instance_ref = mc_data_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AUTOSAR-VARIABLE-REF-REF":
+                setattr(obj, "autosar_variable_ref", ARRef.deserialize(child))
+            elif tag == "MC-DATA-INSTANCE-REF":
+                setattr(obj, "mc_data_instance_ref", ARRef.deserialize(child))
 
         return obj
 

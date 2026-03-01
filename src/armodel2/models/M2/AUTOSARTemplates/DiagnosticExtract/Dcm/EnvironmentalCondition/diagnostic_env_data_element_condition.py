@@ -50,9 +50,9 @@ class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):
     data_prototype_ref: Optional[ARRef]
     sw_data_def: Optional[SwDataDefProps]
     _DESERIALIZE_DISPATCH = {
-        "COMPARE-VALUE": lambda obj, elem: setattr(obj, "compare_value", ValueSpecification.deserialize(elem)),
-        "DATA-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "data_prototype_ref", ARRef.deserialize(elem)),
-        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SwDataDefProps.deserialize(elem)),
+        "COMPARE-VALUE": ("_POLYMORPHIC", "compare_value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "DATA-PROTOTYPE-REF": ("_POLYMORPHIC", "data_prototype_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
     }
 
 
@@ -143,23 +143,41 @@ class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEnvDataElementCondition, cls).deserialize(element)
 
-        # Parse compare_value
-        child = SerializationHelper.find_child_element(element, "COMPARE-VALUE")
-        if child is not None:
-            compare_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
-            obj.compare_value = compare_value_value
-
-        # Parse data_prototype_ref
-        child = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-REF")
-        if child is not None:
-            data_prototype_ref_value = ARRef.deserialize(child)
-            obj.data_prototype_ref = data_prototype_ref_value
-
-        # Parse sw_data_def
-        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
-        if child is not None:
-            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.sw_data_def = sw_data_def_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPARE-VALUE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "compare_value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        setattr(obj, "compare_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        setattr(obj, "compare_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        setattr(obj, "compare_value", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        setattr(obj, "compare_value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        setattr(obj, "compare_value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        setattr(obj, "compare_value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        setattr(obj, "compare_value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
+            elif tag == "DATA-PROTOTYPE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
+                        setattr(obj, "data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
+                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
+                        setattr(obj, "data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
+            elif tag == "SW-DATA-DEF":
+                setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
         return obj
 

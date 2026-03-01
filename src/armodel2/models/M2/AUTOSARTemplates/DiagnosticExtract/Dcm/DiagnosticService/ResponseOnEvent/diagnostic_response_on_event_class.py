@@ -44,11 +44,11 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
     response_on: Optional[TimeValue]
     store_event: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
-        "MAX-NUM": lambda obj, elem: setattr(obj, "max_num", elem.text),
-        "MAX-SUPPORTED": lambda obj, elem: setattr(obj, "max_supported", elem.text),
-        "RESPONSE-ON": lambda obj, elem: setattr(obj, "response_on", elem.text),
-        "STORE-EVENT": lambda obj, elem: setattr(obj, "store_event", elem.text),
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-NUM": lambda obj, elem: setattr(obj, "max_num", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-SUPPORTED": lambda obj, elem: setattr(obj, "max_supported", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "RESPONSE-ON": lambda obj, elem: setattr(obj, "response_on", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "STORE-EVENT": lambda obj, elem: setattr(obj, "store_event", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -169,35 +169,21 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticResponseOnEventClass, cls).deserialize(element)
 
-        # Parse max_number_of
-        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
-        if child is not None:
-            max_number_of_value = child.text
-            obj.max_number_of = max_number_of_value
-
-        # Parse max_num
-        child = SerializationHelper.find_child_element(element, "MAX-NUM")
-        if child is not None:
-            max_num_value = child.text
-            obj.max_num = max_num_value
-
-        # Parse max_supported
-        child = SerializationHelper.find_child_element(element, "MAX-SUPPORTED")
-        if child is not None:
-            max_supported_value = child.text
-            obj.max_supported = max_supported_value
-
-        # Parse response_on
-        child = SerializationHelper.find_child_element(element, "RESPONSE-ON")
-        if child is not None:
-            response_on_value = child.text
-            obj.response_on = response_on_value
-
-        # Parse store_event
-        child = SerializationHelper.find_child_element(element, "STORE-EVENT")
-        if child is not None:
-            store_event_value = child.text
-            obj.store_event = store_event_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAX-NUMBER-OF":
+                setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-NUM":
+                setattr(obj, "max_num", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-SUPPORTED":
+                setattr(obj, "max_supported", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "RESPONSE-ON":
+                setattr(obj, "response_on", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "STORE-EVENT":
+                setattr(obj, "store_event", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

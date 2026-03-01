@@ -51,10 +51,10 @@ class SwCalprmAxis(ARObject):
     sw_calprm_axis: Optional[SwCalprmAxisTypeProps]
     _DESERIALIZE_DISPATCH = {
         "CATEGORY": lambda obj, elem: setattr(obj, "category", CalprmAxisCategoryEnum.deserialize(elem)),
-        "DISPLAY-FORMAT-STRING": lambda obj, elem: setattr(obj, "display_format_string", elem.text),
-        "SW-AXIS-INDEX": lambda obj, elem: setattr(obj, "sw_axis_index", elem.text),
+        "DISPLAY-FORMAT-STRING": lambda obj, elem: setattr(obj, "display_format_string", SerializationHelper.deserialize_by_tag(elem, "DisplayFormatString")),
+        "SW-AXIS-INDEX": lambda obj, elem: setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(elem, "AxisIndexType")),
         "SW-CALIBRATION-ACCESS": lambda obj, elem: setattr(obj, "sw_calibration_access", SwCalibrationAccessEnum.deserialize(elem)),
-        "SW-CALPRM-AXIS": lambda obj, elem: setattr(obj, "sw_calprm_axis", SwCalprmAxisTypeProps.deserialize(elem)),
+        "SW-CALPRM-AXIS": ("_POLYMORPHIC", "sw_calprm_axis", ["SwAxisGrouped", "SwAxisIndividual"]),
     }
 
 
@@ -175,35 +175,27 @@ class SwCalprmAxis(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwCalprmAxis, cls).deserialize(element)
 
-        # Parse category
-        child = SerializationHelper.find_child_element(element, "CATEGORY")
-        if child is not None:
-            category_value = CalprmAxisCategoryEnum.deserialize(child)
-            obj.category = category_value
-
-        # Parse display_format_string
-        child = SerializationHelper.find_child_element(element, "DISPLAY-FORMAT-STRING")
-        if child is not None:
-            display_format_string_value = child.text
-            obj.display_format_string = display_format_string_value
-
-        # Parse sw_axis_index
-        child = SerializationHelper.find_child_element(element, "SW-AXIS-INDEX")
-        if child is not None:
-            sw_axis_index_value = child.text
-            obj.sw_axis_index = sw_axis_index_value
-
-        # Parse sw_calibration_access
-        child = SerializationHelper.find_child_element(element, "SW-CALIBRATION-ACCESS")
-        if child is not None:
-            sw_calibration_access_value = SwCalibrationAccessEnum.deserialize(child)
-            obj.sw_calibration_access = sw_calibration_access_value
-
-        # Parse sw_calprm_axis
-        child = SerializationHelper.find_child_element(element, "SW-CALPRM-AXIS")
-        if child is not None:
-            sw_calprm_axis_value = SerializationHelper.deserialize_by_tag(child, "SwCalprmAxisTypeProps")
-            obj.sw_calprm_axis = sw_calprm_axis_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CATEGORY":
+                setattr(obj, "category", CalprmAxisCategoryEnum.deserialize(child))
+            elif tag == "DISPLAY-FORMAT-STRING":
+                setattr(obj, "display_format_string", SerializationHelper.deserialize_by_tag(child, "DisplayFormatString"))
+            elif tag == "SW-AXIS-INDEX":
+                setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(child, "AxisIndexType"))
+            elif tag == "SW-CALIBRATION-ACCESS":
+                setattr(obj, "sw_calibration_access", SwCalibrationAccessEnum.deserialize(child))
+            elif tag == "SW-CALPRM-AXIS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "SW-AXIS-GROUPED":
+                        setattr(obj, "sw_calprm_axis", SerializationHelper.deserialize_by_tag(child[0], "SwAxisGrouped"))
+                    elif concrete_tag == "SW-AXIS-INDIVIDUAL":
+                        setattr(obj, "sw_calprm_axis", SerializationHelper.deserialize_by_tag(child[0], "SwAxisIndividual"))
 
         return obj
 

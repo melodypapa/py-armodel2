@@ -34,7 +34,7 @@ class AbsoluteTolerance(ARObject):
 
     absolute: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "ABSOLUTE": lambda obj, elem: setattr(obj, "absolute", elem.text),
+        "ABSOLUTE": lambda obj, elem: setattr(obj, "absolute", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -95,11 +95,13 @@ class AbsoluteTolerance(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbsoluteTolerance, cls).deserialize(element)
 
-        # Parse absolute
-        child = SerializationHelper.find_child_element(element, "ABSOLUTE")
-        if child is not None:
-            absolute_value = child.text
-            obj.absolute = absolute_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ABSOLUTE":
+                setattr(obj, "absolute", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

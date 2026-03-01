@@ -46,11 +46,11 @@ class HttpTp(TransportProtocolConfiguration):
     tcp_tp_config: Optional[TcpTp]
     uri: Optional[UriString]
     _DESERIALIZE_DISPATCH = {
-        "CONTENT-TYPE": lambda obj, elem: setattr(obj, "content_type", elem.text),
-        "PROTOCOL-VERSION": lambda obj, elem: setattr(obj, "protocol_version", elem.text),
-        "REQUEST-METHOD-ENUM": lambda obj, elem: setattr(obj, "request_method_enum", any (RequestMethodEnum).deserialize(elem)),
-        "TCP-TP-CONFIG": lambda obj, elem: setattr(obj, "tcp_tp_config", TcpTp.deserialize(elem)),
-        "URI": lambda obj, elem: setattr(obj, "uri", elem.text),
+        "CONTENT-TYPE": lambda obj, elem: setattr(obj, "content_type", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "PROTOCOL-VERSION": lambda obj, elem: setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "REQUEST-METHOD-ENUM": lambda obj, elem: setattr(obj, "request_method_enum", SerializationHelper.deserialize_by_tag(elem, "any (RequestMethodEnum)")),
+        "TCP-TP-CONFIG": lambda obj, elem: setattr(obj, "tcp_tp_config", SerializationHelper.deserialize_by_tag(elem, "TcpTp")),
+        "URI": lambda obj, elem: setattr(obj, "uri", SerializationHelper.deserialize_by_tag(elem, "UriString")),
     }
 
 
@@ -171,35 +171,21 @@ class HttpTp(TransportProtocolConfiguration):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HttpTp, cls).deserialize(element)
 
-        # Parse content_type
-        child = SerializationHelper.find_child_element(element, "CONTENT-TYPE")
-        if child is not None:
-            content_type_value = child.text
-            obj.content_type = content_type_value
-
-        # Parse protocol_version
-        child = SerializationHelper.find_child_element(element, "PROTOCOL-VERSION")
-        if child is not None:
-            protocol_version_value = child.text
-            obj.protocol_version = protocol_version_value
-
-        # Parse request_method_enum
-        child = SerializationHelper.find_child_element(element, "REQUEST-METHOD-ENUM")
-        if child is not None:
-            request_method_enum_value = child.text
-            obj.request_method_enum = request_method_enum_value
-
-        # Parse tcp_tp_config
-        child = SerializationHelper.find_child_element(element, "TCP-TP-CONFIG")
-        if child is not None:
-            tcp_tp_config_value = SerializationHelper.deserialize_by_tag(child, "TcpTp")
-            obj.tcp_tp_config = tcp_tp_config_value
-
-        # Parse uri
-        child = SerializationHelper.find_child_element(element, "URI")
-        if child is not None:
-            uri_value = child.text
-            obj.uri = uri_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONTENT-TYPE":
+                setattr(obj, "content_type", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "PROTOCOL-VERSION":
+                setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "REQUEST-METHOD-ENUM":
+                setattr(obj, "request_method_enum", SerializationHelper.deserialize_by_tag(child, "any (RequestMethodEnum)"))
+            elif tag == "TCP-TP-CONFIG":
+                setattr(obj, "tcp_tp_config", SerializationHelper.deserialize_by_tag(child, "TcpTp"))
+            elif tag == "URI":
+                setattr(obj, "uri", SerializationHelper.deserialize_by_tag(child, "UriString"))
 
         return obj
 

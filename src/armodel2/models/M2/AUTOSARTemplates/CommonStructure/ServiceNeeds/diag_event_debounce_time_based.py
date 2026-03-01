@@ -42,9 +42,9 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
     time_failed: Optional[TimeValue]
     time_passed: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "TIME-BASED-FDC": lambda obj, elem: setattr(obj, "time_based_fdc", elem.text),
-        "TIME-FAILED": lambda obj, elem: setattr(obj, "time_failed", elem.text),
-        "TIME-PASSED": lambda obj, elem: setattr(obj, "time_passed", elem.text),
+        "TIME-BASED-FDC": lambda obj, elem: setattr(obj, "time_based_fdc", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIME-FAILED": lambda obj, elem: setattr(obj, "time_failed", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIME-PASSED": lambda obj, elem: setattr(obj, "time_passed", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -135,23 +135,17 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagEventDebounceTimeBased, cls).deserialize(element)
 
-        # Parse time_based_fdc
-        child = SerializationHelper.find_child_element(element, "TIME-BASED-FDC")
-        if child is not None:
-            time_based_fdc_value = child.text
-            obj.time_based_fdc = time_based_fdc_value
-
-        # Parse time_failed
-        child = SerializationHelper.find_child_element(element, "TIME-FAILED")
-        if child is not None:
-            time_failed_value = child.text
-            obj.time_failed = time_failed_value
-
-        # Parse time_passed
-        child = SerializationHelper.find_child_element(element, "TIME-PASSED")
-        if child is not None:
-            time_passed_value = child.text
-            obj.time_passed = time_passed_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TIME-BASED-FDC":
+                setattr(obj, "time_based_fdc", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIME-FAILED":
+                setattr(obj, "time_failed", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIME-PASSED":
+                setattr(obj, "time_passed", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

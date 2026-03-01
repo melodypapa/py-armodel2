@@ -42,8 +42,8 @@ class AssignFrameIdRange(LinConfigurationEntry):
     frame_pid: FramePid
     start_index: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "FRAME-PID": lambda obj, elem: setattr(obj, "frame_pid", FramePid.deserialize(elem)),
-        "START-INDEX": lambda obj, elem: setattr(obj, "start_index", elem.text),
+        "FRAME-PID": lambda obj, elem: setattr(obj, "frame_pid", SerializationHelper.deserialize_by_tag(elem, "FramePid")),
+        "START-INDEX": lambda obj, elem: setattr(obj, "start_index", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -119,17 +119,15 @@ class AssignFrameIdRange(LinConfigurationEntry):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AssignFrameIdRange, cls).deserialize(element)
 
-        # Parse frame_pid
-        child = SerializationHelper.find_child_element(element, "FRAME-PID")
-        if child is not None:
-            frame_pid_value = SerializationHelper.deserialize_by_tag(child, "FramePid")
-            obj.frame_pid = frame_pid_value
-
-        # Parse start_index
-        child = SerializationHelper.find_child_element(element, "START-INDEX")
-        if child is not None:
-            start_index_value = child.text
-            obj.start_index = start_index_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FRAME-PID":
+                setattr(obj, "frame_pid", SerializationHelper.deserialize_by_tag(child, "FramePid"))
+            elif tag == "START-INDEX":
+                setattr(obj, "start_index", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

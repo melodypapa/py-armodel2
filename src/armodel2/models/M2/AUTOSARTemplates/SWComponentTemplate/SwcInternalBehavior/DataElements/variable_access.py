@@ -126,17 +126,15 @@ class VariableAccess(AbstractAccessPoint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(VariableAccess, cls).deserialize(element)
 
-        # Parse accessed_variable_ref
-        child = SerializationHelper.find_child_element(element, "ACCESSED-VARIABLE-REF")
-        if child is not None:
-            accessed_variable_ref_value = ARRef.deserialize(child)
-            obj.accessed_variable_ref = accessed_variable_ref_value
-
-        # Parse scope
-        child = SerializationHelper.find_child_element(element, "SCOPE")
-        if child is not None:
-            scope_value = VariableAccessScopeEnum.deserialize(child)
-            obj.scope = scope_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACCESSED-VARIABLE-REF":
+                setattr(obj, "accessed_variable_ref", ARRef.deserialize(child))
+            elif tag == "SCOPE":
+                setattr(obj, "scope", VariableAccessScopeEnum.deserialize(child))
 
         return obj
 

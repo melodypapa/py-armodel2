@@ -51,10 +51,10 @@ class EcuResourceEstimation(ARObject):
     rte_resource: Optional[ResourceConsumption]
     sw_comp_to_ecu_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "BSW-RESOURCE": lambda obj, elem: setattr(obj, "bsw_resource", ResourceConsumption.deserialize(elem)),
+        "BSW-RESOURCE": lambda obj, elem: setattr(obj, "bsw_resource", SerializationHelper.deserialize_by_tag(elem, "ResourceConsumption")),
         "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
-        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", DocumentationBlock.deserialize(elem)),
-        "RTE-RESOURCE": lambda obj, elem: setattr(obj, "rte_resource", ResourceConsumption.deserialize(elem)),
+        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "RTE-RESOURCE": lambda obj, elem: setattr(obj, "rte_resource", SerializationHelper.deserialize_by_tag(elem, "ResourceConsumption")),
         "SW-COMP-TO-ECUS": lambda obj, elem: obj.sw_comp_to_ecu_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -179,45 +179,21 @@ class EcuResourceEstimation(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcuResourceEstimation, cls).deserialize(element)
 
-        # Parse bsw_resource
-        child = SerializationHelper.find_child_element(element, "BSW-RESOURCE")
-        if child is not None:
-            bsw_resource_value = SerializationHelper.deserialize_by_tag(child, "ResourceConsumption")
-            obj.bsw_resource = bsw_resource_value
-
-        # Parse ecu_instance_ref
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
-        if child is not None:
-            ecu_instance_ref_value = ARRef.deserialize(child)
-            obj.ecu_instance_ref = ecu_instance_ref_value
-
-        # Parse introduction
-        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
-        if child is not None:
-            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.introduction = introduction_value
-
-        # Parse rte_resource
-        child = SerializationHelper.find_child_element(element, "RTE-RESOURCE")
-        if child is not None:
-            rte_resource_value = SerializationHelper.deserialize_by_tag(child, "ResourceConsumption")
-            obj.rte_resource = rte_resource_value
-
-        # Parse sw_comp_to_ecu_refs (list from container "SW-COMP-TO-ECU-REFS")
-        obj.sw_comp_to_ecu_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-COMP-TO-ECU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_comp_to_ecu_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BSW-RESOURCE":
+                setattr(obj, "bsw_resource", SerializationHelper.deserialize_by_tag(child, "ResourceConsumption"))
+            elif tag == "ECU-INSTANCE-REF":
+                setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
+            elif tag == "INTRODUCTION":
+                setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "RTE-RESOURCE":
+                setattr(obj, "rte_resource", SerializationHelper.deserialize_by_tag(child, "ResourceConsumption"))
+            elif tag == "SW-COMP-TO-ECUS":
+                obj.sw_comp_to_ecu_refs.append(ARRef.deserialize(child))
 
         return obj
 

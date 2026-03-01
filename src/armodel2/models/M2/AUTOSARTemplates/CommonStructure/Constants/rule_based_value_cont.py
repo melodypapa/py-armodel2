@@ -41,7 +41,7 @@ class RuleBasedValueCont(ARObject):
     sw_arraysize_ref: Optional[ARRef]
     unit_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", any (RuleBasedValue).deserialize(elem)),
+        "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(elem, "any (RuleBasedValue)")),
         "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
     }
@@ -133,31 +133,17 @@ class RuleBasedValueCont(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RuleBasedValueCont, cls).deserialize(element)
 
-        # Parse rule_based
-        child = SerializationHelper.find_child_element(element, "RULE-BASED")
-        if child is not None:
-            rule_based_value = child.text
-            obj.rule_based = rule_based_value
-
-        # Parse sw_arraysize_ref (atp_mixed - children appear directly)
-        # Check if element contains expected children for ValueList
-        has_mixed_children = False
-        child_tags_to_check = ['V']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            sw_arraysize_ref_value = SerializationHelper.deserialize_by_tag(element, "ValueList")
-            obj.sw_arraysize_ref = sw_arraysize_ref_value
-
-        # Parse unit_ref
-        child = SerializationHelper.find_child_element(element, "UNIT-REF")
-        if child is not None:
-            unit_ref_value = ARRef.deserialize(child)
-            obj.unit_ref = unit_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RULE-BASED":
+                setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(child, "any (RuleBasedValue)"))
+            elif tag == "SW-ARRAYSIZE-REF":
+                setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
+            elif tag == "UNIT-REF":
+                setattr(obj, "unit_ref", ARRef.deserialize(child))
 
         return obj
 

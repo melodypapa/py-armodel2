@@ -100,11 +100,13 @@ class BswModuleTiming(TimingExtension):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleTiming, cls).deserialize(element)
 
-        # Parse behavior_ref
-        child = SerializationHelper.find_child_element(element, "BEHAVIOR-REF")
-        if child is not None:
-            behavior_ref_value = ARRef.deserialize(child)
-            obj.behavior_ref = behavior_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BEHAVIOR-REF":
+                setattr(obj, "behavior_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -46,7 +46,7 @@ class BswModuleDependency(Identifiable):
     target_module_id: Optional[PositiveInteger]
     target_module_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TARGET-MODULE-ID": lambda obj, elem: setattr(obj, "target_module_id", elem.text),
+        "TARGET-MODULE-ID": lambda obj, elem: setattr(obj, "target_module_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "TARGET-MODULE-REF": lambda obj, elem: setattr(obj, "target_module_ref", ARRef.deserialize(elem)),
     }
 
@@ -123,17 +123,15 @@ class BswModuleDependency(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleDependency, cls).deserialize(element)
 
-        # Parse target_module_id
-        child = SerializationHelper.find_child_element(element, "TARGET-MODULE-ID")
-        if child is not None:
-            target_module_id_value = child.text
-            obj.target_module_id = target_module_id_value
-
-        # Parse target_module_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-MODULE-REF")
-        if child is not None:
-            target_module_ref_value = ARRef.deserialize(child)
-            obj.target_module_ref = target_module_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TARGET-MODULE-ID":
+                setattr(obj, "target_module_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TARGET-MODULE-REF":
+                setattr(obj, "target_module_ref", ARRef.deserialize(child))
 
         return obj
 

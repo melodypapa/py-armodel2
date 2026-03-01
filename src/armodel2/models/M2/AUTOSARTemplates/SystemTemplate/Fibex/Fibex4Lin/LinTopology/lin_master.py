@@ -42,9 +42,9 @@ class LinMaster(ARObject):
     time_base: Optional[TimeValue]
     time_base_jitter: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "LIN-SLAVES": lambda obj, elem: obj.lin_slaves.append(LinSlaveConfig.deserialize(elem)),
-        "TIME-BASE": lambda obj, elem: setattr(obj, "time_base", elem.text),
-        "TIME-BASE-JITTER": lambda obj, elem: setattr(obj, "time_base_jitter", elem.text),
+        "LIN-SLAVES": lambda obj, elem: obj.lin_slaves.append(SerializationHelper.deserialize_by_tag(elem, "LinSlaveConfig")),
+        "TIME-BASE": lambda obj, elem: setattr(obj, "time_base", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIME-BASE-JITTER": lambda obj, elem: setattr(obj, "time_base_jitter", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 

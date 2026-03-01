@@ -44,8 +44,8 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
     committed: Optional[PositiveInteger]
     traffic_shaper_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMMITTED-BURST": lambda obj, elem: setattr(obj, "committed_burst", elem.text),
-        "COMMITTED": lambda obj, elem: setattr(obj, "committed", elem.text),
+        "COMMITTED-BURST": lambda obj, elem: setattr(obj, "committed_burst", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "COMMITTED": lambda obj, elem: setattr(obj, "committed", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "TRAFFIC-SHAPER-REF": lambda obj, elem: setattr(obj, "traffic_shaper_ref", ARRef.deserialize(elem)),
     }
 
@@ -137,23 +137,17 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CouplingPortAsynchronousTrafficShaper, cls).deserialize(element)
 
-        # Parse committed_burst
-        child = SerializationHelper.find_child_element(element, "COMMITTED-BURST")
-        if child is not None:
-            committed_burst_value = child.text
-            obj.committed_burst = committed_burst_value
-
-        # Parse committed
-        child = SerializationHelper.find_child_element(element, "COMMITTED")
-        if child is not None:
-            committed_value = child.text
-            obj.committed = committed_value
-
-        # Parse traffic_shaper_ref
-        child = SerializationHelper.find_child_element(element, "TRAFFIC-SHAPER-REF")
-        if child is not None:
-            traffic_shaper_ref_value = ARRef.deserialize(child)
-            obj.traffic_shaper_ref = traffic_shaper_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMITTED-BURST":
+                setattr(obj, "committed_burst", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "COMMITTED":
+                setattr(obj, "committed", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TRAFFIC-SHAPER-REF":
+                setattr(obj, "traffic_shaper_ref", ARRef.deserialize(child))
 
         return obj
 

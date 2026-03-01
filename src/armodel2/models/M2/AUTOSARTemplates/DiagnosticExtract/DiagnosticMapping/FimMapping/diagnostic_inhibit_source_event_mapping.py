@@ -137,23 +137,17 @@ class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticInhibitSourceEventMapping, cls).deserialize(element)
 
-        # Parse diagnostic_event_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-EVENT-REF")
-        if child is not None:
-            diagnostic_event_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_event_ref = diagnostic_event_ref_value
-
-        # Parse event_group_group_ref
-        child = SerializationHelper.find_child_element(element, "EVENT-GROUP-GROUP-REF")
-        if child is not None:
-            event_group_group_ref_value = ARRef.deserialize(child)
-            obj.event_group_group_ref = event_group_group_ref_value
-
-        # Parse inhibition_source_ref
-        child = SerializationHelper.find_child_element(element, "INHIBITION-SOURCE-REF")
-        if child is not None:
-            inhibition_source_ref_value = ARRef.deserialize(child)
-            obj.inhibition_source_ref = inhibition_source_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DIAGNOSTIC-EVENT-REF":
+                setattr(obj, "diagnostic_event_ref", ARRef.deserialize(child))
+            elif tag == "EVENT-GROUP-GROUP-REF":
+                setattr(obj, "event_group_group_ref", ARRef.deserialize(child))
+            elif tag == "INHIBITION-SOURCE-REF":
+                setattr(obj, "inhibition_source_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -49,13 +49,13 @@ class TcpTp(TcpUdpConfig):
     tcp: Optional[TimeValue]
     tcp_tp_port: Optional[TpPort]
     _DESERIALIZE_DISPATCH = {
-        "KEEP-ALIVE": lambda obj, elem: setattr(obj, "keep_alive", elem.text),
-        "KEEP-ALIVES": lambda obj, elem: setattr(obj, "keep_alives", elem.text),
-        "KEEP-ALIVE-TIME": lambda obj, elem: setattr(obj, "keep_alive_time", elem.text),
-        "NAGLES-ALGORITHM": lambda obj, elem: setattr(obj, "nagles_algorithm", elem.text),
-        "RECEIVE-WINDOW-MIN": lambda obj, elem: setattr(obj, "receive_window_min", elem.text),
-        "TCP": lambda obj, elem: setattr(obj, "tcp", elem.text),
-        "TCP-TP-PORT": lambda obj, elem: setattr(obj, "tcp_tp_port", TpPort.deserialize(elem)),
+        "KEEP-ALIVE": lambda obj, elem: setattr(obj, "keep_alive", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "KEEP-ALIVES": lambda obj, elem: setattr(obj, "keep_alives", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "KEEP-ALIVE-TIME": lambda obj, elem: setattr(obj, "keep_alive_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "NAGLES-ALGORITHM": lambda obj, elem: setattr(obj, "nagles_algorithm", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RECEIVE-WINDOW-MIN": lambda obj, elem: setattr(obj, "receive_window_min", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP": lambda obj, elem: setattr(obj, "tcp", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-TP-PORT": lambda obj, elem: setattr(obj, "tcp_tp_port", SerializationHelper.deserialize_by_tag(elem, "TpPort")),
     }
 
 
@@ -206,47 +206,25 @@ class TcpTp(TcpUdpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TcpTp, cls).deserialize(element)
 
-        # Parse keep_alive
-        child = SerializationHelper.find_child_element(element, "KEEP-ALIVE")
-        if child is not None:
-            keep_alive_value = child.text
-            obj.keep_alive = keep_alive_value
-
-        # Parse keep_alives
-        child = SerializationHelper.find_child_element(element, "KEEP-ALIVES")
-        if child is not None:
-            keep_alives_value = child.text
-            obj.keep_alives = keep_alives_value
-
-        # Parse keep_alive_time
-        child = SerializationHelper.find_child_element(element, "KEEP-ALIVE-TIME")
-        if child is not None:
-            keep_alive_time_value = child.text
-            obj.keep_alive_time = keep_alive_time_value
-
-        # Parse nagles_algorithm
-        child = SerializationHelper.find_child_element(element, "NAGLES-ALGORITHM")
-        if child is not None:
-            nagles_algorithm_value = child.text
-            obj.nagles_algorithm = nagles_algorithm_value
-
-        # Parse receive_window_min
-        child = SerializationHelper.find_child_element(element, "RECEIVE-WINDOW-MIN")
-        if child is not None:
-            receive_window_min_value = child.text
-            obj.receive_window_min = receive_window_min_value
-
-        # Parse tcp
-        child = SerializationHelper.find_child_element(element, "TCP")
-        if child is not None:
-            tcp_value = child.text
-            obj.tcp = tcp_value
-
-        # Parse tcp_tp_port
-        child = SerializationHelper.find_child_element(element, "TCP-TP-PORT")
-        if child is not None:
-            tcp_tp_port_value = SerializationHelper.deserialize_by_tag(child, "TpPort")
-            obj.tcp_tp_port = tcp_tp_port_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "KEEP-ALIVE":
+                setattr(obj, "keep_alive", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "KEEP-ALIVES":
+                setattr(obj, "keep_alives", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "KEEP-ALIVE-TIME":
+                setattr(obj, "keep_alive_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "NAGLES-ALGORITHM":
+                setattr(obj, "nagles_algorithm", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RECEIVE-WINDOW-MIN":
+                setattr(obj, "receive_window_min", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP":
+                setattr(obj, "tcp", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-TP-PORT":
+                setattr(obj, "tcp_tp_port", SerializationHelper.deserialize_by_tag(child, "TpPort"))
 
         return obj
 

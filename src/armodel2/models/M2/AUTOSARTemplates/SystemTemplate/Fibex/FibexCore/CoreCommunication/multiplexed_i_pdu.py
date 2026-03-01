@@ -43,9 +43,9 @@ class MultiplexedIPdu(IPdu):
     selector_field: Optional[Integer]
     unused_bit: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "DYNAMIC-PART": lambda obj, elem: setattr(obj, "dynamic_part", DynamicPart.deserialize(elem)),
-        "SELECTOR-FIELD": lambda obj, elem: setattr(obj, "selector_field", elem.text),
-        "UNUSED-BIT": lambda obj, elem: setattr(obj, "unused_bit", elem.text),
+        "DYNAMIC-PART": lambda obj, elem: setattr(obj, "dynamic_part", SerializationHelper.deserialize_by_tag(elem, "DynamicPart")),
+        "SELECTOR-FIELD": lambda obj, elem: setattr(obj, "selector_field", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "UNUSED-BIT": lambda obj, elem: setattr(obj, "unused_bit", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -136,23 +136,17 @@ class MultiplexedIPdu(IPdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MultiplexedIPdu, cls).deserialize(element)
 
-        # Parse dynamic_part
-        child = SerializationHelper.find_child_element(element, "DYNAMIC-PART")
-        if child is not None:
-            dynamic_part_value = SerializationHelper.deserialize_by_tag(child, "DynamicPart")
-            obj.dynamic_part = dynamic_part_value
-
-        # Parse selector_field
-        child = SerializationHelper.find_child_element(element, "SELECTOR-FIELD")
-        if child is not None:
-            selector_field_value = child.text
-            obj.selector_field = selector_field_value
-
-        # Parse unused_bit
-        child = SerializationHelper.find_child_element(element, "UNUSED-BIT")
-        if child is not None:
-            unused_bit_value = child.text
-            obj.unused_bit = unused_bit_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DYNAMIC-PART":
+                setattr(obj, "dynamic_part", SerializationHelper.deserialize_by_tag(child, "DynamicPart"))
+            elif tag == "SELECTOR-FIELD":
+                setattr(obj, "selector_field", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "UNUSED-BIT":
+                setattr(obj, "unused_bit", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

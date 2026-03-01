@@ -38,7 +38,7 @@ class FMFeatureSelection(Identifiable):
 
     attribute_values: list[FMAttributeValue]
     _DESERIALIZE_DISPATCH = {
-        "ATTRIBUTE-VALUES": lambda obj, elem: obj.attribute_values.append(FMAttributeValue.deserialize(elem)),
+        "ATTRIBUTE-VALUES": lambda obj, elem: obj.attribute_values.append(SerializationHelper.deserialize_by_tag(elem, "FMAttributeValue")),
     }
 
 
@@ -95,15 +95,13 @@ class FMFeatureSelection(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeatureSelection, cls).deserialize(element)
 
-        # Parse attribute_values (list from container "ATTRIBUTE-VALUES")
-        obj.attribute_values = []
-        container = SerializationHelper.find_child_element(element, "ATTRIBUTE-VALUES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.attribute_values.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ATTRIBUTE-VALUES":
+                obj.attribute_values.append(SerializationHelper.deserialize_by_tag(child, "FMAttributeValue"))
 
         return obj
 

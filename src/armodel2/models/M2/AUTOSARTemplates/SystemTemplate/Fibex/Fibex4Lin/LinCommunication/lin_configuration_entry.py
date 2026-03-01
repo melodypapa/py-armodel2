@@ -118,17 +118,15 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinConfigurationEntry, cls).deserialize(element)
 
-        # Parse assigned_ref
-        child = SerializationHelper.find_child_element(element, "ASSIGNED-REF")
-        if child is not None:
-            assigned_ref_value = ARRef.deserialize(child)
-            obj.assigned_ref = assigned_ref_value
-
-        # Parse assigned_lin_ref
-        child = SerializationHelper.find_child_element(element, "ASSIGNED-LIN-REF")
-        if child is not None:
-            assigned_lin_ref_value = ARRef.deserialize(child)
-            obj.assigned_lin_ref = assigned_lin_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ASSIGNED-REF":
+                setattr(obj, "assigned_ref", ARRef.deserialize(child))
+            elif tag == "ASSIGNED-LIN-REF":
+                setattr(obj, "assigned_lin_ref", ARRef.deserialize(child))
 
         return obj
 

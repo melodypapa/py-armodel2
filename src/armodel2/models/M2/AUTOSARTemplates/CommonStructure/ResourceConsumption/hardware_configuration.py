@@ -36,9 +36,9 @@ class HardwareConfiguration(ARObject):
     processor_mode: Optional[String]
     processor_speed: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "ADDITIONAL": lambda obj, elem: setattr(obj, "additional", elem.text),
-        "PROCESSOR-MODE": lambda obj, elem: setattr(obj, "processor_mode", elem.text),
-        "PROCESSOR-SPEED": lambda obj, elem: setattr(obj, "processor_speed", elem.text),
+        "ADDITIONAL": lambda obj, elem: setattr(obj, "additional", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "PROCESSOR-MODE": lambda obj, elem: setattr(obj, "processor_mode", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "PROCESSOR-SPEED": lambda obj, elem: setattr(obj, "processor_speed", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -129,23 +129,17 @@ class HardwareConfiguration(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HardwareConfiguration, cls).deserialize(element)
 
-        # Parse additional
-        child = SerializationHelper.find_child_element(element, "ADDITIONAL")
-        if child is not None:
-            additional_value = child.text
-            obj.additional = additional_value
-
-        # Parse processor_mode
-        child = SerializationHelper.find_child_element(element, "PROCESSOR-MODE")
-        if child is not None:
-            processor_mode_value = child.text
-            obj.processor_mode = processor_mode_value
-
-        # Parse processor_speed
-        child = SerializationHelper.find_child_element(element, "PROCESSOR-SPEED")
-        if child is not None:
-            processor_speed_value = child.text
-            obj.processor_speed = processor_speed_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ADDITIONAL":
+                setattr(obj, "additional", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "PROCESSOR-MODE":
+                setattr(obj, "processor_mode", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "PROCESSOR-SPEED":
+                setattr(obj, "processor_speed", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

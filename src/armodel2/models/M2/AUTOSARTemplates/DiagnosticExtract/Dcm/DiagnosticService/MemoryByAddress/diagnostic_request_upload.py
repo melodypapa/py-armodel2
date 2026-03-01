@@ -97,11 +97,13 @@ class DiagnosticRequestUpload(DiagnosticMemoryAddressableRangeAccess):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestUpload, cls).deserialize(element)
 
-        # Parse request_upload_ref
-        child = SerializationHelper.find_child_element(element, "REQUEST-UPLOAD-REF")
-        if child is not None:
-            request_upload_ref_value = ARRef.deserialize(child)
-            obj.request_upload_ref = request_upload_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "REQUEST-UPLOAD-REF":
+                setattr(obj, "request_upload_ref", ARRef.deserialize(child))
 
         return obj
 

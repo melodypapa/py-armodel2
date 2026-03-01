@@ -41,10 +41,10 @@ class MacSecProps(ARObject):
     on_fail: Optional[TimeValue]
     sak_rekey_time: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "AUTO-START": lambda obj, elem: setattr(obj, "auto_start", elem.text),
-        "MAC-SEC-KAY": lambda obj, elem: setattr(obj, "mac_sec_kay", MacSecLocalKayProps.deserialize(elem)),
-        "ON-FAIL": lambda obj, elem: setattr(obj, "on_fail", elem.text),
-        "SAK-REKEY-TIME": lambda obj, elem: setattr(obj, "sak_rekey_time", elem.text),
+        "AUTO-START": lambda obj, elem: setattr(obj, "auto_start", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "MAC-SEC-KAY": lambda obj, elem: setattr(obj, "mac_sec_kay", SerializationHelper.deserialize_by_tag(elem, "MacSecLocalKayProps")),
+        "ON-FAIL": lambda obj, elem: setattr(obj, "on_fail", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "SAK-REKEY-TIME": lambda obj, elem: setattr(obj, "sak_rekey_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -150,29 +150,19 @@ class MacSecProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacSecProps, cls).deserialize(element)
 
-        # Parse auto_start
-        child = SerializationHelper.find_child_element(element, "AUTO-START")
-        if child is not None:
-            auto_start_value = child.text
-            obj.auto_start = auto_start_value
-
-        # Parse mac_sec_kay
-        child = SerializationHelper.find_child_element(element, "MAC-SEC-KAY")
-        if child is not None:
-            mac_sec_kay_value = SerializationHelper.deserialize_by_tag(child, "MacSecLocalKayProps")
-            obj.mac_sec_kay = mac_sec_kay_value
-
-        # Parse on_fail
-        child = SerializationHelper.find_child_element(element, "ON-FAIL")
-        if child is not None:
-            on_fail_value = child.text
-            obj.on_fail = on_fail_value
-
-        # Parse sak_rekey_time
-        child = SerializationHelper.find_child_element(element, "SAK-REKEY-TIME")
-        if child is not None:
-            sak_rekey_time_value = child.text
-            obj.sak_rekey_time = sak_rekey_time_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AUTO-START":
+                setattr(obj, "auto_start", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "MAC-SEC-KAY":
+                setattr(obj, "mac_sec_kay", SerializationHelper.deserialize_by_tag(child, "MacSecLocalKayProps"))
+            elif tag == "ON-FAIL":
+                setattr(obj, "on_fail", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "SAK-REKEY-TIME":
+                setattr(obj, "sak_rekey_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

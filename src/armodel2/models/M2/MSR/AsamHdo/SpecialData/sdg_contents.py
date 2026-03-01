@@ -54,11 +54,11 @@ class SdgContents(ARObject):
     sdx_ref: Optional[ARRef]
     sdxf_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "SD": lambda obj, elem: setattr(obj, "sd", Sd.deserialize(elem)),
-        "SDF": lambda obj, elem: setattr(obj, "sdf", Sdf.deserialize(elem)),
-        "SDG": lambda obj, elem: setattr(obj, "sdg", Sdg.deserialize(elem)),
-        "SDX-REF": lambda obj, elem: setattr(obj, "sdx_ref", ARRef.deserialize(elem)),
-        "SDXF-REF": lambda obj, elem: setattr(obj, "sdxf_ref", ARRef.deserialize(elem)),
+        "SD": lambda obj, elem: setattr(obj, "sd", SerializationHelper.deserialize_by_tag(elem, "Sd")),
+        "SDF": lambda obj, elem: setattr(obj, "sdf", SerializationHelper.deserialize_by_tag(elem, "Sdf")),
+        "SDG": lambda obj, elem: setattr(obj, "sdg", SerializationHelper.deserialize_by_tag(elem, "Sdg")),
+        "SDX-REF": ("_POLYMORPHIC", "sdx_ref", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
+        "SDXF-REF": ("_POLYMORPHIC", "sdxf_ref", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
     }
 
 

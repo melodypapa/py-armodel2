@@ -56,10 +56,10 @@ class DataPrototypeInSystemInstanceRef(ARObject):
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
         "CONTEXTS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
         "CONTEXT-DATAS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
-        "CONTEXT-PORT-REF": lambda obj, elem: setattr(obj, "context_port_ref", ARRef.deserialize(elem)),
+        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
         "CONTEXT-ROOT-REF": lambda obj, elem: setattr(obj, "context_root_ref", ARRef.deserialize(elem)),
-        "ROOT-DATA-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "root_data_prototype_ref", ARRef.deserialize(elem)),
-        "TARGET-DATA-REF": lambda obj, elem: setattr(obj, "target_data_ref", ARRef.deserialize(elem)),
+        "ROOT-DATA-PROTOTYPE-REF": ("_POLYMORPHIC", "root_data_prototype_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
+        "TARGET-DATA-REF": ("_POLYMORPHIC", "target_data_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
     }
 
 
@@ -216,67 +216,45 @@ class DataPrototypeInSystemInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototypeInSystemInstanceRef, cls).deserialize(element)
 
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse context_refs (list from container "CONTEXT-REFS")
-        obj.context_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.context_refs.append(child_value)
-
-        # Parse context_data_refs (list from container "CONTEXT-DATA-REFS")
-        obj.context_data_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-DATA-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.context_data_refs.append(child_value)
-
-        # Parse context_port_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-PORT-REF")
-        if child is not None:
-            context_port_ref_value = ARRef.deserialize(child)
-            obj.context_port_ref = context_port_ref_value
-
-        # Parse context_root_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-ROOT-REF")
-        if child is not None:
-            context_root_ref_value = ARRef.deserialize(child)
-            obj.context_root_ref = context_root_ref_value
-
-        # Parse root_data_prototype_ref
-        child = SerializationHelper.find_child_element(element, "ROOT-DATA-PROTOTYPE-REF")
-        if child is not None:
-            root_data_prototype_ref_value = ARRef.deserialize(child)
-            obj.root_data_prototype_ref = root_data_prototype_ref_value
-
-        # Parse target_data_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-DATA-REF")
-        if child is not None:
-            target_data_ref_value = ARRef.deserialize(child)
-            obj.target_data_ref = target_data_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BASE-REF":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXTS":
+                obj.context_refs.append(ARRef.deserialize(child))
+            elif tag == "CONTEXT-DATAS":
+                obj.context_data_refs.append(ARRef.deserialize(child))
+            elif tag == "CONTEXT-PORT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
+                        setattr(obj, "context_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
+                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
+                        setattr(obj, "context_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+            elif tag == "CONTEXT-ROOT-REF":
+                setattr(obj, "context_root_ref", ARRef.deserialize(child))
+            elif tag == "ROOT-DATA-PROTOTYPE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
+                        setattr(obj, "root_data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
+                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
+                        setattr(obj, "root_data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
+                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
+                        setattr(obj, "root_data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
+            elif tag == "TARGET-DATA-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
+                        setattr(obj, "target_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
+                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
+                        setattr(obj, "target_data_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
 
         return obj
 

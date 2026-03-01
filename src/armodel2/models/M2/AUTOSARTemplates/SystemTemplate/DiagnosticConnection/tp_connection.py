@@ -32,7 +32,7 @@ class TpConnection(ARObject, ABC):
 
     ident: Optional[TpConnectionIdent]
     _DESERIALIZE_DISPATCH = {
-        "IDENT": lambda obj, elem: setattr(obj, "ident", TpConnectionIdent.deserialize(elem)),
+        "IDENT": lambda obj, elem: setattr(obj, "ident", SerializationHelper.deserialize_by_tag(elem, "TpConnectionIdent")),
     }
 
 
@@ -93,11 +93,13 @@ class TpConnection(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TpConnection, cls).deserialize(element)
 
-        # Parse ident
-        child = SerializationHelper.find_child_element(element, "IDENT")
-        if child is not None:
-            ident_value = SerializationHelper.deserialize_by_tag(child, "TpConnectionIdent")
-            obj.ident = ident_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "IDENT":
+                setattr(obj, "ident", SerializationHelper.deserialize_by_tag(child, "TpConnectionIdent"))
 
         return obj
 

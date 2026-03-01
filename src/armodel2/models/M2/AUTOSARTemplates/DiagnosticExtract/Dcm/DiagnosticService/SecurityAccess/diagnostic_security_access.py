@@ -46,9 +46,9 @@ class DiagnosticSecurityAccess(DiagnosticServiceInstance):
     security_delay: Optional[TimeValue]
     security_level_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "REQUEST-SEED-ID": lambda obj, elem: setattr(obj, "request_seed_id", elem.text),
+        "REQUEST-SEED-ID": lambda obj, elem: setattr(obj, "request_seed_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SECURITY-ACCESS-REF": lambda obj, elem: setattr(obj, "security_access_ref", ARRef.deserialize(elem)),
-        "SECURITY-DELAY": lambda obj, elem: setattr(obj, "security_delay", elem.text),
+        "SECURITY-DELAY": lambda obj, elem: setattr(obj, "security_delay", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "SECURITY-LEVEL-REF": lambda obj, elem: setattr(obj, "security_level_ref", ARRef.deserialize(elem)),
     }
 
@@ -155,29 +155,19 @@ class DiagnosticSecurityAccess(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSecurityAccess, cls).deserialize(element)
 
-        # Parse request_seed_id
-        child = SerializationHelper.find_child_element(element, "REQUEST-SEED-ID")
-        if child is not None:
-            request_seed_id_value = child.text
-            obj.request_seed_id = request_seed_id_value
-
-        # Parse security_access_ref
-        child = SerializationHelper.find_child_element(element, "SECURITY-ACCESS-REF")
-        if child is not None:
-            security_access_ref_value = ARRef.deserialize(child)
-            obj.security_access_ref = security_access_ref_value
-
-        # Parse security_delay
-        child = SerializationHelper.find_child_element(element, "SECURITY-DELAY")
-        if child is not None:
-            security_delay_value = child.text
-            obj.security_delay = security_delay_value
-
-        # Parse security_level_ref
-        child = SerializationHelper.find_child_element(element, "SECURITY-LEVEL-REF")
-        if child is not None:
-            security_level_ref_value = ARRef.deserialize(child)
-            obj.security_level_ref = security_level_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "REQUEST-SEED-ID":
+                setattr(obj, "request_seed_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SECURITY-ACCESS-REF":
+                setattr(obj, "security_access_ref", ARRef.deserialize(child))
+            elif tag == "SECURITY-DELAY":
+                setattr(obj, "security_delay", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "SECURITY-LEVEL-REF":
+                setattr(obj, "security_level_ref", ARRef.deserialize(child))
 
         return obj
 

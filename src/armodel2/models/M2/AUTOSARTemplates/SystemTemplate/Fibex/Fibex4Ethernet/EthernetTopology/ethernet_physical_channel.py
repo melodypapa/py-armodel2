@@ -47,9 +47,9 @@ class EthernetPhysicalChannel(PhysicalChannel):
     so_ad_config: Optional[SoAdConfig]
     vlan: Optional[VlanConfig]
     _DESERIALIZE_DISPATCH = {
-        "NETWORK-ENDPOINTS": lambda obj, elem: obj.network_endpoints.append(NetworkEndpoint.deserialize(elem)),
-        "SO-AD-CONFIG": lambda obj, elem: setattr(obj, "so_ad_config", SoAdConfig.deserialize(elem)),
-        "VLAN": lambda obj, elem: setattr(obj, "vlan", VlanConfig.deserialize(elem)),
+        "NETWORK-ENDPOINTS": lambda obj, elem: obj.network_endpoints.append(SerializationHelper.deserialize_by_tag(elem, "NetworkEndpoint")),
+        "SO-AD-CONFIG": lambda obj, elem: setattr(obj, "so_ad_config", SerializationHelper.deserialize_by_tag(elem, "SoAdConfig")),
+        "VLAN": lambda obj, elem: setattr(obj, "vlan", SerializationHelper.deserialize_by_tag(elem, "VlanConfig")),
     }
 
 
@@ -136,27 +136,17 @@ class EthernetPhysicalChannel(PhysicalChannel):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthernetPhysicalChannel, cls).deserialize(element)
 
-        # Parse network_endpoints (list from container "NETWORK-ENDPOINTS")
-        obj.network_endpoints = []
-        container = SerializationHelper.find_child_element(element, "NETWORK-ENDPOINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.network_endpoints.append(child_value)
-
-        # Parse so_ad_config
-        child = SerializationHelper.find_child_element(element, "SO-AD-CONFIG")
-        if child is not None:
-            so_ad_config_value = SerializationHelper.deserialize_by_tag(child, "SoAdConfig")
-            obj.so_ad_config = so_ad_config_value
-
-        # Parse vlan
-        child = SerializationHelper.find_child_element(element, "VLAN")
-        if child is not None:
-            vlan_value = SerializationHelper.deserialize_by_tag(child, "VlanConfig")
-            obj.vlan = vlan_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "NETWORK-ENDPOINTS":
+                obj.network_endpoints.append(SerializationHelper.deserialize_by_tag(child, "NetworkEndpoint"))
+            elif tag == "SO-AD-CONFIG":
+                setattr(obj, "so_ad_config", SerializationHelper.deserialize_by_tag(child, "SoAdConfig"))
+            elif tag == "VLAN":
+                setattr(obj, "vlan", SerializationHelper.deserialize_by_tag(child, "VlanConfig"))
 
         return obj
 

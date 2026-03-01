@@ -61,12 +61,12 @@ class LinTpConnection(TpConnection):
     _DESERIALIZE_DISPATCH = {
         "DATA-PDU-REF": lambda obj, elem: setattr(obj, "data_pdu_ref", ARRef.deserialize(elem)),
         "FLOW-CONTROL-REF": lambda obj, elem: setattr(obj, "flow_control_ref", ARRef.deserialize(elem)),
-        "LIN-TP-N-SDU-REF": lambda obj, elem: setattr(obj, "lin_tp_n_sdu_ref", ARRef.deserialize(elem)),
+        "LIN-TP-N-SDU-REF": ("_POLYMORPHIC", "lin_tp_n_sdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
         "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
         "RECEIVERS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
-        "TIMEOUT-AS": lambda obj, elem: setattr(obj, "timeout_as", elem.text),
-        "TIMEOUT-CR": lambda obj, elem: setattr(obj, "timeout_cr", elem.text),
-        "TIMEOUT-CS": lambda obj, elem: setattr(obj, "timeout_cs", elem.text),
+        "TIMEOUT-AS": lambda obj, elem: setattr(obj, "timeout_as", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-CR": lambda obj, elem: setattr(obj, "timeout_cr", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-CS": lambda obj, elem: setattr(obj, "timeout_cs", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TRANSMITTER-REF": lambda obj, elem: setattr(obj, "transmitter_ref", ARRef.deserialize(elem)),
     }
 
@@ -251,69 +251,49 @@ class LinTpConnection(TpConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinTpConnection, cls).deserialize(element)
 
-        # Parse data_pdu_ref
-        child = SerializationHelper.find_child_element(element, "DATA-PDU-REF")
-        if child is not None:
-            data_pdu_ref_value = ARRef.deserialize(child)
-            obj.data_pdu_ref = data_pdu_ref_value
-
-        # Parse flow_control_ref
-        child = SerializationHelper.find_child_element(element, "FLOW-CONTROL-REF")
-        if child is not None:
-            flow_control_ref_value = ARRef.deserialize(child)
-            obj.flow_control_ref = flow_control_ref_value
-
-        # Parse lin_tp_n_sdu_ref
-        child = SerializationHelper.find_child_element(element, "LIN-TP-N-SDU-REF")
-        if child is not None:
-            lin_tp_n_sdu_ref_value = ARRef.deserialize(child)
-            obj.lin_tp_n_sdu_ref = lin_tp_n_sdu_ref_value
-
-        # Parse multicast_ref
-        child = SerializationHelper.find_child_element(element, "MULTICAST-REF")
-        if child is not None:
-            multicast_ref_value = ARRef.deserialize(child)
-            obj.multicast_ref = multicast_ref_value
-
-        # Parse receiver_refs (list from container "RECEIVER-REFS")
-        obj.receiver_refs = []
-        container = SerializationHelper.find_child_element(element, "RECEIVER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.receiver_refs.append(child_value)
-
-        # Parse timeout_as
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-AS")
-        if child is not None:
-            timeout_as_value = child.text
-            obj.timeout_as = timeout_as_value
-
-        # Parse timeout_cr
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-CR")
-        if child is not None:
-            timeout_cr_value = child.text
-            obj.timeout_cr = timeout_cr_value
-
-        # Parse timeout_cs
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-CS")
-        if child is not None:
-            timeout_cs_value = child.text
-            obj.timeout_cs = timeout_cs_value
-
-        # Parse transmitter_ref
-        child = SerializationHelper.find_child_element(element, "TRANSMITTER-REF")
-        if child is not None:
-            transmitter_ref_value = ARRef.deserialize(child)
-            obj.transmitter_ref = transmitter_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-PDU-REF":
+                setattr(obj, "data_pdu_ref", ARRef.deserialize(child))
+            elif tag == "FLOW-CONTROL-REF":
+                setattr(obj, "flow_control_ref", ARRef.deserialize(child))
+            elif tag == "LIN-TP-N-SDU-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CONTAINER-I-PDU":
+                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "ContainerIPdu"))
+                    elif concrete_tag == "DCM-I-PDU":
+                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "DcmIPdu"))
+                    elif concrete_tag == "GENERAL-PURPOSE-I-PDU":
+                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "GeneralPurposeIPdu"))
+                    elif concrete_tag == "I-SIGNAL-I-PDU":
+                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "ISignalIPdu"))
+                    elif concrete_tag == "J1939-DCM-I-PDU":
+                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "J1939DcmIPdu"))
+                    elif concrete_tag == "MULTIPLEXED-I-PDU":
+                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "MultiplexedIPdu"))
+                    elif concrete_tag == "N-PDU":
+                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "NPdu"))
+                    elif concrete_tag == "SECURED-I-PDU":
+                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "SecuredIPdu"))
+                    elif concrete_tag == "USER-DEFINED-I-PDU":
+                        setattr(obj, "lin_tp_n_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedIPdu"))
+            elif tag == "MULTICAST-REF":
+                setattr(obj, "multicast_ref", ARRef.deserialize(child))
+            elif tag == "RECEIVERS":
+                obj.receiver_refs.append(ARRef.deserialize(child))
+            elif tag == "TIMEOUT-AS":
+                setattr(obj, "timeout_as", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-CR":
+                setattr(obj, "timeout_cr", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-CS":
+                setattr(obj, "timeout_cs", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TRANSMITTER-REF":
+                setattr(obj, "transmitter_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -188,51 +188,23 @@ class McFunction(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(McFunction, cls).deserialize(element)
 
-        # Parse def_calprm_set_ref
-        child = SerializationHelper.find_child_element(element, "DEF-CALPRM-SET-REF")
-        if child is not None:
-            def_calprm_set_ref_value = ARRef.deserialize(child)
-            obj.def_calprm_set_ref = def_calprm_set_ref_value
-
-        # Parse in_measurement_ref
-        child = SerializationHelper.find_child_element(element, "IN-MEASUREMENT-REF")
-        if child is not None:
-            in_measurement_ref_value = ARRef.deserialize(child)
-            obj.in_measurement_ref = in_measurement_ref_value
-
-        # Parse loc_ref
-        child = SerializationHelper.find_child_element(element, "LOC-REF")
-        if child is not None:
-            loc_ref_value = ARRef.deserialize(child)
-            obj.loc_ref = loc_ref_value
-
-        # Parse out_ref
-        child = SerializationHelper.find_child_element(element, "OUT-REF")
-        if child is not None:
-            out_ref_value = ARRef.deserialize(child)
-            obj.out_ref = out_ref_value
-
-        # Parse ref_calprm_set_ref
-        child = SerializationHelper.find_child_element(element, "REF-CALPRM-SET-REF")
-        if child is not None:
-            ref_calprm_set_ref_value = ARRef.deserialize(child)
-            obj.ref_calprm_set_ref = ref_calprm_set_ref_value
-
-        # Parse sub_function_refs (list from container "SUB-FUNCTION-REFS")
-        obj.sub_function_refs = []
-        container = SerializationHelper.find_child_element(element, "SUB-FUNCTION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sub_function_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEF-CALPRM-SET-REF":
+                setattr(obj, "def_calprm_set_ref", ARRef.deserialize(child))
+            elif tag == "IN-MEASUREMENT-REF":
+                setattr(obj, "in_measurement_ref", ARRef.deserialize(child))
+            elif tag == "LOC-REF":
+                setattr(obj, "loc_ref", ARRef.deserialize(child))
+            elif tag == "OUT-REF":
+                setattr(obj, "out_ref", ARRef.deserialize(child))
+            elif tag == "REF-CALPRM-SET-REF":
+                setattr(obj, "ref_calprm_set_ref", ARRef.deserialize(child))
+            elif tag == "SUB-FUNCTIONS":
+                obj.sub_function_refs.append(ARRef.deserialize(child))
 
         return obj
 

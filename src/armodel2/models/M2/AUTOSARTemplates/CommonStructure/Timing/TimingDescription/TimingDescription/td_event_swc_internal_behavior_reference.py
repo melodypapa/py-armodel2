@@ -36,7 +36,7 @@ class TDEventSwcInternalBehaviorReference(TDEventSwc):
 
     referenced_td_event_swc_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "REFERENCED-TD-EVENT-SWC-REF": lambda obj, elem: setattr(obj, "referenced_td_event_swc_ref", ARRef.deserialize(elem)),
+        "REFERENCED-TD-EVENT-SWC-REF": ("_POLYMORPHIC", "referenced_td_event_swc_ref", ["TDEventSwcInternalBehavior", "TDEventSwcInternalBehaviorReference"]),
     }
 
 
@@ -97,11 +97,19 @@ class TDEventSwcInternalBehaviorReference(TDEventSwc):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventSwcInternalBehaviorReference, cls).deserialize(element)
 
-        # Parse referenced_td_event_swc_ref
-        child = SerializationHelper.find_child_element(element, "REFERENCED-TD-EVENT-SWC-REF")
-        if child is not None:
-            referenced_td_event_swc_ref_value = ARRef.deserialize(child)
-            obj.referenced_td_event_swc_ref = referenced_td_event_swc_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "REFERENCED-TD-EVENT-SWC-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "T-D-EVENT-SWC-INTERNAL-BEHAVIOR":
+                        setattr(obj, "referenced_td_event_swc_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSwcInternalBehavior"))
+                    elif concrete_tag == "T-D-EVENT-SWC-INTERNAL-BEHAVIOR-REFERENCE":
+                        setattr(obj, "referenced_td_event_swc_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSwcInternalBehaviorReference"))
 
         return obj
 

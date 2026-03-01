@@ -47,8 +47,8 @@ class ArrayValueSpecification(CompositeValueSpecification):
     elements: list[ValueSpecification]
     intended_partial: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ELEMENTS": lambda obj, elem: obj.elements.append(ValueSpecification.deserialize(elem)),
-        "INTENDED-PARTIAL": lambda obj, elem: setattr(obj, "intended_partial", elem.text),
+        "ELEMENTS": ("_POLYMORPHIC_LIST", "elements", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "INTENDED-PARTIAL": lambda obj, elem: setattr(obj, "intended_partial", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -120,21 +120,33 @@ class ArrayValueSpecification(CompositeValueSpecification):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ArrayValueSpecification, cls).deserialize(element)
 
-        # Parse elements (list from container "ELEMENTS")
-        obj.elements = []
-        container = SerializationHelper.find_child_element(element, "ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.elements.append(child_value)
-
-        # Parse intended_partial
-        child = SerializationHelper.find_child_element(element, "INTENDED-PARTIAL")
-        if child is not None:
-            intended_partial_value = child.text
-            obj.intended_partial = intended_partial_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ELEMENTS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        obj.elements.append(SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
+            elif tag == "INTENDED-PARTIAL":
+                setattr(obj, "intended_partial", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

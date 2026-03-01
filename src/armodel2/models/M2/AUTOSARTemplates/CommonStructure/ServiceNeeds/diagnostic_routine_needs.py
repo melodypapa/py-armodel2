@@ -101,11 +101,13 @@ class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRoutineNeeds, cls).deserialize(element)
 
-        # Parse diag_routine
-        child = SerializationHelper.find_child_element(element, "DIAG-ROUTINE")
-        if child is not None:
-            diag_routine_value = DiagnosticRoutineTypeEnum.deserialize(child)
-            obj.diag_routine = diag_routine_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DIAG-ROUTINE":
+                setattr(obj, "diag_routine", DiagnosticRoutineTypeEnum.deserialize(child))
 
         return obj
 

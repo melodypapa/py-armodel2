@@ -38,8 +38,8 @@ class TransmissionModeTiming(ARObject):
     cyclic_timing: Optional[CyclicTiming]
     event_controlled_timing: Optional[EventControlledTiming]
     _DESERIALIZE_DISPATCH = {
-        "CYCLIC-TIMING": lambda obj, elem: setattr(obj, "cyclic_timing", CyclicTiming.deserialize(elem)),
-        "EVENT-CONTROLLED-TIMING": lambda obj, elem: setattr(obj, "event_controlled_timing", EventControlledTiming.deserialize(elem)),
+        "CYCLIC-TIMING": lambda obj, elem: setattr(obj, "cyclic_timing", SerializationHelper.deserialize_by_tag(elem, "CyclicTiming")),
+        "EVENT-CONTROLLED-TIMING": lambda obj, elem: setattr(obj, "event_controlled_timing", SerializationHelper.deserialize_by_tag(elem, "EventControlledTiming")),
     }
 
 
@@ -115,17 +115,15 @@ class TransmissionModeTiming(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransmissionModeTiming, cls).deserialize(element)
 
-        # Parse cyclic_timing
-        child = SerializationHelper.find_child_element(element, "CYCLIC-TIMING")
-        if child is not None:
-            cyclic_timing_value = SerializationHelper.deserialize_by_tag(child, "CyclicTiming")
-            obj.cyclic_timing = cyclic_timing_value
-
-        # Parse event_controlled_timing
-        child = SerializationHelper.find_child_element(element, "EVENT-CONTROLLED-TIMING")
-        if child is not None:
-            event_controlled_timing_value = SerializationHelper.deserialize_by_tag(child, "EventControlledTiming")
-            obj.event_controlled_timing = event_controlled_timing_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CYCLIC-TIMING":
+                setattr(obj, "cyclic_timing", SerializationHelper.deserialize_by_tag(child, "CyclicTiming"))
+            elif tag == "EVENT-CONTROLLED-TIMING":
+                setattr(obj, "event_controlled_timing", SerializationHelper.deserialize_by_tag(child, "EventControlledTiming"))
 
         return obj
 

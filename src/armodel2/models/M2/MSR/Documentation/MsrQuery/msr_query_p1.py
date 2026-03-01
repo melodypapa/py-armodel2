@@ -42,8 +42,8 @@ class MsrQueryP1(Paginateable):
     msr_query_props: MsrQueryProps
     msr_query_result: Optional[TopicContent]
     _DESERIALIZE_DISPATCH = {
-        "MSR-QUERY-PROPS": lambda obj, elem: setattr(obj, "msr_query_props", MsrQueryProps.deserialize(elem)),
-        "MSR-QUERY-RESULT": lambda obj, elem: setattr(obj, "msr_query_result", TopicContent.deserialize(elem)),
+        "MSR-QUERY-PROPS": lambda obj, elem: setattr(obj, "msr_query_props", SerializationHelper.deserialize_by_tag(elem, "MsrQueryProps")),
+        "MSR-QUERY-RESULT": lambda obj, elem: setattr(obj, "msr_query_result", SerializationHelper.deserialize_by_tag(elem, "TopicContent")),
     }
 
 
@@ -118,25 +118,15 @@ class MsrQueryP1(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MsrQueryP1, cls).deserialize(element)
 
-        # Parse msr_query_props
-        child = SerializationHelper.find_child_element(element, "MSR-QUERY-PROPS")
-        if child is not None:
-            msr_query_props_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryProps")
-            obj.msr_query_props = msr_query_props_value
-
-        # Parse msr_query_result (atp_mixed - children appear directly)
-        # Check if element contains expected children for TopicContent
-        has_mixed_children = False
-        child_tags_to_check = ['BLOCK-LEVEL', 'TABLE', 'TRACEABLE-TABLE']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            msr_query_result_value = SerializationHelper.deserialize_by_tag(element, "TopicContent")
-            obj.msr_query_result = msr_query_result_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MSR-QUERY-PROPS":
+                setattr(obj, "msr_query_props", SerializationHelper.deserialize_by_tag(child, "MsrQueryProps"))
+            elif tag == "MSR-QUERY-RESULT":
+                setattr(obj, "msr_query_result", SerializationHelper.deserialize_by_tag(child, "TopicContent"))
 
         return obj
 

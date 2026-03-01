@@ -41,9 +41,9 @@ class TtcanCluster(ARObject):
     ntu: Optional[TimeValue]
     operation_mode: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "BASIC-CYCLE-LENGTH": lambda obj, elem: setattr(obj, "basic_cycle_length", elem.text),
-        "NTU": lambda obj, elem: setattr(obj, "ntu", elem.text),
-        "OPERATION-MODE": lambda obj, elem: setattr(obj, "operation_mode", elem.text),
+        "BASIC-CYCLE-LENGTH": lambda obj, elem: setattr(obj, "basic_cycle_length", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NTU": lambda obj, elem: setattr(obj, "ntu", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "OPERATION-MODE": lambda obj, elem: setattr(obj, "operation_mode", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 

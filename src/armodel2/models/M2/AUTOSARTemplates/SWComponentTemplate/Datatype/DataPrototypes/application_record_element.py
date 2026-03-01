@@ -40,7 +40,7 @@ class ApplicationRecordElement(ApplicationCompositeElementDataPrototype):
 
     is_optional: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "IS-OPTIONAL": lambda obj, elem: setattr(obj, "is_optional", elem.text),
+        "IS-OPTIONAL": lambda obj, elem: setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -101,11 +101,13 @@ class ApplicationRecordElement(ApplicationCompositeElementDataPrototype):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationRecordElement, cls).deserialize(element)
 
-        # Parse is_optional
-        child = SerializationHelper.find_child_element(element, "IS-OPTIONAL")
-        if child is not None:
-            is_optional_value = child.text
-            obj.is_optional = is_optional_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "IS-OPTIONAL":
+                setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

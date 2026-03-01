@@ -58,17 +58,17 @@ class DiagnosticCommonProps(ARObject):
     response_on: Optional[Boolean]
     type_of_event: Optional[DiagnosticEvent]
     _DESERIALIZE_DISPATCH = {
-        "AUTHENTICATION": lambda obj, elem: setattr(obj, "authentication", elem.text),
-        "DEBOUNCES": lambda obj, elem: obj.debounces.append(any (DiagnosticDebounce).deserialize(elem)),
+        "AUTHENTICATION": lambda obj, elem: setattr(obj, "authentication", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "DEBOUNCES": lambda obj, elem: obj.debounces.append(SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticDebounce)")),
         "DEFAULT": lambda obj, elem: setattr(obj, "default", ByteOrderEnum.deserialize(elem)),
-        "EVENT": lambda obj, elem: setattr(obj, "event", DiagnosticEvent.deserialize(elem)),
-        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
+        "EVENT": lambda obj, elem: setattr(obj, "event", SerializationHelper.deserialize_by_tag(elem, "DiagnosticEvent")),
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "OCCURRENCE": lambda obj, elem: setattr(obj, "occurrence", DiagnosticOccurrenceCounterProcessingEnum.deserialize(elem)),
-        "RESET-CONFIRMED": lambda obj, elem: setattr(obj, "reset_confirmed", elem.text),
-        "RESET-PENDING-BIT": lambda obj, elem: setattr(obj, "reset_pending_bit", elem.text),
-        "RESPONSE-ON-ALL": lambda obj, elem: setattr(obj, "response_on_all", elem.text),
-        "RESPONSE-ON": lambda obj, elem: setattr(obj, "response_on", elem.text),
-        "TYPE-OF-EVENT": lambda obj, elem: setattr(obj, "type_of_event", DiagnosticEvent.deserialize(elem)),
+        "RESET-CONFIRMED": lambda obj, elem: setattr(obj, "reset_confirmed", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RESET-PENDING-BIT": lambda obj, elem: setattr(obj, "reset_pending_bit", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RESPONSE-ON-ALL": lambda obj, elem: setattr(obj, "response_on_all", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RESPONSE-ON": lambda obj, elem: setattr(obj, "response_on", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TYPE-OF-EVENT": lambda obj, elem: setattr(obj, "type_of_event", SerializationHelper.deserialize_by_tag(elem, "DiagnosticEvent")),
     }
 
 

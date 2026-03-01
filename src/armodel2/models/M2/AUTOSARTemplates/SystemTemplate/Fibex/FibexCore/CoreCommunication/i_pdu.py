@@ -37,7 +37,7 @@ class IPdu(Pdu, ABC):
 
     contained_i_pdu_props: Optional[ContainedIPduProps]
     _DESERIALIZE_DISPATCH = {
-        "CONTAINED-I-PDU-PROPS": lambda obj, elem: setattr(obj, "contained_i_pdu_props", ContainedIPduProps.deserialize(elem)),
+        "CONTAINED-I-PDU-PROPS": lambda obj, elem: setattr(obj, "contained_i_pdu_props", SerializationHelper.deserialize_by_tag(elem, "ContainedIPduProps")),
     }
 
 
@@ -98,11 +98,13 @@ class IPdu(Pdu, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IPdu, cls).deserialize(element)
 
-        # Parse contained_i_pdu_props
-        child = SerializationHelper.find_child_element(element, "CONTAINED-I-PDU-PROPS")
-        if child is not None:
-            contained_i_pdu_props_value = SerializationHelper.deserialize_by_tag(child, "ContainedIPduProps")
-            obj.contained_i_pdu_props = contained_i_pdu_props_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONTAINED-I-PDU-PROPS":
+                setattr(obj, "contained_i_pdu_props", SerializationHelper.deserialize_by_tag(child, "ContainedIPduProps"))
 
         return obj
 

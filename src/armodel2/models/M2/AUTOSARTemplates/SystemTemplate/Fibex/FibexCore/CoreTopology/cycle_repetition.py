@@ -42,7 +42,7 @@ class CycleRepetition(CommunicationCycle):
     base_cycle: Optional[Integer]
     cycle_repetition: Optional[CycleRepetitionType]
     _DESERIALIZE_DISPATCH = {
-        "BASE-CYCLE": lambda obj, elem: setattr(obj, "base_cycle", elem.text),
+        "BASE-CYCLE": lambda obj, elem: setattr(obj, "base_cycle", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "CYCLE-REPETITION": lambda obj, elem: setattr(obj, "cycle_repetition", CycleRepetitionType.deserialize(elem)),
     }
 
@@ -119,17 +119,15 @@ class CycleRepetition(CommunicationCycle):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CycleRepetition, cls).deserialize(element)
 
-        # Parse base_cycle
-        child = SerializationHelper.find_child_element(element, "BASE-CYCLE")
-        if child is not None:
-            base_cycle_value = child.text
-            obj.base_cycle = base_cycle_value
-
-        # Parse cycle_repetition
-        child = SerializationHelper.find_child_element(element, "CYCLE-REPETITION")
-        if child is not None:
-            cycle_repetition_value = CycleRepetitionType.deserialize(child)
-            obj.cycle_repetition = cycle_repetition_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BASE-CYCLE":
+                setattr(obj, "base_cycle", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "CYCLE-REPETITION":
+                setattr(obj, "cycle_repetition", CycleRepetitionType.deserialize(child))
 
         return obj
 

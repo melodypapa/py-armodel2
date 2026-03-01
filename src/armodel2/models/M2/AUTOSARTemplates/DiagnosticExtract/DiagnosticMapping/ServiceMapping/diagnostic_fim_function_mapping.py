@@ -42,7 +42,7 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
         "MAPPED-BSW-REF": lambda obj, elem: setattr(obj, "mapped_bsw_ref", ARRef.deserialize(elem)),
         "MAPPED-FLAT-SWC-REF": lambda obj, elem: setattr(obj, "mapped_flat_swc_ref", ARRef.deserialize(elem)),
         "MAPPED-REF": lambda obj, elem: setattr(obj, "mapped_ref", ARRef.deserialize(elem)),
-        "MAPPED-SWC": lambda obj, elem: setattr(obj, "mapped_swc", any (SwcService).deserialize(elem)),
+        "MAPPED-SWC": lambda obj, elem: setattr(obj, "mapped_swc", SerializationHelper.deserialize_by_tag(elem, "any (SwcService)")),
     }
 
 
@@ -148,29 +148,19 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticFimFunctionMapping, cls).deserialize(element)
 
-        # Parse mapped_bsw_ref
-        child = SerializationHelper.find_child_element(element, "MAPPED-BSW-REF")
-        if child is not None:
-            mapped_bsw_ref_value = ARRef.deserialize(child)
-            obj.mapped_bsw_ref = mapped_bsw_ref_value
-
-        # Parse mapped_flat_swc_ref
-        child = SerializationHelper.find_child_element(element, "MAPPED-FLAT-SWC-REF")
-        if child is not None:
-            mapped_flat_swc_ref_value = ARRef.deserialize(child)
-            obj.mapped_flat_swc_ref = mapped_flat_swc_ref_value
-
-        # Parse mapped_ref
-        child = SerializationHelper.find_child_element(element, "MAPPED-REF")
-        if child is not None:
-            mapped_ref_value = ARRef.deserialize(child)
-            obj.mapped_ref = mapped_ref_value
-
-        # Parse mapped_swc
-        child = SerializationHelper.find_child_element(element, "MAPPED-SWC")
-        if child is not None:
-            mapped_swc_value = child.text
-            obj.mapped_swc = mapped_swc_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAPPED-BSW-REF":
+                setattr(obj, "mapped_bsw_ref", ARRef.deserialize(child))
+            elif tag == "MAPPED-FLAT-SWC-REF":
+                setattr(obj, "mapped_flat_swc_ref", ARRef.deserialize(child))
+            elif tag == "MAPPED-REF":
+                setattr(obj, "mapped_ref", ARRef.deserialize(child))
+            elif tag == "MAPPED-SWC":
+                setattr(obj, "mapped_swc", SerializationHelper.deserialize_by_tag(child, "any (SwcService)"))
 
         return obj
 

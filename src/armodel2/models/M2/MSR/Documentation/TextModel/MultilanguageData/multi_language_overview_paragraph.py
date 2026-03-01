@@ -38,7 +38,7 @@ class MultiLanguageOverviewParagraph(ARObject):
 
     _l2: list[LOverviewParagraph]
     _DESERIALIZE_DISPATCH = {
-        "L2": lambda obj, elem: obj._l2.append(LOverviewParagraph.deserialize(elem)),
+        "L2": lambda obj, elem: obj._l2.append(SerializationHelper.deserialize_by_tag(elem, "LOverviewParagraph")),
     }
 
 
@@ -110,11 +110,13 @@ class MultiLanguageOverviewParagraph(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MultiLanguageOverviewParagraph, cls).deserialize(element)
 
-        # Parse l2 (list with lang_prefix "L-2")
-        obj.l2 = []
-        for child in SerializationHelper.find_all_child_elements(element, "L-2"):
-            l2_value = SerializationHelper.deserialize_by_tag(child, "LOverviewParagraph")
-            obj.l2.append(l2_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "L2":
+                obj._l2.append(SerializationHelper.deserialize_by_tag(child, "LOverviewParagraph"))
 
         return obj
 

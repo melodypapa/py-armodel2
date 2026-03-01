@@ -40,8 +40,8 @@ class AutosarParameterRef(ARObject):
     autosar_ref: Optional[ARRef]
     local_parameter_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "AUTOSAR-REF": lambda obj, elem: setattr(obj, "autosar_ref", ARRef.deserialize(elem)),
-        "LOCAL-PARAMETER-REF": lambda obj, elem: setattr(obj, "local_parameter_ref", ARRef.deserialize(elem)),
+        "AUTOSAR-REF": ("_POLYMORPHIC", "autosar_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "LOCAL-PARAMETER-REF": ("_POLYMORPHIC", "local_parameter_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
     }
 
 
@@ -117,17 +117,27 @@ class AutosarParameterRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AutosarParameterRef, cls).deserialize(element)
 
-        # Parse autosar_ref
-        child = SerializationHelper.find_child_element(element, "AUTOSAR-REF")
-        if child is not None:
-            autosar_ref_value = ARRef.deserialize(child)
-            obj.autosar_ref = autosar_ref_value
-
-        # Parse local_parameter_ref
-        child = SerializationHelper.find_child_element(element, "LOCAL-PARAMETER-REF")
-        if child is not None:
-            local_parameter_ref_value = ARRef.deserialize(child)
-            obj.local_parameter_ref = local_parameter_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AUTOSAR-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
+                        setattr(obj, "autosar_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
+                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
+                        setattr(obj, "autosar_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
+            elif tag == "LOCAL-PARAMETER-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
+                        setattr(obj, "local_parameter_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
+                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
+                        setattr(obj, "local_parameter_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
 
         return obj
 

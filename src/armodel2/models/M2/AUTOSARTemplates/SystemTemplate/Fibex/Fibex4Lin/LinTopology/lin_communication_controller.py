@@ -32,7 +32,7 @@ class LinCommunicationController(ARObject, ABC):
 
     protocol_version: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "PROTOCOL-VERSION": lambda obj, elem: setattr(obj, "protocol_version", elem.text),
+        "PROTOCOL-VERSION": lambda obj, elem: setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -93,11 +93,13 @@ class LinCommunicationController(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinCommunicationController, cls).deserialize(element)
 
-        # Parse protocol_version
-        child = SerializationHelper.find_child_element(element, "PROTOCOL-VERSION")
-        if child is not None:
-            protocol_version_value = child.text
-            obj.protocol_version = protocol_version_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PROTOCOL-VERSION":
+                setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

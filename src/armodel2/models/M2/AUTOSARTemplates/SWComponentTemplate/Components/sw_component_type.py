@@ -65,11 +65,11 @@ class SwComponentType(ARElement, ABC):
     sw_component_documentation: Optional[SwComponentDocumentation]
     unit_group_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONSISTENCY-NEEDSES": lambda obj, elem: obj.consistency_needses.append(ConsistencyNeeds.deserialize(elem)),
-        "PORTS": lambda obj, elem: obj.ports.append(PortPrototype.deserialize(elem)),
-        "PORT-GROUPS": lambda obj, elem: obj.port_groups.append(PortGroup.deserialize(elem)),
+        "CONSISTENCY-NEEDSES": lambda obj, elem: obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(elem, "ConsistencyNeeds")),
+        "PORTS": ("_POLYMORPHIC_LIST", "ports", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "PORT-GROUPS": lambda obj, elem: obj.port_groups.append(SerializationHelper.deserialize_by_tag(elem, "PortGroup")),
         "SWC-MAPPING-CONSTRAINTS": lambda obj, elem: obj.swc_mapping_constraint_refs.append(ARRef.deserialize(elem)),
-        "SW-COMPONENT-DOCUMENTATION": lambda obj, elem: setattr(obj, "sw_component_documentation", SwComponentDocumentation.deserialize(elem)),
+        "SW-COMPONENT-DOCUMENTATION": lambda obj, elem: setattr(obj, "sw_component_documentation", SerializationHelper.deserialize_by_tag(elem, "SwComponentDocumentation")),
         "UNIT-GROUPS": lambda obj, elem: obj.unit_group_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -200,73 +200,29 @@ class SwComponentType(ARElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwComponentType, cls).deserialize(element)
 
-        # Parse consistency_needses (list from container "CONSISTENCY-NEEDSES")
-        obj.consistency_needses = []
-        container = SerializationHelper.find_child_element(element, "CONSISTENCY-NEEDSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.consistency_needses.append(child_value)
-
-        # Parse ports (list from container "PORTS")
-        obj.ports = []
-        container = SerializationHelper.find_child_element(element, "PORTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ports.append(child_value)
-
-        # Parse port_groups (list from container "PORT-GROUPS")
-        obj.port_groups = []
-        container = SerializationHelper.find_child_element(element, "PORT-GROUPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.port_groups.append(child_value)
-
-        # Parse swc_mapping_constraint_refs (list from container "SWC-MAPPING-CONSTRAINT-REFS")
-        obj.swc_mapping_constraint_refs = []
-        container = SerializationHelper.find_child_element(element, "SWC-MAPPING-CONSTRAINT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.swc_mapping_constraint_refs.append(child_value)
-
-        # Parse sw_component_documentation
-        child = SerializationHelper.find_child_element(element, "SW-COMPONENT-DOCUMENTATION")
-        if child is not None:
-            sw_component_documentation_value = SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation")
-            obj.sw_component_documentation = sw_component_documentation_value
-
-        # Parse unit_group_refs (list from container "UNIT-GROUP-REFS")
-        obj.unit_group_refs = []
-        container = SerializationHelper.find_child_element(element, "UNIT-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.unit_group_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONSISTENCY-NEEDSES":
+                obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(child, "ConsistencyNeeds"))
+            elif tag == "PORTS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
+                        obj.ports.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
+                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
+                        obj.ports.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+            elif tag == "PORT-GROUPS":
+                obj.port_groups.append(SerializationHelper.deserialize_by_tag(child, "PortGroup"))
+            elif tag == "SWC-MAPPING-CONSTRAINTS":
+                obj.swc_mapping_constraint_refs.append(ARRef.deserialize(child))
+            elif tag == "SW-COMPONENT-DOCUMENTATION":
+                setattr(obj, "sw_component_documentation", SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation"))
+            elif tag == "UNIT-GROUPS":
+                obj.unit_group_refs.append(ARRef.deserialize(child))
 
         return obj
 

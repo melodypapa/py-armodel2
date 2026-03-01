@@ -88,23 +88,23 @@ class RunnableEntity(ExecutableEntity):
     wait_points: list[WaitPoint]
     written_locals: list[VariableAccess]
     _DESERIALIZE_DISPATCH = {
-        "ARGUMENTS": lambda obj, elem: obj.arguments.append(RunnableEntity.deserialize(elem)),
-        "ASYNCHRONOUS-SERVERS": lambda obj, elem: obj.asynchronous_servers.append(any (AsynchronousServer).deserialize(elem)),
-        "CAN-BE-INVOKED": lambda obj, elem: setattr(obj, "can_be_invoked", elem.text),
-        "DATA-READS": lambda obj, elem: obj.data_reads.append(VariableAccess.deserialize(elem)),
-        "DATA-RECEIVES": lambda obj, elem: obj.data_receives.append(VariableAccess.deserialize(elem)),
-        "DATA-SEND-POINTS": lambda obj, elem: obj.data_send_points.append(VariableAccess.deserialize(elem)),
-        "DATA-WRITES": lambda obj, elem: obj.data_writes.append(VariableAccess.deserialize(elem)),
+        "ARGUMENTS": lambda obj, elem: obj.arguments.append(SerializationHelper.deserialize_by_tag(elem, "RunnableEntity")),
+        "ASYNCHRONOUS-SERVERS": lambda obj, elem: obj.asynchronous_servers.append(SerializationHelper.deserialize_by_tag(elem, "any (AsynchronousServer)")),
+        "CAN-BE-INVOKED": lambda obj, elem: setattr(obj, "can_be_invoked", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "DATA-READS": lambda obj, elem: obj.data_reads.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "DATA-RECEIVES": lambda obj, elem: obj.data_receives.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "DATA-SEND-POINTS": lambda obj, elem: obj.data_send_points.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "DATA-WRITES": lambda obj, elem: obj.data_writes.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
         "EXTERNALS": lambda obj, elem: obj.external_refs.append(ARRef.deserialize(elem)),
         "INTERNALS": lambda obj, elem: obj.internal_refs.append(ARRef.deserialize(elem)),
-        "MODE-ACCESS-POINTS": lambda obj, elem: obj.mode_access_points.append(ModeAccessPoint.deserialize(elem)),
-        "MODE-SWITCH-POINTS": lambda obj, elem: obj.mode_switch_points.append(ModeSwitchPoint.deserialize(elem)),
-        "PARAMETER-ACCESSES": lambda obj, elem: obj.parameter_accesses.append(ParameterAccess.deserialize(elem)),
-        "READ-LOCALS": lambda obj, elem: obj.read_locals.append(VariableAccess.deserialize(elem)),
-        "SERVER-CALL-POINTS": lambda obj, elem: obj.server_call_points.append(ServerCallPoint.deserialize(elem)),
-        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", elem.text),
-        "WAIT-POINTS": lambda obj, elem: obj.wait_points.append(WaitPoint.deserialize(elem)),
-        "WRITTEN-LOCALS": lambda obj, elem: obj.written_locals.append(VariableAccess.deserialize(elem)),
+        "MODE-ACCESS-POINTS": lambda obj, elem: obj.mode_access_points.append(SerializationHelper.deserialize_by_tag(elem, "ModeAccessPoint")),
+        "MODE-SWITCH-POINTS": lambda obj, elem: obj.mode_switch_points.append(SerializationHelper.deserialize_by_tag(elem, "ModeSwitchPoint")),
+        "PARAMETER-ACCESSES": lambda obj, elem: obj.parameter_accesses.append(SerializationHelper.deserialize_by_tag(elem, "ParameterAccess")),
+        "READ-LOCALS": lambda obj, elem: obj.read_locals.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "SERVER-CALL-POINTS": ("_POLYMORPHIC_LIST", "server_call_points", ["AsynchronousServerCallPoint", "SynchronousServerCallPoint"]),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
+        "WAIT-POINTS": lambda obj, elem: obj.wait_points.append(SerializationHelper.deserialize_by_tag(elem, "WaitPoint")),
+        "WRITTEN-LOCALS": lambda obj, elem: obj.written_locals.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
     }
 
 
@@ -359,179 +359,51 @@ class RunnableEntity(ExecutableEntity):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RunnableEntity, cls).deserialize(element)
 
-        # Parse arguments (list from container "ARGUMENTS")
-        obj.arguments = []
-        container = SerializationHelper.find_child_element(element, "ARGUMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.arguments.append(child_value)
-
-        # Parse asynchronous_servers (list from container "ASYNCHRONOUS-SERVERS")
-        obj.asynchronous_servers = []
-        container = SerializationHelper.find_child_element(element, "ASYNCHRONOUS-SERVERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.asynchronous_servers.append(child_value)
-
-        # Parse can_be_invoked
-        child = SerializationHelper.find_child_element(element, "CAN-BE-INVOKED")
-        if child is not None:
-            can_be_invoked_value = child.text
-            obj.can_be_invoked = can_be_invoked_value
-
-        # Parse data_reads (list from container "DATA-READS")
-        obj.data_reads = []
-        container = SerializationHelper.find_child_element(element, "DATA-READS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_reads.append(child_value)
-
-        # Parse data_receives (list from container "DATA-RECEIVES")
-        obj.data_receives = []
-        container = SerializationHelper.find_child_element(element, "DATA-RECEIVES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_receives.append(child_value)
-
-        # Parse data_send_points (list from container "DATA-SEND-POINTS")
-        obj.data_send_points = []
-        container = SerializationHelper.find_child_element(element, "DATA-SEND-POINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_send_points.append(child_value)
-
-        # Parse data_writes (list from container "DATA-WRITES")
-        obj.data_writes = []
-        container = SerializationHelper.find_child_element(element, "DATA-WRITES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_writes.append(child_value)
-
-        # Parse external_refs (list from container "EXTERNAL-REFS")
-        obj.external_refs = []
-        container = SerializationHelper.find_child_element(element, "EXTERNAL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.external_refs.append(child_value)
-
-        # Parse internal_refs (list from container "INTERNAL-REFS")
-        obj.internal_refs = []
-        container = SerializationHelper.find_child_element(element, "INTERNAL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.internal_refs.append(child_value)
-
-        # Parse mode_access_points (list from container "MODE-ACCESS-POINTS")
-        obj.mode_access_points = []
-        container = SerializationHelper.find_child_element(element, "MODE-ACCESS-POINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mode_access_points.append(child_value)
-
-        # Parse mode_switch_points (list from container "MODE-SWITCH-POINTS")
-        obj.mode_switch_points = []
-        container = SerializationHelper.find_child_element(element, "MODE-SWITCH-POINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mode_switch_points.append(child_value)
-
-        # Parse parameter_accesses (list from container "PARAMETER-ACCESSES")
-        obj.parameter_accesses = []
-        container = SerializationHelper.find_child_element(element, "PARAMETER-ACCESSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.parameter_accesses.append(child_value)
-
-        # Parse read_locals (list from container "READ-LOCALS")
-        obj.read_locals = []
-        container = SerializationHelper.find_child_element(element, "READ-LOCALS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.read_locals.append(child_value)
-
-        # Parse server_call_points (list from container "SERVER-CALL-POINTS")
-        obj.server_call_points = []
-        container = SerializationHelper.find_child_element(element, "SERVER-CALL-POINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.server_call_points.append(child_value)
-
-        # Parse symbol
-        child = SerializationHelper.find_child_element(element, "SYMBOL")
-        if child is not None:
-            symbol_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
-            obj.symbol = symbol_value
-
-        # Parse wait_points (list from container "WAIT-POINTS")
-        obj.wait_points = []
-        container = SerializationHelper.find_child_element(element, "WAIT-POINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.wait_points.append(child_value)
-
-        # Parse written_locals (list from container "WRITTEN-LOCALS")
-        obj.written_locals = []
-        container = SerializationHelper.find_child_element(element, "WRITTEN-LOCALS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.written_locals.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ARGUMENTS":
+                obj.arguments.append(SerializationHelper.deserialize_by_tag(child, "RunnableEntity"))
+            elif tag == "ASYNCHRONOUS-SERVERS":
+                obj.asynchronous_servers.append(SerializationHelper.deserialize_by_tag(child, "any (AsynchronousServer)"))
+            elif tag == "CAN-BE-INVOKED":
+                setattr(obj, "can_be_invoked", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "DATA-READS":
+                obj.data_reads.append(SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
+            elif tag == "DATA-RECEIVES":
+                obj.data_receives.append(SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
+            elif tag == "DATA-SEND-POINTS":
+                obj.data_send_points.append(SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
+            elif tag == "DATA-WRITES":
+                obj.data_writes.append(SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
+            elif tag == "EXTERNALS":
+                obj.external_refs.append(ARRef.deserialize(child))
+            elif tag == "INTERNALS":
+                obj.internal_refs.append(ARRef.deserialize(child))
+            elif tag == "MODE-ACCESS-POINTS":
+                obj.mode_access_points.append(SerializationHelper.deserialize_by_tag(child, "ModeAccessPoint"))
+            elif tag == "MODE-SWITCH-POINTS":
+                obj.mode_switch_points.append(SerializationHelper.deserialize_by_tag(child, "ModeSwitchPoint"))
+            elif tag == "PARAMETER-ACCESSES":
+                obj.parameter_accesses.append(SerializationHelper.deserialize_by_tag(child, "ParameterAccess"))
+            elif tag == "READ-LOCALS":
+                obj.read_locals.append(SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
+            elif tag == "SERVER-CALL-POINTS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ASYNCHRONOUS-SERVER-CALL-POINT":
+                        obj.server_call_points.append(SerializationHelper.deserialize_by_tag(child[0], "AsynchronousServerCallPoint"))
+                    elif concrete_tag == "SYNCHRONOUS-SERVER-CALL-POINT":
+                        obj.server_call_points.append(SerializationHelper.deserialize_by_tag(child[0], "SynchronousServerCallPoint"))
+            elif tag == "SYMBOL":
+                setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
+            elif tag == "WAIT-POINTS":
+                obj.wait_points.append(SerializationHelper.deserialize_by_tag(child, "WaitPoint"))
+            elif tag == "WRITTEN-LOCALS":
+                obj.written_locals.append(SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
 
         return obj
 

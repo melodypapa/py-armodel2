@@ -130,23 +130,17 @@ class RptSwPrototypingAccess(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptSwPrototypingAccess, cls).deserialize(element)
 
-        # Parse rpt_hook_access
-        child = SerializationHelper.find_child_element(element, "RPT-HOOK-ACCESS")
-        if child is not None:
-            rpt_hook_access_value = RptAccessEnum.deserialize(child)
-            obj.rpt_hook_access = rpt_hook_access_value
-
-        # Parse rpt_read_access
-        child = SerializationHelper.find_child_element(element, "RPT-READ-ACCESS")
-        if child is not None:
-            rpt_read_access_value = RptAccessEnum.deserialize(child)
-            obj.rpt_read_access = rpt_read_access_value
-
-        # Parse rpt_write_access
-        child = SerializationHelper.find_child_element(element, "RPT-WRITE-ACCESS")
-        if child is not None:
-            rpt_write_access_value = RptAccessEnum.deserialize(child)
-            obj.rpt_write_access = rpt_write_access_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RPT-HOOK-ACCESS":
+                setattr(obj, "rpt_hook_access", RptAccessEnum.deserialize(child))
+            elif tag == "RPT-READ-ACCESS":
+                setattr(obj, "rpt_read_access", RptAccessEnum.deserialize(child))
+            elif tag == "RPT-WRITE-ACCESS":
+                setattr(obj, "rpt_write_access", RptAccessEnum.deserialize(child))
 
         return obj
 

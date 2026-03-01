@@ -38,7 +38,7 @@ class ReceiverAnnotation(SenderReceiverAnnotation):
 
     signal_age: Optional[MultidimensionalTime]
     _DESERIALIZE_DISPATCH = {
-        "SIGNAL-AGE": lambda obj, elem: setattr(obj, "signal_age", MultidimensionalTime.deserialize(elem)),
+        "SIGNAL-AGE": lambda obj, elem: setattr(obj, "signal_age", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
     }
 
 
@@ -99,11 +99,13 @@ class ReceiverAnnotation(SenderReceiverAnnotation):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ReceiverAnnotation, cls).deserialize(element)
 
-        # Parse signal_age
-        child = SerializationHelper.find_child_element(element, "SIGNAL-AGE")
-        if child is not None:
-            signal_age_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.signal_age = signal_age_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SIGNAL-AGE":
+                setattr(obj, "signal_age", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

@@ -34,7 +34,7 @@ class BswModeSwitchAckRequest(ARObject):
 
     timeout: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", elem.text),
+        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -95,11 +95,13 @@ class BswModeSwitchAckRequest(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModeSwitchAckRequest, cls).deserialize(element)
 
-        # Parse timeout
-        child = SerializationHelper.find_child_element(element, "TIMEOUT")
-        if child is not None:
-            timeout_value = child.text
-            obj.timeout = timeout_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TIMEOUT":
+                setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

@@ -48,8 +48,8 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
     port_defined_arguments: list[PortDefinedArgumentValue]
     _DESERIALIZE_DISPATCH = {
         "CLIENT-SERVER-REF": lambda obj, elem: setattr(obj, "client_server_ref", ARRef.deserialize(elem)),
-        "OPERATION": lambda obj, elem: setattr(obj, "operation", ClientServerOperation.deserialize(elem)),
-        "PORT-DEFINED-ARGUMENTS": lambda obj, elem: obj.port_defined_arguments.append(PortDefinedArgumentValue.deserialize(elem)),
+        "OPERATION": lambda obj, elem: setattr(obj, "operation", SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
+        "PORT-DEFINED-ARGUMENTS": lambda obj, elem: obj.port_defined_arguments.append(SerializationHelper.deserialize_by_tag(elem, "PortDefinedArgumentValue")),
     }
 
 
@@ -136,27 +136,17 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerInterfaceToBswModuleEntryBlueprintMapping, cls).deserialize(element)
 
-        # Parse client_server_ref
-        child = SerializationHelper.find_child_element(element, "CLIENT-SERVER-REF")
-        if child is not None:
-            client_server_ref_value = ARRef.deserialize(child)
-            obj.client_server_ref = client_server_ref_value
-
-        # Parse operation
-        child = SerializationHelper.find_child_element(element, "OPERATION")
-        if child is not None:
-            operation_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
-            obj.operation = operation_value
-
-        # Parse port_defined_arguments (list from container "PORT-DEFINED-ARGUMENTS")
-        obj.port_defined_arguments = []
-        container = SerializationHelper.find_child_element(element, "PORT-DEFINED-ARGUMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.port_defined_arguments.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CLIENT-SERVER-REF":
+                setattr(obj, "client_server_ref", ARRef.deserialize(child))
+            elif tag == "OPERATION":
+                setattr(obj, "operation", SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
+            elif tag == "PORT-DEFINED-ARGUMENTS":
+                obj.port_defined_arguments.append(SerializationHelper.deserialize_by_tag(child, "PortDefinedArgumentValue"))
 
         return obj
 

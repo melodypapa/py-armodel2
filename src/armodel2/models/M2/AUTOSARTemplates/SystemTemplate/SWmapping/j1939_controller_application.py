@@ -43,7 +43,7 @@ class J1939ControllerApplication(ARElement):
     function_id: Optional[PositiveInteger]
     sw_component_prototype_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "FUNCTION-ID": lambda obj, elem: setattr(obj, "function_id", elem.text),
+        "FUNCTION-ID": lambda obj, elem: setattr(obj, "function_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SW-COMPONENT-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "sw_component_prototype_ref", ARRef.deserialize(elem)),
     }
 
@@ -120,17 +120,15 @@ class J1939ControllerApplication(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939ControllerApplication, cls).deserialize(element)
 
-        # Parse function_id
-        child = SerializationHelper.find_child_element(element, "FUNCTION-ID")
-        if child is not None:
-            function_id_value = child.text
-            obj.function_id = function_id_value
-
-        # Parse sw_component_prototype_ref
-        child = SerializationHelper.find_child_element(element, "SW-COMPONENT-PROTOTYPE-REF")
-        if child is not None:
-            sw_component_prototype_ref_value = ARRef.deserialize(child)
-            obj.sw_component_prototype_ref = sw_component_prototype_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FUNCTION-ID":
+                setattr(obj, "function_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SW-COMPONENT-PROTOTYPE-REF":
+                setattr(obj, "sw_component_prototype_ref", ARRef.deserialize(child))
 
         return obj
 

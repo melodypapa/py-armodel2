@@ -62,11 +62,11 @@ class ResourceConsumption(Identifiable):
     stack_usages: list[StackUsage]
     _DESERIALIZE_DISPATCH = {
         "ACCESS-COUNT-SETS": lambda obj, elem: obj.access_count_set_refs.append(ARRef.deserialize(elem)),
-        "EXECUTION-TIMES": lambda obj, elem: obj.execution_times.append(ExecutionTime.deserialize(elem)),
-        "HEAP-USAGES": lambda obj, elem: obj.heap_usages.append(HeapUsage.deserialize(elem)),
-        "MEMORY-SECTIONS": lambda obj, elem: obj.memory_sections.append(MemorySection.deserialize(elem)),
-        "SECTION-NAME-PREFIXES": lambda obj, elem: obj.section_name_prefixes.append(SectionNamePrefix.deserialize(elem)),
-        "STACK-USAGES": lambda obj, elem: obj.stack_usages.append(StackUsage.deserialize(elem)),
+        "EXECUTION-TIMES": ("_POLYMORPHIC_LIST", "execution_times", ["AnalyzedExecutionTime", "MeasuredExecutionTime", "RoughEstimateOfExecutionTime", "Simulated"]),
+        "HEAP-USAGES": ("_POLYMORPHIC_LIST", "heap_usages", ["MeasuredHeapUsage", "RoughEstimateHeapUsage", "WorstCaseHeapUsage"]),
+        "MEMORY-SECTIONS": lambda obj, elem: obj.memory_sections.append(SerializationHelper.deserialize_by_tag(elem, "MemorySection")),
+        "SECTION-NAME-PREFIXES": lambda obj, elem: obj.section_name_prefixes.append(SerializationHelper.deserialize_by_tag(elem, "SectionNamePrefix")),
+        "STACK-USAGES": ("_POLYMORPHIC_LIST", "stack_usages", ["MeasuredStackUsage", "RoughEstimateStackUsage", "WorstCaseStackUsage"]),
     }
 
 
@@ -185,71 +185,49 @@ class ResourceConsumption(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ResourceConsumption, cls).deserialize(element)
 
-        # Parse access_count_set_refs (list from container "ACCESS-COUNT-SET-REFS")
-        obj.access_count_set_refs = []
-        container = SerializationHelper.find_child_element(element, "ACCESS-COUNT-SET-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.access_count_set_refs.append(child_value)
-
-        # Parse execution_times (list from container "EXECUTION-TIMES")
-        obj.execution_times = []
-        container = SerializationHelper.find_child_element(element, "EXECUTION-TIMES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.execution_times.append(child_value)
-
-        # Parse heap_usages (list from container "HEAP-USAGES")
-        obj.heap_usages = []
-        container = SerializationHelper.find_child_element(element, "HEAP-USAGES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.heap_usages.append(child_value)
-
-        # Parse memory_sections (list from container "MEMORY-SECTIONS")
-        obj.memory_sections = []
-        container = SerializationHelper.find_child_element(element, "MEMORY-SECTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.memory_sections.append(child_value)
-
-        # Parse section_name_prefixes (list from container "SECTION-NAME-PREFIXES")
-        obj.section_name_prefixes = []
-        container = SerializationHelper.find_child_element(element, "SECTION-NAME-PREFIXES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.section_name_prefixes.append(child_value)
-
-        # Parse stack_usages (list from container "STACK-USAGES")
-        obj.stack_usages = []
-        container = SerializationHelper.find_child_element(element, "STACK-USAGES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.stack_usages.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACCESS-COUNT-SETS":
+                obj.access_count_set_refs.append(ARRef.deserialize(child))
+            elif tag == "EXECUTION-TIMES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ANALYZED-EXECUTION-TIME":
+                        obj.execution_times.append(SerializationHelper.deserialize_by_tag(child[0], "AnalyzedExecutionTime"))
+                    elif concrete_tag == "MEASURED-EXECUTION-TIME":
+                        obj.execution_times.append(SerializationHelper.deserialize_by_tag(child[0], "MeasuredExecutionTime"))
+                    elif concrete_tag == "ROUGH-ESTIMATE-OF-EXECUTION-TIME":
+                        obj.execution_times.append(SerializationHelper.deserialize_by_tag(child[0], "RoughEstimateOfExecutionTime"))
+                    elif concrete_tag == "SIMULATED":
+                        obj.execution_times.append(SerializationHelper.deserialize_by_tag(child[0], "Simulated"))
+            elif tag == "HEAP-USAGES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "MEASURED-HEAP-USAGE":
+                        obj.heap_usages.append(SerializationHelper.deserialize_by_tag(child[0], "MeasuredHeapUsage"))
+                    elif concrete_tag == "ROUGH-ESTIMATE-HEAP-USAGE":
+                        obj.heap_usages.append(SerializationHelper.deserialize_by_tag(child[0], "RoughEstimateHeapUsage"))
+                    elif concrete_tag == "WORST-CASE-HEAP-USAGE":
+                        obj.heap_usages.append(SerializationHelper.deserialize_by_tag(child[0], "WorstCaseHeapUsage"))
+            elif tag == "MEMORY-SECTIONS":
+                obj.memory_sections.append(SerializationHelper.deserialize_by_tag(child, "MemorySection"))
+            elif tag == "SECTION-NAME-PREFIXES":
+                obj.section_name_prefixes.append(SerializationHelper.deserialize_by_tag(child, "SectionNamePrefix"))
+            elif tag == "STACK-USAGES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "MEASURED-STACK-USAGE":
+                        obj.stack_usages.append(SerializationHelper.deserialize_by_tag(child[0], "MeasuredStackUsage"))
+                    elif concrete_tag == "ROUGH-ESTIMATE-STACK-USAGE":
+                        obj.stack_usages.append(SerializationHelper.deserialize_by_tag(child[0], "RoughEstimateStackUsage"))
+                    elif concrete_tag == "WORST-CASE-STACK-USAGE":
+                        obj.stack_usages.append(SerializationHelper.deserialize_by_tag(child[0], "WorstCaseStackUsage"))
 
         return obj
 

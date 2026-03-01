@@ -41,7 +41,7 @@ class SenderRecArrayTypeMapping(SenderRecCompositeTypeMapping):
     sender_to_signal_ref: Optional[ARRef]
     signal_to_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ARRAY-ELEMENTS": lambda obj, elem: obj.array_elements.append(any (SenderRecArray).deserialize(elem)),
+        "ARRAY-ELEMENTS": lambda obj, elem: obj.array_elements.append(SerializationHelper.deserialize_by_tag(elem, "any (SenderRecArray)")),
         "SENDER-TO-SIGNAL-REF": lambda obj, elem: setattr(obj, "sender_to_signal_ref", ARRef.deserialize(elem)),
         "SIGNAL-TO-REF": lambda obj, elem: setattr(obj, "signal_to_ref", ARRef.deserialize(elem)),
     }
@@ -130,27 +130,17 @@ class SenderRecArrayTypeMapping(SenderRecCompositeTypeMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderRecArrayTypeMapping, cls).deserialize(element)
 
-        # Parse array_elements (list from container "ARRAY-ELEMENTS")
-        obj.array_elements = []
-        container = SerializationHelper.find_child_element(element, "ARRAY-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.array_elements.append(child_value)
-
-        # Parse sender_to_signal_ref
-        child = SerializationHelper.find_child_element(element, "SENDER-TO-SIGNAL-REF")
-        if child is not None:
-            sender_to_signal_ref_value = ARRef.deserialize(child)
-            obj.sender_to_signal_ref = sender_to_signal_ref_value
-
-        # Parse signal_to_ref
-        child = SerializationHelper.find_child_element(element, "SIGNAL-TO-REF")
-        if child is not None:
-            signal_to_ref_value = ARRef.deserialize(child)
-            obj.signal_to_ref = signal_to_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ARRAY-ELEMENTS":
+                obj.array_elements.append(SerializationHelper.deserialize_by_tag(child, "any (SenderRecArray)"))
+            elif tag == "SENDER-TO-SIGNAL-REF":
+                setattr(obj, "sender_to_signal_ref", ARRef.deserialize(child))
+            elif tag == "SIGNAL-TO-REF":
+                setattr(obj, "signal_to_ref", ARRef.deserialize(child))
 
         return obj
 

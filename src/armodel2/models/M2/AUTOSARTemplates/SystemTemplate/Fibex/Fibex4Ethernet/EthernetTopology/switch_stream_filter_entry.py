@@ -55,11 +55,11 @@ class SwitchStreamFilterEntry(Identifiable):
     stream: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
         "ASYNCHRONOUS-REF": lambda obj, elem: setattr(obj, "asynchronous_ref", ARRef.deserialize(elem)),
-        "FILTER-PRIORITY": lambda obj, elem: setattr(obj, "filter_priority", elem.text),
+        "FILTER-PRIORITY": lambda obj, elem: setattr(obj, "filter_priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "FLOW-METERING-REF": lambda obj, elem: setattr(obj, "flow_metering_ref", ARRef.deserialize(elem)),
-        "MAX-SDU-SIZE": lambda obj, elem: setattr(obj, "max_sdu_size", elem.text),
+        "MAX-SDU-SIZE": lambda obj, elem: setattr(obj, "max_sdu_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "STREAM-GATE-REF": lambda obj, elem: setattr(obj, "stream_gate_ref", ARRef.deserialize(elem)),
-        "STREAM": lambda obj, elem: setattr(obj, "stream", elem.text),
+        "STREAM": lambda obj, elem: setattr(obj, "stream", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -195,41 +195,23 @@ class SwitchStreamFilterEntry(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwitchStreamFilterEntry, cls).deserialize(element)
 
-        # Parse asynchronous_ref
-        child = SerializationHelper.find_child_element(element, "ASYNCHRONOUS-REF")
-        if child is not None:
-            asynchronous_ref_value = ARRef.deserialize(child)
-            obj.asynchronous_ref = asynchronous_ref_value
-
-        # Parse filter_priority
-        child = SerializationHelper.find_child_element(element, "FILTER-PRIORITY")
-        if child is not None:
-            filter_priority_value = child.text
-            obj.filter_priority = filter_priority_value
-
-        # Parse flow_metering_ref
-        child = SerializationHelper.find_child_element(element, "FLOW-METERING-REF")
-        if child is not None:
-            flow_metering_ref_value = ARRef.deserialize(child)
-            obj.flow_metering_ref = flow_metering_ref_value
-
-        # Parse max_sdu_size
-        child = SerializationHelper.find_child_element(element, "MAX-SDU-SIZE")
-        if child is not None:
-            max_sdu_size_value = child.text
-            obj.max_sdu_size = max_sdu_size_value
-
-        # Parse stream_gate_ref
-        child = SerializationHelper.find_child_element(element, "STREAM-GATE-REF")
-        if child is not None:
-            stream_gate_ref_value = ARRef.deserialize(child)
-            obj.stream_gate_ref = stream_gate_ref_value
-
-        # Parse stream
-        child = SerializationHelper.find_child_element(element, "STREAM")
-        if child is not None:
-            stream_value = child.text
-            obj.stream = stream_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ASYNCHRONOUS-REF":
+                setattr(obj, "asynchronous_ref", ARRef.deserialize(child))
+            elif tag == "FILTER-PRIORITY":
+                setattr(obj, "filter_priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "FLOW-METERING-REF":
+                setattr(obj, "flow_metering_ref", ARRef.deserialize(child))
+            elif tag == "MAX-SDU-SIZE":
+                setattr(obj, "max_sdu_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "STREAM-GATE-REF":
+                setattr(obj, "stream_gate_ref", ARRef.deserialize(child))
+            elif tag == "STREAM":
+                setattr(obj, "stream", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

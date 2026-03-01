@@ -45,8 +45,8 @@ class RoleBasedPortAssignment(ARObject):
     port_prototype_ref: Optional[ARRef]
     role: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "PORT-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "port_prototype_ref", ARRef.deserialize(elem)),
-        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+        "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -122,17 +122,21 @@ class RoleBasedPortAssignment(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RoleBasedPortAssignment, cls).deserialize(element)
 
-        # Parse port_prototype_ref
-        child = SerializationHelper.find_child_element(element, "PORT-PROTOTYPE-REF")
-        if child is not None:
-            port_prototype_ref_value = ARRef.deserialize(child)
-            obj.port_prototype_ref = port_prototype_ref_value
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PORT-PROTOTYPE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
+                        setattr(obj, "port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
+                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
+                        setattr(obj, "port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

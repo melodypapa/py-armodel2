@@ -47,8 +47,8 @@ class SystemSignal(ARElement):
     dynamic_length: Optional[Boolean]
     physical_props: Optional[SwDataDefProps]
     _DESERIALIZE_DISPATCH = {
-        "DYNAMIC-LENGTH": lambda obj, elem: setattr(obj, "dynamic_length", elem.text),
-        "PHYSICAL-PROPS": lambda obj, elem: setattr(obj, "physical_props", SwDataDefProps.deserialize(elem)),
+        "DYNAMIC-LENGTH": lambda obj, elem: setattr(obj, "dynamic_length", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PHYSICAL-PROPS": lambda obj, elem: setattr(obj, "physical_props", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
     }
 
 
@@ -124,17 +124,15 @@ class SystemSignal(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SystemSignal, cls).deserialize(element)
 
-        # Parse dynamic_length
-        child = SerializationHelper.find_child_element(element, "DYNAMIC-LENGTH")
-        if child is not None:
-            dynamic_length_value = child.text
-            obj.dynamic_length = dynamic_length_value
-
-        # Parse physical_props
-        child = SerializationHelper.find_child_element(element, "PHYSICAL-PROPS")
-        if child is not None:
-            physical_props_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.physical_props = physical_props_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DYNAMIC-LENGTH":
+                setattr(obj, "dynamic_length", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PHYSICAL-PROPS":
+                setattr(obj, "physical_props", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
         return obj
 

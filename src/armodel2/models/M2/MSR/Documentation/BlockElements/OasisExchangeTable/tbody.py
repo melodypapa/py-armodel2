@@ -95,11 +95,13 @@ class Tbody(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Tbody, cls).deserialize(element)
 
-        # Parse valign
-        child = SerializationHelper.find_child_element(element, "VALIGN")
-        if child is not None:
-            valign_value = ValignEnum.deserialize(child)
-            obj.valign = valign_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "VALIGN":
+                setattr(obj, "valign", ValignEnum.deserialize(child))
 
         return obj
 

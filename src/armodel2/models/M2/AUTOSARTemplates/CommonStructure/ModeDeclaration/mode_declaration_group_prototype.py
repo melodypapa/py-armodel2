@@ -124,17 +124,15 @@ class ModeDeclarationGroupPrototype(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeDeclarationGroupPrototype, cls).deserialize(element)
 
-        # Parse sw_calibration_access
-        child = SerializationHelper.find_child_element(element, "SW-CALIBRATION-ACCESS")
-        if child is not None:
-            sw_calibration_access_value = SwCalibrationAccessEnum.deserialize(child)
-            obj.sw_calibration_access = sw_calibration_access_value
-
-        # Parse type_ref
-        child = SerializationHelper.find_child_element(element, "TYPE-TREF")
-        if child is not None:
-            type_ref_value = ARRef.deserialize(child)
-            obj.type_ref = type_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SW-CALIBRATION-ACCESS":
+                setattr(obj, "sw_calibration_access", SwCalibrationAccessEnum.deserialize(child))
+            elif tag == "TYPE-TREF":
+                setattr(obj, "type_ref", ARRef.deserialize(child))
 
         return obj
 

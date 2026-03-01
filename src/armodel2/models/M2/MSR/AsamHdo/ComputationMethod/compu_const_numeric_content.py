@@ -38,7 +38,7 @@ class CompuConstNumericContent(CompuConstContent):
 
     v: Optional[Numerical]
     _DESERIALIZE_DISPATCH = {
-        "V": lambda obj, elem: setattr(obj, "v", elem.text),
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
     }
 
 
@@ -99,11 +99,13 @@ class CompuConstNumericContent(CompuConstContent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuConstNumericContent, cls).deserialize(element)
 
-        # Parse v
-        child = SerializationHelper.find_child_element(element, "V")
-        if child is not None:
-            v_value = child.text
-            obj.v = v_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "V":
+                setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
 
         return obj
 

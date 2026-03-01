@@ -34,7 +34,7 @@ class StreamFilterIEEE1722Tp(ARObject):
 
     stream_id: Optional[PositiveUnlimitedInteger]
     _DESERIALIZE_DISPATCH = {
-        "STREAM-ID": lambda obj, elem: setattr(obj, "stream_id", elem.text),
+        "STREAM-ID": lambda obj, elem: setattr(obj, "stream_id", SerializationHelper.deserialize_by_tag(elem, "PositiveUnlimitedInteger")),
     }
 
 
@@ -95,11 +95,13 @@ class StreamFilterIEEE1722Tp(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StreamFilterIEEE1722Tp, cls).deserialize(element)
 
-        # Parse stream_id
-        child = SerializationHelper.find_child_element(element, "STREAM-ID")
-        if child is not None:
-            stream_id_value = child.text
-            obj.stream_id = stream_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "STREAM-ID":
+                setattr(obj, "stream_id", SerializationHelper.deserialize_by_tag(child, "PositiveUnlimitedInteger"))
 
         return obj
 

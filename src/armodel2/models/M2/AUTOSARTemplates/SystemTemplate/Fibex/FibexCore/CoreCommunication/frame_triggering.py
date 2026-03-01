@@ -48,7 +48,7 @@ class FrameTriggering(Identifiable, ABC):
     pdu_triggering_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "FRAME-PORTS": lambda obj, elem: obj.frame_port_refs.append(ARRef.deserialize(elem)),
-        "FRAME-REF": lambda obj, elem: setattr(obj, "frame_ref", ARRef.deserialize(elem)),
+        "FRAME-REF": ("_POLYMORPHIC", "frame_ref", ["AbstractEthernetFrame", "CanFrame", "FlexrayFrame", "LinFrame"]),
         "PDU-TRIGGERINGS": lambda obj, elem: obj.pdu_triggering_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -146,43 +146,27 @@ class FrameTriggering(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FrameTriggering, cls).deserialize(element)
 
-        # Parse frame_port_refs (list from container "FRAME-PORT-REFS")
-        obj.frame_port_refs = []
-        container = SerializationHelper.find_child_element(element, "FRAME-PORT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.frame_port_refs.append(child_value)
-
-        # Parse frame_ref
-        child = SerializationHelper.find_child_element(element, "FRAME-REF")
-        if child is not None:
-            frame_ref_value = ARRef.deserialize(child)
-            obj.frame_ref = frame_ref_value
-
-        # Parse pdu_triggering_refs (list from container "PDU-TRIGGERING-REFS")
-        obj.pdu_triggering_refs = []
-        container = SerializationHelper.find_child_element(element, "PDU-TRIGGERING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pdu_triggering_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FRAME-PORTS":
+                obj.frame_port_refs.append(ARRef.deserialize(child))
+            elif tag == "FRAME-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-ETHERNET-FRAME":
+                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractEthernetFrame"))
+                    elif concrete_tag == "CAN-FRAME":
+                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "CanFrame"))
+                    elif concrete_tag == "FLEXRAY-FRAME":
+                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayFrame"))
+                    elif concrete_tag == "LIN-FRAME":
+                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "LinFrame"))
+            elif tag == "PDU-TRIGGERINGS":
+                obj.pdu_triggering_refs.append(ARRef.deserialize(child))
 
         return obj
 

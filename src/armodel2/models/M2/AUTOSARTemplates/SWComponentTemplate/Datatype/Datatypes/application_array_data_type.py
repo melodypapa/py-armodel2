@@ -44,8 +44,8 @@ class ApplicationArrayDataType(ApplicationCompositeDataType):
     dynamic_array_size_profile: Optional[String]
     element: Optional[ApplicationArrayElement]
     _DESERIALIZE_DISPATCH = {
-        "DYNAMIC-ARRAY-SIZE-PROFILE": lambda obj, elem: setattr(obj, "dynamic_array_size_profile", elem.text),
-        "ELEMENT": lambda obj, elem: setattr(obj, "element", ApplicationArrayElement.deserialize(elem)),
+        "DYNAMIC-ARRAY-SIZE-PROFILE": lambda obj, elem: setattr(obj, "dynamic_array_size_profile", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ELEMENT": lambda obj, elem: setattr(obj, "element", SerializationHelper.deserialize_by_tag(elem, "ApplicationArrayElement")),
     }
 
 
@@ -121,17 +121,15 @@ class ApplicationArrayDataType(ApplicationCompositeDataType):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationArrayDataType, cls).deserialize(element)
 
-        # Parse dynamic_array_size_profile
-        child = SerializationHelper.find_child_element(element, "DYNAMIC-ARRAY-SIZE-PROFILE")
-        if child is not None:
-            dynamic_array_size_profile_value = child.text
-            obj.dynamic_array_size_profile = dynamic_array_size_profile_value
-
-        # Parse element
-        child = SerializationHelper.find_child_element(element, "ELEMENT")
-        if child is not None:
-            element_value = SerializationHelper.deserialize_by_tag(child, "ApplicationArrayElement")
-            obj.element = element_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DYNAMIC-ARRAY-SIZE-PROFILE":
+                setattr(obj, "dynamic_array_size_profile", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ELEMENT":
+                setattr(obj, "element", SerializationHelper.deserialize_by_tag(child, "ApplicationArrayElement"))
 
         return obj
 

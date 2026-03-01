@@ -42,8 +42,8 @@ class IdsmProperties(IdsCommonElement):
     rate_limitations: list[IdsmRateLimitation]
     traffic_limitations: list[IdsmTrafficLimitation]
     _DESERIALIZE_DISPATCH = {
-        "RATE-LIMITATIONS": lambda obj, elem: obj.rate_limitations.append(IdsmRateLimitation.deserialize(elem)),
-        "TRAFFIC-LIMITATIONS": lambda obj, elem: obj.traffic_limitations.append(IdsmTrafficLimitation.deserialize(elem)),
+        "RATE-LIMITATIONS": lambda obj, elem: obj.rate_limitations.append(SerializationHelper.deserialize_by_tag(elem, "IdsmRateLimitation")),
+        "TRAFFIC-LIMITATIONS": lambda obj, elem: obj.traffic_limitations.append(SerializationHelper.deserialize_by_tag(elem, "IdsmTrafficLimitation")),
     }
 
 
@@ -111,25 +111,15 @@ class IdsmProperties(IdsCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IdsmProperties, cls).deserialize(element)
 
-        # Parse rate_limitations (list from container "RATE-LIMITATIONS")
-        obj.rate_limitations = []
-        container = SerializationHelper.find_child_element(element, "RATE-LIMITATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rate_limitations.append(child_value)
-
-        # Parse traffic_limitations (list from container "TRAFFIC-LIMITATIONS")
-        obj.traffic_limitations = []
-        container = SerializationHelper.find_child_element(element, "TRAFFIC-LIMITATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.traffic_limitations.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RATE-LIMITATIONS":
+                obj.rate_limitations.append(SerializationHelper.deserialize_by_tag(child, "IdsmRateLimitation"))
+            elif tag == "TRAFFIC-LIMITATIONS":
+                obj.traffic_limitations.append(SerializationHelper.deserialize_by_tag(child, "IdsmTrafficLimitation"))
 
         return obj
 

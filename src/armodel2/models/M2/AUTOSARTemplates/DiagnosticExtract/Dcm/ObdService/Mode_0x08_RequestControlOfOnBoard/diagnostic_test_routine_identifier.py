@@ -40,9 +40,9 @@ class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
     request_data: Optional[PositiveInteger]
     response_data: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ID": lambda obj, elem: setattr(obj, "id", elem.text),
-        "REQUEST-DATA": lambda obj, elem: setattr(obj, "request_data", elem.text),
-        "RESPONSE-DATA": lambda obj, elem: setattr(obj, "response_data", elem.text),
+        "ID": lambda obj, elem: setattr(obj, "id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "REQUEST-DATA": lambda obj, elem: setattr(obj, "request_data", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "RESPONSE-DATA": lambda obj, elem: setattr(obj, "response_data", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -133,23 +133,17 @@ class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTestRoutineIdentifier, cls).deserialize(element)
 
-        # Parse id
-        child = SerializationHelper.find_child_element(element, "ID")
-        if child is not None:
-            id_value = child.text
-            obj.id = id_value
-
-        # Parse request_data
-        child = SerializationHelper.find_child_element(element, "REQUEST-DATA")
-        if child is not None:
-            request_data_value = child.text
-            obj.request_data = request_data_value
-
-        # Parse response_data
-        child = SerializationHelper.find_child_element(element, "RESPONSE-DATA")
-        if child is not None:
-            response_data_value = child.text
-            obj.response_data = response_data_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ID":
+                setattr(obj, "id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "REQUEST-DATA":
+                setattr(obj, "request_data", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "RESPONSE-DATA":
+                setattr(obj, "response_data", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

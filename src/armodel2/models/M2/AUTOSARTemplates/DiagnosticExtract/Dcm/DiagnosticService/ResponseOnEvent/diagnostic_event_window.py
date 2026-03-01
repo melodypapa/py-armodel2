@@ -31,7 +31,7 @@ class DiagnosticEventWindow(ARObject):
 
     event_window: Optional[DiagnosticEventWindow]
     _DESERIALIZE_DISPATCH = {
-        "EVENT-WINDOW": lambda obj, elem: setattr(obj, "event_window", DiagnosticEventWindow.deserialize(elem)),
+        "EVENT-WINDOW": lambda obj, elem: setattr(obj, "event_window", SerializationHelper.deserialize_by_tag(elem, "DiagnosticEventWindow")),
     }
 
 
@@ -92,11 +92,13 @@ class DiagnosticEventWindow(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventWindow, cls).deserialize(element)
 
-        # Parse event_window
-        child = SerializationHelper.find_child_element(element, "EVENT-WINDOW")
-        if child is not None:
-            event_window_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticEventWindow")
-            obj.event_window = event_window_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "EVENT-WINDOW":
+                setattr(obj, "event_window", SerializationHelper.deserialize_by_tag(child, "DiagnosticEventWindow"))
 
         return obj
 

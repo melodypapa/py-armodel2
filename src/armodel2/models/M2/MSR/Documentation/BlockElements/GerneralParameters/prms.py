@@ -39,8 +39,8 @@ class Prms(Paginateable):
     label: Optional[MultilanguageLongName]
     prm: Any
     _DESERIALIZE_DISPATCH = {
-        "LABEL": lambda obj, elem: setattr(obj, "label", MultilanguageLongName.deserialize(elem)),
-        "PRM": lambda obj, elem: setattr(obj, "prm", any (GeneralParameter).deserialize(elem)),
+        "LABEL": lambda obj, elem: setattr(obj, "label", SerializationHelper.deserialize_by_tag(elem, "MultilanguageLongName")),
+        "PRM": lambda obj, elem: setattr(obj, "prm", SerializationHelper.deserialize_by_tag(elem, "any (GeneralParameter)")),
     }
 
 
@@ -116,17 +116,15 @@ class Prms(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Prms, cls).deserialize(element)
 
-        # Parse label
-        child = SerializationHelper.find_child_element(element, "LABEL")
-        if child is not None:
-            label_value = SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName")
-            obj.label = label_value
-
-        # Parse prm
-        child = SerializationHelper.find_child_element(element, "PRM")
-        if child is not None:
-            prm_value = child.text
-            obj.prm = prm_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LABEL":
+                setattr(obj, "label", SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName"))
+            elif tag == "PRM":
+                setattr(obj, "prm", SerializationHelper.deserialize_by_tag(child, "any (GeneralParameter)"))
 
         return obj
 

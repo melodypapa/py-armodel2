@@ -96,11 +96,13 @@ class DdsCpServiceInstanceOperation(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpServiceInstanceOperation, cls).deserialize(element)
 
-        # Parse dds_operation_ref
-        child = SerializationHelper.find_child_element(element, "DDS-OPERATION-REF")
-        if child is not None:
-            dds_operation_ref_value = ARRef.deserialize(child)
-            obj.dds_operation_ref = dds_operation_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DDS-OPERATION-REF":
+                setattr(obj, "dds_operation_ref", ARRef.deserialize(child))
 
         return obj
 

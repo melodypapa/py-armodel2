@@ -98,11 +98,13 @@ class TDEventCom(TimingDescriptionEvent, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventCom, cls).deserialize(element)
 
-        # Parse ecu_instance_ref
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
-        if child is not None:
-            ecu_instance_ref_value = ARRef.deserialize(child)
-            obj.ecu_instance_ref = ecu_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ECU-INSTANCE-REF":
+                setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
 
         return obj
 

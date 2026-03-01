@@ -38,8 +38,8 @@ class DataFormatTailoring(ARObject):
     class_tailorings: list[ClassTailoring]
     constraints: list[ConstraintTailoring]
     _DESERIALIZE_DISPATCH = {
-        "CLASS-TAILORINGS": lambda obj, elem: obj.class_tailorings.append(ClassTailoring.deserialize(elem)),
-        "CONSTRAINTS": lambda obj, elem: obj.constraints.append(ConstraintTailoring.deserialize(elem)),
+        "CLASS-TAILORINGS": ("_POLYMORPHIC_LIST", "class_tailorings", ["AbstractClassTailoring", "ConcreteClassTailoring"]),
+        "CONSTRAINTS": lambda obj, elem: obj.constraints.append(SerializationHelper.deserialize_by_tag(elem, "ConstraintTailoring")),
     }
 
 
@@ -107,25 +107,21 @@ class DataFormatTailoring(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataFormatTailoring, cls).deserialize(element)
 
-        # Parse class_tailorings (list from container "CLASS-TAILORINGS")
-        obj.class_tailorings = []
-        container = SerializationHelper.find_child_element(element, "CLASS-TAILORINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.class_tailorings.append(child_value)
-
-        # Parse constraints (list from container "CONSTRAINTS")
-        obj.constraints = []
-        container = SerializationHelper.find_child_element(element, "CONSTRAINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.constraints.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CLASS-TAILORINGS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CLASS-TAILORING":
+                        obj.class_tailorings.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractClassTailoring"))
+                    elif concrete_tag == "CONCRETE-CLASS-TAILORING":
+                        obj.class_tailorings.append(SerializationHelper.deserialize_by_tag(child[0], "ConcreteClassTailoring"))
+            elif tag == "CONSTRAINTS":
+                obj.constraints.append(SerializationHelper.deserialize_by_tag(child, "ConstraintTailoring"))
 
         return obj
 

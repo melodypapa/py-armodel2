@@ -42,8 +42,8 @@ class DiagnosticInfoType(DiagnosticCommonElement):
     data_elements: list[DiagnosticParameter]
     id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "DATA-ELEMENTS": lambda obj, elem: obj.data_elements.append(DiagnosticParameter.deserialize(elem)),
-        "ID": lambda obj, elem: setattr(obj, "id", elem.text),
+        "DATA-ELEMENTS": lambda obj, elem: obj.data_elements.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
+        "ID": lambda obj, elem: setattr(obj, "id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -115,21 +115,15 @@ class DiagnosticInfoType(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticInfoType, cls).deserialize(element)
 
-        # Parse data_elements (list from container "DATA-ELEMENTS")
-        obj.data_elements = []
-        container = SerializationHelper.find_child_element(element, "DATA-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_elements.append(child_value)
-
-        # Parse id
-        child = SerializationHelper.find_child_element(element, "ID")
-        if child is not None:
-            id_value = child.text
-            obj.id = id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-ELEMENTS":
+                obj.data_elements.append(SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter"))
+            elif tag == "ID":
+                setattr(obj, "id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

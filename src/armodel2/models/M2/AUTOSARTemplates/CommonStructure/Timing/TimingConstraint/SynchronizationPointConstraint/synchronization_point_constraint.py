@@ -43,9 +43,9 @@ class SynchronizationPointConstraint(TimingConstraint):
     target_event_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "SOURCE-EECS": lambda obj, elem: obj.source_eec_refs.append(ARRef.deserialize(elem)),
-        "SOURCE-EVENTS": lambda obj, elem: obj.source_event_refs.append(ARRef.deserialize(elem)),
+        "SOURCE-EVENTS": ("_POLYMORPHIC_LIST", "source_event_refs", ["BswEvent", "RTEEvent"]),
         "TARGET-EECS": lambda obj, elem: obj.target_eec_refs.append(ARRef.deserialize(elem)),
-        "TARGET-EVENTS": lambda obj, elem: obj.target_event_refs.append(ARRef.deserialize(elem)),
+        "TARGET-EVENTS": ("_POLYMORPHIC_LIST", "target_event_refs", ["BswEvent", "RTEEvent"]),
     }
 
 
@@ -163,69 +163,31 @@ class SynchronizationPointConstraint(TimingConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SynchronizationPointConstraint, cls).deserialize(element)
 
-        # Parse source_eec_refs (list from container "SOURCE-EEC-REFS")
-        obj.source_eec_refs = []
-        container = SerializationHelper.find_child_element(element, "SOURCE-EEC-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.source_eec_refs.append(child_value)
-
-        # Parse source_event_refs (list from container "SOURCE-EVENT-REFS")
-        obj.source_event_refs = []
-        container = SerializationHelper.find_child_element(element, "SOURCE-EVENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.source_event_refs.append(child_value)
-
-        # Parse target_eec_refs (list from container "TARGET-EEC-REFS")
-        obj.target_eec_refs = []
-        container = SerializationHelper.find_child_element(element, "TARGET-EEC-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.target_eec_refs.append(child_value)
-
-        # Parse target_event_refs (list from container "TARGET-EVENT-REFS")
-        obj.target_event_refs = []
-        container = SerializationHelper.find_child_element(element, "TARGET-EVENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.target_event_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SOURCE-EECS":
+                obj.source_eec_refs.append(ARRef.deserialize(child))
+            elif tag == "SOURCE-EVENTS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-EVENT":
+                        obj.source_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswEvent"))
+                    elif concrete_tag == "RTE-EVENT":
+                        obj.source_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "RTEEvent"))
+            elif tag == "TARGET-EECS":
+                obj.target_eec_refs.append(ARRef.deserialize(child))
+            elif tag == "TARGET-EVENTS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-EVENT":
+                        obj.target_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswEvent"))
+                    elif concrete_tag == "RTE-EVENT":
+                        obj.target_event_refs.append(SerializationHelper.deserialize_by_tag(child[0], "RTEEvent"))
 
         return obj
 

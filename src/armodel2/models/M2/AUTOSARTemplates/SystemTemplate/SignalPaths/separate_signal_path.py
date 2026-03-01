@@ -39,8 +39,8 @@ class SeparateSignalPath(SignalPathConstraint):
     operations: list[Any]
     signals: list[SwcToSwcSignal]
     _DESERIALIZE_DISPATCH = {
-        "OPERATIONS": lambda obj, elem: obj.operations.append(any (SwcToSwcOperation).deserialize(elem)),
-        "SIGNALS": lambda obj, elem: obj.signals.append(SwcToSwcSignal.deserialize(elem)),
+        "OPERATIONS": lambda obj, elem: obj.operations.append(SerializationHelper.deserialize_by_tag(elem, "any (SwcToSwcOperation)")),
+        "SIGNALS": lambda obj, elem: obj.signals.append(SerializationHelper.deserialize_by_tag(elem, "SwcToSwcSignal")),
     }
 
 
@@ -108,25 +108,15 @@ class SeparateSignalPath(SignalPathConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SeparateSignalPath, cls).deserialize(element)
 
-        # Parse operations (list from container "OPERATIONS")
-        obj.operations = []
-        container = SerializationHelper.find_child_element(element, "OPERATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.operations.append(child_value)
-
-        # Parse signals (list from container "SIGNALS")
-        obj.signals = []
-        container = SerializationHelper.find_child_element(element, "SIGNALS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.signals.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "OPERATIONS":
+                obj.operations.append(SerializationHelper.deserialize_by_tag(child, "any (SwcToSwcOperation)"))
+            elif tag == "SIGNALS":
+                obj.signals.append(SerializationHelper.deserialize_by_tag(child, "SwcToSwcSignal"))
 
         return obj
 

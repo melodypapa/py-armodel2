@@ -41,7 +41,7 @@ class DefList(Paginateable):
 
     def_item: DefItem
     _DESERIALIZE_DISPATCH = {
-        "DEF-ITEM": lambda obj, elem: setattr(obj, "def_item", DefItem.deserialize(elem)),
+        "DEF-ITEM": lambda obj, elem: setattr(obj, "def_item", SerializationHelper.deserialize_by_tag(elem, "DefItem")),
     }
 
 
@@ -102,11 +102,13 @@ class DefList(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DefList, cls).deserialize(element)
 
-        # Parse def_item
-        child = SerializationHelper.find_child_element(element, "DEF-ITEM")
-        if child is not None:
-            def_item_value = SerializationHelper.deserialize_by_tag(child, "DefItem")
-            obj.def_item = def_item_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEF-ITEM":
+                setattr(obj, "def_item", SerializationHelper.deserialize_by_tag(child, "DefItem"))
 
         return obj
 

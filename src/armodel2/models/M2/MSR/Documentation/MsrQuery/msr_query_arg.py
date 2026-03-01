@@ -36,8 +36,8 @@ class MsrQueryArg(ARObject):
     arg: String
     si: NameToken
     _DESERIALIZE_DISPATCH = {
-        "ARG": lambda obj, elem: setattr(obj, "arg", elem.text),
-        "SI": lambda obj, elem: setattr(obj, "si", elem.text),
+        "ARG": lambda obj, elem: setattr(obj, "arg", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "SI": lambda obj, elem: setattr(obj, "si", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
     }
 
 
@@ -113,17 +113,15 @@ class MsrQueryArg(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MsrQueryArg, cls).deserialize(element)
 
-        # Parse arg
-        child = SerializationHelper.find_child_element(element, "ARG")
-        if child is not None:
-            arg_value = child.text
-            obj.arg = arg_value
-
-        # Parse si
-        child = SerializationHelper.find_child_element(element, "SI")
-        if child is not None:
-            si_value = child.text
-            obj.si = si_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ARG":
+                setattr(obj, "arg", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "SI":
+                setattr(obj, "si", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

@@ -48,9 +48,9 @@ class IPduMapping(ARObject):
     source_i_pdu_ref: Optional[ARRef]
     target_i_pdu_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", DocumentationBlock.deserialize(elem)),
-        "PDU-MAX-LENGTH": lambda obj, elem: setattr(obj, "pdu_max_length", elem.text),
-        "PDUR-TP-CHUNK": lambda obj, elem: setattr(obj, "pdur_tp_chunk", elem.text),
+        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "PDU-MAX-LENGTH": lambda obj, elem: setattr(obj, "pdu_max_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PDUR-TP-CHUNK": lambda obj, elem: setattr(obj, "pdur_tp_chunk", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SOURCE-I-PDU-REF": lambda obj, elem: setattr(obj, "source_i_pdu_ref", ARRef.deserialize(elem)),
         "TARGET-I-PDU-REF": lambda obj, elem: setattr(obj, "target_i_pdu_ref", ARRef.deserialize(elem)),
     }
@@ -173,35 +173,21 @@ class IPduMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IPduMapping, cls).deserialize(element)
 
-        # Parse introduction
-        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
-        if child is not None:
-            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.introduction = introduction_value
-
-        # Parse pdu_max_length
-        child = SerializationHelper.find_child_element(element, "PDU-MAX-LENGTH")
-        if child is not None:
-            pdu_max_length_value = child.text
-            obj.pdu_max_length = pdu_max_length_value
-
-        # Parse pdur_tp_chunk
-        child = SerializationHelper.find_child_element(element, "PDUR-TP-CHUNK")
-        if child is not None:
-            pdur_tp_chunk_value = child.text
-            obj.pdur_tp_chunk = pdur_tp_chunk_value
-
-        # Parse source_i_pdu_ref
-        child = SerializationHelper.find_child_element(element, "SOURCE-I-PDU-REF")
-        if child is not None:
-            source_i_pdu_ref_value = ARRef.deserialize(child)
-            obj.source_i_pdu_ref = source_i_pdu_ref_value
-
-        # Parse target_i_pdu_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-I-PDU-REF")
-        if child is not None:
-            target_i_pdu_ref_value = ARRef.deserialize(child)
-            obj.target_i_pdu_ref = target_i_pdu_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INTRODUCTION":
+                setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "PDU-MAX-LENGTH":
+                setattr(obj, "pdu_max_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PDUR-TP-CHUNK":
+                setattr(obj, "pdur_tp_chunk", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SOURCE-I-PDU-REF":
+                setattr(obj, "source_i_pdu_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-I-PDU-REF":
+                setattr(obj, "target_i_pdu_ref", ARRef.deserialize(child))
 
         return obj
 

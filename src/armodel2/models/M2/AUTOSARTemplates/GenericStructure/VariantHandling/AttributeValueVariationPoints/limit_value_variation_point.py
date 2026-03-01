@@ -95,11 +95,13 @@ class LimitValueVariationPoint(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LimitValueVariationPoint, cls).deserialize(element)
 
-        # Parse interval_type_enum
-        child = SerializationHelper.find_child_element(element, "INTERVAL-TYPE-ENUM")
-        if child is not None:
-            interval_type_enum_value = IntervalTypeEnum.deserialize(child)
-            obj.interval_type_enum = interval_type_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INTERVAL-TYPE-ENUM":
+                setattr(obj, "interval_type_enum", IntervalTypeEnum.deserialize(child))
 
         return obj
 

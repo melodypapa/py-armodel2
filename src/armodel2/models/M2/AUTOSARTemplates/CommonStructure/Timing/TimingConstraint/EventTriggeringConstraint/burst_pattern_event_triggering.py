@@ -46,12 +46,12 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
     pattern_length: Optional[MultidimensionalTime]
     pattern_period: Optional[MultidimensionalTime]
     _DESERIALIZE_DISPATCH = {
-        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
-        "MINIMUM-INTER": lambda obj, elem: setattr(obj, "minimum_inter", MultidimensionalTime.deserialize(elem)),
-        "MIN-NUMBER-OF": lambda obj, elem: setattr(obj, "min_number_of", elem.text),
-        "PATTERN-JITTER": lambda obj, elem: setattr(obj, "pattern_jitter", MultidimensionalTime.deserialize(elem)),
-        "PATTERN-LENGTH": lambda obj, elem: setattr(obj, "pattern_length", MultidimensionalTime.deserialize(elem)),
-        "PATTERN-PERIOD": lambda obj, elem: setattr(obj, "pattern_period", MultidimensionalTime.deserialize(elem)),
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MINIMUM-INTER": lambda obj, elem: setattr(obj, "minimum_inter", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "MIN-NUMBER-OF": lambda obj, elem: setattr(obj, "min_number_of", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PATTERN-JITTER": lambda obj, elem: setattr(obj, "pattern_jitter", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "PATTERN-LENGTH": lambda obj, elem: setattr(obj, "pattern_length", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "PATTERN-PERIOD": lambda obj, elem: setattr(obj, "pattern_period", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
     }
 
 
@@ -187,41 +187,23 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BurstPatternEventTriggering, cls).deserialize(element)
 
-        # Parse max_number_of
-        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
-        if child is not None:
-            max_number_of_value = child.text
-            obj.max_number_of = max_number_of_value
-
-        # Parse minimum_inter
-        child = SerializationHelper.find_child_element(element, "MINIMUM-INTER")
-        if child is not None:
-            minimum_inter_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.minimum_inter = minimum_inter_value
-
-        # Parse min_number_of
-        child = SerializationHelper.find_child_element(element, "MIN-NUMBER-OF")
-        if child is not None:
-            min_number_of_value = child.text
-            obj.min_number_of = min_number_of_value
-
-        # Parse pattern_jitter
-        child = SerializationHelper.find_child_element(element, "PATTERN-JITTER")
-        if child is not None:
-            pattern_jitter_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.pattern_jitter = pattern_jitter_value
-
-        # Parse pattern_length
-        child = SerializationHelper.find_child_element(element, "PATTERN-LENGTH")
-        if child is not None:
-            pattern_length_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.pattern_length = pattern_length_value
-
-        # Parse pattern_period
-        child = SerializationHelper.find_child_element(element, "PATTERN-PERIOD")
-        if child is not None:
-            pattern_period_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.pattern_period = pattern_period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAX-NUMBER-OF":
+                setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MINIMUM-INTER":
+                setattr(obj, "minimum_inter", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "MIN-NUMBER-OF":
+                setattr(obj, "min_number_of", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PATTERN-JITTER":
+                setattr(obj, "pattern_jitter", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "PATTERN-LENGTH":
+                setattr(obj, "pattern_length", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "PATTERN-PERIOD":
+                setattr(obj, "pattern_period", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

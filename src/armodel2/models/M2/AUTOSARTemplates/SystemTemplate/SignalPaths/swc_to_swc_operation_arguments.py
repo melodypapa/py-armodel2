@@ -35,8 +35,8 @@ class SwcToSwcOperationArguments(ARObject):
     direction: Optional[Any]
     operations: list[ClientServerOperation]
     _DESERIALIZE_DISPATCH = {
-        "DIRECTION": lambda obj, elem: setattr(obj, "direction", any (SwcToSwcOperation).deserialize(elem)),
-        "OPERATIONS": lambda obj, elem: obj.operations.append(ClientServerOperation.deserialize(elem)),
+        "DIRECTION": lambda obj, elem: setattr(obj, "direction", SerializationHelper.deserialize_by_tag(elem, "any (SwcToSwcOperation)")),
+        "OPERATIONS": lambda obj, elem: obj.operations.append(SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
     }
 
 
@@ -108,21 +108,15 @@ class SwcToSwcOperationArguments(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcToSwcOperationArguments, cls).deserialize(element)
 
-        # Parse direction
-        child = SerializationHelper.find_child_element(element, "DIRECTION")
-        if child is not None:
-            direction_value = child.text
-            obj.direction = direction_value
-
-        # Parse operations (list from container "OPERATIONS")
-        obj.operations = []
-        container = SerializationHelper.find_child_element(element, "OPERATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.operations.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DIRECTION":
+                setattr(obj, "direction", SerializationHelper.deserialize_by_tag(child, "any (SwcToSwcOperation)"))
+            elif tag == "OPERATIONS":
+                obj.operations.append(SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
 
         return obj
 

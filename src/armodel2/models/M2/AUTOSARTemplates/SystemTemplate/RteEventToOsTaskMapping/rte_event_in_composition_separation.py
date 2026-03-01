@@ -38,7 +38,7 @@ class RteEventInCompositionSeparation(Identifiable):
 
     rte_event_instance_refs: list[RTEEvent]
     _DESERIALIZE_DISPATCH = {
-        "RTE-EVENT-INSTANCE-REFS": lambda obj, elem: obj.rte_event_instance_refs.append(RTEEvent.deserialize(elem)),
+        "RTE-EVENT-INSTANCE-REFS": ("_POLYMORPHIC_LIST", "rte_event_instance_refs", ["AsynchronousServerCallReturnsEvent", "BackgroundEvent", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "ExternalTriggerOccurredEvent", "InitEvent", "InternalTriggerOccurredEvent", "ModeSwitchedAckEvent", "OperationInvokedEvent", "OsTaskExecutionEvent", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "TimingEvent", "TransformerHardErrorEvent"]),
     }
 
 
@@ -95,15 +95,47 @@ class RteEventInCompositionSeparation(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RteEventInCompositionSeparation, cls).deserialize(element)
 
-        # Parse rte_event_instance_refs (list from container "RTE-EVENT-INSTANCE-REFS")
-        obj.rte_event_instance_refs = []
-        container = SerializationHelper.find_child_element(element, "RTE-EVENT-INSTANCE-REFS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rte_event_instance_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RTE-EVENT-INSTANCE-REFS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RETURNS-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AsynchronousServerCallReturnsEvent"))
+                    elif concrete_tag == "BACKGROUND-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BackgroundEvent"))
+                    elif concrete_tag == "DATA-RECEIVE-ERROR-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DataReceiveErrorEvent"))
+                    elif concrete_tag == "DATA-RECEIVED-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DataReceivedEvent"))
+                    elif concrete_tag == "DATA-SEND-COMPLETED-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DataSendCompletedEvent"))
+                    elif concrete_tag == "DATA-WRITE-COMPLETED-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DataWriteCompletedEvent"))
+                    elif concrete_tag == "EXTERNAL-TRIGGER-OCCURRED-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ExternalTriggerOccurredEvent"))
+                    elif concrete_tag == "INIT-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "InitEvent"))
+                    elif concrete_tag == "INTERNAL-TRIGGER-OCCURRED-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "InternalTriggerOccurredEvent"))
+                    elif concrete_tag == "MODE-SWITCHED-ACK-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchedAckEvent"))
+                    elif concrete_tag == "OPERATION-INVOKED-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "OperationInvokedEvent"))
+                    elif concrete_tag == "OS-TASK-EXECUTION-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "OsTaskExecutionEvent"))
+                    elif concrete_tag == "SWC-MODE-MANAGER-ERROR-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SwcModeManagerErrorEvent"))
+                    elif concrete_tag == "SWC-MODE-SWITCH-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SwcModeSwitchEvent"))
+                    elif concrete_tag == "TIMING-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TimingEvent"))
+                    elif concrete_tag == "TRANSFORMER-HARD-ERROR-EVENT":
+                        obj.rte_event_instance_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TransformerHardErrorEvent"))
 
         return obj
 

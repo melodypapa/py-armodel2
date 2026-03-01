@@ -46,10 +46,10 @@ class BswServiceDependency(ServiceDependency):
     ident: Optional[Any]
     service_needs: Optional[ServiceNeeds]
     _DESERIALIZE_DISPATCH = {
-        "ASSIGNED-DATAS": lambda obj, elem: obj.assigned_datas.append(any (RoleBasedData).deserialize(elem)),
-        "ASSIGNED-ENTRIES": lambda obj, elem: obj.assigned_entries.append(RoleBasedBswModuleEntryAssignment.deserialize(elem)),
-        "IDENT": lambda obj, elem: setattr(obj, "ident", any (BswService).deserialize(elem)),
-        "SERVICE-NEEDS": lambda obj, elem: setattr(obj, "service_needs", ServiceNeeds.deserialize(elem)),
+        "ASSIGNED-DATAS": lambda obj, elem: obj.assigned_datas.append(SerializationHelper.deserialize_by_tag(elem, "any (RoleBasedData)")),
+        "ASSIGNED-ENTRIES": lambda obj, elem: obj.assigned_entries.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedBswModuleEntryAssignment")),
+        "IDENT": lambda obj, elem: setattr(obj, "ident", SerializationHelper.deserialize_by_tag(elem, "any (BswService)")),
+        "SERVICE-NEEDS": ("_POLYMORPHIC", "service_needs", ["BswMgrNeeds", "ComMgrUserNeeds", "CryptoKeyManagementNeeds", "CryptoServiceJobNeeds", "CryptoServiceNeeds", "DiagnosticCapabilityElement", "DltUserNeeds", "DoIpServiceNeeds", "EcuStateMgrUserNeeds", "ErrorTracerNeeds", "FunctionInhibitionAvailabilityNeeds", "FunctionInhibitionNeeds", "GlobalSupervisionNeeds", "HardwareTestNeeds", "IdsMgrCustomTimestampNeeds", "IdsMgrNeeds", "IndicatorStatusNeeds", "J1939DcmDm19Support", "J1939RmIncomingRequestServiceNeeds", "J1939RmOutgoingRequestServiceNeeds", "NvBlockNeeds", "SecureOnBoardCommunicationNeeds", "SupervisedEntityCheckpointNeeds", "SupervisedEntityNeeds", "SyncTimeBaseMgrUserNeeds", "V2xDataManagerNeeds", "V2xFacUserNeeds", "V2xMUserNeeds", "VendorSpecificServiceNeeds"]),
     }
 
 
@@ -147,37 +147,79 @@ class BswServiceDependency(ServiceDependency):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswServiceDependency, cls).deserialize(element)
 
-        # Parse assigned_datas (list from container "ASSIGNED-DATAS")
-        obj.assigned_datas = []
-        container = SerializationHelper.find_child_element(element, "ASSIGNED-DATAS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.assigned_datas.append(child_value)
-
-        # Parse assigned_entries (list from container "ASSIGNED-ENTRIES")
-        obj.assigned_entries = []
-        container = SerializationHelper.find_child_element(element, "ASSIGNED-ENTRIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.assigned_entries.append(child_value)
-
-        # Parse ident
-        child = SerializationHelper.find_child_element(element, "IDENT")
-        if child is not None:
-            ident_value = child.text
-            obj.ident = ident_value
-
-        # Parse service_needs
-        child = SerializationHelper.find_child_element(element, "SERVICE-NEEDS")
-        if child is not None:
-            service_needs_value = SerializationHelper.deserialize_by_tag(child, "ServiceNeeds")
-            obj.service_needs = service_needs_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ASSIGNED-DATAS":
+                obj.assigned_datas.append(SerializationHelper.deserialize_by_tag(child, "any (RoleBasedData)"))
+            elif tag == "ASSIGNED-ENTRIES":
+                obj.assigned_entries.append(SerializationHelper.deserialize_by_tag(child, "RoleBasedBswModuleEntryAssignment"))
+            elif tag == "IDENT":
+                setattr(obj, "ident", SerializationHelper.deserialize_by_tag(child, "any (BswService)"))
+            elif tag == "SERVICE-NEEDS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-MGR-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "BswMgrNeeds"))
+                    elif concrete_tag == "COM-MGR-USER-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "ComMgrUserNeeds"))
+                    elif concrete_tag == "CRYPTO-KEY-MANAGEMENT-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "CryptoKeyManagementNeeds"))
+                    elif concrete_tag == "CRYPTO-SERVICE-JOB-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "CryptoServiceJobNeeds"))
+                    elif concrete_tag == "CRYPTO-SERVICE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "CryptoServiceNeeds"))
+                    elif concrete_tag == "DIAGNOSTIC-CAPABILITY-ELEMENT":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticCapabilityElement"))
+                    elif concrete_tag == "DLT-USER-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DltUserNeeds"))
+                    elif concrete_tag == "DO-IP-SERVICE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "DoIpServiceNeeds"))
+                    elif concrete_tag == "ECU-STATE-MGR-USER-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "EcuStateMgrUserNeeds"))
+                    elif concrete_tag == "ERROR-TRACER-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "ErrorTracerNeeds"))
+                    elif concrete_tag == "FUNCTION-INHIBITION-AVAILABILITY-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "FunctionInhibitionAvailabilityNeeds"))
+                    elif concrete_tag == "FUNCTION-INHIBITION-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "FunctionInhibitionNeeds"))
+                    elif concrete_tag == "GLOBAL-SUPERVISION-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "GlobalSupervisionNeeds"))
+                    elif concrete_tag == "HARDWARE-TEST-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "HardwareTestNeeds"))
+                    elif concrete_tag == "IDS-MGR-CUSTOM-TIMESTAMP-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "IdsMgrCustomTimestampNeeds"))
+                    elif concrete_tag == "IDS-MGR-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "IdsMgrNeeds"))
+                    elif concrete_tag == "INDICATOR-STATUS-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "IndicatorStatusNeeds"))
+                    elif concrete_tag == "J1939-DCM-DM19-SUPPORT":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "J1939DcmDm19Support"))
+                    elif concrete_tag == "J1939-RM-INCOMING-REQUEST-SERVICE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "J1939RmIncomingRequestServiceNeeds"))
+                    elif concrete_tag == "J1939-RM-OUTGOING-REQUEST-SERVICE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "J1939RmOutgoingRequestServiceNeeds"))
+                    elif concrete_tag == "NV-BLOCK-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "NvBlockNeeds"))
+                    elif concrete_tag == "SECURE-ON-BOARD-COMMUNICATION-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "SecureOnBoardCommunicationNeeds"))
+                    elif concrete_tag == "SUPERVISED-ENTITY-CHECKPOINT-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "SupervisedEntityCheckpointNeeds"))
+                    elif concrete_tag == "SUPERVISED-ENTITY-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "SupervisedEntityNeeds"))
+                    elif concrete_tag == "SYNC-TIME-BASE-MGR-USER-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "SyncTimeBaseMgrUserNeeds"))
+                    elif concrete_tag == "V2X-DATA-MANAGER-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "V2xDataManagerNeeds"))
+                    elif concrete_tag == "V2X-FAC-USER-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "V2xFacUserNeeds"))
+                    elif concrete_tag == "V2X-M-USER-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "V2xMUserNeeds"))
+                    elif concrete_tag == "VENDOR-SPECIFIC-SERVICE-NEEDS":
+                        setattr(obj, "service_needs", SerializationHelper.deserialize_by_tag(child[0], "VendorSpecificServiceNeeds"))
 
         return obj
 

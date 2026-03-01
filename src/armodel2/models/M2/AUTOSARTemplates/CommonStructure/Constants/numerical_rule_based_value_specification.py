@@ -35,7 +35,7 @@ class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
 
     rule_based: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", any (RuleBasedValue).deserialize(elem)),
+        "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(elem, "any (RuleBasedValue)")),
     }
 
 
@@ -96,11 +96,13 @@ class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NumericalRuleBasedValueSpecification, cls).deserialize(element)
 
-        # Parse rule_based
-        child = SerializationHelper.find_child_element(element, "RULE-BASED")
-        if child is not None:
-            rule_based_value = child.text
-            obj.rule_based = rule_based_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RULE-BASED":
+                setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(child, "any (RuleBasedValue)"))
 
         return obj
 

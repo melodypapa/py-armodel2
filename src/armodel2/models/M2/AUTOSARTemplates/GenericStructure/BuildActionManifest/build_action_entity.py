@@ -40,8 +40,8 @@ class BuildActionEntity(Identifiable, ABC):
     delivery_artifacts: list[AutosarEngineeringObject]
     invocation: Optional[BuildActionInvocator]
     _DESERIALIZE_DISPATCH = {
-        "DELIVERY-ARTIFACTS": lambda obj, elem: obj.delivery_artifacts.append(AutosarEngineeringObject.deserialize(elem)),
-        "INVOCATION": lambda obj, elem: setattr(obj, "invocation", BuildActionInvocator.deserialize(elem)),
+        "DELIVERY-ARTIFACTS": lambda obj, elem: obj.delivery_artifacts.append(SerializationHelper.deserialize_by_tag(elem, "AutosarEngineeringObject")),
+        "INVOCATION": lambda obj, elem: setattr(obj, "invocation", SerializationHelper.deserialize_by_tag(elem, "BuildActionInvocator")),
     }
 
 
@@ -113,21 +113,15 @@ class BuildActionEntity(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BuildActionEntity, cls).deserialize(element)
 
-        # Parse delivery_artifacts (list from container "DELIVERY-ARTIFACTS")
-        obj.delivery_artifacts = []
-        container = SerializationHelper.find_child_element(element, "DELIVERY-ARTIFACTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.delivery_artifacts.append(child_value)
-
-        # Parse invocation
-        child = SerializationHelper.find_child_element(element, "INVOCATION")
-        if child is not None:
-            invocation_value = SerializationHelper.deserialize_by_tag(child, "BuildActionInvocator")
-            obj.invocation = invocation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DELIVERY-ARTIFACTS":
+                obj.delivery_artifacts.append(SerializationHelper.deserialize_by_tag(child, "AutosarEngineeringObject"))
+            elif tag == "INVOCATION":
+                setattr(obj, "invocation", SerializationHelper.deserialize_by_tag(child, "BuildActionInvocator"))
 
         return obj
 

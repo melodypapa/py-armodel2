@@ -35,8 +35,8 @@ class SomeipServiceVersion(ARObject):
     major_version: Optional[PositiveInteger]
     minor_version: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "MAJOR-VERSION": lambda obj, elem: setattr(obj, "major_version", elem.text),
-        "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", elem.text),
+        "MAJOR-VERSION": lambda obj, elem: setattr(obj, "major_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -112,17 +112,15 @@ class SomeipServiceVersion(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SomeipServiceVersion, cls).deserialize(element)
 
-        # Parse major_version
-        child = SerializationHelper.find_child_element(element, "MAJOR-VERSION")
-        if child is not None:
-            major_version_value = child.text
-            obj.major_version = major_version_value
-
-        # Parse minor_version
-        child = SerializationHelper.find_child_element(element, "MINOR-VERSION")
-        if child is not None:
-            minor_version_value = child.text
-            obj.minor_version = minor_version_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAJOR-VERSION":
+                setattr(obj, "major_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MINOR-VERSION":
+                setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

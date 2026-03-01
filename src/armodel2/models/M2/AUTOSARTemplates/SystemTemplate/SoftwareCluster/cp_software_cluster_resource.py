@@ -43,9 +43,9 @@ class CpSoftwareClusterResource(Identifiable, ABC):
     global_resource: Optional[PositiveInteger]
     is_mandatory: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "DEPENDENTS": lambda obj, elem: obj.dependents.append(RoleBasedResourceDependency.deserialize(elem)),
-        "GLOBAL-RESOURCE": lambda obj, elem: setattr(obj, "global_resource", elem.text),
-        "IS-MANDATORY": lambda obj, elem: setattr(obj, "is_mandatory", elem.text),
+        "DEPENDENTS": lambda obj, elem: obj.dependents.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedResourceDependency")),
+        "GLOBAL-RESOURCE": lambda obj, elem: setattr(obj, "global_resource", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IS-MANDATORY": lambda obj, elem: setattr(obj, "is_mandatory", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -132,27 +132,17 @@ class CpSoftwareClusterResource(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterResource, cls).deserialize(element)
 
-        # Parse dependents (list from container "DEPENDENTS")
-        obj.dependents = []
-        container = SerializationHelper.find_child_element(element, "DEPENDENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dependents.append(child_value)
-
-        # Parse global_resource
-        child = SerializationHelper.find_child_element(element, "GLOBAL-RESOURCE")
-        if child is not None:
-            global_resource_value = child.text
-            obj.global_resource = global_resource_value
-
-        # Parse is_mandatory
-        child = SerializationHelper.find_child_element(element, "IS-MANDATORY")
-        if child is not None:
-            is_mandatory_value = child.text
-            obj.is_mandatory = is_mandatory_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEPENDENTS":
+                obj.dependents.append(SerializationHelper.deserialize_by_tag(child, "RoleBasedResourceDependency"))
+            elif tag == "GLOBAL-RESOURCE":
+                setattr(obj, "global_resource", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IS-MANDATORY":
+                setattr(obj, "is_mandatory", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

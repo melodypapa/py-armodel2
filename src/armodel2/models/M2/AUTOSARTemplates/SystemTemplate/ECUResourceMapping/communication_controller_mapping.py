@@ -39,7 +39,7 @@ class CommunicationControllerMapping(ARObject):
     communication_controller_ref: Optional[ARRef]
     hw_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CONTROLLER-REF": lambda obj, elem: setattr(obj, "communication_controller_ref", ARRef.deserialize(elem)),
+        "COMMUNICATION-CONTROLLER-REF": ("_POLYMORPHIC", "communication_controller_ref", ["AbstractCanCommunicationController", "EthernetCommunicationController", "FlexrayCommunicationController", "LinCommunicationController", "UserDefinedCommunicationController"]),
         "HW-REF": lambda obj, elem: setattr(obj, "hw_ref", ARRef.deserialize(elem)),
     }
 
@@ -116,17 +116,27 @@ class CommunicationControllerMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommunicationControllerMapping, cls).deserialize(element)
 
-        # Parse communication_controller_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONTROLLER-REF")
-        if child is not None:
-            communication_controller_ref_value = ARRef.deserialize(child)
-            obj.communication_controller_ref = communication_controller_ref_value
-
-        # Parse hw_ref
-        child = SerializationHelper.find_child_element(element, "HW-REF")
-        if child is not None:
-            hw_ref_value = ARRef.deserialize(child)
-            obj.hw_ref = hw_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMUNICATION-CONTROLLER-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONTROLLER":
+                        setattr(obj, "communication_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCommunicationController"))
+                    elif concrete_tag == "ETHERNET-COMMUNICATION-CONTROLLER":
+                        setattr(obj, "communication_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetCommunicationController"))
+                    elif concrete_tag == "FLEXRAY-COMMUNICATION-CONTROLLER":
+                        setattr(obj, "communication_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayCommunicationController"))
+                    elif concrete_tag == "LIN-COMMUNICATION-CONTROLLER":
+                        setattr(obj, "communication_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "LinCommunicationController"))
+                    elif concrete_tag == "USER-DEFINED-COMMUNICATION-CONTROLLER":
+                        setattr(obj, "communication_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCommunicationController"))
+            elif tag == "HW-REF":
+                setattr(obj, "hw_ref", ARRef.deserialize(child))
 
         return obj
 

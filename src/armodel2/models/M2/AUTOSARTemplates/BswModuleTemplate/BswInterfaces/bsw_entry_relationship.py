@@ -38,7 +38,7 @@ class BswEntryRelationship(ARObject):
     from_ref: Optional[ARRef]
     to_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "BSW-ENTRY": lambda obj, elem: setattr(obj, "bsw_entry", BswEntryRelationship.deserialize(elem)),
+        "BSW-ENTRY": lambda obj, elem: setattr(obj, "bsw_entry", SerializationHelper.deserialize_by_tag(elem, "BswEntryRelationship")),
         "FROM-REF": lambda obj, elem: setattr(obj, "from_ref", ARRef.deserialize(elem)),
         "TO-REF": lambda obj, elem: setattr(obj, "to_ref", ARRef.deserialize(elem)),
     }
@@ -131,23 +131,17 @@ class BswEntryRelationship(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswEntryRelationship, cls).deserialize(element)
 
-        # Parse bsw_entry
-        child = SerializationHelper.find_child_element(element, "BSW-ENTRY")
-        if child is not None:
-            bsw_entry_value = SerializationHelper.deserialize_by_tag(child, "BswEntryRelationship")
-            obj.bsw_entry = bsw_entry_value
-
-        # Parse from_ref
-        child = SerializationHelper.find_child_element(element, "FROM-REF")
-        if child is not None:
-            from_ref_value = ARRef.deserialize(child)
-            obj.from_ref = from_ref_value
-
-        # Parse to_ref
-        child = SerializationHelper.find_child_element(element, "TO-REF")
-        if child is not None:
-            to_ref_value = ARRef.deserialize(child)
-            obj.to_ref = to_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BSW-ENTRY":
+                setattr(obj, "bsw_entry", SerializationHelper.deserialize_by_tag(child, "BswEntryRelationship"))
+            elif tag == "FROM-REF":
+                setattr(obj, "from_ref", ARRef.deserialize(child))
+            elif tag == "TO-REF":
+                setattr(obj, "to_ref", ARRef.deserialize(child))
 
         return obj
 

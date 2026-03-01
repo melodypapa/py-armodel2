@@ -43,10 +43,10 @@ class Compiler(Identifiable):
     vendor: Optional[String]
     version: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "NAME": lambda obj, elem: setattr(obj, "name", elem.text),
-        "OPTIONS": lambda obj, elem: setattr(obj, "options", elem.text),
-        "VENDOR": lambda obj, elem: setattr(obj, "vendor", elem.text),
-        "VERSION": lambda obj, elem: setattr(obj, "version", elem.text),
+        "NAME": lambda obj, elem: setattr(obj, "name", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "OPTIONS": lambda obj, elem: setattr(obj, "options", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "VENDOR": lambda obj, elem: setattr(obj, "vendor", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "VERSION": lambda obj, elem: setattr(obj, "version", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -152,29 +152,19 @@ class Compiler(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Compiler, cls).deserialize(element)
 
-        # Parse name
-        child = SerializationHelper.find_child_element(element, "NAME")
-        if child is not None:
-            name_value = child.text
-            obj.name = name_value
-
-        # Parse options
-        child = SerializationHelper.find_child_element(element, "OPTIONS")
-        if child is not None:
-            options_value = child.text
-            obj.options = options_value
-
-        # Parse vendor
-        child = SerializationHelper.find_child_element(element, "VENDOR")
-        if child is not None:
-            vendor_value = child.text
-            obj.vendor = vendor_value
-
-        # Parse version
-        child = SerializationHelper.find_child_element(element, "VERSION")
-        if child is not None:
-            version_value = child.text
-            obj.version = version_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "NAME":
+                setattr(obj, "name", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "OPTIONS":
+                setattr(obj, "options", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "VENDOR":
+                setattr(obj, "vendor", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "VERSION":
+                setattr(obj, "version", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

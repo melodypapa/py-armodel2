@@ -101,11 +101,13 @@ class EcucUriReferenceDef(EcucAbstractInternalReferenceDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucUriReferenceDef, cls).deserialize(element)
 
-        # Parse destination_uri_ref
-        child = SerializationHelper.find_child_element(element, "DESTINATION-URI-REF")
-        if child is not None:
-            destination_uri_ref_value = ARRef.deserialize(child)
-            obj.destination_uri_ref = destination_uri_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DESTINATION-URI-REF":
+                setattr(obj, "destination_uri_ref", ARRef.deserialize(child))
 
         return obj
 

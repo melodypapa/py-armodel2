@@ -113,17 +113,15 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcBswSynchronizedModeGroupPrototype, cls).deserialize(element)
 
-        # Parse bsw_mode_group_prototype_ref
-        child = SerializationHelper.find_child_element(element, "BSW-MODE-GROUP-PROTOTYPE-REF")
-        if child is not None:
-            bsw_mode_group_prototype_ref_value = ARRef.deserialize(child)
-            obj.bsw_mode_group_prototype_ref = bsw_mode_group_prototype_ref_value
-
-        # Parse swc_mode_group_swc_instance_ref
-        child = SerializationHelper.find_child_element(element, "SWC-MODE-GROUP-SWC-INSTANCE-REF-REF")
-        if child is not None:
-            swc_mode_group_swc_instance_ref_value = ARRef.deserialize(child)
-            obj.swc_mode_group_swc_instance_ref = swc_mode_group_swc_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BSW-MODE-GROUP-PROTOTYPE-REF":
+                setattr(obj, "bsw_mode_group_prototype_ref", ARRef.deserialize(child))
+            elif tag == "SWC-MODE-GROUP-SWC-INSTANCE-REF-REF":
+                setattr(obj, "swc_mode_group_swc_instance_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -34,7 +34,7 @@ class TcpIpIcmpv6Props(ARObject):
 
     tcp_ip_icmp: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "TCP-IP-ICMP": lambda obj, elem: setattr(obj, "tcp_ip_icmp", elem.text),
+        "TCP-IP-ICMP": lambda obj, elem: setattr(obj, "tcp_ip_icmp", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -95,11 +95,13 @@ class TcpIpIcmpv6Props(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TcpIpIcmpv6Props, cls).deserialize(element)
 
-        # Parse tcp_ip_icmp
-        child = SerializationHelper.find_child_element(element, "TCP-IP-ICMP")
-        if child is not None:
-            tcp_ip_icmp_value = child.text
-            obj.tcp_ip_icmp = tcp_ip_icmp_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TCP-IP-ICMP":
+                setattr(obj, "tcp_ip_icmp", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

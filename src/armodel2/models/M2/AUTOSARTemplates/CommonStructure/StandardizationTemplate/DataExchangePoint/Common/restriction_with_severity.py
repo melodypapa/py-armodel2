@@ -93,11 +93,13 @@ class RestrictionWithSeverity(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RestrictionWithSeverity, cls).deserialize(element)
 
-        # Parse severity
-        child = SerializationHelper.find_child_element(element, "SEVERITY")
-        if child is not None:
-            severity_value = SeverityEnum.deserialize(child)
-            obj.severity = severity_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SEVERITY":
+                setattr(obj, "severity", SeverityEnum.deserialize(child))
 
         return obj
 

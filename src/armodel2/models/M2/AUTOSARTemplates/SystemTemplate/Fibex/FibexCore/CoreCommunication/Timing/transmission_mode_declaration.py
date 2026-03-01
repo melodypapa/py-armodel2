@@ -44,11 +44,11 @@ class TransmissionModeDeclaration(ARObject):
     transmission_mode_false_timing: Optional[TransmissionModeTiming]
     transmission_mode_true_timing: Optional[TransmissionModeTiming]
     _DESERIALIZE_DISPATCH = {
-        "MODE-DRIVEN-FALSE-CONDITIONS": lambda obj, elem: obj.mode_driven_false_conditions.append(ModeDrivenTransmissionModeCondition.deserialize(elem)),
-        "MODE-DRIVEN-TRUE-CONDITIONS": lambda obj, elem: obj.mode_driven_true_conditions.append(ModeDrivenTransmissionModeCondition.deserialize(elem)),
-        "TRANSMISSION-MODE-CONDITIONS": lambda obj, elem: obj.transmission_mode_conditions.append(TransmissionModeCondition.deserialize(elem)),
-        "TRANSMISSION-MODE-FALSE-TIMING": lambda obj, elem: setattr(obj, "transmission_mode_false_timing", TransmissionModeTiming.deserialize(elem)),
-        "TRANSMISSION-MODE-TRUE-TIMING": lambda obj, elem: setattr(obj, "transmission_mode_true_timing", TransmissionModeTiming.deserialize(elem)),
+        "MODE-DRIVEN-FALSE-CONDITIONS": lambda obj, elem: obj.mode_driven_false_conditions.append(SerializationHelper.deserialize_by_tag(elem, "ModeDrivenTransmissionModeCondition")),
+        "MODE-DRIVEN-TRUE-CONDITIONS": lambda obj, elem: obj.mode_driven_true_conditions.append(SerializationHelper.deserialize_by_tag(elem, "ModeDrivenTransmissionModeCondition")),
+        "TRANSMISSION-MODE-CONDITIONS": lambda obj, elem: obj.transmission_mode_conditions.append(SerializationHelper.deserialize_by_tag(elem, "TransmissionModeCondition")),
+        "TRANSMISSION-MODE-FALSE-TIMING": lambda obj, elem: setattr(obj, "transmission_mode_false_timing", SerializationHelper.deserialize_by_tag(elem, "TransmissionModeTiming")),
+        "TRANSMISSION-MODE-TRUE-TIMING": lambda obj, elem: setattr(obj, "transmission_mode_true_timing", SerializationHelper.deserialize_by_tag(elem, "TransmissionModeTiming")),
     }
 
 
@@ -157,47 +157,21 @@ class TransmissionModeDeclaration(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransmissionModeDeclaration, cls).deserialize(element)
 
-        # Parse mode_driven_false_conditions (list from container "MODE-DRIVEN-FALSE-CONDITIONS")
-        obj.mode_driven_false_conditions = []
-        container = SerializationHelper.find_child_element(element, "MODE-DRIVEN-FALSE-CONDITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mode_driven_false_conditions.append(child_value)
-
-        # Parse mode_driven_true_conditions (list from container "MODE-DRIVEN-TRUE-CONDITIONS")
-        obj.mode_driven_true_conditions = []
-        container = SerializationHelper.find_child_element(element, "MODE-DRIVEN-TRUE-CONDITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mode_driven_true_conditions.append(child_value)
-
-        # Parse transmission_mode_conditions (list from container "TRANSMISSION-MODE-CONDITIONS")
-        obj.transmission_mode_conditions = []
-        container = SerializationHelper.find_child_element(element, "TRANSMISSION-MODE-CONDITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.transmission_mode_conditions.append(child_value)
-
-        # Parse transmission_mode_false_timing
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION-MODE-FALSE-TIMING")
-        if child is not None:
-            transmission_mode_false_timing_value = SerializationHelper.deserialize_by_tag(child, "TransmissionModeTiming")
-            obj.transmission_mode_false_timing = transmission_mode_false_timing_value
-
-        # Parse transmission_mode_true_timing
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION-MODE-TRUE-TIMING")
-        if child is not None:
-            transmission_mode_true_timing_value = SerializationHelper.deserialize_by_tag(child, "TransmissionModeTiming")
-            obj.transmission_mode_true_timing = transmission_mode_true_timing_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MODE-DRIVEN-FALSE-CONDITIONS":
+                obj.mode_driven_false_conditions.append(SerializationHelper.deserialize_by_tag(child, "ModeDrivenTransmissionModeCondition"))
+            elif tag == "MODE-DRIVEN-TRUE-CONDITIONS":
+                obj.mode_driven_true_conditions.append(SerializationHelper.deserialize_by_tag(child, "ModeDrivenTransmissionModeCondition"))
+            elif tag == "TRANSMISSION-MODE-CONDITIONS":
+                obj.transmission_mode_conditions.append(SerializationHelper.deserialize_by_tag(child, "TransmissionModeCondition"))
+            elif tag == "TRANSMISSION-MODE-FALSE-TIMING":
+                setattr(obj, "transmission_mode_false_timing", SerializationHelper.deserialize_by_tag(child, "TransmissionModeTiming"))
+            elif tag == "TRANSMISSION-MODE-TRUE-TIMING":
+                setattr(obj, "transmission_mode_true_timing", SerializationHelper.deserialize_by_tag(child, "TransmissionModeTiming"))
 
         return obj
 

@@ -35,7 +35,7 @@ class SenderRecRecordTypeMapping(SenderRecCompositeTypeMapping):
 
     record_elements: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "RECORD-ELEMENTS": lambda obj, elem: obj.record_elements.append(any (SenderRecRecord).deserialize(elem)),
+        "RECORD-ELEMENTS": lambda obj, elem: obj.record_elements.append(SerializationHelper.deserialize_by_tag(elem, "any (SenderRecRecord)")),
     }
 
 
@@ -92,15 +92,13 @@ class SenderRecRecordTypeMapping(SenderRecCompositeTypeMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderRecRecordTypeMapping, cls).deserialize(element)
 
-        # Parse record_elements (list from container "RECORD-ELEMENTS")
-        obj.record_elements = []
-        container = SerializationHelper.find_child_element(element, "RECORD-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.record_elements.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RECORD-ELEMENTS":
+                obj.record_elements.append(SerializationHelper.deserialize_by_tag(child, "any (SenderRecRecord)"))
 
         return obj
 

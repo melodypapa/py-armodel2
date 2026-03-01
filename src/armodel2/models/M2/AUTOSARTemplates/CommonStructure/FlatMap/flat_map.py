@@ -41,7 +41,7 @@ class FlatMap(ARElement):
 
     instances: list[FlatInstanceDescriptor]
     _DESERIALIZE_DISPATCH = {
-        "INSTANCES": lambda obj, elem: obj.instances.append(FlatInstanceDescriptor.deserialize(elem)),
+        "INSTANCES": lambda obj, elem: obj.instances.append(SerializationHelper.deserialize_by_tag(elem, "FlatInstanceDescriptor")),
     }
 
 
@@ -98,15 +98,13 @@ class FlatMap(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlatMap, cls).deserialize(element)
 
-        # Parse instances (list from container "INSTANCES")
-        obj.instances = []
-        container = SerializationHelper.find_child_element(element, "INSTANCES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.instances.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INSTANCES":
+                obj.instances.append(SerializationHelper.deserialize_by_tag(child, "FlatInstanceDescriptor"))
 
         return obj
 

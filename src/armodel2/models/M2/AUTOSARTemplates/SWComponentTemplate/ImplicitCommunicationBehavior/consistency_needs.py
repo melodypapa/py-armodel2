@@ -170,69 +170,19 @@ class ConsistencyNeeds(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConsistencyNeeds, cls).deserialize(element)
 
-        # Parse dpg_does_not_refs (list from container "DPG-DOES-NOT-REFS")
-        obj.dpg_does_not_refs = []
-        container = SerializationHelper.find_child_element(element, "DPG-DOES-NOT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dpg_does_not_refs.append(child_value)
-
-        # Parse dpg_require_refs (list from container "DPG-REQUIRES-REFS")
-        obj.dpg_require_refs = []
-        container = SerializationHelper.find_child_element(element, "DPG-REQUIRES-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dpg_require_refs.append(child_value)
-
-        # Parse reg_does_not_refs (list from container "REG-DOES-NOT-REFS")
-        obj.reg_does_not_refs = []
-        container = SerializationHelper.find_child_element(element, "REG-DOES-NOT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.reg_does_not_refs.append(child_value)
-
-        # Parse reg_require_refs (list from container "REG-REQUIRES-REFS")
-        obj.reg_require_refs = []
-        container = SerializationHelper.find_child_element(element, "REG-REQUIRES-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.reg_require_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DPG-DOES-NOTS":
+                obj.dpg_does_not_refs.append(ARRef.deserialize(child))
+            elif tag == "DPG-REQUIRESES":
+                obj.dpg_require_refs.append(ARRef.deserialize(child))
+            elif tag == "REG-DOES-NOTS":
+                obj.reg_does_not_refs.append(ARRef.deserialize(child))
+            elif tag == "REG-REQUIRESES":
+                obj.reg_require_refs.append(ARRef.deserialize(child))
 
         return obj
 

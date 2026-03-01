@@ -120,27 +120,15 @@ class FlexrayTpNode(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayTpNode, cls).deserialize(element)
 
-        # Parse connector_refs (list from container "CONNECTOR-REFS")
-        obj.connector_refs = []
-        container = SerializationHelper.find_child_element(element, "CONNECTOR-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.connector_refs.append(child_value)
-
-        # Parse tp_address_ref
-        child = SerializationHelper.find_child_element(element, "TP-ADDRESS-REF")
-        if child is not None:
-            tp_address_ref_value = ARRef.deserialize(child)
-            obj.tp_address_ref = tp_address_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONNECTORS":
+                obj.connector_refs.append(ARRef.deserialize(child))
+            elif tag == "TP-ADDRESS-REF":
+                setattr(obj, "tp_address_ref", ARRef.deserialize(child))
 
         return obj
 

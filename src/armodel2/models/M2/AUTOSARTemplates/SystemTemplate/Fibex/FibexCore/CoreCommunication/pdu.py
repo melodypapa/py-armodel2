@@ -39,8 +39,8 @@ class Pdu(FibexElement, ABC):
     has_dynamic_length: Optional[Boolean]
     length: Optional[UnlimitedInteger]
     _DESERIALIZE_DISPATCH = {
-        "HAS-DYNAMIC-LENGTH": lambda obj, elem: setattr(obj, "has_dynamic_length", elem.text),
-        "LENGTH": lambda obj, elem: setattr(obj, "length", elem.text),
+        "HAS-DYNAMIC-LENGTH": lambda obj, elem: setattr(obj, "has_dynamic_length", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "LENGTH": lambda obj, elem: setattr(obj, "length", SerializationHelper.deserialize_by_tag(elem, "UnlimitedInteger")),
     }
 
 
@@ -116,17 +116,15 @@ class Pdu(FibexElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Pdu, cls).deserialize(element)
 
-        # Parse has_dynamic_length
-        child = SerializationHelper.find_child_element(element, "HAS-DYNAMIC-LENGTH")
-        if child is not None:
-            has_dynamic_length_value = child.text
-            obj.has_dynamic_length = has_dynamic_length_value
-
-        # Parse length
-        child = SerializationHelper.find_child_element(element, "LENGTH")
-        if child is not None:
-            length_value = child.text
-            obj.length = length_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "HAS-DYNAMIC-LENGTH":
+                setattr(obj, "has_dynamic_length", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "LENGTH":
+                setattr(obj, "length", SerializationHelper.deserialize_by_tag(child, "UnlimitedInteger"))
 
         return obj
 

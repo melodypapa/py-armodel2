@@ -38,7 +38,7 @@ class DiagnosticSessionControlClass(DiagnosticServiceClass):
 
     s3_server: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "S3-SERVER": lambda obj, elem: setattr(obj, "s3_server", elem.text),
+        "S3-SERVER": lambda obj, elem: setattr(obj, "s3_server", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -99,11 +99,13 @@ class DiagnosticSessionControlClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSessionControlClass, cls).deserialize(element)
 
-        # Parse s3_server
-        child = SerializationHelper.find_child_element(element, "S3-SERVER")
-        if child is not None:
-            s3_server_value = child.text
-            obj.s3_server = s3_server_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "S3-SERVER":
+                setattr(obj, "s3_server", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

@@ -38,7 +38,7 @@ class CryptoServiceQueue(ARElement):
 
     queue_size: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "QUEUE-SIZE": lambda obj, elem: setattr(obj, "queue_size", elem.text),
+        "QUEUE-SIZE": lambda obj, elem: setattr(obj, "queue_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -99,11 +99,13 @@ class CryptoServiceQueue(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CryptoServiceQueue, cls).deserialize(element)
 
-        # Parse queue_size
-        child = SerializationHelper.find_child_element(element, "QUEUE-SIZE")
-        if child is not None:
-            queue_size_value = child.text
-            obj.queue_size = queue_size_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "QUEUE-SIZE":
+                setattr(obj, "queue_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

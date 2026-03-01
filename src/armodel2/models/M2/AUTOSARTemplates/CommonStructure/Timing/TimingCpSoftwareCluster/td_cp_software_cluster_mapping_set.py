@@ -35,7 +35,7 @@ class TDCpSoftwareClusterMappingSet(ARElement):
 
     td_cp_softwares: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "TD-CP-SOFTWARES": lambda obj, elem: obj.td_cp_softwares.append(any (TDCpSoftwareCluster).deserialize(elem)),
+        "TD-CP-SOFTWARES": lambda obj, elem: obj.td_cp_softwares.append(SerializationHelper.deserialize_by_tag(elem, "any (TDCpSoftwareCluster)")),
     }
 
 
@@ -92,15 +92,13 @@ class TDCpSoftwareClusterMappingSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDCpSoftwareClusterMappingSet, cls).deserialize(element)
 
-        # Parse td_cp_softwares (list from container "TD-CP-SOFTWARES")
-        obj.td_cp_softwares = []
-        container = SerializationHelper.find_child_element(element, "TD-CP-SOFTWARES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.td_cp_softwares.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TD-CP-SOFTWARES":
+                obj.td_cp_softwares.append(SerializationHelper.deserialize_by_tag(child, "any (TDCpSoftwareCluster)"))
 
         return obj
 

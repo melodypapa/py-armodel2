@@ -54,13 +54,13 @@ class ApplicationEndpoint(Identifiable):
     tls_crypto_service_ref: Optional[ARRef]
     tp_configuration_configuration: Optional[TransportProtocolConfiguration]
     _DESERIALIZE_DISPATCH = {
-        "CONSUMED-SERVICES": lambda obj, elem: obj.consumed_services.append(any (ConsumedService).deserialize(elem)),
-        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
+        "CONSUMED-SERVICES": lambda obj, elem: obj.consumed_services.append(SerializationHelper.deserialize_by_tag(elem, "any (ConsumedService)")),
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "NETWORK-ENDPOINT-ENDPOINT-REF": lambda obj, elem: setattr(obj, "network_endpoint_endpoint_ref", ARRef.deserialize(elem)),
-        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
-        "PROVIDED-SERVICES": lambda obj, elem: obj.provided_services.append(any (ProvidedService).deserialize(elem)),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PROVIDED-SERVICES": lambda obj, elem: obj.provided_services.append(SerializationHelper.deserialize_by_tag(elem, "any (ProvidedService)")),
         "TLS-CRYPTO-SERVICE-REF": lambda obj, elem: setattr(obj, "tls_crypto_service_ref", ARRef.deserialize(elem)),
-        "TP-CONFIGURATION-CONFIGURATION": lambda obj, elem: setattr(obj, "tp_configuration_configuration", TransportProtocolConfiguration.deserialize(elem)),
+        "TP-CONFIGURATION-CONFIGURATION": ("_POLYMORPHIC", "tp_configuration_configuration", ["GenericTp", "HttpTp", "Ieee1722Tp", "RtpTp", "TcpUdpConfig"]),
     }
 
 
@@ -203,55 +203,37 @@ class ApplicationEndpoint(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationEndpoint, cls).deserialize(element)
 
-        # Parse consumed_services (list from container "CONSUMED-SERVICES")
-        obj.consumed_services = []
-        container = SerializationHelper.find_child_element(element, "CONSUMED-SERVICES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.consumed_services.append(child_value)
-
-        # Parse max_number_of
-        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
-        if child is not None:
-            max_number_of_value = child.text
-            obj.max_number_of = max_number_of_value
-
-        # Parse network_endpoint_endpoint_ref
-        child = SerializationHelper.find_child_element(element, "NETWORK-ENDPOINT-ENDPOINT-REF")
-        if child is not None:
-            network_endpoint_endpoint_ref_value = ARRef.deserialize(child)
-            obj.network_endpoint_endpoint_ref = network_endpoint_endpoint_ref_value
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse provided_services (list from container "PROVIDED-SERVICES")
-        obj.provided_services = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-SERVICES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.provided_services.append(child_value)
-
-        # Parse tls_crypto_service_ref
-        child = SerializationHelper.find_child_element(element, "TLS-CRYPTO-SERVICE-REF")
-        if child is not None:
-            tls_crypto_service_ref_value = ARRef.deserialize(child)
-            obj.tls_crypto_service_ref = tls_crypto_service_ref_value
-
-        # Parse tp_configuration_configuration
-        child = SerializationHelper.find_child_element(element, "TP-CONFIGURATION-CONFIGURATION")
-        if child is not None:
-            tp_configuration_configuration_value = SerializationHelper.deserialize_by_tag(child, "TransportProtocolConfiguration")
-            obj.tp_configuration_configuration = tp_configuration_configuration_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONSUMED-SERVICES":
+                obj.consumed_services.append(SerializationHelper.deserialize_by_tag(child, "any (ConsumedService)"))
+            elif tag == "MAX-NUMBER-OF":
+                setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "NETWORK-ENDPOINT-ENDPOINT-REF":
+                setattr(obj, "network_endpoint_endpoint_ref", ARRef.deserialize(child))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PROVIDED-SERVICES":
+                obj.provided_services.append(SerializationHelper.deserialize_by_tag(child, "any (ProvidedService)"))
+            elif tag == "TLS-CRYPTO-SERVICE-REF":
+                setattr(obj, "tls_crypto_service_ref", ARRef.deserialize(child))
+            elif tag == "TP-CONFIGURATION-CONFIGURATION":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "GENERIC-TP":
+                        setattr(obj, "tp_configuration_configuration", SerializationHelper.deserialize_by_tag(child[0], "GenericTp"))
+                    elif concrete_tag == "HTTP-TP":
+                        setattr(obj, "tp_configuration_configuration", SerializationHelper.deserialize_by_tag(child[0], "HttpTp"))
+                    elif concrete_tag == "IEEE1722-TP":
+                        setattr(obj, "tp_configuration_configuration", SerializationHelper.deserialize_by_tag(child[0], "Ieee1722Tp"))
+                    elif concrete_tag == "RTP-TP":
+                        setattr(obj, "tp_configuration_configuration", SerializationHelper.deserialize_by_tag(child[0], "RtpTp"))
+                    elif concrete_tag == "TCP-UDP-CONFIG":
+                        setattr(obj, "tp_configuration_configuration", SerializationHelper.deserialize_by_tag(child[0], "TcpUdpConfig"))
 
         return obj
 

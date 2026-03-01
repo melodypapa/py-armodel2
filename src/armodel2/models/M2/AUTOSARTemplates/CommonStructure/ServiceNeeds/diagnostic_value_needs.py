@@ -48,9 +48,9 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
     fixed_length: Optional[Boolean]
     processing_style: Optional[DiagnosticProcessingStyleEnum]
     _DESERIALIZE_DISPATCH = {
-        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", elem.text),
+        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "DIAGNOSTIC-VALUE-ACCESS": lambda obj, elem: setattr(obj, "diagnostic_value_access", DiagnosticValueAccessEnum.deserialize(elem)),
-        "FIXED-LENGTH": lambda obj, elem: setattr(obj, "fixed_length", elem.text),
+        "FIXED-LENGTH": lambda obj, elem: setattr(obj, "fixed_length", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "PROCESSING-STYLE": lambda obj, elem: setattr(obj, "processing_style", DiagnosticProcessingStyleEnum.deserialize(elem)),
     }
 
@@ -157,29 +157,19 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticValueNeeds, cls).deserialize(element)
 
-        # Parse data_length
-        child = SerializationHelper.find_child_element(element, "DATA-LENGTH")
-        if child is not None:
-            data_length_value = child.text
-            obj.data_length = data_length_value
-
-        # Parse diagnostic_value_access
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-VALUE-ACCESS")
-        if child is not None:
-            diagnostic_value_access_value = DiagnosticValueAccessEnum.deserialize(child)
-            obj.diagnostic_value_access = diagnostic_value_access_value
-
-        # Parse fixed_length
-        child = SerializationHelper.find_child_element(element, "FIXED-LENGTH")
-        if child is not None:
-            fixed_length_value = child.text
-            obj.fixed_length = fixed_length_value
-
-        # Parse processing_style
-        child = SerializationHelper.find_child_element(element, "PROCESSING-STYLE")
-        if child is not None:
-            processing_style_value = DiagnosticProcessingStyleEnum.deserialize(child)
-            obj.processing_style = processing_style_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-LENGTH":
+                setattr(obj, "data_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "DIAGNOSTIC-VALUE-ACCESS":
+                setattr(obj, "diagnostic_value_access", DiagnosticValueAccessEnum.deserialize(child))
+            elif tag == "FIXED-LENGTH":
+                setattr(obj, "fixed_length", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PROCESSING-STYLE":
+                setattr(obj, "processing_style", DiagnosticProcessingStyleEnum.deserialize(child))
 
         return obj
 

@@ -36,7 +36,7 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
     max_gradient: Optional[Float]
     monotony: Optional[MonotonyEnum]
     _DESERIALIZE_DISPATCH = {
-        "MAX-GRADIENT": lambda obj, elem: setattr(obj, "max_gradient", elem.text),
+        "MAX-GRADIENT": lambda obj, elem: setattr(obj, "max_gradient", SerializationHelper.deserialize_by_tag(elem, "Float")),
         "MONOTONY": lambda obj, elem: setattr(obj, "monotony", MonotonyEnum.deserialize(elem)),
     }
 
@@ -113,17 +113,15 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwCalprmAxisTypeProps, cls).deserialize(element)
 
-        # Parse max_gradient
-        child = SerializationHelper.find_child_element(element, "MAX-GRADIENT")
-        if child is not None:
-            max_gradient_value = child.text
-            obj.max_gradient = max_gradient_value
-
-        # Parse monotony
-        child = SerializationHelper.find_child_element(element, "MONOTONY")
-        if child is not None:
-            monotony_value = MonotonyEnum.deserialize(child)
-            obj.monotony = monotony_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAX-GRADIENT":
+                setattr(obj, "max_gradient", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "MONOTONY":
+                setattr(obj, "monotony", MonotonyEnum.deserialize(child))
 
         return obj
 

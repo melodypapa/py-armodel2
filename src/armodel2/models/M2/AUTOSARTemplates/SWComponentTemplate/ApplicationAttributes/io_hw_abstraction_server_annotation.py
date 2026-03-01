@@ -68,11 +68,11 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
     pulse_test: Optional[PulseTestEnum]
     trigger_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "AGE": lambda obj, elem: setattr(obj, "age", MultidimensionalTime.deserialize(elem)),
+        "AGE": lambda obj, elem: setattr(obj, "age", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
         "ARGUMENT-REF": lambda obj, elem: setattr(obj, "argument_ref", ARRef.deserialize(elem)),
-        "BSW-RESOLUTION": lambda obj, elem: setattr(obj, "bsw_resolution", elem.text),
+        "BSW-RESOLUTION": lambda obj, elem: setattr(obj, "bsw_resolution", SerializationHelper.deserialize_by_tag(elem, "Float")),
         "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
-        "FAILURE-REF": lambda obj, elem: setattr(obj, "failure_ref", ARRef.deserialize(elem)),
+        "FAILURE-REF": ("_POLYMORPHIC", "failure_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
         "FILTERING": lambda obj, elem: setattr(obj, "filtering", FilterDebouncingEnum.deserialize(elem)),
         "PULSE-TEST": lambda obj, elem: setattr(obj, "pulse_test", PulseTestEnum.deserialize(elem)),
         "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),
@@ -241,53 +241,33 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IoHwAbstractionServerAnnotation, cls).deserialize(element)
 
-        # Parse age
-        child = SerializationHelper.find_child_element(element, "AGE")
-        if child is not None:
-            age_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.age = age_value
-
-        # Parse argument_ref
-        child = SerializationHelper.find_child_element(element, "ARGUMENT-REF")
-        if child is not None:
-            argument_ref_value = ARRef.deserialize(child)
-            obj.argument_ref = argument_ref_value
-
-        # Parse bsw_resolution
-        child = SerializationHelper.find_child_element(element, "BSW-RESOLUTION")
-        if child is not None:
-            bsw_resolution_value = child.text
-            obj.bsw_resolution = bsw_resolution_value
-
-        # Parse data_element_ref
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
-        if child is not None:
-            data_element_ref_value = ARRef.deserialize(child)
-            obj.data_element_ref = data_element_ref_value
-
-        # Parse failure_ref
-        child = SerializationHelper.find_child_element(element, "FAILURE-REF")
-        if child is not None:
-            failure_ref_value = ARRef.deserialize(child)
-            obj.failure_ref = failure_ref_value
-
-        # Parse filtering
-        child = SerializationHelper.find_child_element(element, "FILTERING")
-        if child is not None:
-            filtering_value = FilterDebouncingEnum.deserialize(child)
-            obj.filtering = filtering_value
-
-        # Parse pulse_test
-        child = SerializationHelper.find_child_element(element, "PULSE-TEST")
-        if child is not None:
-            pulse_test_value = PulseTestEnum.deserialize(child)
-            obj.pulse_test = pulse_test_value
-
-        # Parse trigger_ref
-        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
-        if child is not None:
-            trigger_ref_value = ARRef.deserialize(child)
-            obj.trigger_ref = trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AGE":
+                setattr(obj, "age", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "ARGUMENT-REF":
+                setattr(obj, "argument_ref", ARRef.deserialize(child))
+            elif tag == "BSW-RESOLUTION":
+                setattr(obj, "bsw_resolution", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "DATA-ELEMENT-REF":
+                setattr(obj, "data_element_ref", ARRef.deserialize(child))
+            elif tag == "FAILURE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
+                        setattr(obj, "failure_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
+                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
+                        setattr(obj, "failure_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+            elif tag == "FILTERING":
+                setattr(obj, "filtering", FilterDebouncingEnum.deserialize(child))
+            elif tag == "PULSE-TEST":
+                setattr(obj, "pulse_test", PulseTestEnum.deserialize(child))
+            elif tag == "TRIGGER-REF":
+                setattr(obj, "trigger_ref", ARRef.deserialize(child))
 
         return obj
 

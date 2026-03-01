@@ -39,8 +39,8 @@ class BusMirrorChannel(ARObject):
     bus_mirror: Optional[PositiveInteger]
     channel_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "BUS-MIRROR": lambda obj, elem: setattr(obj, "bus_mirror", elem.text),
-        "CHANNEL-REF": lambda obj, elem: setattr(obj, "channel_ref", ARRef.deserialize(elem)),
+        "BUS-MIRROR": lambda obj, elem: setattr(obj, "bus_mirror", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "CHANNEL-REF": ("_POLYMORPHIC", "channel_ref", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
     }
 
 
@@ -116,17 +116,25 @@ class BusMirrorChannel(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BusMirrorChannel, cls).deserialize(element)
 
-        # Parse bus_mirror
-        child = SerializationHelper.find_child_element(element, "BUS-MIRROR")
-        if child is not None:
-            bus_mirror_value = child.text
-            obj.bus_mirror = bus_mirror_value
-
-        # Parse channel_ref
-        child = SerializationHelper.find_child_element(element, "CHANNEL-REF")
-        if child is not None:
-            channel_ref_value = ARRef.deserialize(child)
-            obj.channel_ref = channel_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BUS-MIRROR":
+                setattr(obj, "bus_mirror", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "CHANNEL-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-PHYSICAL-CHANNEL":
+                        setattr(obj, "channel_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanPhysicalChannel"))
+                    elif concrete_tag == "ETHERNET-PHYSICAL-CHANNEL":
+                        setattr(obj, "channel_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetPhysicalChannel"))
+                    elif concrete_tag == "FLEXRAY-PHYSICAL-CHANNEL":
+                        setattr(obj, "channel_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayPhysicalChannel"))
+                    elif concrete_tag == "LIN-PHYSICAL-CHANNEL":
+                        setattr(obj, "channel_ref", SerializationHelper.deserialize_by_tag(child[0], "LinPhysicalChannel"))
 
         return obj
 

@@ -99,11 +99,13 @@ class BswInternalTriggeringPoint(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswInternalTriggeringPoint, cls).deserialize(element)
 
-        # Parse sw_impl_policy_enum
-        child = SerializationHelper.find_child_element(element, "SW-IMPL-POLICY-ENUM")
-        if child is not None:
-            sw_impl_policy_enum_value = SwImplPolicyEnum.deserialize(child)
-            obj.sw_impl_policy_enum = sw_impl_policy_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SW-IMPL-POLICY-ENUM":
+                setattr(obj, "sw_impl_policy_enum", SwImplPolicyEnum.deserialize(child))
 
         return obj
 

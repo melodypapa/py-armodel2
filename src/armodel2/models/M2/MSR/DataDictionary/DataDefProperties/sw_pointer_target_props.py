@@ -50,8 +50,8 @@ class SwPointerTargetProps(ARObject):
     target_category: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
         "FUNCTION-POINTER-REF": lambda obj, elem: setattr(obj, "function_pointer_ref", ARRef.deserialize(elem)),
-        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SwDataDefProps.deserialize(elem)),
-        "TARGET-CATEGORY": lambda obj, elem: setattr(obj, "target_category", elem.text),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "TARGET-CATEGORY": lambda obj, elem: setattr(obj, "target_category", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -142,23 +142,17 @@ class SwPointerTargetProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwPointerTargetProps, cls).deserialize(element)
 
-        # Parse function_pointer_ref
-        child = SerializationHelper.find_child_element(element, "FUNCTION-POINTER-REF")
-        if child is not None:
-            function_pointer_ref_value = ARRef.deserialize(child)
-            obj.function_pointer_ref = function_pointer_ref_value
-
-        # Parse sw_data_def
-        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
-        if child is not None:
-            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.sw_data_def = sw_data_def_value
-
-        # Parse target_category
-        child = SerializationHelper.find_child_element(element, "TARGET-CATEGORY")
-        if child is not None:
-            target_category_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.target_category = target_category_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FUNCTION-POINTER-REF":
+                setattr(obj, "function_pointer_ref", ARRef.deserialize(child))
+            elif tag == "SW-DATA-DEF":
+                setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            elif tag == "TARGET-CATEGORY":
+                setattr(obj, "target_category", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

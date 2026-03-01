@@ -43,8 +43,8 @@ class DataTypeMap(ARObject):
     application_data_type_ref: Optional[ARRef]
     implementation_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "APPLICATION-DATA-TYPE-REF": lambda obj, elem: setattr(obj, "application_data_type_ref", ARRef.deserialize(elem)),
-        "IMPLEMENTATION-REF": lambda obj, elem: setattr(obj, "implementation_ref", ARRef.deserialize(elem)),
+        "APPLICATION-DATA-TYPE-REF": ("_POLYMORPHIC", "application_data_type_ref", ["ApplicationCompositeDataType", "ApplicationPrimitiveDataType"]),
+        "IMPLEMENTATION-REF": ("_POLYMORPHIC", "implementation_ref", ["ImplementationDataType"]),
     }
 
 
@@ -120,17 +120,25 @@ class DataTypeMap(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataTypeMap, cls).deserialize(element)
 
-        # Parse application_data_type_ref
-        child = SerializationHelper.find_child_element(element, "APPLICATION-DATA-TYPE-REF")
-        if child is not None:
-            application_data_type_ref_value = ARRef.deserialize(child)
-            obj.application_data_type_ref = application_data_type_ref_value
-
-        # Parse implementation_ref
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REF")
-        if child is not None:
-            implementation_ref_value = ARRef.deserialize(child)
-            obj.implementation_ref = implementation_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "APPLICATION-DATA-TYPE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-DATA-TYPE":
+                        setattr(obj, "application_data_type_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeDataType"))
+                    elif concrete_tag == "APPLICATION-PRIMITIVE-DATA-TYPE":
+                        setattr(obj, "application_data_type_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationPrimitiveDataType"))
+            elif tag == "IMPLEMENTATION-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "IMPLEMENTATION-DATA-TYPE":
+                        setattr(obj, "implementation_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationDataType"))
 
         return obj
 

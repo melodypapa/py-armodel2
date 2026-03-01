@@ -40,9 +40,9 @@ class DiagnosticComControlSpecificChannel(ARObject):
     specific_physical_ref: Optional[Any]
     subnet_number: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "SPECIFIC-CHANNEL-REF": lambda obj, elem: setattr(obj, "specific_channel_ref", ARRef.deserialize(elem)),
+        "SPECIFIC-CHANNEL-REF": ("_POLYMORPHIC", "specific_channel_ref", ["AbstractCanCluster", "EthernetCluster", "FlexrayCluster", "LinCluster", "UserDefinedCluster"]),
         "SPECIFIC-PHYSICAL-REF": lambda obj, elem: setattr(obj, "specific_physical_ref", ARRef.deserialize(elem)),
-        "SUBNET-NUMBER": lambda obj, elem: setattr(obj, "subnet_number", elem.text),
+        "SUBNET-NUMBER": lambda obj, elem: setattr(obj, "subnet_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -133,23 +133,29 @@ class DiagnosticComControlSpecificChannel(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticComControlSpecificChannel, cls).deserialize(element)
 
-        # Parse specific_channel_ref
-        child = SerializationHelper.find_child_element(element, "SPECIFIC-CHANNEL-REF")
-        if child is not None:
-            specific_channel_ref_value = ARRef.deserialize(child)
-            obj.specific_channel_ref = specific_channel_ref_value
-
-        # Parse specific_physical_ref
-        child = SerializationHelper.find_child_element(element, "SPECIFIC-PHYSICAL-REF")
-        if child is not None:
-            specific_physical_ref_value = ARRef.deserialize(child)
-            obj.specific_physical_ref = specific_physical_ref_value
-
-        # Parse subnet_number
-        child = SerializationHelper.find_child_element(element, "SUBNET-NUMBER")
-        if child is not None:
-            subnet_number_value = child.text
-            obj.subnet_number = subnet_number_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SPECIFIC-CHANNEL-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-CLUSTER":
+                        setattr(obj, "specific_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCluster"))
+                    elif concrete_tag == "ETHERNET-CLUSTER":
+                        setattr(obj, "specific_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetCluster"))
+                    elif concrete_tag == "FLEXRAY-CLUSTER":
+                        setattr(obj, "specific_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayCluster"))
+                    elif concrete_tag == "LIN-CLUSTER":
+                        setattr(obj, "specific_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "LinCluster"))
+                    elif concrete_tag == "USER-DEFINED-CLUSTER":
+                        setattr(obj, "specific_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCluster"))
+            elif tag == "SPECIFIC-PHYSICAL-REF":
+                setattr(obj, "specific_physical_ref", ARRef.deserialize(child))
+            elif tag == "SUBNET-NUMBER":
+                setattr(obj, "subnet_number", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

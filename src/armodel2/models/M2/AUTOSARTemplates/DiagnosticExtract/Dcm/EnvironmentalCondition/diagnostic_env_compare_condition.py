@@ -97,11 +97,13 @@ class DiagnosticEnvCompareCondition(DiagnosticEnvConditionFormulaPart, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEnvCompareCondition, cls).deserialize(element)
 
-        # Parse compare_type
-        child = SerializationHelper.find_child_element(element, "COMPARE-TYPE")
-        if child is not None:
-            compare_type_value = DiagnosticCompareTypeEnum.deserialize(child)
-            obj.compare_type = compare_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPARE-TYPE":
+                setattr(obj, "compare_type", DiagnosticCompareTypeEnum.deserialize(child))
 
         return obj
 

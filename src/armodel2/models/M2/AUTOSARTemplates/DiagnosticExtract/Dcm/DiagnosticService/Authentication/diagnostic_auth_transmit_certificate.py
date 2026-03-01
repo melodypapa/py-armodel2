@@ -35,7 +35,7 @@ class DiagnosticAuthTransmitCertificate(DiagnosticAuthentication):
 
     certificates: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "CERTIFICATES": lambda obj, elem: obj.certificates.append(any (DiagnosticAuthTransmit).deserialize(elem)),
+        "CERTIFICATES": lambda obj, elem: obj.certificates.append(SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticAuthTransmit)")),
     }
 
 
@@ -92,15 +92,13 @@ class DiagnosticAuthTransmitCertificate(DiagnosticAuthentication):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAuthTransmitCertificate, cls).deserialize(element)
 
-        # Parse certificates (list from container "CERTIFICATES")
-        obj.certificates = []
-        container = SerializationHelper.find_child_element(element, "CERTIFICATES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.certificates.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CERTIFICATES":
+                obj.certificates.append(SerializationHelper.deserialize_by_tag(child, "any (DiagnosticAuthTransmit)"))
 
         return obj
 

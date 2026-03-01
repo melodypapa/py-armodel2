@@ -7,6 +7,7 @@ from typing import Optional
 from .parsers import (
     load_all_package_data,
     load_skip_list,
+    load_polymorphic_types,
     parse_enum_json,
     parse_hierarchy_json,
     parse_mapping_json,
@@ -51,6 +52,10 @@ def generate_all_models(
         # Default to the skip_classes.yaml in the tools directory
         skip_list_file = Path(__file__).parent.parent / "skip_classes.yaml"
     skip_list, force_type_checking_imports = load_skip_list(skip_list_file)
+
+    # Load polymorphic_types mapping from model_mappings.yaml
+    mappings_file = Path(__file__).parent.parent.parent / "src" / "armodel2" / "cfg" / "model_mappings.yaml"
+    polymorphic_types = load_polymorphic_types(mappings_file)
 
     # Parse hierarchy.json for parent and abstract information
     hierarchy_info = parse_hierarchy_json(hierarchy_file)
@@ -129,6 +134,7 @@ def generate_all_models(
                 dependency_graph,
                 force_type_checking_imports,
                 builder_imports,  # Pass builder imports to be added at top
+                polymorphic_types,  # Pass polymorphic types for if-elif-else generation
             )
 
             # Write to file (class code already includes builder imports at top)

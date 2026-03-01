@@ -38,7 +38,7 @@ class ImplementationProps(Referrable, ABC):
 
     symbol: Optional[CIdentifier]
     _DESERIALIZE_DISPATCH = {
-        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", elem.text),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
     }
 
 
@@ -99,11 +99,13 @@ class ImplementationProps(Referrable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ImplementationProps, cls).deserialize(element)
 
-        # Parse symbol
-        child = SerializationHelper.find_child_element(element, "SYMBOL")
-        if child is not None:
-            symbol_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
-            obj.symbol = symbol_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SYMBOL":
+                setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
 
         return obj
 

@@ -35,7 +35,7 @@ class CommunicationController(Identifiable, ABC):
 
     wake_up_by_controller_supported: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "WAKE-UP-BY-CONTROLLER-SUPPORTED": lambda obj, elem: setattr(obj, "wake_up_by_controller_supported", elem.text),
+        "WAKE-UP-BY-CONTROLLER-SUPPORTED": lambda obj, elem: setattr(obj, "wake_up_by_controller_supported", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -96,11 +96,13 @@ class CommunicationController(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommunicationController, cls).deserialize(element)
 
-        # Parse wake_up_by_controller_supported
-        child = SerializationHelper.find_child_element(element, "WAKE-UP-BY-CONTROLLER-SUPPORTED")
-        if child is not None:
-            wake_up_by_controller_supported_value = child.text
-            obj.wake_up_by_controller_supported = wake_up_by_controller_supported_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "WAKE-UP-BY-CONTROLLER-SUPPORTED":
+                setattr(obj, "wake_up_by_controller_supported", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

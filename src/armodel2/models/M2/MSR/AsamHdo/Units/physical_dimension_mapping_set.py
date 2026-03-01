@@ -38,7 +38,7 @@ class PhysicalDimensionMappingSet(ARElement):
 
     physicals: list[PhysicalDimension]
     _DESERIALIZE_DISPATCH = {
-        "PHYSICALS": lambda obj, elem: obj.physicals.append(PhysicalDimension.deserialize(elem)),
+        "PHYSICALS": lambda obj, elem: obj.physicals.append(SerializationHelper.deserialize_by_tag(elem, "PhysicalDimension")),
     }
 
 
@@ -95,15 +95,13 @@ class PhysicalDimensionMappingSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PhysicalDimensionMappingSet, cls).deserialize(element)
 
-        # Parse physicals (list from container "PHYSICALS")
-        obj.physicals = []
-        container = SerializationHelper.find_child_element(element, "PHYSICALS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.physicals.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PHYSICALS":
+                obj.physicals.append(SerializationHelper.deserialize_by_tag(child, "PhysicalDimension"))
 
         return obj
 

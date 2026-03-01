@@ -38,7 +38,7 @@ class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
 
     affected_bsw: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "AFFECTED-BSW": lambda obj, elem: setattr(obj, "affected_bsw", elem.text),
+        "AFFECTED-BSW": lambda obj, elem: setattr(obj, "affected_bsw", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -99,11 +99,13 @@ class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventContextMappingBswModule, cls).deserialize(element)
 
-        # Parse affected_bsw
-        child = SerializationHelper.find_child_element(element, "AFFECTED-BSW")
-        if child is not None:
-            affected_bsw_value = child.text
-            obj.affected_bsw = affected_bsw_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AFFECTED-BSW":
+                setattr(obj, "affected_bsw", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

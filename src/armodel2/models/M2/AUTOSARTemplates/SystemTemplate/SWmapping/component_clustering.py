@@ -40,7 +40,7 @@ class ComponentClustering(MappingConstraint):
     clustereds: list[Any]
     mapping_scope_enum_ref: Optional[MappingScopeEnum]
     _DESERIALIZE_DISPATCH = {
-        "CLUSTEREDS": lambda obj, elem: obj.clustereds.append(any (SwComponent).deserialize(elem)),
+        "CLUSTEREDS": lambda obj, elem: obj.clustereds.append(SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
         "MAPPING-SCOPE-ENUM-REF": lambda obj, elem: setattr(obj, "mapping_scope_enum_ref", MappingScopeEnum.deserialize(elem)),
     }
 
@@ -113,21 +113,15 @@ class ComponentClustering(MappingConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ComponentClustering, cls).deserialize(element)
 
-        # Parse clustereds (list from container "CLUSTEREDS")
-        obj.clustereds = []
-        container = SerializationHelper.find_child_element(element, "CLUSTEREDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.clustereds.append(child_value)
-
-        # Parse mapping_scope_enum_ref
-        child = SerializationHelper.find_child_element(element, "MAPPING-SCOPE-ENUM-REF")
-        if child is not None:
-            mapping_scope_enum_ref_value = ARRef.deserialize(child)
-            obj.mapping_scope_enum_ref = mapping_scope_enum_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CLUSTEREDS":
+                obj.clustereds.append(SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
+            elif tag == "MAPPING-SCOPE-ENUM-REF":
+                setattr(obj, "mapping_scope_enum_ref", MappingScopeEnum.deserialize(child))
 
         return obj
 

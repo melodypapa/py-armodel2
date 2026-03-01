@@ -42,10 +42,10 @@ class FlexrayTpEcu(ARObject):
     ecu_instance_ref: Optional[ARRef]
     full_duplex: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "CANCELLATION": lambda obj, elem: setattr(obj, "cancellation", elem.text),
-        "CYCLE-TIME-MAIN": lambda obj, elem: setattr(obj, "cycle_time_main", elem.text),
+        "CANCELLATION": lambda obj, elem: setattr(obj, "cancellation", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CYCLE-TIME-MAIN": lambda obj, elem: setattr(obj, "cycle_time_main", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
-        "FULL-DUPLEX": lambda obj, elem: setattr(obj, "full_duplex", elem.text),
+        "FULL-DUPLEX": lambda obj, elem: setattr(obj, "full_duplex", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -151,29 +151,19 @@ class FlexrayTpEcu(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayTpEcu, cls).deserialize(element)
 
-        # Parse cancellation
-        child = SerializationHelper.find_child_element(element, "CANCELLATION")
-        if child is not None:
-            cancellation_value = child.text
-            obj.cancellation = cancellation_value
-
-        # Parse cycle_time_main
-        child = SerializationHelper.find_child_element(element, "CYCLE-TIME-MAIN")
-        if child is not None:
-            cycle_time_main_value = child.text
-            obj.cycle_time_main = cycle_time_main_value
-
-        # Parse ecu_instance_ref
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
-        if child is not None:
-            ecu_instance_ref_value = ARRef.deserialize(child)
-            obj.ecu_instance_ref = ecu_instance_ref_value
-
-        # Parse full_duplex
-        child = SerializationHelper.find_child_element(element, "FULL-DUPLEX")
-        if child is not None:
-            full_duplex_value = child.text
-            obj.full_duplex = full_duplex_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CANCELLATION":
+                setattr(obj, "cancellation", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CYCLE-TIME-MAIN":
+                setattr(obj, "cycle_time_main", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "ECU-INSTANCE-REF":
+                setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
+            elif tag == "FULL-DUPLEX":
+                setattr(obj, "full_duplex", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

@@ -41,9 +41,9 @@ class SomeipTpChannel(Identifiable):
     rx_timeout_time: Optional[TimeValue]
     separation_time: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "BURST-SIZE": lambda obj, elem: setattr(obj, "burst_size", elem.text),
-        "RX-TIMEOUT-TIME": lambda obj, elem: setattr(obj, "rx_timeout_time", elem.text),
-        "SEPARATION-TIME": lambda obj, elem: setattr(obj, "separation_time", elem.text),
+        "BURST-SIZE": lambda obj, elem: setattr(obj, "burst_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "RX-TIMEOUT-TIME": lambda obj, elem: setattr(obj, "rx_timeout_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "SEPARATION-TIME": lambda obj, elem: setattr(obj, "separation_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -134,23 +134,17 @@ class SomeipTpChannel(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SomeipTpChannel, cls).deserialize(element)
 
-        # Parse burst_size
-        child = SerializationHelper.find_child_element(element, "BURST-SIZE")
-        if child is not None:
-            burst_size_value = child.text
-            obj.burst_size = burst_size_value
-
-        # Parse rx_timeout_time
-        child = SerializationHelper.find_child_element(element, "RX-TIMEOUT-TIME")
-        if child is not None:
-            rx_timeout_time_value = child.text
-            obj.rx_timeout_time = rx_timeout_time_value
-
-        # Parse separation_time
-        child = SerializationHelper.find_child_element(element, "SEPARATION-TIME")
-        if child is not None:
-            separation_time_value = child.text
-            obj.separation_time = separation_time_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BURST-SIZE":
+                setattr(obj, "burst_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "RX-TIMEOUT-TIME":
+                setattr(obj, "rx_timeout_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "SEPARATION-TIME":
+                setattr(obj, "separation_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

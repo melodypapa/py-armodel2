@@ -50,10 +50,10 @@ class StackUsage(Identifiable, ABC):
     hw_element_ref: Optional[ARRef]
     software_context: Optional[SoftwareContext]
     _DESERIALIZE_DISPATCH = {
-        "EXECUTABLE-ENTITY-REF": lambda obj, elem: setattr(obj, "executable_entity_ref", ARRef.deserialize(elem)),
-        "HARDWARE": lambda obj, elem: setattr(obj, "hardware", HardwareConfiguration.deserialize(elem)),
+        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswModuleEntity", "RunnableEntity"]),
+        "HARDWARE": lambda obj, elem: setattr(obj, "hardware", SerializationHelper.deserialize_by_tag(elem, "HardwareConfiguration")),
         "HW-ELEMENT-REF": lambda obj, elem: setattr(obj, "hw_element_ref", ARRef.deserialize(elem)),
-        "SOFTWARE-CONTEXT": lambda obj, elem: setattr(obj, "software_context", SoftwareContext.deserialize(elem)),
+        "SOFTWARE-CONTEXT": lambda obj, elem: setattr(obj, "software_context", SerializationHelper.deserialize_by_tag(elem, "SoftwareContext")),
     }
 
 
@@ -159,29 +159,25 @@ class StackUsage(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StackUsage, cls).deserialize(element)
 
-        # Parse executable_entity_ref
-        child = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITY-REF")
-        if child is not None:
-            executable_entity_ref_value = ARRef.deserialize(child)
-            obj.executable_entity_ref = executable_entity_ref_value
-
-        # Parse hardware
-        child = SerializationHelper.find_child_element(element, "HARDWARE")
-        if child is not None:
-            hardware_value = SerializationHelper.deserialize_by_tag(child, "HardwareConfiguration")
-            obj.hardware = hardware_value
-
-        # Parse hw_element_ref
-        child = SerializationHelper.find_child_element(element, "HW-ELEMENT-REF")
-        if child is not None:
-            hw_element_ref_value = ARRef.deserialize(child)
-            obj.hw_element_ref = hw_element_ref_value
-
-        # Parse software_context
-        child = SerializationHelper.find_child_element(element, "SOFTWARE-CONTEXT")
-        if child is not None:
-            software_context_value = SerializationHelper.deserialize_by_tag(child, "SoftwareContext")
-            obj.software_context = software_context_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "EXECUTABLE-ENTITY-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-MODULE-ENTITY":
+                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleEntity"))
+                    elif concrete_tag == "RUNNABLE-ENTITY":
+                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "RunnableEntity"))
+            elif tag == "HARDWARE":
+                setattr(obj, "hardware", SerializationHelper.deserialize_by_tag(child, "HardwareConfiguration"))
+            elif tag == "HW-ELEMENT-REF":
+                setattr(obj, "hw_element_ref", ARRef.deserialize(child))
+            elif tag == "SOFTWARE-CONTEXT":
+                setattr(obj, "software_context", SerializationHelper.deserialize_by_tag(child, "SoftwareContext"))
 
         return obj
 

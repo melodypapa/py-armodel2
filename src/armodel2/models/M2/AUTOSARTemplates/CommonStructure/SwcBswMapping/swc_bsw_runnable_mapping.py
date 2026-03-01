@@ -39,7 +39,7 @@ class SwcBswRunnableMapping(ARObject):
     bsw_entity_ref: Optional[ARRef]
     swc_runnable_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "BSW-ENTITY-REF": lambda obj, elem: setattr(obj, "bsw_entity_ref", ARRef.deserialize(elem)),
+        "BSW-ENTITY-REF": ("_POLYMORPHIC", "bsw_entity_ref", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
         "SWC-RUNNABLE-REF": lambda obj, elem: setattr(obj, "swc_runnable_ref", ARRef.deserialize(elem)),
     }
 
@@ -116,17 +116,23 @@ class SwcBswRunnableMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcBswRunnableMapping, cls).deserialize(element)
 
-        # Parse bsw_entity_ref
-        child = SerializationHelper.find_child_element(element, "BSW-ENTITY-REF")
-        if child is not None:
-            bsw_entity_ref_value = ARRef.deserialize(child)
-            obj.bsw_entity_ref = bsw_entity_ref_value
-
-        # Parse swc_runnable_ref
-        child = SerializationHelper.find_child_element(element, "SWC-RUNNABLE-REF")
-        if child is not None:
-            swc_runnable_ref_value = ARRef.deserialize(child)
-            obj.swc_runnable_ref = swc_runnable_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BSW-ENTITY-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-CALLED-ENTITY":
+                        setattr(obj, "bsw_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswCalledEntity"))
+                    elif concrete_tag == "BSW-INTERRUPT-ENTITY":
+                        setattr(obj, "bsw_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswInterruptEntity"))
+                    elif concrete_tag == "BSW-SCHEDULABLE-ENTITY":
+                        setattr(obj, "bsw_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswSchedulableEntity"))
+            elif tag == "SWC-RUNNABLE-REF":
+                setattr(obj, "swc_runnable_ref", ARRef.deserialize(child))
 
         return obj
 

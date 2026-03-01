@@ -44,9 +44,9 @@ class BinaryManifestItemDefinition(Identifiable):
     is_optional: Optional[Boolean]
     size: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "AUXILIARY-FIELDS": lambda obj, elem: obj.auxiliary_fields.append(BinaryManifestItem.deserialize(elem)),
-        "IS-OPTIONAL": lambda obj, elem: setattr(obj, "is_optional", elem.text),
-        "SIZE": lambda obj, elem: setattr(obj, "size", elem.text),
+        "AUXILIARY-FIELDS": lambda obj, elem: obj.auxiliary_fields.append(SerializationHelper.deserialize_by_tag(elem, "BinaryManifestItem")),
+        "IS-OPTIONAL": lambda obj, elem: setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SIZE": lambda obj, elem: setattr(obj, "size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -133,27 +133,17 @@ class BinaryManifestItemDefinition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BinaryManifestItemDefinition, cls).deserialize(element)
 
-        # Parse auxiliary_fields (list from container "AUXILIARY-FIELDS")
-        obj.auxiliary_fields = []
-        container = SerializationHelper.find_child_element(element, "AUXILIARY-FIELDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.auxiliary_fields.append(child_value)
-
-        # Parse is_optional
-        child = SerializationHelper.find_child_element(element, "IS-OPTIONAL")
-        if child is not None:
-            is_optional_value = child.text
-            obj.is_optional = is_optional_value
-
-        # Parse size
-        child = SerializationHelper.find_child_element(element, "SIZE")
-        if child is not None:
-            size_value = child.text
-            obj.size = size_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AUXILIARY-FIELDS":
+                obj.auxiliary_fields.append(SerializationHelper.deserialize_by_tag(child, "BinaryManifestItem"))
+            elif tag == "IS-OPTIONAL":
+                setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SIZE":
+                setattr(obj, "size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -140,23 +140,17 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ObdRatioServiceNeeds, cls).deserialize(element)
 
-        # Parse connection_type
-        child = SerializationHelper.find_child_element(element, "CONNECTION-TYPE")
-        if child is not None:
-            connection_type_value = ObdRatioConnectionKindEnum.deserialize(child)
-            obj.connection_type = connection_type_value
-
-        # Parse rate_based_monitored_event_ref
-        child = SerializationHelper.find_child_element(element, "RATE-BASED-MONITORED-EVENT-REF")
-        if child is not None:
-            rate_based_monitored_event_ref_value = ARRef.deserialize(child)
-            obj.rate_based_monitored_event_ref = rate_based_monitored_event_ref_value
-
-        # Parse used_fid_ref
-        child = SerializationHelper.find_child_element(element, "USED-FID-REF")
-        if child is not None:
-            used_fid_ref_value = ARRef.deserialize(child)
-            obj.used_fid_ref = used_fid_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONNECTION-TYPE":
+                setattr(obj, "connection_type", ObdRatioConnectionKindEnum.deserialize(child))
+            elif tag == "RATE-BASED-MONITORED-EVENT-REF":
+                setattr(obj, "rate_based_monitored_event_ref", ARRef.deserialize(child))
+            elif tag == "USED-FID-REF":
+                setattr(obj, "used_fid_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -48,7 +48,7 @@ class TDEventISignal(TDEventCom):
     td_event_type_enum: Optional[TDEventISignalTypeEnum]
     _DESERIALIZE_DISPATCH = {
         "I-SIGNAL-REF": lambda obj, elem: setattr(obj, "i_signal_ref", ARRef.deserialize(elem)),
-        "PHYSICAL-CHANNEL-REF": lambda obj, elem: setattr(obj, "physical_channel_ref", ARRef.deserialize(elem)),
+        "PHYSICAL-CHANNEL-REF": ("_POLYMORPHIC", "physical_channel_ref", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
         "TD-EVENT-TYPE-ENUM": lambda obj, elem: setattr(obj, "td_event_type_enum", TDEventISignalTypeEnum.deserialize(elem)),
     }
 
@@ -140,23 +140,27 @@ class TDEventISignal(TDEventCom):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventISignal, cls).deserialize(element)
 
-        # Parse i_signal_ref
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-REF")
-        if child is not None:
-            i_signal_ref_value = ARRef.deserialize(child)
-            obj.i_signal_ref = i_signal_ref_value
-
-        # Parse physical_channel_ref
-        child = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNEL-REF")
-        if child is not None:
-            physical_channel_ref_value = ARRef.deserialize(child)
-            obj.physical_channel_ref = physical_channel_ref_value
-
-        # Parse td_event_type_enum
-        child = SerializationHelper.find_child_element(element, "TD-EVENT-TYPE-ENUM")
-        if child is not None:
-            td_event_type_enum_value = TDEventISignalTypeEnum.deserialize(child)
-            obj.td_event_type_enum = td_event_type_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "I-SIGNAL-REF":
+                setattr(obj, "i_signal_ref", ARRef.deserialize(child))
+            elif tag == "PHYSICAL-CHANNEL-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-PHYSICAL-CHANNEL":
+                        setattr(obj, "physical_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanPhysicalChannel"))
+                    elif concrete_tag == "ETHERNET-PHYSICAL-CHANNEL":
+                        setattr(obj, "physical_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetPhysicalChannel"))
+                    elif concrete_tag == "FLEXRAY-PHYSICAL-CHANNEL":
+                        setattr(obj, "physical_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayPhysicalChannel"))
+                    elif concrete_tag == "LIN-PHYSICAL-CHANNEL":
+                        setattr(obj, "physical_channel_ref", SerializationHelper.deserialize_by_tag(child[0], "LinPhysicalChannel"))
+            elif tag == "TD-EVENT-TYPE-ENUM":
+                setattr(obj, "td_event_type_enum", TDEventISignalTypeEnum.deserialize(child))
 
         return obj
 

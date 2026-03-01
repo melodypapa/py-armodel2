@@ -34,7 +34,7 @@ class SwCalprmAxisSet(ARObject):
 
     sw_calprm_axises: list[SwCalprmAxis]
     _DESERIALIZE_DISPATCH = {
-        "SW-CALPRM-AXISES": lambda obj, elem: obj.sw_calprm_axises.append(SwCalprmAxis.deserialize(elem)),
+        "SW-CALPRM-AXISES": lambda obj, elem: obj.sw_calprm_axises.append(SerializationHelper.deserialize_by_tag(elem, "SwCalprmAxis")),
     }
 
 
@@ -91,15 +91,13 @@ class SwCalprmAxisSet(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwCalprmAxisSet, cls).deserialize(element)
 
-        # Parse sw_calprm_axises (list from container "SW-CALPRM-AXISES")
-        obj.sw_calprm_axises = []
-        container = SerializationHelper.find_child_element(element, "SW-CALPRM-AXISES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_calprm_axises.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SW-CALPRM-AXISES":
+                obj.sw_calprm_axises.append(SerializationHelper.deserialize_by_tag(child, "SwCalprmAxis"))
 
         return obj
 

@@ -40,8 +40,8 @@ class IdsmRateLimitation(Identifiable):
     max_events_in: PositiveInteger
     time_interval: Float
     _DESERIALIZE_DISPATCH = {
-        "MAX-EVENTS-IN": lambda obj, elem: setattr(obj, "max_events_in", elem.text),
-        "TIME-INTERVAL": lambda obj, elem: setattr(obj, "time_interval", elem.text),
+        "MAX-EVENTS-IN": lambda obj, elem: setattr(obj, "max_events_in", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TIME-INTERVAL": lambda obj, elem: setattr(obj, "time_interval", SerializationHelper.deserialize_by_tag(elem, "Float")),
     }
 
 
@@ -117,17 +117,15 @@ class IdsmRateLimitation(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IdsmRateLimitation, cls).deserialize(element)
 
-        # Parse max_events_in
-        child = SerializationHelper.find_child_element(element, "MAX-EVENTS-IN")
-        if child is not None:
-            max_events_in_value = child.text
-            obj.max_events_in = max_events_in_value
-
-        # Parse time_interval
-        child = SerializationHelper.find_child_element(element, "TIME-INTERVAL")
-        if child is not None:
-            time_interval_value = child.text
-            obj.time_interval = time_interval_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAX-EVENTS-IN":
+                setattr(obj, "max_events_in", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TIME-INTERVAL":
+                setattr(obj, "time_interval", SerializationHelper.deserialize_by_tag(child, "Float"))
 
         return obj
 

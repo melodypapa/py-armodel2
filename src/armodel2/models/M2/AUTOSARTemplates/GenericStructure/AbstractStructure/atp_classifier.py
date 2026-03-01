@@ -36,7 +36,7 @@ class AtpClassifier(Identifiable, ABC):
 
     atp_features: list[AtpFeature]
     _DESERIALIZE_DISPATCH = {
-        "ATP-FEATURES": lambda obj, elem: obj.atp_features.append(AtpFeature.deserialize(elem)),
+        "ATP-FEATURES": ("_POLYMORPHIC_LIST", "atp_features", ["AtpPrototype", "AtpStructureElement"]),
     }
 
 
@@ -93,15 +93,19 @@ class AtpClassifier(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AtpClassifier, cls).deserialize(element)
 
-        # Parse atp_features (list from container "ATP-FEATURES")
-        obj.atp_features = []
-        container = SerializationHelper.find_child_element(element, "ATP-FEATURES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.atp_features.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ATP-FEATURES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATP-PROTOTYPE":
+                        obj.atp_features.append(SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
+                    elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
+                        obj.atp_features.append(SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
 
         return obj
 

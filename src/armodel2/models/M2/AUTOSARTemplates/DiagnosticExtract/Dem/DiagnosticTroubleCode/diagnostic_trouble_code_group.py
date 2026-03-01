@@ -43,8 +43,8 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
     dtc_refs: list[ARRef]
     group_number: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "DTCS": lambda obj, elem: obj.dtc_refs.append(ARRef.deserialize(elem)),
-        "GROUP-NUMBER": lambda obj, elem: setattr(obj, "group_number", elem.text),
+        "DTCS": ("_POLYMORPHIC_LIST", "dtc_refs", ["DiagnosticTroubleCodeJ1939", "DiagnosticTroubleCodeObd", "DiagnosticTroubleCodeUds"]),
+        "GROUP-NUMBER": lambda obj, elem: setattr(obj, "group_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -123,27 +123,23 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTroubleCodeGroup, cls).deserialize(element)
 
-        # Parse dtc_refs (list from container "DTC-REFS")
-        obj.dtc_refs = []
-        container = SerializationHelper.find_child_element(element, "DTC-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dtc_refs.append(child_value)
-
-        # Parse group_number
-        child = SerializationHelper.find_child_element(element, "GROUP-NUMBER")
-        if child is not None:
-            group_number_value = child.text
-            obj.group_number = group_number_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DTCS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-J1939":
+                        obj.dtc_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeJ1939"))
+                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-OBD":
+                        obj.dtc_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeObd"))
+                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-UDS":
+                        obj.dtc_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeUds"))
+            elif tag == "GROUP-NUMBER":
+                setattr(obj, "group_number", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -44,8 +44,8 @@ class PassThroughSwConnector(SwConnector):
     provided_outer_ref: Optional[ARRef]
     required_outer_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "PROVIDED-OUTER-REF": lambda obj, elem: setattr(obj, "provided_outer_ref", ARRef.deserialize(elem)),
-        "REQUIRED-OUTER-REF": lambda obj, elem: setattr(obj, "required_outer_ref", ARRef.deserialize(elem)),
+        "PROVIDED-OUTER-REF": ("_POLYMORPHIC", "provided_outer_ref", ["PPortPrototype", "PRPortPrototype"]),
+        "REQUIRED-OUTER-REF": ("_POLYMORPHIC", "required_outer_ref", ["PRPortPrototype", "RPortPrototype"]),
     }
 
 
@@ -121,17 +121,27 @@ class PassThroughSwConnector(SwConnector):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PassThroughSwConnector, cls).deserialize(element)
 
-        # Parse provided_outer_ref
-        child = SerializationHelper.find_child_element(element, "PROVIDED-OUTER-REF")
-        if child is not None:
-            provided_outer_ref_value = ARRef.deserialize(child)
-            obj.provided_outer_ref = provided_outer_ref_value
-
-        # Parse required_outer_ref
-        child = SerializationHelper.find_child_element(element, "REQUIRED-OUTER-REF")
-        if child is not None:
-            required_outer_ref_value = ARRef.deserialize(child)
-            obj.required_outer_ref = required_outer_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PROVIDED-OUTER-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "P-PORT-PROTOTYPE":
+                        setattr(obj, "provided_outer_ref", SerializationHelper.deserialize_by_tag(child[0], "PPortPrototype"))
+                    elif concrete_tag == "P-R-PORT-PROTOTYPE":
+                        setattr(obj, "provided_outer_ref", SerializationHelper.deserialize_by_tag(child[0], "PRPortPrototype"))
+            elif tag == "REQUIRED-OUTER-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "P-R-PORT-PROTOTYPE":
+                        setattr(obj, "required_outer_ref", SerializationHelper.deserialize_by_tag(child[0], "PRPortPrototype"))
+                    elif concrete_tag == "R-PORT-PROTOTYPE":
+                        setattr(obj, "required_outer_ref", SerializationHelper.deserialize_by_tag(child[0], "RPortPrototype"))
 
         return obj
 

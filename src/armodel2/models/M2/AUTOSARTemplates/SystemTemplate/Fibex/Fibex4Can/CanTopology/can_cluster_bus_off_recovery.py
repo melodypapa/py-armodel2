@@ -39,11 +39,11 @@ class CanClusterBusOffRecovery(ARObject):
     bor_time_tx: Optional[TimeValue]
     main_function: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "BOR-COUNTER-L1-TO": lambda obj, elem: setattr(obj, "bor_counter_l1_to", elem.text),
-        "BOR-TIME-L1": lambda obj, elem: setattr(obj, "bor_time_l1", elem.text),
-        "BOR-TIME-L2": lambda obj, elem: setattr(obj, "bor_time_l2", elem.text),
-        "BOR-TIME-TX": lambda obj, elem: setattr(obj, "bor_time_tx", elem.text),
-        "MAIN-FUNCTION": lambda obj, elem: setattr(obj, "main_function", elem.text),
+        "BOR-COUNTER-L1-TO": lambda obj, elem: setattr(obj, "bor_counter_l1_to", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "BOR-TIME-L1": lambda obj, elem: setattr(obj, "bor_time_l1", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "BOR-TIME-L2": lambda obj, elem: setattr(obj, "bor_time_l2", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "BOR-TIME-TX": lambda obj, elem: setattr(obj, "bor_time_tx", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "MAIN-FUNCTION": lambda obj, elem: setattr(obj, "main_function", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -164,35 +164,21 @@ class CanClusterBusOffRecovery(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanClusterBusOffRecovery, cls).deserialize(element)
 
-        # Parse bor_counter_l1_to
-        child = SerializationHelper.find_child_element(element, "BOR-COUNTER-L1-TO")
-        if child is not None:
-            bor_counter_l1_to_value = child.text
-            obj.bor_counter_l1_to = bor_counter_l1_to_value
-
-        # Parse bor_time_l1
-        child = SerializationHelper.find_child_element(element, "BOR-TIME-L1")
-        if child is not None:
-            bor_time_l1_value = child.text
-            obj.bor_time_l1 = bor_time_l1_value
-
-        # Parse bor_time_l2
-        child = SerializationHelper.find_child_element(element, "BOR-TIME-L2")
-        if child is not None:
-            bor_time_l2_value = child.text
-            obj.bor_time_l2 = bor_time_l2_value
-
-        # Parse bor_time_tx
-        child = SerializationHelper.find_child_element(element, "BOR-TIME-TX")
-        if child is not None:
-            bor_time_tx_value = child.text
-            obj.bor_time_tx = bor_time_tx_value
-
-        # Parse main_function
-        child = SerializationHelper.find_child_element(element, "MAIN-FUNCTION")
-        if child is not None:
-            main_function_value = child.text
-            obj.main_function = main_function_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BOR-COUNTER-L1-TO":
+                setattr(obj, "bor_counter_l1_to", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "BOR-TIME-L1":
+                setattr(obj, "bor_time_l1", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "BOR-TIME-L2":
+                setattr(obj, "bor_time_l2", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "BOR-TIME-TX":
+                setattr(obj, "bor_time_tx", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "MAIN-FUNCTION":
+                setattr(obj, "main_function", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

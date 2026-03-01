@@ -40,8 +40,8 @@ class DoIpRoutingActivationConfirmationNeeds(DoIpServiceNeeds):
     data_length: Optional[PositiveInteger]
     routing: Optional[NameToken]
     _DESERIALIZE_DISPATCH = {
-        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", elem.text),
-        "ROUTING": lambda obj, elem: setattr(obj, "routing", elem.text),
+        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "ROUTING": lambda obj, elem: setattr(obj, "routing", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
     }
 
 
@@ -117,17 +117,15 @@ class DoIpRoutingActivationConfirmationNeeds(DoIpServiceNeeds):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpRoutingActivationConfirmationNeeds, cls).deserialize(element)
 
-        # Parse data_length
-        child = SerializationHelper.find_child_element(element, "DATA-LENGTH")
-        if child is not None:
-            data_length_value = child.text
-            obj.data_length = data_length_value
-
-        # Parse routing
-        child = SerializationHelper.find_child_element(element, "ROUTING")
-        if child is not None:
-            routing_value = child.text
-            obj.routing = routing_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-LENGTH":
+                setattr(obj, "data_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "ROUTING":
+                setattr(obj, "routing", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

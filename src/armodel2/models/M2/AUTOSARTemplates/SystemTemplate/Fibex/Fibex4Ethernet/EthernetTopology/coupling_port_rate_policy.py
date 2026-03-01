@@ -40,10 +40,10 @@ class CouplingPortRatePolicy(ARObject):
     time_interval: Optional[TimeValue]
     v_lan_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", elem.text),
-        "POLICY-ACTION": lambda obj, elem: setattr(obj, "policy_action", CouplingPortRatePolicy.deserialize(elem)),
-        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
-        "TIME-INTERVAL": lambda obj, elem: setattr(obj, "time_interval", elem.text),
+        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "POLICY-ACTION": lambda obj, elem: setattr(obj, "policy_action", SerializationHelper.deserialize_by_tag(elem, "CouplingPortRatePolicy")),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TIME-INTERVAL": lambda obj, elem: setattr(obj, "time_interval", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "V-LANS": lambda obj, elem: obj.v_lan_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -168,45 +168,21 @@ class CouplingPortRatePolicy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CouplingPortRatePolicy, cls).deserialize(element)
 
-        # Parse data_length
-        child = SerializationHelper.find_child_element(element, "DATA-LENGTH")
-        if child is not None:
-            data_length_value = child.text
-            obj.data_length = data_length_value
-
-        # Parse policy_action
-        child = SerializationHelper.find_child_element(element, "POLICY-ACTION")
-        if child is not None:
-            policy_action_value = SerializationHelper.deserialize_by_tag(child, "CouplingPortRatePolicy")
-            obj.policy_action = policy_action_value
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse time_interval
-        child = SerializationHelper.find_child_element(element, "TIME-INTERVAL")
-        if child is not None:
-            time_interval_value = child.text
-            obj.time_interval = time_interval_value
-
-        # Parse v_lan_refs (list from container "V-LAN-REFS")
-        obj.v_lan_refs = []
-        container = SerializationHelper.find_child_element(element, "V-LAN-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.v_lan_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-LENGTH":
+                setattr(obj, "data_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "POLICY-ACTION":
+                setattr(obj, "policy_action", SerializationHelper.deserialize_by_tag(child, "CouplingPortRatePolicy"))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TIME-INTERVAL":
+                setattr(obj, "time_interval", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "V-LANS":
+                obj.v_lan_refs.append(ARRef.deserialize(child))
 
         return obj
 

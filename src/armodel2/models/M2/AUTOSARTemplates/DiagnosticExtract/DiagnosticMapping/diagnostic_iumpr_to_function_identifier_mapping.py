@@ -117,17 +117,15 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticIumprToFunctionIdentifierMapping, cls).deserialize(element)
 
-        # Parse function_ref
-        child = SerializationHelper.find_child_element(element, "FUNCTION-REF")
-        if child is not None:
-            function_ref_value = ARRef.deserialize(child)
-            obj.function_ref = function_ref_value
-
-        # Parse iumpr_ref
-        child = SerializationHelper.find_child_element(element, "IUMPR-REF")
-        if child is not None:
-            iumpr_ref_value = ARRef.deserialize(child)
-            obj.iumpr_ref = iumpr_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FUNCTION-REF":
+                setattr(obj, "function_ref", ARRef.deserialize(child))
+            elif tag == "IUMPR-REF":
+                setattr(obj, "iumpr_ref", ARRef.deserialize(child))
 
         return obj
 

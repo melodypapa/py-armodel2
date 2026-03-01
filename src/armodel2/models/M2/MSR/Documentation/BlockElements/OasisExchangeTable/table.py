@@ -57,15 +57,15 @@ class Table(Paginateable):
     table_caption: Optional[Caption]
     tabstyle: Optional[NameToken]
     _DESERIALIZE_DISPATCH = {
-        "COLSEP": lambda obj, elem: setattr(obj, "colsep", elem.text),
+        "COLSEP": lambda obj, elem: setattr(obj, "colsep", SerializationHelper.deserialize_by_tag(elem, "TableSeparatorString")),
         "FLOAT": lambda obj, elem: setattr(obj, "float", FloatEnum.deserialize(elem)),
         "FRAME": lambda obj, elem: setattr(obj, "frame", FrameEnum.deserialize(elem)),
-        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", elem.text),
-        "ORIENT": lambda obj, elem: setattr(obj, "orient", any (OrientEnum).deserialize(elem)),
-        "PGWIDE": lambda obj, elem: setattr(obj, "pgwide", elem.text),
-        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", elem.text),
-        "TABLE-CAPTION": lambda obj, elem: setattr(obj, "table_caption", Caption.deserialize(elem)),
-        "TABSTYLE": lambda obj, elem: setattr(obj, "tabstyle", elem.text),
+        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ORIENT": lambda obj, elem: setattr(obj, "orient", SerializationHelper.deserialize_by_tag(elem, "any (OrientEnum)")),
+        "PGWIDE": lambda obj, elem: setattr(obj, "pgwide", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", SerializationHelper.deserialize_by_tag(elem, "TableSeparatorString")),
+        "TABLE-CAPTION": lambda obj, elem: setattr(obj, "table_caption", SerializationHelper.deserialize_by_tag(elem, "Caption")),
+        "TABSTYLE": lambda obj, elem: setattr(obj, "tabstyle", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
     }
 
 
@@ -246,59 +246,29 @@ class Table(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Table, cls).deserialize(element)
 
-        # Parse colsep
-        child = SerializationHelper.find_child_element(element, "COLSEP")
-        if child is not None:
-            colsep_value = child.text
-            obj.colsep = colsep_value
-
-        # Parse float
-        child = SerializationHelper.find_child_element(element, "FLOAT")
-        if child is not None:
-            float_value = FloatEnum.deserialize(child)
-            obj.float = float_value
-
-        # Parse frame
-        child = SerializationHelper.find_child_element(element, "FRAME")
-        if child is not None:
-            frame_value = FrameEnum.deserialize(child)
-            obj.frame = frame_value
-
-        # Parse help_entry
-        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
-        if child is not None:
-            help_entry_value = child.text
-            obj.help_entry = help_entry_value
-
-        # Parse orient
-        child = SerializationHelper.find_child_element(element, "ORIENT")
-        if child is not None:
-            orient_value = child.text
-            obj.orient = orient_value
-
-        # Parse pgwide
-        child = SerializationHelper.find_child_element(element, "PGWIDE")
-        if child is not None:
-            pgwide_value = child.text
-            obj.pgwide = pgwide_value
-
-        # Parse rowsep
-        child = SerializationHelper.find_child_element(element, "ROWSEP")
-        if child is not None:
-            rowsep_value = child.text
-            obj.rowsep = rowsep_value
-
-        # Parse table_caption
-        child = SerializationHelper.find_child_element(element, "TABLE-CAPTION")
-        if child is not None:
-            table_caption_value = SerializationHelper.deserialize_by_tag(child, "Caption")
-            obj.table_caption = table_caption_value
-
-        # Parse tabstyle
-        child = SerializationHelper.find_child_element(element, "TABSTYLE")
-        if child is not None:
-            tabstyle_value = child.text
-            obj.tabstyle = tabstyle_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COLSEP":
+                setattr(obj, "colsep", SerializationHelper.deserialize_by_tag(child, "TableSeparatorString"))
+            elif tag == "FLOAT":
+                setattr(obj, "float", FloatEnum.deserialize(child))
+            elif tag == "FRAME":
+                setattr(obj, "frame", FrameEnum.deserialize(child))
+            elif tag == "HELP-ENTRY":
+                setattr(obj, "help_entry", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ORIENT":
+                setattr(obj, "orient", SerializationHelper.deserialize_by_tag(child, "any (OrientEnum)"))
+            elif tag == "PGWIDE":
+                setattr(obj, "pgwide", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "ROWSEP":
+                setattr(obj, "rowsep", SerializationHelper.deserialize_by_tag(child, "TableSeparatorString"))
+            elif tag == "TABLE-CAPTION":
+                setattr(obj, "table_caption", SerializationHelper.deserialize_by_tag(child, "Caption"))
+            elif tag == "TABSTYLE":
+                setattr(obj, "tabstyle", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

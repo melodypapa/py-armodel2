@@ -50,8 +50,8 @@ class RModeInAtomicSwcInstanceRef(ARObject):
     context_mode_declaration_group_prototype_ref: Optional[ARRef]
     target_mode_declaration_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
-        "CONTEXT-PORT-REF": lambda obj, elem: setattr(obj, "context_port_ref", ARRef.deserialize(elem)),
+        "BASE-REF": ("_POLYMORPHIC", "base_ref", ["ApplicationSwComponentType", "ComplexDeviceDriverSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
+        "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["PRPortPrototype", "RPortPrototype"]),
         "CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "context_mode_declaration_group_prototype_ref", ARRef.deserialize(elem)),
         "TARGET-MODE-DECLARATION-REF": lambda obj, elem: setattr(obj, "target_mode_declaration_ref", ARRef.deserialize(elem)),
     }
@@ -159,29 +159,41 @@ class RModeInAtomicSwcInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RModeInAtomicSwcInstanceRef, cls).deserialize(element)
 
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse context_port_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-PORT-REF")
-        if child is not None:
-            context_port_ref_value = ARRef.deserialize(child)
-            obj.context_port_ref = context_port_ref_value
-
-        # Parse context_mode_declaration_group_prototype_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF")
-        if child is not None:
-            context_mode_declaration_group_prototype_ref_value = ARRef.deserialize(child)
-            obj.context_mode_declaration_group_prototype_ref = context_mode_declaration_group_prototype_ref_value
-
-        # Parse target_mode_declaration_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-MODE-DECLARATION-REF")
-        if child is not None:
-            target_mode_declaration_ref_value = ARRef.deserialize(child)
-            obj.target_mode_declaration_ref = target_mode_declaration_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BASE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-SW-COMPONENT-TYPE":
+                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationSwComponentType"))
+                    elif concrete_tag == "COMPLEX-DEVICE-DRIVER-SW-COMPONENT-TYPE":
+                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ComplexDeviceDriverSwComponentType"))
+                    elif concrete_tag == "ECU-ABSTRACTION-SW-COMPONENT-TYPE":
+                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "EcuAbstractionSwComponentType"))
+                    elif concrete_tag == "NV-BLOCK-SW-COMPONENT-TYPE":
+                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "NvBlockSwComponentType"))
+                    elif concrete_tag == "SENSOR-ACTUATOR-SW-COMPONENT-TYPE":
+                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "SensorActuatorSwComponentType"))
+                    elif concrete_tag == "SERVICE-PROXY-SW-COMPONENT-TYPE":
+                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ServiceProxySwComponentType"))
+                    elif concrete_tag == "SERVICE-SW-COMPONENT-TYPE":
+                        setattr(obj, "base_ref", SerializationHelper.deserialize_by_tag(child[0], "ServiceSwComponentType"))
+            elif tag == "CONTEXT-PORT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "P-R-PORT-PROTOTYPE":
+                        setattr(obj, "context_port_ref", SerializationHelper.deserialize_by_tag(child[0], "PRPortPrototype"))
+                    elif concrete_tag == "R-PORT-PROTOTYPE":
+                        setattr(obj, "context_port_ref", SerializationHelper.deserialize_by_tag(child[0], "RPortPrototype"))
+            elif tag == "CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF":
+                setattr(obj, "context_mode_declaration_group_prototype_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-MODE-DECLARATION-REF":
+                setattr(obj, "target_mode_declaration_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -52,8 +52,8 @@ class SenderReceiverToSignalMapping(DataMapping):
     system_signal_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "DATA-ELEMENT": lambda obj, elem: setattr(obj, "_data_element_iref", ARRef.deserialize(elem)),
-        "SENDER-TO-SIGNAL-TEXT-TABLE-MAPPING": lambda obj, elem: setattr(obj, "sender_to_signal_text_table_mapping", TextTableMapping.deserialize(elem)),
-        "SIGNAL-TO-RECEIVER-TEXT-TABLE-MAPPING": lambda obj, elem: setattr(obj, "signal_to_receiver_text_table_mapping", TextTableMapping.deserialize(elem)),
+        "SENDER-TO-SIGNAL-TEXT-TABLE-MAPPING": lambda obj, elem: setattr(obj, "sender_to_signal_text_table_mapping", SerializationHelper.deserialize_by_tag(elem, "TextTableMapping")),
+        "SIGNAL-TO-RECEIVER-TEXT-TABLE-MAPPING": lambda obj, elem: setattr(obj, "signal_to_receiver_text_table_mapping", SerializationHelper.deserialize_by_tag(elem, "TextTableMapping")),
         "SYSTEM-SIGNAL-REF": lambda obj, elem: setattr(obj, "system_signal_ref", ARRef.deserialize(elem)),
     }
 
@@ -168,30 +168,19 @@ class SenderReceiverToSignalMapping(DataMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderReceiverToSignalMapping, cls).deserialize(element)
 
-        # Parse data_element_iref (instance reference from wrapper "DATA-ELEMENT-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "DATA-ELEMENT-IREF")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            data_element_iref_value = SerializationHelper.deserialize_by_tag(wrapper, "VariableDataPrototypeInSystemInstanceRef")
-            obj.data_element_iref = data_element_iref_value
-
-        # Parse sender_to_signal_text_table_mapping
-        child = SerializationHelper.find_child_element(element, "SENDER-TO-SIGNAL-TEXT-TABLE-MAPPING")
-        if child is not None:
-            sender_to_signal_text_table_mapping_value = SerializationHelper.deserialize_by_tag(child, "TextTableMapping")
-            obj.sender_to_signal_text_table_mapping = sender_to_signal_text_table_mapping_value
-
-        # Parse signal_to_receiver_text_table_mapping
-        child = SerializationHelper.find_child_element(element, "SIGNAL-TO-RECEIVER-TEXT-TABLE-MAPPING")
-        if child is not None:
-            signal_to_receiver_text_table_mapping_value = SerializationHelper.deserialize_by_tag(child, "TextTableMapping")
-            obj.signal_to_receiver_text_table_mapping = signal_to_receiver_text_table_mapping_value
-
-        # Parse system_signal_ref
-        child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
-        if child is not None:
-            system_signal_ref_value = ARRef.deserialize(child)
-            obj.system_signal_ref = system_signal_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-ELEMENT":
+                setattr(obj, "_data_element_iref", ARRef.deserialize(child))
+            elif tag == "SENDER-TO-SIGNAL-TEXT-TABLE-MAPPING":
+                setattr(obj, "sender_to_signal_text_table_mapping", SerializationHelper.deserialize_by_tag(child, "TextTableMapping"))
+            elif tag == "SIGNAL-TO-RECEIVER-TEXT-TABLE-MAPPING":
+                setattr(obj, "signal_to_receiver_text_table_mapping", SerializationHelper.deserialize_by_tag(child, "TextTableMapping"))
+            elif tag == "SYSTEM-SIGNAL-REF":
+                setattr(obj, "system_signal_ref", ARRef.deserialize(child))
 
         return obj
 

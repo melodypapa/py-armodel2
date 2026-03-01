@@ -39,8 +39,8 @@ class BlueprintFormula(ARObject):
     ecuc_ref: ARRef
     verbatim: MultiLanguageVerbatim
     _DESERIALIZE_DISPATCH = {
-        "ECUC-REF": lambda obj, elem: setattr(obj, "ecuc_ref", ARRef.deserialize(elem)),
-        "VERBATIM": lambda obj, elem: setattr(obj, "verbatim", MultiLanguageVerbatim.deserialize(elem)),
+        "ECUC-REF": ("_POLYMORPHIC", "ecuc_ref", ["EcucCommonAttributes", "EcucContainerDef", "EcucModuleDef"]),
+        "VERBATIM": lambda obj, elem: setattr(obj, "verbatim", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageVerbatim")),
     }
 
 
@@ -116,17 +116,23 @@ class BlueprintFormula(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BlueprintFormula, cls).deserialize(element)
 
-        # Parse ecuc_ref
-        child = SerializationHelper.find_child_element(element, "ECUC-REF")
-        if child is not None:
-            ecuc_ref_value = ARRef.deserialize(child)
-            obj.ecuc_ref = ecuc_ref_value
-
-        # Parse verbatim
-        child = SerializationHelper.find_child_element(element, "VERBATIM")
-        if child is not None:
-            verbatim_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageVerbatim")
-            obj.verbatim = verbatim_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ECUC-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ECUC-COMMON-ATTRIBUTES":
+                        setattr(obj, "ecuc_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucCommonAttributes"))
+                    elif concrete_tag == "ECUC-CONTAINER-DEF":
+                        setattr(obj, "ecuc_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucContainerDef"))
+                    elif concrete_tag == "ECUC-MODULE-DEF":
+                        setattr(obj, "ecuc_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucModuleDef"))
+            elif tag == "VERBATIM":
+                setattr(obj, "verbatim", SerializationHelper.deserialize_by_tag(child, "MultiLanguageVerbatim"))
 
         return obj
 

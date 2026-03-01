@@ -31,7 +31,7 @@ class SwComponentPrototypeAssignment(ARObject):
 
     sw_component: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "SW-COMPONENT": lambda obj, elem: setattr(obj, "sw_component", any (SwComponent).deserialize(elem)),
+        "SW-COMPONENT": lambda obj, elem: setattr(obj, "sw_component", SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
     }
 
 
@@ -92,11 +92,13 @@ class SwComponentPrototypeAssignment(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwComponentPrototypeAssignment, cls).deserialize(element)
 
-        # Parse sw_component
-        child = SerializationHelper.find_child_element(element, "SW-COMPONENT")
-        if child is not None:
-            sw_component_value = child.text
-            obj.sw_component = sw_component_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SW-COMPONENT":
+                setattr(obj, "sw_component", SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
 
         return obj
 

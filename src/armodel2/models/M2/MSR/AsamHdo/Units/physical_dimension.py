@@ -44,13 +44,13 @@ class PhysicalDimension(ARElement):
     temperature_exp: Optional[Numerical]
     time_exp: Optional[Numerical]
     _DESERIALIZE_DISPATCH = {
-        "CURRENT-EXP": lambda obj, elem: setattr(obj, "current_exp", elem.text),
-        "LENGTH-EXP": lambda obj, elem: setattr(obj, "length_exp", elem.text),
-        "LUMINOUS-INTENSITY-EXP": lambda obj, elem: setattr(obj, "luminous_intensity_exp", elem.text),
-        "MASS-EXP": lambda obj, elem: setattr(obj, "mass_exp", elem.text),
-        "MOLAR-AMOUNT-EXP": lambda obj, elem: setattr(obj, "molar_amount_exp", elem.text),
-        "TEMPERATURE-EXP": lambda obj, elem: setattr(obj, "temperature_exp", elem.text),
-        "TIME-EXP": lambda obj, elem: setattr(obj, "time_exp", elem.text),
+        "CURRENT-EXP": lambda obj, elem: setattr(obj, "current_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "LENGTH-EXP": lambda obj, elem: setattr(obj, "length_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "LUMINOUS-INTENSITY-EXP": lambda obj, elem: setattr(obj, "luminous_intensity_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "MASS-EXP": lambda obj, elem: setattr(obj, "mass_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "MOLAR-AMOUNT-EXP": lambda obj, elem: setattr(obj, "molar_amount_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "TEMPERATURE-EXP": lambda obj, elem: setattr(obj, "temperature_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "TIME-EXP": lambda obj, elem: setattr(obj, "time_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
     }
 
 
@@ -201,47 +201,25 @@ class PhysicalDimension(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PhysicalDimension, cls).deserialize(element)
 
-        # Parse current_exp
-        child = SerializationHelper.find_child_element(element, "CURRENT-EXP")
-        if child is not None:
-            current_exp_value = child.text
-            obj.current_exp = current_exp_value
-
-        # Parse length_exp
-        child = SerializationHelper.find_child_element(element, "LENGTH-EXP")
-        if child is not None:
-            length_exp_value = child.text
-            obj.length_exp = length_exp_value
-
-        # Parse luminous_intensity_exp
-        child = SerializationHelper.find_child_element(element, "LUMINOUS-INTENSITY-EXP")
-        if child is not None:
-            luminous_intensity_exp_value = child.text
-            obj.luminous_intensity_exp = luminous_intensity_exp_value
-
-        # Parse mass_exp
-        child = SerializationHelper.find_child_element(element, "MASS-EXP")
-        if child is not None:
-            mass_exp_value = child.text
-            obj.mass_exp = mass_exp_value
-
-        # Parse molar_amount_exp
-        child = SerializationHelper.find_child_element(element, "MOLAR-AMOUNT-EXP")
-        if child is not None:
-            molar_amount_exp_value = child.text
-            obj.molar_amount_exp = molar_amount_exp_value
-
-        # Parse temperature_exp
-        child = SerializationHelper.find_child_element(element, "TEMPERATURE-EXP")
-        if child is not None:
-            temperature_exp_value = child.text
-            obj.temperature_exp = temperature_exp_value
-
-        # Parse time_exp
-        child = SerializationHelper.find_child_element(element, "TIME-EXP")
-        if child is not None:
-            time_exp_value = child.text
-            obj.time_exp = time_exp_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CURRENT-EXP":
+                setattr(obj, "current_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "LENGTH-EXP":
+                setattr(obj, "length_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "LUMINOUS-INTENSITY-EXP":
+                setattr(obj, "luminous_intensity_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "MASS-EXP":
+                setattr(obj, "mass_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "MOLAR-AMOUNT-EXP":
+                setattr(obj, "molar_amount_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "TEMPERATURE-EXP":
+                setattr(obj, "temperature_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "TIME-EXP":
+                setattr(obj, "time_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
 
         return obj
 

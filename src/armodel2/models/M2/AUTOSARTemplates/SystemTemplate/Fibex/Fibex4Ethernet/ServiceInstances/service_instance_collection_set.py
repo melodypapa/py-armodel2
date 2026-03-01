@@ -38,7 +38,7 @@ class ServiceInstanceCollectionSet(FibexElement):
 
     service_instances: list[AbstractServiceInstance]
     _DESERIALIZE_DISPATCH = {
-        "SERVICE-INSTANCES": lambda obj, elem: obj.service_instances.append(AbstractServiceInstance.deserialize(elem)),
+        "SERVICE-INSTANCES": ("_POLYMORPHIC_LIST", "service_instances", ["ConsumedServiceInstance", "DdsCpServiceInstance", "ProvidedServiceInstance"]),
     }
 
 
@@ -95,15 +95,21 @@ class ServiceInstanceCollectionSet(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ServiceInstanceCollectionSet, cls).deserialize(element)
 
-        # Parse service_instances (list from container "SERVICE-INSTANCES")
-        obj.service_instances = []
-        container = SerializationHelper.find_child_element(element, "SERVICE-INSTANCES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.service_instances.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SERVICE-INSTANCES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CONSUMED-SERVICE-INSTANCE":
+                        obj.service_instances.append(SerializationHelper.deserialize_by_tag(child[0], "ConsumedServiceInstance"))
+                    elif concrete_tag == "DDS-CP-SERVICE-INSTANCE":
+                        obj.service_instances.append(SerializationHelper.deserialize_by_tag(child[0], "DdsCpServiceInstance"))
+                    elif concrete_tag == "PROVIDED-SERVICE-INSTANCE":
+                        obj.service_instances.append(SerializationHelper.deserialize_by_tag(child[0], "ProvidedServiceInstance"))
 
         return obj
 

@@ -64,11 +64,11 @@ class DltLogChannel(Identifiable):
         "APPLICATIONS": lambda obj, elem: obj.application_refs.append(ARRef.deserialize(elem)),
         "DEFAULT-TRACE": lambda obj, elem: setattr(obj, "default_trace", DltDefaultTraceStateEnum.deserialize(elem)),
         "DLT-MESSAGES": lambda obj, elem: obj.dlt_message_refs.append(ARRef.deserialize(elem)),
-        "LOG-CHANNEL-ID": lambda obj, elem: setattr(obj, "log_channel_id", elem.text),
+        "LOG-CHANNEL-ID": lambda obj, elem: setattr(obj, "log_channel_id", SerializationHelper.deserialize_by_tag(elem, "String")),
         "LOG-TRACE-DEFAULT-LOG": lambda obj, elem: setattr(obj, "log_trace_default_log", LogTraceDefaultLogLevelEnum.deserialize(elem)),
-        "NON-VERBOSE": lambda obj, elem: setattr(obj, "non_verbose", elem.text),
+        "NON-VERBOSE": lambda obj, elem: setattr(obj, "non_verbose", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "RX-PDU-TRIGGERING-CHANNEL-REF": lambda obj, elem: setattr(obj, "rx_pdu_triggering_channel_ref", ARRef.deserialize(elem)),
-        "SEGMENTATION": lambda obj, elem: setattr(obj, "segmentation", elem.text),
+        "SEGMENTATION": lambda obj, elem: setattr(obj, "segmentation", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "TX-PDU-TRIGGERING-REF": lambda obj, elem: setattr(obj, "tx_pdu_triggering_ref", ARRef.deserialize(elem)),
     }
 
@@ -256,79 +256,29 @@ class DltLogChannel(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DltLogChannel, cls).deserialize(element)
 
-        # Parse application_refs (list from container "APPLICATION-REFS")
-        obj.application_refs = []
-        container = SerializationHelper.find_child_element(element, "APPLICATION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.application_refs.append(child_value)
-
-        # Parse default_trace
-        child = SerializationHelper.find_child_element(element, "DEFAULT-TRACE")
-        if child is not None:
-            default_trace_value = DltDefaultTraceStateEnum.deserialize(child)
-            obj.default_trace = default_trace_value
-
-        # Parse dlt_message_refs (list from container "DLT-MESSAGE-REFS")
-        obj.dlt_message_refs = []
-        container = SerializationHelper.find_child_element(element, "DLT-MESSAGE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dlt_message_refs.append(child_value)
-
-        # Parse log_channel_id
-        child = SerializationHelper.find_child_element(element, "LOG-CHANNEL-ID")
-        if child is not None:
-            log_channel_id_value = child.text
-            obj.log_channel_id = log_channel_id_value
-
-        # Parse log_trace_default_log
-        child = SerializationHelper.find_child_element(element, "LOG-TRACE-DEFAULT-LOG")
-        if child is not None:
-            log_trace_default_log_value = LogTraceDefaultLogLevelEnum.deserialize(child)
-            obj.log_trace_default_log = log_trace_default_log_value
-
-        # Parse non_verbose
-        child = SerializationHelper.find_child_element(element, "NON-VERBOSE")
-        if child is not None:
-            non_verbose_value = child.text
-            obj.non_verbose = non_verbose_value
-
-        # Parse rx_pdu_triggering_channel_ref
-        child = SerializationHelper.find_child_element(element, "RX-PDU-TRIGGERING-CHANNEL-REF")
-        if child is not None:
-            rx_pdu_triggering_channel_ref_value = ARRef.deserialize(child)
-            obj.rx_pdu_triggering_channel_ref = rx_pdu_triggering_channel_ref_value
-
-        # Parse segmentation
-        child = SerializationHelper.find_child_element(element, "SEGMENTATION")
-        if child is not None:
-            segmentation_value = child.text
-            obj.segmentation = segmentation_value
-
-        # Parse tx_pdu_triggering_ref
-        child = SerializationHelper.find_child_element(element, "TX-PDU-TRIGGERING-REF")
-        if child is not None:
-            tx_pdu_triggering_ref_value = ARRef.deserialize(child)
-            obj.tx_pdu_triggering_ref = tx_pdu_triggering_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "APPLICATIONS":
+                obj.application_refs.append(ARRef.deserialize(child))
+            elif tag == "DEFAULT-TRACE":
+                setattr(obj, "default_trace", DltDefaultTraceStateEnum.deserialize(child))
+            elif tag == "DLT-MESSAGES":
+                obj.dlt_message_refs.append(ARRef.deserialize(child))
+            elif tag == "LOG-CHANNEL-ID":
+                setattr(obj, "log_channel_id", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "LOG-TRACE-DEFAULT-LOG":
+                setattr(obj, "log_trace_default_log", LogTraceDefaultLogLevelEnum.deserialize(child))
+            elif tag == "NON-VERBOSE":
+                setattr(obj, "non_verbose", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RX-PDU-TRIGGERING-CHANNEL-REF":
+                setattr(obj, "rx_pdu_triggering_channel_ref", ARRef.deserialize(child))
+            elif tag == "SEGMENTATION":
+                setattr(obj, "segmentation", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TX-PDU-TRIGGERING-REF":
+                setattr(obj, "tx_pdu_triggering_ref", ARRef.deserialize(child))
 
         return obj
 

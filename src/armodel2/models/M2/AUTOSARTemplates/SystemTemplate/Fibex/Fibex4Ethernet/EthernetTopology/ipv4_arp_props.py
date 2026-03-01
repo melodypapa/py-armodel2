@@ -39,10 +39,10 @@ class Ipv4ArpProps(ARObject):
     tcp_ip_arp: Optional[TimeValue]
     tcp_ip_arp_table: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "TCP-IP-ARP-NUM": lambda obj, elem: setattr(obj, "tcp_ip_arp_num", elem.text),
-        "TCP-IP-ARP-PACKET": lambda obj, elem: setattr(obj, "tcp_ip_arp_packet", elem.text),
-        "TCP-IP-ARP": lambda obj, elem: setattr(obj, "tcp_ip_arp", elem.text),
-        "TCP-IP-ARP-TABLE": lambda obj, elem: setattr(obj, "tcp_ip_arp_table", elem.text),
+        "TCP-IP-ARP-NUM": lambda obj, elem: setattr(obj, "tcp_ip_arp_num", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-IP-ARP-PACKET": lambda obj, elem: setattr(obj, "tcp_ip_arp_packet", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TCP-IP-ARP": lambda obj, elem: setattr(obj, "tcp_ip_arp", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-IP-ARP-TABLE": lambda obj, elem: setattr(obj, "tcp_ip_arp_table", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -148,29 +148,19 @@ class Ipv4ArpProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ipv4ArpProps, cls).deserialize(element)
 
-        # Parse tcp_ip_arp_num
-        child = SerializationHelper.find_child_element(element, "TCP-IP-ARP-NUM")
-        if child is not None:
-            tcp_ip_arp_num_value = child.text
-            obj.tcp_ip_arp_num = tcp_ip_arp_num_value
-
-        # Parse tcp_ip_arp_packet
-        child = SerializationHelper.find_child_element(element, "TCP-IP-ARP-PACKET")
-        if child is not None:
-            tcp_ip_arp_packet_value = child.text
-            obj.tcp_ip_arp_packet = tcp_ip_arp_packet_value
-
-        # Parse tcp_ip_arp
-        child = SerializationHelper.find_child_element(element, "TCP-IP-ARP")
-        if child is not None:
-            tcp_ip_arp_value = child.text
-            obj.tcp_ip_arp = tcp_ip_arp_value
-
-        # Parse tcp_ip_arp_table
-        child = SerializationHelper.find_child_element(element, "TCP-IP-ARP-TABLE")
-        if child is not None:
-            tcp_ip_arp_table_value = child.text
-            obj.tcp_ip_arp_table = tcp_ip_arp_table_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TCP-IP-ARP-NUM":
+                setattr(obj, "tcp_ip_arp_num", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-IP-ARP-PACKET":
+                setattr(obj, "tcp_ip_arp_packet", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TCP-IP-ARP":
+                setattr(obj, "tcp_ip_arp", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-IP-ARP-TABLE":
+                setattr(obj, "tcp_ip_arp_table", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

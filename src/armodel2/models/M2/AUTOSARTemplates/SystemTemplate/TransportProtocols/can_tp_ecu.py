@@ -39,7 +39,7 @@ class CanTpEcu(ARObject):
     cycle_time_main: Optional[TimeValue]
     ecu_instance_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CYCLE-TIME-MAIN": lambda obj, elem: setattr(obj, "cycle_time_main", elem.text),
+        "CYCLE-TIME-MAIN": lambda obj, elem: setattr(obj, "cycle_time_main", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
     }
 
@@ -116,17 +116,15 @@ class CanTpEcu(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanTpEcu, cls).deserialize(element)
 
-        # Parse cycle_time_main
-        child = SerializationHelper.find_child_element(element, "CYCLE-TIME-MAIN")
-        if child is not None:
-            cycle_time_main_value = child.text
-            obj.cycle_time_main = cycle_time_main_value
-
-        # Parse ecu_instance_ref
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
-        if child is not None:
-            ecu_instance_ref_value = ARRef.deserialize(child)
-            obj.ecu_instance_ref = ecu_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CYCLE-TIME-MAIN":
+                setattr(obj, "cycle_time_main", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "ECU-INSTANCE-REF":
+                setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
 
         return obj
 

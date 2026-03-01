@@ -36,7 +36,7 @@ class SpecElementScope(SpecElementReference, ABC):
 
     in_scope: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "IN-SCOPE": lambda obj, elem: setattr(obj, "in_scope", elem.text),
+        "IN-SCOPE": lambda obj, elem: setattr(obj, "in_scope", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -97,11 +97,13 @@ class SpecElementScope(SpecElementReference, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SpecElementScope, cls).deserialize(element)
 
-        # Parse in_scope
-        child = SerializationHelper.find_child_element(element, "IN-SCOPE")
-        if child is not None:
-            in_scope_value = child.text
-            obj.in_scope = in_scope_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "IN-SCOPE":
+                setattr(obj, "in_scope", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

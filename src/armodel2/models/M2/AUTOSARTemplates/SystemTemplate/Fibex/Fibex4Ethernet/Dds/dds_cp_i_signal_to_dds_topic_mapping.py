@@ -116,17 +116,15 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpISignalToDdsTopicMapping, cls).deserialize(element)
 
-        # Parse dds_topic_ref
-        child = SerializationHelper.find_child_element(element, "DDS-TOPIC-REF")
-        if child is not None:
-            dds_topic_ref_value = ARRef.deserialize(child)
-            obj.dds_topic_ref = dds_topic_ref_value
-
-        # Parse i_signal_ref
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-REF")
-        if child is not None:
-            i_signal_ref_value = ARRef.deserialize(child)
-            obj.i_signal_ref = i_signal_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DDS-TOPIC-REF":
+                setattr(obj, "dds_topic_ref", ARRef.deserialize(child))
+            elif tag == "I-SIGNAL-REF":
+                setattr(obj, "i_signal_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -36,7 +36,7 @@ class EcucAbstractReferenceDef(EcucCommonAttributes, ABC):
 
     with_auto: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "WITH-AUTO": lambda obj, elem: setattr(obj, "with_auto", elem.text),
+        "WITH-AUTO": lambda obj, elem: setattr(obj, "with_auto", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -97,11 +97,13 @@ class EcucAbstractReferenceDef(EcucCommonAttributes, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucAbstractReferenceDef, cls).deserialize(element)
 
-        # Parse with_auto
-        child = SerializationHelper.find_child_element(element, "WITH-AUTO")
-        if child is not None:
-            with_auto_value = child.text
-            obj.with_auto = with_auto_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "WITH-AUTO":
+                setattr(obj, "with_auto", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

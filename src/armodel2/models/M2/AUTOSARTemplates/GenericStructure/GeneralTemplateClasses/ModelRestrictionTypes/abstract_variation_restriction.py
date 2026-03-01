@@ -38,7 +38,7 @@ class AbstractVariationRestriction(ARObject, ABC):
     variation: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
         "VALID-BINDINGS": lambda obj, elem: obj.valid_bindings.append(FullBindingTimeEnum.deserialize(elem)),
-        "VARIATION": lambda obj, elem: setattr(obj, "variation", elem.text),
+        "VARIATION": lambda obj, elem: setattr(obj, "variation", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -117,21 +117,15 @@ class AbstractVariationRestriction(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractVariationRestriction, cls).deserialize(element)
 
-        # Parse valid_bindings (list from container "VALID-BINDINGS")
-        obj.valid_bindings = []
-        container = SerializationHelper.find_child_element(element, "VALID-BINDINGS")
-        if container is not None:
-            for child in container:
-                # Extract enum value (FullBindingTimeEnum)
-                child_value = FullBindingTimeEnum.deserialize(child)
-                if child_value is not None:
-                    obj.valid_bindings.append(child_value)
-
-        # Parse variation
-        child = SerializationHelper.find_child_element(element, "VARIATION")
-        if child is not None:
-            variation_value = child.text
-            obj.variation = variation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "VALID-BINDINGS":
+                obj.valid_bindings.append(FullBindingTimeEnum.deserialize(child))
+            elif tag == "VARIATION":
+                setattr(obj, "variation", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

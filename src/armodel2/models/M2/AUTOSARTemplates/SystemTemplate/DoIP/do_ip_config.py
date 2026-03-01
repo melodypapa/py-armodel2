@@ -38,8 +38,8 @@ class DoIpConfig(ARObject):
     doip_interfaces: list[DoIpInterface]
     logic_address: Optional[DoIpLogicAddress]
     _DESERIALIZE_DISPATCH = {
-        "DOIP-INTERFACES": lambda obj, elem: obj.doip_interfaces.append(DoIpInterface.deserialize(elem)),
-        "LOGIC-ADDRESS": lambda obj, elem: setattr(obj, "logic_address", DoIpLogicAddress.deserialize(elem)),
+        "DOIP-INTERFACES": lambda obj, elem: obj.doip_interfaces.append(SerializationHelper.deserialize_by_tag(elem, "DoIpInterface")),
+        "LOGIC-ADDRESS": lambda obj, elem: setattr(obj, "logic_address", SerializationHelper.deserialize_by_tag(elem, "DoIpLogicAddress")),
     }
 
 
@@ -111,21 +111,15 @@ class DoIpConfig(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpConfig, cls).deserialize(element)
 
-        # Parse doip_interfaces (list from container "DOIP-INTERFACES")
-        obj.doip_interfaces = []
-        container = SerializationHelper.find_child_element(element, "DOIP-INTERFACES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.doip_interfaces.append(child_value)
-
-        # Parse logic_address
-        child = SerializationHelper.find_child_element(element, "LOGIC-ADDRESS")
-        if child is not None:
-            logic_address_value = SerializationHelper.deserialize_by_tag(child, "DoIpLogicAddress")
-            obj.logic_address = logic_address_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DOIP-INTERFACES":
+                obj.doip_interfaces.append(SerializationHelper.deserialize_by_tag(child, "DoIpInterface"))
+            elif tag == "LOGIC-ADDRESS":
+                setattr(obj, "logic_address", SerializationHelper.deserialize_by_tag(child, "DoIpLogicAddress"))
 
         return obj
 

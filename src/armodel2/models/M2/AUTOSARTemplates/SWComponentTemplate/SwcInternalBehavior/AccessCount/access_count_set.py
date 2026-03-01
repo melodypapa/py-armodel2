@@ -38,8 +38,8 @@ class AccessCountSet(ARObject):
     access_counts: list[AccessCount]
     count_profile: Optional[NameToken]
     _DESERIALIZE_DISPATCH = {
-        "ACCESS-COUNTS": lambda obj, elem: obj.access_counts.append(AccessCount.deserialize(elem)),
-        "COUNT-PROFILE": lambda obj, elem: setattr(obj, "count_profile", elem.text),
+        "ACCESS-COUNTS": lambda obj, elem: obj.access_counts.append(SerializationHelper.deserialize_by_tag(elem, "AccessCount")),
+        "COUNT-PROFILE": lambda obj, elem: setattr(obj, "count_profile", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
     }
 
 
@@ -111,21 +111,15 @@ class AccessCountSet(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AccessCountSet, cls).deserialize(element)
 
-        # Parse access_counts (list from container "ACCESS-COUNTS")
-        obj.access_counts = []
-        container = SerializationHelper.find_child_element(element, "ACCESS-COUNTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.access_counts.append(child_value)
-
-        # Parse count_profile
-        child = SerializationHelper.find_child_element(element, "COUNT-PROFILE")
-        if child is not None:
-            count_profile_value = child.text
-            obj.count_profile = count_profile_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACCESS-COUNTS":
+                obj.access_counts.append(SerializationHelper.deserialize_by_tag(child, "AccessCount"))
+            elif tag == "COUNT-PROFILE":
+                setattr(obj, "count_profile", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

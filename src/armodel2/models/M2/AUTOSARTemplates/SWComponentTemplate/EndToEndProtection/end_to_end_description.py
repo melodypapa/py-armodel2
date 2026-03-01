@@ -42,13 +42,13 @@ class EndToEndDescription(ARObject):
     data_length: Optional[PositiveInteger]
     max_delta: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
-        "COUNTER-OFFSET": lambda obj, elem: setattr(obj, "counter_offset", elem.text),
-        "CRC-OFFSET": lambda obj, elem: setattr(obj, "crc_offset", elem.text),
-        "DATA-ID-MODE": lambda obj, elem: setattr(obj, "data_id_mode", elem.text),
-        "DATA-ID-NIBBLE": lambda obj, elem: setattr(obj, "data_id_nibble", elem.text),
-        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", elem.text),
-        "MAX-DELTA": lambda obj, elem: setattr(obj, "max_delta", elem.text),
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "COUNTER-OFFSET": lambda obj, elem: setattr(obj, "counter_offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "CRC-OFFSET": lambda obj, elem: setattr(obj, "crc_offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "DATA-ID-MODE": lambda obj, elem: setattr(obj, "data_id_mode", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "DATA-ID-NIBBLE": lambda obj, elem: setattr(obj, "data_id_nibble", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-DELTA": lambda obj, elem: setattr(obj, "max_delta", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -199,47 +199,25 @@ class EndToEndDescription(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EndToEndDescription, cls).deserialize(element)
 
-        # Parse category
-        child = SerializationHelper.find_child_element(element, "CATEGORY")
-        if child is not None:
-            category_value = child.text
-            obj.category = category_value
-
-        # Parse counter_offset
-        child = SerializationHelper.find_child_element(element, "COUNTER-OFFSET")
-        if child is not None:
-            counter_offset_value = child.text
-            obj.counter_offset = counter_offset_value
-
-        # Parse crc_offset
-        child = SerializationHelper.find_child_element(element, "CRC-OFFSET")
-        if child is not None:
-            crc_offset_value = child.text
-            obj.crc_offset = crc_offset_value
-
-        # Parse data_id_mode
-        child = SerializationHelper.find_child_element(element, "DATA-ID-MODE")
-        if child is not None:
-            data_id_mode_value = child.text
-            obj.data_id_mode = data_id_mode_value
-
-        # Parse data_id_nibble
-        child = SerializationHelper.find_child_element(element, "DATA-ID-NIBBLE")
-        if child is not None:
-            data_id_nibble_value = child.text
-            obj.data_id_nibble = data_id_nibble_value
-
-        # Parse data_length
-        child = SerializationHelper.find_child_element(element, "DATA-LENGTH")
-        if child is not None:
-            data_length_value = child.text
-            obj.data_length = data_length_value
-
-        # Parse max_delta
-        child = SerializationHelper.find_child_element(element, "MAX-DELTA")
-        if child is not None:
-            max_delta_value = child.text
-            obj.max_delta = max_delta_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CATEGORY":
+                setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "COUNTER-OFFSET":
+                setattr(obj, "counter_offset", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "CRC-OFFSET":
+                setattr(obj, "crc_offset", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "DATA-ID-MODE":
+                setattr(obj, "data_id_mode", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "DATA-ID-NIBBLE":
+                setattr(obj, "data_id_nibble", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "DATA-LENGTH":
+                setattr(obj, "data_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-DELTA":
+                setattr(obj, "max_delta", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

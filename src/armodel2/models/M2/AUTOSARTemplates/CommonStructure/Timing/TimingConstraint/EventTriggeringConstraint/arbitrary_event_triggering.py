@@ -43,9 +43,9 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
     maximums: list[MultidimensionalTime]
     minimums: list[MultidimensionalTime]
     _DESERIALIZE_DISPATCH = {
-        "CONFIDENCE-INTERVALS": lambda obj, elem: obj.confidence_intervals.append(ConfidenceInterval.deserialize(elem)),
-        "MAXIMUMS": lambda obj, elem: obj.maximums.append(MultidimensionalTime.deserialize(elem)),
-        "MINIMUMS": lambda obj, elem: obj.minimums.append(MultidimensionalTime.deserialize(elem)),
+        "CONFIDENCE-INTERVALS": lambda obj, elem: obj.confidence_intervals.append(SerializationHelper.deserialize_by_tag(elem, "ConfidenceInterval")),
+        "MAXIMUMS": lambda obj, elem: obj.maximums.append(SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "MINIMUMS": lambda obj, elem: obj.minimums.append(SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
     }
 
 
@@ -124,35 +124,17 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ArbitraryEventTriggering, cls).deserialize(element)
 
-        # Parse confidence_intervals (list from container "CONFIDENCE-INTERVALS")
-        obj.confidence_intervals = []
-        container = SerializationHelper.find_child_element(element, "CONFIDENCE-INTERVALS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.confidence_intervals.append(child_value)
-
-        # Parse maximums (list from container "MAXIMUMS")
-        obj.maximums = []
-        container = SerializationHelper.find_child_element(element, "MAXIMUMS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.maximums.append(child_value)
-
-        # Parse minimums (list from container "MINIMUMS")
-        obj.minimums = []
-        container = SerializationHelper.find_child_element(element, "MINIMUMS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.minimums.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONFIDENCE-INTERVALS":
+                obj.confidence_intervals.append(SerializationHelper.deserialize_by_tag(child, "ConfidenceInterval"))
+            elif tag == "MAXIMUMS":
+                obj.maximums.append(SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "MINIMUMS":
+                obj.minimums.append(SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

@@ -52,22 +52,22 @@ class CanControllerXlConfigurationRequirements(ARObject):
     min_trcv_delay: Optional[TimeValue]
     trcv_pwm_mode: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "ERROR-SIGNALING": lambda obj, elem: setattr(obj, "error_signaling", elem.text),
-        "MAX-NUMBER-OF-TIME-QUANTA-PER": lambda obj, elem: setattr(obj, "max_number_of_time_quanta_per", any (IntegerBit).deserialize(elem)),
-        "MAX-PWM-L": lambda obj, elem: setattr(obj, "max_pwm_l", elem.text),
-        "MAX-PWM-O": lambda obj, elem: setattr(obj, "max_pwm_o", elem.text),
-        "MAX-PWM-S": lambda obj, elem: setattr(obj, "max_pwm_s", elem.text),
-        "MAX-SAMPLE": lambda obj, elem: setattr(obj, "max_sample", elem.text),
-        "MAX-SYNC-JUMP": lambda obj, elem: setattr(obj, "max_sync_jump", elem.text),
-        "MAX-TRCV-DELAY": lambda obj, elem: setattr(obj, "max_trcv_delay", elem.text),
-        "MIN-NUMBER-OF-TIME-QUANTA-PER": lambda obj, elem: setattr(obj, "min_number_of_time_quanta_per", any (IntegerBit).deserialize(elem)),
-        "MIN-PWM-L": lambda obj, elem: setattr(obj, "min_pwm_l", elem.text),
-        "MIN-PWM-O": lambda obj, elem: setattr(obj, "min_pwm_o", elem.text),
-        "MIN-PWM-S": lambda obj, elem: setattr(obj, "min_pwm_s", elem.text),
-        "MIN-SAMPLE-POINT": lambda obj, elem: setattr(obj, "min_sample_point", elem.text),
-        "MIN-SYNC-JUMP": lambda obj, elem: setattr(obj, "min_sync_jump", elem.text),
-        "MIN-TRCV-DELAY": lambda obj, elem: setattr(obj, "min_trcv_delay", elem.text),
-        "TRCV-PWM-MODE": lambda obj, elem: setattr(obj, "trcv_pwm_mode", elem.text),
+        "ERROR-SIGNALING": lambda obj, elem: setattr(obj, "error_signaling", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "MAX-NUMBER-OF-TIME-QUANTA-PER": lambda obj, elem: setattr(obj, "max_number_of_time_quanta_per", SerializationHelper.deserialize_by_tag(elem, "any (IntegerBit)")),
+        "MAX-PWM-L": lambda obj, elem: setattr(obj, "max_pwm_l", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-PWM-O": lambda obj, elem: setattr(obj, "max_pwm_o", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-PWM-S": lambda obj, elem: setattr(obj, "max_pwm_s", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-SAMPLE": lambda obj, elem: setattr(obj, "max_sample", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "MAX-SYNC-JUMP": lambda obj, elem: setattr(obj, "max_sync_jump", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "MAX-TRCV-DELAY": lambda obj, elem: setattr(obj, "max_trcv_delay", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "MIN-NUMBER-OF-TIME-QUANTA-PER": lambda obj, elem: setattr(obj, "min_number_of_time_quanta_per", SerializationHelper.deserialize_by_tag(elem, "any (IntegerBit)")),
+        "MIN-PWM-L": lambda obj, elem: setattr(obj, "min_pwm_l", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MIN-PWM-O": lambda obj, elem: setattr(obj, "min_pwm_o", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MIN-PWM-S": lambda obj, elem: setattr(obj, "min_pwm_s", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MIN-SAMPLE-POINT": lambda obj, elem: setattr(obj, "min_sample_point", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "MIN-SYNC-JUMP": lambda obj, elem: setattr(obj, "min_sync_jump", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "MIN-TRCV-DELAY": lambda obj, elem: setattr(obj, "min_trcv_delay", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TRCV-PWM-MODE": lambda obj, elem: setattr(obj, "trcv_pwm_mode", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -353,101 +353,43 @@ class CanControllerXlConfigurationRequirements(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanControllerXlConfigurationRequirements, cls).deserialize(element)
 
-        # Parse error_signaling
-        child = SerializationHelper.find_child_element(element, "ERROR-SIGNALING")
-        if child is not None:
-            error_signaling_value = child.text
-            obj.error_signaling = error_signaling_value
-
-        # Parse max_number_of_time_quanta_per
-        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF-TIME-QUANTA-PER")
-        if child is not None:
-            max_number_of_time_quanta_per_value = child.text
-            obj.max_number_of_time_quanta_per = max_number_of_time_quanta_per_value
-
-        # Parse max_pwm_l
-        child = SerializationHelper.find_child_element(element, "MAX-PWM-L")
-        if child is not None:
-            max_pwm_l_value = child.text
-            obj.max_pwm_l = max_pwm_l_value
-
-        # Parse max_pwm_o
-        child = SerializationHelper.find_child_element(element, "MAX-PWM-O")
-        if child is not None:
-            max_pwm_o_value = child.text
-            obj.max_pwm_o = max_pwm_o_value
-
-        # Parse max_pwm_s
-        child = SerializationHelper.find_child_element(element, "MAX-PWM-S")
-        if child is not None:
-            max_pwm_s_value = child.text
-            obj.max_pwm_s = max_pwm_s_value
-
-        # Parse max_sample
-        child = SerializationHelper.find_child_element(element, "MAX-SAMPLE")
-        if child is not None:
-            max_sample_value = child.text
-            obj.max_sample = max_sample_value
-
-        # Parse max_sync_jump
-        child = SerializationHelper.find_child_element(element, "MAX-SYNC-JUMP")
-        if child is not None:
-            max_sync_jump_value = child.text
-            obj.max_sync_jump = max_sync_jump_value
-
-        # Parse max_trcv_delay
-        child = SerializationHelper.find_child_element(element, "MAX-TRCV-DELAY")
-        if child is not None:
-            max_trcv_delay_value = child.text
-            obj.max_trcv_delay = max_trcv_delay_value
-
-        # Parse min_number_of_time_quanta_per
-        child = SerializationHelper.find_child_element(element, "MIN-NUMBER-OF-TIME-QUANTA-PER")
-        if child is not None:
-            min_number_of_time_quanta_per_value = child.text
-            obj.min_number_of_time_quanta_per = min_number_of_time_quanta_per_value
-
-        # Parse min_pwm_l
-        child = SerializationHelper.find_child_element(element, "MIN-PWM-L")
-        if child is not None:
-            min_pwm_l_value = child.text
-            obj.min_pwm_l = min_pwm_l_value
-
-        # Parse min_pwm_o
-        child = SerializationHelper.find_child_element(element, "MIN-PWM-O")
-        if child is not None:
-            min_pwm_o_value = child.text
-            obj.min_pwm_o = min_pwm_o_value
-
-        # Parse min_pwm_s
-        child = SerializationHelper.find_child_element(element, "MIN-PWM-S")
-        if child is not None:
-            min_pwm_s_value = child.text
-            obj.min_pwm_s = min_pwm_s_value
-
-        # Parse min_sample_point
-        child = SerializationHelper.find_child_element(element, "MIN-SAMPLE-POINT")
-        if child is not None:
-            min_sample_point_value = child.text
-            obj.min_sample_point = min_sample_point_value
-
-        # Parse min_sync_jump
-        child = SerializationHelper.find_child_element(element, "MIN-SYNC-JUMP")
-        if child is not None:
-            min_sync_jump_value = child.text
-            obj.min_sync_jump = min_sync_jump_value
-
-        # Parse min_trcv_delay
-        child = SerializationHelper.find_child_element(element, "MIN-TRCV-DELAY")
-        if child is not None:
-            min_trcv_delay_value = child.text
-            obj.min_trcv_delay = min_trcv_delay_value
-
-        # Parse trcv_pwm_mode
-        child = SerializationHelper.find_child_element(element, "TRCV-PWM-MODE")
-        if child is not None:
-            trcv_pwm_mode_value = child.text
-            obj.trcv_pwm_mode = trcv_pwm_mode_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ERROR-SIGNALING":
+                setattr(obj, "error_signaling", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "MAX-NUMBER-OF-TIME-QUANTA-PER":
+                setattr(obj, "max_number_of_time_quanta_per", SerializationHelper.deserialize_by_tag(child, "any (IntegerBit)"))
+            elif tag == "MAX-PWM-L":
+                setattr(obj, "max_pwm_l", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-PWM-O":
+                setattr(obj, "max_pwm_o", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-PWM-S":
+                setattr(obj, "max_pwm_s", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-SAMPLE":
+                setattr(obj, "max_sample", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "MAX-SYNC-JUMP":
+                setattr(obj, "max_sync_jump", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "MAX-TRCV-DELAY":
+                setattr(obj, "max_trcv_delay", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "MIN-NUMBER-OF-TIME-QUANTA-PER":
+                setattr(obj, "min_number_of_time_quanta_per", SerializationHelper.deserialize_by_tag(child, "any (IntegerBit)"))
+            elif tag == "MIN-PWM-L":
+                setattr(obj, "min_pwm_l", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MIN-PWM-O":
+                setattr(obj, "min_pwm_o", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MIN-PWM-S":
+                setattr(obj, "min_pwm_s", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MIN-SAMPLE-POINT":
+                setattr(obj, "min_sample_point", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "MIN-SYNC-JUMP":
+                setattr(obj, "min_sync_jump", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "MIN-TRCV-DELAY":
+                setattr(obj, "min_trcv_delay", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TRCV-PWM-MODE":
+                setattr(obj, "trcv_pwm_mode", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

@@ -50,12 +50,12 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
     message: Optional[EthGlobalTimeMessageFormatEnum]
     vlan_priority: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "CRC-FLAGS": lambda obj, elem: setattr(obj, "crc_flags", EthTSynCrcFlags.deserialize(elem)),
-        "DESTINATION": lambda obj, elem: setattr(obj, "destination", elem.text),
-        "FUP-DATA-ID-LIST": lambda obj, elem: setattr(obj, "fup_data_id_list", elem.text),
-        "MANAGEDS": lambda obj, elem: obj.manageds.append(any (EthGlobalTime).deserialize(elem)),
+        "CRC-FLAGS": lambda obj, elem: setattr(obj, "crc_flags", SerializationHelper.deserialize_by_tag(elem, "EthTSynCrcFlags")),
+        "DESTINATION": lambda obj, elem: setattr(obj, "destination", SerializationHelper.deserialize_by_tag(elem, "MacAddressString")),
+        "FUP-DATA-ID-LIST": lambda obj, elem: setattr(obj, "fup_data_id_list", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MANAGEDS": lambda obj, elem: obj.manageds.append(SerializationHelper.deserialize_by_tag(elem, "any (EthGlobalTime)")),
         "MESSAGE": lambda obj, elem: setattr(obj, "message", EthGlobalTimeMessageFormatEnum.deserialize(elem)),
-        "VLAN-PRIORITY": lambda obj, elem: setattr(obj, "vlan_priority", elem.text),
+        "VLAN-PRIORITY": lambda obj, elem: setattr(obj, "vlan_priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -187,45 +187,23 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthGlobalTimeDomainProps, cls).deserialize(element)
 
-        # Parse crc_flags
-        child = SerializationHelper.find_child_element(element, "CRC-FLAGS")
-        if child is not None:
-            crc_flags_value = SerializationHelper.deserialize_by_tag(child, "EthTSynCrcFlags")
-            obj.crc_flags = crc_flags_value
-
-        # Parse destination
-        child = SerializationHelper.find_child_element(element, "DESTINATION")
-        if child is not None:
-            destination_value = child.text
-            obj.destination = destination_value
-
-        # Parse fup_data_id_list
-        child = SerializationHelper.find_child_element(element, "FUP-DATA-ID-LIST")
-        if child is not None:
-            fup_data_id_list_value = child.text
-            obj.fup_data_id_list = fup_data_id_list_value
-
-        # Parse manageds (list from container "MANAGEDS")
-        obj.manageds = []
-        container = SerializationHelper.find_child_element(element, "MANAGEDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.manageds.append(child_value)
-
-        # Parse message
-        child = SerializationHelper.find_child_element(element, "MESSAGE")
-        if child is not None:
-            message_value = EthGlobalTimeMessageFormatEnum.deserialize(child)
-            obj.message = message_value
-
-        # Parse vlan_priority
-        child = SerializationHelper.find_child_element(element, "VLAN-PRIORITY")
-        if child is not None:
-            vlan_priority_value = child.text
-            obj.vlan_priority = vlan_priority_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CRC-FLAGS":
+                setattr(obj, "crc_flags", SerializationHelper.deserialize_by_tag(child, "EthTSynCrcFlags"))
+            elif tag == "DESTINATION":
+                setattr(obj, "destination", SerializationHelper.deserialize_by_tag(child, "MacAddressString"))
+            elif tag == "FUP-DATA-ID-LIST":
+                setattr(obj, "fup_data_id_list", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MANAGEDS":
+                obj.manageds.append(SerializationHelper.deserialize_by_tag(child, "any (EthGlobalTime)"))
+            elif tag == "MESSAGE":
+                setattr(obj, "message", EthGlobalTimeMessageFormatEnum.deserialize(child))
+            elif tag == "VLAN-PRIORITY":
+                setattr(obj, "vlan_priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

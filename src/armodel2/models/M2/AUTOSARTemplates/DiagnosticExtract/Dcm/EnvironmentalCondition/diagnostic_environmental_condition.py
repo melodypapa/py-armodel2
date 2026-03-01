@@ -36,8 +36,8 @@ class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
     formula: Optional[Any]
     mode_elements: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "FORMULA": lambda obj, elem: setattr(obj, "formula", any (DiagnosticEnvCondition).deserialize(elem)),
-        "MODE-ELEMENTS": lambda obj, elem: obj.mode_elements.append(any (DiagnosticEnvMode).deserialize(elem)),
+        "FORMULA": lambda obj, elem: setattr(obj, "formula", SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticEnvCondition)")),
+        "MODE-ELEMENTS": lambda obj, elem: obj.mode_elements.append(SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticEnvMode)")),
     }
 
 
@@ -109,21 +109,15 @@ class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEnvironmentalCondition, cls).deserialize(element)
 
-        # Parse formula
-        child = SerializationHelper.find_child_element(element, "FORMULA")
-        if child is not None:
-            formula_value = child.text
-            obj.formula = formula_value
-
-        # Parse mode_elements (list from container "MODE-ELEMENTS")
-        obj.mode_elements = []
-        container = SerializationHelper.find_child_element(element, "MODE-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mode_elements.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FORMULA":
+                setattr(obj, "formula", SerializationHelper.deserialize_by_tag(child, "any (DiagnosticEnvCondition)"))
+            elif tag == "MODE-ELEMENTS":
+                obj.mode_elements.append(SerializationHelper.deserialize_by_tag(child, "any (DiagnosticEnvMode)"))
 
         return obj
 

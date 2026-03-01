@@ -38,7 +38,7 @@ class IdsMgrNeeds(ServiceNeeds):
 
     use_smart: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "USE-SMART": lambda obj, elem: setattr(obj, "use_smart", elem.text),
+        "USE-SMART": lambda obj, elem: setattr(obj, "use_smart", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -99,11 +99,13 @@ class IdsMgrNeeds(ServiceNeeds):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IdsMgrNeeds, cls).deserialize(element)
 
-        # Parse use_smart
-        child = SerializationHelper.find_child_element(element, "USE-SMART")
-        if child is not None:
-            use_smart_value = child.text
-            obj.use_smart = use_smart_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "USE-SMART":
+                setattr(obj, "use_smart", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

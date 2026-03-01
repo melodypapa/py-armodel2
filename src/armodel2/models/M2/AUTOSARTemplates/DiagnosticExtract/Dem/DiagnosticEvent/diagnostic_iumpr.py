@@ -120,17 +120,15 @@ class DiagnosticIumpr(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticIumpr, cls).deserialize(element)
 
-        # Parse event_ref
-        child = SerializationHelper.find_child_element(element, "EVENT-REF")
-        if child is not None:
-            event_ref_value = ARRef.deserialize(child)
-            obj.event_ref = event_ref_value
-
-        # Parse ratio_kind
-        child = SerializationHelper.find_child_element(element, "RATIO-KIND")
-        if child is not None:
-            ratio_kind_value = DiagnosticIumprKindEnum.deserialize(child)
-            obj.ratio_kind = ratio_kind_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "EVENT-REF":
+                setattr(obj, "event_ref", ARRef.deserialize(child))
+            elif tag == "RATIO-KIND":
+                setattr(obj, "ratio_kind", DiagnosticIumprKindEnum.deserialize(child))
 
         return obj
 

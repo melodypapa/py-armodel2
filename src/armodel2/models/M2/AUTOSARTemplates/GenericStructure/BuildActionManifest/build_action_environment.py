@@ -39,7 +39,7 @@ class BuildActionEnvironment(Identifiable):
 
     sdgs: list[Sdg]
     _DESERIALIZE_DISPATCH = {
-        "SDGS": lambda obj, elem: obj.sdgs.append(Sdg.deserialize(elem)),
+        "SDGS": lambda obj, elem: obj.sdgs.append(SerializationHelper.deserialize_by_tag(elem, "Sdg")),
     }
 
 
@@ -96,15 +96,13 @@ class BuildActionEnvironment(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BuildActionEnvironment, cls).deserialize(element)
 
-        # Parse sdgs (list from container "SDGS")
-        obj.sdgs = []
-        container = SerializationHelper.find_child_element(element, "SDGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sdgs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SDGS":
+                obj.sdgs.append(SerializationHelper.deserialize_by_tag(child, "Sdg"))
 
         return obj
 

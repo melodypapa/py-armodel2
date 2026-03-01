@@ -38,7 +38,7 @@ class CompuScaleConstantContents(CompuScaleContents):
 
     compu_const: Optional[CompuConst]
     _DESERIALIZE_DISPATCH = {
-        "COMPU-CONST": lambda obj, elem: setattr(obj, "compu_const", CompuConst.deserialize(elem)),
+        "COMPU-CONST": lambda obj, elem: setattr(obj, "compu_const", SerializationHelper.deserialize_by_tag(elem, "CompuConst")),
     }
 
 
@@ -99,11 +99,13 @@ class CompuScaleConstantContents(CompuScaleContents):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuScaleConstantContents, cls).deserialize(element)
 
-        # Parse compu_const
-        child = SerializationHelper.find_child_element(element, "COMPU-CONST")
-        if child is not None:
-            compu_const_value = SerializationHelper.deserialize_by_tag(child, "CompuConst")
-            obj.compu_const = compu_const_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPU-CONST":
+                setattr(obj, "compu_const", SerializationHelper.deserialize_by_tag(child, "CompuConst"))
 
         return obj
 

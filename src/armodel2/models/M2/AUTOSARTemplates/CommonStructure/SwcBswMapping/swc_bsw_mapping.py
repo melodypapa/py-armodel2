@@ -58,10 +58,10 @@ class SwcBswMapping(ARElement):
     synchronized_triggers: list[SwcBswSynchronizedTrigger]
     _DESERIALIZE_DISPATCH = {
         "BSW-BEHAVIOR-REF": lambda obj, elem: setattr(obj, "bsw_behavior_ref", ARRef.deserialize(elem)),
-        "RUNNABLE-MAPPINGS": lambda obj, elem: obj.runnable_mappings.append(SwcBswRunnableMapping.deserialize(elem)),
+        "RUNNABLE-MAPPINGS": lambda obj, elem: obj.runnable_mappings.append(SerializationHelper.deserialize_by_tag(elem, "SwcBswRunnableMapping")),
         "SWC-BEHAVIOR-REF": lambda obj, elem: setattr(obj, "swc_behavior_ref", ARRef.deserialize(elem)),
-        "SYNCHRONIZED-MODE-GROUPS": lambda obj, elem: obj.synchronized_mode_groups.append(SwcBswSynchronizedModeGroupPrototype.deserialize(elem)),
-        "SYNCHRONIZED-TRIGGERS": lambda obj, elem: obj.synchronized_triggers.append(SwcBswSynchronizedTrigger.deserialize(elem)),
+        "SYNCHRONIZED-MODE-GROUPS": lambda obj, elem: obj.synchronized_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "SwcBswSynchronizedModeGroupPrototype")),
+        "SYNCHRONIZED-TRIGGERS": lambda obj, elem: obj.synchronized_triggers.append(SerializationHelper.deserialize_by_tag(elem, "SwcBswSynchronizedTrigger")),
     }
 
 
@@ -170,47 +170,21 @@ class SwcBswMapping(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcBswMapping, cls).deserialize(element)
 
-        # Parse bsw_behavior_ref
-        child = SerializationHelper.find_child_element(element, "BSW-BEHAVIOR-REF")
-        if child is not None:
-            bsw_behavior_ref_value = ARRef.deserialize(child)
-            obj.bsw_behavior_ref = bsw_behavior_ref_value
-
-        # Parse runnable_mappings (list from container "RUNNABLE-MAPPINGS")
-        obj.runnable_mappings = []
-        container = SerializationHelper.find_child_element(element, "RUNNABLE-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.runnable_mappings.append(child_value)
-
-        # Parse swc_behavior_ref
-        child = SerializationHelper.find_child_element(element, "SWC-BEHAVIOR-REF")
-        if child is not None:
-            swc_behavior_ref_value = ARRef.deserialize(child)
-            obj.swc_behavior_ref = swc_behavior_ref_value
-
-        # Parse synchronized_mode_groups (list from container "SYNCHRONIZED-MODE-GROUPS")
-        obj.synchronized_mode_groups = []
-        container = SerializationHelper.find_child_element(element, "SYNCHRONIZED-MODE-GROUPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.synchronized_mode_groups.append(child_value)
-
-        # Parse synchronized_triggers (list from container "SYNCHRONIZED-TRIGGERS")
-        obj.synchronized_triggers = []
-        container = SerializationHelper.find_child_element(element, "SYNCHRONIZED-TRIGGERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.synchronized_triggers.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BSW-BEHAVIOR-REF":
+                setattr(obj, "bsw_behavior_ref", ARRef.deserialize(child))
+            elif tag == "RUNNABLE-MAPPINGS":
+                obj.runnable_mappings.append(SerializationHelper.deserialize_by_tag(child, "SwcBswRunnableMapping"))
+            elif tag == "SWC-BEHAVIOR-REF":
+                setattr(obj, "swc_behavior_ref", ARRef.deserialize(child))
+            elif tag == "SYNCHRONIZED-MODE-GROUPS":
+                obj.synchronized_mode_groups.append(SerializationHelper.deserialize_by_tag(child, "SwcBswSynchronizedModeGroupPrototype"))
+            elif tag == "SYNCHRONIZED-TRIGGERS":
+                obj.synchronized_triggers.append(SerializationHelper.deserialize_by_tag(child, "SwcBswSynchronizedTrigger"))
 
         return obj
 

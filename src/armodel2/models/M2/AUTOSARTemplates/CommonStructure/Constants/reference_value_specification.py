@@ -39,7 +39,7 @@ class ReferenceValueSpecification(ValueSpecification):
 
     reference_value_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "REFERENCE-VALUE-REF": lambda obj, elem: setattr(obj, "reference_value_ref", ARRef.deserialize(elem)),
+        "REFERENCE-VALUE-REF": ("_POLYMORPHIC", "reference_value_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
     }
 
 
@@ -100,11 +100,19 @@ class ReferenceValueSpecification(ValueSpecification):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ReferenceValueSpecification, cls).deserialize(element)
 
-        # Parse reference_value_ref
-        child = SerializationHelper.find_child_element(element, "REFERENCE-VALUE-REF")
-        if child is not None:
-            reference_value_ref_value = ARRef.deserialize(child)
-            obj.reference_value_ref = reference_value_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "REFERENCE-VALUE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
+                        setattr(obj, "reference_value_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
+                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
+                        setattr(obj, "reference_value_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
 
         return obj
 

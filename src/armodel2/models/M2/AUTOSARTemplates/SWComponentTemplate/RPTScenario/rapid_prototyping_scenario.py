@@ -50,8 +50,8 @@ class RapidPrototypingScenario(ARElement):
     rpt_system_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "HOST-SYSTEM-REF": lambda obj, elem: setattr(obj, "host_system_ref", ARRef.deserialize(elem)),
-        "RPT-CONTAINERS": lambda obj, elem: obj.rpt_containers.append(RptContainer.deserialize(elem)),
-        "RPT-PROFILES": lambda obj, elem: obj.rpt_profiles.append(RptProfile.deserialize(elem)),
+        "RPT-CONTAINERS": lambda obj, elem: obj.rpt_containers.append(SerializationHelper.deserialize_by_tag(elem, "RptContainer")),
+        "RPT-PROFILES": lambda obj, elem: obj.rpt_profiles.append(SerializationHelper.deserialize_by_tag(elem, "RptProfile")),
         "RPT-SYSTEM-REF": lambda obj, elem: setattr(obj, "rpt_system_ref", ARRef.deserialize(elem)),
     }
 
@@ -150,37 +150,19 @@ class RapidPrototypingScenario(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RapidPrototypingScenario, cls).deserialize(element)
 
-        # Parse host_system_ref
-        child = SerializationHelper.find_child_element(element, "HOST-SYSTEM-REF")
-        if child is not None:
-            host_system_ref_value = ARRef.deserialize(child)
-            obj.host_system_ref = host_system_ref_value
-
-        # Parse rpt_containers (list from container "RPT-CONTAINERS")
-        obj.rpt_containers = []
-        container = SerializationHelper.find_child_element(element, "RPT-CONTAINERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rpt_containers.append(child_value)
-
-        # Parse rpt_profiles (list from container "RPT-PROFILES")
-        obj.rpt_profiles = []
-        container = SerializationHelper.find_child_element(element, "RPT-PROFILES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rpt_profiles.append(child_value)
-
-        # Parse rpt_system_ref
-        child = SerializationHelper.find_child_element(element, "RPT-SYSTEM-REF")
-        if child is not None:
-            rpt_system_ref_value = ARRef.deserialize(child)
-            obj.rpt_system_ref = rpt_system_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "HOST-SYSTEM-REF":
+                setattr(obj, "host_system_ref", ARRef.deserialize(child))
+            elif tag == "RPT-CONTAINERS":
+                obj.rpt_containers.append(SerializationHelper.deserialize_by_tag(child, "RptContainer"))
+            elif tag == "RPT-PROFILES":
+                obj.rpt_profiles.append(SerializationHelper.deserialize_by_tag(child, "RptProfile"))
+            elif tag == "RPT-SYSTEM-REF":
+                setattr(obj, "rpt_system_ref", ARRef.deserialize(child))
 
         return obj
 

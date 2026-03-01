@@ -40,7 +40,7 @@ class DiagnosticEcuReset(DiagnosticServiceInstance):
     custom_sub: Optional[PositiveInteger]
     ecu_reset_class_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CUSTOM-SUB": lambda obj, elem: setattr(obj, "custom_sub", elem.text),
+        "CUSTOM-SUB": lambda obj, elem: setattr(obj, "custom_sub", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "ECU-RESET-CLASS-REF": lambda obj, elem: setattr(obj, "ecu_reset_class_ref", ARRef.deserialize(elem)),
     }
 
@@ -117,17 +117,15 @@ class DiagnosticEcuReset(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEcuReset, cls).deserialize(element)
 
-        # Parse custom_sub
-        child = SerializationHelper.find_child_element(element, "CUSTOM-SUB")
-        if child is not None:
-            custom_sub_value = child.text
-            obj.custom_sub = custom_sub_value
-
-        # Parse ecu_reset_class_ref
-        child = SerializationHelper.find_child_element(element, "ECU-RESET-CLASS-REF")
-        if child is not None:
-            ecu_reset_class_ref_value = ARRef.deserialize(child)
-            obj.ecu_reset_class_ref = ecu_reset_class_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CUSTOM-SUB":
+                setattr(obj, "custom_sub", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "ECU-RESET-CLASS-REF":
+                setattr(obj, "ecu_reset_class_ref", ARRef.deserialize(child))
 
         return obj
 

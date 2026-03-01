@@ -39,8 +39,8 @@ class AnalyzedExecutionTime(ExecutionTime):
     best_case: Optional[MultidimensionalTime]
     worst_case: Optional[MultidimensionalTime]
     _DESERIALIZE_DISPATCH = {
-        "BEST-CASE": lambda obj, elem: setattr(obj, "best_case", MultidimensionalTime.deserialize(elem)),
-        "WORST-CASE": lambda obj, elem: setattr(obj, "worst_case", MultidimensionalTime.deserialize(elem)),
+        "BEST-CASE": lambda obj, elem: setattr(obj, "best_case", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "WORST-CASE": lambda obj, elem: setattr(obj, "worst_case", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
     }
 
 
@@ -116,17 +116,15 @@ class AnalyzedExecutionTime(ExecutionTime):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AnalyzedExecutionTime, cls).deserialize(element)
 
-        # Parse best_case
-        child = SerializationHelper.find_child_element(element, "BEST-CASE")
-        if child is not None:
-            best_case_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.best_case = best_case_value
-
-        # Parse worst_case
-        child = SerializationHelper.find_child_element(element, "WORST-CASE")
-        if child is not None:
-            worst_case_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.worst_case = worst_case_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BEST-CASE":
+                setattr(obj, "best_case", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "WORST-CASE":
+                setattr(obj, "worst_case", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

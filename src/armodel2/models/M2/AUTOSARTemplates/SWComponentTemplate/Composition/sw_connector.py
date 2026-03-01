@@ -39,7 +39,7 @@ class SwConnector(Identifiable, ABC):
 
     mapping_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "MAPPING-REF": lambda obj, elem: setattr(obj, "mapping_ref", ARRef.deserialize(elem)),
+        "MAPPING-REF": ("_POLYMORPHIC", "mapping_ref", ["ClientServerInterfaceMapping", "ModeInterfaceMapping", "TriggerInterfaceMapping", "VariableAndParameter"]),
     }
 
 
@@ -100,11 +100,23 @@ class SwConnector(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwConnector, cls).deserialize(element)
 
-        # Parse mapping_ref
-        child = SerializationHelper.find_child_element(element, "MAPPING-REF")
-        if child is not None:
-            mapping_ref_value = ARRef.deserialize(child)
-            obj.mapping_ref = mapping_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAPPING-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CLIENT-SERVER-INTERFACE-MAPPING":
+                        setattr(obj, "mapping_ref", SerializationHelper.deserialize_by_tag(child[0], "ClientServerInterfaceMapping"))
+                    elif concrete_tag == "MODE-INTERFACE-MAPPING":
+                        setattr(obj, "mapping_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeInterfaceMapping"))
+                    elif concrete_tag == "TRIGGER-INTERFACE-MAPPING":
+                        setattr(obj, "mapping_ref", SerializationHelper.deserialize_by_tag(child[0], "TriggerInterfaceMapping"))
+                    elif concrete_tag == "VARIABLE-AND-PARAMETER":
+                        setattr(obj, "mapping_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableAndParameter"))
 
         return obj
 

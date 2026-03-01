@@ -36,8 +36,8 @@ class Sdf(ARObject):
     gid: NameToken
     value: Optional[Numerical]
     _DESERIALIZE_DISPATCH = {
-        "GID": lambda obj, elem: setattr(obj, "gid", elem.text),
-        "VALUE": lambda obj, elem: setattr(obj, "value", elem.text),
+        "GID": lambda obj, elem: setattr(obj, "gid", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
     }
 
 
@@ -113,17 +113,15 @@ class Sdf(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Sdf, cls).deserialize(element)
 
-        # Parse gid
-        child = SerializationHelper.find_child_element(element, "GID")
-        if child is not None:
-            gid_value = child.text
-            obj.gid = gid_value
-
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = child.text
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "GID":
+                setattr(obj, "gid", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "Numerical"))
 
         return obj
 

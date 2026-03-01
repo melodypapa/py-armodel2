@@ -113,17 +113,15 @@ class TriggerMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TriggerMapping, cls).deserialize(element)
 
-        # Parse first_trigger_ref
-        child = SerializationHelper.find_child_element(element, "FIRST-TRIGGER-REF")
-        if child is not None:
-            first_trigger_ref_value = ARRef.deserialize(child)
-            obj.first_trigger_ref = first_trigger_ref_value
-
-        # Parse second_trigger_ref
-        child = SerializationHelper.find_child_element(element, "SECOND-TRIGGER-REF")
-        if child is not None:
-            second_trigger_ref_value = ARRef.deserialize(child)
-            obj.second_trigger_ref = second_trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FIRST-TRIGGER-REF":
+                setattr(obj, "first_trigger_ref", ARRef.deserialize(child))
+            elif tag == "SECOND-TRIGGER-REF":
+                setattr(obj, "second_trigger_ref", ARRef.deserialize(child))
 
         return obj
 

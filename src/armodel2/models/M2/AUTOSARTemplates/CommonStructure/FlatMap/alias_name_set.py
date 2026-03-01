@@ -40,7 +40,7 @@ class AliasNameSet(ARElement):
 
     alias_names: list[AliasNameAssignment]
     _DESERIALIZE_DISPATCH = {
-        "ALIAS-NAMES": lambda obj, elem: obj.alias_names.append(AliasNameAssignment.deserialize(elem)),
+        "ALIAS-NAMES": lambda obj, elem: obj.alias_names.append(SerializationHelper.deserialize_by_tag(elem, "AliasNameAssignment")),
     }
 
 
@@ -97,15 +97,13 @@ class AliasNameSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AliasNameSet, cls).deserialize(element)
 
-        # Parse alias_names (list from container "ALIAS-NAMES")
-        obj.alias_names = []
-        container = SerializationHelper.find_child_element(element, "ALIAS-NAMES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.alias_names.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALIAS-NAMES":
+                obj.alias_names.append(SerializationHelper.deserialize_by_tag(child, "AliasNameAssignment"))
 
         return obj
 

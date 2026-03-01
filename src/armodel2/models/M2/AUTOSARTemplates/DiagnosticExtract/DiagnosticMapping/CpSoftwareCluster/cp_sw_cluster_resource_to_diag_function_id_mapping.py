@@ -117,17 +117,15 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSwClusterResourceToDiagFunctionIdMapping, cls).deserialize(element)
 
-        # Parse cp_software_cluster_ref
-        child = SerializationHelper.find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
-        if child is not None:
-            cp_software_cluster_ref_value = ARRef.deserialize(child)
-            obj.cp_software_cluster_ref = cp_software_cluster_ref_value
-
-        # Parse function_ref
-        child = SerializationHelper.find_child_element(element, "FUNCTION-REF")
-        if child is not None:
-            function_ref_value = ARRef.deserialize(child)
-            obj.function_ref = function_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CP-SOFTWARE-CLUSTER-REF":
+                setattr(obj, "cp_software_cluster_ref", ARRef.deserialize(child))
+            elif tag == "FUNCTION-REF":
+                setattr(obj, "function_ref", ARRef.deserialize(child))
 
         return obj
 

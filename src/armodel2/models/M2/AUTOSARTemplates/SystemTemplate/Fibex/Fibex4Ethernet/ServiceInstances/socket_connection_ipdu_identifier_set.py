@@ -38,7 +38,7 @@ class SocketConnectionIpduIdentifierSet(FibexElement):
 
     i_pdu_identifiers: list[SoConIPduIdentifier]
     _DESERIALIZE_DISPATCH = {
-        "I-PDU-IDENTIFIERS": lambda obj, elem: obj.i_pdu_identifiers.append(SoConIPduIdentifier.deserialize(elem)),
+        "I-PDU-IDENTIFIERS": lambda obj, elem: obj.i_pdu_identifiers.append(SerializationHelper.deserialize_by_tag(elem, "SoConIPduIdentifier")),
     }
 
 
@@ -95,15 +95,13 @@ class SocketConnectionIpduIdentifierSet(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SocketConnectionIpduIdentifierSet, cls).deserialize(element)
 
-        # Parse i_pdu_identifiers (list from container "I-PDU-IDENTIFIERS")
-        obj.i_pdu_identifiers = []
-        container = SerializationHelper.find_child_element(element, "I-PDU-IDENTIFIERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.i_pdu_identifiers.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "I-PDU-IDENTIFIERS":
+                obj.i_pdu_identifiers.append(SerializationHelper.deserialize_by_tag(child, "SoConIPduIdentifier"))
 
         return obj
 

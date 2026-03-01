@@ -34,7 +34,7 @@ class EventObdReadinessGroup(ARObject):
 
     event_obd: Optional[NameToken]
     _DESERIALIZE_DISPATCH = {
-        "EVENT-OBD": lambda obj, elem: setattr(obj, "event_obd", elem.text),
+        "EVENT-OBD": lambda obj, elem: setattr(obj, "event_obd", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
     }
 
 
@@ -95,11 +95,13 @@ class EventObdReadinessGroup(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EventObdReadinessGroup, cls).deserialize(element)
 
-        # Parse event_obd
-        child = SerializationHelper.find_child_element(element, "EVENT-OBD")
-        if child is not None:
-            event_obd_value = child.text
-            obj.event_obd = event_obd_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "EVENT-OBD":
+                setattr(obj, "event_obd", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

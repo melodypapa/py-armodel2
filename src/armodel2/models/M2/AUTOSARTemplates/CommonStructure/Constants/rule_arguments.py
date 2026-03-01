@@ -45,10 +45,10 @@ class RuleArguments(ARObject):
     vt: Optional[VerbatimString]
     vtf: Optional[NumericalOrText]
     _DESERIALIZE_DISPATCH = {
-        "V": lambda obj, elem: setattr(obj, "v", elem.text),
-        "VF": lambda obj, elem: setattr(obj, "vf", elem.text),
-        "VT": lambda obj, elem: setattr(obj, "vt", elem.text),
-        "VTF": lambda obj, elem: setattr(obj, "vtf", NumericalOrText.deserialize(elem)),
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VF": lambda obj, elem: setattr(obj, "vf", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VT": lambda obj, elem: setattr(obj, "vt", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
+        "VTF": lambda obj, elem: setattr(obj, "vtf", SerializationHelper.deserialize_by_tag(elem, "NumericalOrText")),
     }
 
 

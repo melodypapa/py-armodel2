@@ -38,7 +38,7 @@ class IPv6ExtHeaderFilterList(Identifiable):
 
     allowed_i_pv6_exts: list[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ALLOWED-I-PV6-EXTS": lambda obj, elem: obj.allowed_i_pv6_exts.append(elem.text),
+        "ALLOWED-I-PV6-EXTS": lambda obj, elem: obj.allowed_i_pv6_exts.append(SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -102,15 +102,13 @@ class IPv6ExtHeaderFilterList(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IPv6ExtHeaderFilterList, cls).deserialize(element)
 
-        # Parse allowed_i_pv6_exts (list from container "ALLOWED-I-PV6-EXTS")
-        obj.allowed_i_pv6_exts = []
-        container = SerializationHelper.find_child_element(element, "ALLOWED-I-PV6-EXTS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (PositiveInteger) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.allowed_i_pv6_exts.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALLOWED-I-PV6-EXTS":
+                obj.allowed_i_pv6_exts.append(SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

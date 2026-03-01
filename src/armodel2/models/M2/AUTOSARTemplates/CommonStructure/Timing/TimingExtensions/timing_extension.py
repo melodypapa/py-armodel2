@@ -49,11 +49,11 @@ class TimingExtension(ARElement, ABC):
     timings: list[TimingConstraint]
     timing_resource: Optional[TimingExtension]
     _DESERIALIZE_DISPATCH = {
-        "TIMING-CLOCKS": lambda obj, elem: obj.timing_clocks.append(TimingClock.deserialize(elem)),
-        "TIMING-CLOCK-SYNCS": lambda obj, elem: obj.timing_clock_syncs.append(TimingClockSyncAccuracy.deserialize(elem)),
-        "TIMING-CONDITIONS": lambda obj, elem: obj.timing_conditions.append(TimingCondition.deserialize(elem)),
-        "TIMINGS": lambda obj, elem: obj.timings.append(TimingConstraint.deserialize(elem)),
-        "TIMING-RESOURCE": lambda obj, elem: setattr(obj, "timing_resource", TimingExtension.deserialize(elem)),
+        "TIMING-CLOCKS": ("_POLYMORPHIC_LIST", "timing_clocks", ["TDLETZoneClock"]),
+        "TIMING-CLOCK-SYNCS": lambda obj, elem: obj.timing_clock_syncs.append(SerializationHelper.deserialize_by_tag(elem, "TimingClockSyncAccuracy")),
+        "TIMING-CONDITIONS": lambda obj, elem: obj.timing_conditions.append(SerializationHelper.deserialize_by_tag(elem, "TimingCondition")),
+        "TIMINGS": ("_POLYMORPHIC_LIST", "timings", ["AgeConstraint", "EventTriggeringConstraint", "ExecutionOrderConstraint", "ExecutionTimeConstraint", "LatencyTimingConstraint", "OffsetTimingConstraint", "SynchronizationPointConstraint", "SynchronizationTiming"]),
+        "TIMING-RESOURCE": ("_POLYMORPHIC", "timing_resource", ["BswCompositionTiming", "BswModuleTiming", "EcuTiming", "SwcTiming", "SystemTiming", "VfbTiming"]),
     }
 
 
@@ -158,51 +158,57 @@ class TimingExtension(ARElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingExtension, cls).deserialize(element)
 
-        # Parse timing_clocks (list from container "TIMING-CLOCKS")
-        obj.timing_clocks = []
-        container = SerializationHelper.find_child_element(element, "TIMING-CLOCKS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.timing_clocks.append(child_value)
-
-        # Parse timing_clock_syncs (list from container "TIMING-CLOCK-SYNCS")
-        obj.timing_clock_syncs = []
-        container = SerializationHelper.find_child_element(element, "TIMING-CLOCK-SYNCS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.timing_clock_syncs.append(child_value)
-
-        # Parse timing_conditions (list from container "TIMING-CONDITIONS")
-        obj.timing_conditions = []
-        container = SerializationHelper.find_child_element(element, "TIMING-CONDITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.timing_conditions.append(child_value)
-
-        # Parse timings (list from container "TIMINGS")
-        obj.timings = []
-        container = SerializationHelper.find_child_element(element, "TIMINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.timings.append(child_value)
-
-        # Parse timing_resource
-        child = SerializationHelper.find_child_element(element, "TIMING-RESOURCE")
-        if child is not None:
-            timing_resource_value = SerializationHelper.deserialize_by_tag(child, "TimingExtension")
-            obj.timing_resource = timing_resource_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TIMING-CLOCKS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "T-D-L-E-T-ZONE-CLOCK":
+                        obj.timing_clocks.append(SerializationHelper.deserialize_by_tag(child[0], "TDLETZoneClock"))
+            elif tag == "TIMING-CLOCK-SYNCS":
+                obj.timing_clock_syncs.append(SerializationHelper.deserialize_by_tag(child, "TimingClockSyncAccuracy"))
+            elif tag == "TIMING-CONDITIONS":
+                obj.timing_conditions.append(SerializationHelper.deserialize_by_tag(child, "TimingCondition"))
+            elif tag == "TIMINGS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "AGE-CONSTRAINT":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "AgeConstraint"))
+                    elif concrete_tag == "EVENT-TRIGGERING-CONSTRAINT":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "EventTriggeringConstraint"))
+                    elif concrete_tag == "EXECUTION-ORDER-CONSTRAINT":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "ExecutionOrderConstraint"))
+                    elif concrete_tag == "EXECUTION-TIME-CONSTRAINT":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "ExecutionTimeConstraint"))
+                    elif concrete_tag == "LATENCY-TIMING-CONSTRAINT":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "LatencyTimingConstraint"))
+                    elif concrete_tag == "OFFSET-TIMING-CONSTRAINT":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "OffsetTimingConstraint"))
+                    elif concrete_tag == "SYNCHRONIZATION-POINT-CONSTRAINT":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "SynchronizationPointConstraint"))
+                    elif concrete_tag == "SYNCHRONIZATION-TIMING":
+                        obj.timings.append(SerializationHelper.deserialize_by_tag(child[0], "SynchronizationTiming"))
+            elif tag == "TIMING-RESOURCE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-COMPOSITION-TIMING":
+                        setattr(obj, "timing_resource", SerializationHelper.deserialize_by_tag(child[0], "BswCompositionTiming"))
+                    elif concrete_tag == "BSW-MODULE-TIMING":
+                        setattr(obj, "timing_resource", SerializationHelper.deserialize_by_tag(child[0], "BswModuleTiming"))
+                    elif concrete_tag == "ECU-TIMING":
+                        setattr(obj, "timing_resource", SerializationHelper.deserialize_by_tag(child[0], "EcuTiming"))
+                    elif concrete_tag == "SWC-TIMING":
+                        setattr(obj, "timing_resource", SerializationHelper.deserialize_by_tag(child[0], "SwcTiming"))
+                    elif concrete_tag == "SYSTEM-TIMING":
+                        setattr(obj, "timing_resource", SerializationHelper.deserialize_by_tag(child[0], "SystemTiming"))
+                    elif concrete_tag == "VFB-TIMING":
+                        setattr(obj, "timing_resource", SerializationHelper.deserialize_by_tag(child[0], "VfbTiming"))
 
         return obj
 

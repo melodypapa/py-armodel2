@@ -45,11 +45,11 @@ class MixedContentForLongName(ARObject, ABC):
     sup: Superscript
     tt: Tt
     _DESERIALIZE_DISPATCH = {
-        "E": lambda obj, elem: setattr(obj, "e", EmphasisText.deserialize(elem)),
-        "IE": lambda obj, elem: setattr(obj, "ie", IndexEntry.deserialize(elem)),
-        "SUB": lambda obj, elem: setattr(obj, "sub", elem.text),
-        "SUP": lambda obj, elem: setattr(obj, "sup", elem.text),
-        "TT": lambda obj, elem: setattr(obj, "tt", Tt.deserialize(elem)),
+        "E": lambda obj, elem: setattr(obj, "e", SerializationHelper.deserialize_by_tag(elem, "EmphasisText")),
+        "IE": lambda obj, elem: setattr(obj, "ie", SerializationHelper.deserialize_by_tag(elem, "IndexEntry")),
+        "SUB": lambda obj, elem: setattr(obj, "sub", SerializationHelper.deserialize_by_tag(elem, "Superscript")),
+        "SUP": lambda obj, elem: setattr(obj, "sup", SerializationHelper.deserialize_by_tag(elem, "Superscript")),
+        "TT": lambda obj, elem: setattr(obj, "tt", SerializationHelper.deserialize_by_tag(elem, "Tt")),
     }
 
 
@@ -170,35 +170,21 @@ class MixedContentForLongName(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MixedContentForLongName, cls).deserialize(element)
 
-        # Parse e
-        child = SerializationHelper.find_child_element(element, "E")
-        if child is not None:
-            e_value = SerializationHelper.deserialize_by_tag(child, "EmphasisText")
-            obj.e = e_value
-
-        # Parse ie
-        child = SerializationHelper.find_child_element(element, "IE")
-        if child is not None:
-            ie_value = SerializationHelper.deserialize_by_tag(child, "IndexEntry")
-            obj.ie = ie_value
-
-        # Parse sub
-        child = SerializationHelper.find_child_element(element, "SUB")
-        if child is not None:
-            sub_value = child.text
-            obj.sub = sub_value
-
-        # Parse sup
-        child = SerializationHelper.find_child_element(element, "SUP")
-        if child is not None:
-            sup_value = child.text
-            obj.sup = sup_value
-
-        # Parse tt
-        child = SerializationHelper.find_child_element(element, "TT")
-        if child is not None:
-            tt_value = SerializationHelper.deserialize_by_tag(child, "Tt")
-            obj.tt = tt_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "E":
+                setattr(obj, "e", SerializationHelper.deserialize_by_tag(child, "EmphasisText"))
+            elif tag == "IE":
+                setattr(obj, "ie", SerializationHelper.deserialize_by_tag(child, "IndexEntry"))
+            elif tag == "SUB":
+                setattr(obj, "sub", SerializationHelper.deserialize_by_tag(child, "Superscript"))
+            elif tag == "SUP":
+                setattr(obj, "sup", SerializationHelper.deserialize_by_tag(child, "Superscript"))
+            elif tag == "TT":
+                setattr(obj, "tt", SerializationHelper.deserialize_by_tag(child, "Tt"))
 
         return obj
 

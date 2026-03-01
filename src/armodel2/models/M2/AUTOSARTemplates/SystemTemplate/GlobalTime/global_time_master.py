@@ -48,11 +48,11 @@ class GlobalTimeMaster(Identifiable, ABC):
     is_system_wide: Optional[Boolean]
     sync_period: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CONNECTOR-REF": lambda obj, elem: setattr(obj, "communication_connector_ref", ARRef.deserialize(elem)),
+        "COMMUNICATION-CONNECTOR-REF": ("_POLYMORPHIC", "communication_connector_ref", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
         "ICV-SECURED": lambda obj, elem: setattr(obj, "icv_secured", GlobalTimeIcvSupportEnum.deserialize(elem)),
-        "IMMEDIATE": lambda obj, elem: setattr(obj, "immediate", elem.text),
-        "IS-SYSTEM-WIDE": lambda obj, elem: setattr(obj, "is_system_wide", elem.text),
-        "SYNC-PERIOD": lambda obj, elem: setattr(obj, "sync_period", elem.text),
+        "IMMEDIATE": lambda obj, elem: setattr(obj, "immediate", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "IS-SYSTEM-WIDE": lambda obj, elem: setattr(obj, "is_system_wide", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SYNC-PERIOD": lambda obj, elem: setattr(obj, "sync_period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -173,35 +173,33 @@ class GlobalTimeMaster(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeMaster, cls).deserialize(element)
 
-        # Parse communication_connector_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
-        if child is not None:
-            communication_connector_ref_value = ARRef.deserialize(child)
-            obj.communication_connector_ref = communication_connector_ref_value
-
-        # Parse icv_secured
-        child = SerializationHelper.find_child_element(element, "ICV-SECURED")
-        if child is not None:
-            icv_secured_value = GlobalTimeIcvSupportEnum.deserialize(child)
-            obj.icv_secured = icv_secured_value
-
-        # Parse immediate
-        child = SerializationHelper.find_child_element(element, "IMMEDIATE")
-        if child is not None:
-            immediate_value = child.text
-            obj.immediate = immediate_value
-
-        # Parse is_system_wide
-        child = SerializationHelper.find_child_element(element, "IS-SYSTEM-WIDE")
-        if child is not None:
-            is_system_wide_value = child.text
-            obj.is_system_wide = is_system_wide_value
-
-        # Parse sync_period
-        child = SerializationHelper.find_child_element(element, "SYNC-PERIOD")
-        if child is not None:
-            sync_period_value = child.text
-            obj.sync_period = sync_period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMUNICATION-CONNECTOR-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONNECTOR":
+                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCommunicationConnector"))
+                    elif concrete_tag == "ETHERNET-COMMUNICATION-CONNECTOR":
+                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetCommunicationConnector"))
+                    elif concrete_tag == "FLEXRAY-COMMUNICATION-CONNECTOR":
+                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayCommunicationConnector"))
+                    elif concrete_tag == "LIN-COMMUNICATION-CONNECTOR":
+                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "LinCommunicationConnector"))
+                    elif concrete_tag == "USER-DEFINED-COMMUNICATION-CONNECTOR":
+                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCommunicationConnector"))
+            elif tag == "ICV-SECURED":
+                setattr(obj, "icv_secured", GlobalTimeIcvSupportEnum.deserialize(child))
+            elif tag == "IMMEDIATE":
+                setattr(obj, "immediate", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "IS-SYSTEM-WIDE":
+                setattr(obj, "is_system_wide", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SYNC-PERIOD":
+                setattr(obj, "sync_period", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

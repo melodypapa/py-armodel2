@@ -54,13 +54,13 @@ class Tgroup(ARObject):
     thead: Optional[Tbody]
     _DESERIALIZE_DISPATCH = {
         "ALIGN": lambda obj, elem: setattr(obj, "align", AlignEnum.deserialize(elem)),
-        "COLS": lambda obj, elem: setattr(obj, "cols", elem.text),
-        "COLSEP": lambda obj, elem: setattr(obj, "colsep", elem.text),
-        "COLSPECS": lambda obj, elem: obj.colspecs.append(Colspec.deserialize(elem)),
-        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", elem.text),
-        "TBODY": lambda obj, elem: setattr(obj, "tbody", Tbody.deserialize(elem)),
-        "TFOOT": lambda obj, elem: setattr(obj, "tfoot", Tbody.deserialize(elem)),
-        "THEAD": lambda obj, elem: setattr(obj, "thead", Tbody.deserialize(elem)),
+        "COLS": lambda obj, elem: setattr(obj, "cols", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "COLSEP": lambda obj, elem: setattr(obj, "colsep", SerializationHelper.deserialize_by_tag(elem, "TableSeparatorString")),
+        "COLSPECS": lambda obj, elem: obj.colspecs.append(SerializationHelper.deserialize_by_tag(elem, "Colspec")),
+        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", SerializationHelper.deserialize_by_tag(elem, "TableSeparatorString")),
+        "TBODY": lambda obj, elem: setattr(obj, "tbody", SerializationHelper.deserialize_by_tag(elem, "Tbody")),
+        "TFOOT": lambda obj, elem: setattr(obj, "tfoot", SerializationHelper.deserialize_by_tag(elem, "Tbody")),
+        "THEAD": lambda obj, elem: setattr(obj, "thead", SerializationHelper.deserialize_by_tag(elem, "Tbody")),
     }
 
 
@@ -222,57 +222,27 @@ class Tgroup(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Tgroup, cls).deserialize(element)
 
-        # Parse align
-        child = SerializationHelper.find_child_element(element, "ALIGN")
-        if child is not None:
-            align_value = AlignEnum.deserialize(child)
-            obj.align = align_value
-
-        # Parse cols
-        child = SerializationHelper.find_child_element(element, "COLS")
-        if child is not None:
-            cols_value = child.text
-            obj.cols = cols_value
-
-        # Parse colsep
-        child = SerializationHelper.find_child_element(element, "COLSEP")
-        if child is not None:
-            colsep_value = child.text
-            obj.colsep = colsep_value
-
-        # Parse colspecs (list from container "COLSPECS")
-        obj.colspecs = []
-        container = SerializationHelper.find_child_element(element, "COLSPECS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.colspecs.append(child_value)
-
-        # Parse rowsep
-        child = SerializationHelper.find_child_element(element, "ROWSEP")
-        if child is not None:
-            rowsep_value = child.text
-            obj.rowsep = rowsep_value
-
-        # Parse tbody
-        child = SerializationHelper.find_child_element(element, "TBODY")
-        if child is not None:
-            tbody_value = SerializationHelper.deserialize_by_tag(child, "Tbody")
-            obj.tbody = tbody_value
-
-        # Parse tfoot
-        child = SerializationHelper.find_child_element(element, "TFOOT")
-        if child is not None:
-            tfoot_value = SerializationHelper.deserialize_by_tag(child, "Tbody")
-            obj.tfoot = tfoot_value
-
-        # Parse thead
-        child = SerializationHelper.find_child_element(element, "THEAD")
-        if child is not None:
-            thead_value = SerializationHelper.deserialize_by_tag(child, "Tbody")
-            obj.thead = thead_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALIGN":
+                setattr(obj, "align", AlignEnum.deserialize(child))
+            elif tag == "COLS":
+                setattr(obj, "cols", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "COLSEP":
+                setattr(obj, "colsep", SerializationHelper.deserialize_by_tag(child, "TableSeparatorString"))
+            elif tag == "COLSPECS":
+                obj.colspecs.append(SerializationHelper.deserialize_by_tag(child, "Colspec"))
+            elif tag == "ROWSEP":
+                setattr(obj, "rowsep", SerializationHelper.deserialize_by_tag(child, "TableSeparatorString"))
+            elif tag == "TBODY":
+                setattr(obj, "tbody", SerializationHelper.deserialize_by_tag(child, "Tbody"))
+            elif tag == "TFOOT":
+                setattr(obj, "tfoot", SerializationHelper.deserialize_by_tag(child, "Tbody"))
+            elif tag == "THEAD":
+                setattr(obj, "thead", SerializationHelper.deserialize_by_tag(child, "Tbody"))
 
         return obj
 

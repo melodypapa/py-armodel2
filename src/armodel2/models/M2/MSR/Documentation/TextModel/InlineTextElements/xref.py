@@ -59,8 +59,8 @@ class Xref(ARObject):
     show_resource_short: Optional[ShowResourceShortNameEnum]
     show_see: Optional[ShowSeeEnum]
     _DESERIALIZE_DISPATCH = {
-        "LABEL1": lambda obj, elem: setattr(obj, "label1", SingleLanguageLongName.deserialize(elem)),
-        "REFERRABLE-REF": lambda obj, elem: setattr(obj, "referrable_ref", ARRef.deserialize(elem)),
+        "LABEL1": lambda obj, elem: setattr(obj, "label1", SerializationHelper.deserialize_by_tag(elem, "SingleLanguageLongName")),
+        "REFERRABLE-REF": ("_POLYMORPHIC", "referrable_ref", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
         "RESOLUTION-POLICY-ENUM": lambda obj, elem: setattr(obj, "resolution_policy_enum", ResolutionPolicyEnum.deserialize(elem)),
         "SHOW-CONTENT-ENUM": lambda obj, elem: setattr(obj, "show_content_enum", ShowContentEnum.deserialize(elem)),
         "SHOW-RESOURCE-ALIAS": lambda obj, elem: setattr(obj, "show_resource_alias", ShowResourceAliasNameEnum.deserialize(elem)),
@@ -280,71 +280,75 @@ class Xref(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Xref, cls).deserialize(element)
 
-        # Parse label1
-        child = SerializationHelper.find_child_element(element, "LABEL1")
-        if child is not None:
-            label1_value = SerializationHelper.deserialize_by_tag(child, "SingleLanguageLongName")
-            obj.label1 = label1_value
-
-        # Parse referrable_ref
-        child = SerializationHelper.find_child_element(element, "REFERRABLE-REF")
-        if child is not None:
-            referrable_ref_value = ARRef.deserialize(child)
-            obj.referrable_ref = referrable_ref_value
-
-        # Parse resolution_policy_enum
-        child = SerializationHelper.find_child_element(element, "RESOLUTION-POLICY-ENUM")
-        if child is not None:
-            resolution_policy_enum_value = ResolutionPolicyEnum.deserialize(child)
-            obj.resolution_policy_enum = resolution_policy_enum_value
-
-        # Parse show_content_enum
-        child = SerializationHelper.find_child_element(element, "SHOW-CONTENT-ENUM")
-        if child is not None:
-            show_content_enum_value = ShowContentEnum.deserialize(child)
-            obj.show_content_enum = show_content_enum_value
-
-        # Parse show_resource_alias
-        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-ALIAS")
-        if child is not None:
-            show_resource_alias_value = ShowResourceAliasNameEnum.deserialize(child)
-            obj.show_resource_alias = show_resource_alias_value
-
-        # Parse show_resource
-        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE")
-        if child is not None:
-            show_resource_value = ShowResourceTypeEnum.deserialize(child)
-            obj.show_resource = show_resource_value
-
-        # Parse show_resource_long
-        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-LONG")
-        if child is not None:
-            show_resource_long_value = ShowResourceLongNameEnum.deserialize(child)
-            obj.show_resource_long = show_resource_long_value
-
-        # Parse show_resource_number
-        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-NUMBER")
-        if child is not None:
-            show_resource_number_value = ShowResourceNumberEnum.deserialize(child)
-            obj.show_resource_number = show_resource_number_value
-
-        # Parse show_resource_page
-        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-PAGE")
-        if child is not None:
-            show_resource_page_value = ShowResourcePageEnum.deserialize(child)
-            obj.show_resource_page = show_resource_page_value
-
-        # Parse show_resource_short
-        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-SHORT")
-        if child is not None:
-            show_resource_short_value = ShowResourceShortNameEnum.deserialize(child)
-            obj.show_resource_short = show_resource_short_value
-
-        # Parse show_see
-        child = SerializationHelper.find_child_element(element, "SHOW-SEE")
-        if child is not None:
-            show_see_value = ShowSeeEnum.deserialize(child)
-            obj.show_see = show_see_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LABEL1":
+                setattr(obj, "label1", SerializationHelper.deserialize_by_tag(child, "SingleLanguageLongName"))
+            elif tag == "REFERRABLE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATP-DEFINITION":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "AtpDefinition"))
+                    elif concrete_tag == "BSW-DISTINGUISHED-PARTITION":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "BswDistinguishedPartition"))
+                    elif concrete_tag == "BSW-MODULE-CALL-POINT":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleCallPoint"))
+                    elif concrete_tag == "BSW-MODULE-CLIENT-SERVER-ENTRY":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleClientServerEntry"))
+                    elif concrete_tag == "BSW-VARIABLE-ACCESS":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "BswVariableAccess"))
+                    elif concrete_tag == "COUPLING-PORT-TRAFFIC-CLASS-ASSIGNMENT":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "CouplingPortTrafficClassAssignment"))
+                    elif concrete_tag == "DIAGNOSTIC-ENV-MODE-ELEMENT":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEnvModeElement"))
+                    elif concrete_tag == "ETHERNET-PRIORITY-REGENERATION":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetPriorityRegeneration"))
+                    elif concrete_tag == "EXCLUSIVE-AREA-NESTING-ORDER":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "ExclusiveAreaNestingOrder"))
+                    elif concrete_tag == "HW-DESCRIPTION-ENTITY":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "HwDescriptionEntity"))
+                    elif concrete_tag == "IMPLEMENTATION-PROPS":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationProps"))
+                    elif concrete_tag == "LIN-SLAVE-CONFIG-IDENT":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "LinSlaveConfigIdent"))
+                    elif concrete_tag == "MODE-TRANSITION":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeTransition"))
+                    elif concrete_tag == "MULTILANGUAGE-REFERRABLE":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "MultilanguageReferrable"))
+                    elif concrete_tag == "PNC-MAPPING-IDENT":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "PncMappingIdent"))
+                    elif concrete_tag == "SINGLE-LANGUAGE-REFERRABLE":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "SingleLanguageReferrable"))
+                    elif concrete_tag == "SO-CON-I-PDU-IDENTIFIER":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "SoConIPduIdentifier"))
+                    elif concrete_tag == "SOCKET-CONNECTION-BUNDLE":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "SocketConnectionBundle"))
+                    elif concrete_tag == "TIME-SYNC-SERVER-CONFIGURATION":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "TimeSyncServerConfiguration"))
+                    elif concrete_tag == "TP-CONNECTION-IDENT":
+                        setattr(obj, "referrable_ref", SerializationHelper.deserialize_by_tag(child[0], "TpConnectionIdent"))
+            elif tag == "RESOLUTION-POLICY-ENUM":
+                setattr(obj, "resolution_policy_enum", ResolutionPolicyEnum.deserialize(child))
+            elif tag == "SHOW-CONTENT-ENUM":
+                setattr(obj, "show_content_enum", ShowContentEnum.deserialize(child))
+            elif tag == "SHOW-RESOURCE-ALIAS":
+                setattr(obj, "show_resource_alias", ShowResourceAliasNameEnum.deserialize(child))
+            elif tag == "SHOW-RESOURCE":
+                setattr(obj, "show_resource", ShowResourceTypeEnum.deserialize(child))
+            elif tag == "SHOW-RESOURCE-LONG":
+                setattr(obj, "show_resource_long", ShowResourceLongNameEnum.deserialize(child))
+            elif tag == "SHOW-RESOURCE-NUMBER":
+                setattr(obj, "show_resource_number", ShowResourceNumberEnum.deserialize(child))
+            elif tag == "SHOW-RESOURCE-PAGE":
+                setattr(obj, "show_resource_page", ShowResourcePageEnum.deserialize(child))
+            elif tag == "SHOW-RESOURCE-SHORT":
+                setattr(obj, "show_resource_short", ShowResourceShortNameEnum.deserialize(child))
+            elif tag == "SHOW-SEE":
+                setattr(obj, "show_see", ShowSeeEnum.deserialize(child))
 
         return obj
 

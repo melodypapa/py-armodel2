@@ -140,23 +140,17 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecOcCryptoServiceMapping, cls).deserialize(element)
 
-        # Parse authentication_ref
-        child = SerializationHelper.find_child_element(element, "AUTHENTICATION-REF")
-        if child is not None:
-            authentication_ref_value = ARRef.deserialize(child)
-            obj.authentication_ref = authentication_ref_value
-
-        # Parse crypto_service_key_ref
-        child = SerializationHelper.find_child_element(element, "CRYPTO-SERVICE-KEY-REF")
-        if child is not None:
-            crypto_service_key_ref_value = ARRef.deserialize(child)
-            obj.crypto_service_key_ref = crypto_service_key_ref_value
-
-        # Parse crypto_service_queue_ref
-        child = SerializationHelper.find_child_element(element, "CRYPTO-SERVICE-QUEUE-REF")
-        if child is not None:
-            crypto_service_queue_ref_value = ARRef.deserialize(child)
-            obj.crypto_service_queue_ref = crypto_service_queue_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AUTHENTICATION-REF":
+                setattr(obj, "authentication_ref", ARRef.deserialize(child))
+            elif tag == "CRYPTO-SERVICE-KEY-REF":
+                setattr(obj, "crypto_service_key_ref", ARRef.deserialize(child))
+            elif tag == "CRYPTO-SERVICE-QUEUE-REF":
+                setattr(obj, "crypto_service_queue_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -48,14 +48,14 @@ class NmCluster(Identifiable, ABC):
     nm: Optional[Boolean]
     pnc_cluster: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CLUSTER-REF": lambda obj, elem: setattr(obj, "communication_cluster_ref", ARRef.deserialize(elem)),
-        "NM-CHANNEL": lambda obj, elem: setattr(obj, "nm_channel", elem.text),
-        "NM-NODE": lambda obj, elem: setattr(obj, "nm_node", elem.text),
-        "NM-NODE-ID-ENABLED": lambda obj, elem: setattr(obj, "nm_node_id_enabled", elem.text),
-        "NM-PNC": lambda obj, elem: setattr(obj, "nm_pnc", elem.text),
-        "NM-REPEAT-MSG-IND-ENABLED": lambda obj, elem: setattr(obj, "nm_repeat_msg_ind_enabled", elem.text),
-        "NM": lambda obj, elem: setattr(obj, "nm", elem.text),
-        "PNC-CLUSTER": lambda obj, elem: setattr(obj, "pnc_cluster", elem.text),
+        "COMMUNICATION-CLUSTER-REF": ("_POLYMORPHIC", "communication_cluster_ref", ["AbstractCanCluster", "EthernetCluster", "FlexrayCluster", "LinCluster", "UserDefinedCluster"]),
+        "NM-CHANNEL": lambda obj, elem: setattr(obj, "nm_channel", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-NODE": lambda obj, elem: setattr(obj, "nm_node", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-NODE-ID-ENABLED": lambda obj, elem: setattr(obj, "nm_node_id_enabled", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-PNC": lambda obj, elem: setattr(obj, "nm_pnc", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-REPEAT-MSG-IND-ENABLED": lambda obj, elem: setattr(obj, "nm_repeat_msg_ind_enabled", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM": lambda obj, elem: setattr(obj, "nm", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PNC-CLUSTER": lambda obj, elem: setattr(obj, "pnc_cluster", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -221,53 +221,39 @@ class NmCluster(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NmCluster, cls).deserialize(element)
 
-        # Parse communication_cluster_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CLUSTER-REF")
-        if child is not None:
-            communication_cluster_ref_value = ARRef.deserialize(child)
-            obj.communication_cluster_ref = communication_cluster_ref_value
-
-        # Parse nm_channel
-        child = SerializationHelper.find_child_element(element, "NM-CHANNEL")
-        if child is not None:
-            nm_channel_value = child.text
-            obj.nm_channel = nm_channel_value
-
-        # Parse nm_node
-        child = SerializationHelper.find_child_element(element, "NM-NODE")
-        if child is not None:
-            nm_node_value = child.text
-            obj.nm_node = nm_node_value
-
-        # Parse nm_node_id_enabled
-        child = SerializationHelper.find_child_element(element, "NM-NODE-ID-ENABLED")
-        if child is not None:
-            nm_node_id_enabled_value = child.text
-            obj.nm_node_id_enabled = nm_node_id_enabled_value
-
-        # Parse nm_pnc
-        child = SerializationHelper.find_child_element(element, "NM-PNC")
-        if child is not None:
-            nm_pnc_value = child.text
-            obj.nm_pnc = nm_pnc_value
-
-        # Parse nm_repeat_msg_ind_enabled
-        child = SerializationHelper.find_child_element(element, "NM-REPEAT-MSG-IND-ENABLED")
-        if child is not None:
-            nm_repeat_msg_ind_enabled_value = child.text
-            obj.nm_repeat_msg_ind_enabled = nm_repeat_msg_ind_enabled_value
-
-        # Parse nm
-        child = SerializationHelper.find_child_element(element, "NM")
-        if child is not None:
-            nm_value = child.text
-            obj.nm = nm_value
-
-        # Parse pnc_cluster
-        child = SerializationHelper.find_child_element(element, "PNC-CLUSTER")
-        if child is not None:
-            pnc_cluster_value = child.text
-            obj.pnc_cluster = pnc_cluster_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMUNICATION-CLUSTER-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-CLUSTER":
+                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCluster"))
+                    elif concrete_tag == "ETHERNET-CLUSTER":
+                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetCluster"))
+                    elif concrete_tag == "FLEXRAY-CLUSTER":
+                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayCluster"))
+                    elif concrete_tag == "LIN-CLUSTER":
+                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "LinCluster"))
+                    elif concrete_tag == "USER-DEFINED-CLUSTER":
+                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCluster"))
+            elif tag == "NM-CHANNEL":
+                setattr(obj, "nm_channel", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-NODE":
+                setattr(obj, "nm_node", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-NODE-ID-ENABLED":
+                setattr(obj, "nm_node_id_enabled", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-PNC":
+                setattr(obj, "nm_pnc", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-REPEAT-MSG-IND-ENABLED":
+                setattr(obj, "nm_repeat_msg_ind_enabled", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM":
+                setattr(obj, "nm", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PNC-CLUSTER":
+                setattr(obj, "pnc_cluster", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

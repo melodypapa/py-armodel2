@@ -38,7 +38,7 @@ class KeywordSet(ARElement):
 
     keywords: list[Keyword]
     _DESERIALIZE_DISPATCH = {
-        "KEYWORDS": lambda obj, elem: obj.keywords.append(Keyword.deserialize(elem)),
+        "KEYWORDS": lambda obj, elem: obj.keywords.append(SerializationHelper.deserialize_by_tag(elem, "Keyword")),
     }
 
 
@@ -95,15 +95,13 @@ class KeywordSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(KeywordSet, cls).deserialize(element)
 
-        # Parse keywords (list from container "KEYWORDS")
-        obj.keywords = []
-        container = SerializationHelper.find_child_element(element, "KEYWORDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.keywords.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "KEYWORDS":
+                obj.keywords.append(SerializationHelper.deserialize_by_tag(child, "Keyword"))
 
         return obj
 

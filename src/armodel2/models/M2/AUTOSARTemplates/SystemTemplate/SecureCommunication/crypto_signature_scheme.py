@@ -38,7 +38,7 @@ class CryptoSignatureScheme(ARElement):
 
     signature: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "SIGNATURE": lambda obj, elem: setattr(obj, "signature", elem.text),
+        "SIGNATURE": lambda obj, elem: setattr(obj, "signature", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -99,11 +99,13 @@ class CryptoSignatureScheme(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CryptoSignatureScheme, cls).deserialize(element)
 
-        # Parse signature
-        child = SerializationHelper.find_child_element(element, "SIGNATURE")
-        if child is not None:
-            signature_value = child.text
-            obj.signature = signature_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SIGNATURE":
+                setattr(obj, "signature", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

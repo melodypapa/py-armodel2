@@ -50,8 +50,8 @@ class SwcImplementation(Implementation):
     required_rte_vendor: Optional[String]
     _DESERIALIZE_DISPATCH = {
         "BEHAVIOR-REF": lambda obj, elem: setattr(obj, "behavior_ref", ARRef.deserialize(elem)),
-        "PER-INSTANCE-MEMORY-SIZES": lambda obj, elem: obj.per_instance_memory_sizes.append(PerInstanceMemorySize.deserialize(elem)),
-        "REQUIRED-RTE-VENDOR": lambda obj, elem: setattr(obj, "required_rte_vendor", elem.text),
+        "PER-INSTANCE-MEMORY-SIZES": lambda obj, elem: obj.per_instance_memory_sizes.append(SerializationHelper.deserialize_by_tag(elem, "PerInstanceMemorySize")),
+        "REQUIRED-RTE-VENDOR": lambda obj, elem: setattr(obj, "required_rte_vendor", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -138,27 +138,17 @@ class SwcImplementation(Implementation):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcImplementation, cls).deserialize(element)
 
-        # Parse behavior_ref
-        child = SerializationHelper.find_child_element(element, "BEHAVIOR-REF")
-        if child is not None:
-            behavior_ref_value = ARRef.deserialize(child)
-            obj.behavior_ref = behavior_ref_value
-
-        # Parse per_instance_memory_sizes (list from container "PER-INSTANCE-MEMORY-SIZES")
-        obj.per_instance_memory_sizes = []
-        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORY-SIZES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.per_instance_memory_sizes.append(child_value)
-
-        # Parse required_rte_vendor
-        child = SerializationHelper.find_child_element(element, "REQUIRED-RTE-VENDOR")
-        if child is not None:
-            required_rte_vendor_value = child.text
-            obj.required_rte_vendor = required_rte_vendor_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BEHAVIOR-REF":
+                setattr(obj, "behavior_ref", ARRef.deserialize(child))
+            elif tag == "PER-INSTANCE-MEMORY-SIZES":
+                obj.per_instance_memory_sizes.append(SerializationHelper.deserialize_by_tag(child, "PerInstanceMemorySize"))
+            elif tag == "REQUIRED-RTE-VENDOR":
+                setattr(obj, "required_rte_vendor", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

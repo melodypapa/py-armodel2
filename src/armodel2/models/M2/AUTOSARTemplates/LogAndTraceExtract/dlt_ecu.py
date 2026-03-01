@@ -43,8 +43,8 @@ class DltEcu(ARElement):
     applications: list[DltApplication]
     ecu_id: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "APPLICATIONS": lambda obj, elem: obj.applications.append(DltApplication.deserialize(elem)),
-        "ECU-ID": lambda obj, elem: setattr(obj, "ecu_id", elem.text),
+        "APPLICATIONS": lambda obj, elem: obj.applications.append(SerializationHelper.deserialize_by_tag(elem, "DltApplication")),
+        "ECU-ID": lambda obj, elem: setattr(obj, "ecu_id", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -116,21 +116,15 @@ class DltEcu(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DltEcu, cls).deserialize(element)
 
-        # Parse applications (list from container "APPLICATIONS")
-        obj.applications = []
-        container = SerializationHelper.find_child_element(element, "APPLICATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.applications.append(child_value)
-
-        # Parse ecu_id
-        child = SerializationHelper.find_child_element(element, "ECU-ID")
-        if child is not None:
-            ecu_id_value = child.text
-            obj.ecu_id = ecu_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "APPLICATIONS":
+                obj.applications.append(SerializationHelper.deserialize_by_tag(child, "DltApplication"))
+            elif tag == "ECU-ID":
+                setattr(obj, "ecu_id", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

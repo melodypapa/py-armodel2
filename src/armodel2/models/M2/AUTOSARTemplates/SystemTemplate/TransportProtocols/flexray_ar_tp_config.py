@@ -46,9 +46,9 @@ class FlexrayArTpConfig(TpConfig):
     tp_channels: list[FlexrayArTpChannel]
     tp_nodes: list[FlexrayArTpNode]
     _DESERIALIZE_DISPATCH = {
-        "TP-ADDRESSES": lambda obj, elem: obj.tp_addresses.append(TpAddress.deserialize(elem)),
-        "TP-CHANNELS": lambda obj, elem: obj.tp_channels.append(FlexrayArTpChannel.deserialize(elem)),
-        "TP-NODES": lambda obj, elem: obj.tp_nodes.append(FlexrayArTpNode.deserialize(elem)),
+        "TP-ADDRESSES": lambda obj, elem: obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(elem, "TpAddress")),
+        "TP-CHANNELS": lambda obj, elem: obj.tp_channels.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayArTpChannel")),
+        "TP-NODES": lambda obj, elem: obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayArTpNode")),
     }
 
 
@@ -127,35 +127,17 @@ class FlexrayArTpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayArTpConfig, cls).deserialize(element)
 
-        # Parse tp_addresses (list from container "TP-ADDRESSES")
-        obj.tp_addresses = []
-        container = SerializationHelper.find_child_element(element, "TP-ADDRESSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_addresses.append(child_value)
-
-        # Parse tp_channels (list from container "TP-CHANNELS")
-        obj.tp_channels = []
-        container = SerializationHelper.find_child_element(element, "TP-CHANNELS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_channels.append(child_value)
-
-        # Parse tp_nodes (list from container "TP-NODES")
-        obj.tp_nodes = []
-        container = SerializationHelper.find_child_element(element, "TP-NODES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_nodes.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TP-ADDRESSES":
+                obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(child, "TpAddress"))
+            elif tag == "TP-CHANNELS":
+                obj.tp_channels.append(SerializationHelper.deserialize_by_tag(child, "FlexrayArTpChannel"))
+            elif tag == "TP-NODES":
+                obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(child, "FlexrayArTpNode"))
 
         return obj
 

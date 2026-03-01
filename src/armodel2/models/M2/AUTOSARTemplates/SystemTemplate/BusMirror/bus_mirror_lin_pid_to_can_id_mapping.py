@@ -39,7 +39,7 @@ class BusMirrorLinPidToCanIdMapping(ARObject):
     remapped_can_id: Optional[PositiveInteger]
     source_lin_pid_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "REMAPPED-CAN-ID": lambda obj, elem: setattr(obj, "remapped_can_id", elem.text),
+        "REMAPPED-CAN-ID": lambda obj, elem: setattr(obj, "remapped_can_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SOURCE-LIN-PID-REF": lambda obj, elem: setattr(obj, "source_lin_pid_ref", ARRef.deserialize(elem)),
     }
 
@@ -116,17 +116,15 @@ class BusMirrorLinPidToCanIdMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BusMirrorLinPidToCanIdMapping, cls).deserialize(element)
 
-        # Parse remapped_can_id
-        child = SerializationHelper.find_child_element(element, "REMAPPED-CAN-ID")
-        if child is not None:
-            remapped_can_id_value = child.text
-            obj.remapped_can_id = remapped_can_id_value
-
-        # Parse source_lin_pid_ref
-        child = SerializationHelper.find_child_element(element, "SOURCE-LIN-PID-REF")
-        if child is not None:
-            source_lin_pid_ref_value = ARRef.deserialize(child)
-            obj.source_lin_pid_ref = source_lin_pid_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "REMAPPED-CAN-ID":
+                setattr(obj, "remapped_can_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SOURCE-LIN-PID-REF":
+                setattr(obj, "source_lin_pid_ref", ARRef.deserialize(child))
 
         return obj
 

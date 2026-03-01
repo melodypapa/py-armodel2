@@ -97,11 +97,13 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswAsynchronousServerCallResultPoint, cls).deserialize(element)
 
-        # Parse asynchronous_ref
-        child = SerializationHelper.find_child_element(element, "ASYNCHRONOUS-REF")
-        if child is not None:
-            asynchronous_ref_value = ARRef.deserialize(child)
-            obj.asynchronous_ref = asynchronous_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ASYNCHRONOUS-REF":
+                setattr(obj, "asynchronous_ref", ARRef.deserialize(child))
 
         return obj
 

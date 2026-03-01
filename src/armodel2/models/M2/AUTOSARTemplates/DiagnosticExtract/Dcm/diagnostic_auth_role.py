@@ -40,8 +40,8 @@ class DiagnosticAuthRole(DiagnosticCommonElement):
     bit_position: Optional[PositiveInteger]
     is_default: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "BIT-POSITION": lambda obj, elem: setattr(obj, "bit_position", elem.text),
-        "IS-DEFAULT": lambda obj, elem: setattr(obj, "is_default", elem.text),
+        "BIT-POSITION": lambda obj, elem: setattr(obj, "bit_position", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IS-DEFAULT": lambda obj, elem: setattr(obj, "is_default", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -117,17 +117,15 @@ class DiagnosticAuthRole(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAuthRole, cls).deserialize(element)
 
-        # Parse bit_position
-        child = SerializationHelper.find_child_element(element, "BIT-POSITION")
-        if child is not None:
-            bit_position_value = child.text
-            obj.bit_position = bit_position_value
-
-        # Parse is_default
-        child = SerializationHelper.find_child_element(element, "IS-DEFAULT")
-        if child is not None:
-            is_default_value = child.text
-            obj.is_default = is_default_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BIT-POSITION":
+                setattr(obj, "bit_position", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IS-DEFAULT":
+                setattr(obj, "is_default", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

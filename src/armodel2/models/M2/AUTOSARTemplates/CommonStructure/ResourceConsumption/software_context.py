@@ -35,8 +35,8 @@ class SoftwareContext(ARObject):
     input: Optional[String]
     state: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "INPUT": lambda obj, elem: setattr(obj, "input", elem.text),
-        "STATE": lambda obj, elem: setattr(obj, "state", elem.text),
+        "INPUT": lambda obj, elem: setattr(obj, "input", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "STATE": lambda obj, elem: setattr(obj, "state", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -112,17 +112,15 @@ class SoftwareContext(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SoftwareContext, cls).deserialize(element)
 
-        # Parse input
-        child = SerializationHelper.find_child_element(element, "INPUT")
-        if child is not None:
-            input_value = child.text
-            obj.input = input_value
-
-        # Parse state
-        child = SerializationHelper.find_child_element(element, "STATE")
-        if child is not None:
-            state_value = child.text
-            obj.state = state_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INPUT":
+                setattr(obj, "input", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "STATE":
+                setattr(obj, "state", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

@@ -47,8 +47,8 @@ class BusMirrorChannelMapping(FibexElement, ABC):
     target_pdu_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "MIRRORING": lambda obj, elem: setattr(obj, "mirroring", MirroringProtocolEnum.deserialize(elem)),
-        "SOURCE-CHANNEL": lambda obj, elem: setattr(obj, "source_channel", BusMirrorChannel.deserialize(elem)),
-        "TARGET-CHANNEL": lambda obj, elem: setattr(obj, "target_channel", BusMirrorChannel.deserialize(elem)),
+        "SOURCE-CHANNEL": lambda obj, elem: setattr(obj, "source_channel", SerializationHelper.deserialize_by_tag(elem, "BusMirrorChannel")),
+        "TARGET-CHANNEL": lambda obj, elem: setattr(obj, "target_channel", SerializationHelper.deserialize_by_tag(elem, "BusMirrorChannel")),
         "TARGET-PDUS": lambda obj, elem: obj.target_pdu_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -158,39 +158,19 @@ class BusMirrorChannelMapping(FibexElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BusMirrorChannelMapping, cls).deserialize(element)
 
-        # Parse mirroring
-        child = SerializationHelper.find_child_element(element, "MIRRORING")
-        if child is not None:
-            mirroring_value = MirroringProtocolEnum.deserialize(child)
-            obj.mirroring = mirroring_value
-
-        # Parse source_channel
-        child = SerializationHelper.find_child_element(element, "SOURCE-CHANNEL")
-        if child is not None:
-            source_channel_value = SerializationHelper.deserialize_by_tag(child, "BusMirrorChannel")
-            obj.source_channel = source_channel_value
-
-        # Parse target_channel
-        child = SerializationHelper.find_child_element(element, "TARGET-CHANNEL")
-        if child is not None:
-            target_channel_value = SerializationHelper.deserialize_by_tag(child, "BusMirrorChannel")
-            obj.target_channel = target_channel_value
-
-        # Parse target_pdu_refs (list from container "TARGET-PDU-REFS")
-        obj.target_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "TARGET-PDU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.target_pdu_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MIRRORING":
+                setattr(obj, "mirroring", MirroringProtocolEnum.deserialize(child))
+            elif tag == "SOURCE-CHANNEL":
+                setattr(obj, "source_channel", SerializationHelper.deserialize_by_tag(child, "BusMirrorChannel"))
+            elif tag == "TARGET-CHANNEL":
+                setattr(obj, "target_channel", SerializationHelper.deserialize_by_tag(child, "BusMirrorChannel"))
+            elif tag == "TARGET-PDUS":
+                obj.target_pdu_refs.append(ARRef.deserialize(child))
 
         return obj
 

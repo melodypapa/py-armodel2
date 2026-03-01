@@ -49,9 +49,9 @@ class AbstractServiceInstance(Identifiable, ABC):
     method: Optional[PduActivationRoutingGroup]
     routing_group_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CAPABILITIES": lambda obj, elem: obj.capabilities.append(TagWithOptionalValue.deserialize(elem)),
-        "MAJOR-VERSION": lambda obj, elem: setattr(obj, "major_version", elem.text),
-        "METHOD": lambda obj, elem: setattr(obj, "method", PduActivationRoutingGroup.deserialize(elem)),
+        "CAPABILITIES": lambda obj, elem: obj.capabilities.append(SerializationHelper.deserialize_by_tag(elem, "TagWithOptionalValue")),
+        "MAJOR-VERSION": lambda obj, elem: setattr(obj, "major_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "METHOD": lambda obj, elem: setattr(obj, "method", SerializationHelper.deserialize_by_tag(elem, "PduActivationRoutingGroup")),
         "ROUTING-GROUPS": lambda obj, elem: obj.routing_group_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -157,43 +157,19 @@ class AbstractServiceInstance(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractServiceInstance, cls).deserialize(element)
 
-        # Parse capabilities (list from container "CAPABILITIES")
-        obj.capabilities = []
-        container = SerializationHelper.find_child_element(element, "CAPABILITIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.capabilities.append(child_value)
-
-        # Parse major_version
-        child = SerializationHelper.find_child_element(element, "MAJOR-VERSION")
-        if child is not None:
-            major_version_value = child.text
-            obj.major_version = major_version_value
-
-        # Parse method
-        child = SerializationHelper.find_child_element(element, "METHOD")
-        if child is not None:
-            method_value = SerializationHelper.deserialize_by_tag(child, "PduActivationRoutingGroup")
-            obj.method = method_value
-
-        # Parse routing_group_refs (list from container "ROUTING-GROUP-REFS")
-        obj.routing_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ROUTING-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.routing_group_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CAPABILITIES":
+                obj.capabilities.append(SerializationHelper.deserialize_by_tag(child, "TagWithOptionalValue"))
+            elif tag == "MAJOR-VERSION":
+                setattr(obj, "major_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "METHOD":
+                setattr(obj, "method", SerializationHelper.deserialize_by_tag(child, "PduActivationRoutingGroup"))
+            elif tag == "ROUTING-GROUPS":
+                obj.routing_group_refs.append(ARRef.deserialize(child))
 
         return obj
 

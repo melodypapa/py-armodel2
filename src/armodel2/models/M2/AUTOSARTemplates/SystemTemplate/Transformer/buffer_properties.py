@@ -37,8 +37,8 @@ class BufferProperties(ARObject):
     header_length: Optional[Integer]
     in_place: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "HEADER-LENGTH": lambda obj, elem: setattr(obj, "header_length", elem.text),
-        "IN-PLACE": lambda obj, elem: setattr(obj, "in_place", elem.text),
+        "HEADER-LENGTH": lambda obj, elem: setattr(obj, "header_length", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "IN-PLACE": lambda obj, elem: setattr(obj, "in_place", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -114,17 +114,15 @@ class BufferProperties(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BufferProperties, cls).deserialize(element)
 
-        # Parse header_length
-        child = SerializationHelper.find_child_element(element, "HEADER-LENGTH")
-        if child is not None:
-            header_length_value = child.text
-            obj.header_length = header_length_value
-
-        # Parse in_place
-        child = SerializationHelper.find_child_element(element, "IN-PLACE")
-        if child is not None:
-            in_place_value = child.text
-            obj.in_place = in_place_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "HEADER-LENGTH":
+                setattr(obj, "header_length", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "IN-PLACE":
+                setattr(obj, "in_place", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

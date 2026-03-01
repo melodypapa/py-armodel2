@@ -95,11 +95,13 @@ class DdsOwnership(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsOwnership, cls).deserialize(element)
 
-        # Parse ownership_kind
-        child = SerializationHelper.find_child_element(element, "OWNERSHIP-KIND")
-        if child is not None:
-            ownership_kind_value = DdsOwnershipKindEnum.deserialize(child)
-            obj.ownership_kind = ownership_kind_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "OWNERSHIP-KIND":
+                setattr(obj, "ownership_kind", DdsOwnershipKindEnum.deserialize(child))
 
         return obj
 

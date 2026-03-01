@@ -39,9 +39,9 @@ class ConfidenceInterval(ARObject):
     propability: Optional[Float]
     upper_bound: Optional[MultidimensionalTime]
     _DESERIALIZE_DISPATCH = {
-        "LOWER-BOUND": lambda obj, elem: setattr(obj, "lower_bound", MultidimensionalTime.deserialize(elem)),
-        "PROPABILITY": lambda obj, elem: setattr(obj, "propability", elem.text),
-        "UPPER-BOUND": lambda obj, elem: setattr(obj, "upper_bound", MultidimensionalTime.deserialize(elem)),
+        "LOWER-BOUND": lambda obj, elem: setattr(obj, "lower_bound", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "PROPABILITY": lambda obj, elem: setattr(obj, "propability", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "UPPER-BOUND": lambda obj, elem: setattr(obj, "upper_bound", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
     }
 
 
@@ -132,23 +132,17 @@ class ConfidenceInterval(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConfidenceInterval, cls).deserialize(element)
 
-        # Parse lower_bound
-        child = SerializationHelper.find_child_element(element, "LOWER-BOUND")
-        if child is not None:
-            lower_bound_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.lower_bound = lower_bound_value
-
-        # Parse propability
-        child = SerializationHelper.find_child_element(element, "PROPABILITY")
-        if child is not None:
-            propability_value = child.text
-            obj.propability = propability_value
-
-        # Parse upper_bound
-        child = SerializationHelper.find_child_element(element, "UPPER-BOUND")
-        if child is not None:
-            upper_bound_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.upper_bound = upper_bound_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LOWER-BOUND":
+                setattr(obj, "lower_bound", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "PROPABILITY":
+                setattr(obj, "propability", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "UPPER-BOUND":
+                setattr(obj, "upper_bound", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

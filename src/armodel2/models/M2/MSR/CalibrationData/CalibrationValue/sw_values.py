@@ -52,11 +52,11 @@ class SwValues(ARObject):
     vt: Optional[VerbatimString]
     vtf: Optional[NumericalOrText]
     _DESERIALIZE_DISPATCH = {
-        "V": lambda obj, elem: setattr(obj, "v", elem.text),
-        "VF": lambda obj, elem: setattr(obj, "vf", elem.text),
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VF": lambda obj, elem: setattr(obj, "vf", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "VG-REF": lambda obj, elem: setattr(obj, "vg_ref", ARRef.deserialize(elem)),
-        "VT": lambda obj, elem: setattr(obj, "vt", elem.text),
-        "VTF": lambda obj, elem: setattr(obj, "vtf", NumericalOrText.deserialize(elem)),
+        "VT": lambda obj, elem: setattr(obj, "vt", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
+        "VTF": lambda obj, elem: setattr(obj, "vtf", SerializationHelper.deserialize_by_tag(elem, "NumericalOrText")),
     }
 
 

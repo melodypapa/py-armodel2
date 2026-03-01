@@ -38,7 +38,7 @@ class ConcreteClassTailoring(DataFormatElementScope):
 
     validation_root: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "VALIDATION-ROOT": lambda obj, elem: setattr(obj, "validation_root", elem.text),
+        "VALIDATION-ROOT": lambda obj, elem: setattr(obj, "validation_root", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -99,11 +99,13 @@ class ConcreteClassTailoring(DataFormatElementScope):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConcreteClassTailoring, cls).deserialize(element)
 
-        # Parse validation_root
-        child = SerializationHelper.find_child_element(element, "VALIDATION-ROOT")
-        if child is not None:
-            validation_root_value = child.text
-            obj.validation_root = validation_root_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "VALIDATION-ROOT":
+                setattr(obj, "validation_root", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

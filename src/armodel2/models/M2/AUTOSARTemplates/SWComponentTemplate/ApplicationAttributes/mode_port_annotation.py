@@ -100,11 +100,13 @@ class ModePortAnnotation(GeneralAnnotation):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModePortAnnotation, cls).deserialize(element)
 
-        # Parse mode_group_ref
-        child = SerializationHelper.find_child_element(element, "MODE-GROUP-REF")
-        if child is not None:
-            mode_group_ref_value = ARRef.deserialize(child)
-            obj.mode_group_ref = mode_group_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MODE-GROUP-REF":
+                setattr(obj, "mode_group_ref", ARRef.deserialize(child))
 
         return obj
 

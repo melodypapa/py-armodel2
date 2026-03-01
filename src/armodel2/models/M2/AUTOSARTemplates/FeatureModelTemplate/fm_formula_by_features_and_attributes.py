@@ -114,17 +114,15 @@ class FMFormulaByFeaturesAndAttributes(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFormulaByFeaturesAndAttributes, cls).deserialize(element)
 
-        # Parse attribute_ref
-        child = SerializationHelper.find_child_element(element, "ATTRIBUTE-REF")
-        if child is not None:
-            attribute_ref_value = ARRef.deserialize(child)
-            obj.attribute_ref = attribute_ref_value
-
-        # Parse feature_ref
-        child = SerializationHelper.find_child_element(element, "FEATURE-REF")
-        if child is not None:
-            feature_ref_value = ARRef.deserialize(child)
-            obj.feature_ref = feature_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ATTRIBUTE-REF":
+                setattr(obj, "attribute_ref", ARRef.deserialize(child))
+            elif tag == "FEATURE-REF":
+                setattr(obj, "feature_ref", ARRef.deserialize(child))
 
         return obj
 

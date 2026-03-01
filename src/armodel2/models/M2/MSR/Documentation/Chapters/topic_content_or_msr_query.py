@@ -41,8 +41,8 @@ class TopicContentOrMsrQuery(ARObject):
     msr_query_p1: MsrQueryP1
     topic_content: TopicContent
     _DESERIALIZE_DISPATCH = {
-        "MSR-QUERY-P1": lambda obj, elem: setattr(obj, "msr_query_p1", MsrQueryP1.deserialize(elem)),
-        "TOPIC-CONTENT": lambda obj, elem: setattr(obj, "topic_content", TopicContent.deserialize(elem)),
+        "MSR-QUERY-P1": lambda obj, elem: setattr(obj, "msr_query_p1", SerializationHelper.deserialize_by_tag(elem, "MsrQueryP1")),
+        "TOPIC-CONTENT": lambda obj, elem: setattr(obj, "topic_content", SerializationHelper.deserialize_by_tag(elem, "TopicContent")),
     }
 
 

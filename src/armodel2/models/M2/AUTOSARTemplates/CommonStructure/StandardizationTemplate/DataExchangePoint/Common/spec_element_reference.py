@@ -36,7 +36,7 @@ class SpecElementReference(Identifiable, ABC):
 
     alternative: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "ALTERNATIVE": lambda obj, elem: setattr(obj, "alternative", elem.text),
+        "ALTERNATIVE": lambda obj, elem: setattr(obj, "alternative", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -97,11 +97,13 @@ class SpecElementReference(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SpecElementReference, cls).deserialize(element)
 
-        # Parse alternative
-        child = SerializationHelper.find_child_element(element, "ALTERNATIVE")
-        if child is not None:
-            alternative_value = child.text
-            obj.alternative = alternative_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALTERNATIVE":
+                setattr(obj, "alternative", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

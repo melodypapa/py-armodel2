@@ -98,11 +98,13 @@ class AbstractAccessPoint(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractAccessPoint, cls).deserialize(element)
 
-        # Parse return_value
-        child = SerializationHelper.find_child_element(element, "RETURN-VALUE")
-        if child is not None:
-            return_value_value = RteApiReturnValueProvisionEnum.deserialize(child)
-            obj.return_value = return_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RETURN-VALUE":
+                setattr(obj, "return_value", RteApiReturnValueProvisionEnum.deserialize(child))
 
         return obj
 

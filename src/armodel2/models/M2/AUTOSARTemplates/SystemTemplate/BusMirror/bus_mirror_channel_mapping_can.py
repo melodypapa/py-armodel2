@@ -51,11 +51,11 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
     mirror_source_lin: Optional[PositiveInteger]
     mirror_status: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "CAN-ID-RANGES": lambda obj, elem: obj.can_id_ranges.append(BusMirrorCanIdRangeMapping.deserialize(elem)),
-        "CAN-ID-TO-CAN-IDS": lambda obj, elem: obj.can_id_to_can_ids.append(BusMirrorCanIdToCanIdMapping.deserialize(elem)),
-        "LIN-PID-TO-CAN-IDS": lambda obj, elem: obj.lin_pid_to_can_ids.append(BusMirrorLinPidToCanIdMapping.deserialize(elem)),
-        "MIRROR-SOURCE-LIN": lambda obj, elem: setattr(obj, "mirror_source_lin", elem.text),
-        "MIRROR-STATUS": lambda obj, elem: setattr(obj, "mirror_status", elem.text),
+        "CAN-ID-RANGES": lambda obj, elem: obj.can_id_ranges.append(SerializationHelper.deserialize_by_tag(elem, "BusMirrorCanIdRangeMapping")),
+        "CAN-ID-TO-CAN-IDS": lambda obj, elem: obj.can_id_to_can_ids.append(SerializationHelper.deserialize_by_tag(elem, "BusMirrorCanIdToCanIdMapping")),
+        "LIN-PID-TO-CAN-IDS": lambda obj, elem: obj.lin_pid_to_can_ids.append(SerializationHelper.deserialize_by_tag(elem, "BusMirrorLinPidToCanIdMapping")),
+        "MIRROR-SOURCE-LIN": lambda obj, elem: setattr(obj, "mirror_source_lin", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MIRROR-STATUS": lambda obj, elem: setattr(obj, "mirror_status", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -164,47 +164,21 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BusMirrorChannelMappingCan, cls).deserialize(element)
 
-        # Parse can_id_ranges (list from container "CAN-ID-RANGES")
-        obj.can_id_ranges = []
-        container = SerializationHelper.find_child_element(element, "CAN-ID-RANGES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.can_id_ranges.append(child_value)
-
-        # Parse can_id_to_can_ids (list from container "CAN-ID-TO-CAN-IDS")
-        obj.can_id_to_can_ids = []
-        container = SerializationHelper.find_child_element(element, "CAN-ID-TO-CAN-IDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.can_id_to_can_ids.append(child_value)
-
-        # Parse lin_pid_to_can_ids (list from container "LIN-PID-TO-CAN-IDS")
-        obj.lin_pid_to_can_ids = []
-        container = SerializationHelper.find_child_element(element, "LIN-PID-TO-CAN-IDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.lin_pid_to_can_ids.append(child_value)
-
-        # Parse mirror_source_lin
-        child = SerializationHelper.find_child_element(element, "MIRROR-SOURCE-LIN")
-        if child is not None:
-            mirror_source_lin_value = child.text
-            obj.mirror_source_lin = mirror_source_lin_value
-
-        # Parse mirror_status
-        child = SerializationHelper.find_child_element(element, "MIRROR-STATUS")
-        if child is not None:
-            mirror_status_value = child.text
-            obj.mirror_status = mirror_status_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CAN-ID-RANGES":
+                obj.can_id_ranges.append(SerializationHelper.deserialize_by_tag(child, "BusMirrorCanIdRangeMapping"))
+            elif tag == "CAN-ID-TO-CAN-IDS":
+                obj.can_id_to_can_ids.append(SerializationHelper.deserialize_by_tag(child, "BusMirrorCanIdToCanIdMapping"))
+            elif tag == "LIN-PID-TO-CAN-IDS":
+                obj.lin_pid_to_can_ids.append(SerializationHelper.deserialize_by_tag(child, "BusMirrorLinPidToCanIdMapping"))
+            elif tag == "MIRROR-SOURCE-LIN":
+                setattr(obj, "mirror_source_lin", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MIRROR-STATUS":
+                setattr(obj, "mirror_status", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

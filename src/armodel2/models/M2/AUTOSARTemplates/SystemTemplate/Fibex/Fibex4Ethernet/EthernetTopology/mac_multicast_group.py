@@ -38,7 +38,7 @@ class MacMulticastGroup(Identifiable):
 
     mac_multicast: Optional[MacAddressString]
     _DESERIALIZE_DISPATCH = {
-        "MAC-MULTICAST": lambda obj, elem: setattr(obj, "mac_multicast", elem.text),
+        "MAC-MULTICAST": lambda obj, elem: setattr(obj, "mac_multicast", SerializationHelper.deserialize_by_tag(elem, "MacAddressString")),
     }
 
 
@@ -99,11 +99,13 @@ class MacMulticastGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacMulticastGroup, cls).deserialize(element)
 
-        # Parse mac_multicast
-        child = SerializationHelper.find_child_element(element, "MAC-MULTICAST")
-        if child is not None:
-            mac_multicast_value = child.text
-            obj.mac_multicast = mac_multicast_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAC-MULTICAST":
+                setattr(obj, "mac_multicast", SerializationHelper.deserialize_by_tag(child, "MacAddressString"))
 
         return obj
 

@@ -141,19 +141,15 @@ class AssemblySwConnector(SwConnector):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AssemblySwConnector, cls).deserialize(element)
 
-        # Parse provider_iref (instance reference from wrapper "PROVIDER-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "PROVIDER-IREF")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            provider_iref_value = SerializationHelper.deserialize_by_tag(wrapper, "PPortInCompositionInstanceRef")
-            obj.provider_iref = provider_iref_value
-
-        # Parse requester_iref (instance reference from wrapper "REQUESTER-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "REQUESTER-IREF")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            requester_iref_value = SerializationHelper.deserialize_by_tag(wrapper, "RPortInCompositionInstanceRef")
-            obj.requester_iref = requester_iref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PROVIDER":
+                setattr(obj, "_provider_iref", ARRef.deserialize(child))
+            elif tag == "REQUESTER":
+                setattr(obj, "_requester_iref", ARRef.deserialize(child))
 
         return obj
 

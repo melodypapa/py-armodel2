@@ -38,7 +38,7 @@ class TransformationPropsSet(ARElement):
 
     transformation_props_propses: list[TransformationProps]
     _DESERIALIZE_DISPATCH = {
-        "TRANSFORMATION-PROPS-PROPSES": lambda obj, elem: obj.transformation_props_propses.append(TransformationProps.deserialize(elem)),
+        "TRANSFORMATION-PROPS-PROPSES": ("_POLYMORPHIC_LIST", "transformation_props_propses", ["SOMEIPTransformationProps", "UserDefinedTransformationProps"]),
     }
 
 
@@ -95,15 +95,19 @@ class TransformationPropsSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransformationPropsSet, cls).deserialize(element)
 
-        # Parse transformation_props_propses (list from container "TRANSFORMATION-PROPS-PROPSES")
-        obj.transformation_props_propses = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-PROPS-PROPSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.transformation_props_propses.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TRANSFORMATION-PROPS-PROPSES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "S-O-M-E-I-P-TRANSFORMATION-PROPS":
+                        obj.transformation_props_propses.append(SerializationHelper.deserialize_by_tag(child[0], "SOMEIPTransformationProps"))
+                    elif concrete_tag == "USER-DEFINED-TRANSFORMATION-PROPS":
+                        obj.transformation_props_propses.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedTransformationProps"))
 
         return obj
 

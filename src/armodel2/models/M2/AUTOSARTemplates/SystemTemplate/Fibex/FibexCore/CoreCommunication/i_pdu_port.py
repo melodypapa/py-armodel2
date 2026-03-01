@@ -46,9 +46,9 @@ class IPduPort(CommConnectorPort):
     use_auth_data: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
         "I-PDU-SIGNAL": lambda obj, elem: setattr(obj, "i_pdu_signal", IPduSignalProcessingEnum.deserialize(elem)),
-        "RX-SECURITY": lambda obj, elem: setattr(obj, "rx_security", elem.text),
-        "TIMESTAMP-RX": lambda obj, elem: setattr(obj, "timestamp_rx", elem.text),
-        "USE-AUTH-DATA": lambda obj, elem: setattr(obj, "use_auth_data", elem.text),
+        "RX-SECURITY": lambda obj, elem: setattr(obj, "rx_security", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TIMESTAMP-RX": lambda obj, elem: setattr(obj, "timestamp_rx", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "USE-AUTH-DATA": lambda obj, elem: setattr(obj, "use_auth_data", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -154,29 +154,19 @@ class IPduPort(CommConnectorPort):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IPduPort, cls).deserialize(element)
 
-        # Parse i_pdu_signal
-        child = SerializationHelper.find_child_element(element, "I-PDU-SIGNAL")
-        if child is not None:
-            i_pdu_signal_value = IPduSignalProcessingEnum.deserialize(child)
-            obj.i_pdu_signal = i_pdu_signal_value
-
-        # Parse rx_security
-        child = SerializationHelper.find_child_element(element, "RX-SECURITY")
-        if child is not None:
-            rx_security_value = child.text
-            obj.rx_security = rx_security_value
-
-        # Parse timestamp_rx
-        child = SerializationHelper.find_child_element(element, "TIMESTAMP-RX")
-        if child is not None:
-            timestamp_rx_value = child.text
-            obj.timestamp_rx = timestamp_rx_value
-
-        # Parse use_auth_data
-        child = SerializationHelper.find_child_element(element, "USE-AUTH-DATA")
-        if child is not None:
-            use_auth_data_value = child.text
-            obj.use_auth_data = use_auth_data_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "I-PDU-SIGNAL":
+                setattr(obj, "i_pdu_signal", IPduSignalProcessingEnum.deserialize(child))
+            elif tag == "RX-SECURITY":
+                setattr(obj, "rx_security", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TIMESTAMP-RX":
+                setattr(obj, "timestamp_rx", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "USE-AUTH-DATA":
+                setattr(obj, "use_auth_data", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

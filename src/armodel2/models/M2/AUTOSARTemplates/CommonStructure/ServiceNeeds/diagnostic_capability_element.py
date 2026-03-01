@@ -44,8 +44,8 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
     security_access: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
         "AUDIENCES": lambda obj, elem: obj.audiences.append(DiagnosticAudienceEnum.deserialize(elem)),
-        "DIAG": lambda obj, elem: setattr(obj, "diag", elem.text),
-        "SECURITY-ACCESS": lambda obj, elem: setattr(obj, "security_access", elem.text),
+        "DIAG": lambda obj, elem: setattr(obj, "diag", SerializationHelper.deserialize_by_tag(elem, "DiagRequirementIdString")),
+        "SECURITY-ACCESS": lambda obj, elem: setattr(obj, "security_access", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -139,27 +139,17 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticCapabilityElement, cls).deserialize(element)
 
-        # Parse audiences (list from container "AUDIENCES")
-        obj.audiences = []
-        container = SerializationHelper.find_child_element(element, "AUDIENCES")
-        if container is not None:
-            for child in container:
-                # Extract enum value (DiagnosticAudienceEnum)
-                child_value = DiagnosticAudienceEnum.deserialize(child)
-                if child_value is not None:
-                    obj.audiences.append(child_value)
-
-        # Parse diag
-        child = SerializationHelper.find_child_element(element, "DIAG")
-        if child is not None:
-            diag_value = child.text
-            obj.diag = diag_value
-
-        # Parse security_access
-        child = SerializationHelper.find_child_element(element, "SECURITY-ACCESS")
-        if child is not None:
-            security_access_value = child.text
-            obj.security_access = security_access_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AUDIENCES":
+                obj.audiences.append(DiagnosticAudienceEnum.deserialize(child))
+            elif tag == "DIAG":
+                setattr(obj, "diag", SerializationHelper.deserialize_by_tag(child, "DiagRequirementIdString"))
+            elif tag == "SECURITY-ACCESS":
+                setattr(obj, "security_access", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

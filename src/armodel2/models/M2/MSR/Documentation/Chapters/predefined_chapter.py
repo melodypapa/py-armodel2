@@ -34,7 +34,7 @@ class PredefinedChapter(ARObject):
 
     chapter_model: ChapterModel
     _DESERIALIZE_DISPATCH = {
-        "CHAPTER-MODEL": lambda obj, elem: setattr(obj, "chapter_model", ChapterModel.deserialize(elem)),
+        "CHAPTER-MODEL": lambda obj, elem: setattr(obj, "chapter_model", SerializationHelper.deserialize_by_tag(elem, "ChapterModel")),
     }
 
 
@@ -95,11 +95,13 @@ class PredefinedChapter(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PredefinedChapter, cls).deserialize(element)
 
-        # Parse chapter_model
-        child = SerializationHelper.find_child_element(element, "CHAPTER-MODEL")
-        if child is not None:
-            chapter_model_value = SerializationHelper.deserialize_by_tag(child, "ChapterModel")
-            obj.chapter_model = chapter_model_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CHAPTER-MODEL":
+                setattr(obj, "chapter_model", SerializationHelper.deserialize_by_tag(child, "ChapterModel"))
 
         return obj
 

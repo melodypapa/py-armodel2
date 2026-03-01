@@ -46,13 +46,13 @@ class CryptoKeySlot(Identifiable):
     slot_capacity: Optional[PositiveInteger]
     slot_type: Optional[CryptoKeySlotTypeEnum]
     _DESERIALIZE_DISPATCH = {
-        "ALLOCATE-SHADOW-COPY": lambda obj, elem: setattr(obj, "allocate_shadow_copy", elem.text),
-        "CRYPTO-ALG-ID": lambda obj, elem: setattr(obj, "crypto_alg_id", elem.text),
-        "CRYPTO-OBJECT-TYPE": lambda obj, elem: setattr(obj, "crypto_object_type", CryptoObjectTypeEnum.deserialize(elem)),
-        "KEY-SLOT-ALLOWED-MODIFICATION": lambda obj, elem: setattr(obj, "key_slot_allowed_modification", CryptoKeySlotAllowedModification.deserialize(elem)),
-        "KEY-SLOT-CONTENT-ALLOWED-USAGES": lambda obj, elem: obj.key_slot_content_allowed_usages.append(CryptoKeySlotContentAllowedUsage.deserialize(elem)),
-        "SLOT-CAPACITY": lambda obj, elem: setattr(obj, "slot_capacity", elem.text),
-        "SLOT-TYPE": lambda obj, elem: setattr(obj, "slot_type", CryptoKeySlotTypeEnum.deserialize(elem)),
+        "ALLOCATE-SHADOW-COPY": lambda obj, elem: setattr(obj, "allocate_shadow_copy", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CRYPTO-ALG-ID": lambda obj, elem: setattr(obj, "crypto_alg_id", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "CRYPTO-OBJECT-TYPE": lambda obj, elem: setattr(obj, "crypto_object_type", SerializationHelper.deserialize_by_tag(elem, "CryptoObjectTypeEnum")),
+        "KEY-SLOT-ALLOWED-MODIFICATION": lambda obj, elem: setattr(obj, "key_slot_allowed_modification", SerializationHelper.deserialize_by_tag(elem, "CryptoKeySlotAllowedModification")),
+        "KEY-SLOT-CONTENT-ALLOWED-USAGES": lambda obj, elem: obj.key_slot_content_allowed_usages.append(SerializationHelper.deserialize_by_tag(elem, "CryptoKeySlotContentAllowedUsage")),
+        "SLOT-CAPACITY": lambda obj, elem: setattr(obj, "slot_capacity", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SLOT-TYPE": lambda obj, elem: setattr(obj, "slot_type", SerializationHelper.deserialize_by_tag(elem, "CryptoKeySlotTypeEnum")),
     }
 
 
@@ -199,51 +199,25 @@ class CryptoKeySlot(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CryptoKeySlot, cls).deserialize(element)
 
-        # Parse allocate_shadow_copy
-        child = SerializationHelper.find_child_element(element, "ALLOCATE-SHADOW-COPY")
-        if child is not None:
-            allocate_shadow_copy_value = child.text
-            obj.allocate_shadow_copy = allocate_shadow_copy_value
-
-        # Parse crypto_alg_id
-        child = SerializationHelper.find_child_element(element, "CRYPTO-ALG-ID")
-        if child is not None:
-            crypto_alg_id_value = child.text
-            obj.crypto_alg_id = crypto_alg_id_value
-
-        # Parse crypto_object_type
-        child = SerializationHelper.find_child_element(element, "CRYPTO-OBJECT-TYPE")
-        if child is not None:
-            crypto_object_type_value = SerializationHelper.deserialize_by_tag(child, "CryptoObjectTypeEnum")
-            obj.crypto_object_type = crypto_object_type_value
-
-        # Parse key_slot_allowed_modification
-        child = SerializationHelper.find_child_element(element, "KEY-SLOT-ALLOWED-MODIFICATION")
-        if child is not None:
-            key_slot_allowed_modification_value = SerializationHelper.deserialize_by_tag(child, "CryptoKeySlotAllowedModification")
-            obj.key_slot_allowed_modification = key_slot_allowed_modification_value
-
-        # Parse key_slot_content_allowed_usages (list from container "KEY-SLOT-CONTENT-ALLOWED-USAGES")
-        obj.key_slot_content_allowed_usages = []
-        container = SerializationHelper.find_child_element(element, "KEY-SLOT-CONTENT-ALLOWED-USAGES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.key_slot_content_allowed_usages.append(child_value)
-
-        # Parse slot_capacity
-        child = SerializationHelper.find_child_element(element, "SLOT-CAPACITY")
-        if child is not None:
-            slot_capacity_value = child.text
-            obj.slot_capacity = slot_capacity_value
-
-        # Parse slot_type
-        child = SerializationHelper.find_child_element(element, "SLOT-TYPE")
-        if child is not None:
-            slot_type_value = SerializationHelper.deserialize_by_tag(child, "CryptoKeySlotTypeEnum")
-            obj.slot_type = slot_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALLOCATE-SHADOW-COPY":
+                setattr(obj, "allocate_shadow_copy", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CRYPTO-ALG-ID":
+                setattr(obj, "crypto_alg_id", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "CRYPTO-OBJECT-TYPE":
+                setattr(obj, "crypto_object_type", SerializationHelper.deserialize_by_tag(child, "CryptoObjectTypeEnum"))
+            elif tag == "KEY-SLOT-ALLOWED-MODIFICATION":
+                setattr(obj, "key_slot_allowed_modification", SerializationHelper.deserialize_by_tag(child, "CryptoKeySlotAllowedModification"))
+            elif tag == "KEY-SLOT-CONTENT-ALLOWED-USAGES":
+                obj.key_slot_content_allowed_usages.append(SerializationHelper.deserialize_by_tag(child, "CryptoKeySlotContentAllowedUsage"))
+            elif tag == "SLOT-CAPACITY":
+                setattr(obj, "slot_capacity", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SLOT-TYPE":
+                setattr(obj, "slot_type", SerializationHelper.deserialize_by_tag(child, "CryptoKeySlotTypeEnum"))
 
         return obj
 

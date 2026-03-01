@@ -136,23 +136,17 @@ class PortGroupInSystemInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortGroupInSystemInstanceRef, cls).deserialize(element)
 
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse context_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-REF")
-        if child is not None:
-            context_ref_value = ARRef.deserialize(child)
-            obj.context_ref = context_ref_value
-
-        # Parse target_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-REF")
-        if child is not None:
-            target_ref_value = ARRef.deserialize(child)
-            obj.target_ref = target_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BASE-REF":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-REF":
+                setattr(obj, "context_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-REF":
+                setattr(obj, "target_ref", ARRef.deserialize(child))
 
         return obj
 

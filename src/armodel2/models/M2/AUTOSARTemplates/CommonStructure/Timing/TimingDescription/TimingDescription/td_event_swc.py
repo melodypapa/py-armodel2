@@ -33,7 +33,7 @@ class TDEventSwc(TimingDescriptionEvent, ABC):
 
     component: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "COMPONENT": lambda obj, elem: setattr(obj, "component", any (SwComponent).deserialize(elem)),
+        "COMPONENT": lambda obj, elem: setattr(obj, "component", SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
     }
 
 
@@ -94,11 +94,13 @@ class TDEventSwc(TimingDescriptionEvent, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventSwc, cls).deserialize(element)
 
-        # Parse component
-        child = SerializationHelper.find_child_element(element, "COMPONENT")
-        if child is not None:
-            component_value = child.text
-            obj.component = component_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPONENT":
+                setattr(obj, "component", SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
 
         return obj
 

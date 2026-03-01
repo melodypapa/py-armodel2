@@ -46,8 +46,8 @@ class CpSoftwareCluster(ARElement):
     sw_components: list[Any]
     sw_composition_component_type_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "SOFTWARE-CLUSTER": lambda obj, elem: setattr(obj, "software_cluster", elem.text),
-        "SW-COMPONENTS": lambda obj, elem: obj.sw_components.append(any (SwComponent).deserialize(elem)),
+        "SOFTWARE-CLUSTER": lambda obj, elem: setattr(obj, "software_cluster", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SW-COMPONENTS": lambda obj, elem: obj.sw_components.append(SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
         "SW-COMPOSITION-COMPONENT-TYPES": lambda obj, elem: obj.sw_composition_component_type_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -138,37 +138,17 @@ class CpSoftwareCluster(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareCluster, cls).deserialize(element)
 
-        # Parse software_cluster
-        child = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTER")
-        if child is not None:
-            software_cluster_value = child.text
-            obj.software_cluster = software_cluster_value
-
-        # Parse sw_components (list from container "SW-COMPONENTS")
-        obj.sw_components = []
-        container = SerializationHelper.find_child_element(element, "SW-COMPONENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_components.append(child_value)
-
-        # Parse sw_composition_component_type_refs (list from container "SW-COMPOSITION-COMPONENT-TYPE-REFS")
-        obj.sw_composition_component_type_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-COMPOSITION-COMPONENT-TYPE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_composition_component_type_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SOFTWARE-CLUSTER":
+                setattr(obj, "software_cluster", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SW-COMPONENTS":
+                obj.sw_components.append(SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
+            elif tag == "SW-COMPOSITION-COMPONENT-TYPES":
+                obj.sw_composition_component_type_refs.append(ARRef.deserialize(child))
 
         return obj
 

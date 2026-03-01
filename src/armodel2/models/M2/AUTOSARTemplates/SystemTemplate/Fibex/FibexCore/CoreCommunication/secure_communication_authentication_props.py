@@ -38,7 +38,7 @@ class SecureCommunicationAuthenticationProps(Identifiable):
 
     auth_info_tx: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "AUTH-INFO-TX": lambda obj, elem: setattr(obj, "auth_info_tx", elem.text),
+        "AUTH-INFO-TX": lambda obj, elem: setattr(obj, "auth_info_tx", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -99,11 +99,13 @@ class SecureCommunicationAuthenticationProps(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecureCommunicationAuthenticationProps, cls).deserialize(element)
 
-        # Parse auth_info_tx
-        child = SerializationHelper.find_child_element(element, "AUTH-INFO-TX")
-        if child is not None:
-            auth_info_tx_value = child.text
-            obj.auth_info_tx = auth_info_tx_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AUTH-INFO-TX":
+                setattr(obj, "auth_info_tx", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

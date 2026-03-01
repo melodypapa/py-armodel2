@@ -42,8 +42,8 @@ class DdsCpConfig(ARElement):
     dds_domains: list[DdsCpDomain]
     dds_qos_profiles: list[DdsCpQosProfile]
     _DESERIALIZE_DISPATCH = {
-        "DDS-DOMAINS": lambda obj, elem: obj.dds_domains.append(DdsCpDomain.deserialize(elem)),
-        "DDS-QOS-PROFILES": lambda obj, elem: obj.dds_qos_profiles.append(DdsCpQosProfile.deserialize(elem)),
+        "DDS-DOMAINS": lambda obj, elem: obj.dds_domains.append(SerializationHelper.deserialize_by_tag(elem, "DdsCpDomain")),
+        "DDS-QOS-PROFILES": lambda obj, elem: obj.dds_qos_profiles.append(SerializationHelper.deserialize_by_tag(elem, "DdsCpQosProfile")),
     }
 
 
@@ -111,25 +111,15 @@ class DdsCpConfig(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpConfig, cls).deserialize(element)
 
-        # Parse dds_domains (list from container "DDS-DOMAINS")
-        obj.dds_domains = []
-        container = SerializationHelper.find_child_element(element, "DDS-DOMAINS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dds_domains.append(child_value)
-
-        # Parse dds_qos_profiles (list from container "DDS-QOS-PROFILES")
-        obj.dds_qos_profiles = []
-        container = SerializationHelper.find_child_element(element, "DDS-QOS-PROFILES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dds_qos_profiles.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DDS-DOMAINS":
+                obj.dds_domains.append(SerializationHelper.deserialize_by_tag(child, "DdsCpDomain"))
+            elif tag == "DDS-QOS-PROFILES":
+                obj.dds_qos_profiles.append(SerializationHelper.deserialize_by_tag(child, "DdsCpQosProfile"))
 
         return obj
 

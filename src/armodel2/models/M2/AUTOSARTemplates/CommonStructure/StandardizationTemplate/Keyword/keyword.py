@@ -40,8 +40,8 @@ class Keyword(Identifiable):
     abbr_name: NameToken
     classifications: list[NameToken]
     _DESERIALIZE_DISPATCH = {
-        "ABBR-NAME": lambda obj, elem: setattr(obj, "abbr_name", elem.text),
-        "CLASSIFICATIONS": lambda obj, elem: obj.classifications.append(elem.text),
+        "ABBR-NAME": lambda obj, elem: setattr(obj, "abbr_name", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "CLASSIFICATIONS": lambda obj, elem: obj.classifications.append(SerializationHelper.deserialize_by_tag(elem, "NameToken")),
     }
 
 
@@ -120,21 +120,15 @@ class Keyword(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Keyword, cls).deserialize(element)
 
-        # Parse abbr_name
-        child = SerializationHelper.find_child_element(element, "ABBR-NAME")
-        if child is not None:
-            abbr_name_value = child.text
-            obj.abbr_name = abbr_name_value
-
-        # Parse classifications (list from container "CLASSIFICATIONS")
-        obj.classifications = []
-        container = SerializationHelper.find_child_element(element, "CLASSIFICATIONS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (NameToken) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.classifications.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ABBR-NAME":
+                setattr(obj, "abbr_name", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "CLASSIFICATIONS":
+                obj.classifications.append(SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

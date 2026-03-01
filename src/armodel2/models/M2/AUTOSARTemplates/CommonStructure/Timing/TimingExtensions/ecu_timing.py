@@ -100,11 +100,13 @@ class EcuTiming(TimingExtension):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcuTiming, cls).deserialize(element)
 
-        # Parse ecu_ref
-        child = SerializationHelper.find_child_element(element, "ECU-REF")
-        if child is not None:
-            ecu_ref_value = ARRef.deserialize(child)
-            obj.ecu_ref = ecu_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ECU-REF":
+                setattr(obj, "ecu_ref", ARRef.deserialize(child))
 
         return obj
 

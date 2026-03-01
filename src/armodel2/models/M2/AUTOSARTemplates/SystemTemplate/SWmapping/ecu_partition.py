@@ -38,7 +38,7 @@ class EcuPartition(Identifiable):
 
     exec_in_user: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "EXEC-IN-USER": lambda obj, elem: setattr(obj, "exec_in_user", elem.text),
+        "EXEC-IN-USER": lambda obj, elem: setattr(obj, "exec_in_user", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -99,11 +99,13 @@ class EcuPartition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcuPartition, cls).deserialize(element)
 
-        # Parse exec_in_user
-        child = SerializationHelper.find_child_element(element, "EXEC-IN-USER")
-        if child is not None:
-            exec_in_user_value = child.text
-            obj.exec_in_user = exec_in_user_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "EXEC-IN-USER":
+                setattr(obj, "exec_in_user", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

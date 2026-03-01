@@ -45,7 +45,7 @@ class AutosarDataPrototype(DataPrototype, ABC):
 
     type_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TYPE-TREF": lambda obj, elem: setattr(obj, "type_ref", ARRef.deserialize(elem)),
+        "TYPE-TREF": ("_POLYMORPHIC", "type_ref", ["AbstractImplementationDataType", "ApplicationDataType"]),
     }
 
 
@@ -106,11 +106,19 @@ class AutosarDataPrototype(DataPrototype, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AutosarDataPrototype, cls).deserialize(element)
 
-        # Parse type_ref
-        child = SerializationHelper.find_child_element(element, "TYPE-TREF")
-        if child is not None:
-            type_ref_value = ARRef.deserialize(child)
-            obj.type_ref = type_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TYPE-TREF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-IMPLEMENTATION-DATA-TYPE":
+                        setattr(obj, "type_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractImplementationDataType"))
+                    elif concrete_tag == "APPLICATION-DATA-TYPE":
+                        setattr(obj, "type_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationDataType"))
 
         return obj
 

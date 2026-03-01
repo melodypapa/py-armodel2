@@ -45,9 +45,9 @@ class DltConfig(ARObject):
     timestamp: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
         "DLT-ECU-REF": lambda obj, elem: setattr(obj, "dlt_ecu_ref", ARRef.deserialize(elem)),
-        "DLT-LOG-CHANNELS": lambda obj, elem: obj.dlt_log_channels.append(DltLogChannel.deserialize(elem)),
-        "SESSION-ID": lambda obj, elem: setattr(obj, "session_id", elem.text),
-        "TIMESTAMP": lambda obj, elem: setattr(obj, "timestamp", elem.text),
+        "DLT-LOG-CHANNELS": lambda obj, elem: obj.dlt_log_channels.append(SerializationHelper.deserialize_by_tag(elem, "DltLogChannel")),
+        "SESSION-ID": lambda obj, elem: setattr(obj, "session_id", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TIMESTAMP": lambda obj, elem: setattr(obj, "timestamp", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -149,33 +149,19 @@ class DltConfig(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DltConfig, cls).deserialize(element)
 
-        # Parse dlt_ecu_ref
-        child = SerializationHelper.find_child_element(element, "DLT-ECU-REF")
-        if child is not None:
-            dlt_ecu_ref_value = ARRef.deserialize(child)
-            obj.dlt_ecu_ref = dlt_ecu_ref_value
-
-        # Parse dlt_log_channels (list from container "DLT-LOG-CHANNELS")
-        obj.dlt_log_channels = []
-        container = SerializationHelper.find_child_element(element, "DLT-LOG-CHANNELS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dlt_log_channels.append(child_value)
-
-        # Parse session_id
-        child = SerializationHelper.find_child_element(element, "SESSION-ID")
-        if child is not None:
-            session_id_value = child.text
-            obj.session_id = session_id_value
-
-        # Parse timestamp
-        child = SerializationHelper.find_child_element(element, "TIMESTAMP")
-        if child is not None:
-            timestamp_value = child.text
-            obj.timestamp = timestamp_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DLT-ECU-REF":
+                setattr(obj, "dlt_ecu_ref", ARRef.deserialize(child))
+            elif tag == "DLT-LOG-CHANNELS":
+                obj.dlt_log_channels.append(SerializationHelper.deserialize_by_tag(child, "DltLogChannel"))
+            elif tag == "SESSION-ID":
+                setattr(obj, "session_id", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TIMESTAMP":
+                setattr(obj, "timestamp", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

@@ -51,12 +51,12 @@ class DltArgument(Identifiable):
     predefined_text: Optional[Boolean]
     variable_length: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "DLT-ARGUMENTS": lambda obj, elem: obj.dlt_arguments.append(DltArgument.deserialize(elem)),
-        "LENGTH": lambda obj, elem: setattr(obj, "length", elem.text),
-        "NETWORK": lambda obj, elem: setattr(obj, "network", SwDataDefProps.deserialize(elem)),
-        "OPTIONAL": lambda obj, elem: setattr(obj, "optional", elem.text),
-        "PREDEFINED-TEXT": lambda obj, elem: setattr(obj, "predefined_text", elem.text),
-        "VARIABLE-LENGTH": lambda obj, elem: setattr(obj, "variable_length", elem.text),
+        "DLT-ARGUMENTS": lambda obj, elem: obj.dlt_arguments.append(SerializationHelper.deserialize_by_tag(elem, "DltArgument")),
+        "LENGTH": lambda obj, elem: setattr(obj, "length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "NETWORK": lambda obj, elem: setattr(obj, "network", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "OPTIONAL": lambda obj, elem: setattr(obj, "optional", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PREDEFINED-TEXT": lambda obj, elem: setattr(obj, "predefined_text", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "VARIABLE-LENGTH": lambda obj, elem: setattr(obj, "variable_length", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -188,45 +188,23 @@ class DltArgument(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DltArgument, cls).deserialize(element)
 
-        # Parse dlt_arguments (list from container "DLT-ARGUMENTS")
-        obj.dlt_arguments = []
-        container = SerializationHelper.find_child_element(element, "DLT-ARGUMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dlt_arguments.append(child_value)
-
-        # Parse length
-        child = SerializationHelper.find_child_element(element, "LENGTH")
-        if child is not None:
-            length_value = child.text
-            obj.length = length_value
-
-        # Parse network
-        child = SerializationHelper.find_child_element(element, "NETWORK")
-        if child is not None:
-            network_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.network = network_value
-
-        # Parse optional
-        child = SerializationHelper.find_child_element(element, "OPTIONAL")
-        if child is not None:
-            optional_value = child.text
-            obj.optional = optional_value
-
-        # Parse predefined_text
-        child = SerializationHelper.find_child_element(element, "PREDEFINED-TEXT")
-        if child is not None:
-            predefined_text_value = child.text
-            obj.predefined_text = predefined_text_value
-
-        # Parse variable_length
-        child = SerializationHelper.find_child_element(element, "VARIABLE-LENGTH")
-        if child is not None:
-            variable_length_value = child.text
-            obj.variable_length = variable_length_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DLT-ARGUMENTS":
+                obj.dlt_arguments.append(SerializationHelper.deserialize_by_tag(child, "DltArgument"))
+            elif tag == "LENGTH":
+                setattr(obj, "length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "NETWORK":
+                setattr(obj, "network", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            elif tag == "OPTIONAL":
+                setattr(obj, "optional", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PREDEFINED-TEXT":
+                setattr(obj, "predefined_text", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "VARIABLE-LENGTH":
+                setattr(obj, "variable_length", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

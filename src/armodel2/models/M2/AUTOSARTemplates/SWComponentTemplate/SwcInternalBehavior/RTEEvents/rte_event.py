@@ -139,22 +139,15 @@ class RTEEvent(AbstractEvent, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RTEEvent, cls).deserialize(element)
 
-        # Parse disabled_mode_irefs (multi-wrapper list from "DISABLED-MODE-IREFS")
-        obj.disabled_mode_irefs = []
-        irefs_container = SerializationHelper.find_child_element(element, "DISABLED-MODE-IREFS")
-        if irefs_container is not None:
-            for iref_wrapper in irefs_container:
-                if SerializationHelper.strip_namespace(iref_wrapper.tag) == "DISABLED-MODE-IREF":
-                    # Deserialize each iref wrapper as the type (flattened structure)
-                    child_value = SerializationHelper.deserialize_by_tag(iref_wrapper, "RModeInAtomicSwcInstanceRef")
-                    if child_value is not None:
-                        obj.disabled_mode_irefs.append(child_value)
-
-        # Parse start_on_event_ref
-        child = SerializationHelper.find_child_element(element, "START-ON-EVENT-REF")
-        if child is not None:
-            start_on_event_ref_value = ARRef.deserialize(child)
-            obj.start_on_event_ref = start_on_event_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DISABLED-MODES":
+                obj._disabled_mode_irefs.append(ARRef.deserialize(child))
+            elif tag == "START-ON-EVENT-REF":
+                setattr(obj, "start_on_event_ref", ARRef.deserialize(child))
 
         return obj
 

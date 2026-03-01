@@ -46,9 +46,9 @@ class RptComponent(Identifiable):
     rp_impl_policy: Optional[RptImplPolicy]
     rpt_executable_entities: list[RptExecutableEntity]
     _DESERIALIZE_DISPATCH = {
-        "MC-DATAS": lambda obj, elem: obj.mc_datas.append(RoleBasedMcDataAssignment.deserialize(elem)),
-        "RP-IMPL-POLICY": lambda obj, elem: setattr(obj, "rp_impl_policy", RptImplPolicy.deserialize(elem)),
-        "RPT-EXECUTABLE-ENTITIES": lambda obj, elem: obj.rpt_executable_entities.append(RptExecutableEntity.deserialize(elem)),
+        "MC-DATAS": lambda obj, elem: obj.mc_datas.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
+        "RP-IMPL-POLICY": lambda obj, elem: setattr(obj, "rp_impl_policy", SerializationHelper.deserialize_by_tag(elem, "RptImplPolicy")),
+        "RPT-EXECUTABLE-ENTITIES": lambda obj, elem: obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(elem, "RptExecutableEntity")),
     }
 
 
@@ -131,31 +131,17 @@ class RptComponent(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptComponent, cls).deserialize(element)
 
-        # Parse mc_datas (list from container "MC-DATAS")
-        obj.mc_datas = []
-        container = SerializationHelper.find_child_element(element, "MC-DATAS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mc_datas.append(child_value)
-
-        # Parse rp_impl_policy
-        child = SerializationHelper.find_child_element(element, "RP-IMPL-POLICY")
-        if child is not None:
-            rp_impl_policy_value = SerializationHelper.deserialize_by_tag(child, "RptImplPolicy")
-            obj.rp_impl_policy = rp_impl_policy_value
-
-        # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITIES")
-        obj.rpt_executable_entities = []
-        container = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rpt_executable_entities.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MC-DATAS":
+                obj.mc_datas.append(SerializationHelper.deserialize_by_tag(child, "RoleBasedMcDataAssignment"))
+            elif tag == "RP-IMPL-POLICY":
+                setattr(obj, "rp_impl_policy", SerializationHelper.deserialize_by_tag(child, "RptImplPolicy"))
+            elif tag == "RPT-EXECUTABLE-ENTITIES":
+                obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(child, "RptExecutableEntity"))
 
         return obj
 

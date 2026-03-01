@@ -38,7 +38,7 @@ class HwCategory(ARElement):
 
     hw_attribute_defs: list[HwAttributeDef]
     _DESERIALIZE_DISPATCH = {
-        "HW-ATTRIBUTE-DEFS": lambda obj, elem: obj.hw_attribute_defs.append(HwAttributeDef.deserialize(elem)),
+        "HW-ATTRIBUTE-DEFS": lambda obj, elem: obj.hw_attribute_defs.append(SerializationHelper.deserialize_by_tag(elem, "HwAttributeDef")),
     }
 
 
@@ -95,15 +95,13 @@ class HwCategory(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwCategory, cls).deserialize(element)
 
-        # Parse hw_attribute_defs (list from container "HW-ATTRIBUTE-DEFS")
-        obj.hw_attribute_defs = []
-        container = SerializationHelper.find_child_element(element, "HW-ATTRIBUTE-DEFS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.hw_attribute_defs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "HW-ATTRIBUTE-DEFS":
+                obj.hw_attribute_defs.append(SerializationHelper.deserialize_by_tag(child, "HwAttributeDef"))
 
         return obj
 

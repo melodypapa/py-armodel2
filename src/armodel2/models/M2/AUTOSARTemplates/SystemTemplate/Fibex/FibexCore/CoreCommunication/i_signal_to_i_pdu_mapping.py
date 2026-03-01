@@ -59,9 +59,9 @@ class ISignalToIPduMapping(Identifiable):
         "I-SIGNAL-REF": lambda obj, elem: setattr(obj, "i_signal_ref", ARRef.deserialize(elem)),
         "I-SIGNAL-GROUP-REF": lambda obj, elem: setattr(obj, "i_signal_group_ref", ARRef.deserialize(elem)),
         "PACKING-BYTE-ORDER": lambda obj, elem: setattr(obj, "packing_byte_order", ByteOrderEnum.deserialize(elem)),
-        "START-POSITION": lambda obj, elem: setattr(obj, "start_position", elem.text),
+        "START-POSITION": lambda obj, elem: setattr(obj, "start_position", SerializationHelper.deserialize_by_tag(elem, "UnlimitedInteger")),
         "TRANSFER-PROPERTY": lambda obj, elem: setattr(obj, "transfer_property", TransferPropertyEnum.deserialize(elem)),
-        "UPDATE-INDICATION-BIT-POSITION": lambda obj, elem: setattr(obj, "update_indication_bit_position", elem.text),
+        "UPDATE-INDICATION-BIT-POSITION": lambda obj, elem: setattr(obj, "update_indication_bit_position", SerializationHelper.deserialize_by_tag(elem, "UnlimitedInteger")),
     }
 
 
@@ -197,41 +197,23 @@ class ISignalToIPduMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignalToIPduMapping, cls).deserialize(element)
 
-        # Parse i_signal_ref
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-REF")
-        if child is not None:
-            i_signal_ref_value = ARRef.deserialize(child)
-            obj.i_signal_ref = i_signal_ref_value
-
-        # Parse i_signal_group_ref
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-GROUP-REF")
-        if child is not None:
-            i_signal_group_ref_value = ARRef.deserialize(child)
-            obj.i_signal_group_ref = i_signal_group_ref_value
-
-        # Parse packing_byte_order
-        child = SerializationHelper.find_child_element(element, "PACKING-BYTE-ORDER")
-        if child is not None:
-            packing_byte_order_value = ByteOrderEnum.deserialize(child)
-            obj.packing_byte_order = packing_byte_order_value
-
-        # Parse start_position
-        child = SerializationHelper.find_child_element(element, "START-POSITION")
-        if child is not None:
-            start_position_value = child.text
-            obj.start_position = start_position_value
-
-        # Parse transfer_property
-        child = SerializationHelper.find_child_element(element, "TRANSFER-PROPERTY")
-        if child is not None:
-            transfer_property_value = TransferPropertyEnum.deserialize(child)
-            obj.transfer_property = transfer_property_value
-
-        # Parse update_indication_bit_position
-        child = SerializationHelper.find_child_element(element, "UPDATE-INDICATION-BIT-POSITION")
-        if child is not None:
-            update_indication_bit_position_value = child.text
-            obj.update_indication_bit_position = update_indication_bit_position_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "I-SIGNAL-REF":
+                setattr(obj, "i_signal_ref", ARRef.deserialize(child))
+            elif tag == "I-SIGNAL-GROUP-REF":
+                setattr(obj, "i_signal_group_ref", ARRef.deserialize(child))
+            elif tag == "PACKING-BYTE-ORDER":
+                setattr(obj, "packing_byte_order", ByteOrderEnum.deserialize(child))
+            elif tag == "START-POSITION":
+                setattr(obj, "start_position", SerializationHelper.deserialize_by_tag(child, "UnlimitedInteger"))
+            elif tag == "TRANSFER-PROPERTY":
+                setattr(obj, "transfer_property", TransferPropertyEnum.deserialize(child))
+            elif tag == "UPDATE-INDICATION-BIT-POSITION":
+                setattr(obj, "update_indication_bit_position", SerializationHelper.deserialize_by_tag(child, "UnlimitedInteger"))
 
         return obj
 

@@ -63,18 +63,18 @@ class ProvidedServiceInstance(AbstractServiceInstance):
     service_identifier: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
         "ALLOWED-SERVICES": lambda obj, elem: obj.allowed_service_refs.append(ARRef.deserialize(elem)),
-        "AUTO-AVAILABLE": lambda obj, elem: setattr(obj, "auto_available", elem.text),
-        "EVENT-HANDLERS": lambda obj, elem: obj.event_handlers.append(EventHandler.deserialize(elem)),
-        "INSTANCE": lambda obj, elem: setattr(obj, "instance", elem.text),
-        "LOAD-BALANCING": lambda obj, elem: setattr(obj, "load_balancing", elem.text),
-        "LOCAL-UNICAST": lambda obj, elem: setattr(obj, "local_unicast", ApplicationEndpoint.deserialize(elem)),
-        "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", elem.text),
-        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "AUTO-AVAILABLE": lambda obj, elem: setattr(obj, "auto_available", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "EVENT-HANDLERS": lambda obj, elem: obj.event_handlers.append(SerializationHelper.deserialize_by_tag(elem, "EventHandler")),
+        "INSTANCE": lambda obj, elem: setattr(obj, "instance", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "LOAD-BALANCING": lambda obj, elem: setattr(obj, "load_balancing", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "LOCAL-UNICAST": lambda obj, elem: setattr(obj, "local_unicast", SerializationHelper.deserialize_by_tag(elem, "ApplicationEndpoint")),
+        "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "REMOTE-MULTICASTS": lambda obj, elem: obj.remote_multicast_refs.append(ARRef.deserialize(elem)),
         "REMOTE-UNICASTS": lambda obj, elem: obj.remote_unicast_refs.append(ARRef.deserialize(elem)),
-        "SD-SERVER-CONFIG": lambda obj, elem: setattr(obj, "sd_server_config", any (SdServerConfig).deserialize(elem)),
+        "SD-SERVER-CONFIG": lambda obj, elem: setattr(obj, "sd_server_config", SerializationHelper.deserialize_by_tag(elem, "any (SdServerConfig)")),
         "SD-SERVER-TIMER-REF": lambda obj, elem: setattr(obj, "sd_server_timer_ref", ARRef.deserialize(elem)),
-        "SERVICE-IDENTIFIER": lambda obj, elem: setattr(obj, "service_identifier", elem.text),
+        "SERVICE-IDENTIFIER": lambda obj, elem: setattr(obj, "service_identifier", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -320,117 +320,37 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ProvidedServiceInstance, cls).deserialize(element)
 
-        # Parse allowed_service_refs (list from container "ALLOWED-SERVICE-REFS")
-        obj.allowed_service_refs = []
-        container = SerializationHelper.find_child_element(element, "ALLOWED-SERVICE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.allowed_service_refs.append(child_value)
-
-        # Parse auto_available
-        child = SerializationHelper.find_child_element(element, "AUTO-AVAILABLE")
-        if child is not None:
-            auto_available_value = child.text
-            obj.auto_available = auto_available_value
-
-        # Parse event_handlers (list from container "EVENT-HANDLERS")
-        obj.event_handlers = []
-        container = SerializationHelper.find_child_element(element, "EVENT-HANDLERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.event_handlers.append(child_value)
-
-        # Parse instance
-        child = SerializationHelper.find_child_element(element, "INSTANCE")
-        if child is not None:
-            instance_value = child.text
-            obj.instance = instance_value
-
-        # Parse load_balancing
-        child = SerializationHelper.find_child_element(element, "LOAD-BALANCING")
-        if child is not None:
-            load_balancing_value = child.text
-            obj.load_balancing = load_balancing_value
-
-        # Parse local_unicast
-        child = SerializationHelper.find_child_element(element, "LOCAL-UNICAST")
-        if child is not None:
-            local_unicast_value = SerializationHelper.deserialize_by_tag(child, "ApplicationEndpoint")
-            obj.local_unicast = local_unicast_value
-
-        # Parse minor_version
-        child = SerializationHelper.find_child_element(element, "MINOR-VERSION")
-        if child is not None:
-            minor_version_value = child.text
-            obj.minor_version = minor_version_value
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse remote_multicast_refs (list from container "REMOTE-MULTICAST-REFS")
-        obj.remote_multicast_refs = []
-        container = SerializationHelper.find_child_element(element, "REMOTE-MULTICAST-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.remote_multicast_refs.append(child_value)
-
-        # Parse remote_unicast_refs (list from container "REMOTE-UNICAST-REFS")
-        obj.remote_unicast_refs = []
-        container = SerializationHelper.find_child_element(element, "REMOTE-UNICAST-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.remote_unicast_refs.append(child_value)
-
-        # Parse sd_server_config
-        child = SerializationHelper.find_child_element(element, "SD-SERVER-CONFIG")
-        if child is not None:
-            sd_server_config_value = child.text
-            obj.sd_server_config = sd_server_config_value
-
-        # Parse sd_server_timer_ref
-        child = SerializationHelper.find_child_element(element, "SD-SERVER-TIMER-REF")
-        if child is not None:
-            sd_server_timer_ref_value = ARRef.deserialize(child)
-            obj.sd_server_timer_ref = sd_server_timer_ref_value
-
-        # Parse service_identifier
-        child = SerializationHelper.find_child_element(element, "SERVICE-IDENTIFIER")
-        if child is not None:
-            service_identifier_value = child.text
-            obj.service_identifier = service_identifier_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALLOWED-SERVICES":
+                obj.allowed_service_refs.append(ARRef.deserialize(child))
+            elif tag == "AUTO-AVAILABLE":
+                setattr(obj, "auto_available", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "EVENT-HANDLERS":
+                obj.event_handlers.append(SerializationHelper.deserialize_by_tag(child, "EventHandler"))
+            elif tag == "INSTANCE":
+                setattr(obj, "instance", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "LOAD-BALANCING":
+                setattr(obj, "load_balancing", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "LOCAL-UNICAST":
+                setattr(obj, "local_unicast", SerializationHelper.deserialize_by_tag(child, "ApplicationEndpoint"))
+            elif tag == "MINOR-VERSION":
+                setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "REMOTE-MULTICASTS":
+                obj.remote_multicast_refs.append(ARRef.deserialize(child))
+            elif tag == "REMOTE-UNICASTS":
+                obj.remote_unicast_refs.append(ARRef.deserialize(child))
+            elif tag == "SD-SERVER-CONFIG":
+                setattr(obj, "sd_server_config", SerializationHelper.deserialize_by_tag(child, "any (SdServerConfig)"))
+            elif tag == "SD-SERVER-TIMER-REF":
+                setattr(obj, "sd_server_timer_ref", ARRef.deserialize(child))
+            elif tag == "SERVICE-IDENTIFIER":
+                setattr(obj, "service_identifier", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

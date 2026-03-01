@@ -38,7 +38,7 @@ class SecurityEventContextMappingApplication(SecurityEventContextMapping):
 
     affected: String
     _DESERIALIZE_DISPATCH = {
-        "AFFECTED": lambda obj, elem: setattr(obj, "affected", elem.text),
+        "AFFECTED": lambda obj, elem: setattr(obj, "affected", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -99,11 +99,13 @@ class SecurityEventContextMappingApplication(SecurityEventContextMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventContextMappingApplication, cls).deserialize(element)
 
-        # Parse affected
-        child = SerializationHelper.find_child_element(element, "AFFECTED")
-        if child is not None:
-            affected_value = child.text
-            obj.affected = affected_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AFFECTED":
+                setattr(obj, "affected", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

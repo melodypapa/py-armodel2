@@ -47,8 +47,8 @@ class HwAttributeDef(Identifiable):
     is_required: Optional[Boolean]
     unit_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "HW-ATTRIBUTES": lambda obj, elem: obj.hw_attributes.append(HwAttributeLiteralDef.deserialize(elem)),
-        "IS-REQUIRED": lambda obj, elem: setattr(obj, "is_required", elem.text),
+        "HW-ATTRIBUTES": lambda obj, elem: obj.hw_attributes.append(SerializationHelper.deserialize_by_tag(elem, "HwAttributeLiteralDef")),
+        "IS-REQUIRED": lambda obj, elem: setattr(obj, "is_required", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
     }
 
@@ -136,27 +136,17 @@ class HwAttributeDef(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwAttributeDef, cls).deserialize(element)
 
-        # Parse hw_attributes (list from container "HW-ATTRIBUTES")
-        obj.hw_attributes = []
-        container = SerializationHelper.find_child_element(element, "HW-ATTRIBUTES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.hw_attributes.append(child_value)
-
-        # Parse is_required
-        child = SerializationHelper.find_child_element(element, "IS-REQUIRED")
-        if child is not None:
-            is_required_value = child.text
-            obj.is_required = is_required_value
-
-        # Parse unit_ref
-        child = SerializationHelper.find_child_element(element, "UNIT-REF")
-        if child is not None:
-            unit_ref_value = ARRef.deserialize(child)
-            obj.unit_ref = unit_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "HW-ATTRIBUTES":
+                obj.hw_attributes.append(SerializationHelper.deserialize_by_tag(child, "HwAttributeLiteralDef"))
+            elif tag == "IS-REQUIRED":
+                setattr(obj, "is_required", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "UNIT-REF":
+                setattr(obj, "unit_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -40,8 +40,8 @@ class BinaryManifestProvideResource(BinaryManifestResource):
     number_of: Optional[PositiveInteger]
     supports: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "NUMBER-OF": lambda obj, elem: setattr(obj, "number_of", elem.text),
-        "SUPPORTS": lambda obj, elem: setattr(obj, "supports", elem.text),
+        "NUMBER-OF": lambda obj, elem: setattr(obj, "number_of", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SUPPORTS": lambda obj, elem: setattr(obj, "supports", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -117,17 +117,15 @@ class BinaryManifestProvideResource(BinaryManifestResource):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BinaryManifestProvideResource, cls).deserialize(element)
 
-        # Parse number_of
-        child = SerializationHelper.find_child_element(element, "NUMBER-OF")
-        if child is not None:
-            number_of_value = child.text
-            obj.number_of = number_of_value
-
-        # Parse supports
-        child = SerializationHelper.find_child_element(element, "SUPPORTS")
-        if child is not None:
-            supports_value = child.text
-            obj.supports = supports_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "NUMBER-OF":
+                setattr(obj, "number_of", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SUPPORTS":
+                setattr(obj, "supports", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

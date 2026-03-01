@@ -137,23 +137,17 @@ class DoIpTpConnection(TpConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpTpConnection, cls).deserialize(element)
 
-        # Parse do_ip_source_ref
-        child = SerializationHelper.find_child_element(element, "DO-IP-SOURCE-REF")
-        if child is not None:
-            do_ip_source_ref_value = ARRef.deserialize(child)
-            obj.do_ip_source_ref = do_ip_source_ref_value
-
-        # Parse do_ip_target_ref
-        child = SerializationHelper.find_child_element(element, "DO-IP-TARGET-REF")
-        if child is not None:
-            do_ip_target_ref_value = ARRef.deserialize(child)
-            obj.do_ip_target_ref = do_ip_target_ref_value
-
-        # Parse tp_sdu_ref
-        child = SerializationHelper.find_child_element(element, "TP-SDU-REF")
-        if child is not None:
-            tp_sdu_ref_value = ARRef.deserialize(child)
-            obj.tp_sdu_ref = tp_sdu_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DO-IP-SOURCE-REF":
+                setattr(obj, "do_ip_source_ref", ARRef.deserialize(child))
+            elif tag == "DO-IP-TARGET-REF":
+                setattr(obj, "do_ip_target_ref", ARRef.deserialize(child))
+            elif tag == "TP-SDU-REF":
+                setattr(obj, "tp_sdu_ref", ARRef.deserialize(child))
 
         return obj
 

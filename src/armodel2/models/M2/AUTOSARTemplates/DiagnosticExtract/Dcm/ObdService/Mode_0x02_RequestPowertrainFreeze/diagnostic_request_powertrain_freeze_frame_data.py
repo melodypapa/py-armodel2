@@ -117,17 +117,15 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestPowertrainFreezeFrameData, cls).deserialize(element)
 
-        # Parse freeze_frame_freeze_frame_ref
-        child = SerializationHelper.find_child_element(element, "FREEZE-FRAME-FREEZE-FRAME-REF")
-        if child is not None:
-            freeze_frame_freeze_frame_ref_value = ARRef.deserialize(child)
-            obj.freeze_frame_freeze_frame_ref = freeze_frame_freeze_frame_ref_value
-
-        # Parse request_ref
-        child = SerializationHelper.find_child_element(element, "REQUEST-REF")
-        if child is not None:
-            request_ref_value = ARRef.deserialize(child)
-            obj.request_ref = request_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FREEZE-FRAME-FREEZE-FRAME-REF":
+                setattr(obj, "freeze_frame_freeze_frame_ref", ARRef.deserialize(child))
+            elif tag == "REQUEST-REF":
+                setattr(obj, "request_ref", ARRef.deserialize(child))
 
         return obj
 

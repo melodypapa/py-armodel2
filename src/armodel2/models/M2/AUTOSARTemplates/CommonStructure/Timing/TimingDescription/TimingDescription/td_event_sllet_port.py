@@ -39,7 +39,7 @@ class TDEventSLLETPort(TDEventSLLET):
 
     port_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "PORT-REF": lambda obj, elem: setattr(obj, "port_ref", ARRef.deserialize(elem)),
+        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
     }
 
 
@@ -100,11 +100,19 @@ class TDEventSLLETPort(TDEventSLLET):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventSLLETPort, cls).deserialize(element)
 
-        # Parse port_ref
-        child = SerializationHelper.find_child_element(element, "PORT-REF")
-        if child is not None:
-            port_ref_value = ARRef.deserialize(child)
-            obj.port_ref = port_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PORT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
+                        setattr(obj, "port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
+                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
+                        setattr(obj, "port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
 
         return obj
 

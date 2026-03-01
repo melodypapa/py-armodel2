@@ -32,7 +32,7 @@ class SdgElementWithGid(ARObject, ABC):
 
     gid: Optional[NameToken]
     _DESERIALIZE_DISPATCH = {
-        "GID": lambda obj, elem: setattr(obj, "gid", elem.text),
+        "GID": lambda obj, elem: setattr(obj, "gid", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
     }
 
 
@@ -93,11 +93,13 @@ class SdgElementWithGid(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SdgElementWithGid, cls).deserialize(element)
 
-        # Parse gid
-        child = SerializationHelper.find_child_element(element, "GID")
-        if child is not None:
-            gid_value = child.text
-            obj.gid = gid_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "GID":
+                setattr(obj, "gid", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

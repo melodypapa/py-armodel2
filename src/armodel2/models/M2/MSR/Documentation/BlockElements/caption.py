@@ -38,7 +38,7 @@ class Caption(MultilanguageReferrable):
 
     desc: Optional[MultiLanguageOverviewParagraph]
     _DESERIALIZE_DISPATCH = {
-        "DESC": lambda obj, elem: setattr(obj, "desc", MultiLanguageOverviewParagraph.deserialize(elem)),
+        "DESC": lambda obj, elem: setattr(obj, "desc", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageOverviewParagraph")),
     }
 
 
@@ -99,11 +99,13 @@ class Caption(MultilanguageReferrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Caption, cls).deserialize(element)
 
-        # Parse desc
-        child = SerializationHelper.find_child_element(element, "DESC")
-        if child is not None:
-            desc_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
-            obj.desc = desc_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DESC":
+                setattr(obj, "desc", SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph"))
 
         return obj
 

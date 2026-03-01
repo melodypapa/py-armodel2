@@ -35,7 +35,7 @@ class TransientFault(TracedFailure):
 
     possible_error_reactions: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "POSSIBLE-ERROR-REACTIONS": lambda obj, elem: obj.possible_error_reactions.append(any (PossibleErrorReaction).deserialize(elem)),
+        "POSSIBLE-ERROR-REACTIONS": lambda obj, elem: obj.possible_error_reactions.append(SerializationHelper.deserialize_by_tag(elem, "any (PossibleErrorReaction)")),
     }
 
 
@@ -92,15 +92,13 @@ class TransientFault(TracedFailure):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransientFault, cls).deserialize(element)
 
-        # Parse possible_error_reactions (list from container "POSSIBLE-ERROR-REACTIONS")
-        obj.possible_error_reactions = []
-        container = SerializationHelper.find_child_element(element, "POSSIBLE-ERROR-REACTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.possible_error_reactions.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "POSSIBLE-ERROR-REACTIONS":
+                obj.possible_error_reactions.append(SerializationHelper.deserialize_by_tag(child, "any (PossibleErrorReaction)"))
 
         return obj
 

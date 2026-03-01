@@ -62,10 +62,10 @@ class ExecutableEntity(Identifiable, ABC):
     runs_inside_refs: list[ARRef]
     sw_addr_method_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ACTIVATION-REASONS": lambda obj, elem: obj.activation_reasons.append(ExecutableEntityActivationReason.deserialize(elem)),
+        "ACTIVATION-REASONS": lambda obj, elem: obj.activation_reasons.append(SerializationHelper.deserialize_by_tag(elem, "ExecutableEntityActivationReason")),
         "CAN-ENTERS": lambda obj, elem: obj._can_enter_refs.append(ARRef.deserialize(elem)),
         "EXCLUSIVE-AREA-NESTING-ORDERS": lambda obj, elem: obj.exclusive_area_nesting_order_refs.append(ARRef.deserialize(elem)),
-        "MINIMUM-START-INTERVAL": lambda obj, elem: setattr(obj, "minimum_start_interval", elem.text),
+        "MINIMUM-START-INTERVAL": lambda obj, elem: setattr(obj, "minimum_start_interval", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "REENTRANCY-LEVEL": lambda obj, elem: setattr(obj, "reentrancy_level", ReentrancyLevelEnum.deserialize(elem)),
         "RUNS-INSIDES": lambda obj, elem: obj.runs_inside_refs.append(ARRef.deserialize(elem)),
         "SW-ADDR-METHOD-REF": lambda obj, elem: setattr(obj, "sw_addr_method_ref", ARRef.deserialize(elem)),
@@ -235,81 +235,25 @@ class ExecutableEntity(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ExecutableEntity, cls).deserialize(element)
 
-        # Parse activation_reasons (list from container "ACTIVATION-REASONS")
-        obj.activation_reasons = []
-        container = SerializationHelper.find_child_element(element, "ACTIVATION-REASONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.activation_reasons.append(child_value)
-
-        # Parse can_enter_refs (list from container "CAN-ENTER-EXCLUSIVE-AREA-REFS")
-        obj.can_enter_refs = []
-        container = SerializationHelper.find_child_element(element, "CAN-ENTER-EXCLUSIVE-AREA-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child matches expected reference tag "CAN-ENTER-EXCLUSIVE-AREA-REF"
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag == "CAN-ENTER-EXCLUSIVE-AREA-REF":
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.can_enter_refs.append(child_value)
-
-        # Parse exclusive_area_nesting_order_refs (list from container "EXCLUSIVE-AREA-NESTING-ORDER-REFS")
-        obj.exclusive_area_nesting_order_refs = []
-        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-NESTING-ORDER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.exclusive_area_nesting_order_refs.append(child_value)
-
-        # Parse minimum_start_interval
-        child = SerializationHelper.find_child_element(element, "MINIMUM-START-INTERVAL")
-        if child is not None:
-            minimum_start_interval_value = child.text
-            obj.minimum_start_interval = minimum_start_interval_value
-
-        # Parse reentrancy_level
-        child = SerializationHelper.find_child_element(element, "REENTRANCY-LEVEL")
-        if child is not None:
-            reentrancy_level_value = ReentrancyLevelEnum.deserialize(child)
-            obj.reentrancy_level = reentrancy_level_value
-
-        # Parse runs_inside_refs (list from container "RUNS-INSIDE-REFS")
-        obj.runs_inside_refs = []
-        container = SerializationHelper.find_child_element(element, "RUNS-INSIDE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.runs_inside_refs.append(child_value)
-
-        # Parse sw_addr_method_ref
-        child = SerializationHelper.find_child_element(element, "SW-ADDR-METHOD-REF")
-        if child is not None:
-            sw_addr_method_ref_value = ARRef.deserialize(child)
-            obj.sw_addr_method_ref = sw_addr_method_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACTIVATION-REASONS":
+                obj.activation_reasons.append(SerializationHelper.deserialize_by_tag(child, "ExecutableEntityActivationReason"))
+            elif tag == "CAN-ENTERS":
+                obj._can_enter_refs.append(ARRef.deserialize(child))
+            elif tag == "EXCLUSIVE-AREA-NESTING-ORDERS":
+                obj.exclusive_area_nesting_order_refs.append(ARRef.deserialize(child))
+            elif tag == "MINIMUM-START-INTERVAL":
+                setattr(obj, "minimum_start_interval", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "REENTRANCY-LEVEL":
+                setattr(obj, "reentrancy_level", ReentrancyLevelEnum.deserialize(child))
+            elif tag == "RUNS-INSIDES":
+                obj.runs_inside_refs.append(ARRef.deserialize(child))
+            elif tag == "SW-ADDR-METHOD-REF":
+                setattr(obj, "sw_addr_method_ref", ARRef.deserialize(child))
 
         return obj
 

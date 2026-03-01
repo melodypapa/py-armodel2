@@ -103,11 +103,13 @@ class ClientServerAnnotation(GeneralAnnotation):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerAnnotation, cls).deserialize(element)
 
-        # Parse operation_ref
-        child = SerializationHelper.find_child_element(element, "OPERATION-REF")
-        if child is not None:
-            operation_ref_value = ARRef.deserialize(child)
-            obj.operation_ref = operation_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "OPERATION-REF":
+                setattr(obj, "operation_ref", ARRef.deserialize(child))
 
         return obj
 

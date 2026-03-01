@@ -99,11 +99,13 @@ class FlexrayPhysicalChannel(PhysicalChannel):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayPhysicalChannel, cls).deserialize(element)
 
-        # Parse channel_name
-        child = SerializationHelper.find_child_element(element, "CHANNEL-NAME")
-        if child is not None:
-            channel_name_value = FlexrayChannelName.deserialize(child)
-            obj.channel_name = channel_name_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CHANNEL-NAME":
+                setattr(obj, "channel_name", FlexrayChannelName.deserialize(child))
 
         return obj
 

@@ -36,7 +36,7 @@ class EndToEndProtection(Identifiable):
 
     end_to_ends: list[EndToEndProtection]
     _DESERIALIZE_DISPATCH = {
-        "END-TO-ENDS": lambda obj, elem: obj.end_to_ends.append(EndToEndProtection.deserialize(elem)),
+        "END-TO-ENDS": lambda obj, elem: obj.end_to_ends.append(SerializationHelper.deserialize_by_tag(elem, "EndToEndProtection")),
     }
 
 
@@ -93,15 +93,13 @@ class EndToEndProtection(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EndToEndProtection, cls).deserialize(element)
 
-        # Parse end_to_ends (list from container "END-TO-ENDS")
-        obj.end_to_ends = []
-        container = SerializationHelper.find_child_element(element, "END-TO-ENDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.end_to_ends.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "END-TO-ENDS":
+                obj.end_to_ends.append(SerializationHelper.deserialize_by_tag(child, "EndToEndProtection"))
 
         return obj
 

@@ -38,9 +38,9 @@ class Ipv4FragmentationProps(ARObject):
     tcp_ip_ip_num: Optional[PositiveInteger]
     tcp_ip_ip_reass: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "TCP-IP-IP": lambda obj, elem: setattr(obj, "tcp_ip_ip", elem.text),
-        "TCP-IP-IP-NUM": lambda obj, elem: setattr(obj, "tcp_ip_ip_num", elem.text),
-        "TCP-IP-IP-REASS": lambda obj, elem: setattr(obj, "tcp_ip_ip_reass", elem.text),
+        "TCP-IP-IP": lambda obj, elem: setattr(obj, "tcp_ip_ip", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TCP-IP-IP-NUM": lambda obj, elem: setattr(obj, "tcp_ip_ip_num", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-IP-IP-REASS": lambda obj, elem: setattr(obj, "tcp_ip_ip_reass", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -131,23 +131,17 @@ class Ipv4FragmentationProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ipv4FragmentationProps, cls).deserialize(element)
 
-        # Parse tcp_ip_ip
-        child = SerializationHelper.find_child_element(element, "TCP-IP-IP")
-        if child is not None:
-            tcp_ip_ip_value = child.text
-            obj.tcp_ip_ip = tcp_ip_ip_value
-
-        # Parse tcp_ip_ip_num
-        child = SerializationHelper.find_child_element(element, "TCP-IP-IP-NUM")
-        if child is not None:
-            tcp_ip_ip_num_value = child.text
-            obj.tcp_ip_ip_num = tcp_ip_ip_num_value
-
-        # Parse tcp_ip_ip_reass
-        child = SerializationHelper.find_child_element(element, "TCP-IP-IP-REASS")
-        if child is not None:
-            tcp_ip_ip_reass_value = child.text
-            obj.tcp_ip_ip_reass = tcp_ip_ip_reass_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TCP-IP-IP":
+                setattr(obj, "tcp_ip_ip", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TCP-IP-IP-NUM":
+                setattr(obj, "tcp_ip_ip_num", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-IP-IP-REASS":
+                setattr(obj, "tcp_ip_ip_reass", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

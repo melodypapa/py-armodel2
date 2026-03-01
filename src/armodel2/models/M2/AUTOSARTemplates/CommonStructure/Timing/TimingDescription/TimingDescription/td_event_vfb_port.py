@@ -46,8 +46,8 @@ class TDEventVfbPort(TDEventVfb, ABC):
     port_ref: Optional[ARRef]
     port_prototype_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "IS-EXTERNAL": lambda obj, elem: setattr(obj, "is_external", elem.text),
-        "PORT-REF": lambda obj, elem: setattr(obj, "port_ref", ARRef.deserialize(elem)),
+        "IS-EXTERNAL": lambda obj, elem: setattr(obj, "is_external", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
         "PORT-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "port_prototype_ref", ARRef.deserialize(elem)),
     }
 
@@ -139,23 +139,23 @@ class TDEventVfbPort(TDEventVfb, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventVfbPort, cls).deserialize(element)
 
-        # Parse is_external
-        child = SerializationHelper.find_child_element(element, "IS-EXTERNAL")
-        if child is not None:
-            is_external_value = child.text
-            obj.is_external = is_external_value
-
-        # Parse port_ref
-        child = SerializationHelper.find_child_element(element, "PORT-REF")
-        if child is not None:
-            port_ref_value = ARRef.deserialize(child)
-            obj.port_ref = port_ref_value
-
-        # Parse port_prototype_ref
-        child = SerializationHelper.find_child_element(element, "PORT-PROTOTYPE-REF")
-        if child is not None:
-            port_prototype_ref_value = ARRef.deserialize(child)
-            obj.port_prototype_ref = port_prototype_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "IS-EXTERNAL":
+                setattr(obj, "is_external", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PORT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
+                        setattr(obj, "port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
+                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
+                        setattr(obj, "port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+            elif tag == "PORT-PROTOTYPE-REF":
+                setattr(obj, "port_prototype_ref", ARRef.deserialize(child))
 
         return obj
 

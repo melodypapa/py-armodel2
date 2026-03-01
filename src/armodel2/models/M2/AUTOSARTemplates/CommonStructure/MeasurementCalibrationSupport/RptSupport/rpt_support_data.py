@@ -42,9 +42,9 @@ class RptSupportData(ARObject):
     rpt_components: list[RptComponent]
     rpt_service_points: list[RptServicePoint]
     _DESERIALIZE_DISPATCH = {
-        "EXECUTIONS": lambda obj, elem: obj.executions.append(RptExecutionContext.deserialize(elem)),
-        "RPT-COMPONENTS": lambda obj, elem: obj.rpt_components.append(RptComponent.deserialize(elem)),
-        "RPT-SERVICE-POINTS": lambda obj, elem: obj.rpt_service_points.append(RptServicePoint.deserialize(elem)),
+        "EXECUTIONS": lambda obj, elem: obj.executions.append(SerializationHelper.deserialize_by_tag(elem, "RptExecutionContext")),
+        "RPT-COMPONENTS": lambda obj, elem: obj.rpt_components.append(SerializationHelper.deserialize_by_tag(elem, "RptComponent")),
+        "RPT-SERVICE-POINTS": lambda obj, elem: obj.rpt_service_points.append(SerializationHelper.deserialize_by_tag(elem, "RptServicePoint")),
     }
 
 
@@ -123,35 +123,17 @@ class RptSupportData(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptSupportData, cls).deserialize(element)
 
-        # Parse executions (list from container "EXECUTIONS")
-        obj.executions = []
-        container = SerializationHelper.find_child_element(element, "EXECUTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.executions.append(child_value)
-
-        # Parse rpt_components (list from container "RPT-COMPONENTS")
-        obj.rpt_components = []
-        container = SerializationHelper.find_child_element(element, "RPT-COMPONENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rpt_components.append(child_value)
-
-        # Parse rpt_service_points (list from container "RPT-SERVICE-POINTS")
-        obj.rpt_service_points = []
-        container = SerializationHelper.find_child_element(element, "RPT-SERVICE-POINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rpt_service_points.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "EXECUTIONS":
+                obj.executions.append(SerializationHelper.deserialize_by_tag(child, "RptExecutionContext"))
+            elif tag == "RPT-COMPONENTS":
+                obj.rpt_components.append(SerializationHelper.deserialize_by_tag(child, "RptComponent"))
+            elif tag == "RPT-SERVICE-POINTS":
+                obj.rpt_service_points.append(SerializationHelper.deserialize_by_tag(child, "RptServicePoint"))
 
         return obj
 

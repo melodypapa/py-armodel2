@@ -47,8 +47,8 @@ class NvProvideComSpec(PPortComSpec):
     rom_block_init_value: Optional[ValueSpecification]
     variable_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "RAM-BLOCK-INIT-VALUE": lambda obj, elem: setattr(obj, "ram_block_init_value", ValueSpecification.deserialize(elem)),
-        "ROM-BLOCK-INIT-VALUE": lambda obj, elem: setattr(obj, "rom_block_init_value", ValueSpecification.deserialize(elem)),
+        "RAM-BLOCK-INIT-VALUE": ("_POLYMORPHIC", "ram_block_init_value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "ROM-BLOCK-INIT-VALUE": ("_POLYMORPHIC", "rom_block_init_value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
         "VARIABLE-REF": lambda obj, elem: setattr(obj, "variable_ref", ARRef.deserialize(elem)),
     }
 
@@ -140,23 +140,53 @@ class NvProvideComSpec(PPortComSpec):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NvProvideComSpec, cls).deserialize(element)
 
-        # Parse ram_block_init_value
-        child = SerializationHelper.find_child_element(element, "RAM-BLOCK-INIT-VALUE")
-        if child is not None:
-            ram_block_init_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
-            obj.ram_block_init_value = ram_block_init_value_value
-
-        # Parse rom_block_init_value
-        child = SerializationHelper.find_child_element(element, "ROM-BLOCK-INIT-VALUE")
-        if child is not None:
-            rom_block_init_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
-            obj.rom_block_init_value = rom_block_init_value_value
-
-        # Parse variable_ref
-        child = SerializationHelper.find_child_element(element, "VARIABLE-REF")
-        if child is not None:
-            variable_ref_value = ARRef.deserialize(child)
-            obj.variable_ref = variable_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RAM-BLOCK-INIT-VALUE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "ram_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        setattr(obj, "ram_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        setattr(obj, "ram_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        setattr(obj, "ram_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        setattr(obj, "ram_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        setattr(obj, "ram_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        setattr(obj, "ram_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        setattr(obj, "ram_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
+            elif tag == "ROM-BLOCK-INIT-VALUE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "rom_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        setattr(obj, "rom_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        setattr(obj, "rom_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        setattr(obj, "rom_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        setattr(obj, "rom_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        setattr(obj, "rom_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        setattr(obj, "rom_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        setattr(obj, "rom_block_init_value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
+            elif tag == "VARIABLE-REF":
+                setattr(obj, "variable_ref", ARRef.deserialize(child))
 
         return obj
 

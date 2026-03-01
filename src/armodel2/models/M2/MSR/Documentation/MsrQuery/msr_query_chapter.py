@@ -45,8 +45,8 @@ class MsrQueryChapter(Paginateable):
     msr_query_props: MsrQueryProps
     msr_query_result_chapter: Optional[MsrQueryResultChapter]
     _DESERIALIZE_DISPATCH = {
-        "MSR-QUERY-PROPS": lambda obj, elem: setattr(obj, "msr_query_props", MsrQueryProps.deserialize(elem)),
-        "MSR-QUERY-RESULT-CHAPTER": lambda obj, elem: setattr(obj, "msr_query_result_chapter", MsrQueryResultChapter.deserialize(elem)),
+        "MSR-QUERY-PROPS": lambda obj, elem: setattr(obj, "msr_query_props", SerializationHelper.deserialize_by_tag(elem, "MsrQueryProps")),
+        "MSR-QUERY-RESULT-CHAPTER": lambda obj, elem: setattr(obj, "msr_query_result_chapter", SerializationHelper.deserialize_by_tag(elem, "MsrQueryResultChapter")),
     }
 
 
@@ -122,17 +122,15 @@ class MsrQueryChapter(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MsrQueryChapter, cls).deserialize(element)
 
-        # Parse msr_query_props
-        child = SerializationHelper.find_child_element(element, "MSR-QUERY-PROPS")
-        if child is not None:
-            msr_query_props_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryProps")
-            obj.msr_query_props = msr_query_props_value
-
-        # Parse msr_query_result_chapter
-        child = SerializationHelper.find_child_element(element, "MSR-QUERY-RESULT-CHAPTER")
-        if child is not None:
-            msr_query_result_chapter_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryResultChapter")
-            obj.msr_query_result_chapter = msr_query_result_chapter_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MSR-QUERY-PROPS":
+                setattr(obj, "msr_query_props", SerializationHelper.deserialize_by_tag(child, "MsrQueryProps"))
+            elif tag == "MSR-QUERY-RESULT-CHAPTER":
+                setattr(obj, "msr_query_result_chapter", SerializationHelper.deserialize_by_tag(child, "MsrQueryResultChapter"))
 
         return obj
 

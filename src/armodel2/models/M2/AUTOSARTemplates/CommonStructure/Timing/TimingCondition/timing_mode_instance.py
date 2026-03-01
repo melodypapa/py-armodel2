@@ -35,7 +35,7 @@ class TimingModeInstance(Identifiable):
 
     mode_instance: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "MODE-INSTANCE": lambda obj, elem: setattr(obj, "mode_instance", any (ModeInSwcBsw).deserialize(elem)),
+        "MODE-INSTANCE": lambda obj, elem: setattr(obj, "mode_instance", SerializationHelper.deserialize_by_tag(elem, "any (ModeInSwcBsw)")),
     }
 
 
@@ -96,11 +96,13 @@ class TimingModeInstance(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingModeInstance, cls).deserialize(element)
 
-        # Parse mode_instance
-        child = SerializationHelper.find_child_element(element, "MODE-INSTANCE")
-        if child is not None:
-            mode_instance_value = child.text
-            obj.mode_instance = mode_instance_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MODE-INSTANCE":
+                setattr(obj, "mode_instance", SerializationHelper.deserialize_by_tag(child, "any (ModeInSwcBsw)"))
 
         return obj
 

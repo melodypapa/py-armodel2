@@ -32,7 +32,7 @@ class DataPrototypeReference(ARObject, ABC):
 
     tag_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "TAG-ID": lambda obj, elem: setattr(obj, "tag_id", elem.text),
+        "TAG-ID": lambda obj, elem: setattr(obj, "tag_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -93,11 +93,13 @@ class DataPrototypeReference(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototypeReference, cls).deserialize(element)
 
-        # Parse tag_id
-        child = SerializationHelper.find_child_element(element, "TAG-ID")
-        if child is not None:
-            tag_id_value = child.text
-            obj.tag_id = tag_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TAG-ID":
+                setattr(obj, "tag_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -57,10 +57,10 @@ class SwAxisCont(ARObject):
     _DESERIALIZE_DISPATCH = {
         "CATEGORY": lambda obj, elem: setattr(obj, "category", CalprmAxisCategoryEnum.deserialize(elem)),
         "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
-        "SW-AXIS-INDEX": lambda obj, elem: setattr(obj, "sw_axis_index", elem.text),
-        "SW-VALUES-PHYS": lambda obj, elem: setattr(obj, "sw_values_phys", SwValues.deserialize(elem)),
+        "SW-AXIS-INDEX": lambda obj, elem: setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(elem, "AxisIndexType")),
+        "SW-VALUES-PHYS": lambda obj, elem: setattr(obj, "sw_values_phys", SerializationHelper.deserialize_by_tag(elem, "SwValues")),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
-        "UNIT-DISPLAY": lambda obj, elem: setattr(obj, "unit_display", SingleLanguageUnitNames.deserialize(elem)),
+        "UNIT-DISPLAY": lambda obj, elem: setattr(obj, "unit_display", SerializationHelper.deserialize_by_tag(elem, "SingleLanguageUnitNames")),
     }
 
 
@@ -194,57 +194,23 @@ class SwAxisCont(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwAxisCont, cls).deserialize(element)
 
-        # Parse category
-        child = SerializationHelper.find_child_element(element, "CATEGORY")
-        if child is not None:
-            category_value = CalprmAxisCategoryEnum.deserialize(child)
-            obj.category = category_value
-
-        # Parse sw_arraysize_ref (atp_mixed - children appear directly)
-        # Check if element contains expected children for ValueList
-        has_mixed_children = False
-        child_tags_to_check = ['V']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            sw_arraysize_ref_value = SerializationHelper.deserialize_by_tag(element, "ValueList")
-            obj.sw_arraysize_ref = sw_arraysize_ref_value
-
-        # Parse sw_axis_index
-        child = SerializationHelper.find_child_element(element, "SW-AXIS-INDEX")
-        if child is not None:
-            sw_axis_index_value = child.text
-            obj.sw_axis_index = sw_axis_index_value
-
-        # Parse sw_values_phys (atp_mixed - children appear directly)
-        # Check if element contains expected children for SwValues
-        has_mixed_children = False
-        child_tags_to_check = ['V', 'VF', 'VG', 'VT', 'VTF']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            sw_values_phys_value = SerializationHelper.deserialize_by_tag(element, "SwValues")
-            obj.sw_values_phys = sw_values_phys_value
-
-        # Parse unit_ref
-        child = SerializationHelper.find_child_element(element, "UNIT-REF")
-        if child is not None:
-            unit_ref_value = ARRef.deserialize(child)
-            obj.unit_ref = unit_ref_value
-
-        # Parse unit_display
-        child = SerializationHelper.find_child_element(element, "UNIT-DISPLAY")
-        if child is not None:
-            unit_display_value = SerializationHelper.deserialize_by_tag(child, "SingleLanguageUnitNames")
-            obj.unit_display = unit_display_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CATEGORY":
+                setattr(obj, "category", CalprmAxisCategoryEnum.deserialize(child))
+            elif tag == "SW-ARRAYSIZE-REF":
+                setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
+            elif tag == "SW-AXIS-INDEX":
+                setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(child, "AxisIndexType"))
+            elif tag == "SW-VALUES-PHYS":
+                setattr(obj, "sw_values_phys", SerializationHelper.deserialize_by_tag(child, "SwValues"))
+            elif tag == "UNIT-REF":
+                setattr(obj, "unit_ref", ARRef.deserialize(child))
+            elif tag == "UNIT-DISPLAY":
+                setattr(obj, "unit_display", SerializationHelper.deserialize_by_tag(child, "SingleLanguageUnitNames"))
 
         return obj
 

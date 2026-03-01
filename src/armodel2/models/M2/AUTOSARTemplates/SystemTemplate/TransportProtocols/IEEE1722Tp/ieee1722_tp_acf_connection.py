@@ -44,9 +44,9 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
     collection: Optional[TimeValue]
     mixed_bus_type: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "ACF-TRANSPORTEDS": lambda obj, elem: obj.acf_transporteds.append(IEEE1722TpAcfBus.deserialize(elem)),
-        "COLLECTION": lambda obj, elem: setattr(obj, "collection", elem.text),
-        "MIXED-BUS-TYPE": lambda obj, elem: setattr(obj, "mixed_bus_type", elem.text),
+        "ACF-TRANSPORTEDS": ("_POLYMORPHIC_LIST", "acf_transporteds", ["IEEE1722TpAcfCan", "IEEE1722TpAcfLin"]),
+        "COLLECTION": lambda obj, elem: setattr(obj, "collection", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "MIXED-BUS-TYPE": lambda obj, elem: setattr(obj, "mixed_bus_type", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -133,27 +133,23 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpAcfConnection, cls).deserialize(element)
 
-        # Parse acf_transporteds (list from container "ACF-TRANSPORTEDS")
-        obj.acf_transporteds = []
-        container = SerializationHelper.find_child_element(element, "ACF-TRANSPORTEDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.acf_transporteds.append(child_value)
-
-        # Parse collection
-        child = SerializationHelper.find_child_element(element, "COLLECTION")
-        if child is not None:
-            collection_value = child.text
-            obj.collection = collection_value
-
-        # Parse mixed_bus_type
-        child = SerializationHelper.find_child_element(element, "MIXED-BUS-TYPE")
-        if child is not None:
-            mixed_bus_type_value = child.text
-            obj.mixed_bus_type = mixed_bus_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACF-TRANSPORTEDS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "I-E-E-E1722-TP-ACF-CAN":
+                        obj.acf_transporteds.append(SerializationHelper.deserialize_by_tag(child[0], "IEEE1722TpAcfCan"))
+                    elif concrete_tag == "I-E-E-E1722-TP-ACF-LIN":
+                        obj.acf_transporteds.append(SerializationHelper.deserialize_by_tag(child[0], "IEEE1722TpAcfLin"))
+            elif tag == "COLLECTION":
+                setattr(obj, "collection", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "MIXED-BUS-TYPE":
+                setattr(obj, "mixed_bus_type", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

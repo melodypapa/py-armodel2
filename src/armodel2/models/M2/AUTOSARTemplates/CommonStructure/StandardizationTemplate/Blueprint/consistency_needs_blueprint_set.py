@@ -38,7 +38,7 @@ class ConsistencyNeedsBlueprintSet(ARElement):
 
     consistency_needses: list[ConsistencyNeeds]
     _DESERIALIZE_DISPATCH = {
-        "CONSISTENCY-NEEDSES": lambda obj, elem: obj.consistency_needses.append(ConsistencyNeeds.deserialize(elem)),
+        "CONSISTENCY-NEEDSES": lambda obj, elem: obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(elem, "ConsistencyNeeds")),
     }
 
 
@@ -95,15 +95,13 @@ class ConsistencyNeedsBlueprintSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConsistencyNeedsBlueprintSet, cls).deserialize(element)
 
-        # Parse consistency_needses (list from container "CONSISTENCY-NEEDSES")
-        obj.consistency_needses = []
-        container = SerializationHelper.find_child_element(element, "CONSISTENCY-NEEDSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.consistency_needses.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONSISTENCY-NEEDSES":
+                obj.consistency_needses.append(SerializationHelper.deserialize_by_tag(child, "ConsistencyNeeds"))
 
         return obj
 

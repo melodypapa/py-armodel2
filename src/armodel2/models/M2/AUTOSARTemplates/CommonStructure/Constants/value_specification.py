@@ -34,7 +34,7 @@ class ValueSpecification(ARObject, ABC):
 
     short_label: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -95,11 +95,13 @@ class ValueSpecification(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ValueSpecification, cls).deserialize(element)
 
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

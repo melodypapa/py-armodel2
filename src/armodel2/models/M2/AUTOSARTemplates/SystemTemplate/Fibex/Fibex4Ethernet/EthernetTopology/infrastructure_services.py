@@ -38,8 +38,8 @@ class InfrastructureServices(ARObject):
     do_ip_entity: Optional[DoIpEntity]
     time: Optional[TimeSynchronization]
     _DESERIALIZE_DISPATCH = {
-        "DO-IP-ENTITY": lambda obj, elem: setattr(obj, "do_ip_entity", DoIpEntity.deserialize(elem)),
-        "TIME": lambda obj, elem: setattr(obj, "time", TimeSynchronization.deserialize(elem)),
+        "DO-IP-ENTITY": lambda obj, elem: setattr(obj, "do_ip_entity", SerializationHelper.deserialize_by_tag(elem, "DoIpEntity")),
+        "TIME": lambda obj, elem: setattr(obj, "time", SerializationHelper.deserialize_by_tag(elem, "TimeSynchronization")),
     }
 
 
@@ -115,17 +115,15 @@ class InfrastructureServices(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InfrastructureServices, cls).deserialize(element)
 
-        # Parse do_ip_entity
-        child = SerializationHelper.find_child_element(element, "DO-IP-ENTITY")
-        if child is not None:
-            do_ip_entity_value = SerializationHelper.deserialize_by_tag(child, "DoIpEntity")
-            obj.do_ip_entity = do_ip_entity_value
-
-        # Parse time
-        child = SerializationHelper.find_child_element(element, "TIME")
-        if child is not None:
-            time_value = SerializationHelper.deserialize_by_tag(child, "TimeSynchronization")
-            obj.time = time_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DO-IP-ENTITY":
+                setattr(obj, "do_ip_entity", SerializationHelper.deserialize_by_tag(child, "DoIpEntity"))
+            elif tag == "TIME":
+                setattr(obj, "time", SerializationHelper.deserialize_by_tag(child, "TimeSynchronization"))
 
         return obj
 

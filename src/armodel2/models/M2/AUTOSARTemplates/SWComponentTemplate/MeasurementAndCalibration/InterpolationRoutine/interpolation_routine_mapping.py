@@ -40,7 +40,7 @@ class InterpolationRoutineMapping(ARObject):
     interpolation_routines: list[InterpolationRoutine]
     sw_record_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "INTERPOLATION-ROUTINES": lambda obj, elem: obj.interpolation_routines.append(InterpolationRoutine.deserialize(elem)),
+        "INTERPOLATION-ROUTINES": lambda obj, elem: obj.interpolation_routines.append(SerializationHelper.deserialize_by_tag(elem, "InterpolationRoutine")),
         "SW-RECORD-REF": lambda obj, elem: setattr(obj, "sw_record_ref", ARRef.deserialize(elem)),
     }
 
@@ -113,21 +113,15 @@ class InterpolationRoutineMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InterpolationRoutineMapping, cls).deserialize(element)
 
-        # Parse interpolation_routines (list from container "INTERPOLATION-ROUTINES")
-        obj.interpolation_routines = []
-        container = SerializationHelper.find_child_element(element, "INTERPOLATION-ROUTINES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.interpolation_routines.append(child_value)
-
-        # Parse sw_record_ref
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-REF")
-        if child is not None:
-            sw_record_ref_value = ARRef.deserialize(child)
-            obj.sw_record_ref = sw_record_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INTERPOLATION-ROUTINES":
+                obj.interpolation_routines.append(SerializationHelper.deserialize_by_tag(child, "InterpolationRoutine"))
+            elif tag == "SW-RECORD-REF":
+                setattr(obj, "sw_record_ref", ARRef.deserialize(child))
 
         return obj
 

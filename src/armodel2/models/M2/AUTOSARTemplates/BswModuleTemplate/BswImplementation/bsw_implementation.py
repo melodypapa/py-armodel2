@@ -61,11 +61,11 @@ class BswImplementation(Implementation):
     vendor_api_infix: Optional[Identifier]
     vendor_specific_module_def_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "AR-RELEASE-VERSION": lambda obj, elem: setattr(obj, "ar_release_version", elem.text),
+        "AR-RELEASE-VERSION": lambda obj, elem: setattr(obj, "ar_release_version", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
         "BEHAVIOR-REF": lambda obj, elem: setattr(obj, "behavior_ref", ARRef.deserialize(elem)),
         "PRECONFIGURED-CONFIGURATIONS": lambda obj, elem: obj.preconfigured_configuration_refs.append(ARRef.deserialize(elem)),
         "RECOMMENDED-CONFIGURATIONS": lambda obj, elem: obj.recommended_configuration_refs.append(ARRef.deserialize(elem)),
-        "VENDOR-API-INFIX": lambda obj, elem: setattr(obj, "vendor_api_infix", elem.text),
+        "VENDOR-API-INFIX": lambda obj, elem: setattr(obj, "vendor_api_infix", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
         "VENDOR-SPECIFIC-MODULE-DEFS": lambda obj, elem: obj.vendor_specific_module_def_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -211,71 +211,23 @@ class BswImplementation(Implementation):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswImplementation, cls).deserialize(element)
 
-        # Parse ar_release_version
-        child = SerializationHelper.find_child_element(element, "AR-RELEASE-VERSION")
-        if child is not None:
-            ar_release_version_value = child.text
-            obj.ar_release_version = ar_release_version_value
-
-        # Parse behavior_ref
-        child = SerializationHelper.find_child_element(element, "BEHAVIOR-REF")
-        if child is not None:
-            behavior_ref_value = ARRef.deserialize(child)
-            obj.behavior_ref = behavior_ref_value
-
-        # Parse preconfigured_configuration_refs (list from container "PRECONFIGURED-CONFIGURATION-REFS")
-        obj.preconfigured_configuration_refs = []
-        container = SerializationHelper.find_child_element(element, "PRECONFIGURED-CONFIGURATION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.preconfigured_configuration_refs.append(child_value)
-
-        # Parse recommended_configuration_refs (list from container "RECOMMENDED-CONFIGURATION-REFS")
-        obj.recommended_configuration_refs = []
-        container = SerializationHelper.find_child_element(element, "RECOMMENDED-CONFIGURATION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.recommended_configuration_refs.append(child_value)
-
-        # Parse vendor_api_infix
-        child = SerializationHelper.find_child_element(element, "VENDOR-API-INFIX")
-        if child is not None:
-            vendor_api_infix_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.vendor_api_infix = vendor_api_infix_value
-
-        # Parse vendor_specific_module_def_refs (list from container "VENDOR-SPECIFIC-MODULE-DEF-REFS")
-        obj.vendor_specific_module_def_refs = []
-        container = SerializationHelper.find_child_element(element, "VENDOR-SPECIFIC-MODULE-DEF-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.vendor_specific_module_def_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AR-RELEASE-VERSION":
+                setattr(obj, "ar_release_version", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
+            elif tag == "BEHAVIOR-REF":
+                setattr(obj, "behavior_ref", ARRef.deserialize(child))
+            elif tag == "PRECONFIGURED-CONFIGURATIONS":
+                obj.preconfigured_configuration_refs.append(ARRef.deserialize(child))
+            elif tag == "RECOMMENDED-CONFIGURATIONS":
+                obj.recommended_configuration_refs.append(ARRef.deserialize(child))
+            elif tag == "VENDOR-API-INFIX":
+                setattr(obj, "vendor_api_infix", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "VENDOR-SPECIFIC-MODULE-DEFS":
+                obj.vendor_specific_module_def_refs.append(ARRef.deserialize(child))
 
         return obj
 

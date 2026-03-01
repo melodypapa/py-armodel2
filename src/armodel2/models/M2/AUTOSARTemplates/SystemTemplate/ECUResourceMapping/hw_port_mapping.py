@@ -39,7 +39,7 @@ class HwPortMapping(ARObject):
     communication_connector_ref: Optional[ARRef]
     hw_pin_group_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CONNECTOR-REF": lambda obj, elem: setattr(obj, "communication_connector_ref", ARRef.deserialize(elem)),
+        "COMMUNICATION-CONNECTOR-REF": ("_POLYMORPHIC", "communication_connector_ref", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
         "HW-PIN-GROUP-REF": lambda obj, elem: setattr(obj, "hw_pin_group_ref", ARRef.deserialize(elem)),
     }
 
@@ -116,17 +116,27 @@ class HwPortMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwPortMapping, cls).deserialize(element)
 
-        # Parse communication_connector_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
-        if child is not None:
-            communication_connector_ref_value = ARRef.deserialize(child)
-            obj.communication_connector_ref = communication_connector_ref_value
-
-        # Parse hw_pin_group_ref
-        child = SerializationHelper.find_child_element(element, "HW-PIN-GROUP-REF")
-        if child is not None:
-            hw_pin_group_ref_value = ARRef.deserialize(child)
-            obj.hw_pin_group_ref = hw_pin_group_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMUNICATION-CONNECTOR-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONNECTOR":
+                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCommunicationConnector"))
+                    elif concrete_tag == "ETHERNET-COMMUNICATION-CONNECTOR":
+                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetCommunicationConnector"))
+                    elif concrete_tag == "FLEXRAY-COMMUNICATION-CONNECTOR":
+                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayCommunicationConnector"))
+                    elif concrete_tag == "LIN-COMMUNICATION-CONNECTOR":
+                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "LinCommunicationConnector"))
+                    elif concrete_tag == "USER-DEFINED-COMMUNICATION-CONNECTOR":
+                        setattr(obj, "communication_connector_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCommunicationConnector"))
+            elif tag == "HW-PIN-GROUP-REF":
+                setattr(obj, "hw_pin_group_ref", ARRef.deserialize(child))
 
         return obj
 

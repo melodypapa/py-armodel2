@@ -47,9 +47,9 @@ class TlvDataIdDefinition(ARObject):
     tlv_ref: Optional[ARRef]
     tlv_record_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "ID": lambda obj, elem: setattr(obj, "id", elem.text),
+        "ID": lambda obj, elem: setattr(obj, "id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "TLV-ARGUMENT-REF": lambda obj, elem: setattr(obj, "tlv_argument_ref", ARRef.deserialize(elem)),
-        "TLV-REF": lambda obj, elem: setattr(obj, "tlv_ref", ARRef.deserialize(elem)),
+        "TLV-REF": ("_POLYMORPHIC", "tlv_ref", ["ImplementationDataType"]),
         "TLV-RECORD-REF": lambda obj, elem: setattr(obj, "tlv_record_ref", ARRef.deserialize(elem)),
     }
 
@@ -156,29 +156,23 @@ class TlvDataIdDefinition(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TlvDataIdDefinition, cls).deserialize(element)
 
-        # Parse id
-        child = SerializationHelper.find_child_element(element, "ID")
-        if child is not None:
-            id_value = child.text
-            obj.id = id_value
-
-        # Parse tlv_argument_ref
-        child = SerializationHelper.find_child_element(element, "TLV-ARGUMENT-REF")
-        if child is not None:
-            tlv_argument_ref_value = ARRef.deserialize(child)
-            obj.tlv_argument_ref = tlv_argument_ref_value
-
-        # Parse tlv_ref
-        child = SerializationHelper.find_child_element(element, "TLV-REF")
-        if child is not None:
-            tlv_ref_value = ARRef.deserialize(child)
-            obj.tlv_ref = tlv_ref_value
-
-        # Parse tlv_record_ref
-        child = SerializationHelper.find_child_element(element, "TLV-RECORD-REF")
-        if child is not None:
-            tlv_record_ref_value = ARRef.deserialize(child)
-            obj.tlv_record_ref = tlv_record_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ID":
+                setattr(obj, "id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TLV-ARGUMENT-REF":
+                setattr(obj, "tlv_argument_ref", ARRef.deserialize(child))
+            elif tag == "TLV-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "IMPLEMENTATION-DATA-TYPE":
+                        setattr(obj, "tlv_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationDataType"))
+            elif tag == "TLV-RECORD-REF":
+                setattr(obj, "tlv_record_ref", ARRef.deserialize(child))
 
         return obj
 

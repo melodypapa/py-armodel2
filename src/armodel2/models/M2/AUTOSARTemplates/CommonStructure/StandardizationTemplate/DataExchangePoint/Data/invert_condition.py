@@ -35,7 +35,7 @@ class InvertCondition(AbstractCondition):
 
     condition: AbstractCondition
     _DESERIALIZE_DISPATCH = {
-        "CONDITION": lambda obj, elem: setattr(obj, "condition", AbstractCondition.deserialize(elem)),
+        "CONDITION": ("_POLYMORPHIC", "condition", ["AttributeCondition", "InvertCondition", "TextualCondition"]),
     }
 
 
@@ -96,11 +96,21 @@ class InvertCondition(AbstractCondition):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InvertCondition, cls).deserialize(element)
 
-        # Parse condition
-        child = SerializationHelper.find_child_element(element, "CONDITION")
-        if child is not None:
-            condition_value = SerializationHelper.deserialize_by_tag(child, "AbstractCondition")
-            obj.condition = condition_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONDITION":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATTRIBUTE-CONDITION":
+                        setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child[0], "AttributeCondition"))
+                    elif concrete_tag == "INVERT-CONDITION":
+                        setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child[0], "InvertCondition"))
+                    elif concrete_tag == "TEXTUAL-CONDITION":
+                        setattr(obj, "condition", SerializationHelper.deserialize_by_tag(child[0], "TextualCondition"))
 
         return obj
 

@@ -117,17 +117,15 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataComProps, cls).deserialize(element)
 
-        # Parse data
-        child = SerializationHelper.find_child_element(element, "DATA")
-        if child is not None:
-            data_value = DataConsistencyPolicyEnum.deserialize(child)
-            obj.data = data_value
-
-        # Parse send_indication_enum
-        child = SerializationHelper.find_child_element(element, "SEND-INDICATION-ENUM")
-        if child is not None:
-            send_indication_enum_value = SendIndicationEnum.deserialize(child)
-            obj.send_indication_enum = send_indication_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA":
+                setattr(obj, "data", DataConsistencyPolicyEnum.deserialize(child))
+            elif tag == "SEND-INDICATION-ENUM":
+                setattr(obj, "send_indication_enum", SendIndicationEnum.deserialize(child))
 
         return obj
 

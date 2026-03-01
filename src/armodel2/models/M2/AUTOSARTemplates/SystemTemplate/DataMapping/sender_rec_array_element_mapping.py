@@ -43,8 +43,8 @@ class SenderRecArrayElementMapping(ARObject):
     indexed_array: Optional[IndexedArrayElement]
     system_signal_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMPLEX-TYPE": lambda obj, elem: setattr(obj, "complex_type", SenderRecCompositeTypeMapping.deserialize(elem)),
-        "INDEXED-ARRAY": lambda obj, elem: setattr(obj, "indexed_array", IndexedArrayElement.deserialize(elem)),
+        "COMPLEX-TYPE": ("_POLYMORPHIC", "complex_type", ["SenderRecArrayTypeMapping", "SenderRecRecordTypeMapping"]),
+        "INDEXED-ARRAY": lambda obj, elem: setattr(obj, "indexed_array", SerializationHelper.deserialize_by_tag(elem, "IndexedArrayElement")),
         "SYSTEM-SIGNAL-REF": lambda obj, elem: setattr(obj, "system_signal_ref", ARRef.deserialize(elem)),
     }
 
@@ -136,23 +136,23 @@ class SenderRecArrayElementMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderRecArrayElementMapping, cls).deserialize(element)
 
-        # Parse complex_type
-        child = SerializationHelper.find_child_element(element, "COMPLEX-TYPE")
-        if child is not None:
-            complex_type_value = SerializationHelper.deserialize_by_tag(child, "SenderRecCompositeTypeMapping")
-            obj.complex_type = complex_type_value
-
-        # Parse indexed_array
-        child = SerializationHelper.find_child_element(element, "INDEXED-ARRAY")
-        if child is not None:
-            indexed_array_value = SerializationHelper.deserialize_by_tag(child, "IndexedArrayElement")
-            obj.indexed_array = indexed_array_value
-
-        # Parse system_signal_ref
-        child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
-        if child is not None:
-            system_signal_ref_value = ARRef.deserialize(child)
-            obj.system_signal_ref = system_signal_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPLEX-TYPE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "SENDER-REC-ARRAY-TYPE-MAPPING":
+                        setattr(obj, "complex_type", SerializationHelper.deserialize_by_tag(child[0], "SenderRecArrayTypeMapping"))
+                    elif concrete_tag == "SENDER-REC-RECORD-TYPE-MAPPING":
+                        setattr(obj, "complex_type", SerializationHelper.deserialize_by_tag(child[0], "SenderRecRecordTypeMapping"))
+            elif tag == "INDEXED-ARRAY":
+                setattr(obj, "indexed_array", SerializationHelper.deserialize_by_tag(child, "IndexedArrayElement"))
+            elif tag == "SYSTEM-SIGNAL-REF":
+                setattr(obj, "system_signal_ref", ARRef.deserialize(child))
 
         return obj
 

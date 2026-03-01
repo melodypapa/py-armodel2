@@ -34,7 +34,7 @@ class DiagnosticIumprGroupIdentifier(ARObject):
 
     group_id: Optional[NameToken]
     _DESERIALIZE_DISPATCH = {
-        "GROUP-ID": lambda obj, elem: setattr(obj, "group_id", elem.text),
+        "GROUP-ID": lambda obj, elem: setattr(obj, "group_id", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
     }
 
 
@@ -95,11 +95,13 @@ class DiagnosticIumprGroupIdentifier(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticIumprGroupIdentifier, cls).deserialize(element)
 
-        # Parse group_id
-        child = SerializationHelper.find_child_element(element, "GROUP-ID")
-        if child is not None:
-            group_id_value = child.text
-            obj.group_id = group_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "GROUP-ID":
+                setattr(obj, "group_id", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

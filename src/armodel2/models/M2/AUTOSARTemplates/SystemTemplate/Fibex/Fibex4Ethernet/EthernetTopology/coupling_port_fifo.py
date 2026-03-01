@@ -40,9 +40,9 @@ class CouplingPortFifo(CouplingPortStructuralElement):
     minimum_fifo: Optional[PositiveInteger]
     shaper: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "ASSIGNED-TRAFFIC": lambda obj, elem: setattr(obj, "assigned_traffic", elem.text),
-        "MINIMUM-FIFO": lambda obj, elem: setattr(obj, "minimum_fifo", elem.text),
-        "SHAPER": lambda obj, elem: setattr(obj, "shaper", any (CouplingPortAbstract).deserialize(elem)),
+        "ASSIGNED-TRAFFIC": lambda obj, elem: setattr(obj, "assigned_traffic", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MINIMUM-FIFO": lambda obj, elem: setattr(obj, "minimum_fifo", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SHAPER": lambda obj, elem: setattr(obj, "shaper", SerializationHelper.deserialize_by_tag(elem, "any (CouplingPortAbstract)")),
     }
 
 
@@ -133,23 +133,17 @@ class CouplingPortFifo(CouplingPortStructuralElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CouplingPortFifo, cls).deserialize(element)
 
-        # Parse assigned_traffic
-        child = SerializationHelper.find_child_element(element, "ASSIGNED-TRAFFIC")
-        if child is not None:
-            assigned_traffic_value = child.text
-            obj.assigned_traffic = assigned_traffic_value
-
-        # Parse minimum_fifo
-        child = SerializationHelper.find_child_element(element, "MINIMUM-FIFO")
-        if child is not None:
-            minimum_fifo_value = child.text
-            obj.minimum_fifo = minimum_fifo_value
-
-        # Parse shaper
-        child = SerializationHelper.find_child_element(element, "SHAPER")
-        if child is not None:
-            shaper_value = child.text
-            obj.shaper = shaper_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ASSIGNED-TRAFFIC":
+                setattr(obj, "assigned_traffic", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MINIMUM-FIFO":
+                setattr(obj, "minimum_fifo", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SHAPER":
+                setattr(obj, "shaper", SerializationHelper.deserialize_by_tag(child, "any (CouplingPortAbstract)"))
 
         return obj
 

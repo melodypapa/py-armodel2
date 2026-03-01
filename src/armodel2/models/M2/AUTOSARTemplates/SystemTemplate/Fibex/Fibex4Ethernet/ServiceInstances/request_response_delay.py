@@ -35,8 +35,8 @@ class RequestResponseDelay(ARObject):
     max_value: Optional[TimeValue]
     min_value: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "MAX-VALUE": lambda obj, elem: setattr(obj, "max_value", elem.text),
-        "MIN-VALUE": lambda obj, elem: setattr(obj, "min_value", elem.text),
+        "MAX-VALUE": lambda obj, elem: setattr(obj, "max_value", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "MIN-VALUE": lambda obj, elem: setattr(obj, "min_value", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -112,17 +112,15 @@ class RequestResponseDelay(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RequestResponseDelay, cls).deserialize(element)
 
-        # Parse max_value
-        child = SerializationHelper.find_child_element(element, "MAX-VALUE")
-        if child is not None:
-            max_value_value = child.text
-            obj.max_value = max_value_value
-
-        # Parse min_value
-        child = SerializationHelper.find_child_element(element, "MIN-VALUE")
-        if child is not None:
-            min_value_value = child.text
-            obj.min_value = min_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAX-VALUE":
+                setattr(obj, "max_value", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "MIN-VALUE":
+                setattr(obj, "min_value", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

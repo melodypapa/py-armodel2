@@ -35,7 +35,7 @@ class FMFeatureRestriction(Identifiable):
 
     restriction_and_attributes: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "RESTRICTION-AND-ATTRIBUTES": lambda obj, elem: setattr(obj, "restriction_and_attributes", any (FMConditionByFeatures).deserialize(elem)),
+        "RESTRICTION-AND-ATTRIBUTES": lambda obj, elem: setattr(obj, "restriction_and_attributes", SerializationHelper.deserialize_by_tag(elem, "any (FMConditionByFeatures)")),
     }
 
 
@@ -96,11 +96,13 @@ class FMFeatureRestriction(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeatureRestriction, cls).deserialize(element)
 
-        # Parse restriction_and_attributes
-        child = SerializationHelper.find_child_element(element, "RESTRICTION-AND-ATTRIBUTES")
-        if child is not None:
-            restriction_and_attributes_value = child.text
-            obj.restriction_and_attributes = restriction_and_attributes_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RESTRICTION-AND-ATTRIBUTES":
+                setattr(obj, "restriction_and_attributes", SerializationHelper.deserialize_by_tag(child, "any (FMConditionByFeatures)"))
 
         return obj
 

@@ -47,7 +47,7 @@ class SenderRecRecordElementMapping(ARObject):
     system_signal_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "APPLICATION-RECORD-REF": lambda obj, elem: setattr(obj, "application_record_ref", ARRef.deserialize(elem)),
-        "COMPLEX-TYPE": lambda obj, elem: setattr(obj, "complex_type", SenderRecCompositeTypeMapping.deserialize(elem)),
+        "COMPLEX-TYPE": ("_POLYMORPHIC", "complex_type", ["SenderRecArrayTypeMapping", "SenderRecRecordTypeMapping"]),
         "IMPLEMENTATION-REF": lambda obj, elem: setattr(obj, "implementation_ref", ARRef.deserialize(elem)),
         "SENDER-TO-SIGNAL-REF": lambda obj, elem: setattr(obj, "sender_to_signal_ref", ARRef.deserialize(elem)),
         "SIGNAL-TO-REF": lambda obj, elem: setattr(obj, "signal_to_ref", ARRef.deserialize(elem)),
@@ -187,41 +187,29 @@ class SenderRecRecordElementMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderRecRecordElementMapping, cls).deserialize(element)
 
-        # Parse application_record_ref
-        child = SerializationHelper.find_child_element(element, "APPLICATION-RECORD-REF")
-        if child is not None:
-            application_record_ref_value = ARRef.deserialize(child)
-            obj.application_record_ref = application_record_ref_value
-
-        # Parse complex_type
-        child = SerializationHelper.find_child_element(element, "COMPLEX-TYPE")
-        if child is not None:
-            complex_type_value = SerializationHelper.deserialize_by_tag(child, "SenderRecCompositeTypeMapping")
-            obj.complex_type = complex_type_value
-
-        # Parse implementation_ref
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REF")
-        if child is not None:
-            implementation_ref_value = ARRef.deserialize(child)
-            obj.implementation_ref = implementation_ref_value
-
-        # Parse sender_to_signal_ref
-        child = SerializationHelper.find_child_element(element, "SENDER-TO-SIGNAL-REF")
-        if child is not None:
-            sender_to_signal_ref_value = ARRef.deserialize(child)
-            obj.sender_to_signal_ref = sender_to_signal_ref_value
-
-        # Parse signal_to_ref
-        child = SerializationHelper.find_child_element(element, "SIGNAL-TO-REF")
-        if child is not None:
-            signal_to_ref_value = ARRef.deserialize(child)
-            obj.signal_to_ref = signal_to_ref_value
-
-        # Parse system_signal_ref
-        child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
-        if child is not None:
-            system_signal_ref_value = ARRef.deserialize(child)
-            obj.system_signal_ref = system_signal_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "APPLICATION-RECORD-REF":
+                setattr(obj, "application_record_ref", ARRef.deserialize(child))
+            elif tag == "COMPLEX-TYPE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "SENDER-REC-ARRAY-TYPE-MAPPING":
+                        setattr(obj, "complex_type", SerializationHelper.deserialize_by_tag(child[0], "SenderRecArrayTypeMapping"))
+                    elif concrete_tag == "SENDER-REC-RECORD-TYPE-MAPPING":
+                        setattr(obj, "complex_type", SerializationHelper.deserialize_by_tag(child[0], "SenderRecRecordTypeMapping"))
+            elif tag == "IMPLEMENTATION-REF":
+                setattr(obj, "implementation_ref", ARRef.deserialize(child))
+            elif tag == "SENDER-TO-SIGNAL-REF":
+                setattr(obj, "sender_to_signal_ref", ARRef.deserialize(child))
+            elif tag == "SIGNAL-TO-REF":
+                setattr(obj, "signal_to_ref", ARRef.deserialize(child))
+            elif tag == "SYSTEM-SIGNAL-REF":
+                setattr(obj, "system_signal_ref", ARRef.deserialize(child))
 
         return obj
 

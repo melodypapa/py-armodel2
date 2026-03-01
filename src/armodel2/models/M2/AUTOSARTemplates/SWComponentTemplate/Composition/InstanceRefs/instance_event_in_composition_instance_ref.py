@@ -42,7 +42,7 @@ class InstanceEventInCompositionInstanceRef(ARObject):
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
         "CONTEXT-PROTOTYPES": lambda obj, elem: obj.context_prototype_refs.append(ARRef.deserialize(elem)),
-        "TARGET-EVENT-REF": lambda obj, elem: setattr(obj, "target_event_ref", ARRef.deserialize(elem)),
+        "TARGET-EVENT-REF": ("_POLYMORPHIC", "target_event_ref", ["AsynchronousServerCallReturnsEvent", "BackgroundEvent", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "ExternalTriggerOccurredEvent", "InitEvent", "InternalTriggerOccurredEvent", "ModeSwitchedAckEvent", "OperationInvokedEvent", "OsTaskExecutionEvent", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "TimingEvent", "TransformerHardErrorEvent"]),
     }
 
 
@@ -136,33 +136,51 @@ class InstanceEventInCompositionInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InstanceEventInCompositionInstanceRef, cls).deserialize(element)
 
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse context_prototype_refs (list from container "CONTEXT-PROTOTYPE-REFS")
-        obj.context_prototype_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-PROTOTYPE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.context_prototype_refs.append(child_value)
-
-        # Parse target_event_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-EVENT-REF")
-        if child is not None:
-            target_event_ref_value = ARRef.deserialize(child)
-            obj.target_event_ref = target_event_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BASE-REF":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-PROTOTYPES":
+                obj.context_prototype_refs.append(ARRef.deserialize(child))
+            elif tag == "TARGET-EVENT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RETURNS-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "AsynchronousServerCallReturnsEvent"))
+                    elif concrete_tag == "BACKGROUND-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "BackgroundEvent"))
+                    elif concrete_tag == "DATA-RECEIVE-ERROR-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "DataReceiveErrorEvent"))
+                    elif concrete_tag == "DATA-RECEIVED-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "DataReceivedEvent"))
+                    elif concrete_tag == "DATA-SEND-COMPLETED-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "DataSendCompletedEvent"))
+                    elif concrete_tag == "DATA-WRITE-COMPLETED-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "DataWriteCompletedEvent"))
+                    elif concrete_tag == "EXTERNAL-TRIGGER-OCCURRED-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "ExternalTriggerOccurredEvent"))
+                    elif concrete_tag == "INIT-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "InitEvent"))
+                    elif concrete_tag == "INTERNAL-TRIGGER-OCCURRED-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "InternalTriggerOccurredEvent"))
+                    elif concrete_tag == "MODE-SWITCHED-ACK-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchedAckEvent"))
+                    elif concrete_tag == "OPERATION-INVOKED-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "OperationInvokedEvent"))
+                    elif concrete_tag == "OS-TASK-EXECUTION-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "OsTaskExecutionEvent"))
+                    elif concrete_tag == "SWC-MODE-MANAGER-ERROR-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "SwcModeManagerErrorEvent"))
+                    elif concrete_tag == "SWC-MODE-SWITCH-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "SwcModeSwitchEvent"))
+                    elif concrete_tag == "TIMING-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TimingEvent"))
+                    elif concrete_tag == "TRANSFORMER-HARD-ERROR-EVENT":
+                        setattr(obj, "target_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TransformerHardErrorEvent"))
 
         return obj
 

@@ -51,7 +51,7 @@ class HwElementConnector(Describable):
     hw_pin_group_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "HW-ELEMENTS": lambda obj, elem: obj.hw_element_refs.append(ARRef.deserialize(elem)),
-        "HW-PINS": lambda obj, elem: obj.hw_pins.append(HwPinConnector.deserialize(elem)),
+        "HW-PINS": lambda obj, elem: obj.hw_pins.append(SerializationHelper.deserialize_by_tag(elem, "HwPinConnector")),
         "HW-PIN-GROUPS": lambda obj, elem: obj.hw_pin_group_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -145,47 +145,17 @@ class HwElementConnector(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwElementConnector, cls).deserialize(element)
 
-        # Parse hw_element_refs (list from container "HW-ELEMENT-REFS")
-        obj.hw_element_refs = []
-        container = SerializationHelper.find_child_element(element, "HW-ELEMENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.hw_element_refs.append(child_value)
-
-        # Parse hw_pins (list from container "HW-PINS")
-        obj.hw_pins = []
-        container = SerializationHelper.find_child_element(element, "HW-PINS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.hw_pins.append(child_value)
-
-        # Parse hw_pin_group_refs (list from container "HW-PIN-GROUP-REFS")
-        obj.hw_pin_group_refs = []
-        container = SerializationHelper.find_child_element(element, "HW-PIN-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.hw_pin_group_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "HW-ELEMENTS":
+                obj.hw_element_refs.append(ARRef.deserialize(child))
+            elif tag == "HW-PINS":
+                obj.hw_pins.append(SerializationHelper.deserialize_by_tag(child, "HwPinConnector"))
+            elif tag == "HW-PIN-GROUPS":
+                obj.hw_pin_group_refs.append(ARRef.deserialize(child))
 
         return obj
 

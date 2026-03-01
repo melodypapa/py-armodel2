@@ -38,7 +38,7 @@ class BusMirrorChannelMappingFlexray(BusMirrorChannelMapping):
 
     transmission: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", elem.text),
+        "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -99,11 +99,13 @@ class BusMirrorChannelMappingFlexray(BusMirrorChannelMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BusMirrorChannelMappingFlexray, cls).deserialize(element)
 
-        # Parse transmission
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION")
-        if child is not None:
-            transmission_value = child.text
-            obj.transmission = transmission_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TRANSMISSION":
+                setattr(obj, "transmission", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

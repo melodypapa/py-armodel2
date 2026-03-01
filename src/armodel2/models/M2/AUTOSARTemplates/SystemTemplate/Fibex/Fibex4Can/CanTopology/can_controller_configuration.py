@@ -41,10 +41,10 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
     time_seg1: Optional[Integer]
     time_seg2: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "PROP-SEG": lambda obj, elem: setattr(obj, "prop_seg", elem.text),
-        "SYNC-JUMP-WIDTH": lambda obj, elem: setattr(obj, "sync_jump_width", elem.text),
-        "TIME-SEG1": lambda obj, elem: setattr(obj, "time_seg1", elem.text),
-        "TIME-SEG2": lambda obj, elem: setattr(obj, "time_seg2", elem.text),
+        "PROP-SEG": lambda obj, elem: setattr(obj, "prop_seg", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "SYNC-JUMP-WIDTH": lambda obj, elem: setattr(obj, "sync_jump_width", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "TIME-SEG1": lambda obj, elem: setattr(obj, "time_seg1", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "TIME-SEG2": lambda obj, elem: setattr(obj, "time_seg2", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -150,29 +150,19 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanControllerConfiguration, cls).deserialize(element)
 
-        # Parse prop_seg
-        child = SerializationHelper.find_child_element(element, "PROP-SEG")
-        if child is not None:
-            prop_seg_value = child.text
-            obj.prop_seg = prop_seg_value
-
-        # Parse sync_jump_width
-        child = SerializationHelper.find_child_element(element, "SYNC-JUMP-WIDTH")
-        if child is not None:
-            sync_jump_width_value = child.text
-            obj.sync_jump_width = sync_jump_width_value
-
-        # Parse time_seg1
-        child = SerializationHelper.find_child_element(element, "TIME-SEG1")
-        if child is not None:
-            time_seg1_value = child.text
-            obj.time_seg1 = time_seg1_value
-
-        # Parse time_seg2
-        child = SerializationHelper.find_child_element(element, "TIME-SEG2")
-        if child is not None:
-            time_seg2_value = child.text
-            obj.time_seg2 = time_seg2_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PROP-SEG":
+                setattr(obj, "prop_seg", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "SYNC-JUMP-WIDTH":
+                setattr(obj, "sync_jump_width", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "TIME-SEG1":
+                setattr(obj, "time_seg1", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "TIME-SEG2":
+                setattr(obj, "time_seg2", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

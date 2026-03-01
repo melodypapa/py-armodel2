@@ -91,17 +91,17 @@ class System(ARElement):
     _DESERIALIZE_DISPATCH = {
         "CLIENT-ID-DEFINITION-SETS": lambda obj, elem: obj.client_id_definition_set_refs.append(ARRef.deserialize(elem)),
         "CONTAINER-I-PDU-HEADER-BYTE-ORDER": lambda obj, elem: setattr(obj, "container_i_pdu_header_byte_order", ByteOrderEnum.deserialize(elem)),
-        "ECU-EXTRACT-VERSION": lambda obj, elem: setattr(obj, "ecu_extract_version", elem.text),
-        "FIBEX-ELEMENTS": lambda obj, elem: obj._fibex_element_refs.append(ARRef.deserialize(elem)),
+        "ECU-EXTRACT-VERSION": lambda obj, elem: setattr(obj, "ecu_extract_version", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
+        "FIBEX-ELEMENTS": ("_POLYMORPHIC_LIST", "_fibex_element_refs", ["BusMirrorChannelMapping", "CommunicationCluster", "ConsumedProvidedServiceInstanceGroup", "CouplingElement", "EcuInstance", "EthernetWakeupSleepOnDatalineConfigSet", "Frame", "Gateway", "GlobalTimeDomain", "ISignal", "ISignalGroup", "ISignalIPduGroup", "NmConfig", "Pdu", "PdurIPduGroup", "SecureCommunicationPropsSet", "ServiceInstanceCollectionSet", "SoAdRoutingGroup", "SocketConnectionIpduIdentifierSet", "TpConfig"]),
         "INTERPOLATION-ROUTINE-MAPPING-SETS": lambda obj, elem: obj.interpolation_routine_mapping_set_refs.append(ARRef.deserialize(elem)),
-        "J1939-SHARED-ADDRESS-CLUSTERS": lambda obj, elem: obj.j1939_shared_address_clusters.append(J1939SharedAddressCluster.deserialize(elem)),
-        "MAPPINGS": lambda obj, elem: obj.mappings.append(SystemMapping.deserialize(elem)),
-        "PNC-VECTOR-LENGTH": lambda obj, elem: setattr(obj, "pnc_vector_length", elem.text),
-        "PNC-VECTOR-OFFSET": lambda obj, elem: setattr(obj, "pnc_vector_offset", elem.text),
-        "ROOT-SOFTWARE-COMPOSITIONS": lambda obj, elem: obj.root_software_compositions.append(RootSwCompositionPrototype.deserialize(elem)),
+        "J1939-SHARED-ADDRESS-CLUSTERS": lambda obj, elem: obj.j1939_shared_address_clusters.append(SerializationHelper.deserialize_by_tag(elem, "J1939SharedAddressCluster")),
+        "MAPPINGS": lambda obj, elem: obj.mappings.append(SerializationHelper.deserialize_by_tag(elem, "SystemMapping")),
+        "PNC-VECTOR-LENGTH": lambda obj, elem: setattr(obj, "pnc_vector_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PNC-VECTOR-OFFSET": lambda obj, elem: setattr(obj, "pnc_vector_offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "ROOT-SOFTWARE-COMPOSITIONS": lambda obj, elem: obj.root_software_compositions.append(SerializationHelper.deserialize_by_tag(elem, "RootSwCompositionPrototype")),
         "SW-CLUSTERS": lambda obj, elem: obj.sw_cluster_refs.append(ARRef.deserialize(elem)),
-        "SYSTEM-DOCUMENTATIONS": lambda obj, elem: obj.system_documentations.append(Chapter.deserialize(elem)),
-        "SYSTEM-VERSION": lambda obj, elem: setattr(obj, "system_version", elem.text),
+        "SYSTEM-DOCUMENTATIONS": lambda obj, elem: obj.system_documentations.append(SerializationHelper.deserialize_by_tag(elem, "Chapter")),
+        "SYSTEM-VERSION": lambda obj, elem: setattr(obj, "system_version", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
     }
 
 
@@ -352,139 +352,79 @@ class System(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(System, cls).deserialize(element)
 
-        # Parse client_id_definition_set_refs (list from container "CLIENT-ID-DEFINITION-SET-REFS")
-        obj.client_id_definition_set_refs = []
-        container = SerializationHelper.find_child_element(element, "CLIENT-ID-DEFINITION-SET-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.client_id_definition_set_refs.append(child_value)
-
-        # Parse container_i_pdu_header_byte_order
-        child = SerializationHelper.find_child_element(element, "CONTAINER-I-PDU-HEADER-BYTE-ORDER")
-        if child is not None:
-            container_i_pdu_header_byte_order_value = ByteOrderEnum.deserialize(child)
-            obj.container_i_pdu_header_byte_order = container_i_pdu_header_byte_order_value
-
-        # Parse ecu_extract_version
-        child = SerializationHelper.find_child_element(element, "ECU-EXTRACT-VERSION")
-        if child is not None:
-            ecu_extract_version_value = child.text
-            obj.ecu_extract_version = ecu_extract_version_value
-
-        # Parse fibex_element_refs (list from container "FIBEX-ELEMENTS")
-        obj.fibex_element_refs = []
-        container = SerializationHelper.find_child_element(element, "FIBEX-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Unwrap -REF-CONDITIONAL to extract the inner -REF
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag == "FIBEX-ELEMENT-REF-CONDITIONAL":
-                    ref_child = SerializationHelper.find_child_element(child, "FIBEX-ELEMENT-REF")
-                    if ref_child is not None:
-                        child_value = ARRef.deserialize(ref_child)
-                else:
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.fibex_element_refs.append(child_value)
-
-        # Parse interpolation_routine_mapping_set_refs (list from container "INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
-        obj.interpolation_routine_mapping_set_refs = []
-        container = SerializationHelper.find_child_element(element, "INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.interpolation_routine_mapping_set_refs.append(child_value)
-
-        # Parse j1939_shared_address_clusters (list from container "J1939-SHARED-ADDRESS-CLUSTERS")
-        obj.j1939_shared_address_clusters = []
-        container = SerializationHelper.find_child_element(element, "J1939-SHARED-ADDRESS-CLUSTERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.j1939_shared_address_clusters.append(child_value)
-
-        # Parse mappings (list from container "MAPPINGS")
-        obj.mappings = []
-        container = SerializationHelper.find_child_element(element, "MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mappings.append(child_value)
-
-        # Parse pnc_vector_length
-        child = SerializationHelper.find_child_element(element, "PNC-VECTOR-LENGTH")
-        if child is not None:
-            pnc_vector_length_value = child.text
-            obj.pnc_vector_length = pnc_vector_length_value
-
-        # Parse pnc_vector_offset
-        child = SerializationHelper.find_child_element(element, "PNC-VECTOR-OFFSET")
-        if child is not None:
-            pnc_vector_offset_value = child.text
-            obj.pnc_vector_offset = pnc_vector_offset_value
-
-        # Parse root_software_compositions (list from container "ROOT-SOFTWARE-COMPOSITIONS")
-        obj.root_software_compositions = []
-        container = SerializationHelper.find_child_element(element, "ROOT-SOFTWARE-COMPOSITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.root_software_compositions.append(child_value)
-
-        # Parse sw_cluster_refs (list from container "SW-CLUSTER-REFS")
-        obj.sw_cluster_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-CLUSTER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_cluster_refs.append(child_value)
-
-        # Parse system_documentations (list from container "SYSTEM-DOCUMENTATIONS")
-        obj.system_documentations = []
-        container = SerializationHelper.find_child_element(element, "SYSTEM-DOCUMENTATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.system_documentations.append(child_value)
-
-        # Parse system_version
-        child = SerializationHelper.find_child_element(element, "SYSTEM-VERSION")
-        if child is not None:
-            system_version_value = child.text
-            obj.system_version = system_version_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CLIENT-ID-DEFINITION-SETS":
+                obj.client_id_definition_set_refs.append(ARRef.deserialize(child))
+            elif tag == "CONTAINER-I-PDU-HEADER-BYTE-ORDER":
+                setattr(obj, "container_i_pdu_header_byte_order", ByteOrderEnum.deserialize(child))
+            elif tag == "ECU-EXTRACT-VERSION":
+                setattr(obj, "ecu_extract_version", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
+            elif tag == "FIBEX-ELEMENTS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BUS-MIRROR-CHANNEL-MAPPING":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BusMirrorChannelMapping"))
+                    elif concrete_tag == "COMMUNICATION-CLUSTER":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CommunicationCluster"))
+                    elif concrete_tag == "CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ConsumedProvidedServiceInstanceGroup"))
+                    elif concrete_tag == "COUPLING-ELEMENT":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CouplingElement"))
+                    elif concrete_tag == "ECU-INSTANCE":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EcuInstance"))
+                    elif concrete_tag == "ETHERNET-WAKEUP-SLEEP-ON-DATALINE-CONFIG-SET":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetWakeupSleepOnDatalineConfigSet"))
+                    elif concrete_tag == "FRAME":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "Frame"))
+                    elif concrete_tag == "GATEWAY":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "Gateway"))
+                    elif concrete_tag == "GLOBAL-TIME-DOMAIN":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "GlobalTimeDomain"))
+                    elif concrete_tag == "I-SIGNAL":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ISignal"))
+                    elif concrete_tag == "I-SIGNAL-GROUP":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ISignalGroup"))
+                    elif concrete_tag == "I-SIGNAL-I-PDU-GROUP":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ISignalIPduGroup"))
+                    elif concrete_tag == "NM-CONFIG":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "NmConfig"))
+                    elif concrete_tag == "PDU":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "Pdu"))
+                    elif concrete_tag == "PDUR-I-PDU-GROUP":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "PdurIPduGroup"))
+                    elif concrete_tag == "SECURE-COMMUNICATION-PROPS-SET":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SecureCommunicationPropsSet"))
+                    elif concrete_tag == "SERVICE-INSTANCE-COLLECTION-SET":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ServiceInstanceCollectionSet"))
+                    elif concrete_tag == "SO-AD-ROUTING-GROUP":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SoAdRoutingGroup"))
+                    elif concrete_tag == "SOCKET-CONNECTION-IPDU-IDENTIFIER-SET":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SocketConnectionIpduIdentifierSet"))
+                    elif concrete_tag == "TP-CONFIG":
+                        obj._fibex_element_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TpConfig"))
+            elif tag == "INTERPOLATION-ROUTINE-MAPPING-SETS":
+                obj.interpolation_routine_mapping_set_refs.append(ARRef.deserialize(child))
+            elif tag == "J1939-SHARED-ADDRESS-CLUSTERS":
+                obj.j1939_shared_address_clusters.append(SerializationHelper.deserialize_by_tag(child, "J1939SharedAddressCluster"))
+            elif tag == "MAPPINGS":
+                obj.mappings.append(SerializationHelper.deserialize_by_tag(child, "SystemMapping"))
+            elif tag == "PNC-VECTOR-LENGTH":
+                setattr(obj, "pnc_vector_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PNC-VECTOR-OFFSET":
+                setattr(obj, "pnc_vector_offset", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "ROOT-SOFTWARE-COMPOSITIONS":
+                obj.root_software_compositions.append(SerializationHelper.deserialize_by_tag(child, "RootSwCompositionPrototype"))
+            elif tag == "SW-CLUSTERS":
+                obj.sw_cluster_refs.append(ARRef.deserialize(child))
+            elif tag == "SYSTEM-DOCUMENTATIONS":
+                obj.system_documentations.append(SerializationHelper.deserialize_by_tag(child, "Chapter"))
+            elif tag == "SYSTEM-VERSION":
+                setattr(obj, "system_version", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
 
         return obj
 

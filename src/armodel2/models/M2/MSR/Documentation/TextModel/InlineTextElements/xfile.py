@@ -40,9 +40,9 @@ class Xfile(SingleLanguageReferrable):
     tool_version: Optional[String]
     url: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "TOOL": lambda obj, elem: setattr(obj, "tool", elem.text),
-        "TOOL-VERSION": lambda obj, elem: setattr(obj, "tool_version", elem.text),
-        "URL": lambda obj, elem: setattr(obj, "url", any (Url).deserialize(elem)),
+        "TOOL": lambda obj, elem: setattr(obj, "tool", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "TOOL-VERSION": lambda obj, elem: setattr(obj, "tool_version", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "URL": lambda obj, elem: setattr(obj, "url", SerializationHelper.deserialize_by_tag(elem, "any (Url)")),
     }
 
 
@@ -133,23 +133,17 @@ class Xfile(SingleLanguageReferrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Xfile, cls).deserialize(element)
 
-        # Parse tool
-        child = SerializationHelper.find_child_element(element, "TOOL")
-        if child is not None:
-            tool_value = child.text
-            obj.tool = tool_value
-
-        # Parse tool_version
-        child = SerializationHelper.find_child_element(element, "TOOL-VERSION")
-        if child is not None:
-            tool_version_value = child.text
-            obj.tool_version = tool_version_value
-
-        # Parse url
-        child = SerializationHelper.find_child_element(element, "URL")
-        if child is not None:
-            url_value = child.text
-            obj.url = url_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TOOL":
+                setattr(obj, "tool", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "TOOL-VERSION":
+                setattr(obj, "tool_version", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "URL":
+                setattr(obj, "url", SerializationHelper.deserialize_by_tag(child, "any (Url)"))
 
         return obj
 

@@ -100,11 +100,13 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticJ1939Node, cls).deserialize(element)
 
-        # Parse nm_node_ref
-        child = SerializationHelper.find_child_element(element, "NM-NODE-REF")
-        if child is not None:
-            nm_node_ref_value = ARRef.deserialize(child)
-            obj.nm_node_ref = nm_node_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "NM-NODE-REF":
+                setattr(obj, "nm_node_ref", ARRef.deserialize(child))
 
         return obj
 

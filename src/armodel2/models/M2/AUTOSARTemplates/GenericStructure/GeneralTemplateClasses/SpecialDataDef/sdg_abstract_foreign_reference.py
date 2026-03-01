@@ -36,7 +36,7 @@ class SdgAbstractForeignReference(SdgElementWithGid, ABC):
 
     dest_meta_class: Optional[MetaClassName]
     _DESERIALIZE_DISPATCH = {
-        "DEST-META-CLASS": lambda obj, elem: setattr(obj, "dest_meta_class", elem.text),
+        "DEST-META-CLASS": lambda obj, elem: setattr(obj, "dest_meta_class", SerializationHelper.deserialize_by_tag(elem, "MetaClassName")),
     }
 
 
@@ -97,11 +97,13 @@ class SdgAbstractForeignReference(SdgElementWithGid, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SdgAbstractForeignReference, cls).deserialize(element)
 
-        # Parse dest_meta_class
-        child = SerializationHelper.find_child_element(element, "DEST-META-CLASS")
-        if child is not None:
-            dest_meta_class_value = child.text
-            obj.dest_meta_class = dest_meta_class_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEST-META-CLASS":
+                setattr(obj, "dest_meta_class", SerializationHelper.deserialize_by_tag(child, "MetaClassName"))
 
         return obj
 

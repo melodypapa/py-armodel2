@@ -38,8 +38,8 @@ class MultidimensionalTime(ARObject):
     cse_code: Optional[CseCodeType]
     cse_code_factor: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "CSE-CODE": lambda obj, elem: setattr(obj, "cse_code", elem.text),
-        "CSE-CODE-FACTOR": lambda obj, elem: setattr(obj, "cse_code_factor", elem.text),
+        "CSE-CODE": lambda obj, elem: setattr(obj, "cse_code", SerializationHelper.deserialize_by_tag(elem, "CseCodeType")),
+        "CSE-CODE-FACTOR": lambda obj, elem: setattr(obj, "cse_code_factor", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -115,17 +115,15 @@ class MultidimensionalTime(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MultidimensionalTime, cls).deserialize(element)
 
-        # Parse cse_code
-        child = SerializationHelper.find_child_element(element, "CSE-CODE")
-        if child is not None:
-            cse_code_value = child.text
-            obj.cse_code = cse_code_value
-
-        # Parse cse_code_factor
-        child = SerializationHelper.find_child_element(element, "CSE-CODE-FACTOR")
-        if child is not None:
-            cse_code_factor_value = child.text
-            obj.cse_code_factor = cse_code_factor_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CSE-CODE":
+                setattr(obj, "cse_code", SerializationHelper.deserialize_by_tag(child, "CseCodeType"))
+            elif tag == "CSE-CODE-FACTOR":
+                setattr(obj, "cse_code_factor", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

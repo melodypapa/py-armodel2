@@ -76,18 +76,18 @@ class ReceiverComSpec(RPortComSpec, ABC):
     transformation_com_spec_propses: list[TransformationComSpecProps]
     uses_end_to_end_protection: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "COMPOSITE-NETWORK-REPRESENTATIONS": lambda obj, elem: obj.composite_network_representations.append(CompositeNetworkRepresentation.deserialize(elem)),
-        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "COMPOSITE-NETWORK-REPRESENTATIONS": lambda obj, elem: obj.composite_network_representations.append(SerializationHelper.deserialize_by_tag(elem, "CompositeNetworkRepresentation")),
+        "DATA-ELEMENT-REF": ("_POLYMORPHIC", "data_element_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "HANDLE-OUT-OF-RANGE": lambda obj, elem: setattr(obj, "handle_out_of_range", HandleOutOfRangeEnum.deserialize(elem)),
         "HANDLE-OUT-OF-RANGE-STATUS": lambda obj, elem: setattr(obj, "handle_out_of_range_status", HandleOutOfRangeEnum.deserialize(elem)),
-        "MAX-DELTA-COUNTER-INIT": lambda obj, elem: setattr(obj, "max_delta_counter_init", elem.text),
-        "MAX-NO-NEW-OR-REPEATED-DATA": lambda obj, elem: setattr(obj, "max_no_new_or_repeated_data", elem.text),
-        "NETWORK-REPRESENTATION": lambda obj, elem: setattr(obj, "network_representation", SwDataDefProps.deserialize(elem)),
-        "RECEPTION-PROPS": lambda obj, elem: setattr(obj, "reception_props", ReceptionComSpecProps.deserialize(elem)),
-        "REPLACE-WITH": lambda obj, elem: setattr(obj, "replace_with", VariableAccess.deserialize(elem)),
-        "SYNC-COUNTER-INIT": lambda obj, elem: setattr(obj, "sync_counter_init", elem.text),
-        "TRANSFORMATION-COM-SPEC-PROPSES": lambda obj, elem: obj.transformation_com_spec_propses.append(TransformationComSpecProps.deserialize(elem)),
-        "USES-END-TO-END-PROTECTION": lambda obj, elem: setattr(obj, "uses_end_to_end_protection", elem.text),
+        "MAX-DELTA-COUNTER-INIT": lambda obj, elem: setattr(obj, "max_delta_counter_init", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-NO-NEW-OR-REPEATED-DATA": lambda obj, elem: setattr(obj, "max_no_new_or_repeated_data", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "NETWORK-REPRESENTATION": lambda obj, elem: setattr(obj, "network_representation", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "RECEPTION-PROPS": lambda obj, elem: setattr(obj, "reception_props", SerializationHelper.deserialize_by_tag(elem, "ReceptionComSpecProps")),
+        "REPLACE-WITH": lambda obj, elem: setattr(obj, "replace_with", SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "SYNC-COUNTER-INIT": lambda obj, elem: setattr(obj, "sync_counter_init", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TRANSFORMATION-COM-SPEC-PROPSES": ("_POLYMORPHIC_LIST", "transformation_com_spec_propses", ["EndToEndTransformationComSpecProps", "UserDefinedTransformationComSpecProps"]),
+        "USES-END-TO-END-PROTECTION": lambda obj, elem: setattr(obj, "uses_end_to_end_protection", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -305,85 +305,49 @@ class ReceiverComSpec(RPortComSpec, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ReceiverComSpec, cls).deserialize(element)
 
-        # Parse composite_network_representations (list from container "COMPOSITE-NETWORK-REPRESENTATIONS")
-        obj.composite_network_representations = []
-        container = SerializationHelper.find_child_element(element, "COMPOSITE-NETWORK-REPRESENTATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.composite_network_representations.append(child_value)
-
-        # Parse data_element_ref
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
-        if child is not None:
-            data_element_ref_value = ARRef.deserialize(child)
-            obj.data_element_ref = data_element_ref_value
-
-        # Parse handle_out_of_range
-        child = SerializationHelper.find_child_element(element, "HANDLE-OUT-OF-RANGE")
-        if child is not None:
-            handle_out_of_range_value = HandleOutOfRangeEnum.deserialize(child)
-            obj.handle_out_of_range = handle_out_of_range_value
-
-        # Parse handle_out_of_range_status
-        child = SerializationHelper.find_child_element(element, "HANDLE-OUT-OF-RANGE-STATUS")
-        if child is not None:
-            handle_out_of_range_status_value = HandleOutOfRangeEnum.deserialize(child)
-            obj.handle_out_of_range_status = handle_out_of_range_status_value
-
-        # Parse max_delta_counter_init
-        child = SerializationHelper.find_child_element(element, "MAX-DELTA-COUNTER-INIT")
-        if child is not None:
-            max_delta_counter_init_value = child.text
-            obj.max_delta_counter_init = max_delta_counter_init_value
-
-        # Parse max_no_new_or_repeated_data
-        child = SerializationHelper.find_child_element(element, "MAX-NO-NEW-OR-REPEATED-DATA")
-        if child is not None:
-            max_no_new_or_repeated_data_value = child.text
-            obj.max_no_new_or_repeated_data = max_no_new_or_repeated_data_value
-
-        # Parse network_representation
-        child = SerializationHelper.find_child_element(element, "NETWORK-REPRESENTATION")
-        if child is not None:
-            network_representation_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.network_representation = network_representation_value
-
-        # Parse reception_props
-        child = SerializationHelper.find_child_element(element, "RECEPTION-PROPS")
-        if child is not None:
-            reception_props_value = SerializationHelper.deserialize_by_tag(child, "ReceptionComSpecProps")
-            obj.reception_props = reception_props_value
-
-        # Parse replace_with
-        child = SerializationHelper.find_child_element(element, "REPLACE-WITH")
-        if child is not None:
-            replace_with_value = SerializationHelper.deserialize_by_tag(child, "VariableAccess")
-            obj.replace_with = replace_with_value
-
-        # Parse sync_counter_init
-        child = SerializationHelper.find_child_element(element, "SYNC-COUNTER-INIT")
-        if child is not None:
-            sync_counter_init_value = child.text
-            obj.sync_counter_init = sync_counter_init_value
-
-        # Parse transformation_com_spec_propses (list from container "TRANSFORMATION-COM-SPEC-PROPSES")
-        obj.transformation_com_spec_propses = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-COM-SPEC-PROPSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.transformation_com_spec_propses.append(child_value)
-
-        # Parse uses_end_to_end_protection
-        child = SerializationHelper.find_child_element(element, "USES-END-TO-END-PROTECTION")
-        if child is not None:
-            uses_end_to_end_protection_value = child.text
-            obj.uses_end_to_end_protection = uses_end_to_end_protection_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPOSITE-NETWORK-REPRESENTATIONS":
+                obj.composite_network_representations.append(SerializationHelper.deserialize_by_tag(child, "CompositeNetworkRepresentation"))
+            elif tag == "DATA-ELEMENT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
+                        setattr(obj, "data_element_ref", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
+                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
+                        setattr(obj, "data_element_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
+                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
+                        setattr(obj, "data_element_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
+            elif tag == "HANDLE-OUT-OF-RANGE":
+                setattr(obj, "handle_out_of_range", HandleOutOfRangeEnum.deserialize(child))
+            elif tag == "HANDLE-OUT-OF-RANGE-STATUS":
+                setattr(obj, "handle_out_of_range_status", HandleOutOfRangeEnum.deserialize(child))
+            elif tag == "MAX-DELTA-COUNTER-INIT":
+                setattr(obj, "max_delta_counter_init", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-NO-NEW-OR-REPEATED-DATA":
+                setattr(obj, "max_no_new_or_repeated_data", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "NETWORK-REPRESENTATION":
+                setattr(obj, "network_representation", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            elif tag == "RECEPTION-PROPS":
+                setattr(obj, "reception_props", SerializationHelper.deserialize_by_tag(child, "ReceptionComSpecProps"))
+            elif tag == "REPLACE-WITH":
+                setattr(obj, "replace_with", SerializationHelper.deserialize_by_tag(child, "VariableAccess"))
+            elif tag == "SYNC-COUNTER-INIT":
+                setattr(obj, "sync_counter_init", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TRANSFORMATION-COM-SPEC-PROPSES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "END-TO-END-TRANSFORMATION-COM-SPEC-PROPS":
+                        obj.transformation_com_spec_propses.append(SerializationHelper.deserialize_by_tag(child[0], "EndToEndTransformationComSpecProps"))
+                    elif concrete_tag == "USER-DEFINED-TRANSFORMATION-COM-SPEC-PROPS":
+                        obj.transformation_com_spec_propses.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedTransformationComSpecProps"))
+            elif tag == "USES-END-TO-END-PROTECTION":
+                setattr(obj, "uses_end_to_end_protection", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

@@ -54,12 +54,12 @@ class EthernetCommunicationController(ARObject):
     slave_qualified: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
         "CAN-XL-CONFIG-REF": lambda obj, elem: setattr(obj, "can_xl_config_ref", ARRef.deserialize(elem)),
-        "COUPLING-PORTS": lambda obj, elem: obj.coupling_ports.append(CouplingPort.deserialize(elem)),
+        "COUPLING-PORTS": lambda obj, elem: obj.coupling_ports.append(SerializationHelper.deserialize_by_tag(elem, "CouplingPort")),
         "MAC-LAYER-TYPE": lambda obj, elem: setattr(obj, "mac_layer_type", EthernetMacLayerTypeEnum.deserialize(elem)),
-        "MAC-UNICAST": lambda obj, elem: setattr(obj, "mac_unicast", elem.text),
-        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", elem.text),
-        "SLAVE-ACT-AS": lambda obj, elem: setattr(obj, "slave_act_as", elem.text),
-        "SLAVE-QUALIFIED": lambda obj, elem: setattr(obj, "slave_qualified", elem.text),
+        "MAC-UNICAST": lambda obj, elem: setattr(obj, "mac_unicast", SerializationHelper.deserialize_by_tag(elem, "MacAddressString")),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "SLAVE-ACT-AS": lambda obj, elem: setattr(obj, "slave_act_as", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SLAVE-QUALIFIED": lambda obj, elem: setattr(obj, "slave_qualified", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 

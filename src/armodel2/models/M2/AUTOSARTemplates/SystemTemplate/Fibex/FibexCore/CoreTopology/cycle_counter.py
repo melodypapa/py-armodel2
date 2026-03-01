@@ -38,7 +38,7 @@ class CycleCounter(CommunicationCycle):
 
     cycle_counter: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "CYCLE-COUNTER": lambda obj, elem: setattr(obj, "cycle_counter", elem.text),
+        "CYCLE-COUNTER": lambda obj, elem: setattr(obj, "cycle_counter", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -99,11 +99,13 @@ class CycleCounter(CommunicationCycle):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CycleCounter, cls).deserialize(element)
 
-        # Parse cycle_counter
-        child = SerializationHelper.find_child_element(element, "CYCLE-COUNTER")
-        if child is not None:
-            cycle_counter_value = child.text
-            obj.cycle_counter = cycle_counter_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CYCLE-COUNTER":
+                setattr(obj, "cycle_counter", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

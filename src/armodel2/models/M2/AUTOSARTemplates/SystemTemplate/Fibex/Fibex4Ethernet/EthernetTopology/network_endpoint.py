@@ -52,11 +52,11 @@ class NetworkEndpoint(Identifiable):
     network_endpoints: list[NetworkEndpoint]
     priority: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "FULLY-QUALIFIED": lambda obj, elem: setattr(obj, "fully_qualified", elem.text),
-        "INFRASTRUCTURE-SERVICES": lambda obj, elem: setattr(obj, "infrastructure_services", InfrastructureServices.deserialize(elem)),
-        "IP-SEC-CONFIG": lambda obj, elem: setattr(obj, "ip_sec_config", IPSecConfig.deserialize(elem)),
-        "NETWORK-ENDPOINTS": lambda obj, elem: obj.network_endpoints.append(NetworkEndpoint.deserialize(elem)),
-        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "FULLY-QUALIFIED": lambda obj, elem: setattr(obj, "fully_qualified", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "INFRASTRUCTURE-SERVICES": lambda obj, elem: setattr(obj, "infrastructure_services", SerializationHelper.deserialize_by_tag(elem, "InfrastructureServices")),
+        "IP-SEC-CONFIG": lambda obj, elem: setattr(obj, "ip_sec_config", SerializationHelper.deserialize_by_tag(elem, "IPSecConfig")),
+        "NETWORK-ENDPOINTS": lambda obj, elem: obj.network_endpoints.append(SerializationHelper.deserialize_by_tag(elem, "NetworkEndpoint")),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -173,39 +173,21 @@ class NetworkEndpoint(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NetworkEndpoint, cls).deserialize(element)
 
-        # Parse fully_qualified
-        child = SerializationHelper.find_child_element(element, "FULLY-QUALIFIED")
-        if child is not None:
-            fully_qualified_value = child.text
-            obj.fully_qualified = fully_qualified_value
-
-        # Parse infrastructure_services
-        child = SerializationHelper.find_child_element(element, "INFRASTRUCTURE-SERVICES")
-        if child is not None:
-            infrastructure_services_value = SerializationHelper.deserialize_by_tag(child, "InfrastructureServices")
-            obj.infrastructure_services = infrastructure_services_value
-
-        # Parse ip_sec_config
-        child = SerializationHelper.find_child_element(element, "IP-SEC-CONFIG")
-        if child is not None:
-            ip_sec_config_value = SerializationHelper.deserialize_by_tag(child, "IPSecConfig")
-            obj.ip_sec_config = ip_sec_config_value
-
-        # Parse network_endpoints (list from container "NETWORK-ENDPOINTS")
-        obj.network_endpoints = []
-        container = SerializationHelper.find_child_element(element, "NETWORK-ENDPOINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.network_endpoints.append(child_value)
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FULLY-QUALIFIED":
+                setattr(obj, "fully_qualified", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "INFRASTRUCTURE-SERVICES":
+                setattr(obj, "infrastructure_services", SerializationHelper.deserialize_by_tag(child, "InfrastructureServices"))
+            elif tag == "IP-SEC-CONFIG":
+                setattr(obj, "ip_sec_config", SerializationHelper.deserialize_by_tag(child, "IPSecConfig"))
+            elif tag == "NETWORK-ENDPOINTS":
+                obj.network_endpoints.append(SerializationHelper.deserialize_by_tag(child, "NetworkEndpoint"))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

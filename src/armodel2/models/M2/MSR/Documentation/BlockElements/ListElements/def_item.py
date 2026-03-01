@@ -45,8 +45,8 @@ class DefItem(Paginateable):
     def_: DocumentationBlock
     help_entry: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "DEF": lambda obj, elem: setattr(obj, "def_", DocumentationBlock.deserialize(elem)),
-        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", elem.text),
+        "DEF": lambda obj, elem: setattr(obj, "def_", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -122,17 +122,15 @@ class DefItem(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DefItem, cls).deserialize(element)
 
-        # Parse def_
-        child = SerializationHelper.find_child_element(element, "DEF")
-        if child is not None:
-            def__value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.def_ = def__value
-
-        # Parse help_entry
-        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
-        if child is not None:
-            help_entry_value = child.text
-            obj.help_entry = help_entry_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEF":
+                setattr(obj, "def_", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "HELP-ENTRY":
+                setattr(obj, "help_entry", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

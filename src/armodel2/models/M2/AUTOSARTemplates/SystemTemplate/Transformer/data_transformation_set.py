@@ -42,8 +42,8 @@ class DataTransformationSet(ARElement):
     datas: list[DataTransformation]
     transformation_technologies: list[TransformationTechnology]
     _DESERIALIZE_DISPATCH = {
-        "DATAS": lambda obj, elem: obj.datas.append(DataTransformation.deserialize(elem)),
-        "TRANSFORMATION-TECHNOLOGIES": lambda obj, elem: obj.transformation_technologies.append(TransformationTechnology.deserialize(elem)),
+        "DATAS": lambda obj, elem: obj.datas.append(SerializationHelper.deserialize_by_tag(elem, "DataTransformation")),
+        "TRANSFORMATION-TECHNOLOGIES": lambda obj, elem: obj.transformation_technologies.append(SerializationHelper.deserialize_by_tag(elem, "TransformationTechnology")),
     }
 
 
@@ -111,25 +111,15 @@ class DataTransformationSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataTransformationSet, cls).deserialize(element)
 
-        # Parse datas (list from container "DATAS")
-        obj.datas = []
-        container = SerializationHelper.find_child_element(element, "DATAS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.datas.append(child_value)
-
-        # Parse transformation_technologies (list from container "TRANSFORMATION-TECHNOLOGIES")
-        obj.transformation_technologies = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-TECHNOLOGIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.transformation_technologies.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATAS":
+                obj.datas.append(SerializationHelper.deserialize_by_tag(child, "DataTransformation"))
+            elif tag == "TRANSFORMATION-TECHNOLOGIES":
+                obj.transformation_technologies.append(SerializationHelper.deserialize_by_tag(child, "TransformationTechnology"))
 
         return obj
 

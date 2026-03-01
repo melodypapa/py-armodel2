@@ -63,16 +63,16 @@ class CanFrameTriggering(FrameTriggering):
     rx_mask: Optional[PositiveInteger]
     tx_mask: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ABSOLUTELY-CAN-FRAME-TRIGGERINGS": lambda obj, elem: obj.absolutely_can_frame_triggerings.append(TtcanAbsolutelyScheduledTiming.deserialize(elem)),
+        "ABSOLUTELY-CAN-FRAME-TRIGGERINGS": lambda obj, elem: obj.absolutely_can_frame_triggerings.append(SerializationHelper.deserialize_by_tag(elem, "TtcanAbsolutelyScheduledTiming")),
         "CAN-ADDRESSING-MODE": lambda obj, elem: setattr(obj, "can_addressing_mode", CanAddressingModeType.deserialize(elem)),
         "CAN-FRAME-RX-BEHAVIOR": lambda obj, elem: setattr(obj, "can_frame_rx_behavior", CanFrameRxBehaviorEnum.deserialize(elem)),
         "CAN-FRAME-TX-BEHAVIOR": lambda obj, elem: setattr(obj, "can_frame_tx_behavior", CanFrameTxBehaviorEnum.deserialize(elem)),
-        "CAN-XL-FRAME-TRIGGERING-PROPS": lambda obj, elem: setattr(obj, "can_xl_frame_triggering_props", CanXlFrameTriggeringProps.deserialize(elem)),
-        "IDENTIFIER": lambda obj, elem: setattr(obj, "identifier", elem.text),
-        "J1939REQUESTABLE": lambda obj, elem: setattr(obj, "j1939requestable", elem.text),
-        "RX-IDENTIFIER-RANGE": lambda obj, elem: setattr(obj, "rx_identifier_range", RxIdentifierRange.deserialize(elem)),
-        "RX-MASK": lambda obj, elem: setattr(obj, "rx_mask", elem.text),
-        "TX-MASK": lambda obj, elem: setattr(obj, "tx_mask", elem.text),
+        "CAN-XL-FRAME-TRIGGERING-PROPS": lambda obj, elem: setattr(obj, "can_xl_frame_triggering_props", SerializationHelper.deserialize_by_tag(elem, "CanXlFrameTriggeringProps")),
+        "IDENTIFIER": lambda obj, elem: setattr(obj, "identifier", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "J1939REQUESTABLE": lambda obj, elem: setattr(obj, "j1939requestable", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RX-IDENTIFIER-RANGE": lambda obj, elem: setattr(obj, "rx_identifier_range", SerializationHelper.deserialize_by_tag(elem, "RxIdentifierRange")),
+        "RX-MASK": lambda obj, elem: setattr(obj, "rx_mask", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TX-MASK": lambda obj, elem: setattr(obj, "tx_mask", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -264,69 +264,31 @@ class CanFrameTriggering(FrameTriggering):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanFrameTriggering, cls).deserialize(element)
 
-        # Parse absolutely_can_frame_triggerings (list from container "ABSOLUTELY-CAN-FRAME-TRIGGERINGS")
-        obj.absolutely_can_frame_triggerings = []
-        container = SerializationHelper.find_child_element(element, "ABSOLUTELY-CAN-FRAME-TRIGGERINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.absolutely_can_frame_triggerings.append(child_value)
-
-        # Parse can_addressing_mode
-        child = SerializationHelper.find_child_element(element, "CAN-ADDRESSING-MODE")
-        if child is not None:
-            can_addressing_mode_value = CanAddressingModeType.deserialize(child)
-            obj.can_addressing_mode = can_addressing_mode_value
-
-        # Parse can_frame_rx_behavior
-        child = SerializationHelper.find_child_element(element, "CAN-FRAME-RX-BEHAVIOR")
-        if child is not None:
-            can_frame_rx_behavior_value = CanFrameRxBehaviorEnum.deserialize(child)
-            obj.can_frame_rx_behavior = can_frame_rx_behavior_value
-
-        # Parse can_frame_tx_behavior
-        child = SerializationHelper.find_child_element(element, "CAN-FRAME-TX-BEHAVIOR")
-        if child is not None:
-            can_frame_tx_behavior_value = CanFrameTxBehaviorEnum.deserialize(child)
-            obj.can_frame_tx_behavior = can_frame_tx_behavior_value
-
-        # Parse can_xl_frame_triggering_props
-        child = SerializationHelper.find_child_element(element, "CAN-XL-FRAME-TRIGGERING-PROPS")
-        if child is not None:
-            can_xl_frame_triggering_props_value = SerializationHelper.deserialize_by_tag(child, "CanXlFrameTriggeringProps")
-            obj.can_xl_frame_triggering_props = can_xl_frame_triggering_props_value
-
-        # Parse identifier
-        child = SerializationHelper.find_child_element(element, "IDENTIFIER")
-        if child is not None:
-            identifier_value = child.text
-            obj.identifier = identifier_value
-
-        # Parse j1939requestable
-        child = SerializationHelper.find_child_element(element, "J1939REQUESTABLE")
-        if child is not None:
-            j1939requestable_value = child.text
-            obj.j1939requestable = j1939requestable_value
-
-        # Parse rx_identifier_range
-        child = SerializationHelper.find_child_element(element, "RX-IDENTIFIER-RANGE")
-        if child is not None:
-            rx_identifier_range_value = SerializationHelper.deserialize_by_tag(child, "RxIdentifierRange")
-            obj.rx_identifier_range = rx_identifier_range_value
-
-        # Parse rx_mask
-        child = SerializationHelper.find_child_element(element, "RX-MASK")
-        if child is not None:
-            rx_mask_value = child.text
-            obj.rx_mask = rx_mask_value
-
-        # Parse tx_mask
-        child = SerializationHelper.find_child_element(element, "TX-MASK")
-        if child is not None:
-            tx_mask_value = child.text
-            obj.tx_mask = tx_mask_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ABSOLUTELY-CAN-FRAME-TRIGGERINGS":
+                obj.absolutely_can_frame_triggerings.append(SerializationHelper.deserialize_by_tag(child, "TtcanAbsolutelyScheduledTiming"))
+            elif tag == "CAN-ADDRESSING-MODE":
+                setattr(obj, "can_addressing_mode", CanAddressingModeType.deserialize(child))
+            elif tag == "CAN-FRAME-RX-BEHAVIOR":
+                setattr(obj, "can_frame_rx_behavior", CanFrameRxBehaviorEnum.deserialize(child))
+            elif tag == "CAN-FRAME-TX-BEHAVIOR":
+                setattr(obj, "can_frame_tx_behavior", CanFrameTxBehaviorEnum.deserialize(child))
+            elif tag == "CAN-XL-FRAME-TRIGGERING-PROPS":
+                setattr(obj, "can_xl_frame_triggering_props", SerializationHelper.deserialize_by_tag(child, "CanXlFrameTriggeringProps"))
+            elif tag == "IDENTIFIER":
+                setattr(obj, "identifier", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "J1939REQUESTABLE":
+                setattr(obj, "j1939requestable", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RX-IDENTIFIER-RANGE":
+                setattr(obj, "rx_identifier_range", SerializationHelper.deserialize_by_tag(child, "RxIdentifierRange"))
+            elif tag == "RX-MASK":
+                setattr(obj, "rx_mask", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TX-MASK":
+                setattr(obj, "tx_mask", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

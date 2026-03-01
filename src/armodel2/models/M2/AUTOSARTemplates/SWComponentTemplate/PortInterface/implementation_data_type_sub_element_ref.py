@@ -39,8 +39,8 @@ class ImplementationDataTypeSubElementRef(SubElementRef):
     implementation: Optional[Any]
     parameter: Optional[ArParameterInImplementationDataInstanceRef]
     _DESERIALIZE_DISPATCH = {
-        "IMPLEMENTATION": lambda obj, elem: setattr(obj, "implementation", any (ArVariableIn).deserialize(elem)),
-        "PARAMETER": lambda obj, elem: setattr(obj, "parameter", ArParameterInImplementationDataInstanceRef.deserialize(elem)),
+        "IMPLEMENTATION": lambda obj, elem: setattr(obj, "implementation", SerializationHelper.deserialize_by_tag(elem, "any (ArVariableIn)")),
+        "PARAMETER": lambda obj, elem: setattr(obj, "parameter", SerializationHelper.deserialize_by_tag(elem, "ArParameterInImplementationDataInstanceRef")),
     }
 
 
@@ -116,17 +116,15 @@ class ImplementationDataTypeSubElementRef(SubElementRef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ImplementationDataTypeSubElementRef, cls).deserialize(element)
 
-        # Parse implementation
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION")
-        if child is not None:
-            implementation_value = child.text
-            obj.implementation = implementation_value
-
-        # Parse parameter
-        child = SerializationHelper.find_child_element(element, "PARAMETER")
-        if child is not None:
-            parameter_value = SerializationHelper.deserialize_by_tag(child, "ArParameterInImplementationDataInstanceRef")
-            obj.parameter = parameter_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "IMPLEMENTATION":
+                setattr(obj, "implementation", SerializationHelper.deserialize_by_tag(child, "any (ArVariableIn)"))
+            elif tag == "PARAMETER":
+                setattr(obj, "parameter", SerializationHelper.deserialize_by_tag(child, "ArParameterInImplementationDataInstanceRef"))
 
         return obj
 

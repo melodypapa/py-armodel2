@@ -57,16 +57,16 @@ class LinSlaveConfig(ARObject):
     supplier_id: Optional[PositiveInteger]
     variant_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "CONFIGURED-NAD": lambda obj, elem: setattr(obj, "configured_nad", elem.text),
-        "FUNCTION-ID": lambda obj, elem: setattr(obj, "function_id", elem.text),
-        "IDENT": lambda obj, elem: setattr(obj, "ident", LinSlaveConfigIdent.deserialize(elem)),
-        "INITIAL-NAD": lambda obj, elem: setattr(obj, "initial_nad", elem.text),
-        "LIN-CONFIGURABLE-FRAMES": lambda obj, elem: obj.lin_configurable_frames.append(LinConfigurableFrame.deserialize(elem)),
-        "LIN-ERROR-RESPONSE": lambda obj, elem: setattr(obj, "lin_error_response", LinErrorResponse.deserialize(elem)),
-        "LIN-ORDEREDS": lambda obj, elem: obj.lin_ordereds.append(LinOrderedConfigurableFrame.deserialize(elem)),
-        "PROTOCOL-VERSION": lambda obj, elem: setattr(obj, "protocol_version", elem.text),
-        "SUPPLIER-ID": lambda obj, elem: setattr(obj, "supplier_id", elem.text),
-        "VARIANT-ID": lambda obj, elem: setattr(obj, "variant_id", elem.text),
+        "CONFIGURED-NAD": lambda obj, elem: setattr(obj, "configured_nad", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "FUNCTION-ID": lambda obj, elem: setattr(obj, "function_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IDENT": lambda obj, elem: setattr(obj, "ident", SerializationHelper.deserialize_by_tag(elem, "LinSlaveConfigIdent")),
+        "INITIAL-NAD": lambda obj, elem: setattr(obj, "initial_nad", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "LIN-CONFIGURABLE-FRAMES": lambda obj, elem: obj.lin_configurable_frames.append(SerializationHelper.deserialize_by_tag(elem, "LinConfigurableFrame")),
+        "LIN-ERROR-RESPONSE": lambda obj, elem: setattr(obj, "lin_error_response", SerializationHelper.deserialize_by_tag(elem, "LinErrorResponse")),
+        "LIN-ORDEREDS": lambda obj, elem: obj.lin_ordereds.append(SerializationHelper.deserialize_by_tag(elem, "LinOrderedConfigurableFrame")),
+        "PROTOCOL-VERSION": lambda obj, elem: setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "SUPPLIER-ID": lambda obj, elem: setattr(obj, "supplier_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "VARIANT-ID": lambda obj, elem: setattr(obj, "variant_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -254,73 +254,31 @@ class LinSlaveConfig(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinSlaveConfig, cls).deserialize(element)
 
-        # Parse configured_nad
-        child = SerializationHelper.find_child_element(element, "CONFIGURED-NAD")
-        if child is not None:
-            configured_nad_value = child.text
-            obj.configured_nad = configured_nad_value
-
-        # Parse function_id
-        child = SerializationHelper.find_child_element(element, "FUNCTION-ID")
-        if child is not None:
-            function_id_value = child.text
-            obj.function_id = function_id_value
-
-        # Parse ident
-        child = SerializationHelper.find_child_element(element, "IDENT")
-        if child is not None:
-            ident_value = SerializationHelper.deserialize_by_tag(child, "LinSlaveConfigIdent")
-            obj.ident = ident_value
-
-        # Parse initial_nad
-        child = SerializationHelper.find_child_element(element, "INITIAL-NAD")
-        if child is not None:
-            initial_nad_value = child.text
-            obj.initial_nad = initial_nad_value
-
-        # Parse lin_configurable_frames (list from container "LIN-CONFIGURABLE-FRAMES")
-        obj.lin_configurable_frames = []
-        container = SerializationHelper.find_child_element(element, "LIN-CONFIGURABLE-FRAMES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.lin_configurable_frames.append(child_value)
-
-        # Parse lin_error_response
-        child = SerializationHelper.find_child_element(element, "LIN-ERROR-RESPONSE")
-        if child is not None:
-            lin_error_response_value = SerializationHelper.deserialize_by_tag(child, "LinErrorResponse")
-            obj.lin_error_response = lin_error_response_value
-
-        # Parse lin_ordereds (list from container "LIN-ORDEREDS")
-        obj.lin_ordereds = []
-        container = SerializationHelper.find_child_element(element, "LIN-ORDEREDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.lin_ordereds.append(child_value)
-
-        # Parse protocol_version
-        child = SerializationHelper.find_child_element(element, "PROTOCOL-VERSION")
-        if child is not None:
-            protocol_version_value = child.text
-            obj.protocol_version = protocol_version_value
-
-        # Parse supplier_id
-        child = SerializationHelper.find_child_element(element, "SUPPLIER-ID")
-        if child is not None:
-            supplier_id_value = child.text
-            obj.supplier_id = supplier_id_value
-
-        # Parse variant_id
-        child = SerializationHelper.find_child_element(element, "VARIANT-ID")
-        if child is not None:
-            variant_id_value = child.text
-            obj.variant_id = variant_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONFIGURED-NAD":
+                setattr(obj, "configured_nad", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "FUNCTION-ID":
+                setattr(obj, "function_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IDENT":
+                setattr(obj, "ident", SerializationHelper.deserialize_by_tag(child, "LinSlaveConfigIdent"))
+            elif tag == "INITIAL-NAD":
+                setattr(obj, "initial_nad", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "LIN-CONFIGURABLE-FRAMES":
+                obj.lin_configurable_frames.append(SerializationHelper.deserialize_by_tag(child, "LinConfigurableFrame"))
+            elif tag == "LIN-ERROR-RESPONSE":
+                setattr(obj, "lin_error_response", SerializationHelper.deserialize_by_tag(child, "LinErrorResponse"))
+            elif tag == "LIN-ORDEREDS":
+                obj.lin_ordereds.append(SerializationHelper.deserialize_by_tag(child, "LinOrderedConfigurableFrame"))
+            elif tag == "PROTOCOL-VERSION":
+                setattr(obj, "protocol_version", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "SUPPLIER-ID":
+                setattr(obj, "supplier_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "VARIANT-ID":
+                setattr(obj, "variant_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -118,17 +118,15 @@ class ModeTransition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeTransition, cls).deserialize(element)
 
-        # Parse entered_mode_ref
-        child = SerializationHelper.find_child_element(element, "ENTERED-MODE-REF")
-        if child is not None:
-            entered_mode_ref_value = ARRef.deserialize(child)
-            obj.entered_mode_ref = entered_mode_ref_value
-
-        # Parse exited_mode_ref
-        child = SerializationHelper.find_child_element(element, "EXITED-MODE-REF")
-        if child is not None:
-            exited_mode_ref_value = ARRef.deserialize(child)
-            obj.exited_mode_ref = exited_mode_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ENTERED-MODE-REF":
+                setattr(obj, "entered_mode_ref", ARRef.deserialize(child))
+            elif tag == "EXITED-MODE-REF":
+                setattr(obj, "exited_mode_ref", ARRef.deserialize(child))
 
         return obj
 

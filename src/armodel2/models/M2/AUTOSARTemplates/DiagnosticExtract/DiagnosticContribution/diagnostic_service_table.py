@@ -50,7 +50,7 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
     _DESERIALIZE_DISPATCH = {
         "DIAGNOSTICS": lambda obj, elem: obj.diagnostic_refs.append(ARRef.deserialize(elem)),
         "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
-        "PROTOCOL-KIND": lambda obj, elem: setattr(obj, "protocol_kind", elem.text),
+        "PROTOCOL-KIND": lambda obj, elem: setattr(obj, "protocol_kind", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
         "SERVICE-INSTANCES": lambda obj, elem: obj.service_instance_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -163,49 +163,19 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticServiceTable, cls).deserialize(element)
 
-        # Parse diagnostic_refs (list from container "DIAGNOSTIC-REFS")
-        obj.diagnostic_refs = []
-        container = SerializationHelper.find_child_element(element, "DIAGNOSTIC-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.diagnostic_refs.append(child_value)
-
-        # Parse ecu_instance_ref
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
-        if child is not None:
-            ecu_instance_ref_value = ARRef.deserialize(child)
-            obj.ecu_instance_ref = ecu_instance_ref_value
-
-        # Parse protocol_kind
-        child = SerializationHelper.find_child_element(element, "PROTOCOL-KIND")
-        if child is not None:
-            protocol_kind_value = child.text
-            obj.protocol_kind = protocol_kind_value
-
-        # Parse service_instance_refs (list from container "SERVICE-INSTANCE-REFS")
-        obj.service_instance_refs = []
-        container = SerializationHelper.find_child_element(element, "SERVICE-INSTANCE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.service_instance_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DIAGNOSTICS":
+                obj.diagnostic_refs.append(ARRef.deserialize(child))
+            elif tag == "ECU-INSTANCE-REF":
+                setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
+            elif tag == "PROTOCOL-KIND":
+                setattr(obj, "protocol_kind", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "SERVICE-INSTANCES":
+                obj.service_instance_refs.append(ARRef.deserialize(child))
 
         return obj
 

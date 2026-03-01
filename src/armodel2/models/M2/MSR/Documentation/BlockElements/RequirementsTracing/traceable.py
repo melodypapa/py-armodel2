@@ -35,7 +35,7 @@ class Traceable(MultilanguageReferrable, ABC):
 
     trace_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TRACES": lambda obj, elem: obj.trace_refs.append(ARRef.deserialize(elem)),
+        "TRACES": ("_POLYMORPHIC_LIST", "trace_refs", ["StructuredReq", "TimingConstraint", "TraceableTable", "TraceableText"]),
     }
 
 
@@ -99,21 +99,23 @@ class Traceable(MultilanguageReferrable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Traceable, cls).deserialize(element)
 
-        # Parse trace_refs (list from container "TRACE-REFS")
-        obj.trace_refs = []
-        container = SerializationHelper.find_child_element(element, "TRACE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.trace_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TRACES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "STRUCTURED-REQ":
+                        obj.trace_refs.append(SerializationHelper.deserialize_by_tag(child[0], "StructuredReq"))
+                    elif concrete_tag == "TIMING-CONSTRAINT":
+                        obj.trace_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TimingConstraint"))
+                    elif concrete_tag == "TRACEABLE-TABLE":
+                        obj.trace_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TraceableTable"))
+                    elif concrete_tag == "TRACEABLE-TEXT":
+                        obj.trace_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TraceableText"))
 
         return obj
 

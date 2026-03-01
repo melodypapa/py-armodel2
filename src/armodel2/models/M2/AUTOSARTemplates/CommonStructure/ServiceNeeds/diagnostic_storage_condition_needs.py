@@ -99,11 +99,13 @@ class DiagnosticStorageConditionNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticStorageConditionNeeds, cls).deserialize(element)
 
-        # Parse initial_status
-        child = SerializationHelper.find_child_element(element, "INITIAL-STATUS")
-        if child is not None:
-            initial_status_value = StorageConditionStatusEnum.deserialize(child)
-            obj.initial_status = initial_status_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INITIAL-STATUS":
+                setattr(obj, "initial_status", StorageConditionStatusEnum.deserialize(child))
 
         return obj
 

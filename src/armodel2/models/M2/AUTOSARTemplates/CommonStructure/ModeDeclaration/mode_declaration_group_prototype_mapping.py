@@ -133,23 +133,17 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeDeclarationGroupPrototypeMapping, cls).deserialize(element)
 
-        # Parse first_mode_group_prototype_ref
-        child = SerializationHelper.find_child_element(element, "FIRST-MODE-GROUP-PROTOTYPE-REF")
-        if child is not None:
-            first_mode_group_prototype_ref_value = ARRef.deserialize(child)
-            obj.first_mode_group_prototype_ref = first_mode_group_prototype_ref_value
-
-        # Parse mode_ref
-        child = SerializationHelper.find_child_element(element, "MODE-REF")
-        if child is not None:
-            mode_ref_value = ARRef.deserialize(child)
-            obj.mode_ref = mode_ref_value
-
-        # Parse second_mode_ref
-        child = SerializationHelper.find_child_element(element, "SECOND-MODE-REF")
-        if child is not None:
-            second_mode_ref_value = ARRef.deserialize(child)
-            obj.second_mode_ref = second_mode_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FIRST-MODE-GROUP-PROTOTYPE-REF":
+                setattr(obj, "first_mode_group_prototype_ref", ARRef.deserialize(child))
+            elif tag == "MODE-REF":
+                setattr(obj, "mode_ref", ARRef.deserialize(child))
+            elif tag == "SECOND-MODE-REF":
+                setattr(obj, "second_mode_ref", ARRef.deserialize(child))
 
         return obj
 

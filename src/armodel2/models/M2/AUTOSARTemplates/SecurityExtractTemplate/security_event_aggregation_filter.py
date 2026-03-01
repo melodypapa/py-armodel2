@@ -39,8 +39,8 @@ class SecurityEventAggregationFilter(AbstractSecurityEventFilter):
     context_data: Optional[Any]
     minimum: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-DATA": lambda obj, elem: setattr(obj, "context_data", any (SecurityEventContext).deserialize(elem)),
-        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", elem.text),
+        "CONTEXT-DATA": lambda obj, elem: setattr(obj, "context_data", SerializationHelper.deserialize_by_tag(elem, "any (SecurityEventContext)")),
+        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -116,17 +116,15 @@ class SecurityEventAggregationFilter(AbstractSecurityEventFilter):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventAggregationFilter, cls).deserialize(element)
 
-        # Parse context_data
-        child = SerializationHelper.find_child_element(element, "CONTEXT-DATA")
-        if child is not None:
-            context_data_value = child.text
-            obj.context_data = context_data_value
-
-        # Parse minimum
-        child = SerializationHelper.find_child_element(element, "MINIMUM")
-        if child is not None:
-            minimum_value = child.text
-            obj.minimum = minimum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONTEXT-DATA":
+                setattr(obj, "context_data", SerializationHelper.deserialize_by_tag(child, "any (SecurityEventContext)"))
+            elif tag == "MINIMUM":
+                setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

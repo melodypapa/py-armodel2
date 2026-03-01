@@ -39,7 +39,7 @@ class AclRole(ARElement):
 
     ldap_url: Optional[UriString]
     _DESERIALIZE_DISPATCH = {
-        "LDAP-URL": lambda obj, elem: setattr(obj, "ldap_url", elem.text),
+        "LDAP-URL": lambda obj, elem: setattr(obj, "ldap_url", SerializationHelper.deserialize_by_tag(elem, "UriString")),
     }
 
 
@@ -100,11 +100,13 @@ class AclRole(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AclRole, cls).deserialize(element)
 
-        # Parse ldap_url
-        child = SerializationHelper.find_child_element(element, "LDAP-URL")
-        if child is not None:
-            ldap_url_value = child.text
-            obj.ldap_url = ldap_url_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LDAP-URL":
+                setattr(obj, "ldap_url", SerializationHelper.deserialize_by_tag(child, "UriString"))
 
         return obj
 

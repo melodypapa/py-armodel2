@@ -78,16 +78,16 @@ class PncMapping(Describable):
     _DESERIALIZE_DISPATCH = {
         "DYNAMIC-PNCS": lambda obj, elem: obj.dynamic_pnc_refs.append(ARRef.deserialize(elem)),
         "IDENT-REF": lambda obj, elem: setattr(obj, "ident_ref", ARRef.deserialize(elem)),
-        "PHYSICAL-CHANNELS": lambda obj, elem: obj.physical_channel_refs.append(ARRef.deserialize(elem)),
+        "PHYSICAL-CHANNELS": ("_POLYMORPHIC_LIST", "physical_channel_refs", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
         "PNC-CONSUMEDS": lambda obj, elem: obj.pnc_consumed_refs.append(ARRef.deserialize(elem)),
         "PNC-GROUPS": lambda obj, elem: obj.pnc_group_refs.append(ARRef.deserialize(elem)),
-        "PNC-IDENTIFIER": lambda obj, elem: setattr(obj, "pnc_identifier", elem.text),
+        "PNC-IDENTIFIER": lambda obj, elem: setattr(obj, "pnc_identifier", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PNC-PDUR-GROUPS": lambda obj, elem: obj.pnc_pdur_group_refs.append(ARRef.deserialize(elem)),
-        "PNC-WAKEUP": lambda obj, elem: setattr(obj, "pnc_wakeup", elem.text),
+        "PNC-WAKEUP": lambda obj, elem: setattr(obj, "pnc_wakeup", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "RELEVANT-FORS": lambda obj, elem: obj.relevant_for_refs.append(ARRef.deserialize(elem)),
-        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
         "VFCS": lambda obj, elem: obj.vfc_refs.append(ARRef.deserialize(elem)),
-        "WAKEUP-FRAMES": lambda obj, elem: obj.wakeup_frame_refs.append(ARRef.deserialize(elem)),
+        "WAKEUP-FRAMES": ("_POLYMORPHIC_LIST", "wakeup_frame_refs", ["CanFrameTriggering", "EthernetFrameTriggering", "FlexrayFrameTriggering", "LinFrameTriggering"]),
     }
 
 
@@ -337,157 +337,55 @@ class PncMapping(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PncMapping, cls).deserialize(element)
 
-        # Parse dynamic_pnc_refs (list from container "DYNAMIC-PNC-REFS")
-        obj.dynamic_pnc_refs = []
-        container = SerializationHelper.find_child_element(element, "DYNAMIC-PNC-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dynamic_pnc_refs.append(child_value)
-
-        # Parse ident_ref
-        child = SerializationHelper.find_child_element(element, "IDENT-REF")
-        if child is not None:
-            ident_ref_value = ARRef.deserialize(child)
-            obj.ident_ref = ident_ref_value
-
-        # Parse physical_channel_refs (list from container "PHYSICAL-CHANNEL-REFS")
-        obj.physical_channel_refs = []
-        container = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNEL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.physical_channel_refs.append(child_value)
-
-        # Parse pnc_consumed_refs (list from container "PNC-CONSUMED-REFS")
-        obj.pnc_consumed_refs = []
-        container = SerializationHelper.find_child_element(element, "PNC-CONSUMED-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pnc_consumed_refs.append(child_value)
-
-        # Parse pnc_group_refs (list from container "PNC-GROUP-REFS")
-        obj.pnc_group_refs = []
-        container = SerializationHelper.find_child_element(element, "PNC-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pnc_group_refs.append(child_value)
-
-        # Parse pnc_identifier
-        child = SerializationHelper.find_child_element(element, "PNC-IDENTIFIER")
-        if child is not None:
-            pnc_identifier_value = child.text
-            obj.pnc_identifier = pnc_identifier_value
-
-        # Parse pnc_pdur_group_refs (list from container "PNC-PDUR-GROUP-REFS")
-        obj.pnc_pdur_group_refs = []
-        container = SerializationHelper.find_child_element(element, "PNC-PDUR-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pnc_pdur_group_refs.append(child_value)
-
-        # Parse pnc_wakeup
-        child = SerializationHelper.find_child_element(element, "PNC-WAKEUP")
-        if child is not None:
-            pnc_wakeup_value = child.text
-            obj.pnc_wakeup = pnc_wakeup_value
-
-        # Parse relevant_for_refs (list from container "RELEVANT-FOR-REFS")
-        obj.relevant_for_refs = []
-        container = SerializationHelper.find_child_element(element, "RELEVANT-FOR-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.relevant_for_refs.append(child_value)
-
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
-
-        # Parse vfc_refs (list from container "VFC-REFS")
-        obj.vfc_refs = []
-        container = SerializationHelper.find_child_element(element, "VFC-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.vfc_refs.append(child_value)
-
-        # Parse wakeup_frame_refs (list from container "WAKEUP-FRAME-REFS")
-        obj.wakeup_frame_refs = []
-        container = SerializationHelper.find_child_element(element, "WAKEUP-FRAME-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.wakeup_frame_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DYNAMIC-PNCS":
+                obj.dynamic_pnc_refs.append(ARRef.deserialize(child))
+            elif tag == "IDENT-REF":
+                setattr(obj, "ident_ref", ARRef.deserialize(child))
+            elif tag == "PHYSICAL-CHANNELS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-PHYSICAL-CHANNEL":
+                        obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractCanPhysicalChannel"))
+                    elif concrete_tag == "ETHERNET-PHYSICAL-CHANNEL":
+                        obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetPhysicalChannel"))
+                    elif concrete_tag == "FLEXRAY-PHYSICAL-CHANNEL":
+                        obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayPhysicalChannel"))
+                    elif concrete_tag == "LIN-PHYSICAL-CHANNEL":
+                        obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinPhysicalChannel"))
+            elif tag == "PNC-CONSUMEDS":
+                obj.pnc_consumed_refs.append(ARRef.deserialize(child))
+            elif tag == "PNC-GROUPS":
+                obj.pnc_group_refs.append(ARRef.deserialize(child))
+            elif tag == "PNC-IDENTIFIER":
+                setattr(obj, "pnc_identifier", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PNC-PDUR-GROUPS":
+                obj.pnc_pdur_group_refs.append(ARRef.deserialize(child))
+            elif tag == "PNC-WAKEUP":
+                setattr(obj, "pnc_wakeup", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RELEVANT-FORS":
+                obj.relevant_for_refs.append(ARRef.deserialize(child))
+            elif tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "VFCS":
+                obj.vfc_refs.append(ARRef.deserialize(child))
+            elif tag == "WAKEUP-FRAMES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CAN-FRAME-TRIGGERING":
+                        obj.wakeup_frame_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CanFrameTriggering"))
+                    elif concrete_tag == "ETHERNET-FRAME-TRIGGERING":
+                        obj.wakeup_frame_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetFrameTriggering"))
+                    elif concrete_tag == "FLEXRAY-FRAME-TRIGGERING":
+                        obj.wakeup_frame_refs.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayFrameTriggering"))
+                    elif concrete_tag == "LIN-FRAME-TRIGGERING":
+                        obj.wakeup_frame_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinFrameTriggering"))
 
         return obj
 

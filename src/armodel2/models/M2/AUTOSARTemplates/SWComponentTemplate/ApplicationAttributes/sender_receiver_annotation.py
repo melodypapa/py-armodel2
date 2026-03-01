@@ -47,7 +47,7 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
     limit_kind: Optional[DataLimitKindEnum]
     processing_kind_enum: Optional[ProcessingKindEnum]
     _DESERIALIZE_DISPATCH = {
-        "COMPUTED": lambda obj, elem: setattr(obj, "computed", elem.text),
+        "COMPUTED": lambda obj, elem: setattr(obj, "computed", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
         "LIMIT-KIND": lambda obj, elem: setattr(obj, "limit_kind", DataLimitKindEnum.deserialize(elem)),
         "PROCESSING-KIND-ENUM": lambda obj, elem: setattr(obj, "processing_kind_enum", ProcessingKindEnum.deserialize(elem)),
@@ -156,29 +156,19 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderReceiverAnnotation, cls).deserialize(element)
 
-        # Parse computed
-        child = SerializationHelper.find_child_element(element, "COMPUTED")
-        if child is not None:
-            computed_value = child.text
-            obj.computed = computed_value
-
-        # Parse data_element_ref
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
-        if child is not None:
-            data_element_ref_value = ARRef.deserialize(child)
-            obj.data_element_ref = data_element_ref_value
-
-        # Parse limit_kind
-        child = SerializationHelper.find_child_element(element, "LIMIT-KIND")
-        if child is not None:
-            limit_kind_value = DataLimitKindEnum.deserialize(child)
-            obj.limit_kind = limit_kind_value
-
-        # Parse processing_kind_enum
-        child = SerializationHelper.find_child_element(element, "PROCESSING-KIND-ENUM")
-        if child is not None:
-            processing_kind_enum_value = ProcessingKindEnum.deserialize(child)
-            obj.processing_kind_enum = processing_kind_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPUTED":
+                setattr(obj, "computed", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "DATA-ELEMENT-REF":
+                setattr(obj, "data_element_ref", ARRef.deserialize(child))
+            elif tag == "LIMIT-KIND":
+                setattr(obj, "limit_kind", DataLimitKindEnum.deserialize(child))
+            elif tag == "PROCESSING-KIND-ENUM":
+                setattr(obj, "processing_kind_enum", ProcessingKindEnum.deserialize(child))
 
         return obj
 

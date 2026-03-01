@@ -40,9 +40,9 @@ class FrameMapping(ARObject):
     source_frame_ref: Optional[ARRef]
     target_frame_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", DocumentationBlock.deserialize(elem)),
-        "SOURCE-FRAME-REF": lambda obj, elem: setattr(obj, "source_frame_ref", ARRef.deserialize(elem)),
-        "TARGET-FRAME-REF": lambda obj, elem: setattr(obj, "target_frame_ref", ARRef.deserialize(elem)),
+        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "SOURCE-FRAME-REF": ("_POLYMORPHIC", "source_frame_ref", ["CanFrameTriggering", "EthernetFrameTriggering", "FlexrayFrameTriggering", "LinFrameTriggering"]),
+        "TARGET-FRAME-REF": ("_POLYMORPHIC", "target_frame_ref", ["CanFrameTriggering", "EthernetFrameTriggering", "FlexrayFrameTriggering", "LinFrameTriggering"]),
     }
 
 
@@ -133,23 +133,37 @@ class FrameMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FrameMapping, cls).deserialize(element)
 
-        # Parse introduction
-        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
-        if child is not None:
-            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.introduction = introduction_value
-
-        # Parse source_frame_ref
-        child = SerializationHelper.find_child_element(element, "SOURCE-FRAME-REF")
-        if child is not None:
-            source_frame_ref_value = ARRef.deserialize(child)
-            obj.source_frame_ref = source_frame_ref_value
-
-        # Parse target_frame_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-FRAME-REF")
-        if child is not None:
-            target_frame_ref_value = ARRef.deserialize(child)
-            obj.target_frame_ref = target_frame_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INTRODUCTION":
+                setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "SOURCE-FRAME-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CAN-FRAME-TRIGGERING":
+                        setattr(obj, "source_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "CanFrameTriggering"))
+                    elif concrete_tag == "ETHERNET-FRAME-TRIGGERING":
+                        setattr(obj, "source_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetFrameTriggering"))
+                    elif concrete_tag == "FLEXRAY-FRAME-TRIGGERING":
+                        setattr(obj, "source_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayFrameTriggering"))
+                    elif concrete_tag == "LIN-FRAME-TRIGGERING":
+                        setattr(obj, "source_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "LinFrameTriggering"))
+            elif tag == "TARGET-FRAME-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CAN-FRAME-TRIGGERING":
+                        setattr(obj, "target_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "CanFrameTriggering"))
+                    elif concrete_tag == "ETHERNET-FRAME-TRIGGERING":
+                        setattr(obj, "target_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetFrameTriggering"))
+                    elif concrete_tag == "FLEXRAY-FRAME-TRIGGERING":
+                        setattr(obj, "target_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayFrameTriggering"))
+                    elif concrete_tag == "LIN-FRAME-TRIGGERING":
+                        setattr(obj, "target_frame_ref", SerializationHelper.deserialize_by_tag(child[0], "LinFrameTriggering"))
 
         return obj
 

@@ -39,8 +39,8 @@ class DiagnosticRequestRoutineResults(DiagnosticRoutineSubfunction):
     requests: list[DiagnosticParameter]
     responses: list[DiagnosticParameter]
     _DESERIALIZE_DISPATCH = {
-        "REQUESTS": lambda obj, elem: obj.requests.append(DiagnosticParameter.deserialize(elem)),
-        "RESPONSES": lambda obj, elem: obj.responses.append(DiagnosticParameter.deserialize(elem)),
+        "REQUESTS": lambda obj, elem: obj.requests.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
+        "RESPONSES": lambda obj, elem: obj.responses.append(SerializationHelper.deserialize_by_tag(elem, "DiagnosticParameter")),
     }
 
 
@@ -108,25 +108,15 @@ class DiagnosticRequestRoutineResults(DiagnosticRoutineSubfunction):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestRoutineResults, cls).deserialize(element)
 
-        # Parse requests (list from container "REQUESTS")
-        obj.requests = []
-        container = SerializationHelper.find_child_element(element, "REQUESTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.requests.append(child_value)
-
-        # Parse responses (list from container "RESPONSES")
-        obj.responses = []
-        container = SerializationHelper.find_child_element(element, "RESPONSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.responses.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "REQUESTS":
+                obj.requests.append(SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter"))
+            elif tag == "RESPONSES":
+                obj.responses.append(SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter"))
 
         return obj
 

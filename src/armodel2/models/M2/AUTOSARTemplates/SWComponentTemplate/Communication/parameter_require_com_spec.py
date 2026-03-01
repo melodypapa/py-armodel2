@@ -47,7 +47,7 @@ class ParameterRequireComSpec(RPortComSpec):
     _init_value: Optional[ValueSpecification]
     parameter_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "INIT-VALUE": lambda obj, elem: setattr(obj, "_init_value", ValueSpecification.deserialize(elem)),
+        "INIT-VALUE": ("_POLYMORPHIC", "_init_value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
         "PARAMETER-REF": lambda obj, elem: setattr(obj, "parameter_ref", ARRef.deserialize(elem)),
     }
 
@@ -130,17 +130,33 @@ class ParameterRequireComSpec(RPortComSpec):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ParameterRequireComSpec, cls).deserialize(element)
 
-        # Parse init_value (polymorphic wrapper "INIT-VALUE")
-        wrapper = SerializationHelper.find_child_element(element, "INIT-VALUE")
-        if wrapper is not None:
-            init_value_value = SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
-            obj.init_value = init_value_value
-
-        # Parse parameter_ref
-        child = SerializationHelper.find_child_element(element, "PARAMETER-REF")
-        if child is not None:
-            parameter_ref_value = ARRef.deserialize(child)
-            obj.parameter_ref = parameter_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INIT-VALUE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
+            elif tag == "PARAMETER-REF":
+                setattr(obj, "parameter_ref", ARRef.deserialize(child))
 
         return obj
 

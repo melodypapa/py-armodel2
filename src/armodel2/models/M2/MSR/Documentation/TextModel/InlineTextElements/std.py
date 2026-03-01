@@ -43,11 +43,11 @@ class Std(SingleLanguageReferrable):
     subtitle: Optional[String]
     url: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "DATE": lambda obj, elem: setattr(obj, "date", elem.text),
-        "POSITION": lambda obj, elem: setattr(obj, "position", elem.text),
-        "STATE": lambda obj, elem: setattr(obj, "state", elem.text),
-        "SUBTITLE": lambda obj, elem: setattr(obj, "subtitle", elem.text),
-        "URL": lambda obj, elem: setattr(obj, "url", any (Url).deserialize(elem)),
+        "DATE": lambda obj, elem: setattr(obj, "date", SerializationHelper.deserialize_by_tag(elem, "DateTime")),
+        "POSITION": lambda obj, elem: setattr(obj, "position", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "STATE": lambda obj, elem: setattr(obj, "state", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "SUBTITLE": lambda obj, elem: setattr(obj, "subtitle", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "URL": lambda obj, elem: setattr(obj, "url", SerializationHelper.deserialize_by_tag(elem, "any (Url)")),
     }
 
 
@@ -168,35 +168,21 @@ class Std(SingleLanguageReferrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Std, cls).deserialize(element)
 
-        # Parse date
-        child = SerializationHelper.find_child_element(element, "DATE")
-        if child is not None:
-            date_value = child.text
-            obj.date = date_value
-
-        # Parse position
-        child = SerializationHelper.find_child_element(element, "POSITION")
-        if child is not None:
-            position_value = child.text
-            obj.position = position_value
-
-        # Parse state
-        child = SerializationHelper.find_child_element(element, "STATE")
-        if child is not None:
-            state_value = child.text
-            obj.state = state_value
-
-        # Parse subtitle
-        child = SerializationHelper.find_child_element(element, "SUBTITLE")
-        if child is not None:
-            subtitle_value = child.text
-            obj.subtitle = subtitle_value
-
-        # Parse url
-        child = SerializationHelper.find_child_element(element, "URL")
-        if child is not None:
-            url_value = child.text
-            obj.url = url_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATE":
+                setattr(obj, "date", SerializationHelper.deserialize_by_tag(child, "DateTime"))
+            elif tag == "POSITION":
+                setattr(obj, "position", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "STATE":
+                setattr(obj, "state", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "SUBTITLE":
+                setattr(obj, "subtitle", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "URL":
+                setattr(obj, "url", SerializationHelper.deserialize_by_tag(child, "any (Url)"))
 
         return obj
 

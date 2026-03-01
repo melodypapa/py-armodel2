@@ -98,11 +98,13 @@ class TimingClock(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingClock, cls).deserialize(element)
 
-        # Parse platform_time_ref
-        child = SerializationHelper.find_child_element(element, "PLATFORM-TIME-REF")
-        if child is not None:
-            platform_time_ref_value = ARRef.deserialize(child)
-            obj.platform_time_ref = platform_time_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PLATFORM-TIME-REF":
+                setattr(obj, "platform_time_ref", ARRef.deserialize(child))
 
         return obj
 

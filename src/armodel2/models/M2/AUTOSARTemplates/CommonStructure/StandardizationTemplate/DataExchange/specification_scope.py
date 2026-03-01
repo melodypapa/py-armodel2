@@ -34,7 +34,7 @@ class SpecificationScope(ARObject):
 
     specification_documents: list[SpecificationDocumentScope]
     _DESERIALIZE_DISPATCH = {
-        "SPECIFICATION-DOCUMENTS": lambda obj, elem: obj.specification_documents.append(SpecificationDocumentScope.deserialize(elem)),
+        "SPECIFICATION-DOCUMENTS": lambda obj, elem: obj.specification_documents.append(SerializationHelper.deserialize_by_tag(elem, "SpecificationDocumentScope")),
     }
 
 
@@ -91,15 +91,13 @@ class SpecificationScope(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SpecificationScope, cls).deserialize(element)
 
-        # Parse specification_documents (list from container "SPECIFICATION-DOCUMENTS")
-        obj.specification_documents = []
-        container = SerializationHelper.find_child_element(element, "SPECIFICATION-DOCUMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.specification_documents.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SPECIFICATION-DOCUMENTS":
+                obj.specification_documents.append(SerializationHelper.deserialize_by_tag(child, "SpecificationDocumentScope"))
 
         return obj
 

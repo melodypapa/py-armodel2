@@ -99,11 +99,13 @@ class DcmIPdu(IPdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DcmIPdu, cls).deserialize(element)
 
-        # Parse diag_pdu_type
-        child = SerializationHelper.find_child_element(element, "DIAG-PDU-TYPE")
-        if child is not None:
-            diag_pdu_type_value = DiagPduType.deserialize(child)
-            obj.diag_pdu_type = diag_pdu_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DIAG-PDU-TYPE":
+                setattr(obj, "diag_pdu_type", DiagPduType.deserialize(child))
 
         return obj
 

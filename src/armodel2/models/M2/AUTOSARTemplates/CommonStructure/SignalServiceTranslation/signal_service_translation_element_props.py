@@ -47,9 +47,9 @@ class SignalServiceTranslationElementProps(Identifiable):
     filter: Optional[DataFilter]
     transmission: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "ELEMENT-REF": lambda obj, elem: setattr(obj, "element_ref", ARRef.deserialize(elem)),
-        "FILTER": lambda obj, elem: setattr(obj, "filter", DataFilter.deserialize(elem)),
-        "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", elem.text),
+        "ELEMENT-REF": ("_POLYMORPHIC", "element_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
+        "FILTER": lambda obj, elem: setattr(obj, "filter", SerializationHelper.deserialize_by_tag(elem, "DataFilter")),
+        "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -140,23 +140,23 @@ class SignalServiceTranslationElementProps(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SignalServiceTranslationElementProps, cls).deserialize(element)
 
-        # Parse element_ref
-        child = SerializationHelper.find_child_element(element, "ELEMENT-REF")
-        if child is not None:
-            element_ref_value = ARRef.deserialize(child)
-            obj.element_ref = element_ref_value
-
-        # Parse filter
-        child = SerializationHelper.find_child_element(element, "FILTER")
-        if child is not None:
-            filter_value = SerializationHelper.deserialize_by_tag(child, "DataFilter")
-            obj.filter = filter_value
-
-        # Parse transmission
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION")
-        if child is not None:
-            transmission_value = child.text
-            obj.transmission = transmission_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ELEMENT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
+                        setattr(obj, "element_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
+                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
+                        setattr(obj, "element_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
+            elif tag == "FILTER":
+                setattr(obj, "filter", SerializationHelper.deserialize_by_tag(child, "DataFilter"))
+            elif tag == "TRANSMISSION":
+                setattr(obj, "transmission", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

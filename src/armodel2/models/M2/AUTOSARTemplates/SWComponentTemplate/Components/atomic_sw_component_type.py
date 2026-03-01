@@ -51,8 +51,8 @@ class AtomicSwComponentType(SwComponentType, ABC):
     internal_behaviors: list[SwcInternalBehavior]
     symbol_props: Optional[SymbolProps]
     _DESERIALIZE_DISPATCH = {
-        "INTERNAL-BEHAVIORS": lambda obj, elem: obj.internal_behaviors.append(SwcInternalBehavior.deserialize(elem)),
-        "SYMBOL-PROPS": lambda obj, elem: setattr(obj, "symbol_props", SymbolProps.deserialize(elem)),
+        "INTERNAL-BEHAVIORS": lambda obj, elem: obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(elem, "SwcInternalBehavior")),
+        "SYMBOL-PROPS": lambda obj, elem: setattr(obj, "symbol_props", SerializationHelper.deserialize_by_tag(elem, "SymbolProps")),
     }
 
 
@@ -124,21 +124,15 @@ class AtomicSwComponentType(SwComponentType, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AtomicSwComponentType, cls).deserialize(element)
 
-        # Parse internal_behaviors (list from container "INTERNAL-BEHAVIORS")
-        obj.internal_behaviors = []
-        container = SerializationHelper.find_child_element(element, "INTERNAL-BEHAVIORS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.internal_behaviors.append(child_value)
-
-        # Parse symbol_props
-        child = SerializationHelper.find_child_element(element, "SYMBOL-PROPS")
-        if child is not None:
-            symbol_props_value = SerializationHelper.deserialize_by_tag(child, "SymbolProps")
-            obj.symbol_props = symbol_props_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INTERNAL-BEHAVIORS":
+                obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(child, "SwcInternalBehavior"))
+            elif tag == "SYMBOL-PROPS":
+                setattr(obj, "symbol_props", SerializationHelper.deserialize_by_tag(child, "SymbolProps"))
 
         return obj
 

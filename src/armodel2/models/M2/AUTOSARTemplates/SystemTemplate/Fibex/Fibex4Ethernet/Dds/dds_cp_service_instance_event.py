@@ -136,23 +136,17 @@ class DdsCpServiceInstanceEvent(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpServiceInstanceEvent, cls).deserialize(element)
 
-        # Parse dds_event_ref
-        child = SerializationHelper.find_child_element(element, "DDS-EVENT-REF")
-        if child is not None:
-            dds_event_ref_value = ARRef.deserialize(child)
-            obj.dds_event_ref = dds_event_ref_value
-
-        # Parse dds_event_qos_ref
-        child = SerializationHelper.find_child_element(element, "DDS-EVENT-QOS-REF")
-        if child is not None:
-            dds_event_qos_ref_value = ARRef.deserialize(child)
-            obj.dds_event_qos_ref = dds_event_qos_ref_value
-
-        # Parse dds_event_topic_ref
-        child = SerializationHelper.find_child_element(element, "DDS-EVENT-TOPIC-REF")
-        if child is not None:
-            dds_event_topic_ref_value = ARRef.deserialize(child)
-            obj.dds_event_topic_ref = dds_event_topic_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DDS-EVENT-REF":
+                setattr(obj, "dds_event_ref", ARRef.deserialize(child))
+            elif tag == "DDS-EVENT-QOS-REF":
+                setattr(obj, "dds_event_qos_ref", ARRef.deserialize(child))
+            elif tag == "DDS-EVENT-TOPIC-REF":
+                setattr(obj, "dds_event_topic_ref", ARRef.deserialize(child))
 
         return obj
 

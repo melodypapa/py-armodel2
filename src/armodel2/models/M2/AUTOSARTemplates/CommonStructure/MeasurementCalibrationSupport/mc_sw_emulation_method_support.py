@@ -46,10 +46,10 @@ class McSwEmulationMethodSupport(ARObject):
     short_label: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
         "BASE-REFERENCE-REF": lambda obj, elem: setattr(obj, "base_reference_ref", ARRef.deserialize(elem)),
-        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
-        "ELEMENT-GROUPS": lambda obj, elem: obj.element_groups.append(McParameterElementGroup.deserialize(elem)),
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "ELEMENT-GROUPS": lambda obj, elem: obj.element_groups.append(SerializationHelper.deserialize_by_tag(elem, "McParameterElementGroup")),
         "REFERENCE-TABLE-REF": lambda obj, elem: setattr(obj, "reference_table_ref", ARRef.deserialize(elem)),
-        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -166,39 +166,21 @@ class McSwEmulationMethodSupport(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(McSwEmulationMethodSupport, cls).deserialize(element)
 
-        # Parse base_reference_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REFERENCE-REF")
-        if child is not None:
-            base_reference_ref_value = ARRef.deserialize(child)
-            obj.base_reference_ref = base_reference_ref_value
-
-        # Parse category
-        child = SerializationHelper.find_child_element(element, "CATEGORY")
-        if child is not None:
-            category_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.category = category_value
-
-        # Parse element_groups (list from container "ELEMENT-GROUPS")
-        obj.element_groups = []
-        container = SerializationHelper.find_child_element(element, "ELEMENT-GROUPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.element_groups.append(child_value)
-
-        # Parse reference_table_ref
-        child = SerializationHelper.find_child_element(element, "REFERENCE-TABLE-REF")
-        if child is not None:
-            reference_table_ref_value = ARRef.deserialize(child)
-            obj.reference_table_ref = reference_table_ref_value
-
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BASE-REFERENCE-REF":
+                setattr(obj, "base_reference_ref", ARRef.deserialize(child))
+            elif tag == "CATEGORY":
+                setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "ELEMENT-GROUPS":
+                obj.element_groups.append(SerializationHelper.deserialize_by_tag(child, "McParameterElementGroup"))
+            elif tag == "REFERENCE-TABLE-REF":
+                setattr(obj, "reference_table_ref", ARRef.deserialize(child))
+            elif tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

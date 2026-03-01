@@ -32,7 +32,7 @@ class BlueprintPolicy(ARObject, ABC):
 
     attribute_name: String
     _DESERIALIZE_DISPATCH = {
-        "ATTRIBUTE-NAME": lambda obj, elem: setattr(obj, "attribute_name", elem.text),
+        "ATTRIBUTE-NAME": lambda obj, elem: setattr(obj, "attribute_name", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -93,11 +93,13 @@ class BlueprintPolicy(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BlueprintPolicy, cls).deserialize(element)
 
-        # Parse attribute_name
-        child = SerializationHelper.find_child_element(element, "ATTRIBUTE-NAME")
-        if child is not None:
-            attribute_name_value = child.text
-            obj.attribute_name = attribute_name_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ATTRIBUTE-NAME":
+                setattr(obj, "attribute_name", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

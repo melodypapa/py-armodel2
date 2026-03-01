@@ -68,27 +68,27 @@ class NvBlockNeeds(ServiceNeeds):
     writing: Optional[PositiveInteger]
     writing_priority: Optional[NvBlockNeedsWritingPriorityEnum]
     _DESERIALIZE_DISPATCH = {
-        "CALC-RAM-BLOCK": lambda obj, elem: setattr(obj, "calc_ram_block", elem.text),
-        "CHECK-STATIC-BLOCK-ID": lambda obj, elem: setattr(obj, "check_static_block_id", elem.text),
-        "CYCLIC-WRITING": lambda obj, elem: setattr(obj, "cyclic_writing", elem.text),
-        "N-DATA-SETS": lambda obj, elem: setattr(obj, "n_data_sets", elem.text),
-        "N-ROM-BLOCKS": lambda obj, elem: setattr(obj, "n_rom_blocks", elem.text),
+        "CALC-RAM-BLOCK": lambda obj, elem: setattr(obj, "calc_ram_block", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CHECK-STATIC-BLOCK-ID": lambda obj, elem: setattr(obj, "check_static_block_id", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CYCLIC-WRITING": lambda obj, elem: setattr(obj, "cyclic_writing", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "N-DATA-SETS": lambda obj, elem: setattr(obj, "n_data_sets", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "N-ROM-BLOCKS": lambda obj, elem: setattr(obj, "n_rom_blocks", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "RAM-BLOCK-STATUS-CONTROL": lambda obj, elem: setattr(obj, "ram_block_status_control", RamBlockStatusControlEnum.deserialize(elem)),
-        "READONLY": lambda obj, elem: setattr(obj, "readonly", elem.text),
-        "RELIABILITY-RELIABILITY-ENUM": lambda obj, elem: setattr(obj, "reliability_reliability_enum", NvBlockNeeds.deserialize(elem)),
-        "RESISTANT-TO": lambda obj, elem: setattr(obj, "resistant_to", elem.text),
-        "RESTORE-AT-START": lambda obj, elem: setattr(obj, "restore_at_start", elem.text),
-        "SELECT-BLOCK-FOR": lambda obj, elem: setattr(obj, "select_block_for", elem.text),
-        "STORE-AT": lambda obj, elem: setattr(obj, "store_at", elem.text),
-        "STORE-CYCLIC": lambda obj, elem: setattr(obj, "store_cyclic", elem.text),
-        "STORE": lambda obj, elem: setattr(obj, "store", elem.text),
-        "STORE-IMMEDIATE": lambda obj, elem: setattr(obj, "store_immediate", elem.text),
-        "STORE-ON-CHANGE": lambda obj, elem: setattr(obj, "store_on_change", elem.text),
-        "USE-AUTO": lambda obj, elem: setattr(obj, "use_auto", elem.text),
-        "USE-CRC-COMP": lambda obj, elem: setattr(obj, "use_crc_comp", elem.text),
-        "WRITE-ONLY-ONCE": lambda obj, elem: setattr(obj, "write_only_once", elem.text),
-        "WRITE-VERIFICATION": lambda obj, elem: setattr(obj, "write_verification", elem.text),
-        "WRITING": lambda obj, elem: setattr(obj, "writing", elem.text),
+        "READONLY": lambda obj, elem: setattr(obj, "readonly", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RELIABILITY-RELIABILITY-ENUM": lambda obj, elem: setattr(obj, "reliability_reliability_enum", SerializationHelper.deserialize_by_tag(elem, "NvBlockNeeds")),
+        "RESISTANT-TO": lambda obj, elem: setattr(obj, "resistant_to", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RESTORE-AT-START": lambda obj, elem: setattr(obj, "restore_at_start", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SELECT-BLOCK-FOR": lambda obj, elem: setattr(obj, "select_block_for", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "STORE-AT": lambda obj, elem: setattr(obj, "store_at", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "STORE-CYCLIC": lambda obj, elem: setattr(obj, "store_cyclic", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "STORE": lambda obj, elem: setattr(obj, "store", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "STORE-IMMEDIATE": lambda obj, elem: setattr(obj, "store_immediate", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "STORE-ON-CHANGE": lambda obj, elem: setattr(obj, "store_on_change", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "USE-AUTO": lambda obj, elem: setattr(obj, "use_auto", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "USE-CRC-COMP": lambda obj, elem: setattr(obj, "use_crc_comp", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "WRITE-ONLY-ONCE": lambda obj, elem: setattr(obj, "write_only_once", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "WRITE-VERIFICATION": lambda obj, elem: setattr(obj, "write_verification", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "WRITING": lambda obj, elem: setattr(obj, "writing", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "WRITING-PRIORITY": lambda obj, elem: setattr(obj, "writing_priority", NvBlockNeedsWritingPriorityEnum.deserialize(elem)),
     }
 
@@ -465,137 +465,55 @@ class NvBlockNeeds(ServiceNeeds):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NvBlockNeeds, cls).deserialize(element)
 
-        # Parse calc_ram_block
-        child = SerializationHelper.find_child_element(element, "CALC-RAM-BLOCK")
-        if child is not None:
-            calc_ram_block_value = child.text
-            obj.calc_ram_block = calc_ram_block_value
-
-        # Parse check_static_block_id
-        child = SerializationHelper.find_child_element(element, "CHECK-STATIC-BLOCK-ID")
-        if child is not None:
-            check_static_block_id_value = child.text
-            obj.check_static_block_id = check_static_block_id_value
-
-        # Parse cyclic_writing
-        child = SerializationHelper.find_child_element(element, "CYCLIC-WRITING")
-        if child is not None:
-            cyclic_writing_value = child.text
-            obj.cyclic_writing = cyclic_writing_value
-
-        # Parse n_data_sets
-        child = SerializationHelper.find_child_element(element, "N-DATA-SETS")
-        if child is not None:
-            n_data_sets_value = child.text
-            obj.n_data_sets = n_data_sets_value
-
-        # Parse n_rom_blocks
-        child = SerializationHelper.find_child_element(element, "N-ROM-BLOCKS")
-        if child is not None:
-            n_rom_blocks_value = child.text
-            obj.n_rom_blocks = n_rom_blocks_value
-
-        # Parse ram_block_status_control
-        child = SerializationHelper.find_child_element(element, "RAM-BLOCK-STATUS-CONTROL")
-        if child is not None:
-            ram_block_status_control_value = RamBlockStatusControlEnum.deserialize(child)
-            obj.ram_block_status_control = ram_block_status_control_value
-
-        # Parse readonly
-        child = SerializationHelper.find_child_element(element, "READONLY")
-        if child is not None:
-            readonly_value = child.text
-            obj.readonly = readonly_value
-
-        # Parse reliability_reliability_enum
-        child = SerializationHelper.find_child_element(element, "RELIABILITY-RELIABILITY-ENUM")
-        if child is not None:
-            reliability_reliability_enum_value = SerializationHelper.deserialize_by_tag(child, "NvBlockNeeds")
-            obj.reliability_reliability_enum = reliability_reliability_enum_value
-
-        # Parse resistant_to
-        child = SerializationHelper.find_child_element(element, "RESISTANT-TO")
-        if child is not None:
-            resistant_to_value = child.text
-            obj.resistant_to = resistant_to_value
-
-        # Parse restore_at_start
-        child = SerializationHelper.find_child_element(element, "RESTORE-AT-START")
-        if child is not None:
-            restore_at_start_value = child.text
-            obj.restore_at_start = restore_at_start_value
-
-        # Parse select_block_for
-        child = SerializationHelper.find_child_element(element, "SELECT-BLOCK-FOR")
-        if child is not None:
-            select_block_for_value = child.text
-            obj.select_block_for = select_block_for_value
-
-        # Parse store_at
-        child = SerializationHelper.find_child_element(element, "STORE-AT")
-        if child is not None:
-            store_at_value = child.text
-            obj.store_at = store_at_value
-
-        # Parse store_cyclic
-        child = SerializationHelper.find_child_element(element, "STORE-CYCLIC")
-        if child is not None:
-            store_cyclic_value = child.text
-            obj.store_cyclic = store_cyclic_value
-
-        # Parse store
-        child = SerializationHelper.find_child_element(element, "STORE")
-        if child is not None:
-            store_value = child.text
-            obj.store = store_value
-
-        # Parse store_immediate
-        child = SerializationHelper.find_child_element(element, "STORE-IMMEDIATE")
-        if child is not None:
-            store_immediate_value = child.text
-            obj.store_immediate = store_immediate_value
-
-        # Parse store_on_change
-        child = SerializationHelper.find_child_element(element, "STORE-ON-CHANGE")
-        if child is not None:
-            store_on_change_value = child.text
-            obj.store_on_change = store_on_change_value
-
-        # Parse use_auto
-        child = SerializationHelper.find_child_element(element, "USE-AUTO")
-        if child is not None:
-            use_auto_value = child.text
-            obj.use_auto = use_auto_value
-
-        # Parse use_crc_comp
-        child = SerializationHelper.find_child_element(element, "USE-CRC-COMP")
-        if child is not None:
-            use_crc_comp_value = child.text
-            obj.use_crc_comp = use_crc_comp_value
-
-        # Parse write_only_once
-        child = SerializationHelper.find_child_element(element, "WRITE-ONLY-ONCE")
-        if child is not None:
-            write_only_once_value = child.text
-            obj.write_only_once = write_only_once_value
-
-        # Parse write_verification
-        child = SerializationHelper.find_child_element(element, "WRITE-VERIFICATION")
-        if child is not None:
-            write_verification_value = child.text
-            obj.write_verification = write_verification_value
-
-        # Parse writing
-        child = SerializationHelper.find_child_element(element, "WRITING")
-        if child is not None:
-            writing_value = child.text
-            obj.writing = writing_value
-
-        # Parse writing_priority
-        child = SerializationHelper.find_child_element(element, "WRITING-PRIORITY")
-        if child is not None:
-            writing_priority_value = NvBlockNeedsWritingPriorityEnum.deserialize(child)
-            obj.writing_priority = writing_priority_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CALC-RAM-BLOCK":
+                setattr(obj, "calc_ram_block", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CHECK-STATIC-BLOCK-ID":
+                setattr(obj, "check_static_block_id", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CYCLIC-WRITING":
+                setattr(obj, "cyclic_writing", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "N-DATA-SETS":
+                setattr(obj, "n_data_sets", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "N-ROM-BLOCKS":
+                setattr(obj, "n_rom_blocks", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "RAM-BLOCK-STATUS-CONTROL":
+                setattr(obj, "ram_block_status_control", RamBlockStatusControlEnum.deserialize(child))
+            elif tag == "READONLY":
+                setattr(obj, "readonly", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RELIABILITY-RELIABILITY-ENUM":
+                setattr(obj, "reliability_reliability_enum", SerializationHelper.deserialize_by_tag(child, "NvBlockNeeds"))
+            elif tag == "RESISTANT-TO":
+                setattr(obj, "resistant_to", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RESTORE-AT-START":
+                setattr(obj, "restore_at_start", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SELECT-BLOCK-FOR":
+                setattr(obj, "select_block_for", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "STORE-AT":
+                setattr(obj, "store_at", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "STORE-CYCLIC":
+                setattr(obj, "store_cyclic", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "STORE":
+                setattr(obj, "store", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "STORE-IMMEDIATE":
+                setattr(obj, "store_immediate", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "STORE-ON-CHANGE":
+                setattr(obj, "store_on_change", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "USE-AUTO":
+                setattr(obj, "use_auto", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "USE-CRC-COMP":
+                setattr(obj, "use_crc_comp", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "WRITE-ONLY-ONCE":
+                setattr(obj, "write_only_once", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "WRITE-VERIFICATION":
+                setattr(obj, "write_verification", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "WRITING":
+                setattr(obj, "writing", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "WRITING-PRIORITY":
+                setattr(obj, "writing_priority", NvBlockNeedsWritingPriorityEnum.deserialize(child))
 
         return obj
 

@@ -52,9 +52,9 @@ class PortPrototypeBlueprint(ARElement):
     required_coms: list[RPortComSpec]
     _DESERIALIZE_DISPATCH = {
         "INIT-VALUES": lambda obj, elem: obj._init_value_refs.append(ARRef.deserialize(elem)),
-        "INTERFACE-REF": lambda obj, elem: setattr(obj, "interface_ref", ARRef.deserialize(elem)),
-        "PROVIDED-COMS": lambda obj, elem: obj.provided_coms.append(PPortComSpec.deserialize(elem)),
-        "REQUIRED-COMS": lambda obj, elem: obj.required_coms.append(RPortComSpec.deserialize(elem)),
+        "INTERFACE-REF": ("_POLYMORPHIC", "interface_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
+        "PROVIDED-COMS": ("_POLYMORPHIC_LIST", "provided_coms", ["ModeSwitchSenderComSpec", "NvProvideComSpec", "ParameterProvideComSpec", "SenderComSpec"]),
+        "REQUIRED-COMS": ("_POLYMORPHIC_LIST", "required_coms", ["ClientComSpec", "ModeSwitchReceiverComSpec", "NvRequireComSpec", "ParameterRequireComSpec"]),
     }
 
 
@@ -166,47 +166,49 @@ class PortPrototypeBlueprint(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortPrototypeBlueprint, cls).deserialize(element)
 
-        # Parse init_value_refs (list from container "INIT-VALUE-REFS")
-        obj.init_value_refs = []
-        container = SerializationHelper.find_child_element(element, "INIT-VALUE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.init_value_refs.append(child_value)
-
-        # Parse interface_ref
-        child = SerializationHelper.find_child_element(element, "INTERFACE-REF")
-        if child is not None:
-            interface_ref_value = ARRef.deserialize(child)
-            obj.interface_ref = interface_ref_value
-
-        # Parse provided_coms (list from container "PROVIDED-COMS")
-        obj.provided_coms = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-COMS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.provided_coms.append(child_value)
-
-        # Parse required_coms (list from container "REQUIRED-COMS")
-        obj.required_coms = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-COMS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.required_coms.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INIT-VALUES":
+                obj._init_value_refs.append(ARRef.deserialize(child))
+            elif tag == "INTERFACE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CLIENT-SERVER-INTERFACE":
+                        setattr(obj, "interface_ref", SerializationHelper.deserialize_by_tag(child[0], "ClientServerInterface"))
+                    elif concrete_tag == "DATA-INTERFACE":
+                        setattr(obj, "interface_ref", SerializationHelper.deserialize_by_tag(child[0], "DataInterface"))
+                    elif concrete_tag == "MODE-SWITCH-INTERFACE":
+                        setattr(obj, "interface_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchInterface"))
+                    elif concrete_tag == "TRIGGER-INTERFACE":
+                        setattr(obj, "interface_ref", SerializationHelper.deserialize_by_tag(child[0], "TriggerInterface"))
+            elif tag == "PROVIDED-COMS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "MODE-SWITCH-SENDER-COM-SPEC":
+                        obj.provided_coms.append(SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchSenderComSpec"))
+                    elif concrete_tag == "NV-PROVIDE-COM-SPEC":
+                        obj.provided_coms.append(SerializationHelper.deserialize_by_tag(child[0], "NvProvideComSpec"))
+                    elif concrete_tag == "PARAMETER-PROVIDE-COM-SPEC":
+                        obj.provided_coms.append(SerializationHelper.deserialize_by_tag(child[0], "ParameterProvideComSpec"))
+                    elif concrete_tag == "SENDER-COM-SPEC":
+                        obj.provided_coms.append(SerializationHelper.deserialize_by_tag(child[0], "SenderComSpec"))
+            elif tag == "REQUIRED-COMS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CLIENT-COM-SPEC":
+                        obj.required_coms.append(SerializationHelper.deserialize_by_tag(child[0], "ClientComSpec"))
+                    elif concrete_tag == "MODE-SWITCH-RECEIVER-COM-SPEC":
+                        obj.required_coms.append(SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchReceiverComSpec"))
+                    elif concrete_tag == "NV-REQUIRE-COM-SPEC":
+                        obj.required_coms.append(SerializationHelper.deserialize_by_tag(child[0], "NvRequireComSpec"))
+                    elif concrete_tag == "PARAMETER-REQUIRE-COM-SPEC":
+                        obj.required_coms.append(SerializationHelper.deserialize_by_tag(child[0], "ParameterRequireComSpec"))
 
         return obj
 

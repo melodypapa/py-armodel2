@@ -39,7 +39,7 @@ class ViewMapSet(ARElement):
 
     view_maps: list[ViewMap]
     _DESERIALIZE_DISPATCH = {
-        "VIEW-MAPS": lambda obj, elem: obj.view_maps.append(ViewMap.deserialize(elem)),
+        "VIEW-MAPS": lambda obj, elem: obj.view_maps.append(SerializationHelper.deserialize_by_tag(elem, "ViewMap")),
     }
 
 
@@ -96,15 +96,13 @@ class ViewMapSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ViewMapSet, cls).deserialize(element)
 
-        # Parse view_maps (list from container "VIEW-MAPS")
-        obj.view_maps = []
-        container = SerializationHelper.find_child_element(element, "VIEW-MAPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.view_maps.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "VIEW-MAPS":
+                obj.view_maps.append(SerializationHelper.deserialize_by_tag(child, "ViewMap"))
 
         return obj
 

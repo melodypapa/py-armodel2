@@ -38,7 +38,7 @@ class TlsCryptoCipherSuiteProps(Identifiable):
 
     tcp_ip_tls_use: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "TCP-IP-TLS-USE": lambda obj, elem: setattr(obj, "tcp_ip_tls_use", elem.text),
+        "TCP-IP-TLS-USE": lambda obj, elem: setattr(obj, "tcp_ip_tls_use", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -99,11 +99,13 @@ class TlsCryptoCipherSuiteProps(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TlsCryptoCipherSuiteProps, cls).deserialize(element)
 
-        # Parse tcp_ip_tls_use
-        child = SerializationHelper.find_child_element(element, "TCP-IP-TLS-USE")
-        if child is not None:
-            tcp_ip_tls_use_value = child.text
-            obj.tcp_ip_tls_use = tcp_ip_tls_use_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TCP-IP-TLS-USE":
+                setattr(obj, "tcp_ip_tls_use", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

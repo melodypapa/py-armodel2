@@ -32,7 +32,7 @@ class AbstractCanCommunicationController(CommunicationController, ABC):
 
     can_controller_controller_attributes: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "CAN-CONTROLLER-CONTROLLER-ATTRIBUTES": lambda obj, elem: setattr(obj, "can_controller_controller_attributes", any (AbstractCan).deserialize(elem)),
+        "CAN-CONTROLLER-CONTROLLER-ATTRIBUTES": lambda obj, elem: setattr(obj, "can_controller_controller_attributes", SerializationHelper.deserialize_by_tag(elem, "any (AbstractCan)")),
     }
 
 
@@ -93,11 +93,13 @@ class AbstractCanCommunicationController(CommunicationController, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractCanCommunicationController, cls).deserialize(element)
 
-        # Parse can_controller_controller_attributes
-        child = SerializationHelper.find_child_element(element, "CAN-CONTROLLER-CONTROLLER-ATTRIBUTES")
-        if child is not None:
-            can_controller_controller_attributes_value = child.text
-            obj.can_controller_controller_attributes = can_controller_controller_attributes_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CAN-CONTROLLER-CONTROLLER-ATTRIBUTES":
+                setattr(obj, "can_controller_controller_attributes", SerializationHelper.deserialize_by_tag(child, "any (AbstractCan)"))
 
         return obj
 

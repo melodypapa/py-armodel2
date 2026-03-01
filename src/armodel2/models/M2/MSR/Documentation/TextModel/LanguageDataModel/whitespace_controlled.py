@@ -29,7 +29,7 @@ class WhitespaceControlled(ARObject, ABC):
 
     xml_space: Any
     _DESERIALIZE_DISPATCH = {
-        "XML-SPACE": lambda obj, elem: setattr(obj, "xml_space", any (XmlSpaceEnum).deserialize(elem)),
+        "XML-SPACE": lambda obj, elem: setattr(obj, "xml_space", SerializationHelper.deserialize_by_tag(elem, "any (XmlSpaceEnum)")),
     }
 
 
@@ -90,11 +90,13 @@ class WhitespaceControlled(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(WhitespaceControlled, cls).deserialize(element)
 
-        # Parse xml_space
-        child = SerializationHelper.find_child_element(element, "XML-SPACE")
-        if child is not None:
-            xml_space_value = child.text
-            obj.xml_space = xml_space_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "XML-SPACE":
+                setattr(obj, "xml_space", SerializationHelper.deserialize_by_tag(child, "any (XmlSpaceEnum)"))
 
         return obj
 

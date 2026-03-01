@@ -44,7 +44,7 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
     data_provider: Optional[NameToken]
     _DESERIALIZE_DISPATCH = {
         "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
-        "DATA-PROVIDER": lambda obj, elem: setattr(obj, "data_provider", elem.text),
+        "DATA-PROVIDER": lambda obj, elem: setattr(obj, "data_provider", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
     }
 
 
@@ -120,17 +120,15 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDemProvidedDataMapping, cls).deserialize(element)
 
-        # Parse data_element_ref
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
-        if child is not None:
-            data_element_ref_value = ARRef.deserialize(child)
-            obj.data_element_ref = data_element_ref_value
-
-        # Parse data_provider
-        child = SerializationHelper.find_child_element(element, "DATA-PROVIDER")
-        if child is not None:
-            data_provider_value = child.text
-            obj.data_provider = data_provider_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-ELEMENT-REF":
+                setattr(obj, "data_element_ref", ARRef.deserialize(child))
+            elif tag == "DATA-PROVIDER":
+                setattr(obj, "data_provider", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

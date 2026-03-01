@@ -42,7 +42,7 @@ class EthernetCluster(ARObject):
     coupling_port: Optional[TimeValue]
     mac_multicast_group_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COUPLING-PORT": lambda obj, elem: setattr(obj, "coupling_port", elem.text),
+        "COUPLING-PORT": lambda obj, elem: setattr(obj, "coupling_port", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "MAC-MULTICAST-GROUPS": lambda obj, elem: obj.mac_multicast_group_refs.append(ARRef.deserialize(elem)),
     }
 

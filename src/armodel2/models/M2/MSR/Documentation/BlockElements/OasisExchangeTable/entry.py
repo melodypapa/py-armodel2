@@ -56,16 +56,16 @@ class Entry(ARObject):
     valign: Optional[ValignEnum]
     _DESERIALIZE_DISPATCH = {
         "ALIGN": lambda obj, elem: setattr(obj, "align", AlignEnum.deserialize(elem)),
-        "BGCOLOR": lambda obj, elem: setattr(obj, "bgcolor", elem.text),
-        "COLNAME": lambda obj, elem: setattr(obj, "colname", elem.text),
-        "COLSEP": lambda obj, elem: setattr(obj, "colsep", elem.text),
-        "ENTRY-CONTENTS": lambda obj, elem: setattr(obj, "entry_contents", DocumentationBlock.deserialize(elem)),
-        "MOREROWS": lambda obj, elem: setattr(obj, "morerows", elem.text),
-        "NAMEEND": lambda obj, elem: setattr(obj, "nameend", elem.text),
-        "NAMEST": lambda obj, elem: setattr(obj, "namest", elem.text),
-        "ROTATE": lambda obj, elem: setattr(obj, "rotate", elem.text),
-        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", elem.text),
-        "SPANNAME": lambda obj, elem: setattr(obj, "spanname", elem.text),
+        "BGCOLOR": lambda obj, elem: setattr(obj, "bgcolor", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "COLNAME": lambda obj, elem: setattr(obj, "colname", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "COLSEP": lambda obj, elem: setattr(obj, "colsep", SerializationHelper.deserialize_by_tag(elem, "TableSeparatorString")),
+        "ENTRY-CONTENTS": lambda obj, elem: setattr(obj, "entry_contents", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "MOREROWS": lambda obj, elem: setattr(obj, "morerows", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "NAMEEND": lambda obj, elem: setattr(obj, "nameend", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "NAMEST": lambda obj, elem: setattr(obj, "namest", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ROTATE": lambda obj, elem: setattr(obj, "rotate", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", SerializationHelper.deserialize_by_tag(elem, "TableSeparatorString")),
+        "SPANNAME": lambda obj, elem: setattr(obj, "spanname", SerializationHelper.deserialize_by_tag(elem, "String")),
         "VALIGN": lambda obj, elem: setattr(obj, "valign", ValignEnum.deserialize(elem)),
     }
 
@@ -292,77 +292,35 @@ class Entry(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Entry, cls).deserialize(element)
 
-        # Parse align
-        child = SerializationHelper.find_child_element(element, "ALIGN")
-        if child is not None:
-            align_value = AlignEnum.deserialize(child)
-            obj.align = align_value
-
-        # Parse bgcolor
-        child = SerializationHelper.find_child_element(element, "BGCOLOR")
-        if child is not None:
-            bgcolor_value = child.text
-            obj.bgcolor = bgcolor_value
-
-        # Parse colname
-        child = SerializationHelper.find_child_element(element, "COLNAME")
-        if child is not None:
-            colname_value = child.text
-            obj.colname = colname_value
-
-        # Parse colsep
-        child = SerializationHelper.find_child_element(element, "COLSEP")
-        if child is not None:
-            colsep_value = child.text
-            obj.colsep = colsep_value
-
-        # Parse entry_contents
-        child = SerializationHelper.find_child_element(element, "ENTRY-CONTENTS")
-        if child is not None:
-            entry_contents_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.entry_contents = entry_contents_value
-
-        # Parse morerows
-        child = SerializationHelper.find_child_element(element, "MOREROWS")
-        if child is not None:
-            morerows_value = child.text
-            obj.morerows = morerows_value
-
-        # Parse nameend
-        child = SerializationHelper.find_child_element(element, "NAMEEND")
-        if child is not None:
-            nameend_value = child.text
-            obj.nameend = nameend_value
-
-        # Parse namest
-        child = SerializationHelper.find_child_element(element, "NAMEST")
-        if child is not None:
-            namest_value = child.text
-            obj.namest = namest_value
-
-        # Parse rotate
-        child = SerializationHelper.find_child_element(element, "ROTATE")
-        if child is not None:
-            rotate_value = child.text
-            obj.rotate = rotate_value
-
-        # Parse rowsep
-        child = SerializationHelper.find_child_element(element, "ROWSEP")
-        if child is not None:
-            rowsep_value = child.text
-            obj.rowsep = rowsep_value
-
-        # Parse spanname
-        child = SerializationHelper.find_child_element(element, "SPANNAME")
-        if child is not None:
-            spanname_value = child.text
-            obj.spanname = spanname_value
-
-        # Parse valign
-        child = SerializationHelper.find_child_element(element, "VALIGN")
-        if child is not None:
-            valign_value = ValignEnum.deserialize(child)
-            obj.valign = valign_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALIGN":
+                setattr(obj, "align", AlignEnum.deserialize(child))
+            elif tag == "BGCOLOR":
+                setattr(obj, "bgcolor", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "COLNAME":
+                setattr(obj, "colname", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "COLSEP":
+                setattr(obj, "colsep", SerializationHelper.deserialize_by_tag(child, "TableSeparatorString"))
+            elif tag == "ENTRY-CONTENTS":
+                setattr(obj, "entry_contents", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "MOREROWS":
+                setattr(obj, "morerows", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "NAMEEND":
+                setattr(obj, "nameend", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "NAMEST":
+                setattr(obj, "namest", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ROTATE":
+                setattr(obj, "rotate", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ROWSEP":
+                setattr(obj, "rowsep", SerializationHelper.deserialize_by_tag(child, "TableSeparatorString"))
+            elif tag == "SPANNAME":
+                setattr(obj, "spanname", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "VALIGN":
+                setattr(obj, "valign", ValignEnum.deserialize(child))
 
         return obj
 

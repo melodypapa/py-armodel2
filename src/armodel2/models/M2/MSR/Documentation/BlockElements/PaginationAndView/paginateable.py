@@ -115,17 +115,15 @@ class Paginateable(DocumentViewSelectable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Paginateable, cls).deserialize(element)
 
-        # Parse break_
-        child = SerializationHelper.find_child_element(element, "BREAK")
-        if child is not None:
-            break__value = ChapterEnumBreak.deserialize(child)
-            obj.break_ = break__value
-
-        # Parse keep_with
-        child = SerializationHelper.find_child_element(element, "KEEP-WITH")
-        if child is not None:
-            keep_with_value = KeepWithPreviousEnum.deserialize(child)
-            obj.keep_with = keep_with_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BREAK":
+                setattr(obj, "break_", ChapterEnumBreak.deserialize(child))
+            elif tag == "KEEP-WITH":
+                setattr(obj, "keep_with", KeepWithPreviousEnum.deserialize(child))
 
         return obj
 

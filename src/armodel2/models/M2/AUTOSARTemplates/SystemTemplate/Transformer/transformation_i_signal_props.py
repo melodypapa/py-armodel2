@@ -39,7 +39,7 @@ class TransformationISignalProps(ARObject, ABC):
     transformer_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
         "CS-ERROR-REACTION": lambda obj, elem: setattr(obj, "cs_error_reaction", CSTransformerErrorReactionEnum.deserialize(elem)),
-        "DATA-PROTOTYPES": lambda obj, elem: obj.data_prototype_refs.append(ARRef.deserialize(elem)),
+        "DATA-PROTOTYPES": ("_POLYMORPHIC_LIST", "data_prototype_refs", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
         "TRANSFORMER-REF": lambda obj, elem: setattr(obj, "transformer_ref", ARRef.deserialize(elem)),
     }
 
@@ -134,33 +134,23 @@ class TransformationISignalProps(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransformationISignalProps, cls).deserialize(element)
 
-        # Parse cs_error_reaction
-        child = SerializationHelper.find_child_element(element, "CS-ERROR-REACTION")
-        if child is not None:
-            cs_error_reaction_value = CSTransformerErrorReactionEnum.deserialize(child)
-            obj.cs_error_reaction = cs_error_reaction_value
-
-        # Parse data_prototype_refs (list from container "DATA-PROTOTYPE-REFS")
-        obj.data_prototype_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_prototype_refs.append(child_value)
-
-        # Parse transformer_ref
-        child = SerializationHelper.find_child_element(element, "TRANSFORMER-REF")
-        if child is not None:
-            transformer_ref_value = ARRef.deserialize(child)
-            obj.transformer_ref = transformer_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CS-ERROR-REACTION":
+                setattr(obj, "cs_error_reaction", CSTransformerErrorReactionEnum.deserialize(child))
+            elif tag == "DATA-PROTOTYPES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
+                        obj.data_prototype_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
+                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
+                        obj.data_prototype_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
+            elif tag == "TRANSFORMER-REF":
+                setattr(obj, "transformer_ref", ARRef.deserialize(child))
 
         return obj
 

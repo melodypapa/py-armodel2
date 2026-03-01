@@ -35,7 +35,7 @@ class SignalServiceTranslationPropsSet(ARElement):
 
     signal_service_propses: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "SIGNAL-SERVICE-PROPSES": lambda obj, elem: obj.signal_service_propses.append(any (SignalService).deserialize(elem)),
+        "SIGNAL-SERVICE-PROPSES": lambda obj, elem: obj.signal_service_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
     }
 
 
@@ -92,15 +92,13 @@ class SignalServiceTranslationPropsSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SignalServiceTranslationPropsSet, cls).deserialize(element)
 
-        # Parse signal_service_propses (list from container "SIGNAL-SERVICE-PROPSES")
-        obj.signal_service_propses = []
-        container = SerializationHelper.find_child_element(element, "SIGNAL-SERVICE-PROPSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.signal_service_propses.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SIGNAL-SERVICE-PROPSES":
+                obj.signal_service_propses.append(SerializationHelper.deserialize_by_tag(child, "any (SignalService)"))
 
         return obj
 

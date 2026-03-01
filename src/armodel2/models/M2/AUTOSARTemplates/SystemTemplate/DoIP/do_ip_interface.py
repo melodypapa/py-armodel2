@@ -65,19 +65,19 @@ class DoIpInterface(Identifiable):
     use_vehicle: Optional[Boolean]
     vehicle: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "ALIVE-CHECK": lambda obj, elem: setattr(obj, "alive_check", elem.text),
+        "ALIVE-CHECK": lambda obj, elem: setattr(obj, "alive_check", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "DOIP-CHANNEL-REF": lambda obj, elem: setattr(obj, "doip_channel_ref", ARRef.deserialize(elem)),
         "DOIP-CONNECTIONS": lambda obj, elem: obj.doip_connection_refs.append(ARRef.deserialize(elem)),
-        "DO-IP-ROUTINGS": lambda obj, elem: obj.do_ip_routings.append(DoIpRoutingActivation.deserialize(elem)),
-        "GENERAL-INACTIVITY": lambda obj, elem: setattr(obj, "general_inactivity", elem.text),
-        "INITIAL-INACTIVITY": lambda obj, elem: setattr(obj, "initial_inactivity", elem.text),
-        "INITIAL-VEHICLE": lambda obj, elem: setattr(obj, "initial_vehicle", elem.text),
-        "IS-ACTIVATION-LINE": lambda obj, elem: setattr(obj, "is_activation_line", elem.text),
-        "MAX-TESTER": lambda obj, elem: setattr(obj, "max_tester", elem.text),
+        "DO-IP-ROUTINGS": lambda obj, elem: obj.do_ip_routings.append(SerializationHelper.deserialize_by_tag(elem, "DoIpRoutingActivation")),
+        "GENERAL-INACTIVITY": lambda obj, elem: setattr(obj, "general_inactivity", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "INITIAL-INACTIVITY": lambda obj, elem: setattr(obj, "initial_inactivity", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "INITIAL-VEHICLE": lambda obj, elem: setattr(obj, "initial_vehicle", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "IS-ACTIVATION-LINE": lambda obj, elem: setattr(obj, "is_activation_line", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "MAX-TESTER": lambda obj, elem: setattr(obj, "max_tester", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SOCKETS": lambda obj, elem: obj.socket_refs.append(ARRef.deserialize(elem)),
-        "USE-MAC-ADDRESS": lambda obj, elem: setattr(obj, "use_mac_address", elem.text),
-        "USE-VEHICLE": lambda obj, elem: setattr(obj, "use_vehicle", elem.text),
-        "VEHICLE": lambda obj, elem: setattr(obj, "vehicle", elem.text),
+        "USE-MAC-ADDRESS": lambda obj, elem: setattr(obj, "use_mac_address", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "USE-VEHICLE": lambda obj, elem: setattr(obj, "use_vehicle", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "VEHICLE": lambda obj, elem: setattr(obj, "vehicle", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -320,107 +320,37 @@ class DoIpInterface(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpInterface, cls).deserialize(element)
 
-        # Parse alive_check
-        child = SerializationHelper.find_child_element(element, "ALIVE-CHECK")
-        if child is not None:
-            alive_check_value = child.text
-            obj.alive_check = alive_check_value
-
-        # Parse doip_channel_ref
-        child = SerializationHelper.find_child_element(element, "DOIP-CHANNEL-REF")
-        if child is not None:
-            doip_channel_ref_value = ARRef.deserialize(child)
-            obj.doip_channel_ref = doip_channel_ref_value
-
-        # Parse doip_connection_refs (list from container "DOIP-CONNECTION-REFS")
-        obj.doip_connection_refs = []
-        container = SerializationHelper.find_child_element(element, "DOIP-CONNECTION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.doip_connection_refs.append(child_value)
-
-        # Parse do_ip_routings (list from container "DO-IP-ROUTINGS")
-        obj.do_ip_routings = []
-        container = SerializationHelper.find_child_element(element, "DO-IP-ROUTINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.do_ip_routings.append(child_value)
-
-        # Parse general_inactivity
-        child = SerializationHelper.find_child_element(element, "GENERAL-INACTIVITY")
-        if child is not None:
-            general_inactivity_value = child.text
-            obj.general_inactivity = general_inactivity_value
-
-        # Parse initial_inactivity
-        child = SerializationHelper.find_child_element(element, "INITIAL-INACTIVITY")
-        if child is not None:
-            initial_inactivity_value = child.text
-            obj.initial_inactivity = initial_inactivity_value
-
-        # Parse initial_vehicle
-        child = SerializationHelper.find_child_element(element, "INITIAL-VEHICLE")
-        if child is not None:
-            initial_vehicle_value = child.text
-            obj.initial_vehicle = initial_vehicle_value
-
-        # Parse is_activation_line
-        child = SerializationHelper.find_child_element(element, "IS-ACTIVATION-LINE")
-        if child is not None:
-            is_activation_line_value = child.text
-            obj.is_activation_line = is_activation_line_value
-
-        # Parse max_tester
-        child = SerializationHelper.find_child_element(element, "MAX-TESTER")
-        if child is not None:
-            max_tester_value = child.text
-            obj.max_tester = max_tester_value
-
-        # Parse socket_refs (list from container "SOCKET-REFS")
-        obj.socket_refs = []
-        container = SerializationHelper.find_child_element(element, "SOCKET-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.socket_refs.append(child_value)
-
-        # Parse use_mac_address
-        child = SerializationHelper.find_child_element(element, "USE-MAC-ADDRESS")
-        if child is not None:
-            use_mac_address_value = child.text
-            obj.use_mac_address = use_mac_address_value
-
-        # Parse use_vehicle
-        child = SerializationHelper.find_child_element(element, "USE-VEHICLE")
-        if child is not None:
-            use_vehicle_value = child.text
-            obj.use_vehicle = use_vehicle_value
-
-        # Parse vehicle
-        child = SerializationHelper.find_child_element(element, "VEHICLE")
-        if child is not None:
-            vehicle_value = child.text
-            obj.vehicle = vehicle_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALIVE-CHECK":
+                setattr(obj, "alive_check", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "DOIP-CHANNEL-REF":
+                setattr(obj, "doip_channel_ref", ARRef.deserialize(child))
+            elif tag == "DOIP-CONNECTIONS":
+                obj.doip_connection_refs.append(ARRef.deserialize(child))
+            elif tag == "DO-IP-ROUTINGS":
+                obj.do_ip_routings.append(SerializationHelper.deserialize_by_tag(child, "DoIpRoutingActivation"))
+            elif tag == "GENERAL-INACTIVITY":
+                setattr(obj, "general_inactivity", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "INITIAL-INACTIVITY":
+                setattr(obj, "initial_inactivity", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "INITIAL-VEHICLE":
+                setattr(obj, "initial_vehicle", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "IS-ACTIVATION-LINE":
+                setattr(obj, "is_activation_line", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "MAX-TESTER":
+                setattr(obj, "max_tester", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SOCKETS":
+                obj.socket_refs.append(ARRef.deserialize(child))
+            elif tag == "USE-MAC-ADDRESS":
+                setattr(obj, "use_mac_address", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "USE-VEHICLE":
+                setattr(obj, "use_vehicle", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "VEHICLE":
+                setattr(obj, "vehicle", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

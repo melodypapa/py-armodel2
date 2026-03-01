@@ -113,17 +113,15 @@ class PhysicalDimensionMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PhysicalDimensionMapping, cls).deserialize(element)
 
-        # Parse first_physical_ref
-        child = SerializationHelper.find_child_element(element, "FIRST-PHYSICAL-REF")
-        if child is not None:
-            first_physical_ref_value = ARRef.deserialize(child)
-            obj.first_physical_ref = first_physical_ref_value
-
-        # Parse second_physical_ref
-        child = SerializationHelper.find_child_element(element, "SECOND-PHYSICAL-REF")
-        if child is not None:
-            second_physical_ref_value = ARRef.deserialize(child)
-            obj.second_physical_ref = second_physical_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FIRST-PHYSICAL-REF":
+                setattr(obj, "first_physical_ref", ARRef.deserialize(child))
+            elif tag == "SECOND-PHYSICAL-REF":
+                setattr(obj, "second_physical_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -46,8 +46,8 @@ class ClientServerInterface(PortInterface):
     operations: list[ClientServerOperation]
     possible_errors: list[ApplicationError]
     _DESERIALIZE_DISPATCH = {
-        "OPERATIONS": lambda obj, elem: obj.operations.append(ClientServerOperation.deserialize(elem)),
-        "POSSIBLE-ERRORS": lambda obj, elem: obj.possible_errors.append(ApplicationError.deserialize(elem)),
+        "OPERATIONS": lambda obj, elem: obj.operations.append(SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
+        "POSSIBLE-ERRORS": lambda obj, elem: obj.possible_errors.append(SerializationHelper.deserialize_by_tag(elem, "ApplicationError")),
     }
 
 
@@ -115,25 +115,15 @@ class ClientServerInterface(PortInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerInterface, cls).deserialize(element)
 
-        # Parse operations (list from container "OPERATIONS")
-        obj.operations = []
-        container = SerializationHelper.find_child_element(element, "OPERATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.operations.append(child_value)
-
-        # Parse possible_errors (list from container "POSSIBLE-ERRORS")
-        obj.possible_errors = []
-        container = SerializationHelper.find_child_element(element, "POSSIBLE-ERRORS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.possible_errors.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "OPERATIONS":
+                obj.operations.append(SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
+            elif tag == "POSSIBLE-ERRORS":
+                obj.possible_errors.append(SerializationHelper.deserialize_by_tag(child, "ApplicationError"))
 
         return obj
 

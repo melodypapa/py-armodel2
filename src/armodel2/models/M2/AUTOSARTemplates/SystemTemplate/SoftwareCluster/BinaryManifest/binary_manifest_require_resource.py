@@ -38,7 +38,7 @@ class BinaryManifestRequireResource(BinaryManifestResource):
 
     connection_is: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "CONNECTION-IS": lambda obj, elem: setattr(obj, "connection_is", elem.text),
+        "CONNECTION-IS": lambda obj, elem: setattr(obj, "connection_is", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -99,11 +99,13 @@ class BinaryManifestRequireResource(BinaryManifestResource):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BinaryManifestRequireResource, cls).deserialize(element)
 
-        # Parse connection_is
-        child = SerializationHelper.find_child_element(element, "CONNECTION-IS")
-        if child is not None:
-            connection_is_value = child.text
-            obj.connection_is = connection_is_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONNECTION-IS":
+                setattr(obj, "connection_is", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

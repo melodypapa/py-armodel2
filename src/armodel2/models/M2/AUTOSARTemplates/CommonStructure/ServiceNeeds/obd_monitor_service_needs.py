@@ -52,9 +52,9 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
     unit_and_scaling_id: Optional[PositiveInteger]
     update_kind: Optional[DiagnosticMonitorUpdateKindEnum]
     _DESERIALIZE_DISPATCH = {
-        "APPLICATION-DATA-REF": lambda obj, elem: setattr(obj, "application_data_ref", ARRef.deserialize(elem)),
+        "APPLICATION-DATA-REF": ("_POLYMORPHIC", "application_data_ref", ["ApplicationCompositeDataType", "ApplicationPrimitiveDataType"]),
         "EVENT-NEEDS-REF": lambda obj, elem: setattr(obj, "event_needs_ref", ARRef.deserialize(elem)),
-        "UNIT-AND-SCALING-ID": lambda obj, elem: setattr(obj, "unit_and_scaling_id", elem.text),
+        "UNIT-AND-SCALING-ID": lambda obj, elem: setattr(obj, "unit_and_scaling_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "UPDATE-KIND": lambda obj, elem: setattr(obj, "update_kind", DiagnosticMonitorUpdateKindEnum.deserialize(elem)),
     }
 
@@ -161,29 +161,25 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ObdMonitorServiceNeeds, cls).deserialize(element)
 
-        # Parse application_data_ref
-        child = SerializationHelper.find_child_element(element, "APPLICATION-DATA-REF")
-        if child is not None:
-            application_data_ref_value = ARRef.deserialize(child)
-            obj.application_data_ref = application_data_ref_value
-
-        # Parse event_needs_ref
-        child = SerializationHelper.find_child_element(element, "EVENT-NEEDS-REF")
-        if child is not None:
-            event_needs_ref_value = ARRef.deserialize(child)
-            obj.event_needs_ref = event_needs_ref_value
-
-        # Parse unit_and_scaling_id
-        child = SerializationHelper.find_child_element(element, "UNIT-AND-SCALING-ID")
-        if child is not None:
-            unit_and_scaling_id_value = child.text
-            obj.unit_and_scaling_id = unit_and_scaling_id_value
-
-        # Parse update_kind
-        child = SerializationHelper.find_child_element(element, "UPDATE-KIND")
-        if child is not None:
-            update_kind_value = DiagnosticMonitorUpdateKindEnum.deserialize(child)
-            obj.update_kind = update_kind_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "APPLICATION-DATA-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-DATA-TYPE":
+                        setattr(obj, "application_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeDataType"))
+                    elif concrete_tag == "APPLICATION-PRIMITIVE-DATA-TYPE":
+                        setattr(obj, "application_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationPrimitiveDataType"))
+            elif tag == "EVENT-NEEDS-REF":
+                setattr(obj, "event_needs_ref", ARRef.deserialize(child))
+            elif tag == "UNIT-AND-SCALING-ID":
+                setattr(obj, "unit_and_scaling_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "UPDATE-KIND":
+                setattr(obj, "update_kind", DiagnosticMonitorUpdateKindEnum.deserialize(child))
 
         return obj
 

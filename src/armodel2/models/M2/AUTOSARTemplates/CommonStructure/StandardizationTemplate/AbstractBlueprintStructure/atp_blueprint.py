@@ -38,7 +38,7 @@ class AtpBlueprint(Identifiable, ABC):
 
     blueprint_policies: list[BlueprintPolicy]
     _DESERIALIZE_DISPATCH = {
-        "BLUEPRINT-POLICIES": lambda obj, elem: obj.blueprint_policies.append(BlueprintPolicy.deserialize(elem)),
+        "BLUEPRINT-POLICIES": ("_POLYMORPHIC_LIST", "blueprint_policies", ["BlueprintPolicyModifiable", "BlueprintPolicyNotModifiable"]),
     }
 
 
@@ -95,15 +95,19 @@ class AtpBlueprint(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AtpBlueprint, cls).deserialize(element)
 
-        # Parse blueprint_policies (list from container "BLUEPRINT-POLICIES")
-        obj.blueprint_policies = []
-        container = SerializationHelper.find_child_element(element, "BLUEPRINT-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.blueprint_policies.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BLUEPRINT-POLICIES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BLUEPRINT-POLICY-MODIFIABLE":
+                        obj.blueprint_policies.append(SerializationHelper.deserialize_by_tag(child[0], "BlueprintPolicyModifiable"))
+                    elif concrete_tag == "BLUEPRINT-POLICY-NOT-MODIFIABLE":
+                        obj.blueprint_policies.append(SerializationHelper.deserialize_by_tag(child[0], "BlueprintPolicyNotModifiable"))
 
         return obj
 

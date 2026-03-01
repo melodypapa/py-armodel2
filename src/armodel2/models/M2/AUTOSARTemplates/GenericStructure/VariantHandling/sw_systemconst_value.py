@@ -45,9 +45,9 @@ class SwSystemconstValue(ARObject):
     sw_systemconst_ref: ARRef
     value: Numerical
     _DESERIALIZE_DISPATCH = {
-        "ANNOTATIONS": lambda obj, elem: obj.annotations.append(Annotation.deserialize(elem)),
+        "ANNOTATIONS": lambda obj, elem: obj.annotations.append(SerializationHelper.deserialize_by_tag(elem, "Annotation")),
         "SW-SYSTEMCONST-REF": lambda obj, elem: setattr(obj, "sw_systemconst_ref", ARRef.deserialize(elem)),
-        "VALUE": lambda obj, elem: setattr(obj, "value", elem.text),
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
     }
 
 
@@ -134,27 +134,17 @@ class SwSystemconstValue(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwSystemconstValue, cls).deserialize(element)
 
-        # Parse annotations (list from container "ANNOTATIONS")
-        obj.annotations = []
-        container = SerializationHelper.find_child_element(element, "ANNOTATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.annotations.append(child_value)
-
-        # Parse sw_systemconst_ref
-        child = SerializationHelper.find_child_element(element, "SW-SYSTEMCONST-REF")
-        if child is not None:
-            sw_systemconst_ref_value = ARRef.deserialize(child)
-            obj.sw_systemconst_ref = sw_systemconst_ref_value
-
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = child.text
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ANNOTATIONS":
+                obj.annotations.append(SerializationHelper.deserialize_by_tag(child, "Annotation"))
+            elif tag == "SW-SYSTEMCONST-REF":
+                setattr(obj, "sw_systemconst_ref", ARRef.deserialize(child))
+            elif tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "Numerical"))
 
         return obj
 

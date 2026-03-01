@@ -49,11 +49,11 @@ class ExecutionTimeConstraint(TimingConstraint):
     maximum: Optional[MultidimensionalTime]
     minimum: Optional[MultidimensionalTime]
     _DESERIALIZE_DISPATCH = {
-        "COMPONENT": lambda obj, elem: setattr(obj, "component", any (SwComponent).deserialize(elem)),
-        "EXECUTABLE-ENTITY-REF": lambda obj, elem: setattr(obj, "executable_entity_ref", ARRef.deserialize(elem)),
+        "COMPONENT": lambda obj, elem: setattr(obj, "component", SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
+        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswModuleEntity", "RunnableEntity"]),
         "EXECUTION-TIME": lambda obj, elem: setattr(obj, "execution_time", ExecutionTimeTypeEnum.deserialize(elem)),
-        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", MultidimensionalTime.deserialize(elem)),
-        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", MultidimensionalTime.deserialize(elem)),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
     }
 
 
@@ -174,35 +174,27 @@ class ExecutionTimeConstraint(TimingConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ExecutionTimeConstraint, cls).deserialize(element)
 
-        # Parse component
-        child = SerializationHelper.find_child_element(element, "COMPONENT")
-        if child is not None:
-            component_value = child.text
-            obj.component = component_value
-
-        # Parse executable_entity_ref
-        child = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITY-REF")
-        if child is not None:
-            executable_entity_ref_value = ARRef.deserialize(child)
-            obj.executable_entity_ref = executable_entity_ref_value
-
-        # Parse execution_time
-        child = SerializationHelper.find_child_element(element, "EXECUTION-TIME")
-        if child is not None:
-            execution_time_value = ExecutionTimeTypeEnum.deserialize(child)
-            obj.execution_time = execution_time_value
-
-        # Parse maximum
-        child = SerializationHelper.find_child_element(element, "MAXIMUM")
-        if child is not None:
-            maximum_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.maximum = maximum_value
-
-        # Parse minimum
-        child = SerializationHelper.find_child_element(element, "MINIMUM")
-        if child is not None:
-            minimum_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.minimum = minimum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPONENT":
+                setattr(obj, "component", SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
+            elif tag == "EXECUTABLE-ENTITY-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-MODULE-ENTITY":
+                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleEntity"))
+                    elif concrete_tag == "RUNNABLE-ENTITY":
+                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "RunnableEntity"))
+            elif tag == "EXECUTION-TIME":
+                setattr(obj, "execution_time", ExecutionTimeTypeEnum.deserialize(child))
+            elif tag == "MAXIMUM":
+                setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "MINIMUM":
+                setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

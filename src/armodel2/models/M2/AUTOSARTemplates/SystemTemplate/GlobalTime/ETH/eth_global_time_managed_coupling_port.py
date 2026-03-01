@@ -50,11 +50,11 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
     _DESERIALIZE_DISPATCH = {
         "COUPLING-PORT-REF": lambda obj, elem: setattr(obj, "coupling_port_ref", ARRef.deserialize(elem)),
         "GLOBAL-TIME-PORT-ROLE": lambda obj, elem: setattr(obj, "global_time_port_role", GlobalTimePortRoleEnum.deserialize(elem)),
-        "GLOBAL-TIME-TX-PERIOD": lambda obj, elem: setattr(obj, "global_time_tx_period", elem.text),
-        "PDELAY-LATENCY": lambda obj, elem: setattr(obj, "pdelay_latency", elem.text),
-        "PDELAY-REQUEST": lambda obj, elem: setattr(obj, "pdelay_request", elem.text),
-        "PDELAY-RESP-AND": lambda obj, elem: setattr(obj, "pdelay_resp_and", elem.text),
-        "PDELAY": lambda obj, elem: setattr(obj, "pdelay", elem.text),
+        "GLOBAL-TIME-TX-PERIOD": lambda obj, elem: setattr(obj, "global_time_tx_period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "PDELAY-LATENCY": lambda obj, elem: setattr(obj, "pdelay_latency", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "PDELAY-REQUEST": lambda obj, elem: setattr(obj, "pdelay_request", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "PDELAY-RESP-AND": lambda obj, elem: setattr(obj, "pdelay_resp_and", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "PDELAY": lambda obj, elem: setattr(obj, "pdelay", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -205,47 +205,25 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthGlobalTimeManagedCouplingPort, cls).deserialize(element)
 
-        # Parse coupling_port_ref
-        child = SerializationHelper.find_child_element(element, "COUPLING-PORT-REF")
-        if child is not None:
-            coupling_port_ref_value = ARRef.deserialize(child)
-            obj.coupling_port_ref = coupling_port_ref_value
-
-        # Parse global_time_port_role
-        child = SerializationHelper.find_child_element(element, "GLOBAL-TIME-PORT-ROLE")
-        if child is not None:
-            global_time_port_role_value = GlobalTimePortRoleEnum.deserialize(child)
-            obj.global_time_port_role = global_time_port_role_value
-
-        # Parse global_time_tx_period
-        child = SerializationHelper.find_child_element(element, "GLOBAL-TIME-TX-PERIOD")
-        if child is not None:
-            global_time_tx_period_value = child.text
-            obj.global_time_tx_period = global_time_tx_period_value
-
-        # Parse pdelay_latency
-        child = SerializationHelper.find_child_element(element, "PDELAY-LATENCY")
-        if child is not None:
-            pdelay_latency_value = child.text
-            obj.pdelay_latency = pdelay_latency_value
-
-        # Parse pdelay_request
-        child = SerializationHelper.find_child_element(element, "PDELAY-REQUEST")
-        if child is not None:
-            pdelay_request_value = child.text
-            obj.pdelay_request = pdelay_request_value
-
-        # Parse pdelay_resp_and
-        child = SerializationHelper.find_child_element(element, "PDELAY-RESP-AND")
-        if child is not None:
-            pdelay_resp_and_value = child.text
-            obj.pdelay_resp_and = pdelay_resp_and_value
-
-        # Parse pdelay
-        child = SerializationHelper.find_child_element(element, "PDELAY")
-        if child is not None:
-            pdelay_value = child.text
-            obj.pdelay = pdelay_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COUPLING-PORT-REF":
+                setattr(obj, "coupling_port_ref", ARRef.deserialize(child))
+            elif tag == "GLOBAL-TIME-PORT-ROLE":
+                setattr(obj, "global_time_port_role", GlobalTimePortRoleEnum.deserialize(child))
+            elif tag == "GLOBAL-TIME-TX-PERIOD":
+                setattr(obj, "global_time_tx_period", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "PDELAY-LATENCY":
+                setattr(obj, "pdelay_latency", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "PDELAY-REQUEST":
+                setattr(obj, "pdelay_request", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "PDELAY-RESP-AND":
+                setattr(obj, "pdelay_resp_and", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "PDELAY":
+                setattr(obj, "pdelay", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

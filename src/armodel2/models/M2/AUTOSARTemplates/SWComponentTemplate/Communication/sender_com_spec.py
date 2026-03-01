@@ -67,13 +67,13 @@ class SenderComSpec(PPortComSpec, ABC):
     transmission_props: Optional[TransmissionComSpecProps]
     uses_end_to_end_protection: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "COMPOSITE-NETWORK-REPRESENTATIONS": lambda obj, elem: obj.composite_network_representations.append(CompositeNetworkRepresentation.deserialize(elem)),
-        "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
+        "COMPOSITE-NETWORK-REPRESENTATIONS": lambda obj, elem: obj.composite_network_representations.append(SerializationHelper.deserialize_by_tag(elem, "CompositeNetworkRepresentation")),
+        "DATA-ELEMENT-REF": ("_POLYMORPHIC", "data_element_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "HANDLE-OUT-OF-RANGE": lambda obj, elem: setattr(obj, "handle_out_of_range", HandleOutOfRangeEnum.deserialize(elem)),
-        "NETWORK-REPRESENTATION": lambda obj, elem: setattr(obj, "network_representation", SwDataDefProps.deserialize(elem)),
-        "TRANSMISSION-ACKNOWLEDGE": lambda obj, elem: setattr(obj, "transmission_acknowledge", TransmissionAcknowledgementRequest.deserialize(elem)),
-        "TRANSMISSION-PROPS": lambda obj, elem: setattr(obj, "transmission_props", TransmissionComSpecProps.deserialize(elem)),
-        "USES-END-TO-END-PROTECTION": lambda obj, elem: setattr(obj, "uses_end_to_end_protection", elem.text),
+        "NETWORK-REPRESENTATION": lambda obj, elem: setattr(obj, "network_representation", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "TRANSMISSION-ACKNOWLEDGE": lambda obj, elem: setattr(obj, "transmission_acknowledge", SerializationHelper.deserialize_by_tag(elem, "TransmissionAcknowledgementRequest")),
+        "TRANSMISSION-PROPS": lambda obj, elem: setattr(obj, "transmission_props", SerializationHelper.deserialize_by_tag(elem, "TransmissionComSpecProps")),
+        "USES-END-TO-END-PROTECTION": lambda obj, elem: setattr(obj, "uses_end_to_end_protection", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -220,51 +220,33 @@ class SenderComSpec(PPortComSpec, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderComSpec, cls).deserialize(element)
 
-        # Parse composite_network_representations (list from container "COMPOSITE-NETWORK-REPRESENTATIONS")
-        obj.composite_network_representations = []
-        container = SerializationHelper.find_child_element(element, "COMPOSITE-NETWORK-REPRESENTATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.composite_network_representations.append(child_value)
-
-        # Parse data_element_ref
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
-        if child is not None:
-            data_element_ref_value = ARRef.deserialize(child)
-            obj.data_element_ref = data_element_ref_value
-
-        # Parse handle_out_of_range
-        child = SerializationHelper.find_child_element(element, "HANDLE-OUT-OF-RANGE")
-        if child is not None:
-            handle_out_of_range_value = HandleOutOfRangeEnum.deserialize(child)
-            obj.handle_out_of_range = handle_out_of_range_value
-
-        # Parse network_representation
-        child = SerializationHelper.find_child_element(element, "NETWORK-REPRESENTATION")
-        if child is not None:
-            network_representation_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.network_representation = network_representation_value
-
-        # Parse transmission_acknowledge
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION-ACKNOWLEDGE")
-        if child is not None:
-            transmission_acknowledge_value = SerializationHelper.deserialize_by_tag(child, "TransmissionAcknowledgementRequest")
-            obj.transmission_acknowledge = transmission_acknowledge_value
-
-        # Parse transmission_props
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION-PROPS")
-        if child is not None:
-            transmission_props_value = SerializationHelper.deserialize_by_tag(child, "TransmissionComSpecProps")
-            obj.transmission_props = transmission_props_value
-
-        # Parse uses_end_to_end_protection
-        child = SerializationHelper.find_child_element(element, "USES-END-TO-END-PROTECTION")
-        if child is not None:
-            uses_end_to_end_protection_value = child.text
-            obj.uses_end_to_end_protection = uses_end_to_end_protection_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPOSITE-NETWORK-REPRESENTATIONS":
+                obj.composite_network_representations.append(SerializationHelper.deserialize_by_tag(child, "CompositeNetworkRepresentation"))
+            elif tag == "DATA-ELEMENT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
+                        setattr(obj, "data_element_ref", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
+                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
+                        setattr(obj, "data_element_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
+                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
+                        setattr(obj, "data_element_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
+            elif tag == "HANDLE-OUT-OF-RANGE":
+                setattr(obj, "handle_out_of_range", HandleOutOfRangeEnum.deserialize(child))
+            elif tag == "NETWORK-REPRESENTATION":
+                setattr(obj, "network_representation", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            elif tag == "TRANSMISSION-ACKNOWLEDGE":
+                setattr(obj, "transmission_acknowledge", SerializationHelper.deserialize_by_tag(child, "TransmissionAcknowledgementRequest"))
+            elif tag == "TRANSMISSION-PROPS":
+                setattr(obj, "transmission_props", SerializationHelper.deserialize_by_tag(child, "TransmissionComSpecProps"))
+            elif tag == "USES-END-TO-END-PROTECTION":
+                setattr(obj, "uses_end_to_end_protection", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

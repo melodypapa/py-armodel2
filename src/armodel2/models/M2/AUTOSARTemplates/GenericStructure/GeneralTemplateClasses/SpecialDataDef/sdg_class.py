@@ -50,9 +50,9 @@ class SdgClass(SdgElementWithGid):
     extends_meta: Optional[MetaClassName]
     sdg_constraint_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ATTRIBUTES": lambda obj, elem: obj.attributes.append(SdgAttribute.deserialize(elem)),
-        "CAPTION": lambda obj, elem: setattr(obj, "caption", elem.text),
-        "EXTENDS-META": lambda obj, elem: setattr(obj, "extends_meta", elem.text),
+        "ATTRIBUTES": ("_POLYMORPHIC_LIST", "attributes", ["SdgAbstractForeignReference", "SdgAbstractPrimitiveAttribute", "SdgAggregationWithVariation", "Sdg"]),
+        "CAPTION": lambda obj, elem: setattr(obj, "caption", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "EXTENDS-META": lambda obj, elem: setattr(obj, "extends_meta", SerializationHelper.deserialize_by_tag(elem, "MetaClassName")),
         "SDG-CONSTRAINTS": lambda obj, elem: obj.sdg_constraint_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -158,43 +158,29 @@ class SdgClass(SdgElementWithGid):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SdgClass, cls).deserialize(element)
 
-        # Parse attributes (list from container "ATTRIBUTES")
-        obj.attributes = []
-        container = SerializationHelper.find_child_element(element, "ATTRIBUTES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.attributes.append(child_value)
-
-        # Parse caption
-        child = SerializationHelper.find_child_element(element, "CAPTION")
-        if child is not None:
-            caption_value = child.text
-            obj.caption = caption_value
-
-        # Parse extends_meta
-        child = SerializationHelper.find_child_element(element, "EXTENDS-META")
-        if child is not None:
-            extends_meta_value = child.text
-            obj.extends_meta = extends_meta_value
-
-        # Parse sdg_constraint_refs (list from container "SDG-CONSTRAINT-REFS")
-        obj.sdg_constraint_refs = []
-        container = SerializationHelper.find_child_element(element, "SDG-CONSTRAINT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sdg_constraint_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ATTRIBUTES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "SDG-ABSTRACT-FOREIGN-REFERENCE":
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(child[0], "SdgAbstractForeignReference"))
+                    elif concrete_tag == "SDG-ABSTRACT-PRIMITIVE-ATTRIBUTE":
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(child[0], "SdgAbstractPrimitiveAttribute"))
+                    elif concrete_tag == "SDG-AGGREGATION-WITH-VARIATION":
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(child[0], "SdgAggregationWithVariation"))
+                    elif concrete_tag == "SDG":
+                        obj.attributes.append(SerializationHelper.deserialize_by_tag(child[0], "Sdg"))
+            elif tag == "CAPTION":
+                setattr(obj, "caption", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "EXTENDS-META":
+                setattr(obj, "extends_meta", SerializationHelper.deserialize_by_tag(child, "MetaClassName"))
+            elif tag == "SDG-CONSTRAINTS":
+                obj.sdg_constraint_refs.append(ARRef.deserialize(child))
 
         return obj
 

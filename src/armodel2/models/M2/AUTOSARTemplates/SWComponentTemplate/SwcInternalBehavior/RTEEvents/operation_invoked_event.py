@@ -111,12 +111,13 @@ class OperationInvokedEvent(RTEEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(OperationInvokedEvent, cls).deserialize(element)
 
-        # Parse operation_iref (instance reference from wrapper "OPERATION-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "OPERATION-IREF")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            operation_iref_value = SerializationHelper.deserialize_by_tag(wrapper, "POperationInAtomicSwcInstanceRef")
-            obj.operation_iref = operation_iref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "OPERATION":
+                setattr(obj, "_operation_iref", ARRef.deserialize(child))
 
         return obj
 

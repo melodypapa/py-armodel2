@@ -35,7 +35,7 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
 
     message_type_message_type_enum: Optional[IEEE1722TpAcfCan]
     _DESERIALIZE_DISPATCH = {
-        "MESSAGE-TYPE-MESSAGE-TYPE-ENUM": lambda obj, elem: setattr(obj, "message_type_message_type_enum", IEEE1722TpAcfCan.deserialize(elem)),
+        "MESSAGE-TYPE-MESSAGE-TYPE-ENUM": lambda obj, elem: setattr(obj, "message_type_message_type_enum", SerializationHelper.deserialize_by_tag(elem, "IEEE1722TpAcfCan")),
     }
 
 
@@ -96,11 +96,13 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpAcfCan, cls).deserialize(element)
 
-        # Parse message_type_message_type_enum
-        child = SerializationHelper.find_child_element(element, "MESSAGE-TYPE-MESSAGE-TYPE-ENUM")
-        if child is not None:
-            message_type_message_type_enum_value = SerializationHelper.deserialize_by_tag(child, "IEEE1722TpAcfCan")
-            obj.message_type_message_type_enum = message_type_message_type_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MESSAGE-TYPE-MESSAGE-TYPE-ENUM":
+                setattr(obj, "message_type_message_type_enum", SerializationHelper.deserialize_by_tag(child, "IEEE1722TpAcfCan"))
 
         return obj
 

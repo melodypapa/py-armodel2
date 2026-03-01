@@ -37,7 +37,7 @@ class TpConfig(FibexElement, ABC):
 
     communication_cluster_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CLUSTER-REF": lambda obj, elem: setattr(obj, "communication_cluster_ref", ARRef.deserialize(elem)),
+        "COMMUNICATION-CLUSTER-REF": ("_POLYMORPHIC", "communication_cluster_ref", ["AbstractCanCluster", "EthernetCluster", "FlexrayCluster", "LinCluster", "UserDefinedCluster"]),
     }
 
 
@@ -98,11 +98,25 @@ class TpConfig(FibexElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TpConfig, cls).deserialize(element)
 
-        # Parse communication_cluster_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CLUSTER-REF")
-        if child is not None:
-            communication_cluster_ref_value = ARRef.deserialize(child)
-            obj.communication_cluster_ref = communication_cluster_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMUNICATION-CLUSTER-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-CLUSTER":
+                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCluster"))
+                    elif concrete_tag == "ETHERNET-CLUSTER":
+                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetCluster"))
+                    elif concrete_tag == "FLEXRAY-CLUSTER":
+                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayCluster"))
+                    elif concrete_tag == "LIN-CLUSTER":
+                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "LinCluster"))
+                    elif concrete_tag == "USER-DEFINED-CLUSTER":
+                        setattr(obj, "communication_cluster_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCluster"))
 
         return obj
 

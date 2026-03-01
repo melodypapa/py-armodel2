@@ -47,8 +47,8 @@ class NonqueuedSenderComSpec(SenderComSpec):
     data_filter: Optional[DataFilter]
     _init_value: Optional[ValueSpecification]
     _DESERIALIZE_DISPATCH = {
-        "DATA-FILTER": lambda obj, elem: setattr(obj, "data_filter", DataFilter.deserialize(elem)),
-        "INIT-VALUE": lambda obj, elem: setattr(obj, "_init_value", ValueSpecification.deserialize(elem)),
+        "DATA-FILTER": lambda obj, elem: setattr(obj, "data_filter", SerializationHelper.deserialize_by_tag(elem, "DataFilter")),
+        "INIT-VALUE": ("_POLYMORPHIC", "_init_value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
     }
 
 
@@ -130,17 +130,33 @@ class NonqueuedSenderComSpec(SenderComSpec):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NonqueuedSenderComSpec, cls).deserialize(element)
 
-        # Parse data_filter
-        child = SerializationHelper.find_child_element(element, "DATA-FILTER")
-        if child is not None:
-            data_filter_value = SerializationHelper.deserialize_by_tag(child, "DataFilter")
-            obj.data_filter = data_filter_value
-
-        # Parse init_value (polymorphic wrapper "INIT-VALUE")
-        wrapper = SerializationHelper.find_child_element(element, "INIT-VALUE")
-        if wrapper is not None:
-            init_value_value = SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
-            obj.init_value = init_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-FILTER":
+                setattr(obj, "data_filter", SerializationHelper.deserialize_by_tag(child, "DataFilter"))
+            elif tag == "INIT-VALUE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
 
         return obj
 

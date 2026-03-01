@@ -70,9 +70,9 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         "COMPU-METHOD-REF": lambda obj, elem: setattr(obj, "compu_method_ref", ARRef.deserialize(elem)),
         "DATA-CONSTR-REF": lambda obj, elem: setattr(obj, "data_constr_ref", ARRef.deserialize(elem)),
         "INPUT-VARIABLE-REF": lambda obj, elem: setattr(obj, "input_variable_ref", ARRef.deserialize(elem)),
-        "SW-AXIS-GENERIC": lambda obj, elem: setattr(obj, "sw_axis_generic", SwAxisGeneric.deserialize(elem)),
-        "SW-MAX-AXIS": lambda obj, elem: setattr(obj, "sw_max_axis", elem.text),
-        "SW-MIN-AXIS": lambda obj, elem: setattr(obj, "sw_min_axis", elem.text),
+        "SW-AXIS-GENERIC": lambda obj, elem: setattr(obj, "sw_axis_generic", SerializationHelper.deserialize_by_tag(elem, "SwAxisGeneric")),
+        "SW-MAX-AXIS": lambda obj, elem: setattr(obj, "sw_max_axis", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "SW-MIN-AXIS": lambda obj, elem: setattr(obj, "sw_min_axis", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "SW-VARIABLE-REF-PROXIES": lambda obj, elem: obj.sw_variable_ref_proxy_refs.append(ARRef.deserialize(elem)),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
     }
@@ -243,63 +243,27 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwAxisIndividual, cls).deserialize(element)
 
-        # Parse compu_method_ref
-        child = SerializationHelper.find_child_element(element, "COMPU-METHOD-REF")
-        if child is not None:
-            compu_method_ref_value = ARRef.deserialize(child)
-            obj.compu_method_ref = compu_method_ref_value
-
-        # Parse data_constr_ref
-        child = SerializationHelper.find_child_element(element, "DATA-CONSTR-REF")
-        if child is not None:
-            data_constr_ref_value = ARRef.deserialize(child)
-            obj.data_constr_ref = data_constr_ref_value
-
-        # Parse input_variable_ref
-        child = SerializationHelper.find_child_element(element, "INPUT-VARIABLE-REF")
-        if child is not None:
-            input_variable_ref_value = ARRef.deserialize(child)
-            obj.input_variable_ref = input_variable_ref_value
-
-        # Parse sw_axis_generic
-        child = SerializationHelper.find_child_element(element, "SW-AXIS-GENERIC")
-        if child is not None:
-            sw_axis_generic_value = SerializationHelper.deserialize_by_tag(child, "SwAxisGeneric")
-            obj.sw_axis_generic = sw_axis_generic_value
-
-        # Parse sw_max_axis
-        child = SerializationHelper.find_child_element(element, "SW-MAX-AXIS")
-        if child is not None:
-            sw_max_axis_value = child.text
-            obj.sw_max_axis = sw_max_axis_value
-
-        # Parse sw_min_axis
-        child = SerializationHelper.find_child_element(element, "SW-MIN-AXIS")
-        if child is not None:
-            sw_min_axis_value = child.text
-            obj.sw_min_axis = sw_min_axis_value
-
-        # Parse sw_variable_ref_proxy_refs (list from container "SW-VARIABLE-REF-PROXY-REFS")
-        obj.sw_variable_ref_proxy_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-VARIABLE-REF-PROXY-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_variable_ref_proxy_refs.append(child_value)
-
-        # Parse unit_ref
-        child = SerializationHelper.find_child_element(element, "UNIT-REF")
-        if child is not None:
-            unit_ref_value = ARRef.deserialize(child)
-            obj.unit_ref = unit_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPU-METHOD-REF":
+                setattr(obj, "compu_method_ref", ARRef.deserialize(child))
+            elif tag == "DATA-CONSTR-REF":
+                setattr(obj, "data_constr_ref", ARRef.deserialize(child))
+            elif tag == "INPUT-VARIABLE-REF":
+                setattr(obj, "input_variable_ref", ARRef.deserialize(child))
+            elif tag == "SW-AXIS-GENERIC":
+                setattr(obj, "sw_axis_generic", SerializationHelper.deserialize_by_tag(child, "SwAxisGeneric"))
+            elif tag == "SW-MAX-AXIS":
+                setattr(obj, "sw_max_axis", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "SW-MIN-AXIS":
+                setattr(obj, "sw_min_axis", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "SW-VARIABLE-REF-PROXIES":
+                obj.sw_variable_ref_proxy_refs.append(ARRef.deserialize(child))
+            elif tag == "UNIT-REF":
+                setattr(obj, "unit_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -48,10 +48,10 @@ class EcucContainerValue(Identifiable):
     reference_value_refs: list[Any]
     sub_containers: list[EcucContainerValue]
     _DESERIALIZE_DISPATCH = {
-        "DEFINITION-REF": lambda obj, elem: setattr(obj, "definition_ref", ARRef.deserialize(elem)),
-        "PARAMETER-VALUES": lambda obj, elem: obj.parameter_values.append(EcucParameterValue.deserialize(elem)),
+        "DEFINITION-REF": ("_POLYMORPHIC", "definition_ref", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
+        "PARAMETER-VALUES": ("_POLYMORPHIC_LIST", "parameter_values", ["EcucAddInfoParamValue", "EcucNumericalParamValue", "EcucTextualParamValue"]),
         "REFERENCE-VALUES": lambda obj, elem: obj.reference_value_refs.append(ARRef.deserialize(elem)),
-        "SUB-CONTAINERS": lambda obj, elem: obj.sub_containers.append(EcucContainerValue.deserialize(elem)),
+        "SUB-CONTAINERS": lambda obj, elem: obj.sub_containers.append(SerializationHelper.deserialize_by_tag(elem, "EcucContainerValue")),
     }
 
 
@@ -152,47 +152,33 @@ class EcucContainerValue(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucContainerValue, cls).deserialize(element)
 
-        # Parse definition_ref
-        child = SerializationHelper.find_child_element(element, "DEFINITION-REF")
-        if child is not None:
-            definition_ref_value = ARRef.deserialize(child)
-            obj.definition_ref = definition_ref_value
-
-        # Parse parameter_values (list from container "PARAMETER-VALUES")
-        obj.parameter_values = []
-        container = SerializationHelper.find_child_element(element, "PARAMETER-VALUES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.parameter_values.append(child_value)
-
-        # Parse reference_value_refs (list from container "REFERENCE-VALUE-REFS")
-        obj.reference_value_refs = []
-        container = SerializationHelper.find_child_element(element, "REFERENCE-VALUE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.reference_value_refs.append(child_value)
-
-        # Parse sub_containers (list from container "SUB-CONTAINERS")
-        obj.sub_containers = []
-        container = SerializationHelper.find_child_element(element, "SUB-CONTAINERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sub_containers.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEFINITION-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ECUC-CHOICE-CONTAINER-DEF":
+                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucChoiceContainerDef"))
+                    elif concrete_tag == "ECUC-PARAM-CONF-CONTAINER-DEF":
+                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucParamConfContainerDef"))
+            elif tag == "PARAMETER-VALUES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ECUC-ADD-INFO-PARAM-VALUE":
+                        obj.parameter_values.append(SerializationHelper.deserialize_by_tag(child[0], "EcucAddInfoParamValue"))
+                    elif concrete_tag == "ECUC-NUMERICAL-PARAM-VALUE":
+                        obj.parameter_values.append(SerializationHelper.deserialize_by_tag(child[0], "EcucNumericalParamValue"))
+                    elif concrete_tag == "ECUC-TEXTUAL-PARAM-VALUE":
+                        obj.parameter_values.append(SerializationHelper.deserialize_by_tag(child[0], "EcucTextualParamValue"))
+            elif tag == "REFERENCE-VALUES":
+                obj.reference_value_refs.append(ARRef.deserialize(child))
+            elif tag == "SUB-CONTAINERS":
+                obj.sub_containers.append(SerializationHelper.deserialize_by_tag(child, "EcucContainerValue"))
 
         return obj
 

@@ -117,17 +117,15 @@ class J1939TpNode(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939TpNode, cls).deserialize(element)
 
-        # Parse connector_ref
-        child = SerializationHelper.find_child_element(element, "CONNECTOR-REF")
-        if child is not None:
-            connector_ref_value = ARRef.deserialize(child)
-            obj.connector_ref = connector_ref_value
-
-        # Parse tp_address_ref
-        child = SerializationHelper.find_child_element(element, "TP-ADDRESS-REF")
-        if child is not None:
-            tp_address_ref_value = ARRef.deserialize(child)
-            obj.tp_address_ref = tp_address_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONNECTOR-REF":
+                setattr(obj, "connector_ref", ARRef.deserialize(child))
+            elif tag == "TP-ADDRESS-REF":
+                setattr(obj, "tp_address_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -39,7 +39,7 @@ class ExecutableEntityActivationReason(ImplementationProps):
 
     bit_position: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "BIT-POSITION": lambda obj, elem: setattr(obj, "bit_position", elem.text),
+        "BIT-POSITION": lambda obj, elem: setattr(obj, "bit_position", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -100,11 +100,13 @@ class ExecutableEntityActivationReason(ImplementationProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ExecutableEntityActivationReason, cls).deserialize(element)
 
-        # Parse bit_position
-        child = SerializationHelper.find_child_element(element, "BIT-POSITION")
-        if child is not None:
-            bit_position_value = child.text
-            obj.bit_position = bit_position_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BIT-POSITION":
+                setattr(obj, "bit_position", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

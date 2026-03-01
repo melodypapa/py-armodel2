@@ -48,13 +48,13 @@ class SupervisedEntityNeeds(ServiceNeeds):
     min_alive_cycle: Optional[TimeValue]
     tolerated_failed: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ACTIVATE-AT-START": lambda obj, elem: setattr(obj, "activate_at_start", elem.text),
+        "ACTIVATE-AT-START": lambda obj, elem: setattr(obj, "activate_at_start", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "CHECKPOINTSES": lambda obj, elem: obj.checkpoint_refs.append(ARRef.deserialize(elem)),
-        "ENABLE": lambda obj, elem: setattr(obj, "enable", elem.text),
-        "EXPECTED-ALIVE": lambda obj, elem: setattr(obj, "expected_alive", elem.text),
-        "MAX-ALIVE-CYCLE": lambda obj, elem: setattr(obj, "max_alive_cycle", elem.text),
-        "MIN-ALIVE-CYCLE": lambda obj, elem: setattr(obj, "min_alive_cycle", elem.text),
-        "TOLERATED-FAILED": lambda obj, elem: setattr(obj, "tolerated_failed", elem.text),
+        "ENABLE": lambda obj, elem: setattr(obj, "enable", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "EXPECTED-ALIVE": lambda obj, elem: setattr(obj, "expected_alive", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "MAX-ALIVE-CYCLE": lambda obj, elem: setattr(obj, "max_alive_cycle", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "MIN-ALIVE-CYCLE": lambda obj, elem: setattr(obj, "min_alive_cycle", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TOLERATED-FAILED": lambda obj, elem: setattr(obj, "tolerated_failed", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -208,57 +208,25 @@ class SupervisedEntityNeeds(ServiceNeeds):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SupervisedEntityNeeds, cls).deserialize(element)
 
-        # Parse activate_at_start
-        child = SerializationHelper.find_child_element(element, "ACTIVATE-AT-START")
-        if child is not None:
-            activate_at_start_value = child.text
-            obj.activate_at_start = activate_at_start_value
-
-        # Parse checkpoint_refs (list from container "CHECKPOINTS-REFS")
-        obj.checkpoint_refs = []
-        container = SerializationHelper.find_child_element(element, "CHECKPOINTS-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.checkpoint_refs.append(child_value)
-
-        # Parse enable
-        child = SerializationHelper.find_child_element(element, "ENABLE")
-        if child is not None:
-            enable_value = child.text
-            obj.enable = enable_value
-
-        # Parse expected_alive
-        child = SerializationHelper.find_child_element(element, "EXPECTED-ALIVE")
-        if child is not None:
-            expected_alive_value = child.text
-            obj.expected_alive = expected_alive_value
-
-        # Parse max_alive_cycle
-        child = SerializationHelper.find_child_element(element, "MAX-ALIVE-CYCLE")
-        if child is not None:
-            max_alive_cycle_value = child.text
-            obj.max_alive_cycle = max_alive_cycle_value
-
-        # Parse min_alive_cycle
-        child = SerializationHelper.find_child_element(element, "MIN-ALIVE-CYCLE")
-        if child is not None:
-            min_alive_cycle_value = child.text
-            obj.min_alive_cycle = min_alive_cycle_value
-
-        # Parse tolerated_failed
-        child = SerializationHelper.find_child_element(element, "TOLERATED-FAILED")
-        if child is not None:
-            tolerated_failed_value = child.text
-            obj.tolerated_failed = tolerated_failed_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACTIVATE-AT-START":
+                setattr(obj, "activate_at_start", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CHECKPOINTSES":
+                obj.checkpoint_refs.append(ARRef.deserialize(child))
+            elif tag == "ENABLE":
+                setattr(obj, "enable", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "EXPECTED-ALIVE":
+                setattr(obj, "expected_alive", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "MAX-ALIVE-CYCLE":
+                setattr(obj, "max_alive_cycle", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "MIN-ALIVE-CYCLE":
+                setattr(obj, "min_alive_cycle", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TOLERATED-FAILED":
+                setattr(obj, "tolerated_failed", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -43,7 +43,7 @@ class TraceableText(Paginateable):
 
     text: DocumentationBlock
     _DESERIALIZE_DISPATCH = {
-        "TEXT": lambda obj, elem: setattr(obj, "text", DocumentationBlock.deserialize(elem)),
+        "TEXT": lambda obj, elem: setattr(obj, "text", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
     }
 
 
@@ -104,11 +104,13 @@ class TraceableText(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TraceableText, cls).deserialize(element)
 
-        # Parse text
-        child = SerializationHelper.find_child_element(element, "TEXT")
-        if child is not None:
-            text_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.text = text_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TEXT":
+                setattr(obj, "text", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
 
         return obj
 

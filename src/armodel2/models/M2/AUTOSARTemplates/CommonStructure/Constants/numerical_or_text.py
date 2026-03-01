@@ -37,8 +37,8 @@ class NumericalOrText(ARObject):
     vf: Optional[Numerical]
     vt: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "VF": lambda obj, elem: setattr(obj, "vf", elem.text),
-        "VT": lambda obj, elem: setattr(obj, "vt", elem.text),
+        "VF": lambda obj, elem: setattr(obj, "vf", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VT": lambda obj, elem: setattr(obj, "vt", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -114,17 +114,15 @@ class NumericalOrText(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NumericalOrText, cls).deserialize(element)
 
-        # Parse vf
-        child = SerializationHelper.find_child_element(element, "VF")
-        if child is not None:
-            vf_value = child.text
-            obj.vf = vf_value
-
-        # Parse vt
-        child = SerializationHelper.find_child_element(element, "VT")
-        if child is not None:
-            vt_value = child.text
-            obj.vt = vt_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "VF":
+                setattr(obj, "vf", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "VT":
+                setattr(obj, "vt", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

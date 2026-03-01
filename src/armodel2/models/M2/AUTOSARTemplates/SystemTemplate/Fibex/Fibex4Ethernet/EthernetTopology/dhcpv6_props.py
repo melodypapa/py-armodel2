@@ -36,9 +36,9 @@ class Dhcpv6Props(ARObject):
     tcp_ip_dhcp_v6_inf: Optional[TimeValue]
     tcp_ip_dhcp_v6_sol: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "TCP-IP-DHCP": lambda obj, elem: setattr(obj, "tcp_ip_dhcp", elem.text),
-        "TCP-IP-DHCP-V6-INF": lambda obj, elem: setattr(obj, "tcp_ip_dhcp_v6_inf", elem.text),
-        "TCP-IP-DHCP-V6-SOL": lambda obj, elem: setattr(obj, "tcp_ip_dhcp_v6_sol", elem.text),
+        "TCP-IP-DHCP": lambda obj, elem: setattr(obj, "tcp_ip_dhcp", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-IP-DHCP-V6-INF": lambda obj, elem: setattr(obj, "tcp_ip_dhcp_v6_inf", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-IP-DHCP-V6-SOL": lambda obj, elem: setattr(obj, "tcp_ip_dhcp_v6_sol", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -129,23 +129,17 @@ class Dhcpv6Props(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Dhcpv6Props, cls).deserialize(element)
 
-        # Parse tcp_ip_dhcp
-        child = SerializationHelper.find_child_element(element, "TCP-IP-DHCP")
-        if child is not None:
-            tcp_ip_dhcp_value = child.text
-            obj.tcp_ip_dhcp = tcp_ip_dhcp_value
-
-        # Parse tcp_ip_dhcp_v6_inf
-        child = SerializationHelper.find_child_element(element, "TCP-IP-DHCP-V6-INF")
-        if child is not None:
-            tcp_ip_dhcp_v6_inf_value = child.text
-            obj.tcp_ip_dhcp_v6_inf = tcp_ip_dhcp_v6_inf_value
-
-        # Parse tcp_ip_dhcp_v6_sol
-        child = SerializationHelper.find_child_element(element, "TCP-IP-DHCP-V6-SOL")
-        if child is not None:
-            tcp_ip_dhcp_v6_sol_value = child.text
-            obj.tcp_ip_dhcp_v6_sol = tcp_ip_dhcp_v6_sol_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TCP-IP-DHCP":
+                setattr(obj, "tcp_ip_dhcp", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-IP-DHCP-V6-INF":
+                setattr(obj, "tcp_ip_dhcp_v6_inf", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-IP-DHCP-V6-SOL":
+                setattr(obj, "tcp_ip_dhcp_v6_sol", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

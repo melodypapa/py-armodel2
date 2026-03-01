@@ -62,13 +62,13 @@ class ConsumedEventGroup(Identifiable):
     sd_client_timer_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "APPLICATION-ENDPOINT-REF": lambda obj, elem: setattr(obj, "application_endpoint_ref", ARRef.deserialize(elem)),
-        "AUTO-REQUIRE": lambda obj, elem: setattr(obj, "auto_require", elem.text),
-        "EVENT-GROUP": lambda obj, elem: setattr(obj, "event_group", elem.text),
+        "AUTO-REQUIRE": lambda obj, elem: setattr(obj, "auto_require", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "EVENT-GROUP": lambda obj, elem: setattr(obj, "event_group", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "EVENT-MULTICASTS": lambda obj, elem: obj.event_multicast_refs.append(ARRef.deserialize(elem)),
-        "PDU-ACTIVATION-ROUTINGS": lambda obj, elem: obj.pdu_activation_routings.append(PduActivationRoutingGroup.deserialize(elem)),
-        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
+        "PDU-ACTIVATION-ROUTINGS": lambda obj, elem: obj.pdu_activation_routings.append(SerializationHelper.deserialize_by_tag(elem, "PduActivationRoutingGroup")),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "ROUTING-GROUPS": lambda obj, elem: obj.routing_group_refs.append(ARRef.deserialize(elem)),
-        "SD-CLIENT-CONFIG": lambda obj, elem: setattr(obj, "sd_client_config", any (SdClientConfig).deserialize(elem)),
+        "SD-CLIENT-CONFIG": lambda obj, elem: setattr(obj, "sd_client_config", SerializationHelper.deserialize_by_tag(elem, "any (SdClientConfig)")),
         "SD-CLIENT-TIMER-REF": lambda obj, elem: setattr(obj, "sd_client_timer_ref", ARRef.deserialize(elem)),
     }
 
@@ -252,83 +252,29 @@ class ConsumedEventGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConsumedEventGroup, cls).deserialize(element)
 
-        # Parse application_endpoint_ref
-        child = SerializationHelper.find_child_element(element, "APPLICATION-ENDPOINT-REF")
-        if child is not None:
-            application_endpoint_ref_value = ARRef.deserialize(child)
-            obj.application_endpoint_ref = application_endpoint_ref_value
-
-        # Parse auto_require
-        child = SerializationHelper.find_child_element(element, "AUTO-REQUIRE")
-        if child is not None:
-            auto_require_value = child.text
-            obj.auto_require = auto_require_value
-
-        # Parse event_group
-        child = SerializationHelper.find_child_element(element, "EVENT-GROUP")
-        if child is not None:
-            event_group_value = child.text
-            obj.event_group = event_group_value
-
-        # Parse event_multicast_refs (list from container "EVENT-MULTICAST-REFS")
-        obj.event_multicast_refs = []
-        container = SerializationHelper.find_child_element(element, "EVENT-MULTICAST-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.event_multicast_refs.append(child_value)
-
-        # Parse pdu_activation_routings (list from container "PDU-ACTIVATION-ROUTINGS")
-        obj.pdu_activation_routings = []
-        container = SerializationHelper.find_child_element(element, "PDU-ACTIVATION-ROUTINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pdu_activation_routings.append(child_value)
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse routing_group_refs (list from container "ROUTING-GROUP-REFS")
-        obj.routing_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ROUTING-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.routing_group_refs.append(child_value)
-
-        # Parse sd_client_config
-        child = SerializationHelper.find_child_element(element, "SD-CLIENT-CONFIG")
-        if child is not None:
-            sd_client_config_value = child.text
-            obj.sd_client_config = sd_client_config_value
-
-        # Parse sd_client_timer_ref
-        child = SerializationHelper.find_child_element(element, "SD-CLIENT-TIMER-REF")
-        if child is not None:
-            sd_client_timer_ref_value = ARRef.deserialize(child)
-            obj.sd_client_timer_ref = sd_client_timer_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "APPLICATION-ENDPOINT-REF":
+                setattr(obj, "application_endpoint_ref", ARRef.deserialize(child))
+            elif tag == "AUTO-REQUIRE":
+                setattr(obj, "auto_require", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "EVENT-GROUP":
+                setattr(obj, "event_group", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "EVENT-MULTICASTS":
+                obj.event_multicast_refs.append(ARRef.deserialize(child))
+            elif tag == "PDU-ACTIVATION-ROUTINGS":
+                obj.pdu_activation_routings.append(SerializationHelper.deserialize_by_tag(child, "PduActivationRoutingGroup"))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "ROUTING-GROUPS":
+                obj.routing_group_refs.append(ARRef.deserialize(child))
+            elif tag == "SD-CLIENT-CONFIG":
+                setattr(obj, "sd_client_config", SerializationHelper.deserialize_by_tag(child, "any (SdClientConfig)"))
+            elif tag == "SD-CLIENT-TIMER-REF":
+                setattr(obj, "sd_client_timer_ref", ARRef.deserialize(child))
 
         return obj
 

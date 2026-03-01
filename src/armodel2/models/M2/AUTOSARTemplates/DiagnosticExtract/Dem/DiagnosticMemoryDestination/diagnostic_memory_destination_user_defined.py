@@ -44,7 +44,7 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
     memory_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
         "AUTH-ROLES": lambda obj, elem: obj.auth_role_refs.append(ARRef.deserialize(elem)),
-        "MEMORY-ID": lambda obj, elem: setattr(obj, "memory_id", elem.text),
+        "MEMORY-ID": lambda obj, elem: setattr(obj, "memory_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -123,27 +123,15 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMemoryDestinationUserDefined, cls).deserialize(element)
 
-        # Parse auth_role_refs (list from container "AUTH-ROLE-REFS")
-        obj.auth_role_refs = []
-        container = SerializationHelper.find_child_element(element, "AUTH-ROLE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.auth_role_refs.append(child_value)
-
-        # Parse memory_id
-        child = SerializationHelper.find_child_element(element, "MEMORY-ID")
-        if child is not None:
-            memory_id_value = child.text
-            obj.memory_id = memory_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AUTH-ROLES":
+                obj.auth_role_refs.append(ARRef.deserialize(child))
+            elif tag == "MEMORY-ID":
+                setattr(obj, "memory_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

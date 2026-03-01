@@ -44,7 +44,7 @@ class MacSecParticipantSet(ARElement):
     mka_participants: list[MacSecKayParticipant]
     _DESERIALIZE_DISPATCH = {
         "ETHERNET-CLUSTER-REF": lambda obj, elem: setattr(obj, "ethernet_cluster_ref", ARRef.deserialize(elem)),
-        "MKA-PARTICIPANTS": lambda obj, elem: obj.mka_participants.append(MacSecKayParticipant.deserialize(elem)),
+        "MKA-PARTICIPANTS": lambda obj, elem: obj.mka_participants.append(SerializationHelper.deserialize_by_tag(elem, "MacSecKayParticipant")),
     }
 
 
@@ -116,21 +116,15 @@ class MacSecParticipantSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacSecParticipantSet, cls).deserialize(element)
 
-        # Parse ethernet_cluster_ref
-        child = SerializationHelper.find_child_element(element, "ETHERNET-CLUSTER-REF")
-        if child is not None:
-            ethernet_cluster_ref_value = ARRef.deserialize(child)
-            obj.ethernet_cluster_ref = ethernet_cluster_ref_value
-
-        # Parse mka_participants (list from container "MKA-PARTICIPANTS")
-        obj.mka_participants = []
-        container = SerializationHelper.find_child_element(element, "MKA-PARTICIPANTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mka_participants.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ETHERNET-CLUSTER-REF":
+                setattr(obj, "ethernet_cluster_ref", ARRef.deserialize(child))
+            elif tag == "MKA-PARTICIPANTS":
+                obj.mka_participants.append(SerializationHelper.deserialize_by_tag(child, "MacSecKayParticipant"))
 
         return obj
 

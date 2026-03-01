@@ -39,8 +39,8 @@ class EcucEnumerationLiteralDef(Identifiable):
     ecuc_cond: Optional[Any]
     origin: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "ECUC-COND": lambda obj, elem: setattr(obj, "ecuc_cond", any (EcucCondition).deserialize(elem)),
-        "ORIGIN": lambda obj, elem: setattr(obj, "origin", elem.text),
+        "ECUC-COND": lambda obj, elem: setattr(obj, "ecuc_cond", SerializationHelper.deserialize_by_tag(elem, "any (EcucCondition)")),
+        "ORIGIN": lambda obj, elem: setattr(obj, "origin", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -116,17 +116,15 @@ class EcucEnumerationLiteralDef(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucEnumerationLiteralDef, cls).deserialize(element)
 
-        # Parse ecuc_cond
-        child = SerializationHelper.find_child_element(element, "ECUC-COND")
-        if child is not None:
-            ecuc_cond_value = child.text
-            obj.ecuc_cond = ecuc_cond_value
-
-        # Parse origin
-        child = SerializationHelper.find_child_element(element, "ORIGIN")
-        if child is not None:
-            origin_value = child.text
-            obj.origin = origin_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ECUC-COND":
+                setattr(obj, "ecuc_cond", SerializationHelper.deserialize_by_tag(child, "any (EcucCondition)"))
+            elif tag == "ORIGIN":
+                setattr(obj, "origin", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

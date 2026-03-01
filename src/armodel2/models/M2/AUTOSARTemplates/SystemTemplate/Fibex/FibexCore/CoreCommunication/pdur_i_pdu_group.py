@@ -43,7 +43,7 @@ class PdurIPduGroup(FibexElement):
     communication: Optional[String]
     i_pdu_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION": lambda obj, elem: setattr(obj, "communication", elem.text),
+        "COMMUNICATION": lambda obj, elem: setattr(obj, "communication", SerializationHelper.deserialize_by_tag(elem, "String")),
         "I-PDUS": lambda obj, elem: obj.i_pdu_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -123,27 +123,15 @@ class PdurIPduGroup(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PdurIPduGroup, cls).deserialize(element)
 
-        # Parse communication
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION")
-        if child is not None:
-            communication_value = child.text
-            obj.communication = communication_value
-
-        # Parse i_pdu_refs (list from container "I-PDU-REFS")
-        obj.i_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "I-PDU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.i_pdu_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMUNICATION":
+                setattr(obj, "communication", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "I-PDUS":
+                obj.i_pdu_refs.append(ARRef.deserialize(child))
 
         return obj
 

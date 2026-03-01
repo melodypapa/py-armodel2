@@ -35,8 +35,8 @@ class TimeRangeType(ARObject):
     tolerance: Optional[TimeRangeTypeTolerance]
     value: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "TOLERANCE": lambda obj, elem: setattr(obj, "tolerance", TimeRangeTypeTolerance.deserialize(elem)),
-        "VALUE": lambda obj, elem: setattr(obj, "value", elem.text),
+        "TOLERANCE": lambda obj, elem: setattr(obj, "tolerance", SerializationHelper.deserialize_by_tag(elem, "TimeRangeTypeTolerance")),
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -112,17 +112,15 @@ class TimeRangeType(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimeRangeType, cls).deserialize(element)
 
-        # Parse tolerance
-        child = SerializationHelper.find_child_element(element, "TOLERANCE")
-        if child is not None:
-            tolerance_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeTypeTolerance")
-            obj.tolerance = tolerance_value
-
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = child.text
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TOLERANCE":
+                setattr(obj, "tolerance", SerializationHelper.deserialize_by_tag(child, "TimeRangeTypeTolerance"))
+            elif tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

@@ -38,7 +38,7 @@ class EcucQueryExpression(ARObject):
 
     config_element_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONFIG-ELEMENT-REF": lambda obj, elem: setattr(obj, "config_element_ref", ARRef.deserialize(elem)),
+        "CONFIG-ELEMENT-REF": ("_POLYMORPHIC", "config_element_ref", ["EcucCommonAttributes", "EcucContainerDef", "EcucModuleDef"]),
     }
 
 
@@ -99,11 +99,21 @@ class EcucQueryExpression(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucQueryExpression, cls).deserialize(element)
 
-        # Parse config_element_ref
-        child = SerializationHelper.find_child_element(element, "CONFIG-ELEMENT-REF")
-        if child is not None:
-            config_element_ref_value = ARRef.deserialize(child)
-            obj.config_element_ref = config_element_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONFIG-ELEMENT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ECUC-COMMON-ATTRIBUTES":
+                        setattr(obj, "config_element_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucCommonAttributes"))
+                    elif concrete_tag == "ECUC-CONTAINER-DEF":
+                        setattr(obj, "config_element_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucContainerDef"))
+                    elif concrete_tag == "ECUC-MODULE-DEF":
+                        setattr(obj, "config_element_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucModuleDef"))
 
         return obj
 

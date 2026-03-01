@@ -39,7 +39,7 @@ class ErrorTracerNeeds(ServiceNeeds):
 
     traced_failures: list[TracedFailure]
     _DESERIALIZE_DISPATCH = {
-        "TRACED-FAILURES": lambda obj, elem: obj.traced_failures.append(TracedFailure.deserialize(elem)),
+        "TRACED-FAILURES": ("_POLYMORPHIC_LIST", "traced_failures", ["DevelopmentError", "RuntimeError", "TransientFault"]),
     }
 
 
@@ -96,15 +96,21 @@ class ErrorTracerNeeds(ServiceNeeds):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ErrorTracerNeeds, cls).deserialize(element)
 
-        # Parse traced_failures (list from container "TRACED-FAILURES")
-        obj.traced_failures = []
-        container = SerializationHelper.find_child_element(element, "TRACED-FAILURES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.traced_failures.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TRACED-FAILURES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "DEVELOPMENT-ERROR":
+                        obj.traced_failures.append(SerializationHelper.deserialize_by_tag(child[0], "DevelopmentError"))
+                    elif concrete_tag == "RUNTIME-ERROR":
+                        obj.traced_failures.append(SerializationHelper.deserialize_by_tag(child[0], "RuntimeError"))
+                    elif concrete_tag == "TRANSIENT-FAULT":
+                        obj.traced_failures.append(SerializationHelper.deserialize_by_tag(child[0], "TransientFault"))
 
         return obj
 

@@ -45,10 +45,10 @@ class HwAttributeValue(ARObject):
     v: Optional[Numerical]
     vt: Optional[VerbatimString]
     _DESERIALIZE_DISPATCH = {
-        "ANNOTATION": lambda obj, elem: setattr(obj, "annotation", Annotation.deserialize(elem)),
+        "ANNOTATION": lambda obj, elem: setattr(obj, "annotation", SerializationHelper.deserialize_by_tag(elem, "Annotation")),
         "HW-ATTRIBUTE-DEF-REF": lambda obj, elem: setattr(obj, "hw_attribute_def_ref", ARRef.deserialize(elem)),
-        "V": lambda obj, elem: setattr(obj, "v", elem.text),
-        "VT": lambda obj, elem: setattr(obj, "vt", elem.text),
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VT": lambda obj, elem: setattr(obj, "vt", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
     }
 
 
@@ -154,29 +154,19 @@ class HwAttributeValue(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwAttributeValue, cls).deserialize(element)
 
-        # Parse annotation
-        child = SerializationHelper.find_child_element(element, "ANNOTATION")
-        if child is not None:
-            annotation_value = SerializationHelper.deserialize_by_tag(child, "Annotation")
-            obj.annotation = annotation_value
-
-        # Parse hw_attribute_def_ref
-        child = SerializationHelper.find_child_element(element, "HW-ATTRIBUTE-DEF-REF")
-        if child is not None:
-            hw_attribute_def_ref_value = ARRef.deserialize(child)
-            obj.hw_attribute_def_ref = hw_attribute_def_ref_value
-
-        # Parse v
-        child = SerializationHelper.find_child_element(element, "V")
-        if child is not None:
-            v_value = child.text
-            obj.v = v_value
-
-        # Parse vt
-        child = SerializationHelper.find_child_element(element, "VT")
-        if child is not None:
-            vt_value = SerializationHelper.deserialize_by_tag(child, "VerbatimString")
-            obj.vt = vt_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ANNOTATION":
+                setattr(obj, "annotation", SerializationHelper.deserialize_by_tag(child, "Annotation"))
+            elif tag == "HW-ATTRIBUTE-DEF-REF":
+                setattr(obj, "hw_attribute_def_ref", ARRef.deserialize(child))
+            elif tag == "V":
+                setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "VT":
+                setattr(obj, "vt", SerializationHelper.deserialize_by_tag(child, "VerbatimString"))
 
         return obj
 

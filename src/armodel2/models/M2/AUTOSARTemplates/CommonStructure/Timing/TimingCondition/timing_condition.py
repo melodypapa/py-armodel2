@@ -35,7 +35,7 @@ class TimingCondition(Identifiable):
 
     timing_condition: Optional[TimingCondition]
     _DESERIALIZE_DISPATCH = {
-        "TIMING-CONDITION": lambda obj, elem: setattr(obj, "timing_condition", TimingCondition.deserialize(elem)),
+        "TIMING-CONDITION": lambda obj, elem: setattr(obj, "timing_condition", SerializationHelper.deserialize_by_tag(elem, "TimingCondition")),
     }
 
 
@@ -96,11 +96,13 @@ class TimingCondition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingCondition, cls).deserialize(element)
 
-        # Parse timing_condition
-        child = SerializationHelper.find_child_element(element, "TIMING-CONDITION")
-        if child is not None:
-            timing_condition_value = SerializationHelper.deserialize_by_tag(child, "TimingCondition")
-            obj.timing_condition = timing_condition_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TIMING-CONDITION":
+                setattr(obj, "timing_condition", SerializationHelper.deserialize_by_tag(child, "TimingCondition"))
 
         return obj
 

@@ -116,17 +116,15 @@ class SwcExclusiveAreaPolicy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcExclusiveAreaPolicy, cls).deserialize(element)
 
-        # Parse api_principle_enum
-        child = SerializationHelper.find_child_element(element, "API-PRINCIPLE-ENUM")
-        if child is not None:
-            api_principle_enum_value = ApiPrincipleEnum.deserialize(child)
-            obj.api_principle_enum = api_principle_enum_value
-
-        # Parse exclusive_area_ref
-        child = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-REF")
-        if child is not None:
-            exclusive_area_ref_value = ARRef.deserialize(child)
-            obj.exclusive_area_ref = exclusive_area_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "API-PRINCIPLE-ENUM":
+                setattr(obj, "api_principle_enum", ApiPrincipleEnum.deserialize(child))
+            elif tag == "EXCLUSIVE-AREA-REF":
+                setattr(obj, "exclusive_area_ref", ARRef.deserialize(child))
 
         return obj
 

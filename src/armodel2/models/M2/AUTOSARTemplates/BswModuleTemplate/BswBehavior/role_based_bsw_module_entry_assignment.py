@@ -40,7 +40,7 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
     role: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
         "ASSIGNED-ENTRY-REF": lambda obj, elem: setattr(obj, "assigned_entry_ref", ARRef.deserialize(elem)),
-        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -116,17 +116,15 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RoleBasedBswModuleEntryAssignment, cls).deserialize(element)
 
-        # Parse assigned_entry_ref
-        child = SerializationHelper.find_child_element(element, "ASSIGNED-ENTRY-REF")
-        if child is not None:
-            assigned_entry_ref_value = ARRef.deserialize(child)
-            obj.assigned_entry_ref = assigned_entry_ref_value
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ASSIGNED-ENTRY-REF":
+                setattr(obj, "assigned_entry_ref", ARRef.deserialize(child))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

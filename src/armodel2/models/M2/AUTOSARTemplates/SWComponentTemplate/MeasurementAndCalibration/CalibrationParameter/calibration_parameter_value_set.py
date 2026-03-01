@@ -35,7 +35,7 @@ class CalibrationParameterValueSet(ARElement):
 
     calibrations: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "CALIBRATIONS": lambda obj, elem: obj.calibrations.append(any (CalibrationParameter).deserialize(elem)),
+        "CALIBRATIONS": lambda obj, elem: obj.calibrations.append(SerializationHelper.deserialize_by_tag(elem, "any (CalibrationParameter)")),
     }
 
 
@@ -92,15 +92,13 @@ class CalibrationParameterValueSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CalibrationParameterValueSet, cls).deserialize(element)
 
-        # Parse calibrations (list from container "CALIBRATIONS")
-        obj.calibrations = []
-        container = SerializationHelper.find_child_element(element, "CALIBRATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.calibrations.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CALIBRATIONS":
+                obj.calibrations.append(SerializationHelper.deserialize_by_tag(child, "any (CalibrationParameter)"))
 
         return obj
 

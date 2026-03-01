@@ -49,9 +49,9 @@ class RuleBasedAxisCont(ARObject):
     unit_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CATEGORY": lambda obj, elem: setattr(obj, "category", CalprmAxisCategoryEnum.deserialize(elem)),
-        "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", any (RuleBasedValue).deserialize(elem)),
+        "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(elem, "any (RuleBasedValue)")),
         "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
-        "SW-AXIS-INDEX": lambda obj, elem: setattr(obj, "sw_axis_index", elem.text),
+        "SW-AXIS-INDEX": lambda obj, elem: setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(elem, "AxisIndexType")),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
     }
 
@@ -172,43 +172,21 @@ class RuleBasedAxisCont(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RuleBasedAxisCont, cls).deserialize(element)
 
-        # Parse category
-        child = SerializationHelper.find_child_element(element, "CATEGORY")
-        if child is not None:
-            category_value = CalprmAxisCategoryEnum.deserialize(child)
-            obj.category = category_value
-
-        # Parse rule_based
-        child = SerializationHelper.find_child_element(element, "RULE-BASED")
-        if child is not None:
-            rule_based_value = child.text
-            obj.rule_based = rule_based_value
-
-        # Parse sw_arraysize_ref (atp_mixed - children appear directly)
-        # Check if element contains expected children for ValueList
-        has_mixed_children = False
-        child_tags_to_check = ['V']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            sw_arraysize_ref_value = SerializationHelper.deserialize_by_tag(element, "ValueList")
-            obj.sw_arraysize_ref = sw_arraysize_ref_value
-
-        # Parse sw_axis_index
-        child = SerializationHelper.find_child_element(element, "SW-AXIS-INDEX")
-        if child is not None:
-            sw_axis_index_value = child.text
-            obj.sw_axis_index = sw_axis_index_value
-
-        # Parse unit_ref
-        child = SerializationHelper.find_child_element(element, "UNIT-REF")
-        if child is not None:
-            unit_ref_value = ARRef.deserialize(child)
-            obj.unit_ref = unit_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CATEGORY":
+                setattr(obj, "category", CalprmAxisCategoryEnum.deserialize(child))
+            elif tag == "RULE-BASED":
+                setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(child, "any (RuleBasedValue)"))
+            elif tag == "SW-ARRAYSIZE-REF":
+                setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
+            elif tag == "SW-AXIS-INDEX":
+                setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(child, "AxisIndexType"))
+            elif tag == "UNIT-REF":
+                setattr(obj, "unit_ref", ARRef.deserialize(child))
 
         return obj
 

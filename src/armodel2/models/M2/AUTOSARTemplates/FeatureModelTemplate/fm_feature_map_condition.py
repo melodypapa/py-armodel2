@@ -35,7 +35,7 @@ class FMFeatureMapCondition(Identifiable):
 
     fm_cond_and_attributes: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "FM-COND-AND-ATTRIBUTES": lambda obj, elem: setattr(obj, "fm_cond_and_attributes", any (FMConditionByFeatures).deserialize(elem)),
+        "FM-COND-AND-ATTRIBUTES": lambda obj, elem: setattr(obj, "fm_cond_and_attributes", SerializationHelper.deserialize_by_tag(elem, "any (FMConditionByFeatures)")),
     }
 
 
@@ -96,11 +96,13 @@ class FMFeatureMapCondition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeatureMapCondition, cls).deserialize(element)
 
-        # Parse fm_cond_and_attributes
-        child = SerializationHelper.find_child_element(element, "FM-COND-AND-ATTRIBUTES")
-        if child is not None:
-            fm_cond_and_attributes_value = child.text
-            obj.fm_cond_and_attributes = fm_cond_and_attributes_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FM-COND-AND-ATTRIBUTES":
+                setattr(obj, "fm_cond_and_attributes", SerializationHelper.deserialize_by_tag(child, "any (FMConditionByFeatures)"))
 
         return obj
 

@@ -36,8 +36,8 @@ class FormulaExpression(ARObject, ABC):
     atp_reference_refs: list[ARRef]
     atp_string_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ATP-REFERENCES": lambda obj, elem: obj.atp_reference_refs.append(ARRef.deserialize(elem)),
-        "ATP-STRINGS": lambda obj, elem: obj.atp_string_refs.append(ARRef.deserialize(elem)),
+        "ATP-REFERENCES": ("_POLYMORPHIC_LIST", "atp_reference_refs", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
+        "ATP-STRINGS": ("_POLYMORPHIC_LIST", "atp_string_refs", ["AtpDefinition", "BswDistinguishedPartition", "BswModuleCallPoint", "BswModuleClientServerEntry", "BswVariableAccess", "CouplingPortTrafficClassAssignment", "DiagnosticEnvModeElement", "EthernetPriorityRegeneration", "ExclusiveAreaNestingOrder", "HwDescriptionEntity", "ImplementationProps", "LinSlaveConfigIdent", "ModeTransition", "MultilanguageReferrable", "PncMappingIdent", "SingleLanguageReferrable", "SoConIPduIdentifier", "SocketConnectionBundle", "TimeSyncServerConfiguration", "TpConnectionIdent"]),
     }
 
 
@@ -119,37 +119,99 @@ class FormulaExpression(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FormulaExpression, cls).deserialize(element)
 
-        # Parse atp_reference_refs (list from container "ATP-REFERENCE-REFS")
-        obj.atp_reference_refs = []
-        container = SerializationHelper.find_child_element(element, "ATP-REFERENCE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.atp_reference_refs.append(child_value)
-
-        # Parse atp_string_refs (list from container "ATP-STRING-REFS")
-        obj.atp_string_refs = []
-        container = SerializationHelper.find_child_element(element, "ATP-STRING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.atp_string_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ATP-REFERENCES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATP-DEFINITION":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AtpDefinition"))
+                    elif concrete_tag == "BSW-DISTINGUISHED-PARTITION":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswDistinguishedPartition"))
+                    elif concrete_tag == "BSW-MODULE-CALL-POINT":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswModuleCallPoint"))
+                    elif concrete_tag == "BSW-MODULE-CLIENT-SERVER-ENTRY":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswModuleClientServerEntry"))
+                    elif concrete_tag == "BSW-VARIABLE-ACCESS":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswVariableAccess"))
+                    elif concrete_tag == "COUPLING-PORT-TRAFFIC-CLASS-ASSIGNMENT":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CouplingPortTrafficClassAssignment"))
+                    elif concrete_tag == "DIAGNOSTIC-ENV-MODE-ELEMENT":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEnvModeElement"))
+                    elif concrete_tag == "ETHERNET-PRIORITY-REGENERATION":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetPriorityRegeneration"))
+                    elif concrete_tag == "EXCLUSIVE-AREA-NESTING-ORDER":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ExclusiveAreaNestingOrder"))
+                    elif concrete_tag == "HW-DESCRIPTION-ENTITY":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "HwDescriptionEntity"))
+                    elif concrete_tag == "IMPLEMENTATION-PROPS":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ImplementationProps"))
+                    elif concrete_tag == "LIN-SLAVE-CONFIG-IDENT":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinSlaveConfigIdent"))
+                    elif concrete_tag == "MODE-TRANSITION":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ModeTransition"))
+                    elif concrete_tag == "MULTILANGUAGE-REFERRABLE":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "MultilanguageReferrable"))
+                    elif concrete_tag == "PNC-MAPPING-IDENT":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "PncMappingIdent"))
+                    elif concrete_tag == "SINGLE-LANGUAGE-REFERRABLE":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SingleLanguageReferrable"))
+                    elif concrete_tag == "SO-CON-I-PDU-IDENTIFIER":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SoConIPduIdentifier"))
+                    elif concrete_tag == "SOCKET-CONNECTION-BUNDLE":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SocketConnectionBundle"))
+                    elif concrete_tag == "TIME-SYNC-SERVER-CONFIGURATION":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TimeSyncServerConfiguration"))
+                    elif concrete_tag == "TP-CONNECTION-IDENT":
+                        obj.atp_reference_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TpConnectionIdent"))
+            elif tag == "ATP-STRINGS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATP-DEFINITION":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AtpDefinition"))
+                    elif concrete_tag == "BSW-DISTINGUISHED-PARTITION":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswDistinguishedPartition"))
+                    elif concrete_tag == "BSW-MODULE-CALL-POINT":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswModuleCallPoint"))
+                    elif concrete_tag == "BSW-MODULE-CLIENT-SERVER-ENTRY":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswModuleClientServerEntry"))
+                    elif concrete_tag == "BSW-VARIABLE-ACCESS":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswVariableAccess"))
+                    elif concrete_tag == "COUPLING-PORT-TRAFFIC-CLASS-ASSIGNMENT":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "CouplingPortTrafficClassAssignment"))
+                    elif concrete_tag == "DIAGNOSTIC-ENV-MODE-ELEMENT":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DiagnosticEnvModeElement"))
+                    elif concrete_tag == "ETHERNET-PRIORITY-REGENERATION":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetPriorityRegeneration"))
+                    elif concrete_tag == "EXCLUSIVE-AREA-NESTING-ORDER":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ExclusiveAreaNestingOrder"))
+                    elif concrete_tag == "HW-DESCRIPTION-ENTITY":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "HwDescriptionEntity"))
+                    elif concrete_tag == "IMPLEMENTATION-PROPS":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ImplementationProps"))
+                    elif concrete_tag == "LIN-SLAVE-CONFIG-IDENT":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinSlaveConfigIdent"))
+                    elif concrete_tag == "MODE-TRANSITION":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ModeTransition"))
+                    elif concrete_tag == "MULTILANGUAGE-REFERRABLE":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "MultilanguageReferrable"))
+                    elif concrete_tag == "PNC-MAPPING-IDENT":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "PncMappingIdent"))
+                    elif concrete_tag == "SINGLE-LANGUAGE-REFERRABLE":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SingleLanguageReferrable"))
+                    elif concrete_tag == "SO-CON-I-PDU-IDENTIFIER":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SoConIPduIdentifier"))
+                    elif concrete_tag == "SOCKET-CONNECTION-BUNDLE":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SocketConnectionBundle"))
+                    elif concrete_tag == "TIME-SYNC-SERVER-CONFIGURATION":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TimeSyncServerConfiguration"))
+                    elif concrete_tag == "TP-CONNECTION-IDENT":
+                        obj.atp_string_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TpConnectionIdent"))
 
         return obj
 

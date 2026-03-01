@@ -40,7 +40,7 @@ class ApplicationRecordDataType(ApplicationCompositeDataType):
 
     elements: list[ApplicationRecordElement]
     _DESERIALIZE_DISPATCH = {
-        "ELEMENTS": lambda obj, elem: obj.elements.append(ApplicationRecordElement.deserialize(elem)),
+        "ELEMENTS": lambda obj, elem: obj.elements.append(SerializationHelper.deserialize_by_tag(elem, "ApplicationRecordElement")),
     }
 
 
@@ -97,15 +97,13 @@ class ApplicationRecordDataType(ApplicationCompositeDataType):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationRecordDataType, cls).deserialize(element)
 
-        # Parse elements (list from container "ELEMENTS")
-        obj.elements = []
-        container = SerializationHelper.find_child_element(element, "ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.elements.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ELEMENTS":
+                obj.elements.append(SerializationHelper.deserialize_by_tag(child, "ApplicationRecordElement"))
 
         return obj
 

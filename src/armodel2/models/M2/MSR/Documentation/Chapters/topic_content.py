@@ -42,9 +42,9 @@ class TopicContent(ARObject):
     table: Optional[Table]
     traceable_table: Any
     _DESERIALIZE_DISPATCH = {
-        "BLOCK-LEVEL": lambda obj, elem: setattr(obj, "block_level", DocumentationBlock.deserialize(elem)),
-        "TABLE": lambda obj, elem: setattr(obj, "table", Table.deserialize(elem)),
-        "TRACEABLE-TABLE": lambda obj, elem: setattr(obj, "traceable_table", any (TraceableTable).deserialize(elem)),
+        "BLOCK-LEVEL": lambda obj, elem: setattr(obj, "block_level", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "TABLE": lambda obj, elem: setattr(obj, "table", SerializationHelper.deserialize_by_tag(elem, "Table")),
+        "TRACEABLE-TABLE": lambda obj, elem: setattr(obj, "traceable_table", SerializationHelper.deserialize_by_tag(elem, "any (TraceableTable)")),
     }
 
 

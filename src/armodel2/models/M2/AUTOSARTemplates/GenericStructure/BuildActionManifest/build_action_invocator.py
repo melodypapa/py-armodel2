@@ -34,7 +34,7 @@ class BuildActionInvocator(ARObject):
 
     command: Optional[VerbatimString]
     _DESERIALIZE_DISPATCH = {
-        "COMMAND": lambda obj, elem: setattr(obj, "command", elem.text),
+        "COMMAND": lambda obj, elem: setattr(obj, "command", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
     }
 
 
@@ -95,11 +95,13 @@ class BuildActionInvocator(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BuildActionInvocator, cls).deserialize(element)
 
-        # Parse command
-        child = SerializationHelper.find_child_element(element, "COMMAND")
-        if child is not None:
-            command_value = SerializationHelper.deserialize_by_tag(child, "VerbatimString")
-            obj.command = command_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMAND":
+                setattr(obj, "command", SerializationHelper.deserialize_by_tag(child, "VerbatimString"))
 
         return obj
 

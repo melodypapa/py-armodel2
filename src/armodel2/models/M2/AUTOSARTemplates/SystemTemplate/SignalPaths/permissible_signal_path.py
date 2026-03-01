@@ -44,9 +44,9 @@ class PermissibleSignalPath(SignalPathConstraint):
     physical_channel_refs: list[ARRef]
     signals: list[SwcToSwcSignal]
     _DESERIALIZE_DISPATCH = {
-        "OPERATIONS": lambda obj, elem: obj.operations.append(any (SwcToSwcOperation).deserialize(elem)),
-        "PHYSICAL-CHANNELS": lambda obj, elem: obj.physical_channel_refs.append(ARRef.deserialize(elem)),
-        "SIGNALS": lambda obj, elem: obj.signals.append(SwcToSwcSignal.deserialize(elem)),
+        "OPERATIONS": lambda obj, elem: obj.operations.append(SerializationHelper.deserialize_by_tag(elem, "any (SwcToSwcOperation)")),
+        "PHYSICAL-CHANNELS": ("_POLYMORPHIC_LIST", "physical_channel_refs", ["AbstractCanPhysicalChannel", "EthernetPhysicalChannel", "FlexrayPhysicalChannel", "LinPhysicalChannel"]),
+        "SIGNALS": lambda obj, elem: obj.signals.append(SerializationHelper.deserialize_by_tag(elem, "SwcToSwcSignal")),
     }
 
 
@@ -132,41 +132,27 @@ class PermissibleSignalPath(SignalPathConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PermissibleSignalPath, cls).deserialize(element)
 
-        # Parse operations (list from container "OPERATIONS")
-        obj.operations = []
-        container = SerializationHelper.find_child_element(element, "OPERATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.operations.append(child_value)
-
-        # Parse physical_channel_refs (list from container "PHYSICAL-CHANNEL-REFS")
-        obj.physical_channel_refs = []
-        container = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNEL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.physical_channel_refs.append(child_value)
-
-        # Parse signals (list from container "SIGNALS")
-        obj.signals = []
-        container = SerializationHelper.find_child_element(element, "SIGNALS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.signals.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "OPERATIONS":
+                obj.operations.append(SerializationHelper.deserialize_by_tag(child, "any (SwcToSwcOperation)"))
+            elif tag == "PHYSICAL-CHANNELS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-PHYSICAL-CHANNEL":
+                        obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractCanPhysicalChannel"))
+                    elif concrete_tag == "ETHERNET-PHYSICAL-CHANNEL":
+                        obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetPhysicalChannel"))
+                    elif concrete_tag == "FLEXRAY-PHYSICAL-CHANNEL":
+                        obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayPhysicalChannel"))
+                    elif concrete_tag == "LIN-PHYSICAL-CHANNEL":
+                        obj.physical_channel_refs.append(SerializationHelper.deserialize_by_tag(child[0], "LinPhysicalChannel"))
+            elif tag == "SIGNALS":
+                obj.signals.append(SerializationHelper.deserialize_by_tag(child, "SwcToSwcSignal"))
 
         return obj
 

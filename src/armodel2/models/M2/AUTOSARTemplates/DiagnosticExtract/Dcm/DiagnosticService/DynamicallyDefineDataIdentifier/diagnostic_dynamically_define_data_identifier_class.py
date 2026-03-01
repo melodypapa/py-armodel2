@@ -43,9 +43,9 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
     configuration: Optional[DiagnosticHandleDDDIConfigurationEnum]
     subfunctions: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "CHECK-PER": lambda obj, elem: setattr(obj, "check_per", elem.text),
+        "CHECK-PER": lambda obj, elem: setattr(obj, "check_per", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "CONFIGURATION": lambda obj, elem: setattr(obj, "configuration", DiagnosticHandleDDDIConfigurationEnum.deserialize(elem)),
-        "SUBFUNCTIONS": lambda obj, elem: obj.subfunctions.append(any (DiagnosticDynamically).deserialize(elem)),
+        "SUBFUNCTIONS": lambda obj, elem: obj.subfunctions.append(SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticDynamically)")),
     }
 
 
@@ -132,27 +132,17 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDynamicallyDefineDataIdentifierClass, cls).deserialize(element)
 
-        # Parse check_per
-        child = SerializationHelper.find_child_element(element, "CHECK-PER")
-        if child is not None:
-            check_per_value = child.text
-            obj.check_per = check_per_value
-
-        # Parse configuration
-        child = SerializationHelper.find_child_element(element, "CONFIGURATION")
-        if child is not None:
-            configuration_value = DiagnosticHandleDDDIConfigurationEnum.deserialize(child)
-            obj.configuration = configuration_value
-
-        # Parse subfunctions (list from container "SUBFUNCTIONS")
-        obj.subfunctions = []
-        container = SerializationHelper.find_child_element(element, "SUBFUNCTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.subfunctions.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CHECK-PER":
+                setattr(obj, "check_per", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CONFIGURATION":
+                setattr(obj, "configuration", DiagnosticHandleDDDIConfigurationEnum.deserialize(child))
+            elif tag == "SUBFUNCTIONS":
+                obj.subfunctions.append(SerializationHelper.deserialize_by_tag(child, "any (DiagnosticDynamically)"))
 
         return obj
 

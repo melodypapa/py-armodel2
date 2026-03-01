@@ -38,8 +38,8 @@ class SoAdConfig(ARObject):
     connections: list[SocketConnection]
     socket_addresses: list[SocketAddress]
     _DESERIALIZE_DISPATCH = {
-        "CONNECTIONS": lambda obj, elem: obj.connections.append(SocketConnection.deserialize(elem)),
-        "SOCKET-ADDRESSES": lambda obj, elem: obj.socket_addresses.append(SocketAddress.deserialize(elem)),
+        "CONNECTIONS": lambda obj, elem: obj.connections.append(SerializationHelper.deserialize_by_tag(elem, "SocketConnection")),
+        "SOCKET-ADDRESSES": lambda obj, elem: obj.socket_addresses.append(SerializationHelper.deserialize_by_tag(elem, "SocketAddress")),
     }
 
 
@@ -107,25 +107,15 @@ class SoAdConfig(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SoAdConfig, cls).deserialize(element)
 
-        # Parse connections (list from container "CONNECTIONS")
-        obj.connections = []
-        container = SerializationHelper.find_child_element(element, "CONNECTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.connections.append(child_value)
-
-        # Parse socket_addresses (list from container "SOCKET-ADDRESSES")
-        obj.socket_addresses = []
-        container = SerializationHelper.find_child_element(element, "SOCKET-ADDRESSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.socket_addresses.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONNECTIONS":
+                obj.connections.append(SerializationHelper.deserialize_by_tag(child, "SocketConnection"))
+            elif tag == "SOCKET-ADDRESSES":
+                obj.socket_addresses.append(SerializationHelper.deserialize_by_tag(child, "SocketAddress"))
 
         return obj
 

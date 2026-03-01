@@ -42,10 +42,10 @@ class CanNmNode(NmNode):
     nm_msg_cycle: Optional[TimeValue]
     nm_msg: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "ALL-NM-MESSAGES": lambda obj, elem: setattr(obj, "all_nm_messages", elem.text),
-        "NM-CAR-WAKE-UP": lambda obj, elem: setattr(obj, "nm_car_wake_up", elem.text),
-        "NM-MSG-CYCLE": lambda obj, elem: setattr(obj, "nm_msg_cycle", elem.text),
-        "NM-MSG": lambda obj, elem: setattr(obj, "nm_msg", elem.text),
+        "ALL-NM-MESSAGES": lambda obj, elem: setattr(obj, "all_nm_messages", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-CAR-WAKE-UP": lambda obj, elem: setattr(obj, "nm_car_wake_up", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-MSG-CYCLE": lambda obj, elem: setattr(obj, "nm_msg_cycle", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "NM-MSG": lambda obj, elem: setattr(obj, "nm_msg", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -151,29 +151,19 @@ class CanNmNode(NmNode):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanNmNode, cls).deserialize(element)
 
-        # Parse all_nm_messages
-        child = SerializationHelper.find_child_element(element, "ALL-NM-MESSAGES")
-        if child is not None:
-            all_nm_messages_value = child.text
-            obj.all_nm_messages = all_nm_messages_value
-
-        # Parse nm_car_wake_up
-        child = SerializationHelper.find_child_element(element, "NM-CAR-WAKE-UP")
-        if child is not None:
-            nm_car_wake_up_value = child.text
-            obj.nm_car_wake_up = nm_car_wake_up_value
-
-        # Parse nm_msg_cycle
-        child = SerializationHelper.find_child_element(element, "NM-MSG-CYCLE")
-        if child is not None:
-            nm_msg_cycle_value = child.text
-            obj.nm_msg_cycle = nm_msg_cycle_value
-
-        # Parse nm_msg
-        child = SerializationHelper.find_child_element(element, "NM-MSG")
-        if child is not None:
-            nm_msg_value = child.text
-            obj.nm_msg = nm_msg_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALL-NM-MESSAGES":
+                setattr(obj, "all_nm_messages", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-CAR-WAKE-UP":
+                setattr(obj, "nm_car_wake_up", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-MSG-CYCLE":
+                setattr(obj, "nm_msg_cycle", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "NM-MSG":
+                setattr(obj, "nm_msg", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

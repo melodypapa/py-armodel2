@@ -145,53 +145,17 @@ class PredefinedVariant(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PredefinedVariant, cls).deserialize(element)
 
-        # Parse included_variant_refs (list from container "INCLUDED-VARIANT-REFS")
-        obj.included_variant_refs = []
-        container = SerializationHelper.find_child_element(element, "INCLUDED-VARIANT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.included_variant_refs.append(child_value)
-
-        # Parse post_build_variant_refs (list from container "POST-BUILD-VARIANT-REFS")
-        obj.post_build_variant_refs = []
-        container = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.post_build_variant_refs.append(child_value)
-
-        # Parse sw_refs (list from container "SW-REFS")
-        obj.sw_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INCLUDED-VARIANTS":
+                obj.included_variant_refs.append(ARRef.deserialize(child))
+            elif tag == "POST-BUILD-VARIANTS":
+                obj.post_build_variant_refs.append(ARRef.deserialize(child))
+            elif tag == "SWS":
+                obj.sw_refs.append(ARRef.deserialize(child))
 
         return obj
 

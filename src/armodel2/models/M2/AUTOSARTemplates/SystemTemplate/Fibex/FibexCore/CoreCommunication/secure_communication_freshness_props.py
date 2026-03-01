@@ -41,9 +41,9 @@ class SecureCommunicationFreshnessProps(Identifiable):
     freshness_value: Optional[PositiveInteger]
     use_freshness: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "FRESHNESS": lambda obj, elem: setattr(obj, "freshness", elem.text),
-        "FRESHNESS-VALUE": lambda obj, elem: setattr(obj, "freshness_value", elem.text),
-        "USE-FRESHNESS": lambda obj, elem: setattr(obj, "use_freshness", elem.text),
+        "FRESHNESS": lambda obj, elem: setattr(obj, "freshness", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "FRESHNESS-VALUE": lambda obj, elem: setattr(obj, "freshness_value", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "USE-FRESHNESS": lambda obj, elem: setattr(obj, "use_freshness", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -134,23 +134,17 @@ class SecureCommunicationFreshnessProps(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecureCommunicationFreshnessProps, cls).deserialize(element)
 
-        # Parse freshness
-        child = SerializationHelper.find_child_element(element, "FRESHNESS")
-        if child is not None:
-            freshness_value = child.text
-            obj.freshness = freshness_value
-
-        # Parse freshness_value
-        child = SerializationHelper.find_child_element(element, "FRESHNESS-VALUE")
-        if child is not None:
-            freshness_value_value = child.text
-            obj.freshness_value = freshness_value_value
-
-        # Parse use_freshness
-        child = SerializationHelper.find_child_element(element, "USE-FRESHNESS")
-        if child is not None:
-            use_freshness_value = child.text
-            obj.use_freshness = use_freshness_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FRESHNESS":
+                setattr(obj, "freshness", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "FRESHNESS-VALUE":
+                setattr(obj, "freshness_value", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "USE-FRESHNESS":
+                setattr(obj, "use_freshness", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

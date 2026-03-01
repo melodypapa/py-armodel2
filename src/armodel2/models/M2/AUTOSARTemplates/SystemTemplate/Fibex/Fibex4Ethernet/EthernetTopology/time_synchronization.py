@@ -38,8 +38,8 @@ class TimeSynchronization(ARObject):
     time_sync_client_configuration: Optional[TimeSyncClientConfiguration]
     time_sync_server_configuration: Optional[TimeSyncServerConfiguration]
     _DESERIALIZE_DISPATCH = {
-        "TIME-SYNC-CLIENT-CONFIGURATION": lambda obj, elem: setattr(obj, "time_sync_client_configuration", TimeSyncClientConfiguration.deserialize(elem)),
-        "TIME-SYNC-SERVER-CONFIGURATION": lambda obj, elem: setattr(obj, "time_sync_server_configuration", TimeSyncServerConfiguration.deserialize(elem)),
+        "TIME-SYNC-CLIENT-CONFIGURATION": lambda obj, elem: setattr(obj, "time_sync_client_configuration", SerializationHelper.deserialize_by_tag(elem, "TimeSyncClientConfiguration")),
+        "TIME-SYNC-SERVER-CONFIGURATION": lambda obj, elem: setattr(obj, "time_sync_server_configuration", SerializationHelper.deserialize_by_tag(elem, "TimeSyncServerConfiguration")),
     }
 
 
@@ -115,17 +115,15 @@ class TimeSynchronization(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimeSynchronization, cls).deserialize(element)
 
-        # Parse time_sync_client_configuration
-        child = SerializationHelper.find_child_element(element, "TIME-SYNC-CLIENT-CONFIGURATION")
-        if child is not None:
-            time_sync_client_configuration_value = SerializationHelper.deserialize_by_tag(child, "TimeSyncClientConfiguration")
-            obj.time_sync_client_configuration = time_sync_client_configuration_value
-
-        # Parse time_sync_server_configuration
-        child = SerializationHelper.find_child_element(element, "TIME-SYNC-SERVER-CONFIGURATION")
-        if child is not None:
-            time_sync_server_configuration_value = SerializationHelper.deserialize_by_tag(child, "TimeSyncServerConfiguration")
-            obj.time_sync_server_configuration = time_sync_server_configuration_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TIME-SYNC-CLIENT-CONFIGURATION":
+                setattr(obj, "time_sync_client_configuration", SerializationHelper.deserialize_by_tag(child, "TimeSyncClientConfiguration"))
+            elif tag == "TIME-SYNC-SERVER-CONFIGURATION":
+                setattr(obj, "time_sync_server_configuration", SerializationHelper.deserialize_by_tag(child, "TimeSyncServerConfiguration"))
 
         return obj
 

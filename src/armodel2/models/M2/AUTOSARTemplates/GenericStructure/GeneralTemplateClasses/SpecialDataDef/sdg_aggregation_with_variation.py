@@ -100,11 +100,13 @@ class SdgAggregationWithVariation(SdgElementWithGid):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SdgAggregationWithVariation, cls).deserialize(element)
 
-        # Parse sub_sdg_ref
-        child = SerializationHelper.find_child_element(element, "SUB-SDG-REF")
-        if child is not None:
-            sub_sdg_ref_value = ARRef.deserialize(child)
-            obj.sub_sdg_ref = sub_sdg_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SUB-SDG-REF":
+                setattr(obj, "sub_sdg_ref", ARRef.deserialize(child))
 
         return obj
 

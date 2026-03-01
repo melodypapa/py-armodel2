@@ -117,17 +117,15 @@ class DiagnosticRequestControlOfOnBoardDevice(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestControlOfOnBoardDevice, cls).deserialize(element)
 
-        # Parse request_control_ref
-        child = SerializationHelper.find_child_element(element, "REQUEST-CONTROL-REF")
-        if child is not None:
-            request_control_ref_value = ARRef.deserialize(child)
-            obj.request_control_ref = request_control_ref_value
-
-        # Parse test_id_identifier_ref
-        child = SerializationHelper.find_child_element(element, "TEST-ID-IDENTIFIER-REF")
-        if child is not None:
-            test_id_identifier_ref_value = ARRef.deserialize(child)
-            obj.test_id_identifier_ref = test_id_identifier_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "REQUEST-CONTROL-REF":
+                setattr(obj, "request_control_ref", ARRef.deserialize(child))
+            elif tag == "TEST-ID-IDENTIFIER-REF":
+                setattr(obj, "test_id_identifier_ref", ARRef.deserialize(child))
 
         return obj
 

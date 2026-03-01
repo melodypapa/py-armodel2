@@ -38,7 +38,7 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
 
     control_option: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "CONTROL-OPTION": lambda obj, elem: setattr(obj, "control_option", elem.text),
+        "CONTROL-OPTION": lambda obj, elem: setattr(obj, "control_option", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -99,11 +99,13 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticControlDTCSettingClass, cls).deserialize(element)
 
-        # Parse control_option
-        child = SerializationHelper.find_child_element(element, "CONTROL-OPTION")
-        if child is not None:
-            control_option_value = child.text
-            obj.control_option = control_option_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONTROL-OPTION":
+                setattr(obj, "control_option", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

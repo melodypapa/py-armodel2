@@ -32,7 +32,7 @@ class MultiplexedPart(ARObject, ABC):
 
     segment_positions: list[SegmentPosition]
     _DESERIALIZE_DISPATCH = {
-        "SEGMENT-POSITIONS": lambda obj, elem: obj.segment_positions.append(SegmentPosition.deserialize(elem)),
+        "SEGMENT-POSITIONS": lambda obj, elem: obj.segment_positions.append(SerializationHelper.deserialize_by_tag(elem, "SegmentPosition")),
     }
 
 
@@ -89,15 +89,13 @@ class MultiplexedPart(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MultiplexedPart, cls).deserialize(element)
 
-        # Parse segment_positions (list from container "SEGMENT-POSITIONS")
-        obj.segment_positions = []
-        container = SerializationHelper.find_child_element(element, "SEGMENT-POSITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.segment_positions.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SEGMENT-POSITIONS":
+                obj.segment_positions.append(SerializationHelper.deserialize_by_tag(child, "SegmentPosition"))
 
         return obj
 

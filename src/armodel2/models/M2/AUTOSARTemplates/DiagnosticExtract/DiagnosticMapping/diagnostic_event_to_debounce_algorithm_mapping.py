@@ -117,17 +117,15 @@ class DiagnosticEventToDebounceAlgorithmMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventToDebounceAlgorithmMapping, cls).deserialize(element)
 
-        # Parse debounce_ref
-        child = SerializationHelper.find_child_element(element, "DEBOUNCE-REF")
-        if child is not None:
-            debounce_ref_value = ARRef.deserialize(child)
-            obj.debounce_ref = debounce_ref_value
-
-        # Parse diagnostic_event_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-EVENT-REF")
-        if child is not None:
-            diagnostic_event_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_event_ref = diagnostic_event_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEBOUNCE-REF":
+                setattr(obj, "debounce_ref", ARRef.deserialize(child))
+            elif tag == "DIAGNOSTIC-EVENT-REF":
+                setattr(obj, "diagnostic_event_ref", ARRef.deserialize(child))
 
         return obj
 

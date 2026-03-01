@@ -39,7 +39,7 @@ class E2EProfileCompatibilityProps(ARElement):
 
     transit_to_invalid: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "TRANSIT-TO-INVALID": lambda obj, elem: setattr(obj, "transit_to_invalid", elem.text),
+        "TRANSIT-TO-INVALID": lambda obj, elem: setattr(obj, "transit_to_invalid", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -100,11 +100,13 @@ class E2EProfileCompatibilityProps(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(E2EProfileCompatibilityProps, cls).deserialize(element)
 
-        # Parse transit_to_invalid
-        child = SerializationHelper.find_child_element(element, "TRANSIT-TO-INVALID")
-        if child is not None:
-            transit_to_invalid_value = child.text
-            obj.transit_to_invalid = transit_to_invalid_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TRANSIT-TO-INVALID":
+                setattr(obj, "transit_to_invalid", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

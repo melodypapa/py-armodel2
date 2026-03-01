@@ -67,24 +67,24 @@ class FlexrayArTpChannel(ARObject):
     tp_connections: list[FlexrayArTpConnection]
     _DESERIALIZE_DISPATCH = {
         "ACK-TYPE": lambda obj, elem: setattr(obj, "ack_type", FrArTpAckType.deserialize(elem)),
-        "CANCELLATION": lambda obj, elem: setattr(obj, "cancellation", elem.text),
-        "EXTENDED": lambda obj, elem: setattr(obj, "extended", elem.text),
-        "MAX-AR": lambda obj, elem: setattr(obj, "max_ar", elem.text),
-        "MAX-AS": lambda obj, elem: setattr(obj, "max_as", elem.text),
-        "MAX-BS": lambda obj, elem: setattr(obj, "max_bs", elem.text),
-        "MAX-FC-WAIT": lambda obj, elem: setattr(obj, "max_fc_wait", elem.text),
+        "CANCELLATION": lambda obj, elem: setattr(obj, "cancellation", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "EXTENDED": lambda obj, elem: setattr(obj, "extended", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "MAX-AR": lambda obj, elem: setattr(obj, "max_ar", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MAX-AS": lambda obj, elem: setattr(obj, "max_as", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MAX-BS": lambda obj, elem: setattr(obj, "max_bs", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MAX-FC-WAIT": lambda obj, elem: setattr(obj, "max_fc_wait", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "MAXIMUM-MESSAGE": lambda obj, elem: setattr(obj, "maximum_message", MaximumMessageLengthType.deserialize(elem)),
-        "MAX-RETRIES": lambda obj, elem: setattr(obj, "max_retries", elem.text),
-        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", elem.text),
-        "MULTICAST": lambda obj, elem: setattr(obj, "multicast", elem.text),
+        "MAX-RETRIES": lambda obj, elem: setattr(obj, "max_retries", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "MULTICAST": lambda obj, elem: setattr(obj, "multicast", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "N-PDUS": lambda obj, elem: obj.n_pdu_refs.append(ARRef.deserialize(elem)),
-        "TIME-BR": lambda obj, elem: setattr(obj, "time_br", elem.text),
-        "TIME-CS": lambda obj, elem: setattr(obj, "time_cs", elem.text),
-        "TIMEOUT-AR": lambda obj, elem: setattr(obj, "timeout_ar", elem.text),
-        "TIMEOUT-AS": lambda obj, elem: setattr(obj, "timeout_as", elem.text),
-        "TIMEOUT-BS": lambda obj, elem: setattr(obj, "timeout_bs", elem.text),
-        "TIMEOUT-CR": lambda obj, elem: setattr(obj, "timeout_cr", elem.text),
-        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(FlexrayArTpConnection.deserialize(elem)),
+        "TIME-BR": lambda obj, elem: setattr(obj, "time_br", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIME-CS": lambda obj, elem: setattr(obj, "time_cs", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-AR": lambda obj, elem: setattr(obj, "timeout_ar", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-AS": lambda obj, elem: setattr(obj, "timeout_as", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-BS": lambda obj, elem: setattr(obj, "timeout_bs", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-CR": lambda obj, elem: setattr(obj, "timeout_cr", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayArTpConnection")),
     }
 
 
@@ -414,133 +414,49 @@ class FlexrayArTpChannel(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayArTpChannel, cls).deserialize(element)
 
-        # Parse ack_type
-        child = SerializationHelper.find_child_element(element, "ACK-TYPE")
-        if child is not None:
-            ack_type_value = FrArTpAckType.deserialize(child)
-            obj.ack_type = ack_type_value
-
-        # Parse cancellation
-        child = SerializationHelper.find_child_element(element, "CANCELLATION")
-        if child is not None:
-            cancellation_value = child.text
-            obj.cancellation = cancellation_value
-
-        # Parse extended
-        child = SerializationHelper.find_child_element(element, "EXTENDED")
-        if child is not None:
-            extended_value = child.text
-            obj.extended = extended_value
-
-        # Parse max_ar
-        child = SerializationHelper.find_child_element(element, "MAX-AR")
-        if child is not None:
-            max_ar_value = child.text
-            obj.max_ar = max_ar_value
-
-        # Parse max_as
-        child = SerializationHelper.find_child_element(element, "MAX-AS")
-        if child is not None:
-            max_as_value = child.text
-            obj.max_as = max_as_value
-
-        # Parse max_bs
-        child = SerializationHelper.find_child_element(element, "MAX-BS")
-        if child is not None:
-            max_bs_value = child.text
-            obj.max_bs = max_bs_value
-
-        # Parse max_fc_wait
-        child = SerializationHelper.find_child_element(element, "MAX-FC-WAIT")
-        if child is not None:
-            max_fc_wait_value = child.text
-            obj.max_fc_wait = max_fc_wait_value
-
-        # Parse maximum_message
-        child = SerializationHelper.find_child_element(element, "MAXIMUM-MESSAGE")
-        if child is not None:
-            maximum_message_value = MaximumMessageLengthType.deserialize(child)
-            obj.maximum_message = maximum_message_value
-
-        # Parse max_retries
-        child = SerializationHelper.find_child_element(element, "MAX-RETRIES")
-        if child is not None:
-            max_retries_value = child.text
-            obj.max_retries = max_retries_value
-
-        # Parse minimum
-        child = SerializationHelper.find_child_element(element, "MINIMUM")
-        if child is not None:
-            minimum_value = child.text
-            obj.minimum = minimum_value
-
-        # Parse multicast
-        child = SerializationHelper.find_child_element(element, "MULTICAST")
-        if child is not None:
-            multicast_value = child.text
-            obj.multicast = multicast_value
-
-        # Parse n_pdu_refs (list from container "N-PDU-REFS")
-        obj.n_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "N-PDU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.n_pdu_refs.append(child_value)
-
-        # Parse time_br
-        child = SerializationHelper.find_child_element(element, "TIME-BR")
-        if child is not None:
-            time_br_value = child.text
-            obj.time_br = time_br_value
-
-        # Parse time_cs
-        child = SerializationHelper.find_child_element(element, "TIME-CS")
-        if child is not None:
-            time_cs_value = child.text
-            obj.time_cs = time_cs_value
-
-        # Parse timeout_ar
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-AR")
-        if child is not None:
-            timeout_ar_value = child.text
-            obj.timeout_ar = timeout_ar_value
-
-        # Parse timeout_as
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-AS")
-        if child is not None:
-            timeout_as_value = child.text
-            obj.timeout_as = timeout_as_value
-
-        # Parse timeout_bs
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-BS")
-        if child is not None:
-            timeout_bs_value = child.text
-            obj.timeout_bs = timeout_bs_value
-
-        # Parse timeout_cr
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-CR")
-        if child is not None:
-            timeout_cr_value = child.text
-            obj.timeout_cr = timeout_cr_value
-
-        # Parse tp_connections (list from container "TP-CONNECTIONS")
-        obj.tp_connections = []
-        container = SerializationHelper.find_child_element(element, "TP-CONNECTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_connections.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACK-TYPE":
+                setattr(obj, "ack_type", FrArTpAckType.deserialize(child))
+            elif tag == "CANCELLATION":
+                setattr(obj, "cancellation", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "EXTENDED":
+                setattr(obj, "extended", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "MAX-AR":
+                setattr(obj, "max_ar", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MAX-AS":
+                setattr(obj, "max_as", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MAX-BS":
+                setattr(obj, "max_bs", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MAX-FC-WAIT":
+                setattr(obj, "max_fc_wait", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAXIMUM-MESSAGE":
+                setattr(obj, "maximum_message", MaximumMessageLengthType.deserialize(child))
+            elif tag == "MAX-RETRIES":
+                setattr(obj, "max_retries", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MINIMUM":
+                setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "MULTICAST":
+                setattr(obj, "multicast", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "N-PDUS":
+                obj.n_pdu_refs.append(ARRef.deserialize(child))
+            elif tag == "TIME-BR":
+                setattr(obj, "time_br", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIME-CS":
+                setattr(obj, "time_cs", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-AR":
+                setattr(obj, "timeout_ar", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-AS":
+                setattr(obj, "timeout_as", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-BS":
+                setattr(obj, "timeout_bs", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-CR":
+                setattr(obj, "timeout_cr", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TP-CONNECTIONS":
+                obj.tp_connections.append(SerializationHelper.deserialize_by_tag(child, "FlexrayArTpConnection"))
 
         return obj
 

@@ -50,15 +50,15 @@ class ContainedIPduProps(ARObject):
     trigger_ref: Optional[PduCollectionTriggerEnum]
     update: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "COLLECTION": lambda obj, elem: setattr(obj, "collection", any (ContainedIPdu).deserialize(elem)),
+        "COLLECTION": lambda obj, elem: setattr(obj, "collection", SerializationHelper.deserialize_by_tag(elem, "any (ContainedIPdu)")),
         "CONTAINED-PDU-REF": lambda obj, elem: setattr(obj, "contained_pdu_ref", ARRef.deserialize(elem)),
-        "HEADER-ID-LONG": lambda obj, elem: setattr(obj, "header_id_long", elem.text),
-        "HEADER-ID-SHORT": lambda obj, elem: setattr(obj, "header_id_short", elem.text),
-        "OFFSET": lambda obj, elem: setattr(obj, "offset", elem.text),
-        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
-        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", elem.text),
+        "HEADER-ID-LONG": lambda obj, elem: setattr(obj, "header_id_long", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "HEADER-ID-SHORT": lambda obj, elem: setattr(obj, "header_id_short", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "OFFSET": lambda obj, elem: setattr(obj, "offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", PduCollectionTriggerEnum.deserialize(elem)),
-        "UPDATE": lambda obj, elem: setattr(obj, "update", elem.text),
+        "UPDATE": lambda obj, elem: setattr(obj, "update", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -239,59 +239,29 @@ class ContainedIPduProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ContainedIPduProps, cls).deserialize(element)
 
-        # Parse collection
-        child = SerializationHelper.find_child_element(element, "COLLECTION")
-        if child is not None:
-            collection_value = child.text
-            obj.collection = collection_value
-
-        # Parse contained_pdu_ref
-        child = SerializationHelper.find_child_element(element, "CONTAINED-PDU-REF")
-        if child is not None:
-            contained_pdu_ref_value = ARRef.deserialize(child)
-            obj.contained_pdu_ref = contained_pdu_ref_value
-
-        # Parse header_id_long
-        child = SerializationHelper.find_child_element(element, "HEADER-ID-LONG")
-        if child is not None:
-            header_id_long_value = child.text
-            obj.header_id_long = header_id_long_value
-
-        # Parse header_id_short
-        child = SerializationHelper.find_child_element(element, "HEADER-ID-SHORT")
-        if child is not None:
-            header_id_short_value = child.text
-            obj.header_id_short = header_id_short_value
-
-        # Parse offset
-        child = SerializationHelper.find_child_element(element, "OFFSET")
-        if child is not None:
-            offset_value = child.text
-            obj.offset = offset_value
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse timeout
-        child = SerializationHelper.find_child_element(element, "TIMEOUT")
-        if child is not None:
-            timeout_value = child.text
-            obj.timeout = timeout_value
-
-        # Parse trigger_ref
-        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
-        if child is not None:
-            trigger_ref_value = ARRef.deserialize(child)
-            obj.trigger_ref = trigger_ref_value
-
-        # Parse update
-        child = SerializationHelper.find_child_element(element, "UPDATE")
-        if child is not None:
-            update_value = child.text
-            obj.update = update_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COLLECTION":
+                setattr(obj, "collection", SerializationHelper.deserialize_by_tag(child, "any (ContainedIPdu)"))
+            elif tag == "CONTAINED-PDU-REF":
+                setattr(obj, "contained_pdu_ref", ARRef.deserialize(child))
+            elif tag == "HEADER-ID-LONG":
+                setattr(obj, "header_id_long", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "HEADER-ID-SHORT":
+                setattr(obj, "header_id_short", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "OFFSET":
+                setattr(obj, "offset", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TIMEOUT":
+                setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TRIGGER-REF":
+                setattr(obj, "trigger_ref", PduCollectionTriggerEnum.deserialize(child))
+            elif tag == "UPDATE":
+                setattr(obj, "update", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

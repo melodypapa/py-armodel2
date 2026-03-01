@@ -34,7 +34,7 @@ class StreamFilterMACAddress(ARObject):
 
     mac_address_string: Optional[MacAddressString]
     _DESERIALIZE_DISPATCH = {
-        "MAC-ADDRESS-STRING": lambda obj, elem: setattr(obj, "mac_address_string", elem.text),
+        "MAC-ADDRESS-STRING": lambda obj, elem: setattr(obj, "mac_address_string", SerializationHelper.deserialize_by_tag(elem, "MacAddressString")),
     }
 
 
@@ -95,11 +95,13 @@ class StreamFilterMACAddress(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StreamFilterMACAddress, cls).deserialize(element)
 
-        # Parse mac_address_string
-        child = SerializationHelper.find_child_element(element, "MAC-ADDRESS-STRING")
-        if child is not None:
-            mac_address_string_value = child.text
-            obj.mac_address_string = mac_address_string_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAC-ADDRESS-STRING":
+                setattr(obj, "mac_address_string", SerializationHelper.deserialize_by_tag(child, "MacAddressString"))
 
         return obj
 

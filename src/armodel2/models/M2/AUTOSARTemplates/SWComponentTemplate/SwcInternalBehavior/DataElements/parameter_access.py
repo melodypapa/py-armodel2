@@ -48,7 +48,7 @@ class ParameterAccess(AbstractAccessPoint):
     sw_data_def: Optional[SwDataDefProps]
     _DESERIALIZE_DISPATCH = {
         "ACCESSED-PARAMETER-REF": lambda obj, elem: setattr(obj, "accessed_parameter_ref", ARRef.deserialize(elem)),
-        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SwDataDefProps.deserialize(elem)),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
     }
 
 
@@ -124,17 +124,15 @@ class ParameterAccess(AbstractAccessPoint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ParameterAccess, cls).deserialize(element)
 
-        # Parse accessed_parameter_ref
-        child = SerializationHelper.find_child_element(element, "ACCESSED-PARAMETER-REF")
-        if child is not None:
-            accessed_parameter_ref_value = ARRef.deserialize(child)
-            obj.accessed_parameter_ref = accessed_parameter_ref_value
-
-        # Parse sw_data_def
-        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
-        if child is not None:
-            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.sw_data_def = sw_data_def_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACCESSED-PARAMETER-REF":
+                setattr(obj, "accessed_parameter_ref", ARRef.deserialize(child))
+            elif tag == "SW-DATA-DEF":
+                setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
         return obj
 

@@ -38,10 +38,10 @@ class Ipv6FragmentationProps(ARObject):
     tcp_ip_ip_tx: Optional[PositiveInteger]
     tcp_ip_ip_tx_fragment_buffer_size: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "TCP-IP-IP": lambda obj, elem: setattr(obj, "tcp_ip_ip", elem.text),
-        "TCP-IP-IP-REASSEMBLY-BUFFER-SIZE": lambda obj, elem: setattr(obj, "tcp_ip_ip_reassembly_buffer_size", elem.text),
-        "TCP-IP-IP-TX": lambda obj, elem: setattr(obj, "tcp_ip_ip_tx", elem.text),
-        "TCP-IP-IP-TX-FRAGMENT-BUFFER-SIZE": lambda obj, elem: setattr(obj, "tcp_ip_ip_tx_fragment_buffer_size", elem.text),
+        "TCP-IP-IP": lambda obj, elem: setattr(obj, "tcp_ip_ip", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TCP-IP-IP-REASSEMBLY-BUFFER-SIZE": lambda obj, elem: setattr(obj, "tcp_ip_ip_reassembly_buffer_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-IP-IP-TX": lambda obj, elem: setattr(obj, "tcp_ip_ip_tx", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TCP-IP-IP-TX-FRAGMENT-BUFFER-SIZE": lambda obj, elem: setattr(obj, "tcp_ip_ip_tx_fragment_buffer_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -147,29 +147,19 @@ class Ipv6FragmentationProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ipv6FragmentationProps, cls).deserialize(element)
 
-        # Parse tcp_ip_ip
-        child = SerializationHelper.find_child_element(element, "TCP-IP-IP")
-        if child is not None:
-            tcp_ip_ip_value = child.text
-            obj.tcp_ip_ip = tcp_ip_ip_value
-
-        # Parse tcp_ip_ip_reassembly_buffer_size
-        child = SerializationHelper.find_child_element(element, "TCP-IP-IP-REASSEMBLY-BUFFER-SIZE")
-        if child is not None:
-            tcp_ip_ip_reassembly_buffer_size_value = child.text
-            obj.tcp_ip_ip_reassembly_buffer_size = tcp_ip_ip_reassembly_buffer_size_value
-
-        # Parse tcp_ip_ip_tx
-        child = SerializationHelper.find_child_element(element, "TCP-IP-IP-TX")
-        if child is not None:
-            tcp_ip_ip_tx_value = child.text
-            obj.tcp_ip_ip_tx = tcp_ip_ip_tx_value
-
-        # Parse tcp_ip_ip_tx_fragment_buffer_size
-        child = SerializationHelper.find_child_element(element, "TCP-IP-IP-TX-FRAGMENT-BUFFER-SIZE")
-        if child is not None:
-            tcp_ip_ip_tx_fragment_buffer_size_value = child.text
-            obj.tcp_ip_ip_tx_fragment_buffer_size = tcp_ip_ip_tx_fragment_buffer_size_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TCP-IP-IP":
+                setattr(obj, "tcp_ip_ip", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TCP-IP-IP-REASSEMBLY-BUFFER-SIZE":
+                setattr(obj, "tcp_ip_ip_reassembly_buffer_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-IP-IP-TX":
+                setattr(obj, "tcp_ip_ip_tx", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TCP-IP-IP-TX-FRAGMENT-BUFFER-SIZE":
+                setattr(obj, "tcp_ip_ip_tx_fragment_buffer_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

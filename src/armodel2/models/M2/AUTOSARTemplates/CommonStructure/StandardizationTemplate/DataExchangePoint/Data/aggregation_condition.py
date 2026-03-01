@@ -100,11 +100,13 @@ class AggregationCondition(AttributeCondition):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AggregationCondition, cls).deserialize(element)
 
-        # Parse aggregation_ref
-        child = SerializationHelper.find_child_element(element, "AGGREGATION-REF")
-        if child is not None:
-            aggregation_ref_value = ARRef.deserialize(child)
-            obj.aggregation_ref = aggregation_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AGGREGATION-REF":
+                setattr(obj, "aggregation_ref", ARRef.deserialize(child))
 
         return obj
 

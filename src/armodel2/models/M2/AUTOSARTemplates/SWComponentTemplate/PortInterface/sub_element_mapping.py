@@ -40,8 +40,8 @@ class SubElementMapping(ARObject):
     second_element_ref: Optional[ARRef]
     text_table_ref: ARRef
     _DESERIALIZE_DISPATCH = {
-        "FIRST-ELEMENT-REF": lambda obj, elem: setattr(obj, "first_element_ref", ARRef.deserialize(elem)),
-        "SECOND-ELEMENT-REF": lambda obj, elem: setattr(obj, "second_element_ref", ARRef.deserialize(elem)),
+        "FIRST-ELEMENT-REF": ("_POLYMORPHIC", "first_element_ref", ["ApplicationCompositeDataTypeSubElementRef", "ImplementationDataTypeSubElementRef"]),
+        "SECOND-ELEMENT-REF": ("_POLYMORPHIC", "second_element_ref", ["ApplicationCompositeDataTypeSubElementRef", "ImplementationDataTypeSubElementRef"]),
         "TEXT-TABLE-REF": lambda obj, elem: setattr(obj, "text_table_ref", ARRef.deserialize(elem)),
     }
 
@@ -133,23 +133,29 @@ class SubElementMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SubElementMapping, cls).deserialize(element)
 
-        # Parse first_element_ref
-        child = SerializationHelper.find_child_element(element, "FIRST-ELEMENT-REF")
-        if child is not None:
-            first_element_ref_value = ARRef.deserialize(child)
-            obj.first_element_ref = first_element_ref_value
-
-        # Parse second_element_ref
-        child = SerializationHelper.find_child_element(element, "SECOND-ELEMENT-REF")
-        if child is not None:
-            second_element_ref_value = ARRef.deserialize(child)
-            obj.second_element_ref = second_element_ref_value
-
-        # Parse text_table_ref
-        child = SerializationHelper.find_child_element(element, "TEXT-TABLE-REF")
-        if child is not None:
-            text_table_ref_value = ARRef.deserialize(child)
-            obj.text_table_ref = text_table_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FIRST-ELEMENT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-DATA-TYPE-SUB-ELEMENT-REF":
+                        setattr(obj, "first_element_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeDataTypeSubElementRef"))
+                    elif concrete_tag == "IMPLEMENTATION-DATA-TYPE-SUB-ELEMENT-REF":
+                        setattr(obj, "first_element_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationDataTypeSubElementRef"))
+            elif tag == "SECOND-ELEMENT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-DATA-TYPE-SUB-ELEMENT-REF":
+                        setattr(obj, "second_element_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeDataTypeSubElementRef"))
+                    elif concrete_tag == "IMPLEMENTATION-DATA-TYPE-SUB-ELEMENT-REF":
+                        setattr(obj, "second_element_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationDataTypeSubElementRef"))
+            elif tag == "TEXT-TABLE-REF":
+                setattr(obj, "text_table_ref", ARRef.deserialize(child))
 
         return obj
 

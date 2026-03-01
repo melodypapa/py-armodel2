@@ -35,8 +35,8 @@ class TDHeaderIdRange(ARObject):
     max_header_id: Optional[Integer]
     min_header_id: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "MAX-HEADER-ID": lambda obj, elem: setattr(obj, "max_header_id", elem.text),
-        "MIN-HEADER-ID": lambda obj, elem: setattr(obj, "min_header_id", elem.text),
+        "MAX-HEADER-ID": lambda obj, elem: setattr(obj, "max_header_id", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MIN-HEADER-ID": lambda obj, elem: setattr(obj, "min_header_id", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -112,17 +112,15 @@ class TDHeaderIdRange(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDHeaderIdRange, cls).deserialize(element)
 
-        # Parse max_header_id
-        child = SerializationHelper.find_child_element(element, "MAX-HEADER-ID")
-        if child is not None:
-            max_header_id_value = child.text
-            obj.max_header_id = max_header_id_value
-
-        # Parse min_header_id
-        child = SerializationHelper.find_child_element(element, "MIN-HEADER-ID")
-        if child is not None:
-            min_header_id_value = child.text
-            obj.min_header_id = min_header_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAX-HEADER-ID":
+                setattr(obj, "max_header_id", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MIN-HEADER-ID":
+                setattr(obj, "min_header_id", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

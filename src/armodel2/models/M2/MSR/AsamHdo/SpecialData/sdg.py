@@ -48,9 +48,9 @@ class Sdg(ARObject):
     sdg_caption: Optional[SdgCaption]
     sdg_contents: Optional[SdgContents]
     _DESERIALIZE_DISPATCH = {
-        "GID": lambda obj, elem: setattr(obj, "gid", elem.text),
-        "SDG-CAPTION": lambda obj, elem: setattr(obj, "sdg_caption", SdgCaption.deserialize(elem)),
-        "SDG-CONTENTS": lambda obj, elem: setattr(obj, "sdg_contents", SdgContents.deserialize(elem)),
+        "GID": lambda obj, elem: setattr(obj, "gid", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "SDG-CAPTION": lambda obj, elem: setattr(obj, "sdg_caption", SerializationHelper.deserialize_by_tag(elem, "SdgCaption")),
+        "SDG-CONTENTS": lambda obj, elem: setattr(obj, "sdg_contents", SerializationHelper.deserialize_by_tag(elem, "SdgContents")),
     }
 
 
@@ -140,31 +140,17 @@ class Sdg(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Sdg, cls).deserialize(element)
 
-        # Parse gid
-        child = SerializationHelper.find_child_element(element, "GID")
-        if child is not None:
-            gid_value = child.text
-            obj.gid = gid_value
-
-        # Parse sdg_caption
-        child = SerializationHelper.find_child_element(element, "SDG-CAPTION")
-        if child is not None:
-            sdg_caption_value = SerializationHelper.deserialize_by_tag(child, "SdgCaption")
-            obj.sdg_caption = sdg_caption_value
-
-        # Parse sdg_contents (atp_mixed - children appear directly)
-        # Check if element contains expected children for SdgContents
-        has_mixed_children = False
-        child_tags_to_check = ['SD', 'SDF', 'SDG', 'SDX', 'SDXF']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            sdg_contents_value = SerializationHelper.deserialize_by_tag(element, "SdgContents")
-            obj.sdg_contents = sdg_contents_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "GID":
+                setattr(obj, "gid", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "SDG-CAPTION":
+                setattr(obj, "sdg_caption", SerializationHelper.deserialize_by_tag(child, "SdgCaption"))
+            elif tag == "SDG-CONTENTS":
+                setattr(obj, "sdg_contents", SerializationHelper.deserialize_by_tag(child, "SdgContents"))
 
         return obj
 

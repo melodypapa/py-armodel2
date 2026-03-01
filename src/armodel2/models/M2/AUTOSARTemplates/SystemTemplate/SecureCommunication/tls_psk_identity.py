@@ -41,8 +41,8 @@ class TlsPskIdentity(ARObject):
     psk_identity_hint: Optional[String]
     _DESERIALIZE_DISPATCH = {
         "PRE-SHARED-KEY-REF": lambda obj, elem: setattr(obj, "pre_shared_key_ref", ARRef.deserialize(elem)),
-        "PSK-IDENTITY": lambda obj, elem: setattr(obj, "psk_identity", elem.text),
-        "PSK-IDENTITY-HINT": lambda obj, elem: setattr(obj, "psk_identity_hint", elem.text),
+        "PSK-IDENTITY": lambda obj, elem: setattr(obj, "psk_identity", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "PSK-IDENTITY-HINT": lambda obj, elem: setattr(obj, "psk_identity_hint", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -133,23 +133,17 @@ class TlsPskIdentity(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TlsPskIdentity, cls).deserialize(element)
 
-        # Parse pre_shared_key_ref
-        child = SerializationHelper.find_child_element(element, "PRE-SHARED-KEY-REF")
-        if child is not None:
-            pre_shared_key_ref_value = ARRef.deserialize(child)
-            obj.pre_shared_key_ref = pre_shared_key_ref_value
-
-        # Parse psk_identity
-        child = SerializationHelper.find_child_element(element, "PSK-IDENTITY")
-        if child is not None:
-            psk_identity_value = child.text
-            obj.psk_identity = psk_identity_value
-
-        # Parse psk_identity_hint
-        child = SerializationHelper.find_child_element(element, "PSK-IDENTITY-HINT")
-        if child is not None:
-            psk_identity_hint_value = child.text
-            obj.psk_identity_hint = psk_identity_hint_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PRE-SHARED-KEY-REF":
+                setattr(obj, "pre_shared_key_ref", ARRef.deserialize(child))
+            elif tag == "PSK-IDENTITY":
+                setattr(obj, "psk_identity", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "PSK-IDENTITY-HINT":
+                setattr(obj, "psk_identity_hint", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

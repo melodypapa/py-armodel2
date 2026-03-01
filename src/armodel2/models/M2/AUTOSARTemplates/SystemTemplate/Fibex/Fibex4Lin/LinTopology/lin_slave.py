@@ -50,14 +50,14 @@ class LinSlave(ARObject):
     supplier_id: Optional[PositiveInteger]
     variant_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ASSIGN-NAD": lambda obj, elem: setattr(obj, "assign_nad", elem.text),
-        "CONFIGURED-NAD": lambda obj, elem: setattr(obj, "configured_nad", elem.text),
-        "FUNCTION-ID": lambda obj, elem: setattr(obj, "function_id", elem.text),
-        "INITIAL-NAD": lambda obj, elem: setattr(obj, "initial_nad", elem.text),
-        "LIN-ERROR-RESPONSE": lambda obj, elem: setattr(obj, "lin_error_response", LinErrorResponse.deserialize(elem)),
-        "NAS-TIMEOUT": lambda obj, elem: setattr(obj, "nas_timeout", elem.text),
-        "SUPPLIER-ID": lambda obj, elem: setattr(obj, "supplier_id", elem.text),
-        "VARIANT-ID": lambda obj, elem: setattr(obj, "variant_id", elem.text),
+        "ASSIGN-NAD": lambda obj, elem: setattr(obj, "assign_nad", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CONFIGURED-NAD": lambda obj, elem: setattr(obj, "configured_nad", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "FUNCTION-ID": lambda obj, elem: setattr(obj, "function_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "INITIAL-NAD": lambda obj, elem: setattr(obj, "initial_nad", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "LIN-ERROR-RESPONSE": lambda obj, elem: setattr(obj, "lin_error_response", SerializationHelper.deserialize_by_tag(elem, "LinErrorResponse")),
+        "NAS-TIMEOUT": lambda obj, elem: setattr(obj, "nas_timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "SUPPLIER-ID": lambda obj, elem: setattr(obj, "supplier_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "VARIANT-ID": lambda obj, elem: setattr(obj, "variant_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 

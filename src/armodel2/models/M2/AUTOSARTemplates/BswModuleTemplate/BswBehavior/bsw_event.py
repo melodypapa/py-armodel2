@@ -47,8 +47,8 @@ class BswEvent(AbstractEvent, ABC):
     starts_on_event_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CONTEXTS": lambda obj, elem: obj.context_refs.append(ARRef.deserialize(elem)),
-        "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS": lambda obj, elem: obj.disabled_in_mode_description_instance_refs.append(ModeDeclaration.deserialize(elem)),
-        "STARTS-ON-EVENT-REF": lambda obj, elem: setattr(obj, "starts_on_event_ref", ARRef.deserialize(elem)),
+        "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS": lambda obj, elem: obj.disabled_in_mode_description_instance_refs.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclaration")),
+        "STARTS-ON-EVENT-REF": ("_POLYMORPHIC", "starts_on_event_ref", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
     }
 
 
@@ -138,37 +138,25 @@ class BswEvent(AbstractEvent, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswEvent, cls).deserialize(element)
 
-        # Parse context_refs (list from container "CONTEXT-REFS")
-        obj.context_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.context_refs.append(child_value)
-
-        # Parse disabled_in_mode_description_instance_refs (list from container "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS")
-        obj.disabled_in_mode_description_instance_refs = []
-        container = SerializationHelper.find_child_element(element, "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.disabled_in_mode_description_instance_refs.append(child_value)
-
-        # Parse starts_on_event_ref
-        child = SerializationHelper.find_child_element(element, "STARTS-ON-EVENT-REF")
-        if child is not None:
-            starts_on_event_ref_value = ARRef.deserialize(child)
-            obj.starts_on_event_ref = starts_on_event_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONTEXTS":
+                obj.context_refs.append(ARRef.deserialize(child))
+            elif tag == "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS":
+                obj.disabled_in_mode_description_instance_refs.append(SerializationHelper.deserialize_by_tag(child, "ModeDeclaration"))
+            elif tag == "STARTS-ON-EVENT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-CALLED-ENTITY":
+                        setattr(obj, "starts_on_event_ref", SerializationHelper.deserialize_by_tag(child[0], "BswCalledEntity"))
+                    elif concrete_tag == "BSW-INTERRUPT-ENTITY":
+                        setattr(obj, "starts_on_event_ref", SerializationHelper.deserialize_by_tag(child[0], "BswInterruptEntity"))
+                    elif concrete_tag == "BSW-SCHEDULABLE-ENTITY":
+                        setattr(obj, "starts_on_event_ref", SerializationHelper.deserialize_by_tag(child[0], "BswSchedulableEntity"))
 
         return obj
 

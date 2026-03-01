@@ -36,7 +36,7 @@ class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
 
     service_request: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "SERVICE-REQUEST": lambda obj, elem: setattr(obj, "service_request", any (DiagnosticService).deserialize(elem)),
+        "SERVICE-REQUEST": lambda obj, elem: setattr(obj, "service_request", SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticService)")),
     }
 
 
@@ -97,11 +97,13 @@ class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticCommunicationManagerNeeds, cls).deserialize(element)
 
-        # Parse service_request
-        child = SerializationHelper.find_child_element(element, "SERVICE-REQUEST")
-        if child is not None:
-            service_request_value = child.text
-            obj.service_request = service_request_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SERVICE-REQUEST":
+                setattr(obj, "service_request", SerializationHelper.deserialize_by_tag(child, "any (DiagnosticService)"))
 
         return obj
 

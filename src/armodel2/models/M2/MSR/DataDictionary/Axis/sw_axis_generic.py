@@ -40,7 +40,7 @@ class SwAxisGeneric(ARObject):
     sw_generic_axis_params: list[SwGenericAxisParam]
     _DESERIALIZE_DISPATCH = {
         "SW-AXIS-TYPE-REF": lambda obj, elem: setattr(obj, "sw_axis_type_ref", ARRef.deserialize(elem)),
-        "SW-GENERIC-AXIS-PARAMS": lambda obj, elem: obj.sw_generic_axis_params.append(SwGenericAxisParam.deserialize(elem)),
+        "SW-GENERIC-AXIS-PARAMS": lambda obj, elem: obj.sw_generic_axis_params.append(SerializationHelper.deserialize_by_tag(elem, "SwGenericAxisParam")),
     }
 
 
@@ -112,21 +112,15 @@ class SwAxisGeneric(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwAxisGeneric, cls).deserialize(element)
 
-        # Parse sw_axis_type_ref
-        child = SerializationHelper.find_child_element(element, "SW-AXIS-TYPE-REF")
-        if child is not None:
-            sw_axis_type_ref_value = ARRef.deserialize(child)
-            obj.sw_axis_type_ref = sw_axis_type_ref_value
-
-        # Parse sw_generic_axis_params (list from container "SW-GENERIC-AXIS-PARAMS")
-        obj.sw_generic_axis_params = []
-        container = SerializationHelper.find_child_element(element, "SW-GENERIC-AXIS-PARAMS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_generic_axis_params.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SW-AXIS-TYPE-REF":
+                setattr(obj, "sw_axis_type_ref", ARRef.deserialize(child))
+            elif tag == "SW-GENERIC-AXIS-PARAMS":
+                obj.sw_generic_axis_params.append(SerializationHelper.deserialize_by_tag(child, "SwGenericAxisParam"))
 
         return obj
 

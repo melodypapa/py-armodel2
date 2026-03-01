@@ -46,7 +46,7 @@ class DataTransformation(Identifiable):
     transformer_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
         "DATA": lambda obj, elem: setattr(obj, "data", DataTransformationKindEnum.deserialize(elem)),
-        "EXECUTE-DESPITE": lambda obj, elem: setattr(obj, "execute_despite", elem.text),
+        "EXECUTE-DESPITE": lambda obj, elem: setattr(obj, "execute_despite", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "TRANSFORMERS": lambda obj, elem: obj.transformer_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -141,33 +141,17 @@ class DataTransformation(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataTransformation, cls).deserialize(element)
 
-        # Parse data
-        child = SerializationHelper.find_child_element(element, "DATA")
-        if child is not None:
-            data_value = DataTransformationKindEnum.deserialize(child)
-            obj.data = data_value
-
-        # Parse execute_despite
-        child = SerializationHelper.find_child_element(element, "EXECUTE-DESPITE")
-        if child is not None:
-            execute_despite_value = child.text
-            obj.execute_despite = execute_despite_value
-
-        # Parse transformer_refs (list from container "TRANSFORMER-REFS")
-        obj.transformer_refs = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.transformer_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA":
+                setattr(obj, "data", DataTransformationKindEnum.deserialize(child))
+            elif tag == "EXECUTE-DESPITE":
+                setattr(obj, "execute_despite", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TRANSFORMERS":
+                obj.transformer_refs.append(ARRef.deserialize(child))
 
         return obj
 

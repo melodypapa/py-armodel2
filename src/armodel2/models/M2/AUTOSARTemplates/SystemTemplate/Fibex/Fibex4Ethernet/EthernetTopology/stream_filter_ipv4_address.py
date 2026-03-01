@@ -34,7 +34,7 @@ class StreamFilterIpv4Address(ARObject):
 
     ipv4_address: Optional[Ip4AddressString]
     _DESERIALIZE_DISPATCH = {
-        "IPV4-ADDRESS": lambda obj, elem: setattr(obj, "ipv4_address", elem.text),
+        "IPV4-ADDRESS": lambda obj, elem: setattr(obj, "ipv4_address", SerializationHelper.deserialize_by_tag(elem, "Ip4AddressString")),
     }
 
 
@@ -95,11 +95,13 @@ class StreamFilterIpv4Address(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StreamFilterIpv4Address, cls).deserialize(element)
 
-        # Parse ipv4_address
-        child = SerializationHelper.find_child_element(element, "IPV4-ADDRESS")
-        if child is not None:
-            ipv4_address_value = child.text
-            obj.ipv4_address = ipv4_address_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "IPV4-ADDRESS":
+                setattr(obj, "ipv4_address", SerializationHelper.deserialize_by_tag(child, "Ip4AddressString"))
 
         return obj
 

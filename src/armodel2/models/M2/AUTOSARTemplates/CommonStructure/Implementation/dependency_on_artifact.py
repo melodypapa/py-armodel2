@@ -44,7 +44,7 @@ class DependencyOnArtifact(Identifiable):
     artifact_descriptor: Optional[AutosarEngineeringObject]
     usage_refs: list[DependencyUsageEnum]
     _DESERIALIZE_DISPATCH = {
-        "ARTIFACT-DESCRIPTOR": lambda obj, elem: setattr(obj, "artifact_descriptor", AutosarEngineeringObject.deserialize(elem)),
+        "ARTIFACT-DESCRIPTOR": lambda obj, elem: setattr(obj, "artifact_descriptor", SerializationHelper.deserialize_by_tag(elem, "AutosarEngineeringObject")),
         "USAGES": lambda obj, elem: obj.usage_refs.append(DependencyUsageEnum.deserialize(elem)),
     }
 
@@ -124,27 +124,15 @@ class DependencyOnArtifact(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DependencyOnArtifact, cls).deserialize(element)
 
-        # Parse artifact_descriptor
-        child = SerializationHelper.find_child_element(element, "ARTIFACT-DESCRIPTOR")
-        if child is not None:
-            artifact_descriptor_value = SerializationHelper.deserialize_by_tag(child, "AutosarEngineeringObject")
-            obj.artifact_descriptor = artifact_descriptor_value
-
-        # Parse usage_refs (list from container "USAGE-REFS")
-        obj.usage_refs = []
-        container = SerializationHelper.find_child_element(element, "USAGE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.usage_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ARTIFACT-DESCRIPTOR":
+                setattr(obj, "artifact_descriptor", SerializationHelper.deserialize_by_tag(child, "AutosarEngineeringObject"))
+            elif tag == "USAGES":
+                obj.usage_refs.append(DependencyUsageEnum.deserialize(child))
 
         return obj
 

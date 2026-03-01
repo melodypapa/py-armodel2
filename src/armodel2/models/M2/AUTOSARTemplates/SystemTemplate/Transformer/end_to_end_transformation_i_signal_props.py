@@ -40,10 +40,10 @@ class EndToEndTransformationISignalProps(ARObject):
     min_data_length: Optional[PositiveInteger]
     source_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", elem.text),
-        "MAX-DATA-LENGTH": lambda obj, elem: setattr(obj, "max_data_length", elem.text),
-        "MIN-DATA-LENGTH": lambda obj, elem: setattr(obj, "min_data_length", elem.text),
-        "SOURCE-ID": lambda obj, elem: setattr(obj, "source_id", elem.text),
+        "DATA-LENGTH": lambda obj, elem: setattr(obj, "data_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-DATA-LENGTH": lambda obj, elem: setattr(obj, "max_data_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MIN-DATA-LENGTH": lambda obj, elem: setattr(obj, "min_data_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SOURCE-ID": lambda obj, elem: setattr(obj, "source_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 

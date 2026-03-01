@@ -41,7 +41,7 @@ class EcucQuery(Identifiable):
 
     ecuc_query: Optional[EcucQueryExpression]
     _DESERIALIZE_DISPATCH = {
-        "ECUC-QUERY": lambda obj, elem: setattr(obj, "ecuc_query", EcucQueryExpression.deserialize(elem)),
+        "ECUC-QUERY": lambda obj, elem: setattr(obj, "ecuc_query", SerializationHelper.deserialize_by_tag(elem, "EcucQueryExpression")),
     }
 
 
@@ -102,11 +102,13 @@ class EcucQuery(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucQuery, cls).deserialize(element)
 
-        # Parse ecuc_query
-        child = SerializationHelper.find_child_element(element, "ECUC-QUERY")
-        if child is not None:
-            ecuc_query_value = SerializationHelper.deserialize_by_tag(child, "EcucQueryExpression")
-            obj.ecuc_query = ecuc_query_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ECUC-QUERY":
+                setattr(obj, "ecuc_query", SerializationHelper.deserialize_by_tag(child, "EcucQueryExpression"))
 
         return obj
 

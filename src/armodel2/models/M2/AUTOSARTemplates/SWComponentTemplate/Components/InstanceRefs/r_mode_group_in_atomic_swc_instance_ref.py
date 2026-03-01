@@ -43,7 +43,7 @@ class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
     context_r_port_ref: Optional[ARRef]
     target_mode_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-R-PORT-REF": lambda obj, elem: setattr(obj, "context_r_port_ref", ARRef.deserialize(elem)),
+        "CONTEXT-R-PORT-REF": ("_POLYMORPHIC", "context_r_port_ref", ["PRPortPrototype", "RPortPrototype"]),
         "TARGET-MODE-REF": lambda obj, elem: setattr(obj, "target_mode_ref", ARRef.deserialize(elem)),
     }
 
@@ -120,17 +120,21 @@ class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RModeGroupInAtomicSWCInstanceRef, cls).deserialize(element)
 
-        # Parse context_r_port_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-R-PORT-REF")
-        if child is not None:
-            context_r_port_ref_value = ARRef.deserialize(child)
-            obj.context_r_port_ref = context_r_port_ref_value
-
-        # Parse target_mode_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-MODE-REF")
-        if child is not None:
-            target_mode_ref_value = ARRef.deserialize(child)
-            obj.target_mode_ref = target_mode_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONTEXT-R-PORT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "P-R-PORT-PROTOTYPE":
+                        setattr(obj, "context_r_port_ref", SerializationHelper.deserialize_by_tag(child[0], "PRPortPrototype"))
+                    elif concrete_tag == "R-PORT-PROTOTYPE":
+                        setattr(obj, "context_r_port_ref", SerializationHelper.deserialize_by_tag(child[0], "RPortPrototype"))
+            elif tag == "TARGET-MODE-REF":
+                setattr(obj, "target_mode_ref", ARRef.deserialize(child))
 
         return obj
 

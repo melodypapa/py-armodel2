@@ -39,7 +39,7 @@ class DdsReliability(ARObject):
     reliability_max: Optional[Float]
     _DESERIALIZE_DISPATCH = {
         "RELIABILITY-KIND": lambda obj, elem: setattr(obj, "reliability_kind", DdsReliabilityKindEnum.deserialize(elem)),
-        "RELIABILITY-MAX": lambda obj, elem: setattr(obj, "reliability_max", elem.text),
+        "RELIABILITY-MAX": lambda obj, elem: setattr(obj, "reliability_max", SerializationHelper.deserialize_by_tag(elem, "Float")),
     }
 
 
@@ -115,17 +115,15 @@ class DdsReliability(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsReliability, cls).deserialize(element)
 
-        # Parse reliability_kind
-        child = SerializationHelper.find_child_element(element, "RELIABILITY-KIND")
-        if child is not None:
-            reliability_kind_value = DdsReliabilityKindEnum.deserialize(child)
-            obj.reliability_kind = reliability_kind_value
-
-        # Parse reliability_max
-        child = SerializationHelper.find_child_element(element, "RELIABILITY-MAX")
-        if child is not None:
-            reliability_max_value = child.text
-            obj.reliability_max = reliability_max_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RELIABILITY-KIND":
+                setattr(obj, "reliability_kind", DdsReliabilityKindEnum.deserialize(child))
+            elif tag == "RELIABILITY-MAX":
+                setattr(obj, "reliability_max", SerializationHelper.deserialize_by_tag(child, "Float"))
 
         return obj
 

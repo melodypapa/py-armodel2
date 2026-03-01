@@ -46,9 +46,9 @@ class J1939TpPg(ARObject):
     sdu_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "DIRECT-PDU-REF": lambda obj, elem: setattr(obj, "direct_pdu_ref", ARRef.deserialize(elem)),
-        "PGN": lambda obj, elem: setattr(obj, "pgn", elem.text),
-        "REQUESTABLE": lambda obj, elem: setattr(obj, "requestable", elem.text),
-        "SDUS": lambda obj, elem: obj.sdu_refs.append(ARRef.deserialize(elem)),
+        "PGN": lambda obj, elem: setattr(obj, "pgn", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "REQUESTABLE": lambda obj, elem: setattr(obj, "requestable", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SDUS": ("_POLYMORPHIC_LIST", "sdu_refs", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
     }
 
 
@@ -157,39 +157,39 @@ class J1939TpPg(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939TpPg, cls).deserialize(element)
 
-        # Parse direct_pdu_ref
-        child = SerializationHelper.find_child_element(element, "DIRECT-PDU-REF")
-        if child is not None:
-            direct_pdu_ref_value = ARRef.deserialize(child)
-            obj.direct_pdu_ref = direct_pdu_ref_value
-
-        # Parse pgn
-        child = SerializationHelper.find_child_element(element, "PGN")
-        if child is not None:
-            pgn_value = child.text
-            obj.pgn = pgn_value
-
-        # Parse requestable
-        child = SerializationHelper.find_child_element(element, "REQUESTABLE")
-        if child is not None:
-            requestable_value = child.text
-            obj.requestable = requestable_value
-
-        # Parse sdu_refs (list from container "SDU-REFS")
-        obj.sdu_refs = []
-        container = SerializationHelper.find_child_element(element, "SDU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sdu_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DIRECT-PDU-REF":
+                setattr(obj, "direct_pdu_ref", ARRef.deserialize(child))
+            elif tag == "PGN":
+                setattr(obj, "pgn", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "REQUESTABLE":
+                setattr(obj, "requestable", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SDUS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CONTAINER-I-PDU":
+                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ContainerIPdu"))
+                    elif concrete_tag == "DCM-I-PDU":
+                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "DcmIPdu"))
+                    elif concrete_tag == "GENERAL-PURPOSE-I-PDU":
+                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "GeneralPurposeIPdu"))
+                    elif concrete_tag == "I-SIGNAL-I-PDU":
+                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ISignalIPdu"))
+                    elif concrete_tag == "J1939-DCM-I-PDU":
+                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "J1939DcmIPdu"))
+                    elif concrete_tag == "MULTIPLEXED-I-PDU":
+                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "MultiplexedIPdu"))
+                    elif concrete_tag == "N-PDU":
+                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "NPdu"))
+                    elif concrete_tag == "SECURED-I-PDU":
+                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "SecuredIPdu"))
+                    elif concrete_tag == "USER-DEFINED-I-PDU":
+                        obj.sdu_refs.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedIPdu"))
 
         return obj
 

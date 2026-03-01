@@ -99,11 +99,13 @@ class DiagnosticMemoryDestinationPrimary(DiagnosticMemoryDestination):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMemoryDestinationPrimary, cls).deserialize(element)
 
-        # Parse type_of_dtc
-        child = SerializationHelper.find_child_element(element, "TYPE-OF-DTC")
-        if child is not None:
-            type_of_dtc_value = DiagnosticTypeOfDtcSupportedEnum.deserialize(child)
-            obj.type_of_dtc = type_of_dtc_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TYPE-OF-DTC":
+                setattr(obj, "type_of_dtc", DiagnosticTypeOfDtcSupportedEnum.deserialize(child))
 
         return obj
 

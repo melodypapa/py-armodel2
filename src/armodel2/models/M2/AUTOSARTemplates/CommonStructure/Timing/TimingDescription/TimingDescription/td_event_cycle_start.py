@@ -36,7 +36,7 @@ class TDEventCycleStart(TDEventCom, ABC):
 
     cycle_repetition: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "CYCLE-REPETITION": lambda obj, elem: setattr(obj, "cycle_repetition", elem.text),
+        "CYCLE-REPETITION": lambda obj, elem: setattr(obj, "cycle_repetition", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -97,11 +97,13 @@ class TDEventCycleStart(TDEventCom, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventCycleStart, cls).deserialize(element)
 
-        # Parse cycle_repetition
-        child = SerializationHelper.find_child_element(element, "CYCLE-REPETITION")
-        if child is not None:
-            cycle_repetition_value = child.text
-            obj.cycle_repetition = cycle_repetition_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CYCLE-REPETITION":
+                setattr(obj, "cycle_repetition", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

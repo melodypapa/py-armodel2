@@ -34,7 +34,7 @@ class SwDataDependency(ARObject):
 
     sw_data: Optional[CompuGenericMath]
     _DESERIALIZE_DISPATCH = {
-        "SW-DATA": lambda obj, elem: setattr(obj, "sw_data", CompuGenericMath.deserialize(elem)),
+        "SW-DATA": lambda obj, elem: setattr(obj, "sw_data", SerializationHelper.deserialize_by_tag(elem, "CompuGenericMath")),
     }
 
 
@@ -95,11 +95,13 @@ class SwDataDependency(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwDataDependency, cls).deserialize(element)
 
-        # Parse sw_data
-        child = SerializationHelper.find_child_element(element, "SW-DATA")
-        if child is not None:
-            sw_data_value = SerializationHelper.deserialize_by_tag(child, "CompuGenericMath")
-            obj.sw_data = sw_data_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SW-DATA":
+                setattr(obj, "sw_data", SerializationHelper.deserialize_by_tag(child, "CompuGenericMath"))
 
         return obj
 

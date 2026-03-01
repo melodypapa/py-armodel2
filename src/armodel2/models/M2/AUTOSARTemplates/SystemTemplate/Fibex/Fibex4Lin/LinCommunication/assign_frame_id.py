@@ -100,11 +100,13 @@ class AssignFrameId(LinConfigurationEntry):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AssignFrameId, cls).deserialize(element)
 
-        # Parse assigned_frame_ref
-        child = SerializationHelper.find_child_element(element, "ASSIGNED-FRAME-REF")
-        if child is not None:
-            assigned_frame_ref_value = ARRef.deserialize(child)
-            obj.assigned_frame_ref = assigned_frame_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ASSIGNED-FRAME-REF":
+                setattr(obj, "assigned_frame_ref", ARRef.deserialize(child))
 
         return obj
 

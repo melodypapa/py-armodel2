@@ -38,7 +38,7 @@ class CryptoEllipticCurveProps(ARElement):
 
     named_curve_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "NAMED-CURVE-ID": lambda obj, elem: setattr(obj, "named_curve_id", elem.text),
+        "NAMED-CURVE-ID": lambda obj, elem: setattr(obj, "named_curve_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -99,11 +99,13 @@ class CryptoEllipticCurveProps(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CryptoEllipticCurveProps, cls).deserialize(element)
 
-        # Parse named_curve_id
-        child = SerializationHelper.find_child_element(element, "NAMED-CURVE-ID")
-        if child is not None:
-            named_curve_id_value = child.text
-            obj.named_curve_id = named_curve_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "NAMED-CURVE-ID":
+                setattr(obj, "named_curve_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

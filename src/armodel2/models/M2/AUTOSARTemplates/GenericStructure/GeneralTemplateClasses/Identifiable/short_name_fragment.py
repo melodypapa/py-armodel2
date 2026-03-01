@@ -36,8 +36,8 @@ class ShortNameFragment(ARObject):
     fragment: Identifier
     role: String
     _DESERIALIZE_DISPATCH = {
-        "FRAGMENT": lambda obj, elem: setattr(obj, "fragment", elem.text),
-        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+        "FRAGMENT": lambda obj, elem: setattr(obj, "fragment", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -113,17 +113,15 @@ class ShortNameFragment(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ShortNameFragment, cls).deserialize(element)
 
-        # Parse fragment
-        child = SerializationHelper.find_child_element(element, "FRAGMENT")
-        if child is not None:
-            fragment_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.fragment = fragment_value
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = child.text
-            obj.role = role_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FRAGMENT":
+                setattr(obj, "fragment", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

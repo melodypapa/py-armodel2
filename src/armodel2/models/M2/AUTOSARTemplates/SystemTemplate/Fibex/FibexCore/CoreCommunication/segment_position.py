@@ -40,8 +40,8 @@ class SegmentPosition(ARObject):
     segment: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
         "SEGMENT-BYTE": lambda obj, elem: setattr(obj, "segment_byte", ByteOrderEnum.deserialize(elem)),
-        "SEGMENT-LENGTH": lambda obj, elem: setattr(obj, "segment_length", elem.text),
-        "SEGMENT": lambda obj, elem: setattr(obj, "segment", elem.text),
+        "SEGMENT-LENGTH": lambda obj, elem: setattr(obj, "segment_length", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "SEGMENT": lambda obj, elem: setattr(obj, "segment", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -132,23 +132,17 @@ class SegmentPosition(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SegmentPosition, cls).deserialize(element)
 
-        # Parse segment_byte
-        child = SerializationHelper.find_child_element(element, "SEGMENT-BYTE")
-        if child is not None:
-            segment_byte_value = ByteOrderEnum.deserialize(child)
-            obj.segment_byte = segment_byte_value
-
-        # Parse segment_length
-        child = SerializationHelper.find_child_element(element, "SEGMENT-LENGTH")
-        if child is not None:
-            segment_length_value = child.text
-            obj.segment_length = segment_length_value
-
-        # Parse segment
-        child = SerializationHelper.find_child_element(element, "SEGMENT")
-        if child is not None:
-            segment_value = child.text
-            obj.segment = segment_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SEGMENT-BYTE":
+                setattr(obj, "segment_byte", ByteOrderEnum.deserialize(child))
+            elif tag == "SEGMENT-LENGTH":
+                setattr(obj, "segment_length", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "SEGMENT":
+                setattr(obj, "segment", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

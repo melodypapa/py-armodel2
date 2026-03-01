@@ -47,9 +47,9 @@ class EcucParameterValue(EcucIndexableValue, ABC):
     definition_ref: Optional[ARRef]
     is_auto_value: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "ANNOTATIONS": lambda obj, elem: obj.annotations.append(Annotation.deserialize(elem)),
-        "DEFINITION-REF": lambda obj, elem: setattr(obj, "definition_ref", ARRef.deserialize(elem)),
-        "IS-AUTO-VALUE": lambda obj, elem: setattr(obj, "is_auto_value", elem.text),
+        "ANNOTATIONS": lambda obj, elem: obj.annotations.append(SerializationHelper.deserialize_by_tag(elem, "Annotation")),
+        "DEFINITION-REF": ("_POLYMORPHIC", "definition_ref", ["EcucAbstractStringParamDef", "EcucAddInfoParamDef", "EcucBooleanParamDef", "EcucEnumerationParamDef", "EcucFloatParamDef", "EcucIntegerParamDef"]),
+        "IS-AUTO-VALUE": lambda obj, elem: setattr(obj, "is_auto_value", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -136,27 +136,31 @@ class EcucParameterValue(EcucIndexableValue, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucParameterValue, cls).deserialize(element)
 
-        # Parse annotations (list from container "ANNOTATIONS")
-        obj.annotations = []
-        container = SerializationHelper.find_child_element(element, "ANNOTATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.annotations.append(child_value)
-
-        # Parse definition_ref
-        child = SerializationHelper.find_child_element(element, "DEFINITION-REF")
-        if child is not None:
-            definition_ref_value = ARRef.deserialize(child)
-            obj.definition_ref = definition_ref_value
-
-        # Parse is_auto_value
-        child = SerializationHelper.find_child_element(element, "IS-AUTO-VALUE")
-        if child is not None:
-            is_auto_value_value = child.text
-            obj.is_auto_value = is_auto_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ANNOTATIONS":
+                obj.annotations.append(SerializationHelper.deserialize_by_tag(child, "Annotation"))
+            elif tag == "DEFINITION-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ECUC-ABSTRACT-STRING-PARAM-DEF":
+                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucAbstractStringParamDef"))
+                    elif concrete_tag == "ECUC-ADD-INFO-PARAM-DEF":
+                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucAddInfoParamDef"))
+                    elif concrete_tag == "ECUC-BOOLEAN-PARAM-DEF":
+                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucBooleanParamDef"))
+                    elif concrete_tag == "ECUC-ENUMERATION-PARAM-DEF":
+                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucEnumerationParamDef"))
+                    elif concrete_tag == "ECUC-FLOAT-PARAM-DEF":
+                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucFloatParamDef"))
+                    elif concrete_tag == "ECUC-INTEGER-PARAM-DEF":
+                        setattr(obj, "definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucIntegerParamDef"))
+            elif tag == "IS-AUTO-VALUE":
+                setattr(obj, "is_auto_value", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

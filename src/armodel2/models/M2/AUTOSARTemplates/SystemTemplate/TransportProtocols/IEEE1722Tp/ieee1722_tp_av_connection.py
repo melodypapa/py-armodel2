@@ -41,7 +41,7 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
     max_transit_time: Optional[TimeValue]
     sdu_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "MAX-TRANSIT-TIME": lambda obj, elem: setattr(obj, "max_transit_time", elem.text),
+        "MAX-TRANSIT-TIME": lambda obj, elem: setattr(obj, "max_transit_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "SDUS": lambda obj, elem: obj.sdu_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -121,27 +121,15 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpAvConnection, cls).deserialize(element)
 
-        # Parse max_transit_time
-        child = SerializationHelper.find_child_element(element, "MAX-TRANSIT-TIME")
-        if child is not None:
-            max_transit_time_value = child.text
-            obj.max_transit_time = max_transit_time_value
-
-        # Parse sdu_refs (list from container "SDU-REFS")
-        obj.sdu_refs = []
-        container = SerializationHelper.find_child_element(element, "SDU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sdu_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAX-TRANSIT-TIME":
+                setattr(obj, "max_transit_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "SDUS":
+                obj.sdu_refs.append(ARRef.deserialize(child))
 
         return obj
 

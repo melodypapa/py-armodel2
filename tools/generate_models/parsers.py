@@ -194,3 +194,32 @@ def load_all_package_data(packages_dir: Path) -> Dict[str, Dict[str, Any]]:
             pass
 
     return package_data
+
+
+def load_polymorphic_types(
+    mappings_file: Path,
+) -> Dict[str, List[str]]:
+    """Parse model_mappings.yaml to get polymorphic type mappings.
+
+    Args:
+        mappings_file: Path to model_mappings.yaml file
+
+    Returns:
+        Dictionary mapping base types to lists of concrete implementation types
+        (empty dict if file doesn't exist, yaml not available, or no polymorphic_types key)
+    """
+    if _yaml is None:
+        # YAML module not available, return empty result
+        return {}
+
+    if not mappings_file.exists():
+        # File doesn't exist, return empty result
+        return {}
+
+    try:
+        with open(mappings_file, "r", encoding="utf-8") as f:
+            data = _yaml.safe_load(f) if _yaml else {}
+            return data.get("polymorphic_types", {})
+    except Exception:
+        # If there's any error loading the file, return empty result
+        return {}

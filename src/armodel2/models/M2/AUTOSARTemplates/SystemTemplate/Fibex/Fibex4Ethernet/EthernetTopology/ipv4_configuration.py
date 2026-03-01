@@ -50,14 +50,14 @@ class Ipv4Configuration(NetworkEndpointAddress):
     network_mask: Optional[Ip4AddressString]
     ttl: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ASSIGNMENT": lambda obj, elem: setattr(obj, "assignment", elem.text),
-        "DEFAULT-GATEWAY": lambda obj, elem: setattr(obj, "default_gateway", elem.text),
-        "DNS-SERVERS": lambda obj, elem: obj.dns_servers.append(elem.text),
+        "ASSIGNMENT": lambda obj, elem: setattr(obj, "assignment", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "DEFAULT-GATEWAY": lambda obj, elem: setattr(obj, "default_gateway", SerializationHelper.deserialize_by_tag(elem, "Ip4AddressString")),
+        "DNS-SERVERS": lambda obj, elem: obj.dns_servers.append(SerializationHelper.deserialize_by_tag(elem, "Ip4AddressString")),
         "IP-ADDRESS-KEEP-ENUM": lambda obj, elem: setattr(obj, "ip_address_keep_enum", IpAddressKeepEnum.deserialize(elem)),
-        "IPV4-ADDRESS": lambda obj, elem: setattr(obj, "ipv4_address", elem.text),
+        "IPV4-ADDRESS": lambda obj, elem: setattr(obj, "ipv4_address", SerializationHelper.deserialize_by_tag(elem, "Ip4AddressString")),
         "IPV4-ADDRESS-SOURCE": lambda obj, elem: setattr(obj, "ipv4_address_source", Ipv4AddressSourceEnum.deserialize(elem)),
-        "NETWORK-MASK": lambda obj, elem: setattr(obj, "network_mask", elem.text),
-        "TTL": lambda obj, elem: setattr(obj, "ttl", elem.text),
+        "NETWORK-MASK": lambda obj, elem: setattr(obj, "network_mask", SerializationHelper.deserialize_by_tag(elem, "Ip4AddressString")),
+        "TTL": lambda obj, elem: setattr(obj, "ttl", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -226,57 +226,27 @@ class Ipv4Configuration(NetworkEndpointAddress):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ipv4Configuration, cls).deserialize(element)
 
-        # Parse assignment
-        child = SerializationHelper.find_child_element(element, "ASSIGNMENT")
-        if child is not None:
-            assignment_value = child.text
-            obj.assignment = assignment_value
-
-        # Parse default_gateway
-        child = SerializationHelper.find_child_element(element, "DEFAULT-GATEWAY")
-        if child is not None:
-            default_gateway_value = child.text
-            obj.default_gateway = default_gateway_value
-
-        # Parse dns_servers (list from container "DNS-SERVERS")
-        obj.dns_servers = []
-        container = SerializationHelper.find_child_element(element, "DNS-SERVERS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (Ip4AddressString) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.dns_servers.append(child_value)
-
-        # Parse ip_address_keep_enum
-        child = SerializationHelper.find_child_element(element, "IP-ADDRESS-KEEP-ENUM")
-        if child is not None:
-            ip_address_keep_enum_value = IpAddressKeepEnum.deserialize(child)
-            obj.ip_address_keep_enum = ip_address_keep_enum_value
-
-        # Parse ipv4_address
-        child = SerializationHelper.find_child_element(element, "IPV4-ADDRESS")
-        if child is not None:
-            ipv4_address_value = child.text
-            obj.ipv4_address = ipv4_address_value
-
-        # Parse ipv4_address_source
-        child = SerializationHelper.find_child_element(element, "IPV4-ADDRESS-SOURCE")
-        if child is not None:
-            ipv4_address_source_value = Ipv4AddressSourceEnum.deserialize(child)
-            obj.ipv4_address_source = ipv4_address_source_value
-
-        # Parse network_mask
-        child = SerializationHelper.find_child_element(element, "NETWORK-MASK")
-        if child is not None:
-            network_mask_value = child.text
-            obj.network_mask = network_mask_value
-
-        # Parse ttl
-        child = SerializationHelper.find_child_element(element, "TTL")
-        if child is not None:
-            ttl_value = child.text
-            obj.ttl = ttl_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ASSIGNMENT":
+                setattr(obj, "assignment", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "DEFAULT-GATEWAY":
+                setattr(obj, "default_gateway", SerializationHelper.deserialize_by_tag(child, "Ip4AddressString"))
+            elif tag == "DNS-SERVERS":
+                obj.dns_servers.append(SerializationHelper.deserialize_by_tag(child, "Ip4AddressString"))
+            elif tag == "IP-ADDRESS-KEEP-ENUM":
+                setattr(obj, "ip_address_keep_enum", IpAddressKeepEnum.deserialize(child))
+            elif tag == "IPV4-ADDRESS":
+                setattr(obj, "ipv4_address", SerializationHelper.deserialize_by_tag(child, "Ip4AddressString"))
+            elif tag == "IPV4-ADDRESS-SOURCE":
+                setattr(obj, "ipv4_address_source", Ipv4AddressSourceEnum.deserialize(child))
+            elif tag == "NETWORK-MASK":
+                setattr(obj, "network_mask", SerializationHelper.deserialize_by_tag(child, "Ip4AddressString"))
+            elif tag == "TTL":
+                setattr(obj, "ttl", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

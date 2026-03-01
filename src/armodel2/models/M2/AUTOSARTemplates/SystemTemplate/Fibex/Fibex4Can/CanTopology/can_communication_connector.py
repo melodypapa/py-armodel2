@@ -41,9 +41,9 @@ class CanCommunicationConnector(AbstractCanCommunicationConnector):
     pnc_wakeup: Optional[PositiveUnlimitedInteger]
     pnc_wakeup_dlc: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "PNC-WAKEUP-CAN": lambda obj, elem: setattr(obj, "pnc_wakeup_can", elem.text),
-        "PNC-WAKEUP": lambda obj, elem: setattr(obj, "pnc_wakeup", elem.text),
-        "PNC-WAKEUP-DLC": lambda obj, elem: setattr(obj, "pnc_wakeup_dlc", elem.text),
+        "PNC-WAKEUP-CAN": lambda obj, elem: setattr(obj, "pnc_wakeup_can", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PNC-WAKEUP": lambda obj, elem: setattr(obj, "pnc_wakeup", SerializationHelper.deserialize_by_tag(elem, "PositiveUnlimitedInteger")),
+        "PNC-WAKEUP-DLC": lambda obj, elem: setattr(obj, "pnc_wakeup_dlc", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -134,23 +134,17 @@ class CanCommunicationConnector(AbstractCanCommunicationConnector):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanCommunicationConnector, cls).deserialize(element)
 
-        # Parse pnc_wakeup_can
-        child = SerializationHelper.find_child_element(element, "PNC-WAKEUP-CAN")
-        if child is not None:
-            pnc_wakeup_can_value = child.text
-            obj.pnc_wakeup_can = pnc_wakeup_can_value
-
-        # Parse pnc_wakeup
-        child = SerializationHelper.find_child_element(element, "PNC-WAKEUP")
-        if child is not None:
-            pnc_wakeup_value = child.text
-            obj.pnc_wakeup = pnc_wakeup_value
-
-        # Parse pnc_wakeup_dlc
-        child = SerializationHelper.find_child_element(element, "PNC-WAKEUP-DLC")
-        if child is not None:
-            pnc_wakeup_dlc_value = child.text
-            obj.pnc_wakeup_dlc = pnc_wakeup_dlc_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PNC-WAKEUP-CAN":
+                setattr(obj, "pnc_wakeup_can", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PNC-WAKEUP":
+                setattr(obj, "pnc_wakeup", SerializationHelper.deserialize_by_tag(child, "PositiveUnlimitedInteger"))
+            elif tag == "PNC-WAKEUP-DLC":
+                setattr(obj, "pnc_wakeup_dlc", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

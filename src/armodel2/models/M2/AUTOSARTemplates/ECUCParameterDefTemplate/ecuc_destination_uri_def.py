@@ -35,7 +35,7 @@ class EcucDestinationUriDef(Identifiable):
 
     destination_uri: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "DESTINATION-URI": lambda obj, elem: setattr(obj, "destination_uri", any (EcucDestinationUri).deserialize(elem)),
+        "DESTINATION-URI": lambda obj, elem: setattr(obj, "destination_uri", SerializationHelper.deserialize_by_tag(elem, "any (EcucDestinationUri)")),
     }
 
 
@@ -96,11 +96,13 @@ class EcucDestinationUriDef(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucDestinationUriDef, cls).deserialize(element)
 
-        # Parse destination_uri
-        child = SerializationHelper.find_child_element(element, "DESTINATION-URI")
-        if child is not None:
-            destination_uri_value = child.text
-            obj.destination_uri = destination_uri_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DESTINATION-URI":
+                setattr(obj, "destination_uri", SerializationHelper.deserialize_by_tag(child, "any (EcucDestinationUri)"))
 
         return obj
 

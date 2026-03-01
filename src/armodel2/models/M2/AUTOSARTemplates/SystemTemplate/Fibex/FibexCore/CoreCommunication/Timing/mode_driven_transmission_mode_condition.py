@@ -99,21 +99,13 @@ class ModeDrivenTransmissionModeCondition(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeDrivenTransmissionModeCondition, cls).deserialize(element)
 
-        # Parse mode_refs (list from container "MODE-REFS")
-        obj.mode_refs = []
-        container = SerializationHelper.find_child_element(element, "MODE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mode_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MODES":
+                obj.mode_refs.append(ARRef.deserialize(child))
 
         return obj
 

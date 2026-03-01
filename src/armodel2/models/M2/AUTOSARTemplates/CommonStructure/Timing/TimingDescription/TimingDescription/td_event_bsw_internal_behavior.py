@@ -40,8 +40,8 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
     bsw_module_entity_entity_ref: Optional[ARRef]
     td_event_bsw_behavior_type: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "BSW-MODULE-ENTITY-ENTITY-REF": lambda obj, elem: setattr(obj, "bsw_module_entity_entity_ref", ARRef.deserialize(elem)),
-        "TD-EVENT-BSW-BEHAVIOR-TYPE": lambda obj, elem: setattr(obj, "td_event_bsw_behavior_type", any (TDEventBswInternal).deserialize(elem)),
+        "BSW-MODULE-ENTITY-ENTITY-REF": ("_POLYMORPHIC", "bsw_module_entity_entity_ref", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
+        "TD-EVENT-BSW-BEHAVIOR-TYPE": lambda obj, elem: setattr(obj, "td_event_bsw_behavior_type", SerializationHelper.deserialize_by_tag(elem, "any (TDEventBswInternal)")),
     }
 
 
@@ -117,17 +117,23 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventBswInternalBehavior, cls).deserialize(element)
 
-        # Parse bsw_module_entity_entity_ref
-        child = SerializationHelper.find_child_element(element, "BSW-MODULE-ENTITY-ENTITY-REF")
-        if child is not None:
-            bsw_module_entity_entity_ref_value = ARRef.deserialize(child)
-            obj.bsw_module_entity_entity_ref = bsw_module_entity_entity_ref_value
-
-        # Parse td_event_bsw_behavior_type
-        child = SerializationHelper.find_child_element(element, "TD-EVENT-BSW-BEHAVIOR-TYPE")
-        if child is not None:
-            td_event_bsw_behavior_type_value = child.text
-            obj.td_event_bsw_behavior_type = td_event_bsw_behavior_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BSW-MODULE-ENTITY-ENTITY-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-CALLED-ENTITY":
+                        setattr(obj, "bsw_module_entity_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswCalledEntity"))
+                    elif concrete_tag == "BSW-INTERRUPT-ENTITY":
+                        setattr(obj, "bsw_module_entity_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswInterruptEntity"))
+                    elif concrete_tag == "BSW-SCHEDULABLE-ENTITY":
+                        setattr(obj, "bsw_module_entity_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswSchedulableEntity"))
+            elif tag == "TD-EVENT-BSW-BEHAVIOR-TYPE":
+                setattr(obj, "td_event_bsw_behavior_type", SerializationHelper.deserialize_by_tag(child, "any (TDEventBswInternal)"))
 
         return obj
 

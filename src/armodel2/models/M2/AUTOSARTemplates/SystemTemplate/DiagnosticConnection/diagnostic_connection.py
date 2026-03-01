@@ -178,55 +178,21 @@ class DiagnosticConnection(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticConnection, cls).deserialize(element)
 
-        # Parse functional_request_refs (list from container "FUNCTIONAL-REQUEST-REFS")
-        obj.functional_request_refs = []
-        container = SerializationHelper.find_child_element(element, "FUNCTIONAL-REQUEST-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.functional_request_refs.append(child_value)
-
-        # Parse periodic_response_uudt_refs (list from container "PERIODIC-RESPONSE-UUDT-REFS")
-        obj.periodic_response_uudt_refs = []
-        container = SerializationHelper.find_child_element(element, "PERIODIC-RESPONSE-UUDT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.periodic_response_uudt_refs.append(child_value)
-
-        # Parse physical_request_ref
-        child = SerializationHelper.find_child_element(element, "PHYSICAL-REQUEST-REF")
-        if child is not None:
-            physical_request_ref_value = ARRef.deserialize(child)
-            obj.physical_request_ref = physical_request_ref_value
-
-        # Parse response_ref
-        child = SerializationHelper.find_child_element(element, "RESPONSE-REF")
-        if child is not None:
-            response_ref_value = ARRef.deserialize(child)
-            obj.response_ref = response_ref_value
-
-        # Parse response_on_ref
-        child = SerializationHelper.find_child_element(element, "RESPONSE-ON-REF")
-        if child is not None:
-            response_on_ref_value = ARRef.deserialize(child)
-            obj.response_on_ref = response_on_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FUNCTIONAL-REQUESTS":
+                obj.functional_request_refs.append(ARRef.deserialize(child))
+            elif tag == "PERIODIC-RESPONSE-UUDTS":
+                obj.periodic_response_uudt_refs.append(ARRef.deserialize(child))
+            elif tag == "PHYSICAL-REQUEST-REF":
+                setattr(obj, "physical_request_ref", ARRef.deserialize(child))
+            elif tag == "RESPONSE-REF":
+                setattr(obj, "response_ref", ARRef.deserialize(child))
+            elif tag == "RESPONSE-ON-REF":
+                setattr(obj, "response_on_ref", ARRef.deserialize(child))
 
         return obj
 

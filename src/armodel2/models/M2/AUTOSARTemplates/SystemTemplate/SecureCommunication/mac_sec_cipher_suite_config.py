@@ -34,7 +34,7 @@ class MacSecCipherSuiteConfig(ARObject):
 
     cipher_suite: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "CIPHER-SUITE": lambda obj, elem: setattr(obj, "cipher_suite", elem.text),
+        "CIPHER-SUITE": lambda obj, elem: setattr(obj, "cipher_suite", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -95,11 +95,13 @@ class MacSecCipherSuiteConfig(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacSecCipherSuiteConfig, cls).deserialize(element)
 
-        # Parse cipher_suite
-        child = SerializationHelper.find_child_element(element, "CIPHER-SUITE")
-        if child is not None:
-            cipher_suite_value = child.text
-            obj.cipher_suite = cipher_suite_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CIPHER-SUITE":
+                setattr(obj, "cipher_suite", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

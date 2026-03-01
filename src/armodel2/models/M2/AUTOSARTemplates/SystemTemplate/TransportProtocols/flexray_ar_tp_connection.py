@@ -53,10 +53,10 @@ class FlexrayArTpConnection(TpConnection):
     source_ref: Optional[ARRef]
     target_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONNECTION-PRIO": lambda obj, elem: setattr(obj, "connection_prio", elem.text),
-        "DIRECT-TP-SDU-REF": lambda obj, elem: setattr(obj, "direct_tp_sdu_ref", ARRef.deserialize(elem)),
+        "CONNECTION-PRIO": lambda obj, elem: setattr(obj, "connection_prio", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "DIRECT-TP-SDU-REF": ("_POLYMORPHIC", "direct_tp_sdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
         "MULTICAST-REF": lambda obj, elem: setattr(obj, "multicast_ref", ARRef.deserialize(elem)),
-        "REVERSED-TP-SDU-REF": lambda obj, elem: setattr(obj, "reversed_tp_sdu_ref", ARRef.deserialize(elem)),
+        "REVERSED-TP-SDU-REF": ("_POLYMORPHIC", "reversed_tp_sdu_ref", ["ContainerIPdu", "DcmIPdu", "GeneralPurposeIPdu", "ISignalIPdu", "J1939DcmIPdu", "MultiplexedIPdu", "NPdu", "SecuredIPdu", "UserDefinedIPdu"]),
         "SOURCE-REF": lambda obj, elem: setattr(obj, "source_ref", ARRef.deserialize(elem)),
         "TARGETS": lambda obj, elem: obj.target_refs.append(ARRef.deserialize(elem)),
     }
@@ -197,51 +197,63 @@ class FlexrayArTpConnection(TpConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayArTpConnection, cls).deserialize(element)
 
-        # Parse connection_prio
-        child = SerializationHelper.find_child_element(element, "CONNECTION-PRIO")
-        if child is not None:
-            connection_prio_value = child.text
-            obj.connection_prio = connection_prio_value
-
-        # Parse direct_tp_sdu_ref
-        child = SerializationHelper.find_child_element(element, "DIRECT-TP-SDU-REF")
-        if child is not None:
-            direct_tp_sdu_ref_value = ARRef.deserialize(child)
-            obj.direct_tp_sdu_ref = direct_tp_sdu_ref_value
-
-        # Parse multicast_ref
-        child = SerializationHelper.find_child_element(element, "MULTICAST-REF")
-        if child is not None:
-            multicast_ref_value = ARRef.deserialize(child)
-            obj.multicast_ref = multicast_ref_value
-
-        # Parse reversed_tp_sdu_ref
-        child = SerializationHelper.find_child_element(element, "REVERSED-TP-SDU-REF")
-        if child is not None:
-            reversed_tp_sdu_ref_value = ARRef.deserialize(child)
-            obj.reversed_tp_sdu_ref = reversed_tp_sdu_ref_value
-
-        # Parse source_ref
-        child = SerializationHelper.find_child_element(element, "SOURCE-REF")
-        if child is not None:
-            source_ref_value = ARRef.deserialize(child)
-            obj.source_ref = source_ref_value
-
-        # Parse target_refs (list from container "TARGET-REFS")
-        obj.target_refs = []
-        container = SerializationHelper.find_child_element(element, "TARGET-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.target_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONNECTION-PRIO":
+                setattr(obj, "connection_prio", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "DIRECT-TP-SDU-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CONTAINER-I-PDU":
+                        setattr(obj, "direct_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "ContainerIPdu"))
+                    elif concrete_tag == "DCM-I-PDU":
+                        setattr(obj, "direct_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "DcmIPdu"))
+                    elif concrete_tag == "GENERAL-PURPOSE-I-PDU":
+                        setattr(obj, "direct_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "GeneralPurposeIPdu"))
+                    elif concrete_tag == "I-SIGNAL-I-PDU":
+                        setattr(obj, "direct_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "ISignalIPdu"))
+                    elif concrete_tag == "J1939-DCM-I-PDU":
+                        setattr(obj, "direct_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "J1939DcmIPdu"))
+                    elif concrete_tag == "MULTIPLEXED-I-PDU":
+                        setattr(obj, "direct_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "MultiplexedIPdu"))
+                    elif concrete_tag == "N-PDU":
+                        setattr(obj, "direct_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "NPdu"))
+                    elif concrete_tag == "SECURED-I-PDU":
+                        setattr(obj, "direct_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "SecuredIPdu"))
+                    elif concrete_tag == "USER-DEFINED-I-PDU":
+                        setattr(obj, "direct_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedIPdu"))
+            elif tag == "MULTICAST-REF":
+                setattr(obj, "multicast_ref", ARRef.deserialize(child))
+            elif tag == "REVERSED-TP-SDU-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CONTAINER-I-PDU":
+                        setattr(obj, "reversed_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "ContainerIPdu"))
+                    elif concrete_tag == "DCM-I-PDU":
+                        setattr(obj, "reversed_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "DcmIPdu"))
+                    elif concrete_tag == "GENERAL-PURPOSE-I-PDU":
+                        setattr(obj, "reversed_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "GeneralPurposeIPdu"))
+                    elif concrete_tag == "I-SIGNAL-I-PDU":
+                        setattr(obj, "reversed_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "ISignalIPdu"))
+                    elif concrete_tag == "J1939-DCM-I-PDU":
+                        setattr(obj, "reversed_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "J1939DcmIPdu"))
+                    elif concrete_tag == "MULTIPLEXED-I-PDU":
+                        setattr(obj, "reversed_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "MultiplexedIPdu"))
+                    elif concrete_tag == "N-PDU":
+                        setattr(obj, "reversed_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "NPdu"))
+                    elif concrete_tag == "SECURED-I-PDU":
+                        setattr(obj, "reversed_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "SecuredIPdu"))
+                    elif concrete_tag == "USER-DEFINED-I-PDU":
+                        setattr(obj, "reversed_tp_sdu_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedIPdu"))
+            elif tag == "SOURCE-REF":
+                setattr(obj, "source_ref", ARRef.deserialize(child))
+            elif tag == "TARGETS":
+                obj.target_refs.append(ARRef.deserialize(child))
 
         return obj
 

@@ -49,12 +49,12 @@ class SecurityEventContextProps(Identifiable):
     sensor_instance: Optional[PositiveInteger]
     severity: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-DATA": lambda obj, elem: setattr(obj, "context_data", any (SecurityEventContext).deserialize(elem)),
-        "DEFAULT": lambda obj, elem: setattr(obj, "default", any (SecurityEventReporting).deserialize(elem)),
-        "PERSISTENT": lambda obj, elem: setattr(obj, "persistent", elem.text),
+        "CONTEXT-DATA": lambda obj, elem: setattr(obj, "context_data", SerializationHelper.deserialize_by_tag(elem, "any (SecurityEventContext)")),
+        "DEFAULT": lambda obj, elem: setattr(obj, "default", SerializationHelper.deserialize_by_tag(elem, "any (SecurityEventReporting)")),
+        "PERSISTENT": lambda obj, elem: setattr(obj, "persistent", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "SECURITY-EVENT-REF": lambda obj, elem: setattr(obj, "security_event_ref", ARRef.deserialize(elem)),
-        "SENSOR-INSTANCE": lambda obj, elem: setattr(obj, "sensor_instance", elem.text),
-        "SEVERITY": lambda obj, elem: setattr(obj, "severity", elem.text),
+        "SENSOR-INSTANCE": lambda obj, elem: setattr(obj, "sensor_instance", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SEVERITY": lambda obj, elem: setattr(obj, "severity", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -190,41 +190,23 @@ class SecurityEventContextProps(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventContextProps, cls).deserialize(element)
 
-        # Parse context_data
-        child = SerializationHelper.find_child_element(element, "CONTEXT-DATA")
-        if child is not None:
-            context_data_value = child.text
-            obj.context_data = context_data_value
-
-        # Parse default
-        child = SerializationHelper.find_child_element(element, "DEFAULT")
-        if child is not None:
-            default_value = child.text
-            obj.default = default_value
-
-        # Parse persistent
-        child = SerializationHelper.find_child_element(element, "PERSISTENT")
-        if child is not None:
-            persistent_value = child.text
-            obj.persistent = persistent_value
-
-        # Parse security_event_ref
-        child = SerializationHelper.find_child_element(element, "SECURITY-EVENT-REF")
-        if child is not None:
-            security_event_ref_value = ARRef.deserialize(child)
-            obj.security_event_ref = security_event_ref_value
-
-        # Parse sensor_instance
-        child = SerializationHelper.find_child_element(element, "SENSOR-INSTANCE")
-        if child is not None:
-            sensor_instance_value = child.text
-            obj.sensor_instance = sensor_instance_value
-
-        # Parse severity
-        child = SerializationHelper.find_child_element(element, "SEVERITY")
-        if child is not None:
-            severity_value = child.text
-            obj.severity = severity_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONTEXT-DATA":
+                setattr(obj, "context_data", SerializationHelper.deserialize_by_tag(child, "any (SecurityEventContext)"))
+            elif tag == "DEFAULT":
+                setattr(obj, "default", SerializationHelper.deserialize_by_tag(child, "any (SecurityEventReporting)"))
+            elif tag == "PERSISTENT":
+                setattr(obj, "persistent", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SECURITY-EVENT-REF":
+                setattr(obj, "security_event_ref", ARRef.deserialize(child))
+            elif tag == "SENSOR-INSTANCE":
+                setattr(obj, "sensor_instance", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SEVERITY":
+                setattr(obj, "severity", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

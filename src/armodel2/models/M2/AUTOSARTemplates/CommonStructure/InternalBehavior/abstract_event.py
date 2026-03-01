@@ -38,7 +38,7 @@ class AbstractEvent(Identifiable, ABC):
 
     activation_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ACTIVATION-REF": lambda obj, elem: setattr(obj, "activation_ref", ARRef.deserialize(elem)),
+        "ACTIVATION-REF": ("_POLYMORPHIC", "activation_ref", ["BswModuleEntity", "RunnableEntity"]),
     }
 
 
@@ -99,11 +99,19 @@ class AbstractEvent(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractEvent, cls).deserialize(element)
 
-        # Parse activation_ref
-        child = SerializationHelper.find_child_element(element, "ACTIVATION-REF")
-        if child is not None:
-            activation_ref_value = ARRef.deserialize(child)
-            obj.activation_ref = activation_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACTIVATION-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-MODULE-ENTITY":
+                        setattr(obj, "activation_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleEntity"))
+                    elif concrete_tag == "RUNNABLE-ENTITY":
+                        setattr(obj, "activation_ref", SerializationHelper.deserialize_by_tag(child[0], "RunnableEntity"))
 
         return obj
 

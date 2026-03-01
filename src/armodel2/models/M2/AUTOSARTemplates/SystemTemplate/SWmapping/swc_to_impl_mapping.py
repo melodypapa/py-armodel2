@@ -100,11 +100,13 @@ class SwcToImplMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcToImplMapping, cls).deserialize(element)
 
-        # Parse component_ref
-        child = SerializationHelper.find_child_element(element, "COMPONENT-REF")
-        if child is not None:
-            component_ref_value = ARRef.deserialize(child)
-            obj.component_ref = component_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPONENT-REF":
+                setattr(obj, "component_ref", ARRef.deserialize(child))
 
         return obj
 

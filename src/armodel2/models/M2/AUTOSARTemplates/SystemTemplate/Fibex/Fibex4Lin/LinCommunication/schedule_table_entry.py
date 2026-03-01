@@ -38,9 +38,9 @@ class ScheduleTableEntry(ARObject, ABC):
     introduction: Optional[DocumentationBlock]
     position_in_table: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "DELAY": lambda obj, elem: setattr(obj, "delay", elem.text),
-        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", DocumentationBlock.deserialize(elem)),
-        "POSITION-IN-TABLE": lambda obj, elem: setattr(obj, "position_in_table", elem.text),
+        "DELAY": lambda obj, elem: setattr(obj, "delay", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "POSITION-IN-TABLE": lambda obj, elem: setattr(obj, "position_in_table", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -131,23 +131,17 @@ class ScheduleTableEntry(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ScheduleTableEntry, cls).deserialize(element)
 
-        # Parse delay
-        child = SerializationHelper.find_child_element(element, "DELAY")
-        if child is not None:
-            delay_value = child.text
-            obj.delay = delay_value
-
-        # Parse introduction
-        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
-        if child is not None:
-            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.introduction = introduction_value
-
-        # Parse position_in_table
-        child = SerializationHelper.find_child_element(element, "POSITION-IN-TABLE")
-        if child is not None:
-            position_in_table_value = child.text
-            obj.position_in_table = position_in_table_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DELAY":
+                setattr(obj, "delay", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "INTRODUCTION":
+                setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "POSITION-IN-TABLE":
+                setattr(obj, "position_in_table", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

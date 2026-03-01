@@ -42,9 +42,9 @@ class BuildEngineeringObject(EngineeringObject):
     file_type_pattern: RegularExpression
     intended: Optional[UriString]
     _DESERIALIZE_DISPATCH = {
-        "FILE-TYPE": lambda obj, elem: setattr(obj, "file_type", elem.text),
-        "FILE-TYPE-PATTERN": lambda obj, elem: setattr(obj, "file_type_pattern", elem.text),
-        "INTENDED": lambda obj, elem: setattr(obj, "intended", elem.text),
+        "FILE-TYPE": lambda obj, elem: setattr(obj, "file_type", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "FILE-TYPE-PATTERN": lambda obj, elem: setattr(obj, "file_type_pattern", SerializationHelper.deserialize_by_tag(elem, "RegularExpression")),
+        "INTENDED": lambda obj, elem: setattr(obj, "intended", SerializationHelper.deserialize_by_tag(elem, "UriString")),
     }
 
 
@@ -135,23 +135,17 @@ class BuildEngineeringObject(EngineeringObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BuildEngineeringObject, cls).deserialize(element)
 
-        # Parse file_type
-        child = SerializationHelper.find_child_element(element, "FILE-TYPE")
-        if child is not None:
-            file_type_value = child.text
-            obj.file_type = file_type_value
-
-        # Parse file_type_pattern
-        child = SerializationHelper.find_child_element(element, "FILE-TYPE-PATTERN")
-        if child is not None:
-            file_type_pattern_value = child.text
-            obj.file_type_pattern = file_type_pattern_value
-
-        # Parse intended
-        child = SerializationHelper.find_child_element(element, "INTENDED")
-        if child is not None:
-            intended_value = child.text
-            obj.intended = intended_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FILE-TYPE":
+                setattr(obj, "file_type", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "FILE-TYPE-PATTERN":
+                setattr(obj, "file_type_pattern", SerializationHelper.deserialize_by_tag(child, "RegularExpression"))
+            elif tag == "INTENDED":
+                setattr(obj, "intended", SerializationHelper.deserialize_by_tag(child, "UriString"))
 
         return obj
 

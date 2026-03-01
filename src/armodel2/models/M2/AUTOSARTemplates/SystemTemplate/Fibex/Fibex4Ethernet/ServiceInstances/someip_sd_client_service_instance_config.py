@@ -43,9 +43,9 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
     priority: Optional[PositiveInteger]
     service_find: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "INITIAL-FIND-BEHAVIOR": lambda obj, elem: setattr(obj, "initial_find_behavior", InitialSdDelayConfig.deserialize(elem)),
-        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
-        "SERVICE-FIND": lambda obj, elem: setattr(obj, "service_find", elem.text),
+        "INITIAL-FIND-BEHAVIOR": lambda obj, elem: setattr(obj, "initial_find_behavior", SerializationHelper.deserialize_by_tag(elem, "InitialSdDelayConfig")),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SERVICE-FIND": lambda obj, elem: setattr(obj, "service_find", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -136,23 +136,17 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SomeipSdClientServiceInstanceConfig, cls).deserialize(element)
 
-        # Parse initial_find_behavior
-        child = SerializationHelper.find_child_element(element, "INITIAL-FIND-BEHAVIOR")
-        if child is not None:
-            initial_find_behavior_value = SerializationHelper.deserialize_by_tag(child, "InitialSdDelayConfig")
-            obj.initial_find_behavior = initial_find_behavior_value
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse service_find
-        child = SerializationHelper.find_child_element(element, "SERVICE-FIND")
-        if child is not None:
-            service_find_value = child.text
-            obj.service_find = service_find_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INITIAL-FIND-BEHAVIOR":
+                setattr(obj, "initial_find_behavior", SerializationHelper.deserialize_by_tag(child, "InitialSdDelayConfig"))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SERVICE-FIND":
+                setattr(obj, "service_find", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

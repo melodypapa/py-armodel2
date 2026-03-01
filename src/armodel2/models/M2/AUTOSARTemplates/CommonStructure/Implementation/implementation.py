@@ -87,20 +87,20 @@ class Implementation(ARElement, ABC):
     vendor_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
         "BUILD-ACTION-MANIFEST-REF": lambda obj, elem: setattr(obj, "build_action_manifest_ref", ARRef.deserialize(elem)),
-        "CODE-DESCRIPTORS": lambda obj, elem: obj.code_descriptors.append(Code.deserialize(elem)),
-        "COMPILERS": lambda obj, elem: obj.compilers.append(Compiler.deserialize(elem)),
-        "GENERATED-ARTIFACTS": lambda obj, elem: obj.generated_artifacts.append(DependencyOnArtifact.deserialize(elem)),
+        "CODE-DESCRIPTORS": lambda obj, elem: obj.code_descriptors.append(SerializationHelper.deserialize_by_tag(elem, "Code")),
+        "COMPILERS": lambda obj, elem: obj.compilers.append(SerializationHelper.deserialize_by_tag(elem, "Compiler")),
+        "GENERATED-ARTIFACTS": lambda obj, elem: obj.generated_artifacts.append(SerializationHelper.deserialize_by_tag(elem, "DependencyOnArtifact")),
         "HW-ELEMENTS": lambda obj, elem: obj.hw_element_refs.append(ARRef.deserialize(elem)),
-        "LINKERS": lambda obj, elem: obj.linkers.append(Linker.deserialize(elem)),
-        "MC-SUPPORT": lambda obj, elem: setattr(obj, "mc_support", McSupportData.deserialize(elem)),
+        "LINKERS": lambda obj, elem: obj.linkers.append(SerializationHelper.deserialize_by_tag(elem, "Linker")),
+        "MC-SUPPORT": lambda obj, elem: setattr(obj, "mc_support", SerializationHelper.deserialize_by_tag(elem, "McSupportData")),
         "PROGRAMMING-LANGUAGE": lambda obj, elem: setattr(obj, "programming_language", ProgramminglanguageEnum.deserialize(elem)),
-        "REQUIRED-ARTIFACTS": lambda obj, elem: obj.required_artifacts.append(DependencyOnArtifact.deserialize(elem)),
-        "REQUIRED-GENERATOR-TOOLS": lambda obj, elem: obj.required_generator_tools.append(DependencyOnArtifact.deserialize(elem)),
-        "RESOURCE-CONSUMPTION": lambda obj, elem: setattr(obj, "resource_consumption", ResourceConsumption.deserialize(elem)),
+        "REQUIRED-ARTIFACTS": lambda obj, elem: obj.required_artifacts.append(SerializationHelper.deserialize_by_tag(elem, "DependencyOnArtifact")),
+        "REQUIRED-GENERATOR-TOOLS": lambda obj, elem: obj.required_generator_tools.append(SerializationHelper.deserialize_by_tag(elem, "DependencyOnArtifact")),
+        "RESOURCE-CONSUMPTION": lambda obj, elem: setattr(obj, "resource_consumption", SerializationHelper.deserialize_by_tag(elem, "ResourceConsumption")),
         "SWC-BSW-MAPPING-REF": lambda obj, elem: setattr(obj, "swc_bsw_mapping_ref", ARRef.deserialize(elem)),
-        "SW-VERSION": lambda obj, elem: setattr(obj, "sw_version", elem.text),
-        "USED-CODE-GENERATOR": lambda obj, elem: setattr(obj, "used_code_generator", elem.text),
-        "VENDOR-ID": lambda obj, elem: setattr(obj, "vendor_id", elem.text),
+        "SW-VERSION": lambda obj, elem: setattr(obj, "sw_version", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
+        "USED-CODE-GENERATOR": lambda obj, elem: setattr(obj, "used_code_generator", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "VENDOR-ID": lambda obj, elem: setattr(obj, "vendor_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -350,129 +350,41 @@ class Implementation(ARElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Implementation, cls).deserialize(element)
 
-        # Parse build_action_manifest_ref
-        child = SerializationHelper.find_child_element(element, "BUILD-ACTION-MANIFEST-REF")
-        if child is not None:
-            build_action_manifest_ref_value = ARRef.deserialize(child)
-            obj.build_action_manifest_ref = build_action_manifest_ref_value
-
-        # Parse code_descriptors (list from container "CODE-DESCRIPTORS")
-        obj.code_descriptors = []
-        container = SerializationHelper.find_child_element(element, "CODE-DESCRIPTORS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.code_descriptors.append(child_value)
-
-        # Parse compilers (list from container "COMPILERS")
-        obj.compilers = []
-        container = SerializationHelper.find_child_element(element, "COMPILERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.compilers.append(child_value)
-
-        # Parse generated_artifacts (list from container "GENERATED-ARTIFACTS")
-        obj.generated_artifacts = []
-        container = SerializationHelper.find_child_element(element, "GENERATED-ARTIFACTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.generated_artifacts.append(child_value)
-
-        # Parse hw_element_refs (list from container "HW-ELEMENT-REFS")
-        obj.hw_element_refs = []
-        container = SerializationHelper.find_child_element(element, "HW-ELEMENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.hw_element_refs.append(child_value)
-
-        # Parse linkers (list from container "LINKERS")
-        obj.linkers = []
-        container = SerializationHelper.find_child_element(element, "LINKERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.linkers.append(child_value)
-
-        # Parse mc_support
-        child = SerializationHelper.find_child_element(element, "MC-SUPPORT")
-        if child is not None:
-            mc_support_value = SerializationHelper.deserialize_by_tag(child, "McSupportData")
-            obj.mc_support = mc_support_value
-
-        # Parse programming_language
-        child = SerializationHelper.find_child_element(element, "PROGRAMMING-LANGUAGE")
-        if child is not None:
-            programming_language_value = ProgramminglanguageEnum.deserialize(child)
-            obj.programming_language = programming_language_value
-
-        # Parse required_artifacts (list from container "REQUIRED-ARTIFACTS")
-        obj.required_artifacts = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-ARTIFACTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.required_artifacts.append(child_value)
-
-        # Parse required_generator_tools (list from container "REQUIRED-GENERATOR-TOOLS")
-        obj.required_generator_tools = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-GENERATOR-TOOLS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.required_generator_tools.append(child_value)
-
-        # Parse resource_consumption
-        child = SerializationHelper.find_child_element(element, "RESOURCE-CONSUMPTION")
-        if child is not None:
-            resource_consumption_value = SerializationHelper.deserialize_by_tag(child, "ResourceConsumption")
-            obj.resource_consumption = resource_consumption_value
-
-        # Parse swc_bsw_mapping_ref
-        child = SerializationHelper.find_child_element(element, "SWC-BSW-MAPPING-REF")
-        if child is not None:
-            swc_bsw_mapping_ref_value = ARRef.deserialize(child)
-            obj.swc_bsw_mapping_ref = swc_bsw_mapping_ref_value
-
-        # Parse sw_version
-        child = SerializationHelper.find_child_element(element, "SW-VERSION")
-        if child is not None:
-            sw_version_value = child.text
-            obj.sw_version = sw_version_value
-
-        # Parse used_code_generator
-        child = SerializationHelper.find_child_element(element, "USED-CODE-GENERATOR")
-        if child is not None:
-            used_code_generator_value = child.text
-            obj.used_code_generator = used_code_generator_value
-
-        # Parse vendor_id
-        child = SerializationHelper.find_child_element(element, "VENDOR-ID")
-        if child is not None:
-            vendor_id_value = child.text
-            obj.vendor_id = vendor_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BUILD-ACTION-MANIFEST-REF":
+                setattr(obj, "build_action_manifest_ref", ARRef.deserialize(child))
+            elif tag == "CODE-DESCRIPTORS":
+                obj.code_descriptors.append(SerializationHelper.deserialize_by_tag(child, "Code"))
+            elif tag == "COMPILERS":
+                obj.compilers.append(SerializationHelper.deserialize_by_tag(child, "Compiler"))
+            elif tag == "GENERATED-ARTIFACTS":
+                obj.generated_artifacts.append(SerializationHelper.deserialize_by_tag(child, "DependencyOnArtifact"))
+            elif tag == "HW-ELEMENTS":
+                obj.hw_element_refs.append(ARRef.deserialize(child))
+            elif tag == "LINKERS":
+                obj.linkers.append(SerializationHelper.deserialize_by_tag(child, "Linker"))
+            elif tag == "MC-SUPPORT":
+                setattr(obj, "mc_support", SerializationHelper.deserialize_by_tag(child, "McSupportData"))
+            elif tag == "PROGRAMMING-LANGUAGE":
+                setattr(obj, "programming_language", ProgramminglanguageEnum.deserialize(child))
+            elif tag == "REQUIRED-ARTIFACTS":
+                obj.required_artifacts.append(SerializationHelper.deserialize_by_tag(child, "DependencyOnArtifact"))
+            elif tag == "REQUIRED-GENERATOR-TOOLS":
+                obj.required_generator_tools.append(SerializationHelper.deserialize_by_tag(child, "DependencyOnArtifact"))
+            elif tag == "RESOURCE-CONSUMPTION":
+                setattr(obj, "resource_consumption", SerializationHelper.deserialize_by_tag(child, "ResourceConsumption"))
+            elif tag == "SWC-BSW-MAPPING-REF":
+                setattr(obj, "swc_bsw_mapping_ref", ARRef.deserialize(child))
+            elif tag == "SW-VERSION":
+                setattr(obj, "sw_version", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
+            elif tag == "USED-CODE-GENERATOR":
+                setattr(obj, "used_code_generator", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "VENDOR-ID":
+                setattr(obj, "vendor_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

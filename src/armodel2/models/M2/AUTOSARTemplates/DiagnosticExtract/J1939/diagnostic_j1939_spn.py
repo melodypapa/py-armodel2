@@ -38,7 +38,7 @@ class DiagnosticJ1939Spn(DiagnosticCommonElement):
 
     spn: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "SPN": lambda obj, elem: setattr(obj, "spn", elem.text),
+        "SPN": lambda obj, elem: setattr(obj, "spn", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -99,11 +99,13 @@ class DiagnosticJ1939Spn(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticJ1939Spn, cls).deserialize(element)
 
-        # Parse spn
-        child = SerializationHelper.find_child_element(element, "SPN")
-        if child is not None:
-            spn_value = child.text
-            obj.spn = spn_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SPN":
+                setattr(obj, "spn", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

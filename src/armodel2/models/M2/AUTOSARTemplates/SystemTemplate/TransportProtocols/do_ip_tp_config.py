@@ -42,8 +42,8 @@ class DoIpTpConfig(TpConfig):
     do_ip_logic_address_addresses: list[DoIpLogicAddress]
     tp_connections: list[DoIpTpConnection]
     _DESERIALIZE_DISPATCH = {
-        "DO-IP-LOGIC-ADDRESS-ADDRESSES": lambda obj, elem: obj.do_ip_logic_address_addresses.append(DoIpLogicAddress.deserialize(elem)),
-        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(DoIpTpConnection.deserialize(elem)),
+        "DO-IP-LOGIC-ADDRESS-ADDRESSES": lambda obj, elem: obj.do_ip_logic_address_addresses.append(SerializationHelper.deserialize_by_tag(elem, "DoIpLogicAddress")),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SerializationHelper.deserialize_by_tag(elem, "DoIpTpConnection")),
     }
 
 
@@ -111,25 +111,15 @@ class DoIpTpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpTpConfig, cls).deserialize(element)
 
-        # Parse do_ip_logic_address_addresses (list from container "DO-IP-LOGIC-ADDRESS-ADDRESSES")
-        obj.do_ip_logic_address_addresses = []
-        container = SerializationHelper.find_child_element(element, "DO-IP-LOGIC-ADDRESS-ADDRESSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.do_ip_logic_address_addresses.append(child_value)
-
-        # Parse tp_connections (list from container "TP-CONNECTIONS")
-        obj.tp_connections = []
-        container = SerializationHelper.find_child_element(element, "TP-CONNECTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_connections.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DO-IP-LOGIC-ADDRESS-ADDRESSES":
+                obj.do_ip_logic_address_addresses.append(SerializationHelper.deserialize_by_tag(child, "DoIpLogicAddress"))
+            elif tag == "TP-CONNECTIONS":
+                obj.tp_connections.append(SerializationHelper.deserialize_by_tag(child, "DoIpTpConnection"))
 
         return obj
 

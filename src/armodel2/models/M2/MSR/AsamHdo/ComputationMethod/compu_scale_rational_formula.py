@@ -38,7 +38,7 @@ class CompuScaleRationalFormula(CompuScaleContents):
 
     compu_rational_coeffs: Optional[CompuRationalCoeffs]
     _DESERIALIZE_DISPATCH = {
-        "COMPU-RATIONAL-COEFFS": lambda obj, elem: setattr(obj, "compu_rational_coeffs", CompuRationalCoeffs.deserialize(elem)),
+        "COMPU-RATIONAL-COEFFS": lambda obj, elem: setattr(obj, "compu_rational_coeffs", SerializationHelper.deserialize_by_tag(elem, "CompuRationalCoeffs")),
     }
 
 
@@ -99,11 +99,13 @@ class CompuScaleRationalFormula(CompuScaleContents):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuScaleRationalFormula, cls).deserialize(element)
 
-        # Parse compu_rational_coeffs
-        child = SerializationHelper.find_child_element(element, "COMPU-RATIONAL-COEFFS")
-        if child is not None:
-            compu_rational_coeffs_value = SerializationHelper.deserialize_by_tag(child, "CompuRationalCoeffs")
-            obj.compu_rational_coeffs = compu_rational_coeffs_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPU-RATIONAL-COEFFS":
+                setattr(obj, "compu_rational_coeffs", SerializationHelper.deserialize_by_tag(child, "CompuRationalCoeffs"))
 
         return obj
 

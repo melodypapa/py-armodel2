@@ -34,7 +34,7 @@ class DdsTopicData(ARObject):
 
     topic_data: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "TOPIC-DATA": lambda obj, elem: setattr(obj, "topic_data", elem.text),
+        "TOPIC-DATA": lambda obj, elem: setattr(obj, "topic_data", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -95,11 +95,13 @@ class DdsTopicData(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsTopicData, cls).deserialize(element)
 
-        # Parse topic_data
-        child = SerializationHelper.find_child_element(element, "TOPIC-DATA")
-        if child is not None:
-            topic_data_value = child.text
-            obj.topic_data = topic_data_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TOPIC-DATA":
+                setattr(obj, "topic_data", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

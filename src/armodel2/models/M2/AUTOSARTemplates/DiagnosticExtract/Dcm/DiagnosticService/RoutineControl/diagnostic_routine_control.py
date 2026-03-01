@@ -117,17 +117,15 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRoutineControl, cls).deserialize(element)
 
-        # Parse routine_ref
-        child = SerializationHelper.find_child_element(element, "ROUTINE-REF")
-        if child is not None:
-            routine_ref_value = ARRef.deserialize(child)
-            obj.routine_ref = routine_ref_value
-
-        # Parse routine_control_ref
-        child = SerializationHelper.find_child_element(element, "ROUTINE-CONTROL-REF")
-        if child is not None:
-            routine_control_ref_value = ARRef.deserialize(child)
-            obj.routine_control_ref = routine_control_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ROUTINE-REF":
+                setattr(obj, "routine_ref", ARRef.deserialize(child))
+            elif tag == "ROUTINE-CONTROL-REF":
+                setattr(obj, "routine_control_ref", ARRef.deserialize(child))
 
         return obj
 

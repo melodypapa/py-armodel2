@@ -68,18 +68,18 @@ class StructuredReq(Paginateable):
     use_case: Optional[DocumentationBlock]
     _DESERIALIZE_DISPATCH = {
         "APPLIES-TOES": lambda obj, elem: obj.applies_toes.append(StandardNameEnum.deserialize(elem)),
-        "CONFLICTS": lambda obj, elem: setattr(obj, "conflicts", DocumentationBlock.deserialize(elem)),
-        "DATE": lambda obj, elem: setattr(obj, "date", elem.text),
-        "DEPENDENCIES": lambda obj, elem: setattr(obj, "dependencies", DocumentationBlock.deserialize(elem)),
-        "DESCRIPTION": lambda obj, elem: setattr(obj, "description", DocumentationBlock.deserialize(elem)),
-        "IMPORTANCE": lambda obj, elem: setattr(obj, "importance", elem.text),
-        "ISSUED-BY": lambda obj, elem: setattr(obj, "issued_by", elem.text),
-        "RATIONALE": lambda obj, elem: setattr(obj, "rationale", DocumentationBlock.deserialize(elem)),
-        "REMARK": lambda obj, elem: setattr(obj, "remark", DocumentationBlock.deserialize(elem)),
-        "SUPPORTING": lambda obj, elem: setattr(obj, "supporting", DocumentationBlock.deserialize(elem)),
-        "TESTED-ITEMS": lambda obj, elem: obj.tested_item_refs.append(ARRef.deserialize(elem)),
-        "TYPE": lambda obj, elem: setattr(obj, "type", elem.text),
-        "USE-CASE": lambda obj, elem: setattr(obj, "use_case", DocumentationBlock.deserialize(elem)),
+        "CONFLICTS": lambda obj, elem: setattr(obj, "conflicts", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "DATE": lambda obj, elem: setattr(obj, "date", SerializationHelper.deserialize_by_tag(elem, "DateTime")),
+        "DEPENDENCIES": lambda obj, elem: setattr(obj, "dependencies", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "DESCRIPTION": lambda obj, elem: setattr(obj, "description", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "IMPORTANCE": lambda obj, elem: setattr(obj, "importance", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ISSUED-BY": lambda obj, elem: setattr(obj, "issued_by", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "RATIONALE": lambda obj, elem: setattr(obj, "rationale", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "REMARK": lambda obj, elem: setattr(obj, "remark", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "SUPPORTING": lambda obj, elem: setattr(obj, "supporting", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "TESTED-ITEMS": ("_POLYMORPHIC_LIST", "tested_item_refs", ["StructuredReq", "TimingConstraint", "TraceableTable", "TraceableText"]),
+        "TYPE": lambda obj, elem: setattr(obj, "type", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "USE-CASE": lambda obj, elem: setattr(obj, "use_case", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
     }
 
 
@@ -326,97 +326,47 @@ class StructuredReq(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StructuredReq, cls).deserialize(element)
 
-        # Parse applies_toes (list from container "APPLIES-TOES")
-        obj.applies_toes = []
-        container = SerializationHelper.find_child_element(element, "APPLIES-TOES")
-        if container is not None:
-            for child in container:
-                # Extract enum value (StandardNameEnum)
-                child_value = StandardNameEnum.deserialize(child)
-                if child_value is not None:
-                    obj.applies_toes.append(child_value)
-
-        # Parse conflicts
-        child = SerializationHelper.find_child_element(element, "CONFLICTS")
-        if child is not None:
-            conflicts_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.conflicts = conflicts_value
-
-        # Parse date
-        child = SerializationHelper.find_child_element(element, "DATE")
-        if child is not None:
-            date_value = child.text
-            obj.date = date_value
-
-        # Parse dependencies
-        child = SerializationHelper.find_child_element(element, "DEPENDENCIES")
-        if child is not None:
-            dependencies_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.dependencies = dependencies_value
-
-        # Parse description
-        child = SerializationHelper.find_child_element(element, "DESCRIPTION")
-        if child is not None:
-            description_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.description = description_value
-
-        # Parse importance
-        child = SerializationHelper.find_child_element(element, "IMPORTANCE")
-        if child is not None:
-            importance_value = child.text
-            obj.importance = importance_value
-
-        # Parse issued_by
-        child = SerializationHelper.find_child_element(element, "ISSUED-BY")
-        if child is not None:
-            issued_by_value = child.text
-            obj.issued_by = issued_by_value
-
-        # Parse rationale
-        child = SerializationHelper.find_child_element(element, "RATIONALE")
-        if child is not None:
-            rationale_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.rationale = rationale_value
-
-        # Parse remark
-        child = SerializationHelper.find_child_element(element, "REMARK")
-        if child is not None:
-            remark_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.remark = remark_value
-
-        # Parse supporting
-        child = SerializationHelper.find_child_element(element, "SUPPORTING")
-        if child is not None:
-            supporting_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.supporting = supporting_value
-
-        # Parse tested_item_refs (list from container "TESTED-ITEM-REFS")
-        obj.tested_item_refs = []
-        container = SerializationHelper.find_child_element(element, "TESTED-ITEM-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tested_item_refs.append(child_value)
-
-        # Parse type
-        child = SerializationHelper.find_child_element(element, "TYPE")
-        if child is not None:
-            type_value = child.text
-            obj.type = type_value
-
-        # Parse use_case
-        child = SerializationHelper.find_child_element(element, "USE-CASE")
-        if child is not None:
-            use_case_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.use_case = use_case_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "APPLIES-TOES":
+                obj.applies_toes.append(StandardNameEnum.deserialize(child))
+            elif tag == "CONFLICTS":
+                setattr(obj, "conflicts", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "DATE":
+                setattr(obj, "date", SerializationHelper.deserialize_by_tag(child, "DateTime"))
+            elif tag == "DEPENDENCIES":
+                setattr(obj, "dependencies", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "DESCRIPTION":
+                setattr(obj, "description", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "IMPORTANCE":
+                setattr(obj, "importance", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ISSUED-BY":
+                setattr(obj, "issued_by", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "RATIONALE":
+                setattr(obj, "rationale", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "REMARK":
+                setattr(obj, "remark", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "SUPPORTING":
+                setattr(obj, "supporting", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "TESTED-ITEMS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "STRUCTURED-REQ":
+                        obj.tested_item_refs.append(SerializationHelper.deserialize_by_tag(child[0], "StructuredReq"))
+                    elif concrete_tag == "TIMING-CONSTRAINT":
+                        obj.tested_item_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TimingConstraint"))
+                    elif concrete_tag == "TRACEABLE-TABLE":
+                        obj.tested_item_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TraceableTable"))
+                    elif concrete_tag == "TRACEABLE-TEXT":
+                        obj.tested_item_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TraceableText"))
+            elif tag == "TYPE":
+                setattr(obj, "type", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "USE-CASE":
+                setattr(obj, "use_case", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
 
         return obj
 

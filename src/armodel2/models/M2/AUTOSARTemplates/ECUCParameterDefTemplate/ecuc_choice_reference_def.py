@@ -40,7 +40,7 @@ class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
 
     destination_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DESTINATIONS": lambda obj, elem: obj.destination_refs.append(ARRef.deserialize(elem)),
+        "DESTINATIONS": ("_POLYMORPHIC_LIST", "destination_refs", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
     }
 
 
@@ -104,21 +104,19 @@ class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucChoiceReferenceDef, cls).deserialize(element)
 
-        # Parse destination_refs (list from container "DESTINATION-REFS")
-        obj.destination_refs = []
-        container = SerializationHelper.find_child_element(element, "DESTINATION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.destination_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DESTINATIONS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ECUC-CHOICE-CONTAINER-DEF":
+                        obj.destination_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EcucChoiceContainerDef"))
+                    elif concrete_tag == "ECUC-PARAM-CONF-CONTAINER-DEF":
+                        obj.destination_refs.append(SerializationHelper.deserialize_by_tag(child[0], "EcucParamConfContainerDef"))
 
         return obj
 

@@ -47,9 +47,9 @@ class ApplicationValueSpecification(ValueSpecification):
     sw_axis_conts: list[SwAxisCont]
     sw_value_cont: Optional[SwValueCont]
     _DESERIALIZE_DISPATCH = {
-        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
-        "SW-AXIS-CONTS": lambda obj, elem: obj.sw_axis_conts.append(SwAxisCont.deserialize(elem)),
-        "SW-VALUE-CONT": lambda obj, elem: setattr(obj, "sw_value_cont", SwValueCont.deserialize(elem)),
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "SW-AXIS-CONTS": lambda obj, elem: obj.sw_axis_conts.append(SerializationHelper.deserialize_by_tag(elem, "SwAxisCont")),
+        "SW-VALUE-CONT": lambda obj, elem: setattr(obj, "sw_value_cont", SerializationHelper.deserialize_by_tag(elem, "SwValueCont")),
     }
 
 
@@ -136,27 +136,17 @@ class ApplicationValueSpecification(ValueSpecification):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationValueSpecification, cls).deserialize(element)
 
-        # Parse category
-        child = SerializationHelper.find_child_element(element, "CATEGORY")
-        if child is not None:
-            category_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.category = category_value
-
-        # Parse sw_axis_conts (list from container "SW-AXIS-CONTS")
-        obj.sw_axis_conts = []
-        container = SerializationHelper.find_child_element(element, "SW-AXIS-CONTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sw_axis_conts.append(child_value)
-
-        # Parse sw_value_cont
-        child = SerializationHelper.find_child_element(element, "SW-VALUE-CONT")
-        if child is not None:
-            sw_value_cont_value = SerializationHelper.deserialize_by_tag(child, "SwValueCont")
-            obj.sw_value_cont = sw_value_cont_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CATEGORY":
+                setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "SW-AXIS-CONTS":
+                obj.sw_axis_conts.append(SerializationHelper.deserialize_by_tag(child, "SwAxisCont"))
+            elif tag == "SW-VALUE-CONT":
+                setattr(obj, "sw_value_cont", SerializationHelper.deserialize_by_tag(child, "SwValueCont"))
 
         return obj
 

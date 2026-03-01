@@ -46,13 +46,13 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
     wakeup_remote: Optional[Boolean]
     wakeup: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "SLEEP-MODE": lambda obj, elem: setattr(obj, "sleep_mode", elem.text),
-        "SLEEP-REPETITION": lambda obj, elem: setattr(obj, "sleep_repetition", elem.text),
-        "SLEEP": lambda obj, elem: setattr(obj, "sleep", elem.text),
-        "WAKEUP-FORWARD": lambda obj, elem: setattr(obj, "wakeup_forward", elem.text),
-        "WAKEUP-LOCAL": lambda obj, elem: setattr(obj, "wakeup_local", elem.text),
-        "WAKEUP-REMOTE": lambda obj, elem: setattr(obj, "wakeup_remote", elem.text),
-        "WAKEUP": lambda obj, elem: setattr(obj, "wakeup", elem.text),
+        "SLEEP-MODE": lambda obj, elem: setattr(obj, "sleep_mode", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "SLEEP-REPETITION": lambda obj, elem: setattr(obj, "sleep_repetition", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "SLEEP": lambda obj, elem: setattr(obj, "sleep", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "WAKEUP-FORWARD": lambda obj, elem: setattr(obj, "wakeup_forward", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "WAKEUP-LOCAL": lambda obj, elem: setattr(obj, "wakeup_local", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "WAKEUP-REMOTE": lambda obj, elem: setattr(obj, "wakeup_remote", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "WAKEUP": lambda obj, elem: setattr(obj, "wakeup", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -203,47 +203,25 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthernetWakeupSleepOnDatalineConfig, cls).deserialize(element)
 
-        # Parse sleep_mode
-        child = SerializationHelper.find_child_element(element, "SLEEP-MODE")
-        if child is not None:
-            sleep_mode_value = child.text
-            obj.sleep_mode = sleep_mode_value
-
-        # Parse sleep_repetition
-        child = SerializationHelper.find_child_element(element, "SLEEP-REPETITION")
-        if child is not None:
-            sleep_repetition_value = child.text
-            obj.sleep_repetition = sleep_repetition_value
-
-        # Parse sleep
-        child = SerializationHelper.find_child_element(element, "SLEEP")
-        if child is not None:
-            sleep_value = child.text
-            obj.sleep = sleep_value
-
-        # Parse wakeup_forward
-        child = SerializationHelper.find_child_element(element, "WAKEUP-FORWARD")
-        if child is not None:
-            wakeup_forward_value = child.text
-            obj.wakeup_forward = wakeup_forward_value
-
-        # Parse wakeup_local
-        child = SerializationHelper.find_child_element(element, "WAKEUP-LOCAL")
-        if child is not None:
-            wakeup_local_value = child.text
-            obj.wakeup_local = wakeup_local_value
-
-        # Parse wakeup_remote
-        child = SerializationHelper.find_child_element(element, "WAKEUP-REMOTE")
-        if child is not None:
-            wakeup_remote_value = child.text
-            obj.wakeup_remote = wakeup_remote_value
-
-        # Parse wakeup
-        child = SerializationHelper.find_child_element(element, "WAKEUP")
-        if child is not None:
-            wakeup_value = child.text
-            obj.wakeup = wakeup_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SLEEP-MODE":
+                setattr(obj, "sleep_mode", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "SLEEP-REPETITION":
+                setattr(obj, "sleep_repetition", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "SLEEP":
+                setattr(obj, "sleep", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "WAKEUP-FORWARD":
+                setattr(obj, "wakeup_forward", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "WAKEUP-LOCAL":
+                setattr(obj, "wakeup_local", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "WAKEUP-REMOTE":
+                setattr(obj, "wakeup_remote", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "WAKEUP":
+                setattr(obj, "wakeup", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

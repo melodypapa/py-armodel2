@@ -38,7 +38,7 @@ class AssignNad(LinConfigurationEntry):
 
     new_nad: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "NEW-NAD": lambda obj, elem: setattr(obj, "new_nad", elem.text),
+        "NEW-NAD": lambda obj, elem: setattr(obj, "new_nad", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -99,11 +99,13 @@ class AssignNad(LinConfigurationEntry):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AssignNad, cls).deserialize(element)
 
-        # Parse new_nad
-        child = SerializationHelper.find_child_element(element, "NEW-NAD")
-        if child is not None:
-            new_nad_value = child.text
-            obj.new_nad = new_nad_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "NEW-NAD":
+                setattr(obj, "new_nad", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

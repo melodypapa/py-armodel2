@@ -36,8 +36,8 @@ class InstantiationRTEEventProps(ARObject, ABC):
     refined_event: Optional[RTEEvent]
     short_label: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "REFINED-EVENT": lambda obj, elem: setattr(obj, "refined_event", RTEEvent.deserialize(elem)),
-        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "REFINED-EVENT": ("_POLYMORPHIC", "refined_event", ["AsynchronousServerCallReturnsEvent", "BackgroundEvent", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "ExternalTriggerOccurredEvent", "InitEvent", "InternalTriggerOccurredEvent", "ModeSwitchedAckEvent", "OperationInvokedEvent", "OsTaskExecutionEvent", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "TimingEvent", "TransformerHardErrorEvent"]),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -113,17 +113,49 @@ class InstantiationRTEEventProps(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InstantiationRTEEventProps, cls).deserialize(element)
 
-        # Parse refined_event
-        child = SerializationHelper.find_child_element(element, "REFINED-EVENT")
-        if child is not None:
-            refined_event_value = SerializationHelper.deserialize_by_tag(child, "RTEEvent")
-            obj.refined_event = refined_event_value
-
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "REFINED-EVENT":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RETURNS-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "AsynchronousServerCallReturnsEvent"))
+                    elif concrete_tag == "BACKGROUND-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "BackgroundEvent"))
+                    elif concrete_tag == "DATA-RECEIVE-ERROR-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "DataReceiveErrorEvent"))
+                    elif concrete_tag == "DATA-RECEIVED-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "DataReceivedEvent"))
+                    elif concrete_tag == "DATA-SEND-COMPLETED-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "DataSendCompletedEvent"))
+                    elif concrete_tag == "DATA-WRITE-COMPLETED-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "DataWriteCompletedEvent"))
+                    elif concrete_tag == "EXTERNAL-TRIGGER-OCCURRED-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "ExternalTriggerOccurredEvent"))
+                    elif concrete_tag == "INIT-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "InitEvent"))
+                    elif concrete_tag == "INTERNAL-TRIGGER-OCCURRED-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "InternalTriggerOccurredEvent"))
+                    elif concrete_tag == "MODE-SWITCHED-ACK-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchedAckEvent"))
+                    elif concrete_tag == "OPERATION-INVOKED-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "OperationInvokedEvent"))
+                    elif concrete_tag == "OS-TASK-EXECUTION-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "OsTaskExecutionEvent"))
+                    elif concrete_tag == "SWC-MODE-MANAGER-ERROR-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "SwcModeManagerErrorEvent"))
+                    elif concrete_tag == "SWC-MODE-SWITCH-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "SwcModeSwitchEvent"))
+                    elif concrete_tag == "TIMING-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "TimingEvent"))
+                    elif concrete_tag == "TRANSFORMER-HARD-ERROR-EVENT":
+                        setattr(obj, "refined_event", SerializationHelper.deserialize_by_tag(child[0], "TransformerHardErrorEvent"))
+            elif tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

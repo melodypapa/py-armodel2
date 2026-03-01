@@ -42,8 +42,8 @@ class Topic1(Paginateable):
     help_entry: Optional[String]
     topic_content_or_msr: Optional[TopicContentOrMsrQuery]
     _DESERIALIZE_DISPATCH = {
-        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", elem.text),
-        "TOPIC-CONTENT-OR-MSR": lambda obj, elem: setattr(obj, "topic_content_or_msr", TopicContentOrMsrQuery.deserialize(elem)),
+        "HELP-ENTRY": lambda obj, elem: setattr(obj, "help_entry", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "TOPIC-CONTENT-OR-MSR": lambda obj, elem: setattr(obj, "topic_content_or_msr", SerializationHelper.deserialize_by_tag(elem, "TopicContentOrMsrQuery")),
     }
 
 
@@ -118,25 +118,15 @@ class Topic1(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Topic1, cls).deserialize(element)
 
-        # Parse help_entry
-        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
-        if child is not None:
-            help_entry_value = child.text
-            obj.help_entry = help_entry_value
-
-        # Parse topic_content_or_msr (atp_mixed - children appear directly)
-        # Check if element contains expected children for TopicContentOrMsrQuery
-        has_mixed_children = False
-        child_tags_to_check = ['MSR-QUERY-P1', 'TOPIC-CONTENT']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            topic_content_or_msr_value = SerializationHelper.deserialize_by_tag(element, "TopicContentOrMsrQuery")
-            obj.topic_content_or_msr = topic_content_or_msr_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "HELP-ENTRY":
+                setattr(obj, "help_entry", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "TOPIC-CONTENT-OR-MSR":
+                setattr(obj, "topic_content_or_msr", SerializationHelper.deserialize_by_tag(child, "TopicContentOrMsrQuery"))
 
         return obj
 

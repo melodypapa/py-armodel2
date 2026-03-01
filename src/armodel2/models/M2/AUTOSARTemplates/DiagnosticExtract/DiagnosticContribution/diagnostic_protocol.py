@@ -52,9 +52,9 @@ class DiagnosticProtocol(DiagnosticCommonElement):
     service_table_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "DIAGNOSTICS": lambda obj, elem: obj.diagnostic_refs.append(ARRef.deserialize(elem)),
-        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
-        "PROTOCOL-KIND": lambda obj, elem: setattr(obj, "protocol_kind", elem.text),
-        "SEND-RESP-PEND": lambda obj, elem: setattr(obj, "send_resp_pend", elem.text),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PROTOCOL-KIND": lambda obj, elem: setattr(obj, "protocol_kind", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "SEND-RESP-PEND": lambda obj, elem: setattr(obj, "send_resp_pend", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "SERVICE-TABLE-REF": lambda obj, elem: setattr(obj, "service_table_ref", ARRef.deserialize(elem)),
     }
 
@@ -179,45 +179,21 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticProtocol, cls).deserialize(element)
 
-        # Parse diagnostic_refs (list from container "DIAGNOSTIC-REFS")
-        obj.diagnostic_refs = []
-        container = SerializationHelper.find_child_element(element, "DIAGNOSTIC-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.diagnostic_refs.append(child_value)
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse protocol_kind
-        child = SerializationHelper.find_child_element(element, "PROTOCOL-KIND")
-        if child is not None:
-            protocol_kind_value = child.text
-            obj.protocol_kind = protocol_kind_value
-
-        # Parse send_resp_pend
-        child = SerializationHelper.find_child_element(element, "SEND-RESP-PEND")
-        if child is not None:
-            send_resp_pend_value = child.text
-            obj.send_resp_pend = send_resp_pend_value
-
-        # Parse service_table_ref
-        child = SerializationHelper.find_child_element(element, "SERVICE-TABLE-REF")
-        if child is not None:
-            service_table_ref_value = ARRef.deserialize(child)
-            obj.service_table_ref = service_table_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DIAGNOSTICS":
+                obj.diagnostic_refs.append(ARRef.deserialize(child))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PROTOCOL-KIND":
+                setattr(obj, "protocol_kind", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "SEND-RESP-PEND":
+                setattr(obj, "send_resp_pend", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SERVICE-TABLE-REF":
+                setattr(obj, "service_table_ref", ARRef.deserialize(child))
 
         return obj
 

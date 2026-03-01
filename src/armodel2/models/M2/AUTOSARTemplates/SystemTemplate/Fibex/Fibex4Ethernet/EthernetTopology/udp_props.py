@@ -34,7 +34,7 @@ class UdpProps(ARObject):
 
     udp_ttl: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "UDP-TTL": lambda obj, elem: setattr(obj, "udp_ttl", elem.text),
+        "UDP-TTL": lambda obj, elem: setattr(obj, "udp_ttl", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -95,11 +95,13 @@ class UdpProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(UdpProps, cls).deserialize(element)
 
-        # Parse udp_ttl
-        child = SerializationHelper.find_child_element(element, "UDP-TTL")
-        if child is not None:
-            udp_ttl_value = child.text
-            obj.udp_ttl = udp_ttl_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "UDP-TTL":
+                setattr(obj, "udp_ttl", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

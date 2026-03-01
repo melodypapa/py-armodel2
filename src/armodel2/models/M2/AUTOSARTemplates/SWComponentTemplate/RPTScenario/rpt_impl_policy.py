@@ -114,17 +114,15 @@ class RptImplPolicy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptImplPolicy, cls).deserialize(element)
 
-        # Parse rpt_enabler_impl
-        child = SerializationHelper.find_child_element(element, "RPT-ENABLER-IMPL")
-        if child is not None:
-            rpt_enabler_impl_value = RptEnablerImplTypeEnum.deserialize(child)
-            obj.rpt_enabler_impl = rpt_enabler_impl_value
-
-        # Parse rpt_preparation_enum
-        child = SerializationHelper.find_child_element(element, "RPT-PREPARATION-ENUM")
-        if child is not None:
-            rpt_preparation_enum_value = RptPreparationEnum.deserialize(child)
-            obj.rpt_preparation_enum = rpt_preparation_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RPT-ENABLER-IMPL":
+                setattr(obj, "rpt_enabler_impl", RptEnablerImplTypeEnum.deserialize(child))
+            elif tag == "RPT-PREPARATION-ENUM":
+                setattr(obj, "rpt_preparation_enum", RptPreparationEnum.deserialize(child))
 
         return obj
 

@@ -38,7 +38,7 @@ class TcpOptionFilterList(Identifiable):
 
     allowed_tcp_options: list[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ALLOWED-TCP-OPTIONS": lambda obj, elem: obj.allowed_tcp_options.append(elem.text),
+        "ALLOWED-TCP-OPTIONS": lambda obj, elem: obj.allowed_tcp_options.append(SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -102,15 +102,13 @@ class TcpOptionFilterList(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TcpOptionFilterList, cls).deserialize(element)
 
-        # Parse allowed_tcp_options (list from container "ALLOWED-TCP-OPTIONS")
-        obj.allowed_tcp_options = []
-        container = SerializationHelper.find_child_element(element, "ALLOWED-TCP-OPTIONS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (PositiveInteger) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.allowed_tcp_options.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALLOWED-TCP-OPTIONS":
+                obj.allowed_tcp_options.append(SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

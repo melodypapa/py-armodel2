@@ -41,7 +41,7 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
 
     sensor_actuator_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "SENSOR-ACTUATOR-REF": lambda obj, elem: setattr(obj, "sensor_actuator_ref", ARRef.deserialize(elem)),
+        "SENSOR-ACTUATOR-REF": ("_POLYMORPHIC", "sensor_actuator_ref", ["HwElement", "HwPin", "HwPinGroup", "HwType"]),
     }
 
 
@@ -102,11 +102,23 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SensorActuatorSwComponentType, cls).deserialize(element)
 
-        # Parse sensor_actuator_ref
-        child = SerializationHelper.find_child_element(element, "SENSOR-ACTUATOR-REF")
-        if child is not None:
-            sensor_actuator_ref_value = ARRef.deserialize(child)
-            obj.sensor_actuator_ref = sensor_actuator_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SENSOR-ACTUATOR-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "HW-ELEMENT":
+                        setattr(obj, "sensor_actuator_ref", SerializationHelper.deserialize_by_tag(child[0], "HwElement"))
+                    elif concrete_tag == "HW-PIN":
+                        setattr(obj, "sensor_actuator_ref", SerializationHelper.deserialize_by_tag(child[0], "HwPin"))
+                    elif concrete_tag == "HW-PIN-GROUP":
+                        setattr(obj, "sensor_actuator_ref", SerializationHelper.deserialize_by_tag(child[0], "HwPinGroup"))
+                    elif concrete_tag == "HW-TYPE":
+                        setattr(obj, "sensor_actuator_ref", SerializationHelper.deserialize_by_tag(child[0], "HwType"))
 
         return obj
 

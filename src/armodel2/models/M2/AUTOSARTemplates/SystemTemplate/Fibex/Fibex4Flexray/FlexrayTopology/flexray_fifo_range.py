@@ -35,8 +35,8 @@ class FlexrayFifoRange(ARObject):
     range_max: Optional[Integer]
     range_min: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "RANGE-MAX": lambda obj, elem: setattr(obj, "range_max", elem.text),
-        "RANGE-MIN": lambda obj, elem: setattr(obj, "range_min", elem.text),
+        "RANGE-MAX": lambda obj, elem: setattr(obj, "range_max", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "RANGE-MIN": lambda obj, elem: setattr(obj, "range_min", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -112,17 +112,15 @@ class FlexrayFifoRange(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayFifoRange, cls).deserialize(element)
 
-        # Parse range_max
-        child = SerializationHelper.find_child_element(element, "RANGE-MAX")
-        if child is not None:
-            range_max_value = child.text
-            obj.range_max = range_max_value
-
-        # Parse range_min
-        child = SerializationHelper.find_child_element(element, "RANGE-MIN")
-        if child is not None:
-            range_min_value = child.text
-            obj.range_min = range_min_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RANGE-MAX":
+                setattr(obj, "range_max", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "RANGE-MIN":
+                setattr(obj, "range_min", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

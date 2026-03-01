@@ -133,22 +133,15 @@ class SwcModeSwitchEvent(RTEEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcModeSwitchEvent, cls).deserialize(element)
 
-        # Parse activation
-        child = SerializationHelper.find_child_element(element, "ACTIVATION")
-        if child is not None:
-            activation_value = ModeActivationKind.deserialize(child)
-            obj.activation = activation_value
-
-        # Parse mode_irefs (multi-wrapper list from "MODE-IREFS")
-        obj.mode_irefs = []
-        irefs_container = SerializationHelper.find_child_element(element, "MODE-IREFS")
-        if irefs_container is not None:
-            for iref_wrapper in irefs_container:
-                if SerializationHelper.strip_namespace(iref_wrapper.tag) == "MODE-IREF":
-                    # Deserialize each iref wrapper as the type (flattened structure)
-                    child_value = SerializationHelper.deserialize_by_tag(iref_wrapper, "RModeInAtomicSwcInstanceRef")
-                    if child_value is not None:
-                        obj.mode_irefs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACTIVATION":
+                setattr(obj, "activation", ModeActivationKind.deserialize(child))
+            elif tag == "MODES":
+                obj._mode_irefs.append(ARRef.deserialize(child))
 
         return obj
 

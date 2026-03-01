@@ -53,11 +53,11 @@ class CommunicationConnector(Identifiable, ABC):
     pnc_filter_array_masks: list[PositiveInteger]
     pnc_gateway_type: Optional[PncGatewayTypeEnum]
     _DESERIALIZE_DISPATCH = {
-        "COMM-CONTROLLER-REF": lambda obj, elem: setattr(obj, "comm_controller_ref", ARRef.deserialize(elem)),
-        "CREATE-ECU-WAKEUP-SOURCE": lambda obj, elem: setattr(obj, "create_ecu_wakeup_source", elem.text),
-        "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED": lambda obj, elem: setattr(obj, "dynamic_pnc_to_channel_mapping_enabled", elem.text),
-        "ECU-COMM-PORT-INSTANCES": lambda obj, elem: obj.ecu_comm_port_instances.append(CommConnectorPort.deserialize(elem)),
-        "PNC-FILTER-ARRAY-MASKS": lambda obj, elem: obj.pnc_filter_array_masks.append(elem.text),
+        "COMM-CONTROLLER-REF": ("_POLYMORPHIC", "comm_controller_ref", ["AbstractCanCommunicationController", "EthernetCommunicationController", "FlexrayCommunicationController", "LinCommunicationController", "UserDefinedCommunicationController"]),
+        "CREATE-ECU-WAKEUP-SOURCE": lambda obj, elem: setattr(obj, "create_ecu_wakeup_source", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED": lambda obj, elem: setattr(obj, "dynamic_pnc_to_channel_mapping_enabled", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "ECU-COMM-PORT-INSTANCES": ("_POLYMORPHIC_LIST", "ecu_comm_port_instances", ["FramePort", "IPduPort", "ISignalPort"]),
+        "PNC-FILTER-ARRAY-MASKS": lambda obj, elem: obj.pnc_filter_array_masks.append(SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PNC-GATEWAY-TYPE": lambda obj, elem: setattr(obj, "pnc_gateway_type", PncGatewayTypeEnum.deserialize(elem)),
     }
 
@@ -193,49 +193,43 @@ class CommunicationConnector(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommunicationConnector, cls).deserialize(element)
 
-        # Parse comm_controller_ref
-        child = SerializationHelper.find_child_element(element, "COMM-CONTROLLER-REF")
-        if child is not None:
-            comm_controller_ref_value = ARRef.deserialize(child)
-            obj.comm_controller_ref = comm_controller_ref_value
-
-        # Parse create_ecu_wakeup_source
-        child = SerializationHelper.find_child_element(element, "CREATE-ECU-WAKEUP-SOURCE")
-        if child is not None:
-            create_ecu_wakeup_source_value = child.text
-            obj.create_ecu_wakeup_source = create_ecu_wakeup_source_value
-
-        # Parse dynamic_pnc_to_channel_mapping_enabled
-        child = SerializationHelper.find_child_element(element, "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED")
-        if child is not None:
-            dynamic_pnc_to_channel_mapping_enabled_value = child.text
-            obj.dynamic_pnc_to_channel_mapping_enabled = dynamic_pnc_to_channel_mapping_enabled_value
-
-        # Parse ecu_comm_port_instances (list from container "ECU-COMM-PORT-INSTANCES")
-        obj.ecu_comm_port_instances = []
-        container = SerializationHelper.find_child_element(element, "ECU-COMM-PORT-INSTANCES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ecu_comm_port_instances.append(child_value)
-
-        # Parse pnc_filter_array_masks (list from container "PNC-FILTER-ARRAY-MASKS")
-        obj.pnc_filter_array_masks = []
-        container = SerializationHelper.find_child_element(element, "PNC-FILTER-ARRAY-MASKS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (PositiveInteger) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.pnc_filter_array_masks.append(child_value)
-
-        # Parse pnc_gateway_type
-        child = SerializationHelper.find_child_element(element, "PNC-GATEWAY-TYPE")
-        if child is not None:
-            pnc_gateway_type_value = PncGatewayTypeEnum.deserialize(child)
-            obj.pnc_gateway_type = pnc_gateway_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMM-CONTROLLER-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONTROLLER":
+                        setattr(obj, "comm_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCommunicationController"))
+                    elif concrete_tag == "ETHERNET-COMMUNICATION-CONTROLLER":
+                        setattr(obj, "comm_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "EthernetCommunicationController"))
+                    elif concrete_tag == "FLEXRAY-COMMUNICATION-CONTROLLER":
+                        setattr(obj, "comm_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "FlexrayCommunicationController"))
+                    elif concrete_tag == "LIN-COMMUNICATION-CONTROLLER":
+                        setattr(obj, "comm_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "LinCommunicationController"))
+                    elif concrete_tag == "USER-DEFINED-COMMUNICATION-CONTROLLER":
+                        setattr(obj, "comm_controller_ref", SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCommunicationController"))
+            elif tag == "CREATE-ECU-WAKEUP-SOURCE":
+                setattr(obj, "create_ecu_wakeup_source", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED":
+                setattr(obj, "dynamic_pnc_to_channel_mapping_enabled", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "ECU-COMM-PORT-INSTANCES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "FRAME-PORT":
+                        obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(child[0], "FramePort"))
+                    elif concrete_tag == "I-PDU-PORT":
+                        obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(child[0], "IPduPort"))
+                    elif concrete_tag == "I-SIGNAL-PORT":
+                        obj.ecu_comm_port_instances.append(SerializationHelper.deserialize_by_tag(child[0], "ISignalPort"))
+            elif tag == "PNC-FILTER-ARRAY-MASKS":
+                obj.pnc_filter_array_masks.append(SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PNC-GATEWAY-TYPE":
+                setattr(obj, "pnc_gateway_type", PncGatewayTypeEnum.deserialize(child))
 
         return obj
 

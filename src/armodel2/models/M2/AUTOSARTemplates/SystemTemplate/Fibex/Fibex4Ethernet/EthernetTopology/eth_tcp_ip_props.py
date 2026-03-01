@@ -42,8 +42,8 @@ class EthTcpIpProps(ARElement):
     tcp_props: Optional[TcpProps]
     udp_props: Optional[UdpProps]
     _DESERIALIZE_DISPATCH = {
-        "TCP-PROPS": lambda obj, elem: setattr(obj, "tcp_props", TcpProps.deserialize(elem)),
-        "UDP-PROPS": lambda obj, elem: setattr(obj, "udp_props", UdpProps.deserialize(elem)),
+        "TCP-PROPS": lambda obj, elem: setattr(obj, "tcp_props", SerializationHelper.deserialize_by_tag(elem, "TcpProps")),
+        "UDP-PROPS": lambda obj, elem: setattr(obj, "udp_props", SerializationHelper.deserialize_by_tag(elem, "UdpProps")),
     }
 
 
@@ -119,17 +119,15 @@ class EthTcpIpProps(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthTcpIpProps, cls).deserialize(element)
 
-        # Parse tcp_props
-        child = SerializationHelper.find_child_element(element, "TCP-PROPS")
-        if child is not None:
-            tcp_props_value = SerializationHelper.deserialize_by_tag(child, "TcpProps")
-            obj.tcp_props = tcp_props_value
-
-        # Parse udp_props
-        child = SerializationHelper.find_child_element(element, "UDP-PROPS")
-        if child is not None:
-            udp_props_value = SerializationHelper.deserialize_by_tag(child, "UdpProps")
-            obj.udp_props = udp_props_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TCP-PROPS":
+                setattr(obj, "tcp_props", SerializationHelper.deserialize_by_tag(child, "TcpProps"))
+            elif tag == "UDP-PROPS":
+                setattr(obj, "udp_props", SerializationHelper.deserialize_by_tag(child, "UdpProps"))
 
         return obj
 

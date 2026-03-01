@@ -58,11 +58,11 @@ class ModeDeclarationGroup(ARElement):
     on_transition_value: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
         "INITIAL-MODE-REF": lambda obj, elem: setattr(obj, "initial_mode_ref", ARRef.deserialize(elem)),
-        "MODE-DECLARATIONS": lambda obj, elem: obj.mode_declarations.append(ModeDeclaration.deserialize(elem)),
-        "MODE-MANAGER-ERROR-BEHAVIOR": lambda obj, elem: setattr(obj, "mode_manager_error_behavior", ModeErrorBehavior.deserialize(elem)),
-        "MODE-TRANSITIONS": lambda obj, elem: obj.mode_transitions.append(ModeTransition.deserialize(elem)),
-        "MODE-USER-ERROR-BEHAVIOR": lambda obj, elem: setattr(obj, "mode_user_error_behavior", ModeErrorBehavior.deserialize(elem)),
-        "ON-TRANSITION-VALUE": lambda obj, elem: setattr(obj, "on_transition_value", elem.text),
+        "MODE-DECLARATIONS": lambda obj, elem: obj.mode_declarations.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclaration")),
+        "MODE-MANAGER-ERROR-BEHAVIOR": lambda obj, elem: setattr(obj, "mode_manager_error_behavior", SerializationHelper.deserialize_by_tag(elem, "ModeErrorBehavior")),
+        "MODE-TRANSITIONS": lambda obj, elem: obj.mode_transitions.append(SerializationHelper.deserialize_by_tag(elem, "ModeTransition")),
+        "MODE-USER-ERROR-BEHAVIOR": lambda obj, elem: setattr(obj, "mode_user_error_behavior", SerializationHelper.deserialize_by_tag(elem, "ModeErrorBehavior")),
+        "ON-TRANSITION-VALUE": lambda obj, elem: setattr(obj, "on_transition_value", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -190,49 +190,23 @@ class ModeDeclarationGroup(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeDeclarationGroup, cls).deserialize(element)
 
-        # Parse initial_mode_ref
-        child = SerializationHelper.find_child_element(element, "INITIAL-MODE-REF")
-        if child is not None:
-            initial_mode_ref_value = ARRef.deserialize(child)
-            obj.initial_mode_ref = initial_mode_ref_value
-
-        # Parse mode_declarations (list from container "MODE-DECLARATIONS")
-        obj.mode_declarations = []
-        container = SerializationHelper.find_child_element(element, "MODE-DECLARATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mode_declarations.append(child_value)
-
-        # Parse mode_manager_error_behavior
-        child = SerializationHelper.find_child_element(element, "MODE-MANAGER-ERROR-BEHAVIOR")
-        if child is not None:
-            mode_manager_error_behavior_value = SerializationHelper.deserialize_by_tag(child, "ModeErrorBehavior")
-            obj.mode_manager_error_behavior = mode_manager_error_behavior_value
-
-        # Parse mode_transitions (list from container "MODE-TRANSITIONS")
-        obj.mode_transitions = []
-        container = SerializationHelper.find_child_element(element, "MODE-TRANSITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mode_transitions.append(child_value)
-
-        # Parse mode_user_error_behavior
-        child = SerializationHelper.find_child_element(element, "MODE-USER-ERROR-BEHAVIOR")
-        if child is not None:
-            mode_user_error_behavior_value = SerializationHelper.deserialize_by_tag(child, "ModeErrorBehavior")
-            obj.mode_user_error_behavior = mode_user_error_behavior_value
-
-        # Parse on_transition_value
-        child = SerializationHelper.find_child_element(element, "ON-TRANSITION-VALUE")
-        if child is not None:
-            on_transition_value_value = child.text
-            obj.on_transition_value = on_transition_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INITIAL-MODE-REF":
+                setattr(obj, "initial_mode_ref", ARRef.deserialize(child))
+            elif tag == "MODE-DECLARATIONS":
+                obj.mode_declarations.append(SerializationHelper.deserialize_by_tag(child, "ModeDeclaration"))
+            elif tag == "MODE-MANAGER-ERROR-BEHAVIOR":
+                setattr(obj, "mode_manager_error_behavior", SerializationHelper.deserialize_by_tag(child, "ModeErrorBehavior"))
+            elif tag == "MODE-TRANSITIONS":
+                obj.mode_transitions.append(SerializationHelper.deserialize_by_tag(child, "ModeTransition"))
+            elif tag == "MODE-USER-ERROR-BEHAVIOR":
+                setattr(obj, "mode_user_error_behavior", SerializationHelper.deserialize_by_tag(child, "ModeErrorBehavior"))
+            elif tag == "ON-TRANSITION-VALUE":
+                setattr(obj, "on_transition_value", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

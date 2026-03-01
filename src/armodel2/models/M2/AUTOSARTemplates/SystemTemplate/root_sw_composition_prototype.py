@@ -146,33 +146,17 @@ class RootSwCompositionPrototype(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RootSwCompositionPrototype, cls).deserialize(element)
 
-        # Parse calibration_parameter_value_set_refs (list from container "CALIBRATION-PARAMETER-VALUE-SET-REFS")
-        obj.calibration_parameter_value_set_refs = []
-        container = SerializationHelper.find_child_element(element, "CALIBRATION-PARAMETER-VALUE-SET-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.calibration_parameter_value_set_refs.append(child_value)
-
-        # Parse flat_map_ref
-        child = SerializationHelper.find_child_element(element, "FLAT-MAP-REF")
-        if child is not None:
-            flat_map_ref_value = ARRef.deserialize(child)
-            obj.flat_map_ref = flat_map_ref_value
-
-        # Parse software_composition_ref
-        child = SerializationHelper.find_child_element(element, "SOFTWARE-COMPOSITION-TREF")
-        if child is not None:
-            software_composition_ref_value = ARRef.deserialize(child)
-            obj.software_composition_ref = software_composition_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CALIBRATION-PARAMETER-VALUE-SETS":
+                obj.calibration_parameter_value_set_refs.append(ARRef.deserialize(child))
+            elif tag == "FLAT-MAP-REF":
+                setattr(obj, "flat_map_ref", ARRef.deserialize(child))
+            elif tag == "SOFTWARE-COMPOSITION-TREF":
+                setattr(obj, "software_composition_ref", ARRef.deserialize(child))
 
         return obj
 

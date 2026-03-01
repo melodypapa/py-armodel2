@@ -117,17 +117,15 @@ class DiagnosticEventToSecurityEventMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventToSecurityEventMapping, cls).deserialize(element)
 
-        # Parse diagnostic_event_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-EVENT-REF")
-        if child is not None:
-            diagnostic_event_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_event_ref = diagnostic_event_ref_value
-
-        # Parse security_event_context_ref
-        child = SerializationHelper.find_child_element(element, "SECURITY-EVENT-CONTEXT-REF")
-        if child is not None:
-            security_event_context_ref_value = ARRef.deserialize(child)
-            obj.security_event_context_ref = security_event_context_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DIAGNOSTIC-EVENT-REF":
+                setattr(obj, "diagnostic_event_ref", ARRef.deserialize(child))
+            elif tag == "SECURITY-EVENT-CONTEXT-REF":
+                setattr(obj, "security_event_context_ref", ARRef.deserialize(child))
 
         return obj
 

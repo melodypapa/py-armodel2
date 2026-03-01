@@ -46,8 +46,8 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
     ipv6_multicast_ip_address: Optional[Ip6AddressString]
     _DESERIALIZE_DISPATCH = {
         "COMMUNICATION-CONNECTOR-REF": lambda obj, elem: setattr(obj, "communication_connector_ref", ARRef.deserialize(elem)),
-        "IPV4-MULTICAST-IP-ADDRESS": lambda obj, elem: setattr(obj, "ipv4_multicast_ip_address", elem.text),
-        "IPV6-MULTICAST-IP-ADDRESS": lambda obj, elem: setattr(obj, "ipv6_multicast_ip_address", elem.text),
+        "IPV4-MULTICAST-IP-ADDRESS": lambda obj, elem: setattr(obj, "ipv4_multicast_ip_address", SerializationHelper.deserialize_by_tag(elem, "Ip4AddressString")),
+        "IPV6-MULTICAST-IP-ADDRESS": lambda obj, elem: setattr(obj, "ipv6_multicast_ip_address", SerializationHelper.deserialize_by_tag(elem, "Ip6AddressString")),
     }
 
 
@@ -138,23 +138,17 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PlatformModuleEthernetEndpointConfiguration, cls).deserialize(element)
 
-        # Parse communication_connector_ref
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
-        if child is not None:
-            communication_connector_ref_value = ARRef.deserialize(child)
-            obj.communication_connector_ref = communication_connector_ref_value
-
-        # Parse ipv4_multicast_ip_address
-        child = SerializationHelper.find_child_element(element, "IPV4-MULTICAST-IP-ADDRESS")
-        if child is not None:
-            ipv4_multicast_ip_address_value = child.text
-            obj.ipv4_multicast_ip_address = ipv4_multicast_ip_address_value
-
-        # Parse ipv6_multicast_ip_address
-        child = SerializationHelper.find_child_element(element, "IPV6-MULTICAST-IP-ADDRESS")
-        if child is not None:
-            ipv6_multicast_ip_address_value = child.text
-            obj.ipv6_multicast_ip_address = ipv6_multicast_ip_address_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMUNICATION-CONNECTOR-REF":
+                setattr(obj, "communication_connector_ref", ARRef.deserialize(child))
+            elif tag == "IPV4-MULTICAST-IP-ADDRESS":
+                setattr(obj, "ipv4_multicast_ip_address", SerializationHelper.deserialize_by_tag(child, "Ip4AddressString"))
+            elif tag == "IPV6-MULTICAST-IP-ADDRESS":
+                setattr(obj, "ipv6_multicast_ip_address", SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
 
         return obj
 

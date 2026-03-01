@@ -39,7 +39,7 @@ class ApplicationError(Identifiable):
 
     error_code: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "ERROR-CODE": lambda obj, elem: setattr(obj, "error_code", elem.text),
+        "ERROR-CODE": lambda obj, elem: setattr(obj, "error_code", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -100,11 +100,13 @@ class ApplicationError(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationError, cls).deserialize(element)
 
-        # Parse error_code
-        child = SerializationHelper.find_child_element(element, "ERROR-CODE")
-        if child is not None:
-            error_code_value = child.text
-            obj.error_code = error_code_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ERROR-CODE":
+                setattr(obj, "error_code", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

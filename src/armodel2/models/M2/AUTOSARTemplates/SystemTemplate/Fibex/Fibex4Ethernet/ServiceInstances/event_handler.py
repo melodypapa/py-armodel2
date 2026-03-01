@@ -62,12 +62,12 @@ class EventHandler(Identifiable):
     sd_server_eg_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CONSUMED-EVENT-GROUPS": lambda obj, elem: obj.consumed_event_group_refs.append(ARRef.deserialize(elem)),
-        "EVENT-GROUP": lambda obj, elem: setattr(obj, "event_group", elem.text),
+        "EVENT-GROUP": lambda obj, elem: setattr(obj, "event_group", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "EVENT-MULTICAST-REF": lambda obj, elem: setattr(obj, "event_multicast_ref", ARRef.deserialize(elem)),
-        "MULTICAST": lambda obj, elem: setattr(obj, "multicast", elem.text),
-        "PDU-ACTIVATION-ROUTINGS": lambda obj, elem: obj.pdu_activation_routings.append(PduActivationRoutingGroup.deserialize(elem)),
+        "MULTICAST": lambda obj, elem: setattr(obj, "multicast", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PDU-ACTIVATION-ROUTINGS": lambda obj, elem: obj.pdu_activation_routings.append(SerializationHelper.deserialize_by_tag(elem, "PduActivationRoutingGroup")),
         "ROUTING-GROUPS": lambda obj, elem: obj.routing_group_refs.append(ARRef.deserialize(elem)),
-        "SD-SERVER-CONFIG": lambda obj, elem: setattr(obj, "sd_server_config", any (SdServerConfig).deserialize(elem)),
+        "SD-SERVER-CONFIG": lambda obj, elem: setattr(obj, "sd_server_config", SerializationHelper.deserialize_by_tag(elem, "any (SdServerConfig)")),
         "SD-SERVER-EG-REF": lambda obj, elem: setattr(obj, "sd_server_eg_ref", ARRef.deserialize(elem)),
     }
 
@@ -236,77 +236,27 @@ class EventHandler(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EventHandler, cls).deserialize(element)
 
-        # Parse consumed_event_group_refs (list from container "CONSUMED-EVENT-GROUP-REFS")
-        obj.consumed_event_group_refs = []
-        container = SerializationHelper.find_child_element(element, "CONSUMED-EVENT-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.consumed_event_group_refs.append(child_value)
-
-        # Parse event_group
-        child = SerializationHelper.find_child_element(element, "EVENT-GROUP")
-        if child is not None:
-            event_group_value = child.text
-            obj.event_group = event_group_value
-
-        # Parse event_multicast_ref
-        child = SerializationHelper.find_child_element(element, "EVENT-MULTICAST-REF")
-        if child is not None:
-            event_multicast_ref_value = ARRef.deserialize(child)
-            obj.event_multicast_ref = event_multicast_ref_value
-
-        # Parse multicast
-        child = SerializationHelper.find_child_element(element, "MULTICAST")
-        if child is not None:
-            multicast_value = child.text
-            obj.multicast = multicast_value
-
-        # Parse pdu_activation_routings (list from container "PDU-ACTIVATION-ROUTINGS")
-        obj.pdu_activation_routings = []
-        container = SerializationHelper.find_child_element(element, "PDU-ACTIVATION-ROUTINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pdu_activation_routings.append(child_value)
-
-        # Parse routing_group_refs (list from container "ROUTING-GROUP-REFS")
-        obj.routing_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ROUTING-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.routing_group_refs.append(child_value)
-
-        # Parse sd_server_config
-        child = SerializationHelper.find_child_element(element, "SD-SERVER-CONFIG")
-        if child is not None:
-            sd_server_config_value = child.text
-            obj.sd_server_config = sd_server_config_value
-
-        # Parse sd_server_eg_ref
-        child = SerializationHelper.find_child_element(element, "SD-SERVER-EG-REF")
-        if child is not None:
-            sd_server_eg_ref_value = ARRef.deserialize(child)
-            obj.sd_server_eg_ref = sd_server_eg_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONSUMED-EVENT-GROUPS":
+                obj.consumed_event_group_refs.append(ARRef.deserialize(child))
+            elif tag == "EVENT-GROUP":
+                setattr(obj, "event_group", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "EVENT-MULTICAST-REF":
+                setattr(obj, "event_multicast_ref", ARRef.deserialize(child))
+            elif tag == "MULTICAST":
+                setattr(obj, "multicast", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PDU-ACTIVATION-ROUTINGS":
+                obj.pdu_activation_routings.append(SerializationHelper.deserialize_by_tag(child, "PduActivationRoutingGroup"))
+            elif tag == "ROUTING-GROUPS":
+                obj.routing_group_refs.append(ARRef.deserialize(child))
+            elif tag == "SD-SERVER-CONFIG":
+                setattr(obj, "sd_server_config", SerializationHelper.deserialize_by_tag(child, "any (SdServerConfig)"))
+            elif tag == "SD-SERVER-EG-REF":
+                setattr(obj, "sd_server_eg_ref", ARRef.deserialize(child))
 
         return obj
 

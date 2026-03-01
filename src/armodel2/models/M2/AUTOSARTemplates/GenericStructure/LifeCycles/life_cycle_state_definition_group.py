@@ -39,7 +39,7 @@ class LifeCycleStateDefinitionGroup(ARElement):
 
     lc_states: list[LifeCycleState]
     _DESERIALIZE_DISPATCH = {
-        "LC-STATES": lambda obj, elem: obj.lc_states.append(LifeCycleState.deserialize(elem)),
+        "LC-STATES": lambda obj, elem: obj.lc_states.append(SerializationHelper.deserialize_by_tag(elem, "LifeCycleState")),
     }
 
 
@@ -96,15 +96,13 @@ class LifeCycleStateDefinitionGroup(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LifeCycleStateDefinitionGroup, cls).deserialize(element)
 
-        # Parse lc_states (list from container "LC-STATES")
-        obj.lc_states = []
-        container = SerializationHelper.find_child_element(element, "LC-STATES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.lc_states.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LC-STATES":
+                obj.lc_states.append(SerializationHelper.deserialize_by_tag(child, "LifeCycleState"))
 
         return obj
 

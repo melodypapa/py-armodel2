@@ -42,7 +42,7 @@ class ArParameterInImplementationDataInstanceRef(ARObject):
     target_data_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
         "CONTEXT-DATAS": lambda obj, elem: obj.context_data_refs.append(ARRef.deserialize(elem)),
-        "PORT-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "port_prototype_ref", ARRef.deserialize(elem)),
+        "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
         "ROOT-PARAMETER-REF": lambda obj, elem: setattr(obj, "root_parameter_ref", ARRef.deserialize(elem)),
         "TARGET-DATA-REF": lambda obj, elem: setattr(obj, "target_data_ref", ARRef.deserialize(elem)),
     }
@@ -153,39 +153,25 @@ class ArParameterInImplementationDataInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ArParameterInImplementationDataInstanceRef, cls).deserialize(element)
 
-        # Parse context_data_refs (list from container "CONTEXT-DATA-REFS")
-        obj.context_data_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-DATA-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.context_data_refs.append(child_value)
-
-        # Parse port_prototype_ref
-        child = SerializationHelper.find_child_element(element, "PORT-PROTOTYPE-REF")
-        if child is not None:
-            port_prototype_ref_value = ARRef.deserialize(child)
-            obj.port_prototype_ref = port_prototype_ref_value
-
-        # Parse root_parameter_ref
-        child = SerializationHelper.find_child_element(element, "ROOT-PARAMETER-REF")
-        if child is not None:
-            root_parameter_ref_value = ARRef.deserialize(child)
-            obj.root_parameter_ref = root_parameter_ref_value
-
-        # Parse target_data_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-DATA-REF")
-        if child is not None:
-            target_data_ref_value = ARRef.deserialize(child)
-            obj.target_data_ref = target_data_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONTEXT-DATAS":
+                obj.context_data_refs.append(ARRef.deserialize(child))
+            elif tag == "PORT-PROTOTYPE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
+                        setattr(obj, "port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
+                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
+                        setattr(obj, "port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+            elif tag == "ROOT-PARAMETER-REF":
+                setattr(obj, "root_parameter_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-DATA-REF":
+                setattr(obj, "target_data_ref", ARRef.deserialize(child))
 
         return obj
 

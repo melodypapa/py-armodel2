@@ -40,8 +40,8 @@ class DiagnosticEventInfoNeeds(DiagnosticCapabilityElement):
     obd_dtc_number: Optional[PositiveInteger]
     uds_dtc_number: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "OBD-DTC-NUMBER": lambda obj, elem: setattr(obj, "obd_dtc_number", elem.text),
-        "UDS-DTC-NUMBER": lambda obj, elem: setattr(obj, "uds_dtc_number", elem.text),
+        "OBD-DTC-NUMBER": lambda obj, elem: setattr(obj, "obd_dtc_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "UDS-DTC-NUMBER": lambda obj, elem: setattr(obj, "uds_dtc_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -117,17 +117,15 @@ class DiagnosticEventInfoNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventInfoNeeds, cls).deserialize(element)
 
-        # Parse obd_dtc_number
-        child = SerializationHelper.find_child_element(element, "OBD-DTC-NUMBER")
-        if child is not None:
-            obd_dtc_number_value = child.text
-            obj.obd_dtc_number = obd_dtc_number_value
-
-        # Parse uds_dtc_number
-        child = SerializationHelper.find_child_element(element, "UDS-DTC-NUMBER")
-        if child is not None:
-            uds_dtc_number_value = child.text
-            obj.uds_dtc_number = uds_dtc_number_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "OBD-DTC-NUMBER":
+                setattr(obj, "obd_dtc_number", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "UDS-DTC-NUMBER":
+                setattr(obj, "uds_dtc_number", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -49,11 +49,11 @@ class EmphasisText(ARObject):
     tt: Optional[Tt]
     type: Optional[EEnum]
     _DESERIALIZE_DISPATCH = {
-        "COLOR": lambda obj, elem: setattr(obj, "color", elem.text),
+        "COLOR": lambda obj, elem: setattr(obj, "color", SerializationHelper.deserialize_by_tag(elem, "String")),
         "FONT": lambda obj, elem: setattr(obj, "font", EEnumFont.deserialize(elem)),
-        "SUB": lambda obj, elem: setattr(obj, "sub", elem.text),
-        "SUP": lambda obj, elem: setattr(obj, "sup", elem.text),
-        "TT": lambda obj, elem: setattr(obj, "tt", Tt.deserialize(elem)),
+        "SUB": lambda obj, elem: setattr(obj, "sub", SerializationHelper.deserialize_by_tag(elem, "Superscript")),
+        "SUP": lambda obj, elem: setattr(obj, "sup", SerializationHelper.deserialize_by_tag(elem, "Superscript")),
+        "TT": lambda obj, elem: setattr(obj, "tt", SerializationHelper.deserialize_by_tag(elem, "Tt")),
         "TYPE": lambda obj, elem: setattr(obj, "type", EEnum.deserialize(elem)),
     }
 
@@ -190,41 +190,23 @@ class EmphasisText(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EmphasisText, cls).deserialize(element)
 
-        # Parse color
-        child = SerializationHelper.find_child_element(element, "COLOR")
-        if child is not None:
-            color_value = child.text
-            obj.color = color_value
-
-        # Parse font
-        child = SerializationHelper.find_child_element(element, "FONT")
-        if child is not None:
-            font_value = EEnumFont.deserialize(child)
-            obj.font = font_value
-
-        # Parse sub
-        child = SerializationHelper.find_child_element(element, "SUB")
-        if child is not None:
-            sub_value = child.text
-            obj.sub = sub_value
-
-        # Parse sup
-        child = SerializationHelper.find_child_element(element, "SUP")
-        if child is not None:
-            sup_value = child.text
-            obj.sup = sup_value
-
-        # Parse tt
-        child = SerializationHelper.find_child_element(element, "TT")
-        if child is not None:
-            tt_value = SerializationHelper.deserialize_by_tag(child, "Tt")
-            obj.tt = tt_value
-
-        # Parse type
-        child = SerializationHelper.find_child_element(element, "TYPE")
-        if child is not None:
-            type_value = EEnum.deserialize(child)
-            obj.type = type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COLOR":
+                setattr(obj, "color", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "FONT":
+                setattr(obj, "font", EEnumFont.deserialize(child))
+            elif tag == "SUB":
+                setattr(obj, "sub", SerializationHelper.deserialize_by_tag(child, "Superscript"))
+            elif tag == "SUP":
+                setattr(obj, "sup", SerializationHelper.deserialize_by_tag(child, "Superscript"))
+            elif tag == "TT":
+                setattr(obj, "tt", SerializationHelper.deserialize_by_tag(child, "Tt"))
+            elif tag == "TYPE":
+                setattr(obj, "type", EEnum.deserialize(child))
 
         return obj
 

@@ -40,8 +40,8 @@ class BinaryManifestMetaDataField(BinaryManifestAddressableObject):
     size: Optional[PositiveInteger]
     value: Optional[VerbatimString]
     _DESERIALIZE_DISPATCH = {
-        "SIZE": lambda obj, elem: setattr(obj, "size", elem.text),
-        "VALUE": lambda obj, elem: setattr(obj, "value", elem.text),
+        "SIZE": lambda obj, elem: setattr(obj, "size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
     }
 
 
@@ -117,17 +117,15 @@ class BinaryManifestMetaDataField(BinaryManifestAddressableObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BinaryManifestMetaDataField, cls).deserialize(element)
 
-        # Parse size
-        child = SerializationHelper.find_child_element(element, "SIZE")
-        if child is not None:
-            size_value = child.text
-            obj.size = size_value
-
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = SerializationHelper.deserialize_by_tag(child, "VerbatimString")
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SIZE":
+                setattr(obj, "size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "VerbatimString"))
 
         return obj
 

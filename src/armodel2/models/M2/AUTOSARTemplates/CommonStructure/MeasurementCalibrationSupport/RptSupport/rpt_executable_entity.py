@@ -44,10 +44,10 @@ class RptExecutableEntity(Identifiable):
     rpt_writes: list[RoleBasedMcDataAssignment]
     symbol: Optional[CIdentifier]
     _DESERIALIZE_DISPATCH = {
-        "RPT-EXECUTABLE-ENTITIES": lambda obj, elem: obj.rpt_executable_entities.append(RptExecutableEntity.deserialize(elem)),
-        "RPT-READS": lambda obj, elem: obj.rpt_reads.append(RoleBasedMcDataAssignment.deserialize(elem)),
-        "RPT-WRITES": lambda obj, elem: obj.rpt_writes.append(RoleBasedMcDataAssignment.deserialize(elem)),
-        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", elem.text),
+        "RPT-EXECUTABLE-ENTITIES": lambda obj, elem: obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(elem, "RptExecutableEntity")),
+        "RPT-READS": lambda obj, elem: obj.rpt_reads.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
+        "RPT-WRITES": lambda obj, elem: obj.rpt_writes.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
     }
 
 
@@ -141,41 +141,19 @@ class RptExecutableEntity(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RptExecutableEntity, cls).deserialize(element)
 
-        # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITIES")
-        obj.rpt_executable_entities = []
-        container = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rpt_executable_entities.append(child_value)
-
-        # Parse rpt_reads (list from container "RPT-READS")
-        obj.rpt_reads = []
-        container = SerializationHelper.find_child_element(element, "RPT-READS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rpt_reads.append(child_value)
-
-        # Parse rpt_writes (list from container "RPT-WRITES")
-        obj.rpt_writes = []
-        container = SerializationHelper.find_child_element(element, "RPT-WRITES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rpt_writes.append(child_value)
-
-        # Parse symbol
-        child = SerializationHelper.find_child_element(element, "SYMBOL")
-        if child is not None:
-            symbol_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
-            obj.symbol = symbol_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RPT-EXECUTABLE-ENTITIES":
+                obj.rpt_executable_entities.append(SerializationHelper.deserialize_by_tag(child, "RptExecutableEntity"))
+            elif tag == "RPT-READS":
+                obj.rpt_reads.append(SerializationHelper.deserialize_by_tag(child, "RoleBasedMcDataAssignment"))
+            elif tag == "RPT-WRITES":
+                obj.rpt_writes.append(SerializationHelper.deserialize_by_tag(child, "RoleBasedMcDataAssignment"))
+            elif tag == "SYMBOL":
+                setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
 
         return obj
 

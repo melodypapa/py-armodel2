@@ -38,7 +38,7 @@ class CpSoftwareClusterCommunicationResource(CpSoftwareClusterResource):
 
     communication: Optional[CpSoftwareCluster]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION": lambda obj, elem: setattr(obj, "communication", CpSoftwareCluster.deserialize(elem)),
+        "COMMUNICATION": lambda obj, elem: setattr(obj, "communication", SerializationHelper.deserialize_by_tag(elem, "CpSoftwareCluster")),
     }
 
 
@@ -99,11 +99,13 @@ class CpSoftwareClusterCommunicationResource(CpSoftwareClusterResource):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterCommunicationResource, cls).deserialize(element)
 
-        # Parse communication
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION")
-        if child is not None:
-            communication_value = SerializationHelper.deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.communication = communication_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMUNICATION":
+                setattr(obj, "communication", SerializationHelper.deserialize_by_tag(child, "CpSoftwareCluster"))
 
         return obj
 

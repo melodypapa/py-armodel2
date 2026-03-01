@@ -42,9 +42,9 @@ class EcucFloatParamDef(EcucParameterDef):
     max: Optional[Limit]
     min: Optional[Limit]
     _DESERIALIZE_DISPATCH = {
-        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", elem.text),
-        "MAX": lambda obj, elem: setattr(obj, "max", elem.text),
-        "MIN": lambda obj, elem: setattr(obj, "min", elem.text),
+        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "MAX": lambda obj, elem: setattr(obj, "max", SerializationHelper.deserialize_by_tag(elem, "Limit")),
+        "MIN": lambda obj, elem: setattr(obj, "min", SerializationHelper.deserialize_by_tag(elem, "Limit")),
     }
 
 
@@ -135,23 +135,17 @@ class EcucFloatParamDef(EcucParameterDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucFloatParamDef, cls).deserialize(element)
 
-        # Parse default_value
-        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE")
-        if child is not None:
-            default_value_value = child.text
-            obj.default_value = default_value_value
-
-        # Parse max
-        child = SerializationHelper.find_child_element(element, "MAX")
-        if child is not None:
-            max_value = SerializationHelper.deserialize_by_tag(child, "Limit")
-            obj.max = max_value
-
-        # Parse min
-        child = SerializationHelper.find_child_element(element, "MIN")
-        if child is not None:
-            min_value = SerializationHelper.deserialize_by_tag(child, "Limit")
-            obj.min = min_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEFAULT-VALUE":
+                setattr(obj, "default_value", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "MAX":
+                setattr(obj, "max", SerializationHelper.deserialize_by_tag(child, "Limit"))
+            elif tag == "MIN":
+                setattr(obj, "min", SerializationHelper.deserialize_by_tag(child, "Limit"))
 
         return obj
 

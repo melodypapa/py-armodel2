@@ -47,7 +47,7 @@ class BuildActionManifest(ARElement):
     start_action_refs: list[ARRef]
     tear_down_action_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "BUILD-ACTIONS": lambda obj, elem: obj.build_actions.append(BuildActionEnvironment.deserialize(elem)),
+        "BUILD-ACTIONS": lambda obj, elem: obj.build_actions.append(SerializationHelper.deserialize_by_tag(elem, "BuildActionEnvironment")),
         "DYNAMIC-ACTIONS": lambda obj, elem: obj.dynamic_action_refs.append(ARRef.deserialize(elem)),
         "START-ACTIONS": lambda obj, elem: obj.start_action_refs.append(ARRef.deserialize(elem)),
         "TEAR-DOWN-ACTIONS": lambda obj, elem: obj.tear_down_action_refs.append(ARRef.deserialize(elem)),
@@ -161,63 +161,19 @@ class BuildActionManifest(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BuildActionManifest, cls).deserialize(element)
 
-        # Parse build_actions (list from container "BUILD-ACTIONS")
-        obj.build_actions = []
-        container = SerializationHelper.find_child_element(element, "BUILD-ACTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.build_actions.append(child_value)
-
-        # Parse dynamic_action_refs (list from container "DYNAMIC-ACTION-REFS")
-        obj.dynamic_action_refs = []
-        container = SerializationHelper.find_child_element(element, "DYNAMIC-ACTION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dynamic_action_refs.append(child_value)
-
-        # Parse start_action_refs (list from container "START-ACTION-REFS")
-        obj.start_action_refs = []
-        container = SerializationHelper.find_child_element(element, "START-ACTION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.start_action_refs.append(child_value)
-
-        # Parse tear_down_action_refs (list from container "TEAR-DOWN-ACTION-REFS")
-        obj.tear_down_action_refs = []
-        container = SerializationHelper.find_child_element(element, "TEAR-DOWN-ACTION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tear_down_action_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BUILD-ACTIONS":
+                obj.build_actions.append(SerializationHelper.deserialize_by_tag(child, "BuildActionEnvironment"))
+            elif tag == "DYNAMIC-ACTIONS":
+                obj.dynamic_action_refs.append(ARRef.deserialize(child))
+            elif tag == "START-ACTIONS":
+                obj.start_action_refs.append(ARRef.deserialize(child))
+            elif tag == "TEAR-DOWN-ACTIONS":
+                obj.tear_down_action_refs.append(ARRef.deserialize(child))
 
         return obj
 

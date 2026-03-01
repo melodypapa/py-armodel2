@@ -39,7 +39,7 @@ class IdsmSignatureSupportAp(ARObject):
     crypto_primitive: String
     key_slot_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CRYPTO-PRIMITIVE": lambda obj, elem: setattr(obj, "crypto_primitive", elem.text),
+        "CRYPTO-PRIMITIVE": lambda obj, elem: setattr(obj, "crypto_primitive", SerializationHelper.deserialize_by_tag(elem, "String")),
         "KEY-SLOT-REF": lambda obj, elem: setattr(obj, "key_slot_ref", ARRef.deserialize(elem)),
     }
 
@@ -116,17 +116,15 @@ class IdsmSignatureSupportAp(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IdsmSignatureSupportAp, cls).deserialize(element)
 
-        # Parse crypto_primitive
-        child = SerializationHelper.find_child_element(element, "CRYPTO-PRIMITIVE")
-        if child is not None:
-            crypto_primitive_value = child.text
-            obj.crypto_primitive = crypto_primitive_value
-
-        # Parse key_slot_ref
-        child = SerializationHelper.find_child_element(element, "KEY-SLOT-REF")
-        if child is not None:
-            key_slot_ref_value = ARRef.deserialize(child)
-            obj.key_slot_ref = key_slot_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CRYPTO-PRIMITIVE":
+                setattr(obj, "crypto_primitive", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "KEY-SLOT-REF":
+                setattr(obj, "key_slot_ref", ARRef.deserialize(child))
 
         return obj
 

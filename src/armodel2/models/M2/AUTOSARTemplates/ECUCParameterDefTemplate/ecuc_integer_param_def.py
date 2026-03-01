@@ -41,9 +41,9 @@ class EcucIntegerParamDef(EcucParameterDef):
     max: Optional[UnlimitedInteger]
     min: Optional[UnlimitedInteger]
     _DESERIALIZE_DISPATCH = {
-        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", elem.text),
-        "MAX": lambda obj, elem: setattr(obj, "max", elem.text),
-        "MIN": lambda obj, elem: setattr(obj, "min", elem.text),
+        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", SerializationHelper.deserialize_by_tag(elem, "UnlimitedInteger")),
+        "MAX": lambda obj, elem: setattr(obj, "max", SerializationHelper.deserialize_by_tag(elem, "UnlimitedInteger")),
+        "MIN": lambda obj, elem: setattr(obj, "min", SerializationHelper.deserialize_by_tag(elem, "UnlimitedInteger")),
     }
 
 
@@ -134,23 +134,17 @@ class EcucIntegerParamDef(EcucParameterDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucIntegerParamDef, cls).deserialize(element)
 
-        # Parse default_value
-        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE")
-        if child is not None:
-            default_value_value = child.text
-            obj.default_value = default_value_value
-
-        # Parse max
-        child = SerializationHelper.find_child_element(element, "MAX")
-        if child is not None:
-            max_value = child.text
-            obj.max = max_value
-
-        # Parse min
-        child = SerializationHelper.find_child_element(element, "MIN")
-        if child is not None:
-            min_value = child.text
-            obj.min = min_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEFAULT-VALUE":
+                setattr(obj, "default_value", SerializationHelper.deserialize_by_tag(child, "UnlimitedInteger"))
+            elif tag == "MAX":
+                setattr(obj, "max", SerializationHelper.deserialize_by_tag(child, "UnlimitedInteger"))
+            elif tag == "MIN":
+                setattr(obj, "min", SerializationHelper.deserialize_by_tag(child, "UnlimitedInteger"))
 
         return obj
 

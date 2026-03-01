@@ -35,7 +35,7 @@ class DiagnosticOperationCycle(DiagnosticCommonElement):
 
     type_cycle_type_enum: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "TYPE-CYCLE-TYPE-ENUM": lambda obj, elem: setattr(obj, "type_cycle_type_enum", any (DiagnosticOperation).deserialize(elem)),
+        "TYPE-CYCLE-TYPE-ENUM": lambda obj, elem: setattr(obj, "type_cycle_type_enum", SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticOperation)")),
     }
 
 
@@ -96,11 +96,13 @@ class DiagnosticOperationCycle(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticOperationCycle, cls).deserialize(element)
 
-        # Parse type_cycle_type_enum
-        child = SerializationHelper.find_child_element(element, "TYPE-CYCLE-TYPE-ENUM")
-        if child is not None:
-            type_cycle_type_enum_value = child.text
-            obj.type_cycle_type_enum = type_cycle_type_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TYPE-CYCLE-TYPE-ENUM":
+                setattr(obj, "type_cycle_type_enum", SerializationHelper.deserialize_by_tag(child, "any (DiagnosticOperation)"))
 
         return obj
 

@@ -113,17 +113,15 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939ControllerApplicationToJ1939NmNodeMapping, cls).deserialize(element)
 
-        # Parse j1939_controller_ref
-        child = SerializationHelper.find_child_element(element, "J1939-CONTROLLER-REF")
-        if child is not None:
-            j1939_controller_ref_value = ARRef.deserialize(child)
-            obj.j1939_controller_ref = j1939_controller_ref_value
-
-        # Parse j1939_nm_node_ref
-        child = SerializationHelper.find_child_element(element, "J1939-NM-NODE-REF")
-        if child is not None:
-            j1939_nm_node_ref_value = ARRef.deserialize(child)
-            obj.j1939_nm_node_ref = j1939_nm_node_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "J1939-CONTROLLER-REF":
+                setattr(obj, "j1939_controller_ref", ARRef.deserialize(child))
+            elif tag == "J1939-NM-NODE-REF":
+                setattr(obj, "j1939_nm_node_ref", ARRef.deserialize(child))
 
         return obj
 

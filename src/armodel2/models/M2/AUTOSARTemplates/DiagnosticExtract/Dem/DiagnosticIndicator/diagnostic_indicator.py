@@ -99,11 +99,13 @@ class DiagnosticIndicator(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticIndicator, cls).deserialize(element)
 
-        # Parse type
-        child = SerializationHelper.find_child_element(element, "TYPE")
-        if child is not None:
-            type_value = DiagnosticIndicatorTypeEnum.deserialize(child)
-            obj.type = type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TYPE":
+                setattr(obj, "type", DiagnosticIndicatorTypeEnum.deserialize(child))
 
         return obj
 

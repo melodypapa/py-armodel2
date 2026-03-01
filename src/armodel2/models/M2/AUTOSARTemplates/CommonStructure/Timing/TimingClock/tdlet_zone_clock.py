@@ -39,8 +39,8 @@ class TDLETZoneClock(TimingClock):
     accuracy_ext: Optional[MultidimensionalTime]
     accuracy_int: Optional[MultidimensionalTime]
     _DESERIALIZE_DISPATCH = {
-        "ACCURACY-EXT": lambda obj, elem: setattr(obj, "accuracy_ext", MultidimensionalTime.deserialize(elem)),
-        "ACCURACY-INT": lambda obj, elem: setattr(obj, "accuracy_int", MultidimensionalTime.deserialize(elem)),
+        "ACCURACY-EXT": lambda obj, elem: setattr(obj, "accuracy_ext", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "ACCURACY-INT": lambda obj, elem: setattr(obj, "accuracy_int", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
     }
 
 
@@ -116,17 +116,15 @@ class TDLETZoneClock(TimingClock):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDLETZoneClock, cls).deserialize(element)
 
-        # Parse accuracy_ext
-        child = SerializationHelper.find_child_element(element, "ACCURACY-EXT")
-        if child is not None:
-            accuracy_ext_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.accuracy_ext = accuracy_ext_value
-
-        # Parse accuracy_int
-        child = SerializationHelper.find_child_element(element, "ACCURACY-INT")
-        if child is not None:
-            accuracy_int_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.accuracy_int = accuracy_int_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACCURACY-EXT":
+                setattr(obj, "accuracy_ext", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "ACCURACY-INT":
+                setattr(obj, "accuracy_int", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

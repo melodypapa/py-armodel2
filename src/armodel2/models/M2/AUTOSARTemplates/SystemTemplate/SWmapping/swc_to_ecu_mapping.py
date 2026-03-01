@@ -173,34 +173,19 @@ class SwcToEcuMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcToEcuMapping, cls).deserialize(element)
 
-        # Parse component_irefs (multi-wrapper list from "COMPONENT-IREFS")
-        obj.component_irefs = []
-        irefs_container = SerializationHelper.find_child_element(element, "COMPONENT-IREFS")
-        if irefs_container is not None:
-            for iref_wrapper in irefs_container:
-                if SerializationHelper.strip_namespace(iref_wrapper.tag) == "COMPONENT-IREF":
-                    # Deserialize each iref wrapper as the type (flattened structure)
-                    child_value = SerializationHelper.deserialize_by_tag(iref_wrapper, "ComponentInSystemInstanceRef")
-                    if child_value is not None:
-                        obj.component_irefs.append(child_value)
-
-        # Parse controlled_hw_element_ref
-        child = SerializationHelper.find_child_element(element, "CONTROLLED-HW-ELEMENT-REF")
-        if child is not None:
-            controlled_hw_element_ref_value = ARRef.deserialize(child)
-            obj.controlled_hw_element_ref = controlled_hw_element_ref_value
-
-        # Parse ecu_instance_ref
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
-        if child is not None:
-            ecu_instance_ref_value = ARRef.deserialize(child)
-            obj.ecu_instance_ref = ecu_instance_ref_value
-
-        # Parse processing_unit_ref
-        child = SerializationHelper.find_child_element(element, "PROCESSING-UNIT-REF")
-        if child is not None:
-            processing_unit_ref_value = ARRef.deserialize(child)
-            obj.processing_unit_ref = processing_unit_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPONENTS":
+                obj._component_irefs.append(ARRef.deserialize(child))
+            elif tag == "CONTROLLED-HW-ELEMENT-REF":
+                setattr(obj, "controlled_hw_element_ref", ARRef.deserialize(child))
+            elif tag == "ECU-INSTANCE-REF":
+                setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
+            elif tag == "PROCESSING-UNIT-REF":
+                setattr(obj, "processing_unit_ref", ARRef.deserialize(child))
 
         return obj
 

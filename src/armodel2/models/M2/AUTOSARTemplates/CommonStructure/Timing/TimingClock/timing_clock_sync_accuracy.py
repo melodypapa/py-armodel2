@@ -44,9 +44,9 @@ class TimingClockSyncAccuracy(Identifiable):
     lower_ref: Optional[ARRef]
     upper_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ACCURACY": lambda obj, elem: setattr(obj, "accuracy", MultidimensionalTime.deserialize(elem)),
-        "LOWER-REF": lambda obj, elem: setattr(obj, "lower_ref", ARRef.deserialize(elem)),
-        "UPPER-REF": lambda obj, elem: setattr(obj, "upper_ref", ARRef.deserialize(elem)),
+        "ACCURACY": lambda obj, elem: setattr(obj, "accuracy", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "LOWER-REF": ("_POLYMORPHIC", "lower_ref", ["TDLETZoneClock"]),
+        "UPPER-REF": ("_POLYMORPHIC", "upper_ref", ["TDLETZoneClock"]),
     }
 
 
@@ -137,23 +137,25 @@ class TimingClockSyncAccuracy(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingClockSyncAccuracy, cls).deserialize(element)
 
-        # Parse accuracy
-        child = SerializationHelper.find_child_element(element, "ACCURACY")
-        if child is not None:
-            accuracy_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.accuracy = accuracy_value
-
-        # Parse lower_ref
-        child = SerializationHelper.find_child_element(element, "LOWER-REF")
-        if child is not None:
-            lower_ref_value = ARRef.deserialize(child)
-            obj.lower_ref = lower_ref_value
-
-        # Parse upper_ref
-        child = SerializationHelper.find_child_element(element, "UPPER-REF")
-        if child is not None:
-            upper_ref_value = ARRef.deserialize(child)
-            obj.upper_ref = upper_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACCURACY":
+                setattr(obj, "accuracy", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "LOWER-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "T-D-L-E-T-ZONE-CLOCK":
+                        setattr(obj, "lower_ref", SerializationHelper.deserialize_by_tag(child[0], "TDLETZoneClock"))
+            elif tag == "UPPER-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "T-D-L-E-T-ZONE-CLOCK":
+                        setattr(obj, "upper_ref", SerializationHelper.deserialize_by_tag(child[0], "TDLETZoneClock"))
 
         return obj
 

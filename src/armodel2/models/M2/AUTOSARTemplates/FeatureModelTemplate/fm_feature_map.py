@@ -41,7 +41,7 @@ class FMFeatureMap(ARElement):
 
     mappings: list[FMFeatureMapElement]
     _DESERIALIZE_DISPATCH = {
-        "MAPPINGS": lambda obj, elem: obj.mappings.append(FMFeatureMapElement.deserialize(elem)),
+        "MAPPINGS": lambda obj, elem: obj.mappings.append(SerializationHelper.deserialize_by_tag(elem, "FMFeatureMapElement")),
     }
 
 
@@ -98,15 +98,13 @@ class FMFeatureMap(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeatureMap, cls).deserialize(element)
 
-        # Parse mappings (list from container "MAPPINGS")
-        obj.mappings = []
-        container = SerializationHelper.find_child_element(element, "MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mappings.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAPPINGS":
+                obj.mappings.append(SerializationHelper.deserialize_by_tag(child, "FMFeatureMapElement"))
 
         return obj
 

@@ -55,9 +55,9 @@ class LifeCycleInfoSet(ARElement):
     used_life_cycle_state_definition_group_ref: ARRef
     _DESERIALIZE_DISPATCH = {
         "DEFAULT-LC-STATE-REF": lambda obj, elem: setattr(obj, "default_lc_state_ref", ARRef.deserialize(elem)),
-        "DEFAULT-PERIOD-BEGIN": lambda obj, elem: setattr(obj, "default_period_begin", LifeCyclePeriod.deserialize(elem)),
-        "DEFAULT-PERIOD-END": lambda obj, elem: setattr(obj, "default_period_end", LifeCyclePeriod.deserialize(elem)),
-        "LIFE-CYCLE-INFOES": lambda obj, elem: obj._life_cycle_infoes.append(LifeCycleInfo.deserialize(elem)),
+        "DEFAULT-PERIOD-BEGIN": lambda obj, elem: setattr(obj, "default_period_begin", SerializationHelper.deserialize_by_tag(elem, "LifeCyclePeriod")),
+        "DEFAULT-PERIOD-END": lambda obj, elem: setattr(obj, "default_period_end", SerializationHelper.deserialize_by_tag(elem, "LifeCyclePeriod")),
+        "LIFE-CYCLE-INFOES": lambda obj, elem: obj._life_cycle_infoes.append(SerializationHelper.deserialize_by_tag(elem, "LifeCycleInfo")),
         "USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF": lambda obj, elem: setattr(obj, "used_life_cycle_state_definition_group_ref", ARRef.deserialize(elem)),
     }
 
@@ -186,39 +186,21 @@ class LifeCycleInfoSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LifeCycleInfoSet, cls).deserialize(element)
 
-        # Parse default_lc_state_ref
-        child = SerializationHelper.find_child_element(element, "DEFAULT-LC-STATE-REF")
-        if child is not None:
-            default_lc_state_ref_value = ARRef.deserialize(child)
-            obj.default_lc_state_ref = default_lc_state_ref_value
-
-        # Parse default_period_begin
-        child = SerializationHelper.find_child_element(element, "DEFAULT-PERIOD-BEGIN")
-        if child is not None:
-            default_period_begin_value = SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod")
-            obj.default_period_begin = default_period_begin_value
-
-        # Parse default_period_end
-        child = SerializationHelper.find_child_element(element, "DEFAULT-PERIOD-END")
-        if child is not None:
-            default_period_end_value = SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod")
-            obj.default_period_end = default_period_end_value
-
-        # Parse life_cycle_infoes (list from container "LIFE-CYCLE-INFOS")
-        obj.life_cycle_infoes = []
-        container = SerializationHelper.find_child_element(element, "LIFE-CYCLE-INFOS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.life_cycle_infoes.append(child_value)
-
-        # Parse used_life_cycle_state_definition_group_ref
-        child = SerializationHelper.find_child_element(element, "USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF")
-        if child is not None:
-            used_life_cycle_state_definition_group_ref_value = ARRef.deserialize(child)
-            obj.used_life_cycle_state_definition_group_ref = used_life_cycle_state_definition_group_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEFAULT-LC-STATE-REF":
+                setattr(obj, "default_lc_state_ref", ARRef.deserialize(child))
+            elif tag == "DEFAULT-PERIOD-BEGIN":
+                setattr(obj, "default_period_begin", SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod"))
+            elif tag == "DEFAULT-PERIOD-END":
+                setattr(obj, "default_period_end", SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod"))
+            elif tag == "LIFE-CYCLE-INFOES":
+                obj._life_cycle_infoes.append(SerializationHelper.deserialize_by_tag(child, "LifeCycleInfo"))
+            elif tag == "USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF":
+                setattr(obj, "used_life_cycle_state_definition_group_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -116,27 +116,15 @@ class DiagnosticParameterElementAccess(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticParameterElementAccess, cls).deserialize(element)
 
-        # Parse context_element_refs (list from container "CONTEXT-ELEMENT-REFS")
-        obj.context_element_refs = []
-        container = SerializationHelper.find_child_element(element, "CONTEXT-ELEMENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.context_element_refs.append(child_value)
-
-        # Parse target_element_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-ELEMENT-REF")
-        if child is not None:
-            target_element_ref_value = ARRef.deserialize(child)
-            obj.target_element_ref = target_element_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONTEXT-ELEMENTS":
+                obj.context_element_refs.append(ARRef.deserialize(child))
+            elif tag == "TARGET-ELEMENT-REF":
+                setattr(obj, "target_element_ref", ARRef.deserialize(child))
 
         return obj
 

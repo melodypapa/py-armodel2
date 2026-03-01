@@ -40,7 +40,7 @@ class DiagnosticEnableConditionPortMapping(DiagnosticSwMapping):
     _DESERIALIZE_DISPATCH = {
         "ENABLE-CONDITION-REF": lambda obj, elem: setattr(obj, "enable_condition_ref", ARRef.deserialize(elem)),
         "SWC-FLAT-SERVICE-REF": lambda obj, elem: setattr(obj, "swc_flat_service_ref", ARRef.deserialize(elem)),
-        "SWC-SERVICE": lambda obj, elem: setattr(obj, "swc_service", any (SwcService).deserialize(elem)),
+        "SWC-SERVICE": lambda obj, elem: setattr(obj, "swc_service", SerializationHelper.deserialize_by_tag(elem, "any (SwcService)")),
     }
 
 
@@ -131,23 +131,17 @@ class DiagnosticEnableConditionPortMapping(DiagnosticSwMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEnableConditionPortMapping, cls).deserialize(element)
 
-        # Parse enable_condition_ref
-        child = SerializationHelper.find_child_element(element, "ENABLE-CONDITION-REF")
-        if child is not None:
-            enable_condition_ref_value = ARRef.deserialize(child)
-            obj.enable_condition_ref = enable_condition_ref_value
-
-        # Parse swc_flat_service_ref
-        child = SerializationHelper.find_child_element(element, "SWC-FLAT-SERVICE-REF")
-        if child is not None:
-            swc_flat_service_ref_value = ARRef.deserialize(child)
-            obj.swc_flat_service_ref = swc_flat_service_ref_value
-
-        # Parse swc_service
-        child = SerializationHelper.find_child_element(element, "SWC-SERVICE")
-        if child is not None:
-            swc_service_value = child.text
-            obj.swc_service = swc_service_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ENABLE-CONDITION-REF":
+                setattr(obj, "enable_condition_ref", ARRef.deserialize(child))
+            elif tag == "SWC-FLAT-SERVICE-REF":
+                setattr(obj, "swc_flat_service_ref", ARRef.deserialize(child))
+            elif tag == "SWC-SERVICE":
+                setattr(obj, "swc_service", SerializationHelper.deserialize_by_tag(child, "any (SwcService)"))
 
         return obj
 

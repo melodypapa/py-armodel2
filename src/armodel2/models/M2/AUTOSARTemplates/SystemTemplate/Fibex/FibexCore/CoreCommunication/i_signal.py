@@ -81,14 +81,14 @@ class ISignal(FibexElement):
     _DESERIALIZE_DISPATCH = {
         "DATA-TRANSFORMATION-REF": lambda obj, elem: setattr(obj, "data_transformation_ref", ARRef.deserialize(elem)),
         "DATA-TYPE-POLICY": lambda obj, elem: setattr(obj, "data_type_policy", DataTypePolicyEnum.deserialize(elem)),
-        "INIT-VALUE": lambda obj, elem: setattr(obj, "_init_value", ValueSpecification.deserialize(elem)),
-        "I-SIGNAL-PROPS": lambda obj, elem: setattr(obj, "i_signal_props", ISignalProps.deserialize(elem)),
+        "INIT-VALUE": ("_POLYMORPHIC", "_init_value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "I-SIGNAL-PROPS": lambda obj, elem: setattr(obj, "i_signal_props", SerializationHelper.deserialize_by_tag(elem, "ISignalProps")),
         "I-SIGNAL-TYPE": lambda obj, elem: setattr(obj, "i_signal_type", ISignalTypeEnum.deserialize(elem)),
-        "LENGTH": lambda obj, elem: setattr(obj, "length", elem.text),
-        "NETWORK-REPRESENTATION-PROPS": lambda obj, elem: setattr(obj, "network_representation_props", SwDataDefProps.deserialize(elem)),
+        "LENGTH": lambda obj, elem: setattr(obj, "length", SerializationHelper.deserialize_by_tag(elem, "UnlimitedInteger")),
+        "NETWORK-REPRESENTATION-PROPS": lambda obj, elem: setattr(obj, "network_representation_props", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
         "SYSTEM-SIGNAL-REF": lambda obj, elem: setattr(obj, "system_signal_ref", ARRef.deserialize(elem)),
-        "TIMEOUT-SUBSTITUTION-VALUE": lambda obj, elem: setattr(obj, "timeout_substitution_value", ValueSpecification.deserialize(elem)),
-        "TRANSFORMATION-I-SIGNAL-PROPS": lambda obj, elem: obj.transformation_i_signal_props.append(TransformationISignalProps.deserialize(elem)),
+        "TIMEOUT-SUBSTITUTION-VALUE": ("_POLYMORPHIC", "timeout_substitution_value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "TRANSFORMATION-I-SIGNAL-PROPS": ("_POLYMORPHIC_LIST", "transformation_i_signal_props", ["EndToEndTransformationISignalProps", "SOMEIPTransformationISignalProps", "UserDefinedTransformation"]),
     }
 
 
@@ -286,69 +286,75 @@ class ISignal(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignal, cls).deserialize(element)
 
-        # Parse data_transformation_ref
-        child = SerializationHelper.find_child_element(element, "DATA-TRANSFORMATION-REF")
-        if child is not None:
-            data_transformation_ref_value = ARRef.deserialize(child)
-            obj.data_transformation_ref = data_transformation_ref_value
-
-        # Parse data_type_policy
-        child = SerializationHelper.find_child_element(element, "DATA-TYPE-POLICY")
-        if child is not None:
-            data_type_policy_value = DataTypePolicyEnum.deserialize(child)
-            obj.data_type_policy = data_type_policy_value
-
-        # Parse init_value (polymorphic wrapper "INIT-VALUE")
-        wrapper = SerializationHelper.find_child_element(element, "INIT-VALUE")
-        if wrapper is not None:
-            init_value_value = SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
-            obj.init_value = init_value_value
-
-        # Parse i_signal_props
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-PROPS")
-        if child is not None:
-            i_signal_props_value = SerializationHelper.deserialize_by_tag(child, "ISignalProps")
-            obj.i_signal_props = i_signal_props_value
-
-        # Parse i_signal_type
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-TYPE")
-        if child is not None:
-            i_signal_type_value = ISignalTypeEnum.deserialize(child)
-            obj.i_signal_type = i_signal_type_value
-
-        # Parse length
-        child = SerializationHelper.find_child_element(element, "LENGTH")
-        if child is not None:
-            length_value = child.text
-            obj.length = length_value
-
-        # Parse network_representation_props
-        child = SerializationHelper.find_child_element(element, "NETWORK-REPRESENTATION-PROPS")
-        if child is not None:
-            network_representation_props_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.network_representation_props = network_representation_props_value
-
-        # Parse system_signal_ref
-        child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
-        if child is not None:
-            system_signal_ref_value = ARRef.deserialize(child)
-            obj.system_signal_ref = system_signal_ref_value
-
-        # Parse timeout_substitution_value
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-SUBSTITUTION-VALUE")
-        if child is not None:
-            timeout_substitution_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
-            obj.timeout_substitution_value = timeout_substitution_value_value
-
-        # Parse transformation_i_signal_props (list from container "TRANSFORMATION-I-SIGNAL-PROPS")
-        obj.transformation_i_signal_props = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-I-SIGNAL-PROPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.transformation_i_signal_props.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-TRANSFORMATION-REF":
+                setattr(obj, "data_transformation_ref", ARRef.deserialize(child))
+            elif tag == "DATA-TYPE-POLICY":
+                setattr(obj, "data_type_policy", DataTypePolicyEnum.deserialize(child))
+            elif tag == "INIT-VALUE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
+            elif tag == "I-SIGNAL-PROPS":
+                setattr(obj, "i_signal_props", SerializationHelper.deserialize_by_tag(child, "ISignalProps"))
+            elif tag == "I-SIGNAL-TYPE":
+                setattr(obj, "i_signal_type", ISignalTypeEnum.deserialize(child))
+            elif tag == "LENGTH":
+                setattr(obj, "length", SerializationHelper.deserialize_by_tag(child, "UnlimitedInteger"))
+            elif tag == "NETWORK-REPRESENTATION-PROPS":
+                setattr(obj, "network_representation_props", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            elif tag == "SYSTEM-SIGNAL-REF":
+                setattr(obj, "system_signal_ref", ARRef.deserialize(child))
+            elif tag == "TIMEOUT-SUBSTITUTION-VALUE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        setattr(obj, "timeout_substitution_value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
+            elif tag == "TRANSFORMATION-I-SIGNAL-PROPS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "END-TO-END-TRANSFORMATION-I-SIGNAL-PROPS":
+                        obj.transformation_i_signal_props.append(SerializationHelper.deserialize_by_tag(child[0], "EndToEndTransformationISignalProps"))
+                    elif concrete_tag == "S-O-M-E-I-P-TRANSFORMATION-I-SIGNAL-PROPS":
+                        obj.transformation_i_signal_props.append(SerializationHelper.deserialize_by_tag(child[0], "SOMEIPTransformationISignalProps"))
+                    elif concrete_tag == "USER-DEFINED-TRANSFORMATION":
+                        obj.transformation_i_signal_props.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedTransformation"))
 
         return obj
 

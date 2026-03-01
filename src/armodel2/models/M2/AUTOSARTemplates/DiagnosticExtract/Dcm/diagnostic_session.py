@@ -45,10 +45,10 @@ class DiagnosticSession(DiagnosticCommonElement):
     p2_server_max: Optional[TimeValue]
     p2_star_server: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "ID": lambda obj, elem: setattr(obj, "id", elem.text),
+        "ID": lambda obj, elem: setattr(obj, "id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "JUMP-TO-BOOT": lambda obj, elem: setattr(obj, "jump_to_boot", DiagnosticJumpToBootLoaderEnum.deserialize(elem)),
-        "P2-SERVER-MAX": lambda obj, elem: setattr(obj, "p2_server_max", elem.text),
-        "P2-STAR-SERVER": lambda obj, elem: setattr(obj, "p2_star_server", elem.text),
+        "P2-SERVER-MAX": lambda obj, elem: setattr(obj, "p2_server_max", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "P2-STAR-SERVER": lambda obj, elem: setattr(obj, "p2_star_server", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -154,29 +154,19 @@ class DiagnosticSession(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSession, cls).deserialize(element)
 
-        # Parse id
-        child = SerializationHelper.find_child_element(element, "ID")
-        if child is not None:
-            id_value = child.text
-            obj.id = id_value
-
-        # Parse jump_to_boot
-        child = SerializationHelper.find_child_element(element, "JUMP-TO-BOOT")
-        if child is not None:
-            jump_to_boot_value = DiagnosticJumpToBootLoaderEnum.deserialize(child)
-            obj.jump_to_boot = jump_to_boot_value
-
-        # Parse p2_server_max
-        child = SerializationHelper.find_child_element(element, "P2-SERVER-MAX")
-        if child is not None:
-            p2_server_max_value = child.text
-            obj.p2_server_max = p2_server_max_value
-
-        # Parse p2_star_server
-        child = SerializationHelper.find_child_element(element, "P2-STAR-SERVER")
-        if child is not None:
-            p2_star_server_value = child.text
-            obj.p2_star_server = p2_star_server_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ID":
+                setattr(obj, "id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "JUMP-TO-BOOT":
+                setattr(obj, "jump_to_boot", DiagnosticJumpToBootLoaderEnum.deserialize(child))
+            elif tag == "P2-SERVER-MAX":
+                setattr(obj, "p2_server_max", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "P2-STAR-SERVER":
+                setattr(obj, "p2_star_server", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

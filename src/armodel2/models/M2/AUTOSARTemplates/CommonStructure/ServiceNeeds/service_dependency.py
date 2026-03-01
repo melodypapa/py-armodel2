@@ -41,9 +41,9 @@ class ServiceDependency(ARObject, ABC):
     diagnostic: Optional[ServiceDiagnosticRelevanceEnum]
     symbolic_name_props: Optional[SymbolicNameProps]
     _DESERIALIZE_DISPATCH = {
-        "ASSIGNED-DATA": lambda obj, elem: setattr(obj, "assigned_data", RoleBasedDataTypeAssignment.deserialize(elem)),
+        "ASSIGNED-DATA": lambda obj, elem: setattr(obj, "assigned_data", SerializationHelper.deserialize_by_tag(elem, "RoleBasedDataTypeAssignment")),
         "DIAGNOSTIC": lambda obj, elem: setattr(obj, "diagnostic", ServiceDiagnosticRelevanceEnum.deserialize(elem)),
-        "SYMBOLIC-NAME-PROPS": lambda obj, elem: setattr(obj, "symbolic_name_props", SymbolicNameProps.deserialize(elem)),
+        "SYMBOLIC-NAME-PROPS": lambda obj, elem: setattr(obj, "symbolic_name_props", SerializationHelper.deserialize_by_tag(elem, "SymbolicNameProps")),
     }
 
 
@@ -134,23 +134,17 @@ class ServiceDependency(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ServiceDependency, cls).deserialize(element)
 
-        # Parse assigned_data
-        child = SerializationHelper.find_child_element(element, "ASSIGNED-DATA")
-        if child is not None:
-            assigned_data_value = SerializationHelper.deserialize_by_tag(child, "RoleBasedDataTypeAssignment")
-            obj.assigned_data = assigned_data_value
-
-        # Parse diagnostic
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC")
-        if child is not None:
-            diagnostic_value = ServiceDiagnosticRelevanceEnum.deserialize(child)
-            obj.diagnostic = diagnostic_value
-
-        # Parse symbolic_name_props
-        child = SerializationHelper.find_child_element(element, "SYMBOLIC-NAME-PROPS")
-        if child is not None:
-            symbolic_name_props_value = SerializationHelper.deserialize_by_tag(child, "SymbolicNameProps")
-            obj.symbolic_name_props = symbolic_name_props_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ASSIGNED-DATA":
+                setattr(obj, "assigned_data", SerializationHelper.deserialize_by_tag(child, "RoleBasedDataTypeAssignment"))
+            elif tag == "DIAGNOSTIC":
+                setattr(obj, "diagnostic", ServiceDiagnosticRelevanceEnum.deserialize(child))
+            elif tag == "SYMBOLIC-NAME-PROPS":
+                setattr(obj, "symbolic_name_props", SerializationHelper.deserialize_by_tag(child, "SymbolicNameProps"))
 
         return obj
 

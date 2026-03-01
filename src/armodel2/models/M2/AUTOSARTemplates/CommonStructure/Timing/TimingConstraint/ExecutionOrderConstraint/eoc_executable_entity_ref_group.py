@@ -55,14 +55,14 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
     triggering_event_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "LET-DATA-EXCHANGE": lambda obj, elem: setattr(obj, "let_data_exchange", LetDataExchangeParadigmEnum.deserialize(elem)),
-        "LET-INTERVALS": lambda obj, elem: obj.let_interval_refs.append(ARRef.deserialize(elem)),
-        "MAX-CYCLE": lambda obj, elem: setattr(obj, "max_cycle", elem.text),
-        "MAX-CYCLES": lambda obj, elem: setattr(obj, "max_cycles", elem.text),
-        "MAX-SLOTS": lambda obj, elem: setattr(obj, "max_slots", elem.text),
-        "MAX-SLOTS-PER": lambda obj, elem: setattr(obj, "max_slots_per", elem.text),
+        "LET-INTERVALS": ("_POLYMORPHIC_LIST", "let_interval_refs", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "MAX-CYCLE": lambda obj, elem: setattr(obj, "max_cycle", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MAX-CYCLES": lambda obj, elem: setattr(obj, "max_cycles", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MAX-SLOTS": lambda obj, elem: setattr(obj, "max_slots", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MAX-SLOTS-PER": lambda obj, elem: setattr(obj, "max_slots_per", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "NESTED-ELEMENTS": lambda obj, elem: obj.nested_element_refs.append(ARRef.deserialize(elem)),
         "SUCCESSORS": lambda obj, elem: obj.successor_refs.append(ARRef.deserialize(elem)),
-        "TRIGGERING-EVENT-REF": lambda obj, elem: setattr(obj, "triggering_event_ref", ARRef.deserialize(elem)),
+        "TRIGGERING-EVENT-REF": ("_POLYMORPHIC", "triggering_event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
     }
 
 
@@ -252,89 +252,61 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EOCExecutableEntityRefGroup, cls).deserialize(element)
 
-        # Parse let_data_exchange
-        child = SerializationHelper.find_child_element(element, "LET-DATA-EXCHANGE")
-        if child is not None:
-            let_data_exchange_value = LetDataExchangeParadigmEnum.deserialize(child)
-            obj.let_data_exchange = let_data_exchange_value
-
-        # Parse let_interval_refs (list from container "LET-INTERVAL-REFS")
-        obj.let_interval_refs = []
-        container = SerializationHelper.find_child_element(element, "LET-INTERVAL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.let_interval_refs.append(child_value)
-
-        # Parse max_cycle
-        child = SerializationHelper.find_child_element(element, "MAX-CYCLE")
-        if child is not None:
-            max_cycle_value = child.text
-            obj.max_cycle = max_cycle_value
-
-        # Parse max_cycles
-        child = SerializationHelper.find_child_element(element, "MAX-CYCLES")
-        if child is not None:
-            max_cycles_value = child.text
-            obj.max_cycles = max_cycles_value
-
-        # Parse max_slots
-        child = SerializationHelper.find_child_element(element, "MAX-SLOTS")
-        if child is not None:
-            max_slots_value = child.text
-            obj.max_slots = max_slots_value
-
-        # Parse max_slots_per
-        child = SerializationHelper.find_child_element(element, "MAX-SLOTS-PER")
-        if child is not None:
-            max_slots_per_value = child.text
-            obj.max_slots_per = max_slots_per_value
-
-        # Parse nested_element_refs (list from container "NESTED-ELEMENT-REFS")
-        obj.nested_element_refs = []
-        container = SerializationHelper.find_child_element(element, "NESTED-ELEMENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.nested_element_refs.append(child_value)
-
-        # Parse successor_refs (list from container "SUCCESSOR-REFS")
-        obj.successor_refs = []
-        container = SerializationHelper.find_child_element(element, "SUCCESSOR-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.successor_refs.append(child_value)
-
-        # Parse triggering_event_ref
-        child = SerializationHelper.find_child_element(element, "TRIGGERING-EVENT-REF")
-        if child is not None:
-            triggering_event_ref_value = ARRef.deserialize(child)
-            obj.triggering_event_ref = triggering_event_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LET-DATA-EXCHANGE":
+                setattr(obj, "let_data_exchange", LetDataExchangeParadigmEnum.deserialize(child))
+            elif tag == "LET-INTERVALS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "T-D-EVENT-BSW":
+                        obj.let_interval_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventBsw"))
+                    elif concrete_tag == "T-D-EVENT-BSW-INTERNAL-BEHAVIOR":
+                        obj.let_interval_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventBswInternalBehavior"))
+                    elif concrete_tag == "T-D-EVENT-COM":
+                        obj.let_interval_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventCom"))
+                    elif concrete_tag == "T-D-EVENT-COMPLEX":
+                        obj.let_interval_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventComplex"))
+                    elif concrete_tag == "T-D-EVENT-S-L-L-E-T":
+                        obj.let_interval_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventSLLET"))
+                    elif concrete_tag == "T-D-EVENT-SWC":
+                        obj.let_interval_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventSwc"))
+                    elif concrete_tag == "T-D-EVENT-VFB":
+                        obj.let_interval_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TDEventVfb"))
+            elif tag == "MAX-CYCLE":
+                setattr(obj, "max_cycle", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MAX-CYCLES":
+                setattr(obj, "max_cycles", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MAX-SLOTS":
+                setattr(obj, "max_slots", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "MAX-SLOTS-PER":
+                setattr(obj, "max_slots_per", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "NESTED-ELEMENTS":
+                obj.nested_element_refs.append(ARRef.deserialize(child))
+            elif tag == "SUCCESSORS":
+                obj.successor_refs.append(ARRef.deserialize(child))
+            elif tag == "TRIGGERING-EVENT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "T-D-EVENT-BSW":
+                        setattr(obj, "triggering_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBsw"))
+                    elif concrete_tag == "T-D-EVENT-BSW-INTERNAL-BEHAVIOR":
+                        setattr(obj, "triggering_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBswInternalBehavior"))
+                    elif concrete_tag == "T-D-EVENT-COM":
+                        setattr(obj, "triggering_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventCom"))
+                    elif concrete_tag == "T-D-EVENT-COMPLEX":
+                        setattr(obj, "triggering_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventComplex"))
+                    elif concrete_tag == "T-D-EVENT-S-L-L-E-T":
+                        setattr(obj, "triggering_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSLLET"))
+                    elif concrete_tag == "T-D-EVENT-SWC":
+                        setattr(obj, "triggering_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSwc"))
+                    elif concrete_tag == "T-D-EVENT-VFB":
+                        setattr(obj, "triggering_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventVfb"))
 
         return obj
 

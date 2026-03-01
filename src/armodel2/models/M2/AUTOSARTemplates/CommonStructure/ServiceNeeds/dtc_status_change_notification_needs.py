@@ -35,7 +35,7 @@ class DtcStatusChangeNotificationNeeds(DiagnosticCapabilityElement):
 
     notification_time: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "NOTIFICATION-TIME": lambda obj, elem: setattr(obj, "notification_time", any (DiagnosticClearDtc).deserialize(elem)),
+        "NOTIFICATION-TIME": lambda obj, elem: setattr(obj, "notification_time", SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticClearDtc)")),
     }
 
 
@@ -96,11 +96,13 @@ class DtcStatusChangeNotificationNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DtcStatusChangeNotificationNeeds, cls).deserialize(element)
 
-        # Parse notification_time
-        child = SerializationHelper.find_child_element(element, "NOTIFICATION-TIME")
-        if child is not None:
-            notification_time_value = child.text
-            obj.notification_time = notification_time_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "NOTIFICATION-TIME":
+                setattr(obj, "notification_time", SerializationHelper.deserialize_by_tag(child, "any (DiagnosticClearDtc)"))
 
         return obj
 

@@ -108,28 +108,28 @@ class BswInternalBehavior(InternalBehavior):
     trigger_direct_implementations: list[BswTriggerDirectImplementation]
     variation_point_proxies: list[VariationPointProxy]
     _DESERIALIZE_DISPATCH = {
-        "AR-TYPED-PER-INSTANCE-MEMORIES": lambda obj, elem: obj.ar_typed_per_instance_memories.append(VariableDataPrototype.deserialize(elem)),
-        "BSW-PER-INSTANCE-MEMORY-POLICIES": lambda obj, elem: obj.bsw_per_instance_memory_policies.append(BswPerInstanceMemoryPolicy.deserialize(elem)),
-        "CLIENT-POLICIES": lambda obj, elem: obj.client_policies.append(BswClientPolicy.deserialize(elem)),
-        "DISTINGUISHED-PARTITIONS": lambda obj, elem: obj.distinguished_partitions.append(BswDistinguishedPartition.deserialize(elem)),
-        "ENTITIES": lambda obj, elem: obj.entities.append(BswModuleEntity.deserialize(elem)),
-        "EVENTS": lambda obj, elem: obj.events.append(BswEvent.deserialize(elem)),
-        "EXCLUSIVE-AREA-POLICIES": lambda obj, elem: obj.exclusive_area_policies.append(BswExclusiveAreaPolicy.deserialize(elem)),
-        "INCLUDED-DATA-TYPE-SETS": lambda obj, elem: obj.included_data_type_sets.append(IncludedDataTypeSet.deserialize(elem)),
-        "INCLUDED-MODE-DECLARATION-GROUP-SETS": lambda obj, elem: obj.included_mode_declaration_group_sets.append(IncludedModeDeclarationGroupSet.deserialize(elem)),
-        "INTERNAL-TRIGGERING-POINTS": lambda obj, elem: obj.internal_triggering_points.append(BswInternalTriggeringPoint.deserialize(elem)),
-        "INTERNAL-TRIGGERING-POINT-POLICIES": lambda obj, elem: obj.internal_triggering_point_policies.append(BswInternalTriggeringPointPolicy.deserialize(elem)),
-        "MODE-RECEIVER-POLICIES": lambda obj, elem: obj.mode_receiver_policies.append(BswModeReceiverPolicy.deserialize(elem)),
-        "MODE-SENDER-POLICIES": lambda obj, elem: obj.mode_sender_policies.append(BswModeSenderPolicy.deserialize(elem)),
-        "PARAMETER-POLICIES": lambda obj, elem: obj.parameter_policies.append(BswParameterPolicy.deserialize(elem)),
-        "PER-INSTANCE-PARAMETERS": lambda obj, elem: obj.per_instance_parameters.append(ParameterDataPrototype.deserialize(elem)),
-        "RECEPTION-POLICIES": lambda obj, elem: obj.reception_policies.append(BswDataReceptionPolicy.deserialize(elem)),
-        "RELEASED-TRIGGER-POLICIES": lambda obj, elem: obj.released_trigger_policies.append(BswReleasedTriggerPolicy.deserialize(elem)),
-        "SCHEDULER-NAME-PREFIXES": lambda obj, elem: obj.scheduler_name_prefixes.append(BswSchedulerNamePrefix.deserialize(elem)),
-        "SEND-POLICIES": lambda obj, elem: obj.send_policies.append(BswDataSendPolicy.deserialize(elem)),
-        "SERVICE-DEPENDENCIES": lambda obj, elem: obj.service_dependencies.append(BswServiceDependency.deserialize(elem)),
-        "TRIGGER-DIRECT-IMPLEMENTATIONS": lambda obj, elem: obj.trigger_direct_implementations.append(BswTriggerDirectImplementation.deserialize(elem)),
-        "VARIATION-POINT-PROXIES": lambda obj, elem: obj.variation_point_proxies.append(VariationPointProxy.deserialize(elem)),
+        "AR-TYPED-PER-INSTANCE-MEMORIES": lambda obj, elem: obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
+        "BSW-PER-INSTANCE-MEMORY-POLICIES": lambda obj, elem: obj.bsw_per_instance_memory_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswPerInstanceMemoryPolicy")),
+        "CLIENT-POLICIES": lambda obj, elem: obj.client_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswClientPolicy")),
+        "DISTINGUISHED-PARTITIONS": lambda obj, elem: obj.distinguished_partitions.append(SerializationHelper.deserialize_by_tag(elem, "BswDistinguishedPartition")),
+        "ENTITIES": ("_POLYMORPHIC_LIST", "entities", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
+        "EVENTS": ("_POLYMORPHIC_LIST", "events", ["BswInterruptEvent", "BswOperationInvokedEvent", "BswScheduleEvent"]),
+        "EXCLUSIVE-AREA-POLICIES": lambda obj, elem: obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswExclusiveAreaPolicy")),
+        "INCLUDED-DATA-TYPE-SETS": lambda obj, elem: obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedDataTypeSet")),
+        "INCLUDED-MODE-DECLARATION-GROUP-SETS": lambda obj, elem: obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedModeDeclarationGroupSet")),
+        "INTERNAL-TRIGGERING-POINTS": lambda obj, elem: obj.internal_triggering_points.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalTriggeringPoint")),
+        "INTERNAL-TRIGGERING-POINT-POLICIES": lambda obj, elem: obj.internal_triggering_point_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalTriggeringPointPolicy")),
+        "MODE-RECEIVER-POLICIES": lambda obj, elem: obj.mode_receiver_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswModeReceiverPolicy")),
+        "MODE-SENDER-POLICIES": lambda obj, elem: obj.mode_sender_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswModeSenderPolicy")),
+        "PARAMETER-POLICIES": lambda obj, elem: obj.parameter_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswParameterPolicy")),
+        "PER-INSTANCE-PARAMETERS": lambda obj, elem: obj.per_instance_parameters.append(SerializationHelper.deserialize_by_tag(elem, "ParameterDataPrototype")),
+        "RECEPTION-POLICIES": ("_POLYMORPHIC_LIST", "reception_policies", ["BswQueuedDataReceptionPolicy"]),
+        "RELEASED-TRIGGER-POLICIES": lambda obj, elem: obj.released_trigger_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswReleasedTriggerPolicy")),
+        "SCHEDULER-NAME-PREFIXES": lambda obj, elem: obj.scheduler_name_prefixes.append(SerializationHelper.deserialize_by_tag(elem, "BswSchedulerNamePrefix")),
+        "SEND-POLICIES": lambda obj, elem: obj.send_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswDataSendPolicy")),
+        "SERVICE-DEPENDENCIES": lambda obj, elem: obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "BswServiceDependency")),
+        "TRIGGER-DIRECT-IMPLEMENTATIONS": lambda obj, elem: obj.trigger_direct_implementations.append(SerializationHelper.deserialize_by_tag(elem, "BswTriggerDirectImplementation")),
+        "VARIATION-POINT-PROXIES": lambda obj, elem: obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(elem, "VariationPointProxy")),
     }
 
 
@@ -417,225 +417,75 @@ class BswInternalBehavior(InternalBehavior):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswInternalBehavior, cls).deserialize(element)
 
-        # Parse ar_typed_per_instance_memories (list from container "AR-TYPED-PER-INSTANCE-MEMORIES")
-        obj.ar_typed_per_instance_memories = []
-        container = SerializationHelper.find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ar_typed_per_instance_memories.append(child_value)
-
-        # Parse bsw_per_instance_memory_policies (list from container "BSW-PER-INSTANCE-MEMORY-POLICIES")
-        obj.bsw_per_instance_memory_policies = []
-        container = SerializationHelper.find_child_element(element, "BSW-PER-INSTANCE-MEMORY-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.bsw_per_instance_memory_policies.append(child_value)
-
-        # Parse client_policies (list from container "CLIENT-POLICIES")
-        obj.client_policies = []
-        container = SerializationHelper.find_child_element(element, "CLIENT-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.client_policies.append(child_value)
-
-        # Parse distinguished_partitions (list from container "DISTINGUISHED-PARTITIONS")
-        obj.distinguished_partitions = []
-        container = SerializationHelper.find_child_element(element, "DISTINGUISHED-PARTITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.distinguished_partitions.append(child_value)
-
-        # Parse entities (list from container "ENTITIES")
-        obj.entities = []
-        container = SerializationHelper.find_child_element(element, "ENTITIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.entities.append(child_value)
-
-        # Parse events (list from container "EVENTS")
-        obj.events = []
-        container = SerializationHelper.find_child_element(element, "EVENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.events.append(child_value)
-
-        # Parse exclusive_area_policies (list from container "EXCLUSIVE-AREA-POLICIES")
-        obj.exclusive_area_policies = []
-        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.exclusive_area_policies.append(child_value)
-
-        # Parse included_data_type_sets (list from container "INCLUDED-DATA-TYPE-SETS")
-        obj.included_data_type_sets = []
-        container = SerializationHelper.find_child_element(element, "INCLUDED-DATA-TYPE-SETS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.included_data_type_sets.append(child_value)
-
-        # Parse included_mode_declaration_group_sets (list from container "INCLUDED-MODE-DECLARATION-GROUP-SETS")
-        obj.included_mode_declaration_group_sets = []
-        container = SerializationHelper.find_child_element(element, "INCLUDED-MODE-DECLARATION-GROUP-SETS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.included_mode_declaration_group_sets.append(child_value)
-
-        # Parse internal_triggering_points (list from container "INTERNAL-TRIGGERING-POINTS")
-        obj.internal_triggering_points = []
-        container = SerializationHelper.find_child_element(element, "INTERNAL-TRIGGERING-POINTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.internal_triggering_points.append(child_value)
-
-        # Parse internal_triggering_point_policies (list from container "INTERNAL-TRIGGERING-POINT-POLICIES")
-        obj.internal_triggering_point_policies = []
-        container = SerializationHelper.find_child_element(element, "INTERNAL-TRIGGERING-POINT-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.internal_triggering_point_policies.append(child_value)
-
-        # Parse mode_receiver_policies (list from container "MODE-RECEIVER-POLICIES")
-        obj.mode_receiver_policies = []
-        container = SerializationHelper.find_child_element(element, "MODE-RECEIVER-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mode_receiver_policies.append(child_value)
-
-        # Parse mode_sender_policies (list from container "MODE-SENDER-POLICIES")
-        obj.mode_sender_policies = []
-        container = SerializationHelper.find_child_element(element, "MODE-SENDER-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mode_sender_policies.append(child_value)
-
-        # Parse parameter_policies (list from container "PARAMETER-POLICIES")
-        obj.parameter_policies = []
-        container = SerializationHelper.find_child_element(element, "PARAMETER-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.parameter_policies.append(child_value)
-
-        # Parse per_instance_parameters (list from container "PER-INSTANCE-PARAMETERS")
-        obj.per_instance_parameters = []
-        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-PARAMETERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.per_instance_parameters.append(child_value)
-
-        # Parse reception_policies (list from container "RECEPTION-POLICIES")
-        obj.reception_policies = []
-        container = SerializationHelper.find_child_element(element, "RECEPTION-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.reception_policies.append(child_value)
-
-        # Parse released_trigger_policies (list from container "RELEASED-TRIGGER-POLICIES")
-        obj.released_trigger_policies = []
-        container = SerializationHelper.find_child_element(element, "RELEASED-TRIGGER-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.released_trigger_policies.append(child_value)
-
-        # Parse scheduler_name_prefixes (list from container "SCHEDULER-NAME-PREFIXES")
-        obj.scheduler_name_prefixes = []
-        container = SerializationHelper.find_child_element(element, "SCHEDULER-NAME-PREFIXES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.scheduler_name_prefixes.append(child_value)
-
-        # Parse send_policies (list from container "SEND-POLICIES")
-        obj.send_policies = []
-        container = SerializationHelper.find_child_element(element, "SEND-POLICIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.send_policies.append(child_value)
-
-        # Parse service_dependencies (list from container "SERVICE-DEPENDENCIES")
-        obj.service_dependencies = []
-        container = SerializationHelper.find_child_element(element, "SERVICE-DEPENDENCIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.service_dependencies.append(child_value)
-
-        # Parse trigger_direct_implementations (list from container "TRIGGER-DIRECT-IMPLEMENTATIONS")
-        obj.trigger_direct_implementations = []
-        container = SerializationHelper.find_child_element(element, "TRIGGER-DIRECT-IMPLEMENTATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.trigger_direct_implementations.append(child_value)
-
-        # Parse variation_point_proxies (list from container "VARIATION-POINT-PROXIES")
-        obj.variation_point_proxies = []
-        container = SerializationHelper.find_child_element(element, "VARIATION-POINT-PROXIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.variation_point_proxies.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AR-TYPED-PER-INSTANCE-MEMORIES":
+                obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(child, "VariableDataPrototype"))
+            elif tag == "BSW-PER-INSTANCE-MEMORY-POLICIES":
+                obj.bsw_per_instance_memory_policies.append(SerializationHelper.deserialize_by_tag(child, "BswPerInstanceMemoryPolicy"))
+            elif tag == "CLIENT-POLICIES":
+                obj.client_policies.append(SerializationHelper.deserialize_by_tag(child, "BswClientPolicy"))
+            elif tag == "DISTINGUISHED-PARTITIONS":
+                obj.distinguished_partitions.append(SerializationHelper.deserialize_by_tag(child, "BswDistinguishedPartition"))
+            elif tag == "ENTITIES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-CALLED-ENTITY":
+                        obj.entities.append(SerializationHelper.deserialize_by_tag(child[0], "BswCalledEntity"))
+                    elif concrete_tag == "BSW-INTERRUPT-ENTITY":
+                        obj.entities.append(SerializationHelper.deserialize_by_tag(child[0], "BswInterruptEntity"))
+                    elif concrete_tag == "BSW-SCHEDULABLE-ENTITY":
+                        obj.entities.append(SerializationHelper.deserialize_by_tag(child[0], "BswSchedulableEntity"))
+            elif tag == "EVENTS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-INTERRUPT-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "BswInterruptEvent"))
+                    elif concrete_tag == "BSW-OPERATION-INVOKED-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "BswOperationInvokedEvent"))
+                    elif concrete_tag == "BSW-SCHEDULE-EVENT":
+                        obj.events.append(SerializationHelper.deserialize_by_tag(child[0], "BswScheduleEvent"))
+            elif tag == "EXCLUSIVE-AREA-POLICIES":
+                obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(child, "BswExclusiveAreaPolicy"))
+            elif tag == "INCLUDED-DATA-TYPE-SETS":
+                obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(child, "IncludedDataTypeSet"))
+            elif tag == "INCLUDED-MODE-DECLARATION-GROUP-SETS":
+                obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(child, "IncludedModeDeclarationGroupSet"))
+            elif tag == "INTERNAL-TRIGGERING-POINTS":
+                obj.internal_triggering_points.append(SerializationHelper.deserialize_by_tag(child, "BswInternalTriggeringPoint"))
+            elif tag == "INTERNAL-TRIGGERING-POINT-POLICIES":
+                obj.internal_triggering_point_policies.append(SerializationHelper.deserialize_by_tag(child, "BswInternalTriggeringPointPolicy"))
+            elif tag == "MODE-RECEIVER-POLICIES":
+                obj.mode_receiver_policies.append(SerializationHelper.deserialize_by_tag(child, "BswModeReceiverPolicy"))
+            elif tag == "MODE-SENDER-POLICIES":
+                obj.mode_sender_policies.append(SerializationHelper.deserialize_by_tag(child, "BswModeSenderPolicy"))
+            elif tag == "PARAMETER-POLICIES":
+                obj.parameter_policies.append(SerializationHelper.deserialize_by_tag(child, "BswParameterPolicy"))
+            elif tag == "PER-INSTANCE-PARAMETERS":
+                obj.per_instance_parameters.append(SerializationHelper.deserialize_by_tag(child, "ParameterDataPrototype"))
+            elif tag == "RECEPTION-POLICIES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-QUEUED-DATA-RECEPTION-POLICY":
+                        obj.reception_policies.append(SerializationHelper.deserialize_by_tag(child[0], "BswQueuedDataReceptionPolicy"))
+            elif tag == "RELEASED-TRIGGER-POLICIES":
+                obj.released_trigger_policies.append(SerializationHelper.deserialize_by_tag(child, "BswReleasedTriggerPolicy"))
+            elif tag == "SCHEDULER-NAME-PREFIXES":
+                obj.scheduler_name_prefixes.append(SerializationHelper.deserialize_by_tag(child, "BswSchedulerNamePrefix"))
+            elif tag == "SEND-POLICIES":
+                obj.send_policies.append(SerializationHelper.deserialize_by_tag(child, "BswDataSendPolicy"))
+            elif tag == "SERVICE-DEPENDENCIES":
+                obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(child, "BswServiceDependency"))
+            elif tag == "TRIGGER-DIRECT-IMPLEMENTATIONS":
+                obj.trigger_direct_implementations.append(SerializationHelper.deserialize_by_tag(child, "BswTriggerDirectImplementation"))
+            elif tag == "VARIATION-POINT-PROXIES":
+                obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(child, "VariationPointProxy"))
 
         return obj
 

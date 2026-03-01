@@ -42,9 +42,9 @@ class AttributeValueVariationPoint(ARObject, ABC):
     short_label: Optional[PrimitiveIdentifier]
     _DESERIALIZE_DISPATCH = {
         "BINDING-TIME-ENUM": lambda obj, elem: setattr(obj, "binding_time_enum", BindingTimeEnum.deserialize(elem)),
-        "BLUEPRINT-VALUE": lambda obj, elem: setattr(obj, "blueprint_value", elem.text),
-        "SD": lambda obj, elem: setattr(obj, "sd", elem.text),
-        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "BLUEPRINT-VALUE": lambda obj, elem: setattr(obj, "blueprint_value", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "SD": lambda obj, elem: setattr(obj, "sd", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "PrimitiveIdentifier")),
     }
 
 
@@ -150,29 +150,19 @@ class AttributeValueVariationPoint(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AttributeValueVariationPoint, cls).deserialize(element)
 
-        # Parse binding_time_enum
-        child = SerializationHelper.find_child_element(element, "BINDING-TIME-ENUM")
-        if child is not None:
-            binding_time_enum_value = BindingTimeEnum.deserialize(child)
-            obj.binding_time_enum = binding_time_enum_value
-
-        # Parse blueprint_value
-        child = SerializationHelper.find_child_element(element, "BLUEPRINT-VALUE")
-        if child is not None:
-            blueprint_value_value = child.text
-            obj.blueprint_value = blueprint_value_value
-
-        # Parse sd
-        child = SerializationHelper.find_child_element(element, "SD")
-        if child is not None:
-            sd_value = child.text
-            obj.sd = sd_value
-
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = child.text
-            obj.short_label = short_label_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BINDING-TIME-ENUM":
+                setattr(obj, "binding_time_enum", BindingTimeEnum.deserialize(child))
+            elif tag == "BLUEPRINT-VALUE":
+                setattr(obj, "blueprint_value", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "SD":
+                setattr(obj, "sd", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "PrimitiveIdentifier"))
 
         return obj
 

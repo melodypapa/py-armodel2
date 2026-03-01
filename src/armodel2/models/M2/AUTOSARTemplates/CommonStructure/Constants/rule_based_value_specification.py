@@ -41,9 +41,9 @@ class RuleBasedValueSpecification(ARObject):
     max_size_to_fill: Optional[Integer]
     rule: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "ARGUMENTS": lambda obj, elem: setattr(obj, "arguments", RuleArguments.deserialize(elem)),
-        "MAX-SIZE-TO-FILL": lambda obj, elem: setattr(obj, "max_size_to_fill", elem.text),
-        "RULE": lambda obj, elem: setattr(obj, "rule", elem.text),
+        "ARGUMENTS": lambda obj, elem: setattr(obj, "arguments", SerializationHelper.deserialize_by_tag(elem, "RuleArguments")),
+        "MAX-SIZE-TO-FILL": lambda obj, elem: setattr(obj, "max_size_to_fill", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "RULE": lambda obj, elem: setattr(obj, "rule", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -133,31 +133,17 @@ class RuleBasedValueSpecification(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RuleBasedValueSpecification, cls).deserialize(element)
 
-        # Parse arguments (atp_mixed - children appear directly)
-        # Check if element contains expected children for RuleArguments
-        has_mixed_children = False
-        child_tags_to_check = ['V', 'VF', 'VT', 'VTF']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            arguments_value = SerializationHelper.deserialize_by_tag(element, "RuleArguments")
-            obj.arguments = arguments_value
-
-        # Parse max_size_to_fill
-        child = SerializationHelper.find_child_element(element, "MAX-SIZE-TO-FILL")
-        if child is not None:
-            max_size_to_fill_value = child.text
-            obj.max_size_to_fill = max_size_to_fill_value
-
-        # Parse rule
-        child = SerializationHelper.find_child_element(element, "RULE")
-        if child is not None:
-            rule_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.rule = rule_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ARGUMENTS":
+                setattr(obj, "arguments", SerializationHelper.deserialize_by_tag(child, "RuleArguments"))
+            elif tag == "MAX-SIZE-TO-FILL":
+                setattr(obj, "max_size_to_fill", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "RULE":
+                setattr(obj, "rule", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

@@ -39,8 +39,8 @@ class MacSecGlobalKayProps(ARElement):
     bypass_ether: PositiveInteger
     bypass_vlan: PositiveInteger
     _DESERIALIZE_DISPATCH = {
-        "BYPASS-ETHER": lambda obj, elem: setattr(obj, "bypass_ether", elem.text),
-        "BYPASS-VLAN": lambda obj, elem: setattr(obj, "bypass_vlan", elem.text),
+        "BYPASS-ETHER": lambda obj, elem: setattr(obj, "bypass_ether", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "BYPASS-VLAN": lambda obj, elem: setattr(obj, "bypass_vlan", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -116,17 +116,15 @@ class MacSecGlobalKayProps(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacSecGlobalKayProps, cls).deserialize(element)
 
-        # Parse bypass_ether
-        child = SerializationHelper.find_child_element(element, "BYPASS-ETHER")
-        if child is not None:
-            bypass_ether_value = child.text
-            obj.bypass_ether = bypass_ether_value
-
-        # Parse bypass_vlan
-        child = SerializationHelper.find_child_element(element, "BYPASS-VLAN")
-        if child is not None:
-            bypass_vlan_value = child.text
-            obj.bypass_vlan = bypass_vlan_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BYPASS-ETHER":
+                setattr(obj, "bypass_ether", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "BYPASS-VLAN":
+                setattr(obj, "bypass_vlan", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

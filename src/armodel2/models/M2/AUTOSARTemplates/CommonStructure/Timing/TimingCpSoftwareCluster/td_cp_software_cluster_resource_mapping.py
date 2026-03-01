@@ -44,7 +44,7 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
     timing_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "RESOURCE-REF": lambda obj, elem: setattr(obj, "resource_ref", ARRef.deserialize(elem)),
-        "TIMING-REF": lambda obj, elem: setattr(obj, "timing_ref", ARRef.deserialize(elem)),
+        "TIMING-REF": ("_POLYMORPHIC", "timing_ref", ["TimingDescriptionEvent", "TimingDescriptionEventChain"]),
     }
 
 
@@ -120,17 +120,21 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDCpSoftwareClusterResourceMapping, cls).deserialize(element)
 
-        # Parse resource_ref
-        child = SerializationHelper.find_child_element(element, "RESOURCE-REF")
-        if child is not None:
-            resource_ref_value = ARRef.deserialize(child)
-            obj.resource_ref = resource_ref_value
-
-        # Parse timing_ref
-        child = SerializationHelper.find_child_element(element, "TIMING-REF")
-        if child is not None:
-            timing_ref_value = ARRef.deserialize(child)
-            obj.timing_ref = timing_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RESOURCE-REF":
+                setattr(obj, "resource_ref", ARRef.deserialize(child))
+            elif tag == "TIMING-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "TIMING-DESCRIPTION-EVENT":
+                        setattr(obj, "timing_ref", SerializationHelper.deserialize_by_tag(child[0], "TimingDescriptionEvent"))
+                    elif concrete_tag == "TIMING-DESCRIPTION-EVENT-CHAIN":
+                        setattr(obj, "timing_ref", SerializationHelper.deserialize_by_tag(child[0], "TimingDescriptionEventChain"))
 
         return obj
 

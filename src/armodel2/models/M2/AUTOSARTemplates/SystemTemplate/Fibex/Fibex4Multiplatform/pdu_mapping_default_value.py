@@ -34,7 +34,7 @@ class PduMappingDefaultValue(ARObject):
 
     default_values: list[DefaultValueElement]
     _DESERIALIZE_DISPATCH = {
-        "DEFAULT-VALUES": lambda obj, elem: obj.default_values.append(DefaultValueElement.deserialize(elem)),
+        "DEFAULT-VALUES": lambda obj, elem: obj.default_values.append(SerializationHelper.deserialize_by_tag(elem, "DefaultValueElement")),
     }
 
 
@@ -91,15 +91,13 @@ class PduMappingDefaultValue(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PduMappingDefaultValue, cls).deserialize(element)
 
-        # Parse default_values (list from container "DEFAULT-VALUES")
-        obj.default_values = []
-        container = SerializationHelper.find_child_element(element, "DEFAULT-VALUES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.default_values.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEFAULT-VALUES":
+                obj.default_values.append(SerializationHelper.deserialize_by_tag(child, "DefaultValueElement"))
 
         return obj
 

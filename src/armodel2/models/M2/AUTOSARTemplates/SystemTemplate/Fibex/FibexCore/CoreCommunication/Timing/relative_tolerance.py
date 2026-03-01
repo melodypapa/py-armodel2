@@ -34,7 +34,7 @@ class RelativeTolerance(ARObject):
 
     relative: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "RELATIVE": lambda obj, elem: setattr(obj, "relative", elem.text),
+        "RELATIVE": lambda obj, elem: setattr(obj, "relative", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -95,11 +95,13 @@ class RelativeTolerance(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RelativeTolerance, cls).deserialize(element)
 
-        # Parse relative
-        child = SerializationHelper.find_child_element(element, "RELATIVE")
-        if child is not None:
-            relative_value = child.text
-            obj.relative = relative_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RELATIVE":
+                setattr(obj, "relative", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

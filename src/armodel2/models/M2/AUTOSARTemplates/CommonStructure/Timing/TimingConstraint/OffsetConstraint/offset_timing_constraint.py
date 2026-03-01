@@ -45,10 +45,10 @@ class OffsetTimingConstraint(TimingConstraint):
     source_ref: Optional[ARRef]
     target_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", MultidimensionalTime.deserialize(elem)),
-        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", MultidimensionalTime.deserialize(elem)),
-        "SOURCE-REF": lambda obj, elem: setattr(obj, "source_ref", ARRef.deserialize(elem)),
-        "TARGET-REF": lambda obj, elem: setattr(obj, "target_ref", ARRef.deserialize(elem)),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "MINIMUM": lambda obj, elem: setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
+        "SOURCE-REF": ("_POLYMORPHIC", "source_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
+        "TARGET-REF": ("_POLYMORPHIC", "target_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
     }
 
 
@@ -154,29 +154,51 @@ class OffsetTimingConstraint(TimingConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(OffsetTimingConstraint, cls).deserialize(element)
 
-        # Parse maximum
-        child = SerializationHelper.find_child_element(element, "MAXIMUM")
-        if child is not None:
-            maximum_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.maximum = maximum_value
-
-        # Parse minimum
-        child = SerializationHelper.find_child_element(element, "MINIMUM")
-        if child is not None:
-            minimum_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.minimum = minimum_value
-
-        # Parse source_ref
-        child = SerializationHelper.find_child_element(element, "SOURCE-REF")
-        if child is not None:
-            source_ref_value = ARRef.deserialize(child)
-            obj.source_ref = source_ref_value
-
-        # Parse target_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-REF")
-        if child is not None:
-            target_ref_value = ARRef.deserialize(child)
-            obj.target_ref = target_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAXIMUM":
+                setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "MINIMUM":
+                setattr(obj, "minimum", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
+            elif tag == "SOURCE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "T-D-EVENT-BSW":
+                        setattr(obj, "source_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBsw"))
+                    elif concrete_tag == "T-D-EVENT-BSW-INTERNAL-BEHAVIOR":
+                        setattr(obj, "source_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBswInternalBehavior"))
+                    elif concrete_tag == "T-D-EVENT-COM":
+                        setattr(obj, "source_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventCom"))
+                    elif concrete_tag == "T-D-EVENT-COMPLEX":
+                        setattr(obj, "source_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventComplex"))
+                    elif concrete_tag == "T-D-EVENT-S-L-L-E-T":
+                        setattr(obj, "source_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSLLET"))
+                    elif concrete_tag == "T-D-EVENT-SWC":
+                        setattr(obj, "source_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSwc"))
+                    elif concrete_tag == "T-D-EVENT-VFB":
+                        setattr(obj, "source_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventVfb"))
+            elif tag == "TARGET-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "T-D-EVENT-BSW":
+                        setattr(obj, "target_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBsw"))
+                    elif concrete_tag == "T-D-EVENT-BSW-INTERNAL-BEHAVIOR":
+                        setattr(obj, "target_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBswInternalBehavior"))
+                    elif concrete_tag == "T-D-EVENT-COM":
+                        setattr(obj, "target_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventCom"))
+                    elif concrete_tag == "T-D-EVENT-COMPLEX":
+                        setattr(obj, "target_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventComplex"))
+                    elif concrete_tag == "T-D-EVENT-S-L-L-E-T":
+                        setattr(obj, "target_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSLLET"))
+                    elif concrete_tag == "T-D-EVENT-SWC":
+                        setattr(obj, "target_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSwc"))
+                    elif concrete_tag == "T-D-EVENT-VFB":
+                        setattr(obj, "target_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventVfb"))
 
         return obj
 

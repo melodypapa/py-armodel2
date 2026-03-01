@@ -99,11 +99,13 @@ class DelegatedPortAnnotation(GeneralAnnotation):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DelegatedPortAnnotation, cls).deserialize(element)
 
-        # Parse signal_fan
-        child = SerializationHelper.find_child_element(element, "SIGNAL-FAN")
-        if child is not None:
-            signal_fan_value = SignalFanEnum.deserialize(child)
-            obj.signal_fan = signal_fan_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SIGNAL-FAN":
+                setattr(obj, "signal_fan", SignalFanEnum.deserialize(child))
 
         return obj
 

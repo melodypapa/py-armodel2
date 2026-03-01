@@ -39,9 +39,9 @@ class MsrQueryProps(ARObject):
     msr_query_args: list[MsrQueryArg]
     msr_query_name: String
     _DESERIALIZE_DISPATCH = {
-        "COMMENT": lambda obj, elem: setattr(obj, "comment", elem.text),
-        "MSR-QUERY-ARGS": lambda obj, elem: obj.msr_query_args.append(MsrQueryArg.deserialize(elem)),
-        "MSR-QUERY-NAME": lambda obj, elem: setattr(obj, "msr_query_name", elem.text),
+        "COMMENT": lambda obj, elem: setattr(obj, "comment", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "MSR-QUERY-ARGS": lambda obj, elem: obj.msr_query_args.append(SerializationHelper.deserialize_by_tag(elem, "MsrQueryArg")),
+        "MSR-QUERY-NAME": lambda obj, elem: setattr(obj, "msr_query_name", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -128,27 +128,17 @@ class MsrQueryProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MsrQueryProps, cls).deserialize(element)
 
-        # Parse comment
-        child = SerializationHelper.find_child_element(element, "COMMENT")
-        if child is not None:
-            comment_value = child.text
-            obj.comment = comment_value
-
-        # Parse msr_query_args (list from container "MSR-QUERY-ARGS")
-        obj.msr_query_args = []
-        container = SerializationHelper.find_child_element(element, "MSR-QUERY-ARGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.msr_query_args.append(child_value)
-
-        # Parse msr_query_name
-        child = SerializationHelper.find_child_element(element, "MSR-QUERY-NAME")
-        if child is not None:
-            msr_query_name_value = child.text
-            obj.msr_query_name = msr_query_name_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMENT":
+                setattr(obj, "comment", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "MSR-QUERY-ARGS":
+                obj.msr_query_args.append(SerializationHelper.deserialize_by_tag(child, "MsrQueryArg"))
+            elif tag == "MSR-QUERY-NAME":
+                setattr(obj, "msr_query_name", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

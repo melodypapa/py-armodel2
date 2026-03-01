@@ -34,7 +34,7 @@ class CompuGenericMath(ARObject):
 
     level: Optional[PrimitiveIdentifier]
     _DESERIALIZE_DISPATCH = {
-        "LEVEL": lambda obj, elem: setattr(obj, "level", elem.text),
+        "LEVEL": lambda obj, elem: setattr(obj, "level", SerializationHelper.deserialize_by_tag(elem, "PrimitiveIdentifier")),
     }
 
 
@@ -95,11 +95,13 @@ class CompuGenericMath(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuGenericMath, cls).deserialize(element)
 
-        # Parse level
-        child = SerializationHelper.find_child_element(element, "LEVEL")
-        if child is not None:
-            level_value = child.text
-            obj.level = level_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LEVEL":
+                setattr(obj, "level", SerializationHelper.deserialize_by_tag(child, "PrimitiveIdentifier"))
 
         return obj
 

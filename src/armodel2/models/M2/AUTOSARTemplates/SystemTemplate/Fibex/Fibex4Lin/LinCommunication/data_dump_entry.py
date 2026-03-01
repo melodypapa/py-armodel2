@@ -38,7 +38,7 @@ class DataDumpEntry(LinConfigurationEntry):
 
     byte_values: list[Integer]
     _DESERIALIZE_DISPATCH = {
-        "BYTE-VALUES": lambda obj, elem: obj.byte_values.append(elem.text),
+        "BYTE-VALUES": lambda obj, elem: obj.byte_values.append(SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -102,15 +102,13 @@ class DataDumpEntry(LinConfigurationEntry):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataDumpEntry, cls).deserialize(element)
 
-        # Parse byte_values (list from container "BYTE-VALUES")
-        obj.byte_values = []
-        container = SerializationHelper.find_child_element(element, "BYTE-VALUES")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (Integer) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.byte_values.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BYTE-VALUES":
+                obj.byte_values.append(SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

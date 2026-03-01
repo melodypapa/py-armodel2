@@ -41,10 +41,10 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
     is_unused: Optional[Boolean]
     value: Optional[BinaryManifestItem]
     _DESERIALIZE_DISPATCH = {
-        "AUXILIARY-FIELDS": lambda obj, elem: obj.auxiliary_fields.append(BinaryManifestItem.deserialize(elem)),
-        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", BinaryManifestItem.deserialize(elem)),
-        "IS-UNUSED": lambda obj, elem: setattr(obj, "is_unused", elem.text),
-        "VALUE": lambda obj, elem: setattr(obj, "value", BinaryManifestItem.deserialize(elem)),
+        "AUXILIARY-FIELDS": lambda obj, elem: obj.auxiliary_fields.append(SerializationHelper.deserialize_by_tag(elem, "BinaryManifestItem")),
+        "DEFAULT-VALUE": lambda obj, elem: setattr(obj, "default_value", SerializationHelper.deserialize_by_tag(elem, "BinaryManifestItem")),
+        "IS-UNUSED": lambda obj, elem: setattr(obj, "is_unused", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "BinaryManifestItem")),
     }
 
 
@@ -146,33 +146,19 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BinaryManifestItem, cls).deserialize(element)
 
-        # Parse auxiliary_fields (list from container "AUXILIARY-FIELDS")
-        obj.auxiliary_fields = []
-        container = SerializationHelper.find_child_element(element, "AUXILIARY-FIELDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.auxiliary_fields.append(child_value)
-
-        # Parse default_value
-        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE")
-        if child is not None:
-            default_value_value = SerializationHelper.deserialize_by_tag(child, "BinaryManifestItem")
-            obj.default_value = default_value_value
-
-        # Parse is_unused
-        child = SerializationHelper.find_child_element(element, "IS-UNUSED")
-        if child is not None:
-            is_unused_value = child.text
-            obj.is_unused = is_unused_value
-
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = SerializationHelper.deserialize_by_tag(child, "BinaryManifestItem")
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AUXILIARY-FIELDS":
+                obj.auxiliary_fields.append(SerializationHelper.deserialize_by_tag(child, "BinaryManifestItem"))
+            elif tag == "DEFAULT-VALUE":
+                setattr(obj, "default_value", SerializationHelper.deserialize_by_tag(child, "BinaryManifestItem"))
+            elif tag == "IS-UNUSED":
+                setattr(obj, "is_unused", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "BinaryManifestItem"))
 
         return obj
 

@@ -38,7 +38,7 @@ class SwitchStreamGateEntry(Identifiable):
 
     internal_priority: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "INTERNAL-PRIORITY": lambda obj, elem: setattr(obj, "internal_priority", elem.text),
+        "INTERNAL-PRIORITY": lambda obj, elem: setattr(obj, "internal_priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -99,11 +99,13 @@ class SwitchStreamGateEntry(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwitchStreamGateEntry, cls).deserialize(element)
 
-        # Parse internal_priority
-        child = SerializationHelper.find_child_element(element, "INTERNAL-PRIORITY")
-        if child is not None:
-            internal_priority_value = child.text
-            obj.internal_priority = internal_priority_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INTERNAL-PRIORITY":
+                setattr(obj, "internal_priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

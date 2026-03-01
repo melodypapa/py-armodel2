@@ -99,11 +99,13 @@ class CommunicationBufferLocking(SwcSupportedFeature):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommunicationBufferLocking, cls).deserialize(element)
 
-        # Parse support_buffer_locking
-        child = SerializationHelper.find_child_element(element, "SUPPORT-BUFFER-LOCKING")
-        if child is not None:
-            support_buffer_locking_value = SupportBufferLockingEnum.deserialize(child)
-            obj.support_buffer_locking = support_buffer_locking_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SUPPORT-BUFFER-LOCKING":
+                setattr(obj, "support_buffer_locking", SupportBufferLockingEnum.deserialize(child))
 
         return obj
 

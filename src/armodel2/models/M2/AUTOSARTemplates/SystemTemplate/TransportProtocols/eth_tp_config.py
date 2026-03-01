@@ -38,7 +38,7 @@ class EthTpConfig(TpConfig):
 
     tp_connections: list[EthTpConnection]
     _DESERIALIZE_DISPATCH = {
-        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(EthTpConnection.deserialize(elem)),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SerializationHelper.deserialize_by_tag(elem, "EthTpConnection")),
     }
 
 
@@ -95,15 +95,13 @@ class EthTpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthTpConfig, cls).deserialize(element)
 
-        # Parse tp_connections (list from container "TP-CONNECTIONS")
-        obj.tp_connections = []
-        container = SerializationHelper.find_child_element(element, "TP-CONNECTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_connections.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TP-CONNECTIONS":
+                obj.tp_connections.append(SerializationHelper.deserialize_by_tag(child, "EthTpConnection"))
 
         return obj
 

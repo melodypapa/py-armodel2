@@ -113,17 +113,15 @@ class ConstantSpecificationMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConstantSpecificationMapping, cls).deserialize(element)
 
-        # Parse appl_constant_ref
-        child = SerializationHelper.find_child_element(element, "APPL-CONSTANT-REF")
-        if child is not None:
-            appl_constant_ref_value = ARRef.deserialize(child)
-            obj.appl_constant_ref = appl_constant_ref_value
-
-        # Parse impl_constant_ref
-        child = SerializationHelper.find_child_element(element, "IMPL-CONSTANT-REF")
-        if child is not None:
-            impl_constant_ref_value = ARRef.deserialize(child)
-            obj.impl_constant_ref = impl_constant_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "APPL-CONSTANT-REF":
+                setattr(obj, "appl_constant_ref", ARRef.deserialize(child))
+            elif tag == "IMPL-CONSTANT-REF":
+                setattr(obj, "impl_constant_ref", ARRef.deserialize(child))
 
         return obj
 

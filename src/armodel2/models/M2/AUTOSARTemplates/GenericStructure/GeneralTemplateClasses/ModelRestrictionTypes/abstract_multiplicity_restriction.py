@@ -35,8 +35,8 @@ class AbstractMultiplicityRestriction(ARObject, ABC):
     lower_multiplicity: Optional[PositiveInteger]
     upper_multiplicity: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "LOWER-MULTIPLICITY": lambda obj, elem: setattr(obj, "lower_multiplicity", elem.text),
-        "UPPER-MULTIPLICITY": lambda obj, elem: setattr(obj, "upper_multiplicity", elem.text),
+        "LOWER-MULTIPLICITY": lambda obj, elem: setattr(obj, "lower_multiplicity", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "UPPER-MULTIPLICITY": lambda obj, elem: setattr(obj, "upper_multiplicity", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -112,17 +112,15 @@ class AbstractMultiplicityRestriction(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractMultiplicityRestriction, cls).deserialize(element)
 
-        # Parse lower_multiplicity
-        child = SerializationHelper.find_child_element(element, "LOWER-MULTIPLICITY")
-        if child is not None:
-            lower_multiplicity_value = child.text
-            obj.lower_multiplicity = lower_multiplicity_value
-
-        # Parse upper_multiplicity
-        child = SerializationHelper.find_child_element(element, "UPPER-MULTIPLICITY")
-        if child is not None:
-            upper_multiplicity_value = child.text
-            obj.upper_multiplicity = upper_multiplicity_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LOWER-MULTIPLICITY":
+                setattr(obj, "lower_multiplicity", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "UPPER-MULTIPLICITY":
+                setattr(obj, "upper_multiplicity", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

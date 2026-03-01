@@ -46,14 +46,14 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
     iidc_tag: Optional[PositiveInteger]
     iidc_t_code: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "IIDC-CHANNEL": lambda obj, elem: setattr(obj, "iidc_channel", elem.text),
-        "IIDC-DATA-BLOCK": lambda obj, elem: setattr(obj, "iidc_data_block", elem.text),
-        "IIDC-FRACTION": lambda obj, elem: setattr(obj, "iidc_fraction", elem.text),
-        "IIDC-SOURCE": lambda obj, elem: setattr(obj, "iidc_source", elem.text),
-        "IIDC-STREAM": lambda obj, elem: setattr(obj, "iidc_stream", elem.text),
-        "IIDC-SY": lambda obj, elem: setattr(obj, "iidc_sy", elem.text),
-        "IIDC-TAG": lambda obj, elem: setattr(obj, "iidc_tag", elem.text),
-        "IIDC-T-CODE": lambda obj, elem: setattr(obj, "iidc_t_code", elem.text),
+        "IIDC-CHANNEL": lambda obj, elem: setattr(obj, "iidc_channel", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IIDC-DATA-BLOCK": lambda obj, elem: setattr(obj, "iidc_data_block", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IIDC-FRACTION": lambda obj, elem: setattr(obj, "iidc_fraction", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IIDC-SOURCE": lambda obj, elem: setattr(obj, "iidc_source", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "IIDC-STREAM": lambda obj, elem: setattr(obj, "iidc_stream", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IIDC-SY": lambda obj, elem: setattr(obj, "iidc_sy", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IIDC-TAG": lambda obj, elem: setattr(obj, "iidc_tag", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IIDC-T-CODE": lambda obj, elem: setattr(obj, "iidc_t_code", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -219,53 +219,27 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpIidcConnection, cls).deserialize(element)
 
-        # Parse iidc_channel
-        child = SerializationHelper.find_child_element(element, "IIDC-CHANNEL")
-        if child is not None:
-            iidc_channel_value = child.text
-            obj.iidc_channel = iidc_channel_value
-
-        # Parse iidc_data_block
-        child = SerializationHelper.find_child_element(element, "IIDC-DATA-BLOCK")
-        if child is not None:
-            iidc_data_block_value = child.text
-            obj.iidc_data_block = iidc_data_block_value
-
-        # Parse iidc_fraction
-        child = SerializationHelper.find_child_element(element, "IIDC-FRACTION")
-        if child is not None:
-            iidc_fraction_value = child.text
-            obj.iidc_fraction = iidc_fraction_value
-
-        # Parse iidc_source
-        child = SerializationHelper.find_child_element(element, "IIDC-SOURCE")
-        if child is not None:
-            iidc_source_value = child.text
-            obj.iidc_source = iidc_source_value
-
-        # Parse iidc_stream
-        child = SerializationHelper.find_child_element(element, "IIDC-STREAM")
-        if child is not None:
-            iidc_stream_value = child.text
-            obj.iidc_stream = iidc_stream_value
-
-        # Parse iidc_sy
-        child = SerializationHelper.find_child_element(element, "IIDC-SY")
-        if child is not None:
-            iidc_sy_value = child.text
-            obj.iidc_sy = iidc_sy_value
-
-        # Parse iidc_tag
-        child = SerializationHelper.find_child_element(element, "IIDC-TAG")
-        if child is not None:
-            iidc_tag_value = child.text
-            obj.iidc_tag = iidc_tag_value
-
-        # Parse iidc_t_code
-        child = SerializationHelper.find_child_element(element, "IIDC-T-CODE")
-        if child is not None:
-            iidc_t_code_value = child.text
-            obj.iidc_t_code = iidc_t_code_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "IIDC-CHANNEL":
+                setattr(obj, "iidc_channel", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IIDC-DATA-BLOCK":
+                setattr(obj, "iidc_data_block", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IIDC-FRACTION":
+                setattr(obj, "iidc_fraction", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IIDC-SOURCE":
+                setattr(obj, "iidc_source", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "IIDC-STREAM":
+                setattr(obj, "iidc_stream", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IIDC-SY":
+                setattr(obj, "iidc_sy", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IIDC-TAG":
+                setattr(obj, "iidc_tag", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IIDC-T-CODE":
+                setattr(obj, "iidc_t_code", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

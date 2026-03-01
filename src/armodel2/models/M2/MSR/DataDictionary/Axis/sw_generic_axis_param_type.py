@@ -100,11 +100,13 @@ class SwGenericAxisParamType(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwGenericAxisParamType, cls).deserialize(element)
 
-        # Parse data_constr_ref
-        child = SerializationHelper.find_child_element(element, "DATA-CONSTR-REF")
-        if child is not None:
-            data_constr_ref_value = ARRef.deserialize(child)
-            obj.data_constr_ref = data_constr_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-CONSTR-REF":
+                setattr(obj, "data_constr_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -41,8 +41,8 @@ class ValueGroup(ARObject):
     label: Optional[MultilanguageLongName]
     vg_contents: Optional[SwValues]
     _DESERIALIZE_DISPATCH = {
-        "LABEL": lambda obj, elem: setattr(obj, "label", MultilanguageLongName.deserialize(elem)),
-        "VG-CONTENTS": lambda obj, elem: setattr(obj, "vg_contents", SwValues.deserialize(elem)),
+        "LABEL": lambda obj, elem: setattr(obj, "label", SerializationHelper.deserialize_by_tag(elem, "MultilanguageLongName")),
+        "VG-CONTENTS": lambda obj, elem: setattr(obj, "vg_contents", SerializationHelper.deserialize_by_tag(elem, "SwValues")),
     }
 
 
@@ -117,25 +117,15 @@ class ValueGroup(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ValueGroup, cls).deserialize(element)
 
-        # Parse label
-        child = SerializationHelper.find_child_element(element, "LABEL")
-        if child is not None:
-            label_value = SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName")
-            obj.label = label_value
-
-        # Parse vg_contents (atp_mixed - children appear directly)
-        # Check if element contains expected children for SwValues
-        has_mixed_children = False
-        child_tags_to_check = ['V', 'VF', 'VG', 'VT', 'VTF']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            vg_contents_value = SerializationHelper.deserialize_by_tag(element, "SwValues")
-            obj.vg_contents = vg_contents_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LABEL":
+                setattr(obj, "label", SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName"))
+            elif tag == "VG-CONTENTS":
+                setattr(obj, "vg_contents", SerializationHelper.deserialize_by_tag(child, "SwValues"))
 
         return obj
 

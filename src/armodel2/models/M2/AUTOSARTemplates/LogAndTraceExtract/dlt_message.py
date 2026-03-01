@@ -51,12 +51,12 @@ class DltMessage(Identifiable):
     message_type_info: Optional[String]
     privacy_level: Optional[PrivacyLevel]
     _DESERIALIZE_DISPATCH = {
-        "DLT-ARGUMENTS": lambda obj, elem: obj.dlt_arguments.append(DltArgument.deserialize(elem)),
-        "MESSAGE-ID": lambda obj, elem: setattr(obj, "message_id", elem.text),
-        "MESSAGE-LINE": lambda obj, elem: setattr(obj, "message_line", elem.text),
-        "MESSAGE-SOURCE": lambda obj, elem: setattr(obj, "message_source", elem.text),
-        "MESSAGE-TYPE-INFO": lambda obj, elem: setattr(obj, "message_type_info", elem.text),
-        "PRIVACY-LEVEL": lambda obj, elem: setattr(obj, "privacy_level", PrivacyLevel.deserialize(elem)),
+        "DLT-ARGUMENTS": lambda obj, elem: obj.dlt_arguments.append(SerializationHelper.deserialize_by_tag(elem, "DltArgument")),
+        "MESSAGE-ID": lambda obj, elem: setattr(obj, "message_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MESSAGE-LINE": lambda obj, elem: setattr(obj, "message_line", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MESSAGE-SOURCE": lambda obj, elem: setattr(obj, "message_source", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "MESSAGE-TYPE-INFO": lambda obj, elem: setattr(obj, "message_type_info", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "PRIVACY-LEVEL": lambda obj, elem: setattr(obj, "privacy_level", SerializationHelper.deserialize_by_tag(elem, "PrivacyLevel")),
     }
 
 
@@ -188,45 +188,23 @@ class DltMessage(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DltMessage, cls).deserialize(element)
 
-        # Parse dlt_arguments (list from container "DLT-ARGUMENTS")
-        obj.dlt_arguments = []
-        container = SerializationHelper.find_child_element(element, "DLT-ARGUMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dlt_arguments.append(child_value)
-
-        # Parse message_id
-        child = SerializationHelper.find_child_element(element, "MESSAGE-ID")
-        if child is not None:
-            message_id_value = child.text
-            obj.message_id = message_id_value
-
-        # Parse message_line
-        child = SerializationHelper.find_child_element(element, "MESSAGE-LINE")
-        if child is not None:
-            message_line_value = child.text
-            obj.message_line = message_line_value
-
-        # Parse message_source
-        child = SerializationHelper.find_child_element(element, "MESSAGE-SOURCE")
-        if child is not None:
-            message_source_value = child.text
-            obj.message_source = message_source_value
-
-        # Parse message_type_info
-        child = SerializationHelper.find_child_element(element, "MESSAGE-TYPE-INFO")
-        if child is not None:
-            message_type_info_value = child.text
-            obj.message_type_info = message_type_info_value
-
-        # Parse privacy_level
-        child = SerializationHelper.find_child_element(element, "PRIVACY-LEVEL")
-        if child is not None:
-            privacy_level_value = SerializationHelper.deserialize_by_tag(child, "PrivacyLevel")
-            obj.privacy_level = privacy_level_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DLT-ARGUMENTS":
+                obj.dlt_arguments.append(SerializationHelper.deserialize_by_tag(child, "DltArgument"))
+            elif tag == "MESSAGE-ID":
+                setattr(obj, "message_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MESSAGE-LINE":
+                setattr(obj, "message_line", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MESSAGE-SOURCE":
+                setattr(obj, "message_source", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "MESSAGE-TYPE-INFO":
+                setattr(obj, "message_type_info", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "PRIVACY-LEVEL":
+                setattr(obj, "privacy_level", SerializationHelper.deserialize_by_tag(child, "PrivacyLevel"))
 
         return obj
 

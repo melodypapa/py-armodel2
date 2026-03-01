@@ -43,7 +43,7 @@ class EvaluatedVariantSet(ARElement):
     approval_status: NameToken
     evaluated_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "APPROVAL-STATUS": lambda obj, elem: setattr(obj, "approval_status", elem.text),
+        "APPROVAL-STATUS": lambda obj, elem: setattr(obj, "approval_status", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
         "EVALUATEDS": lambda obj, elem: obj.evaluated_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -123,27 +123,15 @@ class EvaluatedVariantSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EvaluatedVariantSet, cls).deserialize(element)
 
-        # Parse approval_status
-        child = SerializationHelper.find_child_element(element, "APPROVAL-STATUS")
-        if child is not None:
-            approval_status_value = child.text
-            obj.approval_status = approval_status_value
-
-        # Parse evaluated_refs (list from container "EVALUATED-REFS")
-        obj.evaluated_refs = []
-        container = SerializationHelper.find_child_element(element, "EVALUATED-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.evaluated_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "APPROVAL-STATUS":
+                setattr(obj, "approval_status", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "EVALUATEDS":
+                obj.evaluated_refs.append(ARRef.deserialize(child))
 
         return obj
 

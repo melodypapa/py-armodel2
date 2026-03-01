@@ -45,7 +45,7 @@ class HwPinGroupContent(ARObject):
     hw_pin: Optional[HwPin]
     hw_pin_group_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "HW-PIN": lambda obj, elem: setattr(obj, "hw_pin", HwPin.deserialize(elem)),
+        "HW-PIN": lambda obj, elem: setattr(obj, "hw_pin", SerializationHelper.deserialize_by_tag(elem, "HwPin")),
         "HW-PIN-GROUP-REF": lambda obj, elem: setattr(obj, "hw_pin_group_ref", ARRef.deserialize(elem)),
     }
 

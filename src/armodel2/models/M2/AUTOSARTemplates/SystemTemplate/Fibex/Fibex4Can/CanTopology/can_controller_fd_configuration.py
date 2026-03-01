@@ -41,13 +41,13 @@ class CanControllerFdConfiguration(ARObject):
     time_seg2: Optional[PositiveInteger]
     tx_bit_rate_switch: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "PADDING-VALUE": lambda obj, elem: setattr(obj, "padding_value", elem.text),
-        "PROP-SEG": lambda obj, elem: setattr(obj, "prop_seg", elem.text),
-        "SSP-OFFSET": lambda obj, elem: setattr(obj, "ssp_offset", elem.text),
-        "SYNC-JUMP-WIDTH": lambda obj, elem: setattr(obj, "sync_jump_width", elem.text),
-        "TIME-SEG1": lambda obj, elem: setattr(obj, "time_seg1", elem.text),
-        "TIME-SEG2": lambda obj, elem: setattr(obj, "time_seg2", elem.text),
-        "TX-BIT-RATE-SWITCH": lambda obj, elem: setattr(obj, "tx_bit_rate_switch", elem.text),
+        "PADDING-VALUE": lambda obj, elem: setattr(obj, "padding_value", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PROP-SEG": lambda obj, elem: setattr(obj, "prop_seg", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SSP-OFFSET": lambda obj, elem: setattr(obj, "ssp_offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SYNC-JUMP-WIDTH": lambda obj, elem: setattr(obj, "sync_jump_width", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TIME-SEG1": lambda obj, elem: setattr(obj, "time_seg1", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TIME-SEG2": lambda obj, elem: setattr(obj, "time_seg2", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "TX-BIT-RATE-SWITCH": lambda obj, elem: setattr(obj, "tx_bit_rate_switch", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -198,47 +198,25 @@ class CanControllerFdConfiguration(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanControllerFdConfiguration, cls).deserialize(element)
 
-        # Parse padding_value
-        child = SerializationHelper.find_child_element(element, "PADDING-VALUE")
-        if child is not None:
-            padding_value_value = child.text
-            obj.padding_value = padding_value_value
-
-        # Parse prop_seg
-        child = SerializationHelper.find_child_element(element, "PROP-SEG")
-        if child is not None:
-            prop_seg_value = child.text
-            obj.prop_seg = prop_seg_value
-
-        # Parse ssp_offset
-        child = SerializationHelper.find_child_element(element, "SSP-OFFSET")
-        if child is not None:
-            ssp_offset_value = child.text
-            obj.ssp_offset = ssp_offset_value
-
-        # Parse sync_jump_width
-        child = SerializationHelper.find_child_element(element, "SYNC-JUMP-WIDTH")
-        if child is not None:
-            sync_jump_width_value = child.text
-            obj.sync_jump_width = sync_jump_width_value
-
-        # Parse time_seg1
-        child = SerializationHelper.find_child_element(element, "TIME-SEG1")
-        if child is not None:
-            time_seg1_value = child.text
-            obj.time_seg1 = time_seg1_value
-
-        # Parse time_seg2
-        child = SerializationHelper.find_child_element(element, "TIME-SEG2")
-        if child is not None:
-            time_seg2_value = child.text
-            obj.time_seg2 = time_seg2_value
-
-        # Parse tx_bit_rate_switch
-        child = SerializationHelper.find_child_element(element, "TX-BIT-RATE-SWITCH")
-        if child is not None:
-            tx_bit_rate_switch_value = child.text
-            obj.tx_bit_rate_switch = tx_bit_rate_switch_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PADDING-VALUE":
+                setattr(obj, "padding_value", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PROP-SEG":
+                setattr(obj, "prop_seg", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SSP-OFFSET":
+                setattr(obj, "ssp_offset", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SYNC-JUMP-WIDTH":
+                setattr(obj, "sync_jump_width", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TIME-SEG1":
+                setattr(obj, "time_seg1", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TIME-SEG2":
+                setattr(obj, "time_seg2", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TX-BIT-RATE-SWITCH":
+                setattr(obj, "tx_bit_rate_switch", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

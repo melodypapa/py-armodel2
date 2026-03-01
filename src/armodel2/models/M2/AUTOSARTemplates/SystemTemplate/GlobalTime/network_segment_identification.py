@@ -34,7 +34,7 @@ class NetworkSegmentIdentification(ARObject):
 
     network: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "NETWORK": lambda obj, elem: setattr(obj, "network", elem.text),
+        "NETWORK": lambda obj, elem: setattr(obj, "network", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -95,11 +95,13 @@ class NetworkSegmentIdentification(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NetworkSegmentIdentification, cls).deserialize(element)
 
-        # Parse network
-        child = SerializationHelper.find_child_element(element, "NETWORK")
-        if child is not None:
-            network_value = child.text
-            obj.network = network_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "NETWORK":
+                setattr(obj, "network", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

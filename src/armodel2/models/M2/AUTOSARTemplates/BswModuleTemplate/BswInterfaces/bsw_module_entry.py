@@ -69,16 +69,16 @@ class BswModuleEntry(ARElement):
     service_id: Optional[PositiveInteger]
     sw_service_impl_policy: Optional[SwServiceImplPolicyEnum]
     _DESERIALIZE_DISPATCH = {
-        "ARGUMENTS": lambda obj, elem: obj.arguments.append(SwServiceArg.deserialize(elem)),
+        "ARGUMENTS": lambda obj, elem: obj.arguments.append(SerializationHelper.deserialize_by_tag(elem, "SwServiceArg")),
         "BSW-ENTRY-KIND": lambda obj, elem: setattr(obj, "bsw_entry_kind", BswEntryKindEnum.deserialize(elem)),
         "CALL-TYPE": lambda obj, elem: setattr(obj, "call_type", BswCallType.deserialize(elem)),
         "EXECUTION-CONTEXT": lambda obj, elem: setattr(obj, "execution_context", BswExecutionContext.deserialize(elem)),
-        "FUNCTION-PROTOTYPE-EMITTER": lambda obj, elem: setattr(obj, "function_prototype_emitter", elem.text),
-        "IS-REENTRANT": lambda obj, elem: setattr(obj, "is_reentrant", elem.text),
-        "IS-SYNCHRONOUS": lambda obj, elem: setattr(obj, "is_synchronous", elem.text),
-        "RETURN-TYPE": lambda obj, elem: setattr(obj, "return_type", SwServiceArg.deserialize(elem)),
-        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
-        "SERVICE-ID": lambda obj, elem: setattr(obj, "service_id", elem.text),
+        "FUNCTION-PROTOTYPE-EMITTER": lambda obj, elem: setattr(obj, "function_prototype_emitter", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "IS-REENTRANT": lambda obj, elem: setattr(obj, "is_reentrant", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "IS-SYNCHRONOUS": lambda obj, elem: setattr(obj, "is_synchronous", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RETURN-TYPE": lambda obj, elem: setattr(obj, "return_type", SerializationHelper.deserialize_by_tag(elem, "SwServiceArg")),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "SERVICE-ID": lambda obj, elem: setattr(obj, "service_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SW-SERVICE-IMPL-POLICY": lambda obj, elem: setattr(obj, "sw_service_impl_policy", SwServiceImplPolicyEnum.deserialize(elem)),
     }
 
@@ -286,75 +286,33 @@ class BswModuleEntry(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleEntry, cls).deserialize(element)
 
-        # Parse arguments (list from container "ARGUMENTS")
-        obj.arguments = []
-        container = SerializationHelper.find_child_element(element, "ARGUMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.arguments.append(child_value)
-
-        # Parse bsw_entry_kind
-        child = SerializationHelper.find_child_element(element, "BSW-ENTRY-KIND")
-        if child is not None:
-            bsw_entry_kind_value = BswEntryKindEnum.deserialize(child)
-            obj.bsw_entry_kind = bsw_entry_kind_value
-
-        # Parse call_type
-        child = SerializationHelper.find_child_element(element, "CALL-TYPE")
-        if child is not None:
-            call_type_value = BswCallType.deserialize(child)
-            obj.call_type = call_type_value
-
-        # Parse execution_context
-        child = SerializationHelper.find_child_element(element, "EXECUTION-CONTEXT")
-        if child is not None:
-            execution_context_value = BswExecutionContext.deserialize(child)
-            obj.execution_context = execution_context_value
-
-        # Parse function_prototype_emitter
-        child = SerializationHelper.find_child_element(element, "FUNCTION-PROTOTYPE-EMITTER")
-        if child is not None:
-            function_prototype_emitter_value = child.text
-            obj.function_prototype_emitter = function_prototype_emitter_value
-
-        # Parse is_reentrant
-        child = SerializationHelper.find_child_element(element, "IS-REENTRANT")
-        if child is not None:
-            is_reentrant_value = child.text
-            obj.is_reentrant = is_reentrant_value
-
-        # Parse is_synchronous
-        child = SerializationHelper.find_child_element(element, "IS-SYNCHRONOUS")
-        if child is not None:
-            is_synchronous_value = child.text
-            obj.is_synchronous = is_synchronous_value
-
-        # Parse return_type
-        child = SerializationHelper.find_child_element(element, "RETURN-TYPE")
-        if child is not None:
-            return_type_value = SerializationHelper.deserialize_by_tag(child, "SwServiceArg")
-            obj.return_type = return_type_value
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
-
-        # Parse service_id
-        child = SerializationHelper.find_child_element(element, "SERVICE-ID")
-        if child is not None:
-            service_id_value = child.text
-            obj.service_id = service_id_value
-
-        # Parse sw_service_impl_policy
-        child = SerializationHelper.find_child_element(element, "SW-SERVICE-IMPL-POLICY")
-        if child is not None:
-            sw_service_impl_policy_value = SwServiceImplPolicyEnum.deserialize(child)
-            obj.sw_service_impl_policy = sw_service_impl_policy_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ARGUMENTS":
+                obj.arguments.append(SerializationHelper.deserialize_by_tag(child, "SwServiceArg"))
+            elif tag == "BSW-ENTRY-KIND":
+                setattr(obj, "bsw_entry_kind", BswEntryKindEnum.deserialize(child))
+            elif tag == "CALL-TYPE":
+                setattr(obj, "call_type", BswCallType.deserialize(child))
+            elif tag == "EXECUTION-CONTEXT":
+                setattr(obj, "execution_context", BswExecutionContext.deserialize(child))
+            elif tag == "FUNCTION-PROTOTYPE-EMITTER":
+                setattr(obj, "function_prototype_emitter", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "IS-REENTRANT":
+                setattr(obj, "is_reentrant", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "IS-SYNCHRONOUS":
+                setattr(obj, "is_synchronous", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RETURN-TYPE":
+                setattr(obj, "return_type", SerializationHelper.deserialize_by_tag(child, "SwServiceArg"))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "SERVICE-ID":
+                setattr(obj, "service_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SW-SERVICE-IMPL-POLICY":
+                setattr(obj, "sw_service_impl_policy", SwServiceImplPolicyEnum.deserialize(child))
 
         return obj
 

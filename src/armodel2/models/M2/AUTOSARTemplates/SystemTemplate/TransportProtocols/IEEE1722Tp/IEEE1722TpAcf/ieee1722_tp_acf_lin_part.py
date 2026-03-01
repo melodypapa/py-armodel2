@@ -43,7 +43,7 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
     lin_identifier: Optional[PositiveInteger]
     sdu_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "LIN-IDENTIFIER": lambda obj, elem: setattr(obj, "lin_identifier", elem.text),
+        "LIN-IDENTIFIER": lambda obj, elem: setattr(obj, "lin_identifier", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SDU-REF": lambda obj, elem: setattr(obj, "sdu_ref", ARRef.deserialize(elem)),
     }
 
@@ -120,17 +120,15 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpAcfLinPart, cls).deserialize(element)
 
-        # Parse lin_identifier
-        child = SerializationHelper.find_child_element(element, "LIN-IDENTIFIER")
-        if child is not None:
-            lin_identifier_value = child.text
-            obj.lin_identifier = lin_identifier_value
-
-        # Parse sdu_ref
-        child = SerializationHelper.find_child_element(element, "SDU-REF")
-        if child is not None:
-            sdu_ref_value = ARRef.deserialize(child)
-            obj.sdu_ref = sdu_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LIN-IDENTIFIER":
+                setattr(obj, "lin_identifier", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SDU-REF":
+                setattr(obj, "sdu_ref", ARRef.deserialize(child))
 
         return obj
 

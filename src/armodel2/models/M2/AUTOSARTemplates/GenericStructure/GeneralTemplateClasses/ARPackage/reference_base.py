@@ -49,12 +49,12 @@ class ReferenceBase(ARObject):
     global_element_refs: list[ReferrableSubtypesEnum]
     global_in_package_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
-        "IS-DEFAULT": lambda obj, elem: setattr(obj, "is_default", elem.text),
-        "IS-GLOBAL": lambda obj, elem: setattr(obj, "is_global", elem.text),
-        "BASE-IS-THIS-PACKAGE": lambda obj, elem: setattr(obj, "base_is_this_package", elem.text),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "IS-DEFAULT": lambda obj, elem: setattr(obj, "is_default", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "IS-GLOBAL": lambda obj, elem: setattr(obj, "is_global", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "BASE-IS-THIS-PACKAGE": lambda obj, elem: setattr(obj, "base_is_this_package", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "PACKAGE-REF": lambda obj, elem: setattr(obj, "package_ref", ARRef.deserialize(elem)),
-        "GLOBAL-ELEMENTS": lambda obj, elem: obj.global_element_refs.append(elem.text),
+        "GLOBAL-ELEMENTS": lambda obj, elem: obj.global_element_refs.append(ARRef.deserialize(elem)),
         "GLOBAL-IN-PACKAGES": lambda obj, elem: obj.global_in_package_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -212,67 +212,25 @@ class ReferenceBase(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ReferenceBase, cls).deserialize(element)
 
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
-
-        # Parse is_default
-        child = SerializationHelper.find_child_element(element, "IS-DEFAULT")
-        if child is not None:
-            is_default_value = child.text
-            obj.is_default = is_default_value
-
-        # Parse is_global
-        child = SerializationHelper.find_child_element(element, "IS-GLOBAL")
-        if child is not None:
-            is_global_value = child.text
-            obj.is_global = is_global_value
-
-        # Parse base_is_this_package
-        child = SerializationHelper.find_child_element(element, "BASE-IS-THIS-PACKAGE")
-        if child is not None:
-            base_is_this_package_value = child.text
-            obj.base_is_this_package = base_is_this_package_value
-
-        # Parse package_ref
-        child = SerializationHelper.find_child_element(element, "PACKAGE-REF")
-        if child is not None:
-            package_ref_value = ARRef.deserialize(child)
-            obj.package_ref = package_ref_value
-
-        # Parse global_element_refs (list from container "GLOBAL-ELEMENT-REFS")
-        obj.global_element_refs = []
-        container = SerializationHelper.find_child_element(element, "GLOBAL-ELEMENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.global_element_refs.append(child_value)
-
-        # Parse global_in_package_refs (list from container "GLOBAL-IN-PACKAGE-REFS")
-        obj.global_in_package_refs = []
-        container = SerializationHelper.find_child_element(element, "GLOBAL-IN-PACKAGE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.global_in_package_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "IS-DEFAULT":
+                setattr(obj, "is_default", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "IS-GLOBAL":
+                setattr(obj, "is_global", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "BASE-IS-THIS-PACKAGE":
+                setattr(obj, "base_is_this_package", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PACKAGE-REF":
+                setattr(obj, "package_ref", ARRef.deserialize(child))
+            elif tag == "GLOBAL-ELEMENTS":
+                obj.global_element_refs.append(ARRef.deserialize(child))
+            elif tag == "GLOBAL-IN-PACKAGES":
+                obj.global_in_package_refs.append(ARRef.deserialize(child))
 
         return obj
 

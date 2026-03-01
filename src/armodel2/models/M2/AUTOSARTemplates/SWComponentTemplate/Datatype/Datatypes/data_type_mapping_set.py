@@ -48,8 +48,8 @@ class DataTypeMappingSet(ARElement):
     data_type_maps: list[DataTypeMap]
     mode_request_type_maps: list[ModeRequestTypeMap]
     _DESERIALIZE_DISPATCH = {
-        "DATA-TYPE-MAPS": lambda obj, elem: obj.data_type_maps.append(DataTypeMap.deserialize(elem)),
-        "MODE-REQUEST-TYPE-MAPS": lambda obj, elem: obj.mode_request_type_maps.append(ModeRequestTypeMap.deserialize(elem)),
+        "DATA-TYPE-MAPS": lambda obj, elem: obj.data_type_maps.append(SerializationHelper.deserialize_by_tag(elem, "DataTypeMap")),
+        "MODE-REQUEST-TYPE-MAPS": lambda obj, elem: obj.mode_request_type_maps.append(SerializationHelper.deserialize_by_tag(elem, "ModeRequestTypeMap")),
     }
 
 
@@ -117,25 +117,15 @@ class DataTypeMappingSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataTypeMappingSet, cls).deserialize(element)
 
-        # Parse data_type_maps (list from container "DATA-TYPE-MAPS")
-        obj.data_type_maps = []
-        container = SerializationHelper.find_child_element(element, "DATA-TYPE-MAPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_type_maps.append(child_value)
-
-        # Parse mode_request_type_maps (list from container "MODE-REQUEST-TYPE-MAPS")
-        obj.mode_request_type_maps = []
-        container = SerializationHelper.find_child_element(element, "MODE-REQUEST-TYPE-MAPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mode_request_type_maps.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-TYPE-MAPS":
+                obj.data_type_maps.append(SerializationHelper.deserialize_by_tag(child, "DataTypeMap"))
+            elif tag == "MODE-REQUEST-TYPE-MAPS":
+                obj.mode_request_type_maps.append(SerializationHelper.deserialize_by_tag(child, "ModeRequestTypeMap"))
 
         return obj
 

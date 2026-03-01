@@ -49,8 +49,8 @@ class TDEventFrameEthernet(TDEventCom):
     td_pdu_triggering_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "STATIC-SOCKET-REF": lambda obj, elem: setattr(obj, "static_socket_ref", ARRef.deserialize(elem)),
-        "TD-EVENT-TYPE": lambda obj, elem: setattr(obj, "td_event_type", TDEventFrameEthernet.deserialize(elem)),
-        "TD-HEADER-ID-FILTERS": lambda obj, elem: obj.td_header_id_filters.append(TDHeaderIdRange.deserialize(elem)),
+        "TD-EVENT-TYPE": lambda obj, elem: setattr(obj, "td_event_type", SerializationHelper.deserialize_by_tag(elem, "TDEventFrameEthernet")),
+        "TD-HEADER-ID-FILTERS": lambda obj, elem: obj.td_header_id_filters.append(SerializationHelper.deserialize_by_tag(elem, "TDHeaderIdRange")),
         "TD-PDU-TRIGGERINGS": lambda obj, elem: obj.td_pdu_triggering_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -156,43 +156,19 @@ class TDEventFrameEthernet(TDEventCom):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventFrameEthernet, cls).deserialize(element)
 
-        # Parse static_socket_ref
-        child = SerializationHelper.find_child_element(element, "STATIC-SOCKET-REF")
-        if child is not None:
-            static_socket_ref_value = ARRef.deserialize(child)
-            obj.static_socket_ref = static_socket_ref_value
-
-        # Parse td_event_type
-        child = SerializationHelper.find_child_element(element, "TD-EVENT-TYPE")
-        if child is not None:
-            td_event_type_value = SerializationHelper.deserialize_by_tag(child, "TDEventFrameEthernet")
-            obj.td_event_type = td_event_type_value
-
-        # Parse td_header_id_filters (list from container "TD-HEADER-ID-FILTERS")
-        obj.td_header_id_filters = []
-        container = SerializationHelper.find_child_element(element, "TD-HEADER-ID-FILTERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.td_header_id_filters.append(child_value)
-
-        # Parse td_pdu_triggering_refs (list from container "TD-PDU-TRIGGERING-REFS")
-        obj.td_pdu_triggering_refs = []
-        container = SerializationHelper.find_child_element(element, "TD-PDU-TRIGGERING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.td_pdu_triggering_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "STATIC-SOCKET-REF":
+                setattr(obj, "static_socket_ref", ARRef.deserialize(child))
+            elif tag == "TD-EVENT-TYPE":
+                setattr(obj, "td_event_type", SerializationHelper.deserialize_by_tag(child, "TDEventFrameEthernet"))
+            elif tag == "TD-HEADER-ID-FILTERS":
+                obj.td_header_id_filters.append(SerializationHelper.deserialize_by_tag(child, "TDHeaderIdRange"))
+            elif tag == "TD-PDU-TRIGGERINGS":
+                obj.td_pdu_triggering_refs.append(ARRef.deserialize(child))
 
         return obj
 

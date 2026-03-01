@@ -47,11 +47,11 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
     requires_index: Optional[Boolean]
     value_configs: list[EcucValueConfigurationClass]
     _DESERIALIZE_DISPATCH = {
-        "MULTIPLICITIES": lambda obj, elem: obj.multiplicities.append(EcucMultiplicityConfigurationClass.deserialize(elem)),
-        "ORIGIN": lambda obj, elem: setattr(obj, "origin", elem.text),
-        "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", elem.text),
-        "REQUIRES-INDEX": lambda obj, elem: setattr(obj, "requires_index", elem.text),
-        "VALUE-CONFIGS": lambda obj, elem: obj.value_configs.append(EcucValueConfigurationClass.deserialize(elem)),
+        "MULTIPLICITIES": lambda obj, elem: obj.multiplicities.append(SerializationHelper.deserialize_by_tag(elem, "EcucMultiplicityConfigurationClass")),
+        "ORIGIN": lambda obj, elem: setattr(obj, "origin", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "REQUIRES-INDEX": lambda obj, elem: setattr(obj, "requires_index", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "VALUE-CONFIGS": lambda obj, elem: obj.value_configs.append(SerializationHelper.deserialize_by_tag(elem, "EcucValueConfigurationClass")),
     }
 
 
@@ -164,43 +164,21 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucCommonAttributes, cls).deserialize(element)
 
-        # Parse multiplicities (list from container "MULTIPLICITIES")
-        obj.multiplicities = []
-        container = SerializationHelper.find_child_element(element, "MULTIPLICITIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.multiplicities.append(child_value)
-
-        # Parse origin
-        child = SerializationHelper.find_child_element(element, "ORIGIN")
-        if child is not None:
-            origin_value = child.text
-            obj.origin = origin_value
-
-        # Parse post_build_variant
-        child = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANT")
-        if child is not None:
-            post_build_variant_value = child.text
-            obj.post_build_variant = post_build_variant_value
-
-        # Parse requires_index
-        child = SerializationHelper.find_child_element(element, "REQUIRES-INDEX")
-        if child is not None:
-            requires_index_value = child.text
-            obj.requires_index = requires_index_value
-
-        # Parse value_configs (list from container "VALUE-CONFIGS")
-        obj.value_configs = []
-        container = SerializationHelper.find_child_element(element, "VALUE-CONFIGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.value_configs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MULTIPLICITIES":
+                obj.multiplicities.append(SerializationHelper.deserialize_by_tag(child, "EcucMultiplicityConfigurationClass"))
+            elif tag == "ORIGIN":
+                setattr(obj, "origin", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "POST-BUILD-VARIANT":
+                setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "REQUIRES-INDEX":
+                setattr(obj, "requires_index", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "VALUE-CONFIGS":
+                obj.value_configs.append(SerializationHelper.deserialize_by_tag(child, "EcucValueConfigurationClass"))
 
         return obj
 

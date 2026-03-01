@@ -39,7 +39,7 @@ class BswEntryRelationshipSet(ARElement):
 
     bsw_entry_relationships: list[BswEntryRelationship]
     _DESERIALIZE_DISPATCH = {
-        "BSW-ENTRY-RELATIONSHIPS": lambda obj, elem: obj.bsw_entry_relationships.append(BswEntryRelationship.deserialize(elem)),
+        "BSW-ENTRY-RELATIONSHIPS": lambda obj, elem: obj.bsw_entry_relationships.append(SerializationHelper.deserialize_by_tag(elem, "BswEntryRelationship")),
     }
 
 
@@ -96,15 +96,13 @@ class BswEntryRelationshipSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswEntryRelationshipSet, cls).deserialize(element)
 
-        # Parse bsw_entry_relationships (list from container "BSW-ENTRY-RELATIONSHIPS")
-        obj.bsw_entry_relationships = []
-        container = SerializationHelper.find_child_element(element, "BSW-ENTRY-RELATIONSHIPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.bsw_entry_relationships.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BSW-ENTRY-RELATIONSHIPS":
+                obj.bsw_entry_relationships.append(SerializationHelper.deserialize_by_tag(child, "BswEntryRelationship"))
 
         return obj
 

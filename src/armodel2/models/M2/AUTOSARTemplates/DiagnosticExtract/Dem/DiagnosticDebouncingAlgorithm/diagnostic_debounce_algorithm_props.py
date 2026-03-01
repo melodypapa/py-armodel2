@@ -39,7 +39,7 @@ class DiagnosticDebounceAlgorithmProps(Identifiable):
 
     debounce: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "DEBOUNCE": lambda obj, elem: setattr(obj, "debounce", elem.text),
+        "DEBOUNCE": lambda obj, elem: setattr(obj, "debounce", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -100,11 +100,13 @@ class DiagnosticDebounceAlgorithmProps(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDebounceAlgorithmProps, cls).deserialize(element)
 
-        # Parse debounce
-        child = SerializationHelper.find_child_element(element, "DEBOUNCE")
-        if child is not None:
-            debounce_value = child.text
-            obj.debounce = debounce_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEBOUNCE":
+                setattr(obj, "debounce", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

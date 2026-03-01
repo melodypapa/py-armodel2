@@ -31,7 +31,7 @@ class ISignalProps(ARObject):
 
     handle_out_of_range: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "HANDLE-OUT-OF-RANGE": lambda obj, elem: setattr(obj, "handle_out_of_range", any (HandleOutOfRange).deserialize(elem)),
+        "HANDLE-OUT-OF-RANGE": lambda obj, elem: setattr(obj, "handle_out_of_range", SerializationHelper.deserialize_by_tag(elem, "any (HandleOutOfRange)")),
     }
 
 
@@ -92,11 +92,13 @@ class ISignalProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignalProps, cls).deserialize(element)
 
-        # Parse handle_out_of_range
-        child = SerializationHelper.find_child_element(element, "HANDLE-OUT-OF-RANGE")
-        if child is not None:
-            handle_out_of_range_value = child.text
-            obj.handle_out_of_range = handle_out_of_range_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "HANDLE-OUT-OF-RANGE":
+                setattr(obj, "handle_out_of_range", SerializationHelper.deserialize_by_tag(child, "any (HandleOutOfRange)"))
 
         return obj
 

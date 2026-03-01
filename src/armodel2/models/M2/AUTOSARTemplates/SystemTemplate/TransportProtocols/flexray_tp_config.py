@@ -54,11 +54,11 @@ class FlexrayTpConfig(TpConfig):
     tp_ecus: list[FlexrayTpEcu]
     tp_nodes: list[FlexrayTpNode]
     _DESERIALIZE_DISPATCH = {
-        "PDU-POOLS": lambda obj, elem: obj.pdu_pools.append(FlexrayTpPduPool.deserialize(elem)),
-        "TP-ADDRESSES": lambda obj, elem: obj.tp_addresses.append(TpAddress.deserialize(elem)),
-        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(FlexrayTpConnection.deserialize(elem)),
-        "TP-ECUS": lambda obj, elem: obj.tp_ecus.append(FlexrayTpEcu.deserialize(elem)),
-        "TP-NODES": lambda obj, elem: obj.tp_nodes.append(FlexrayTpNode.deserialize(elem)),
+        "PDU-POOLS": lambda obj, elem: obj.pdu_pools.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayTpPduPool")),
+        "TP-ADDRESSES": lambda obj, elem: obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(elem, "TpAddress")),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayTpConnection")),
+        "TP-ECUS": lambda obj, elem: obj.tp_ecus.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayTpEcu")),
+        "TP-NODES": lambda obj, elem: obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(elem, "FlexrayTpNode")),
     }
 
 
@@ -159,55 +159,21 @@ class FlexrayTpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayTpConfig, cls).deserialize(element)
 
-        # Parse pdu_pools (list from container "PDU-POOLS")
-        obj.pdu_pools = []
-        container = SerializationHelper.find_child_element(element, "PDU-POOLS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.pdu_pools.append(child_value)
-
-        # Parse tp_addresses (list from container "TP-ADDRESSES")
-        obj.tp_addresses = []
-        container = SerializationHelper.find_child_element(element, "TP-ADDRESSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_addresses.append(child_value)
-
-        # Parse tp_connections (list from container "TP-CONNECTIONS")
-        obj.tp_connections = []
-        container = SerializationHelper.find_child_element(element, "TP-CONNECTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_connections.append(child_value)
-
-        # Parse tp_ecus (list from container "TP-ECUS")
-        obj.tp_ecus = []
-        container = SerializationHelper.find_child_element(element, "TP-ECUS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_ecus.append(child_value)
-
-        # Parse tp_nodes (list from container "TP-NODES")
-        obj.tp_nodes = []
-        container = SerializationHelper.find_child_element(element, "TP-NODES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_nodes.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PDU-POOLS":
+                obj.pdu_pools.append(SerializationHelper.deserialize_by_tag(child, "FlexrayTpPduPool"))
+            elif tag == "TP-ADDRESSES":
+                obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(child, "TpAddress"))
+            elif tag == "TP-CONNECTIONS":
+                obj.tp_connections.append(SerializationHelper.deserialize_by_tag(child, "FlexrayTpConnection"))
+            elif tag == "TP-ECUS":
+                obj.tp_ecus.append(SerializationHelper.deserialize_by_tag(child, "FlexrayTpEcu"))
+            elif tag == "TP-NODES":
+                obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(child, "FlexrayTpNode"))
 
         return obj
 

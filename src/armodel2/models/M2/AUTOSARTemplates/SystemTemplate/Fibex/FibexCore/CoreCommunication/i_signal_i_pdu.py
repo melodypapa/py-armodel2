@@ -47,9 +47,9 @@ class ISignalIPdu(IPdu):
     i_signal_to_pdu_mappings: list[ISignalToIPduMapping]
     unused_bit_pattern: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "I-PDU-TIMING-SPECIFICATIONS": lambda obj, elem: obj.i_pdu_timing_specifications.append(IPduTiming.deserialize(elem)),
-        "I-SIGNAL-TO-PDU-MAPPINGS": lambda obj, elem: obj.i_signal_to_pdu_mappings.append(ISignalToIPduMapping.deserialize(elem)),
-        "UNUSED-BIT-PATTERN": lambda obj, elem: setattr(obj, "unused_bit_pattern", elem.text),
+        "I-PDU-TIMING-SPECIFICATIONS": lambda obj, elem: obj.i_pdu_timing_specifications.append(SerializationHelper.deserialize_by_tag(elem, "IPduTiming")),
+        "I-SIGNAL-TO-PDU-MAPPINGS": lambda obj, elem: obj.i_signal_to_pdu_mappings.append(SerializationHelper.deserialize_by_tag(elem, "ISignalToIPduMapping")),
+        "UNUSED-BIT-PATTERN": lambda obj, elem: setattr(obj, "unused_bit_pattern", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -132,31 +132,17 @@ class ISignalIPdu(IPdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignalIPdu, cls).deserialize(element)
 
-        # Parse i_pdu_timing_specifications (list from container "I-PDU-TIMING-SPECIFICATIONS")
-        obj.i_pdu_timing_specifications = []
-        container = SerializationHelper.find_child_element(element, "I-PDU-TIMING-SPECIFICATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.i_pdu_timing_specifications.append(child_value)
-
-        # Parse i_signal_to_pdu_mappings (list from container "I-SIGNAL-TO-PDU-MAPPINGS")
-        obj.i_signal_to_pdu_mappings = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-TO-PDU-MAPPINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.i_signal_to_pdu_mappings.append(child_value)
-
-        # Parse unused_bit_pattern
-        child = SerializationHelper.find_child_element(element, "UNUSED-BIT-PATTERN")
-        if child is not None:
-            unused_bit_pattern_value = child.text
-            obj.unused_bit_pattern = unused_bit_pattern_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "I-PDU-TIMING-SPECIFICATIONS":
+                obj.i_pdu_timing_specifications.append(SerializationHelper.deserialize_by_tag(child, "IPduTiming"))
+            elif tag == "I-SIGNAL-TO-PDU-MAPPINGS":
+                obj.i_signal_to_pdu_mappings.append(SerializationHelper.deserialize_by_tag(child, "ISignalToIPduMapping"))
+            elif tag == "UNUSED-BIT-PATTERN":
+                setattr(obj, "unused_bit_pattern", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

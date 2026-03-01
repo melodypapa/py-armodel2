@@ -38,7 +38,7 @@ class TextualCondition(AbstractCondition):
 
     text: String
     _DESERIALIZE_DISPATCH = {
-        "TEXT": lambda obj, elem: setattr(obj, "text", elem.text),
+        "TEXT": lambda obj, elem: setattr(obj, "text", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -99,11 +99,13 @@ class TextualCondition(AbstractCondition):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TextualCondition, cls).deserialize(element)
 
-        # Parse text
-        child = SerializationHelper.find_child_element(element, "TEXT")
-        if child is not None:
-            text_value = child.text
-            obj.text = text_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TEXT":
+                setattr(obj, "text", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

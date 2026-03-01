@@ -43,7 +43,7 @@ class ModeRequestTypeMap(ARObject):
     implementation_data_type_ref: Optional[ARRef]
     mode_group_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "IMPLEMENTATION-DATA-TYPE-REF": lambda obj, elem: setattr(obj, "implementation_data_type_ref", ARRef.deserialize(elem)),
+        "IMPLEMENTATION-DATA-TYPE-REF": ("_POLYMORPHIC", "implementation_data_type_ref", ["ImplementationDataType"]),
         "MODE-GROUP-REF": lambda obj, elem: setattr(obj, "mode_group_ref", ARRef.deserialize(elem)),
     }
 
@@ -120,17 +120,19 @@ class ModeRequestTypeMap(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeRequestTypeMap, cls).deserialize(element)
 
-        # Parse implementation_data_type_ref
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-DATA-TYPE-REF")
-        if child is not None:
-            implementation_data_type_ref_value = ARRef.deserialize(child)
-            obj.implementation_data_type_ref = implementation_data_type_ref_value
-
-        # Parse mode_group_ref
-        child = SerializationHelper.find_child_element(element, "MODE-GROUP-REF")
-        if child is not None:
-            mode_group_ref_value = ARRef.deserialize(child)
-            obj.mode_group_ref = mode_group_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "IMPLEMENTATION-DATA-TYPE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "IMPLEMENTATION-DATA-TYPE":
+                        setattr(obj, "implementation_data_type_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationDataType"))
+            elif tag == "MODE-GROUP-REF":
+                setattr(obj, "mode_group_ref", ARRef.deserialize(child))
 
         return obj
 

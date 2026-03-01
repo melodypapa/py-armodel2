@@ -37,9 +37,9 @@ class LifeCyclePeriod(ARObject):
     date: Optional[DateTime]
     product_release: Optional[RevisionLabelString]
     _DESERIALIZE_DISPATCH = {
-        "AR-RELEASE-VERSION": lambda obj, elem: setattr(obj, "ar_release_version", elem.text),
-        "DATE": lambda obj, elem: setattr(obj, "date", elem.text),
-        "PRODUCT-RELEASE": lambda obj, elem: setattr(obj, "product_release", elem.text),
+        "AR-RELEASE-VERSION": lambda obj, elem: setattr(obj, "ar_release_version", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
+        "DATE": lambda obj, elem: setattr(obj, "date", SerializationHelper.deserialize_by_tag(elem, "DateTime")),
+        "PRODUCT-RELEASE": lambda obj, elem: setattr(obj, "product_release", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
     }
 
 
@@ -130,23 +130,17 @@ class LifeCyclePeriod(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LifeCyclePeriod, cls).deserialize(element)
 
-        # Parse ar_release_version
-        child = SerializationHelper.find_child_element(element, "AR-RELEASE-VERSION")
-        if child is not None:
-            ar_release_version_value = child.text
-            obj.ar_release_version = ar_release_version_value
-
-        # Parse date
-        child = SerializationHelper.find_child_element(element, "DATE")
-        if child is not None:
-            date_value = child.text
-            obj.date = date_value
-
-        # Parse product_release
-        child = SerializationHelper.find_child_element(element, "PRODUCT-RELEASE")
-        if child is not None:
-            product_release_value = child.text
-            obj.product_release = product_release_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AR-RELEASE-VERSION":
+                setattr(obj, "ar_release_version", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
+            elif tag == "DATE":
+                setattr(obj, "date", SerializationHelper.deserialize_by_tag(child, "DateTime"))
+            elif tag == "PRODUCT-RELEASE":
+                setattr(obj, "product_release", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
 
         return obj
 

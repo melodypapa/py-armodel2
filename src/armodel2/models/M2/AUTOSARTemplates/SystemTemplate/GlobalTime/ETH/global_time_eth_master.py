@@ -47,8 +47,8 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
     sub_tlv_config: Optional[EthTSynSubTlvConfig]
     _DESERIALIZE_DISPATCH = {
         "CRC-SECURED": lambda obj, elem: setattr(obj, "crc_secured", GlobalTimeCrcSupportEnum.deserialize(elem)),
-        "HOLD-OVER-TIME": lambda obj, elem: setattr(obj, "hold_over_time", elem.text),
-        "SUB-TLV-CONFIG": lambda obj, elem: setattr(obj, "sub_tlv_config", EthTSynSubTlvConfig.deserialize(elem)),
+        "HOLD-OVER-TIME": lambda obj, elem: setattr(obj, "hold_over_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "SUB-TLV-CONFIG": lambda obj, elem: setattr(obj, "sub_tlv_config", SerializationHelper.deserialize_by_tag(elem, "EthTSynSubTlvConfig")),
     }
 
 
@@ -139,23 +139,17 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeEthMaster, cls).deserialize(element)
 
-        # Parse crc_secured
-        child = SerializationHelper.find_child_element(element, "CRC-SECURED")
-        if child is not None:
-            crc_secured_value = GlobalTimeCrcSupportEnum.deserialize(child)
-            obj.crc_secured = crc_secured_value
-
-        # Parse hold_over_time
-        child = SerializationHelper.find_child_element(element, "HOLD-OVER-TIME")
-        if child is not None:
-            hold_over_time_value = child.text
-            obj.hold_over_time = hold_over_time_value
-
-        # Parse sub_tlv_config
-        child = SerializationHelper.find_child_element(element, "SUB-TLV-CONFIG")
-        if child is not None:
-            sub_tlv_config_value = SerializationHelper.deserialize_by_tag(child, "EthTSynSubTlvConfig")
-            obj.sub_tlv_config = sub_tlv_config_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CRC-SECURED":
+                setattr(obj, "crc_secured", GlobalTimeCrcSupportEnum.deserialize(child))
+            elif tag == "HOLD-OVER-TIME":
+                setattr(obj, "hold_over_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "SUB-TLV-CONFIG":
+                setattr(obj, "sub_tlv_config", SerializationHelper.deserialize_by_tag(child, "EthTSynSubTlvConfig"))
 
         return obj
 

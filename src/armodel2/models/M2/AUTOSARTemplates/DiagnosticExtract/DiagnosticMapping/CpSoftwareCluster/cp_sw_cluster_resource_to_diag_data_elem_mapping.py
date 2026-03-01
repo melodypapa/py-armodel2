@@ -120,17 +120,15 @@ class CpSwClusterResourceToDiagDataElemMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSwClusterResourceToDiagDataElemMapping, cls).deserialize(element)
 
-        # Parse cp_software_cluster_ref
-        child = SerializationHelper.find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
-        if child is not None:
-            cp_software_cluster_ref_value = ARRef.deserialize(child)
-            obj.cp_software_cluster_ref = cp_software_cluster_ref_value
-
-        # Parse diagnostic_data_ref
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-DATA-REF")
-        if child is not None:
-            diagnostic_data_ref_value = ARRef.deserialize(child)
-            obj.diagnostic_data_ref = diagnostic_data_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CP-SOFTWARE-CLUSTER-REF":
+                setattr(obj, "cp_software_cluster_ref", ARRef.deserialize(child))
+            elif tag == "DIAGNOSTIC-DATA-REF":
+                setattr(obj, "diagnostic_data_ref", ARRef.deserialize(child))
 
         return obj
 

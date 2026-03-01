@@ -43,7 +43,7 @@ class TransformerHardErrorEvent(RTEEvent):
     operation: Optional[ClientServerOperation]
     required_trigger_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "OPERATION": lambda obj, elem: setattr(obj, "operation", ClientServerOperation.deserialize(elem)),
+        "OPERATION": lambda obj, elem: setattr(obj, "operation", SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
         "REQUIRED-TRIGGER-REF": lambda obj, elem: setattr(obj, "required_trigger_ref", ARRef.deserialize(elem)),
     }
 
@@ -120,17 +120,15 @@ class TransformerHardErrorEvent(RTEEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransformerHardErrorEvent, cls).deserialize(element)
 
-        # Parse operation
-        child = SerializationHelper.find_child_element(element, "OPERATION")
-        if child is not None:
-            operation_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
-            obj.operation = operation_value
-
-        # Parse required_trigger_ref
-        child = SerializationHelper.find_child_element(element, "REQUIRED-TRIGGER-REF")
-        if child is not None:
-            required_trigger_ref_value = ARRef.deserialize(child)
-            obj.required_trigger_ref = required_trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "OPERATION":
+                setattr(obj, "operation", SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
+            elif tag == "REQUIRED-TRIGGER-REF":
+                setattr(obj, "required_trigger_ref", ARRef.deserialize(child))
 
         return obj
 

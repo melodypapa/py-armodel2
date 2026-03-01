@@ -38,7 +38,7 @@ class NotAvailableValueSpecification(ValueSpecification):
 
     default_pattern: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "DEFAULT-PATTERN": lambda obj, elem: setattr(obj, "default_pattern", elem.text),
+        "DEFAULT-PATTERN": lambda obj, elem: setattr(obj, "default_pattern", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -99,11 +99,13 @@ class NotAvailableValueSpecification(ValueSpecification):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NotAvailableValueSpecification, cls).deserialize(element)
 
-        # Parse default_pattern
-        child = SerializationHelper.find_child_element(element, "DEFAULT-PATTERN")
-        if child is not None:
-            default_pattern_value = child.text
-            obj.default_pattern = default_pattern_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEFAULT-PATTERN":
+                setattr(obj, "default_pattern", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

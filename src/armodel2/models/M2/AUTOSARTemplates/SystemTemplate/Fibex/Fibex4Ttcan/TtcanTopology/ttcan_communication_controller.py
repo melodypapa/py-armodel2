@@ -45,14 +45,14 @@ class TtcanCommunicationController(ARObject):
     time_triggered: Optional[Integer]
     tx_enable: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "APPL-WATCHDOG": lambda obj, elem: setattr(obj, "appl_watchdog", elem.text),
-        "EXPECTED-TX": lambda obj, elem: setattr(obj, "expected_tx", elem.text),
-        "EXTERNAL-CLOCK": lambda obj, elem: setattr(obj, "external_clock", elem.text),
-        "INITIAL-REF-OFFSET": lambda obj, elem: setattr(obj, "initial_ref_offset", elem.text),
-        "MASTER": lambda obj, elem: setattr(obj, "master", elem.text),
-        "TIME-MASTER": lambda obj, elem: setattr(obj, "time_master", elem.text),
-        "TIME-TRIGGERED": lambda obj, elem: setattr(obj, "time_triggered", elem.text),
-        "TX-ENABLE": lambda obj, elem: setattr(obj, "tx_enable", elem.text),
+        "APPL-WATCHDOG": lambda obj, elem: setattr(obj, "appl_watchdog", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "EXPECTED-TX": lambda obj, elem: setattr(obj, "expected_tx", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "EXTERNAL-CLOCK": lambda obj, elem: setattr(obj, "external_clock", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "INITIAL-REF-OFFSET": lambda obj, elem: setattr(obj, "initial_ref_offset", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "MASTER": lambda obj, elem: setattr(obj, "master", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TIME-MASTER": lambda obj, elem: setattr(obj, "time_master", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "TIME-TRIGGERED": lambda obj, elem: setattr(obj, "time_triggered", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "TX-ENABLE": lambda obj, elem: setattr(obj, "tx_enable", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 

@@ -47,13 +47,13 @@ class DocRevision(ARObject):
     revision_label_p2: Optional[RevisionLabelString]
     state: Optional[NameToken]
     _DESERIALIZE_DISPATCH = {
-        "DATE": lambda obj, elem: setattr(obj, "date", elem.text),
-        "ISSUED-BY": lambda obj, elem: setattr(obj, "issued_by", elem.text),
-        "MODIFICATIONS": lambda obj, elem: obj.modifications.append(Modification.deserialize(elem)),
-        "REVISION-LABEL-STRING": lambda obj, elem: setattr(obj, "revision_label_string", elem.text),
-        "REVISION-LABEL-P1": lambda obj, elem: setattr(obj, "revision_label_p1", elem.text),
-        "REVISION-LABEL-P2": lambda obj, elem: setattr(obj, "revision_label_p2", elem.text),
-        "STATE": lambda obj, elem: setattr(obj, "state", elem.text),
+        "DATE": lambda obj, elem: setattr(obj, "date", SerializationHelper.deserialize_by_tag(elem, "DateTime")),
+        "ISSUED-BY": lambda obj, elem: setattr(obj, "issued_by", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "MODIFICATIONS": lambda obj, elem: obj.modifications.append(SerializationHelper.deserialize_by_tag(elem, "Modification")),
+        "REVISION-LABEL-STRING": lambda obj, elem: setattr(obj, "revision_label_string", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
+        "REVISION-LABEL-P1": lambda obj, elem: setattr(obj, "revision_label_p1", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
+        "REVISION-LABEL-P2": lambda obj, elem: setattr(obj, "revision_label_p2", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
+        "STATE": lambda obj, elem: setattr(obj, "state", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
     }
 
 
@@ -200,51 +200,25 @@ class DocRevision(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DocRevision, cls).deserialize(element)
 
-        # Parse date
-        child = SerializationHelper.find_child_element(element, "DATE")
-        if child is not None:
-            date_value = child.text
-            obj.date = date_value
-
-        # Parse issued_by
-        child = SerializationHelper.find_child_element(element, "ISSUED-BY")
-        if child is not None:
-            issued_by_value = child.text
-            obj.issued_by = issued_by_value
-
-        # Parse modifications (list from container "MODIFICATIONS")
-        obj.modifications = []
-        container = SerializationHelper.find_child_element(element, "MODIFICATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.modifications.append(child_value)
-
-        # Parse revision_label_string
-        child = SerializationHelper.find_child_element(element, "REVISION-LABEL-STRING")
-        if child is not None:
-            revision_label_string_value = child.text
-            obj.revision_label_string = revision_label_string_value
-
-        # Parse revision_label_p1
-        child = SerializationHelper.find_child_element(element, "REVISION-LABEL-P1")
-        if child is not None:
-            revision_label_p1_value = child.text
-            obj.revision_label_p1 = revision_label_p1_value
-
-        # Parse revision_label_p2
-        child = SerializationHelper.find_child_element(element, "REVISION-LABEL-P2")
-        if child is not None:
-            revision_label_p2_value = child.text
-            obj.revision_label_p2 = revision_label_p2_value
-
-        # Parse state
-        child = SerializationHelper.find_child_element(element, "STATE")
-        if child is not None:
-            state_value = child.text
-            obj.state = state_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATE":
+                setattr(obj, "date", SerializationHelper.deserialize_by_tag(child, "DateTime"))
+            elif tag == "ISSUED-BY":
+                setattr(obj, "issued_by", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "MODIFICATIONS":
+                obj.modifications.append(SerializationHelper.deserialize_by_tag(child, "Modification"))
+            elif tag == "REVISION-LABEL-STRING":
+                setattr(obj, "revision_label_string", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
+            elif tag == "REVISION-LABEL-P1":
+                setattr(obj, "revision_label_p1", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
+            elif tag == "REVISION-LABEL-P2":
+                setattr(obj, "revision_label_p2", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
+            elif tag == "STATE":
+                setattr(obj, "state", SerializationHelper.deserialize_by_tag(child, "NameToken"))
 
         return obj
 

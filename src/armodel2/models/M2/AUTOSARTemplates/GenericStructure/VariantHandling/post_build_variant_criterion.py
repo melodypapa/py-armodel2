@@ -103,11 +103,13 @@ class PostBuildVariantCriterion(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PostBuildVariantCriterion, cls).deserialize(element)
 
-        # Parse compu_method_ref
-        child = SerializationHelper.find_child_element(element, "COMPU-METHOD-REF")
-        if child is not None:
-            compu_method_ref_value = ARRef.deserialize(child)
-            obj.compu_method_ref = compu_method_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPU-METHOD-REF":
+                setattr(obj, "compu_method_ref", ARRef.deserialize(child))
 
         return obj
 

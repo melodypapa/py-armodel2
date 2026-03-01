@@ -99,11 +99,13 @@ class EcucConditionFormula(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucConditionFormula, cls).deserialize(element)
 
-        # Parse ecuc_query_ref
-        child = SerializationHelper.find_child_element(element, "ECUC-QUERY-REF")
-        if child is not None:
-            ecuc_query_ref_value = ARRef.deserialize(child)
-            obj.ecuc_query_ref = ecuc_query_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ECUC-QUERY-REF":
+                setattr(obj, "ecuc_query_ref", ARRef.deserialize(child))
 
         return obj
 

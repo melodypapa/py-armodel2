@@ -40,9 +40,9 @@ class PerInstanceMemorySize(ARObject):
     per_instance_memory_memory_ref: Optional[ARRef]
     size: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ALIGNMENT": lambda obj, elem: setattr(obj, "alignment", elem.text),
+        "ALIGNMENT": lambda obj, elem: setattr(obj, "alignment", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PER-INSTANCE-MEMORY-MEMORY-REF": lambda obj, elem: setattr(obj, "per_instance_memory_memory_ref", ARRef.deserialize(elem)),
-        "SIZE": lambda obj, elem: setattr(obj, "size", elem.text),
+        "SIZE": lambda obj, elem: setattr(obj, "size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -133,23 +133,17 @@ class PerInstanceMemorySize(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PerInstanceMemorySize, cls).deserialize(element)
 
-        # Parse alignment
-        child = SerializationHelper.find_child_element(element, "ALIGNMENT")
-        if child is not None:
-            alignment_value = child.text
-            obj.alignment = alignment_value
-
-        # Parse per_instance_memory_memory_ref
-        child = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORY-MEMORY-REF")
-        if child is not None:
-            per_instance_memory_memory_ref_value = ARRef.deserialize(child)
-            obj.per_instance_memory_memory_ref = per_instance_memory_memory_ref_value
-
-        # Parse size
-        child = SerializationHelper.find_child_element(element, "SIZE")
-        if child is not None:
-            size_value = child.text
-            obj.size = size_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALIGNMENT":
+                setattr(obj, "alignment", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PER-INSTANCE-MEMORY-MEMORY-REF":
+                setattr(obj, "per_instance_memory_memory_ref", ARRef.deserialize(child))
+            elif tag == "SIZE":
+                setattr(obj, "size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

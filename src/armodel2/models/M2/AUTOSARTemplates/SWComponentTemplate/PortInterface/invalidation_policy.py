@@ -116,17 +116,15 @@ class InvalidationPolicy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InvalidationPolicy, cls).deserialize(element)
 
-        # Parse data_element_ref
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
-        if child is not None:
-            data_element_ref_value = ARRef.deserialize(child)
-            obj.data_element_ref = data_element_ref_value
-
-        # Parse handle_invalid_enum
-        child = SerializationHelper.find_child_element(element, "HANDLE-INVALID-ENUM")
-        if child is not None:
-            handle_invalid_enum_value = HandleInvalidEnum.deserialize(child)
-            obj.handle_invalid_enum = handle_invalid_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-ELEMENT-REF":
+                setattr(obj, "data_element_ref", ARRef.deserialize(child))
+            elif tag == "HANDLE-INVALID-ENUM":
+                setattr(obj, "handle_invalid_enum", HandleInvalidEnum.deserialize(child))
 
         return obj
 

@@ -97,11 +97,13 @@ class DiagnosticWriteDataByIdentifier(DiagnosticDataByIdentifier):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticWriteDataByIdentifier, cls).deserialize(element)
 
-        # Parse write_class_ref
-        child = SerializationHelper.find_child_element(element, "WRITE-CLASS-REF")
-        if child is not None:
-            write_class_ref_value = ARRef.deserialize(child)
-            obj.write_class_ref = write_class_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "WRITE-CLASS-REF":
+                setattr(obj, "write_class_ref", ARRef.deserialize(child))
 
         return obj
 

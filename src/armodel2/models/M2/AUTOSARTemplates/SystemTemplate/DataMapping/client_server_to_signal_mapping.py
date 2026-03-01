@@ -45,7 +45,7 @@ class ClientServerToSignalMapping(DataMapping):
     return_signal_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CALL-SIGNAL-REF": lambda obj, elem: setattr(obj, "call_signal_ref", ARRef.deserialize(elem)),
-        "CLIENT-SERVER": lambda obj, elem: setattr(obj, "client_server", ClientServerOperation.deserialize(elem)),
+        "CLIENT-SERVER": lambda obj, elem: setattr(obj, "client_server", SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
         "RETURN-SIGNAL-REF": lambda obj, elem: setattr(obj, "return_signal_ref", ARRef.deserialize(elem)),
     }
 
@@ -137,23 +137,17 @@ class ClientServerToSignalMapping(DataMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerToSignalMapping, cls).deserialize(element)
 
-        # Parse call_signal_ref
-        child = SerializationHelper.find_child_element(element, "CALL-SIGNAL-REF")
-        if child is not None:
-            call_signal_ref_value = ARRef.deserialize(child)
-            obj.call_signal_ref = call_signal_ref_value
-
-        # Parse client_server
-        child = SerializationHelper.find_child_element(element, "CLIENT-SERVER")
-        if child is not None:
-            client_server_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
-            obj.client_server = client_server_value
-
-        # Parse return_signal_ref
-        child = SerializationHelper.find_child_element(element, "RETURN-SIGNAL-REF")
-        if child is not None:
-            return_signal_ref_value = ARRef.deserialize(child)
-            obj.return_signal_ref = return_signal_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CALL-SIGNAL-REF":
+                setattr(obj, "call_signal_ref", ARRef.deserialize(child))
+            elif tag == "CLIENT-SERVER":
+                setattr(obj, "client_server", SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
+            elif tag == "RETURN-SIGNAL-REF":
+                setattr(obj, "return_signal_ref", ARRef.deserialize(child))
 
         return obj
 

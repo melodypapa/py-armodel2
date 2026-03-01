@@ -48,11 +48,11 @@ class SwitchFlowMeteringEntry(Identifiable):
     excess: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
         "COLOR-MODE": lambda obj, elem: setattr(obj, "color_mode", FlowMeteringColorModeEnum.deserialize(elem)),
-        "COMMITTED-BURST": lambda obj, elem: setattr(obj, "committed_burst", elem.text),
-        "COMMITTED": lambda obj, elem: setattr(obj, "committed", elem.text),
-        "COUPLING-FLAG": lambda obj, elem: setattr(obj, "coupling_flag", elem.text),
-        "EXCESS-BURST": lambda obj, elem: setattr(obj, "excess_burst", elem.text),
-        "EXCESS": lambda obj, elem: setattr(obj, "excess", elem.text),
+        "COMMITTED-BURST": lambda obj, elem: setattr(obj, "committed_burst", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "COMMITTED": lambda obj, elem: setattr(obj, "committed", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "COUPLING-FLAG": lambda obj, elem: setattr(obj, "coupling_flag", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "EXCESS-BURST": lambda obj, elem: setattr(obj, "excess_burst", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "EXCESS": lambda obj, elem: setattr(obj, "excess", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -188,41 +188,23 @@ class SwitchFlowMeteringEntry(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwitchFlowMeteringEntry, cls).deserialize(element)
 
-        # Parse color_mode
-        child = SerializationHelper.find_child_element(element, "COLOR-MODE")
-        if child is not None:
-            color_mode_value = FlowMeteringColorModeEnum.deserialize(child)
-            obj.color_mode = color_mode_value
-
-        # Parse committed_burst
-        child = SerializationHelper.find_child_element(element, "COMMITTED-BURST")
-        if child is not None:
-            committed_burst_value = child.text
-            obj.committed_burst = committed_burst_value
-
-        # Parse committed
-        child = SerializationHelper.find_child_element(element, "COMMITTED")
-        if child is not None:
-            committed_value = child.text
-            obj.committed = committed_value
-
-        # Parse coupling_flag
-        child = SerializationHelper.find_child_element(element, "COUPLING-FLAG")
-        if child is not None:
-            coupling_flag_value = child.text
-            obj.coupling_flag = coupling_flag_value
-
-        # Parse excess_burst
-        child = SerializationHelper.find_child_element(element, "EXCESS-BURST")
-        if child is not None:
-            excess_burst_value = child.text
-            obj.excess_burst = excess_burst_value
-
-        # Parse excess
-        child = SerializationHelper.find_child_element(element, "EXCESS")
-        if child is not None:
-            excess_value = child.text
-            obj.excess = excess_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COLOR-MODE":
+                setattr(obj, "color_mode", FlowMeteringColorModeEnum.deserialize(child))
+            elif tag == "COMMITTED-BURST":
+                setattr(obj, "committed_burst", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "COMMITTED":
+                setattr(obj, "committed", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "COUPLING-FLAG":
+                setattr(obj, "coupling_flag", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "EXCESS-BURST":
+                setattr(obj, "excess_burst", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "EXCESS":
+                setattr(obj, "excess", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

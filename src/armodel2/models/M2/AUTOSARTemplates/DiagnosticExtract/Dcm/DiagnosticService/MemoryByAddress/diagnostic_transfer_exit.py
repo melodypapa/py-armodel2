@@ -97,11 +97,13 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTransferExit, cls).deserialize(element)
 
-        # Parse transfer_exit_ref
-        child = SerializationHelper.find_child_element(element, "TRANSFER-EXIT-REF")
-        if child is not None:
-            transfer_exit_ref_value = ARRef.deserialize(child)
-            obj.transfer_exit_ref = transfer_exit_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TRANSFER-EXIT-REF":
+                setattr(obj, "transfer_exit_ref", ARRef.deserialize(child))
 
         return obj
 

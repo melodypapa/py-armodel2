@@ -117,17 +117,15 @@ class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticFimAliasEventGroupMapping, cls).deserialize(element)
 
-        # Parse actual_event_ref
-        child = SerializationHelper.find_child_element(element, "ACTUAL-EVENT-REF")
-        if child is not None:
-            actual_event_ref_value = ARRef.deserialize(child)
-            obj.actual_event_ref = actual_event_ref_value
-
-        # Parse alias_event_ref
-        child = SerializationHelper.find_child_element(element, "ALIAS-EVENT-REF")
-        if child is not None:
-            alias_event_ref_value = ARRef.deserialize(child)
-            obj.alias_event_ref = alias_event_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACTUAL-EVENT-REF":
+                setattr(obj, "actual_event_ref", ARRef.deserialize(child))
+            elif tag == "ALIAS-EVENT-REF":
+                setattr(obj, "alias_event_ref", ARRef.deserialize(child))
 
         return obj
 

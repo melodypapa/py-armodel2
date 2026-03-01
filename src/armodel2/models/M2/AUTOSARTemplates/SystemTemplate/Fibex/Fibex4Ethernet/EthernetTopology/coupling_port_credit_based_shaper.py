@@ -40,9 +40,9 @@ class CouplingPortCreditBasedShaper(Identifiable):
     lower_boundary: Optional[PositiveInteger]
     upper_boundary: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "IDLE-SLOPE": lambda obj, elem: setattr(obj, "idle_slope", elem.text),
-        "LOWER-BOUNDARY": lambda obj, elem: setattr(obj, "lower_boundary", elem.text),
-        "UPPER-BOUNDARY": lambda obj, elem: setattr(obj, "upper_boundary", elem.text),
+        "IDLE-SLOPE": lambda obj, elem: setattr(obj, "idle_slope", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "LOWER-BOUNDARY": lambda obj, elem: setattr(obj, "lower_boundary", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "UPPER-BOUNDARY": lambda obj, elem: setattr(obj, "upper_boundary", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -133,23 +133,17 @@ class CouplingPortCreditBasedShaper(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CouplingPortCreditBasedShaper, cls).deserialize(element)
 
-        # Parse idle_slope
-        child = SerializationHelper.find_child_element(element, "IDLE-SLOPE")
-        if child is not None:
-            idle_slope_value = child.text
-            obj.idle_slope = idle_slope_value
-
-        # Parse lower_boundary
-        child = SerializationHelper.find_child_element(element, "LOWER-BOUNDARY")
-        if child is not None:
-            lower_boundary_value = child.text
-            obj.lower_boundary = lower_boundary_value
-
-        # Parse upper_boundary
-        child = SerializationHelper.find_child_element(element, "UPPER-BOUNDARY")
-        if child is not None:
-            upper_boundary_value = child.text
-            obj.upper_boundary = upper_boundary_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "IDLE-SLOPE":
+                setattr(obj, "idle_slope", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "LOWER-BOUNDARY":
+                setattr(obj, "lower_boundary", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "UPPER-BOUNDARY":
+                setattr(obj, "upper_boundary", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

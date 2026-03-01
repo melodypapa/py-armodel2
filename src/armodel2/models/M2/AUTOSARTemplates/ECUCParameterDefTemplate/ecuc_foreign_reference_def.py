@@ -38,7 +38,7 @@ class EcucForeignReferenceDef(EcucAbstractExternalReferenceDef):
 
     destination_type: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "DESTINATION-TYPE": lambda obj, elem: setattr(obj, "destination_type", elem.text),
+        "DESTINATION-TYPE": lambda obj, elem: setattr(obj, "destination_type", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -99,11 +99,13 @@ class EcucForeignReferenceDef(EcucAbstractExternalReferenceDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucForeignReferenceDef, cls).deserialize(element)
 
-        # Parse destination_type
-        child = SerializationHelper.find_child_element(element, "DESTINATION-TYPE")
-        if child is not None:
-            destination_type_value = child.text
-            obj.destination_type = destination_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DESTINATION-TYPE":
+                setattr(obj, "destination_type", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

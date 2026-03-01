@@ -41,9 +41,9 @@ class CryptoServicePrimitive(ARElement):
     algorithm_mode: Optional[String]
     algorithm: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "ALGORITHM-FAMILY": lambda obj, elem: setattr(obj, "algorithm_family", elem.text),
-        "ALGORITHM-MODE": lambda obj, elem: setattr(obj, "algorithm_mode", elem.text),
-        "ALGORITHM": lambda obj, elem: setattr(obj, "algorithm", elem.text),
+        "ALGORITHM-FAMILY": lambda obj, elem: setattr(obj, "algorithm_family", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ALGORITHM-MODE": lambda obj, elem: setattr(obj, "algorithm_mode", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ALGORITHM": lambda obj, elem: setattr(obj, "algorithm", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -134,23 +134,17 @@ class CryptoServicePrimitive(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CryptoServicePrimitive, cls).deserialize(element)
 
-        # Parse algorithm_family
-        child = SerializationHelper.find_child_element(element, "ALGORITHM-FAMILY")
-        if child is not None:
-            algorithm_family_value = child.text
-            obj.algorithm_family = algorithm_family_value
-
-        # Parse algorithm_mode
-        child = SerializationHelper.find_child_element(element, "ALGORITHM-MODE")
-        if child is not None:
-            algorithm_mode_value = child.text
-            obj.algorithm_mode = algorithm_mode_value
-
-        # Parse algorithm
-        child = SerializationHelper.find_child_element(element, "ALGORITHM")
-        if child is not None:
-            algorithm_value = child.text
-            obj.algorithm = algorithm_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALGORITHM-FAMILY":
+                setattr(obj, "algorithm_family", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ALGORITHM-MODE":
+                setattr(obj, "algorithm_mode", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ALGORITHM":
+                setattr(obj, "algorithm", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

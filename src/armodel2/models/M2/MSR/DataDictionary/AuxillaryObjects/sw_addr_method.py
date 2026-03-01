@@ -49,8 +49,8 @@ class SwAddrMethod(ARElement):
     section_type: Optional[MemorySectionType]
     _DESERIALIZE_DISPATCH = {
         "MEMORY": lambda obj, elem: setattr(obj, "memory", MemoryAllocationKeywordPolicyType.deserialize(elem)),
-        "OPTIONS": lambda obj, elem: obj.options.append(elem.text),
-        "SECTION": lambda obj, elem: setattr(obj, "section", elem.text),
+        "OPTIONS": lambda obj, elem: obj.options.append(SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "SECTION": lambda obj, elem: setattr(obj, "section", SerializationHelper.deserialize_by_tag(elem, "SectionInitializationPolicyType")),
         "SECTION-TYPE": lambda obj, elem: setattr(obj, "section_type", MemorySectionType.deserialize(elem)),
     }
 
@@ -160,33 +160,19 @@ class SwAddrMethod(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwAddrMethod, cls).deserialize(element)
 
-        # Parse memory
-        child = SerializationHelper.find_child_element(element, "MEMORY")
-        if child is not None:
-            memory_value = MemoryAllocationKeywordPolicyType.deserialize(child)
-            obj.memory = memory_value
-
-        # Parse options (list from container "OPTIONS")
-        obj.options = []
-        container = SerializationHelper.find_child_element(element, "OPTIONS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (Identifier) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.options.append(child_value)
-
-        # Parse section
-        child = SerializationHelper.find_child_element(element, "SECTION")
-        if child is not None:
-            section_value = child.text
-            obj.section = section_value
-
-        # Parse section_type
-        child = SerializationHelper.find_child_element(element, "SECTION-TYPE")
-        if child is not None:
-            section_type_value = MemorySectionType.deserialize(child)
-            obj.section_type = section_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MEMORY":
+                setattr(obj, "memory", MemoryAllocationKeywordPolicyType.deserialize(child))
+            elif tag == "OPTIONS":
+                obj.options.append(SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "SECTION":
+                setattr(obj, "section", SerializationHelper.deserialize_by_tag(child, "SectionInitializationPolicyType"))
+            elif tag == "SECTION-TYPE":
+                setattr(obj, "section_type", MemorySectionType.deserialize(child))
 
         return obj
 

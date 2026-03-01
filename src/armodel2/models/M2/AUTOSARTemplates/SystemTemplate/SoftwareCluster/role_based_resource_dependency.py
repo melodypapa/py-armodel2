@@ -41,7 +41,7 @@ class RoleBasedResourceDependency(ARObject):
     role: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
         "RESOURCE-REF": lambda obj, elem: setattr(obj, "resource_ref", ARRef.deserialize(elem)),
-        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -117,17 +117,15 @@ class RoleBasedResourceDependency(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RoleBasedResourceDependency, cls).deserialize(element)
 
-        # Parse resource_ref
-        child = SerializationHelper.find_child_element(element, "RESOURCE-REF")
-        if child is not None:
-            resource_ref_value = ARRef.deserialize(child)
-            obj.resource_ref = resource_ref_value
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RESOURCE-REF":
+                setattr(obj, "resource_ref", ARRef.deserialize(child))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

@@ -38,7 +38,7 @@ class EcucDestinationUriDefSet(ARElement):
 
     destination_uri_defs: list[EcucDestinationUriDef]
     _DESERIALIZE_DISPATCH = {
-        "DESTINATION-URI-DEFS": lambda obj, elem: obj.destination_uri_defs.append(EcucDestinationUriDef.deserialize(elem)),
+        "DESTINATION-URI-DEFS": lambda obj, elem: obj.destination_uri_defs.append(SerializationHelper.deserialize_by_tag(elem, "EcucDestinationUriDef")),
     }
 
 
@@ -95,15 +95,13 @@ class EcucDestinationUriDefSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucDestinationUriDefSet, cls).deserialize(element)
 
-        # Parse destination_uri_defs (list from container "DESTINATION-URI-DEFS")
-        obj.destination_uri_defs = []
-        container = SerializationHelper.find_child_element(element, "DESTINATION-URI-DEFS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.destination_uri_defs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DESTINATION-URI-DEFS":
+                obj.destination_uri_defs.append(SerializationHelper.deserialize_by_tag(child, "EcucDestinationUriDef"))
 
         return obj
 

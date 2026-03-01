@@ -117,17 +117,15 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestVehicleInfo, cls).deserialize(element)
 
-        # Parse info_type_ref
-        child = SerializationHelper.find_child_element(element, "INFO-TYPE-REF")
-        if child is not None:
-            info_type_ref_value = ARRef.deserialize(child)
-            obj.info_type_ref = info_type_ref_value
-
-        # Parse request_vehicle_ref
-        child = SerializationHelper.find_child_element(element, "REQUEST-VEHICLE-REF")
-        if child is not None:
-            request_vehicle_ref_value = ARRef.deserialize(child)
-            obj.request_vehicle_ref = request_vehicle_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INFO-TYPE-REF":
+                setattr(obj, "info_type_ref", ARRef.deserialize(child))
+            elif tag == "REQUEST-VEHICLE-REF":
+                setattr(obj, "request_vehicle_ref", ARRef.deserialize(child))
 
         return obj
 

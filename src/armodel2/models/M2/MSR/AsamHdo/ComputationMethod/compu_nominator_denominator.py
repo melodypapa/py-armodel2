@@ -35,7 +35,7 @@ class CompuNominatorDenominator(ARObject):
 
     _vs: list[Numerical]
     _DESERIALIZE_DISPATCH = {
-        "VS": lambda obj, elem: obj._vs.append(elem.text),
+        "VS": lambda obj, elem: obj._vs.append(SerializationHelper.deserialize_by_tag(elem, "Numerical")),
     }
 
 
@@ -106,14 +106,13 @@ class CompuNominatorDenominator(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompuNominatorDenominator, cls).deserialize(element)
 
-        # Parse vs (list of direct "V" children, no container)
-        obj.vs = []
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
         for child in element:
-            child_element_tag = SerializationHelper.strip_namespace(child.tag)
-            if child_element_tag == "V":                # Extract primitive value (Numerical) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.vs.append(child_value)
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "VS":
+                obj._vs.append(SerializationHelper.deserialize_by_tag(child, "Numerical"))
 
         return obj
 

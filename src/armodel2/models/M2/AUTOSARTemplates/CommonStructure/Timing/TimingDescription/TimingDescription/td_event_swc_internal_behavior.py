@@ -45,7 +45,7 @@ class TDEventSwcInternalBehavior(TDEventSwc):
     variable_access_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "RUNNABLE-REF": lambda obj, elem: setattr(obj, "runnable_ref", ARRef.deserialize(elem)),
-        "TD-EVENT-SWC-BEHAVIOR-TYPE": lambda obj, elem: setattr(obj, "td_event_swc_behavior_type", any (TDEventSwcInternal).deserialize(elem)),
+        "TD-EVENT-SWC-BEHAVIOR-TYPE": lambda obj, elem: setattr(obj, "td_event_swc_behavior_type", SerializationHelper.deserialize_by_tag(elem, "any (TDEventSwcInternal)")),
         "VARIABLE-ACCESS-REF": lambda obj, elem: setattr(obj, "variable_access_ref", ARRef.deserialize(elem)),
     }
 
@@ -137,23 +137,17 @@ class TDEventSwcInternalBehavior(TDEventSwc):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventSwcInternalBehavior, cls).deserialize(element)
 
-        # Parse runnable_ref
-        child = SerializationHelper.find_child_element(element, "RUNNABLE-REF")
-        if child is not None:
-            runnable_ref_value = ARRef.deserialize(child)
-            obj.runnable_ref = runnable_ref_value
-
-        # Parse td_event_swc_behavior_type
-        child = SerializationHelper.find_child_element(element, "TD-EVENT-SWC-BEHAVIOR-TYPE")
-        if child is not None:
-            td_event_swc_behavior_type_value = child.text
-            obj.td_event_swc_behavior_type = td_event_swc_behavior_type_value
-
-        # Parse variable_access_ref
-        child = SerializationHelper.find_child_element(element, "VARIABLE-ACCESS-REF")
-        if child is not None:
-            variable_access_ref_value = ARRef.deserialize(child)
-            obj.variable_access_ref = variable_access_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RUNNABLE-REF":
+                setattr(obj, "runnable_ref", ARRef.deserialize(child))
+            elif tag == "TD-EVENT-SWC-BEHAVIOR-TYPE":
+                setattr(obj, "td_event_swc_behavior_type", SerializationHelper.deserialize_by_tag(child, "any (TDEventSwcInternal)"))
+            elif tag == "VARIABLE-ACCESS-REF":
+                setattr(obj, "variable_access_ref", ARRef.deserialize(child))
 
         return obj
 

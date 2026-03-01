@@ -42,8 +42,8 @@ class IncludedDataTypeSet(ARObject):
     data_type_refs: list[ARRef]
     literal_prefix: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "DATA-TYPES": lambda obj, elem: obj.data_type_refs.append(ARRef.deserialize(elem)),
-        "LITERAL-PREFIX": lambda obj, elem: setattr(obj, "literal_prefix", elem.text),
+        "DATA-TYPES": ("_POLYMORPHIC_LIST", "data_type_refs", ["AbstractImplementationDataType", "ApplicationDataType"]),
+        "LITERAL-PREFIX": lambda obj, elem: setattr(obj, "literal_prefix", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -122,27 +122,21 @@ class IncludedDataTypeSet(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IncludedDataTypeSet, cls).deserialize(element)
 
-        # Parse data_type_refs (list from container "DATA-TYPE-REFS")
-        obj.data_type_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-TYPE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_type_refs.append(child_value)
-
-        # Parse literal_prefix
-        child = SerializationHelper.find_child_element(element, "LITERAL-PREFIX")
-        if child is not None:
-            literal_prefix_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.literal_prefix = literal_prefix_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-TYPES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-IMPLEMENTATION-DATA-TYPE":
+                        obj.data_type_refs.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractImplementationDataType"))
+                    elif concrete_tag == "APPLICATION-DATA-TYPE":
+                        obj.data_type_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ApplicationDataType"))
+            elif tag == "LITERAL-PREFIX":
+                setattr(obj, "literal_prefix", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

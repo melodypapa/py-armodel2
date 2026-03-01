@@ -49,8 +49,8 @@ class Note(Paginateable):
     note_text: DocumentationBlock
     note_type: Optional[NoteTypeEnum]
     _DESERIALIZE_DISPATCH = {
-        "LABEL": lambda obj, elem: setattr(obj, "label", MultilanguageLongName.deserialize(elem)),
-        "NOTE-TEXT": lambda obj, elem: setattr(obj, "note_text", DocumentationBlock.deserialize(elem)),
+        "LABEL": lambda obj, elem: setattr(obj, "label", SerializationHelper.deserialize_by_tag(elem, "MultilanguageLongName")),
+        "NOTE-TEXT": lambda obj, elem: setattr(obj, "note_text", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
         "NOTE-TYPE": lambda obj, elem: setattr(obj, "note_type", NoteTypeEnum.deserialize(elem)),
     }
 
@@ -142,23 +142,17 @@ class Note(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Note, cls).deserialize(element)
 
-        # Parse label
-        child = SerializationHelper.find_child_element(element, "LABEL")
-        if child is not None:
-            label_value = SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName")
-            obj.label = label_value
-
-        # Parse note_text
-        child = SerializationHelper.find_child_element(element, "NOTE-TEXT")
-        if child is not None:
-            note_text_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.note_text = note_text_value
-
-        # Parse note_type
-        child = SerializationHelper.find_child_element(element, "NOTE-TYPE")
-        if child is not None:
-            note_type_value = NoteTypeEnum.deserialize(child)
-            obj.note_type = note_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LABEL":
+                setattr(obj, "label", SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName"))
+            elif tag == "NOTE-TEXT":
+                setattr(obj, "note_text", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "NOTE-TYPE":
+                setattr(obj, "note_type", NoteTypeEnum.deserialize(child))
 
         return obj
 

@@ -40,8 +40,8 @@ class FlexrayCommunicationConnector(CommunicationConnector):
     nm_ready_sleep: Optional[Float]
     wake_up: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "NM-READY-SLEEP": lambda obj, elem: setattr(obj, "nm_ready_sleep", elem.text),
-        "WAKE-UP": lambda obj, elem: setattr(obj, "wake_up", elem.text),
+        "NM-READY-SLEEP": lambda obj, elem: setattr(obj, "nm_ready_sleep", SerializationHelper.deserialize_by_tag(elem, "Float")),
+        "WAKE-UP": lambda obj, elem: setattr(obj, "wake_up", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -117,17 +117,15 @@ class FlexrayCommunicationConnector(CommunicationConnector):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayCommunicationConnector, cls).deserialize(element)
 
-        # Parse nm_ready_sleep
-        child = SerializationHelper.find_child_element(element, "NM-READY-SLEEP")
-        if child is not None:
-            nm_ready_sleep_value = child.text
-            obj.nm_ready_sleep = nm_ready_sleep_value
-
-        # Parse wake_up
-        child = SerializationHelper.find_child_element(element, "WAKE-UP")
-        if child is not None:
-            wake_up_value = child.text
-            obj.wake_up = wake_up_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "NM-READY-SLEEP":
+                setattr(obj, "nm_ready_sleep", SerializationHelper.deserialize_by_tag(child, "Float"))
+            elif tag == "WAKE-UP":
+                setattr(obj, "wake_up", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

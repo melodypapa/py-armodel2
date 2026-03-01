@@ -39,7 +39,7 @@ class AutosarVariableInstance(Identifiable):
 
     variable_instance_instance_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "VARIABLE-INSTANCE-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "variable_instance_instance_ref", ARRef.deserialize(elem)),
+        "VARIABLE-INSTANCE-INSTANCE-REF-REF": ("_POLYMORPHIC", "variable_instance_instance_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
     }
 
 
@@ -100,11 +100,19 @@ class AutosarVariableInstance(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AutosarVariableInstance, cls).deserialize(element)
 
-        # Parse variable_instance_instance_ref
-        child = SerializationHelper.find_child_element(element, "VARIABLE-INSTANCE-INSTANCE-REF-REF")
-        if child is not None:
-            variable_instance_instance_ref_value = ARRef.deserialize(child)
-            obj.variable_instance_instance_ref = variable_instance_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "VARIABLE-INSTANCE-INSTANCE-REF-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
+                        setattr(obj, "variable_instance_instance_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
+                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
+                        setattr(obj, "variable_instance_instance_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
 
         return obj
 

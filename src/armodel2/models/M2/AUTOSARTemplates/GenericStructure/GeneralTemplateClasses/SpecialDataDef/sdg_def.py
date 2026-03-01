@@ -39,7 +39,7 @@ class SdgDef(ARElement):
 
     sdg_classes: list[SdgClass]
     _DESERIALIZE_DISPATCH = {
-        "SDG-CLASSES": lambda obj, elem: obj.sdg_classes.append(SdgClass.deserialize(elem)),
+        "SDG-CLASSES": lambda obj, elem: obj.sdg_classes.append(SerializationHelper.deserialize_by_tag(elem, "SdgClass")),
     }
 
 
@@ -96,15 +96,13 @@ class SdgDef(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SdgDef, cls).deserialize(element)
 
-        # Parse sdg_classes (list from container "SDG-CLASSES")
-        obj.sdg_classes = []
-        container = SerializationHelper.find_child_element(element, "SDG-CLASSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sdg_classes.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SDG-CLASSES":
+                obj.sdg_classes.append(SerializationHelper.deserialize_by_tag(child, "SdgClass"))
 
         return obj
 

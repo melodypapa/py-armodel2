@@ -40,8 +40,8 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
     trouble_code_ref: Optional[ARRef]
     trouble_code_uds_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TROUBLE-CODE-REF": lambda obj, elem: setattr(obj, "trouble_code_ref", ARRef.deserialize(elem)),
-        "TROUBLE-CODE-UDS-REF": lambda obj, elem: setattr(obj, "trouble_code_uds_ref", ARRef.deserialize(elem)),
+        "TROUBLE-CODE-REF": ("_POLYMORPHIC", "trouble_code_ref", ["DiagnosticTroubleCodeJ1939", "DiagnosticTroubleCodeObd", "DiagnosticTroubleCodeUds"]),
+        "TROUBLE-CODE-UDS-REF": ("_POLYMORPHIC", "trouble_code_uds_ref", ["DiagnosticTroubleCodeJ1939", "DiagnosticTroubleCodeObd", "DiagnosticTroubleCodeUds"]),
     }
 
 
@@ -117,17 +117,31 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTroubleCodeUdsToTroubleCodeObdMapping, cls).deserialize(element)
 
-        # Parse trouble_code_ref
-        child = SerializationHelper.find_child_element(element, "TROUBLE-CODE-REF")
-        if child is not None:
-            trouble_code_ref_value = ARRef.deserialize(child)
-            obj.trouble_code_ref = trouble_code_ref_value
-
-        # Parse trouble_code_uds_ref
-        child = SerializationHelper.find_child_element(element, "TROUBLE-CODE-UDS-REF")
-        if child is not None:
-            trouble_code_uds_ref_value = ARRef.deserialize(child)
-            obj.trouble_code_uds_ref = trouble_code_uds_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TROUBLE-CODE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-J1939":
+                        setattr(obj, "trouble_code_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeJ1939"))
+                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-OBD":
+                        setattr(obj, "trouble_code_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeObd"))
+                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-UDS":
+                        setattr(obj, "trouble_code_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeUds"))
+            elif tag == "TROUBLE-CODE-UDS-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-J1939":
+                        setattr(obj, "trouble_code_uds_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeJ1939"))
+                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-OBD":
+                        setattr(obj, "trouble_code_uds_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeObd"))
+                    elif concrete_tag == "DIAGNOSTIC-TROUBLE-CODE-UDS":
+                        setattr(obj, "trouble_code_uds_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticTroubleCodeUds"))
 
         return obj
 

@@ -35,8 +35,8 @@ class Modification(ARObject):
     change: MultiLanguageOverviewParagraph
     reason: Optional[MultiLanguageOverviewParagraph]
     _DESERIALIZE_DISPATCH = {
-        "CHANGE": lambda obj, elem: setattr(obj, "change", MultiLanguageOverviewParagraph.deserialize(elem)),
-        "REASON": lambda obj, elem: setattr(obj, "reason", MultiLanguageOverviewParagraph.deserialize(elem)),
+        "CHANGE": lambda obj, elem: setattr(obj, "change", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageOverviewParagraph")),
+        "REASON": lambda obj, elem: setattr(obj, "reason", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageOverviewParagraph")),
     }
 
 
@@ -112,17 +112,15 @@ class Modification(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Modification, cls).deserialize(element)
 
-        # Parse change
-        child = SerializationHelper.find_child_element(element, "CHANGE")
-        if child is not None:
-            change_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
-            obj.change = change_value
-
-        # Parse reason
-        child = SerializationHelper.find_child_element(element, "REASON")
-        if child is not None:
-            reason_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
-            obj.reason = reason_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CHANGE":
+                setattr(obj, "change", SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph"))
+            elif tag == "REASON":
+                setattr(obj, "reason", SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph"))
 
         return obj
 

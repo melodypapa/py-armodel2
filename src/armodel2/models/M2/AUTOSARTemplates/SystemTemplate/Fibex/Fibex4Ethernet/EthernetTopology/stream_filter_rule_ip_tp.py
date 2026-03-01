@@ -40,10 +40,10 @@ class StreamFilterRuleIpTp(ARObject):
     source: Optional[StreamFilterIpv6Address]
     source_ports: list[StreamFilterPortRange]
     _DESERIALIZE_DISPATCH = {
-        "DESTINATION": lambda obj, elem: setattr(obj, "destination", StreamFilterIpv6Address.deserialize(elem)),
-        "DESTINATION-PORTS": lambda obj, elem: obj.destination_ports.append(StreamFilterPortRange.deserialize(elem)),
-        "SOURCE": lambda obj, elem: setattr(obj, "source", StreamFilterIpv6Address.deserialize(elem)),
-        "SOURCE-PORTS": lambda obj, elem: obj.source_ports.append(StreamFilterPortRange.deserialize(elem)),
+        "DESTINATION": lambda obj, elem: setattr(obj, "destination", SerializationHelper.deserialize_by_tag(elem, "StreamFilterIpv6Address")),
+        "DESTINATION-PORTS": lambda obj, elem: obj.destination_ports.append(SerializationHelper.deserialize_by_tag(elem, "StreamFilterPortRange")),
+        "SOURCE": lambda obj, elem: setattr(obj, "source", SerializationHelper.deserialize_by_tag(elem, "StreamFilterIpv6Address")),
+        "SOURCE-PORTS": lambda obj, elem: obj.source_ports.append(SerializationHelper.deserialize_by_tag(elem, "StreamFilterPortRange")),
     }
 
 
@@ -141,37 +141,19 @@ class StreamFilterRuleIpTp(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StreamFilterRuleIpTp, cls).deserialize(element)
 
-        # Parse destination
-        child = SerializationHelper.find_child_element(element, "DESTINATION")
-        if child is not None:
-            destination_value = SerializationHelper.deserialize_by_tag(child, "StreamFilterIpv6Address")
-            obj.destination = destination_value
-
-        # Parse destination_ports (list from container "DESTINATION-PORTS")
-        obj.destination_ports = []
-        container = SerializationHelper.find_child_element(element, "DESTINATION-PORTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.destination_ports.append(child_value)
-
-        # Parse source
-        child = SerializationHelper.find_child_element(element, "SOURCE")
-        if child is not None:
-            source_value = SerializationHelper.deserialize_by_tag(child, "StreamFilterIpv6Address")
-            obj.source = source_value
-
-        # Parse source_ports (list from container "SOURCE-PORTS")
-        obj.source_ports = []
-        container = SerializationHelper.find_child_element(element, "SOURCE-PORTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.source_ports.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DESTINATION":
+                setattr(obj, "destination", SerializationHelper.deserialize_by_tag(child, "StreamFilterIpv6Address"))
+            elif tag == "DESTINATION-PORTS":
+                obj.destination_ports.append(SerializationHelper.deserialize_by_tag(child, "StreamFilterPortRange"))
+            elif tag == "SOURCE":
+                setattr(obj, "source", SerializationHelper.deserialize_by_tag(child, "StreamFilterIpv6Address"))
+            elif tag == "SOURCE-PORTS":
+                obj.source_ports.append(SerializationHelper.deserialize_by_tag(child, "StreamFilterPortRange"))
 
         return obj
 

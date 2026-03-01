@@ -43,8 +43,8 @@ class InterpolationRoutine(ARObject):
     short_label: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
         "INTERPOLATION-REF": lambda obj, elem: setattr(obj, "interpolation_ref", ARRef.deserialize(elem)),
-        "IS-DEFAULT": lambda obj, elem: setattr(obj, "is_default", elem.text),
-        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "IS-DEFAULT": lambda obj, elem: setattr(obj, "is_default", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -135,23 +135,17 @@ class InterpolationRoutine(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InterpolationRoutine, cls).deserialize(element)
 
-        # Parse interpolation_ref
-        child = SerializationHelper.find_child_element(element, "INTERPOLATION-REF")
-        if child is not None:
-            interpolation_ref_value = ARRef.deserialize(child)
-            obj.interpolation_ref = interpolation_ref_value
-
-        # Parse is_default
-        child = SerializationHelper.find_child_element(element, "IS-DEFAULT")
-        if child is not None:
-            is_default_value = child.text
-            obj.is_default = is_default_value
-
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INTERPOLATION-REF":
+                setattr(obj, "interpolation_ref", ARRef.deserialize(child))
+            elif tag == "IS-DEFAULT":
+                setattr(obj, "is_default", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

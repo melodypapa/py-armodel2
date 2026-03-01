@@ -61,11 +61,11 @@ class NmNode(Identifiable, ABC):
     tx_nm_pdu_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CONTROLLER-REF": lambda obj, elem: setattr(obj, "controller_ref", ARRef.deserialize(elem)),
-        "NM-COORD-CLUSTER": lambda obj, elem: setattr(obj, "nm_coord_cluster", elem.text),
+        "NM-COORD-CLUSTER": lambda obj, elem: setattr(obj, "nm_coord_cluster", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "NM-COORDINATOR-ROLE": lambda obj, elem: setattr(obj, "nm_coordinator_role", NmCoordinatorRoleEnum.deserialize(elem)),
         "NM-IF-ECU-REF": lambda obj, elem: setattr(obj, "nm_if_ecu_ref", ARRef.deserialize(elem)),
-        "NM-NODE-ID": lambda obj, elem: setattr(obj, "nm_node_id", elem.text),
-        "NM-PASSIVE": lambda obj, elem: setattr(obj, "nm_passive", elem.text),
+        "NM-NODE-ID": lambda obj, elem: setattr(obj, "nm_node_id", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "NM-PASSIVE": lambda obj, elem: setattr(obj, "nm_passive", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "RX-NM-PDUS": lambda obj, elem: obj.rx_nm_pdu_refs.append(ARRef.deserialize(elem)),
         "TX-NM-PDUS": lambda obj, elem: obj.tx_nm_pdu_refs.append(ARRef.deserialize(elem)),
     }
@@ -239,73 +239,27 @@ class NmNode(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NmNode, cls).deserialize(element)
 
-        # Parse controller_ref
-        child = SerializationHelper.find_child_element(element, "CONTROLLER-REF")
-        if child is not None:
-            controller_ref_value = ARRef.deserialize(child)
-            obj.controller_ref = controller_ref_value
-
-        # Parse nm_coord_cluster
-        child = SerializationHelper.find_child_element(element, "NM-COORD-CLUSTER")
-        if child is not None:
-            nm_coord_cluster_value = child.text
-            obj.nm_coord_cluster = nm_coord_cluster_value
-
-        # Parse nm_coordinator_role
-        child = SerializationHelper.find_child_element(element, "NM-COORDINATOR-ROLE")
-        if child is not None:
-            nm_coordinator_role_value = NmCoordinatorRoleEnum.deserialize(child)
-            obj.nm_coordinator_role = nm_coordinator_role_value
-
-        # Parse nm_if_ecu_ref
-        child = SerializationHelper.find_child_element(element, "NM-IF-ECU-REF")
-        if child is not None:
-            nm_if_ecu_ref_value = ARRef.deserialize(child)
-            obj.nm_if_ecu_ref = nm_if_ecu_ref_value
-
-        # Parse nm_node_id
-        child = SerializationHelper.find_child_element(element, "NM-NODE-ID")
-        if child is not None:
-            nm_node_id_value = child.text
-            obj.nm_node_id = nm_node_id_value
-
-        # Parse nm_passive
-        child = SerializationHelper.find_child_element(element, "NM-PASSIVE")
-        if child is not None:
-            nm_passive_value = child.text
-            obj.nm_passive = nm_passive_value
-
-        # Parse rx_nm_pdu_refs (list from container "RX-NM-PDU-REFS")
-        obj.rx_nm_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "RX-NM-PDU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.rx_nm_pdu_refs.append(child_value)
-
-        # Parse tx_nm_pdu_refs (list from container "TX-NM-PDU-REFS")
-        obj.tx_nm_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "TX-NM-PDU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tx_nm_pdu_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONTROLLER-REF":
+                setattr(obj, "controller_ref", ARRef.deserialize(child))
+            elif tag == "NM-COORD-CLUSTER":
+                setattr(obj, "nm_coord_cluster", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "NM-COORDINATOR-ROLE":
+                setattr(obj, "nm_coordinator_role", NmCoordinatorRoleEnum.deserialize(child))
+            elif tag == "NM-IF-ECU-REF":
+                setattr(obj, "nm_if_ecu_ref", ARRef.deserialize(child))
+            elif tag == "NM-NODE-ID":
+                setattr(obj, "nm_node_id", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "NM-PASSIVE":
+                setattr(obj, "nm_passive", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RX-NM-PDUS":
+                obj.rx_nm_pdu_refs.append(ARRef.deserialize(child))
+            elif tag == "TX-NM-PDUS":
+                obj.tx_nm_pdu_refs.append(ARRef.deserialize(child))
 
         return obj
 

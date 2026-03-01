@@ -50,11 +50,11 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
     uses_monitor: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
         "DEFERRING-FIDS": lambda obj, elem: obj.deferring_fid_refs.append(ARRef.deserialize(elem)),
-        "DIAG-EVENT-DEBOUNCE": lambda obj, elem: setattr(obj, "diag_event_debounce", any (DiagEventDebounce).deserialize(elem)),
+        "DIAG-EVENT-DEBOUNCE": lambda obj, elem: setattr(obj, "diag_event_debounce", SerializationHelper.deserialize_by_tag(elem, "any (DiagEventDebounce)")),
         "INHIBITING-FID-REF": lambda obj, elem: setattr(obj, "inhibiting_fid_ref", ARRef.deserialize(elem)),
         "INHIBITINGS": lambda obj, elem: obj.inhibiting_refs.append(ARRef.deserialize(elem)),
-        "PRESTORED": lambda obj, elem: setattr(obj, "prestored", elem.text),
-        "USES-MONITOR": lambda obj, elem: setattr(obj, "uses_monitor", elem.text),
+        "PRESTORED": lambda obj, elem: setattr(obj, "prestored", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "USES-MONITOR": lambda obj, elem: setattr(obj, "uses_monitor", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -196,61 +196,23 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventNeeds, cls).deserialize(element)
 
-        # Parse deferring_fid_refs (list from container "DEFERRING-FID-REFS")
-        obj.deferring_fid_refs = []
-        container = SerializationHelper.find_child_element(element, "DEFERRING-FID-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.deferring_fid_refs.append(child_value)
-
-        # Parse diag_event_debounce
-        child = SerializationHelper.find_child_element(element, "DIAG-EVENT-DEBOUNCE")
-        if child is not None:
-            diag_event_debounce_value = child.text
-            obj.diag_event_debounce = diag_event_debounce_value
-
-        # Parse inhibiting_fid_ref
-        child = SerializationHelper.find_child_element(element, "INHIBITING-FID-REF")
-        if child is not None:
-            inhibiting_fid_ref_value = ARRef.deserialize(child)
-            obj.inhibiting_fid_ref = inhibiting_fid_ref_value
-
-        # Parse inhibiting_refs (list from container "INHIBITING-REFS")
-        obj.inhibiting_refs = []
-        container = SerializationHelper.find_child_element(element, "INHIBITING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.inhibiting_refs.append(child_value)
-
-        # Parse prestored
-        child = SerializationHelper.find_child_element(element, "PRESTORED")
-        if child is not None:
-            prestored_value = child.text
-            obj.prestored = prestored_value
-
-        # Parse uses_monitor
-        child = SerializationHelper.find_child_element(element, "USES-MONITOR")
-        if child is not None:
-            uses_monitor_value = child.text
-            obj.uses_monitor = uses_monitor_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEFERRING-FIDS":
+                obj.deferring_fid_refs.append(ARRef.deserialize(child))
+            elif tag == "DIAG-EVENT-DEBOUNCE":
+                setattr(obj, "diag_event_debounce", SerializationHelper.deserialize_by_tag(child, "any (DiagEventDebounce)"))
+            elif tag == "INHIBITING-FID-REF":
+                setattr(obj, "inhibiting_fid_ref", ARRef.deserialize(child))
+            elif tag == "INHIBITINGS":
+                obj.inhibiting_refs.append(ARRef.deserialize(child))
+            elif tag == "PRESTORED":
+                setattr(obj, "prestored", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "USES-MONITOR":
+                setattr(obj, "uses_monitor", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

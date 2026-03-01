@@ -46,7 +46,7 @@ class LinScheduleTable(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "RESUME-POSITION": lambda obj, elem: setattr(obj, "resume_position", ResumePosition.deserialize(elem)),
         "RUN-MODE": lambda obj, elem: setattr(obj, "run_mode", RunMode.deserialize(elem)),
-        "TABLE-ENTRIES": lambda obj, elem: obj.table_entries.append(ScheduleTableEntry.deserialize(elem)),
+        "TABLE-ENTRIES": ("_POLYMORPHIC_LIST", "table_entries", ["ApplicationEntry", "FreeFormatEntry", "LinConfigurationEntry"]),
     }
 
 
@@ -133,27 +133,25 @@ class LinScheduleTable(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinScheduleTable, cls).deserialize(element)
 
-        # Parse resume_position
-        child = SerializationHelper.find_child_element(element, "RESUME-POSITION")
-        if child is not None:
-            resume_position_value = ResumePosition.deserialize(child)
-            obj.resume_position = resume_position_value
-
-        # Parse run_mode
-        child = SerializationHelper.find_child_element(element, "RUN-MODE")
-        if child is not None:
-            run_mode_value = RunMode.deserialize(child)
-            obj.run_mode = run_mode_value
-
-        # Parse table_entries (list from container "TABLE-ENTRIES")
-        obj.table_entries = []
-        container = SerializationHelper.find_child_element(element, "TABLE-ENTRIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.table_entries.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RESUME-POSITION":
+                setattr(obj, "resume_position", ResumePosition.deserialize(child))
+            elif tag == "RUN-MODE":
+                setattr(obj, "run_mode", RunMode.deserialize(child))
+            elif tag == "TABLE-ENTRIES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-ENTRY":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(child[0], "ApplicationEntry"))
+                    elif concrete_tag == "FREE-FORMAT-ENTRY":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(child[0], "FreeFormatEntry"))
+                    elif concrete_tag == "LIN-CONFIGURATION-ENTRY":
+                        obj.table_entries.append(SerializationHelper.deserialize_by_tag(child[0], "LinConfigurationEntry"))
 
         return obj
 

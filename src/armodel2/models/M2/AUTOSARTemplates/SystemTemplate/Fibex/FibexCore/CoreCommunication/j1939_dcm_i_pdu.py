@@ -40,8 +40,8 @@ class J1939DcmIPdu(IPdu):
     diagnostic: Optional[PositiveInteger]
     message_type: Any
     _DESERIALIZE_DISPATCH = {
-        "DIAGNOSTIC": lambda obj, elem: setattr(obj, "diagnostic", elem.text),
-        "MESSAGE-TYPE": lambda obj, elem: setattr(obj, "message_type", any (e.g).deserialize(elem)),
+        "DIAGNOSTIC": lambda obj, elem: setattr(obj, "diagnostic", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MESSAGE-TYPE": lambda obj, elem: setattr(obj, "message_type", SerializationHelper.deserialize_by_tag(elem, "any (e.g)")),
     }
 
 
@@ -117,17 +117,15 @@ class J1939DcmIPdu(IPdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939DcmIPdu, cls).deserialize(element)
 
-        # Parse diagnostic
-        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC")
-        if child is not None:
-            diagnostic_value = child.text
-            obj.diagnostic = diagnostic_value
-
-        # Parse message_type
-        child = SerializationHelper.find_child_element(element, "MESSAGE-TYPE")
-        if child is not None:
-            message_type_value = child.text
-            obj.message_type = message_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DIAGNOSTIC":
+                setattr(obj, "diagnostic", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MESSAGE-TYPE":
+                setattr(obj, "message_type", SerializationHelper.deserialize_by_tag(child, "any (e.g)"))
 
         return obj
 

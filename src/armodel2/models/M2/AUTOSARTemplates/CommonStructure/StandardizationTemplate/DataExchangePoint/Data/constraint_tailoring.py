@@ -100,11 +100,13 @@ class ConstraintTailoring(RestrictionWithSeverity):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConstraintTailoring, cls).deserialize(element)
 
-        # Parse constraint_ref
-        child = SerializationHelper.find_child_element(element, "CONSTRAINT-REF")
-        if child is not None:
-            constraint_ref_value = ARRef.deserialize(child)
-            obj.constraint_ref = constraint_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONSTRAINT-REF":
+                setattr(obj, "constraint_ref", ARRef.deserialize(child))
 
         return obj
 

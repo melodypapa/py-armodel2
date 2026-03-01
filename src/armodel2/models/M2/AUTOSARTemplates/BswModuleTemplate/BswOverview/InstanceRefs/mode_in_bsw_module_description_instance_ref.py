@@ -136,23 +136,17 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeInBswModuleDescriptionInstanceRef, cls).deserialize(element)
 
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse context_mode_group_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-MODE-GROUP-REF")
-        if child is not None:
-            context_mode_group_ref_value = ARRef.deserialize(child)
-            obj.context_mode_group_ref = context_mode_group_ref_value
-
-        # Parse target_mode_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-MODE-REF")
-        if child is not None:
-            target_mode_ref_value = ARRef.deserialize(child)
-            obj.target_mode_ref = target_mode_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BASE-REF":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-MODE-GROUP-REF":
+                setattr(obj, "context_mode_group_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-MODE-REF":
+                setattr(obj, "target_mode_ref", ARRef.deserialize(child))
 
         return obj
 

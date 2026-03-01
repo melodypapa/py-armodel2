@@ -38,7 +38,7 @@ class SomeipSdServerEventGroupTimingConfig(ARElement):
 
     request: Optional[RequestResponseDelay]
     _DESERIALIZE_DISPATCH = {
-        "REQUEST": lambda obj, elem: setattr(obj, "request", RequestResponseDelay.deserialize(elem)),
+        "REQUEST": lambda obj, elem: setattr(obj, "request", SerializationHelper.deserialize_by_tag(elem, "RequestResponseDelay")),
     }
 
 
@@ -99,11 +99,13 @@ class SomeipSdServerEventGroupTimingConfig(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SomeipSdServerEventGroupTimingConfig, cls).deserialize(element)
 
-        # Parse request
-        child = SerializationHelper.find_child_element(element, "REQUEST")
-        if child is not None:
-            request_value = SerializationHelper.deserialize_by_tag(child, "RequestResponseDelay")
-            obj.request = request_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "REQUEST":
+                setattr(obj, "request", SerializationHelper.deserialize_by_tag(child, "RequestResponseDelay"))
 
         return obj
 

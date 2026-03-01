@@ -42,8 +42,8 @@ class LinPhysicalChannel(PhysicalChannel):
     bus_idle_timeout: Optional[TimeValue]
     schedule_tables: list[LinScheduleTable]
     _DESERIALIZE_DISPATCH = {
-        "BUS-IDLE-TIMEOUT": lambda obj, elem: setattr(obj, "bus_idle_timeout", elem.text),
-        "SCHEDULE-TABLES": lambda obj, elem: obj.schedule_tables.append(LinScheduleTable.deserialize(elem)),
+        "BUS-IDLE-TIMEOUT": lambda obj, elem: setattr(obj, "bus_idle_timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "SCHEDULE-TABLES": lambda obj, elem: obj.schedule_tables.append(SerializationHelper.deserialize_by_tag(elem, "LinScheduleTable")),
     }
 
 
@@ -115,21 +115,15 @@ class LinPhysicalChannel(PhysicalChannel):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinPhysicalChannel, cls).deserialize(element)
 
-        # Parse bus_idle_timeout
-        child = SerializationHelper.find_child_element(element, "BUS-IDLE-TIMEOUT")
-        if child is not None:
-            bus_idle_timeout_value = child.text
-            obj.bus_idle_timeout = bus_idle_timeout_value
-
-        # Parse schedule_tables (list from container "SCHEDULE-TABLES")
-        obj.schedule_tables = []
-        container = SerializationHelper.find_child_element(element, "SCHEDULE-TABLES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.schedule_tables.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BUS-IDLE-TIMEOUT":
+                setattr(obj, "bus_idle_timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "SCHEDULE-TABLES":
+                obj.schedule_tables.append(SerializationHelper.deserialize_by_tag(child, "LinScheduleTable"))
 
         return obj
 

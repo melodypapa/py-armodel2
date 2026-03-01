@@ -48,7 +48,7 @@ class TDEventBswModeDeclaration(TDEventBsw):
         "ENTRY-MODE-REF": lambda obj, elem: setattr(obj, "entry_mode_ref", ARRef.deserialize(elem)),
         "EXIT-MODE-REF": lambda obj, elem: setattr(obj, "exit_mode_ref", ARRef.deserialize(elem)),
         "MODE-REF": lambda obj, elem: setattr(obj, "mode_ref", ARRef.deserialize(elem)),
-        "TD-EVENT-BSW-DECLARATION-TYPE": lambda obj, elem: setattr(obj, "td_event_bsw_declaration_type", any (TDEventBswMode).deserialize(elem)),
+        "TD-EVENT-BSW-DECLARATION-TYPE": lambda obj, elem: setattr(obj, "td_event_bsw_declaration_type", SerializationHelper.deserialize_by_tag(elem, "any (TDEventBswMode)")),
     }
 
 
@@ -154,29 +154,19 @@ class TDEventBswModeDeclaration(TDEventBsw):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventBswModeDeclaration, cls).deserialize(element)
 
-        # Parse entry_mode_ref
-        child = SerializationHelper.find_child_element(element, "ENTRY-MODE-REF")
-        if child is not None:
-            entry_mode_ref_value = ARRef.deserialize(child)
-            obj.entry_mode_ref = entry_mode_ref_value
-
-        # Parse exit_mode_ref
-        child = SerializationHelper.find_child_element(element, "EXIT-MODE-REF")
-        if child is not None:
-            exit_mode_ref_value = ARRef.deserialize(child)
-            obj.exit_mode_ref = exit_mode_ref_value
-
-        # Parse mode_ref
-        child = SerializationHelper.find_child_element(element, "MODE-REF")
-        if child is not None:
-            mode_ref_value = ARRef.deserialize(child)
-            obj.mode_ref = mode_ref_value
-
-        # Parse td_event_bsw_declaration_type
-        child = SerializationHelper.find_child_element(element, "TD-EVENT-BSW-DECLARATION-TYPE")
-        if child is not None:
-            td_event_bsw_declaration_type_value = child.text
-            obj.td_event_bsw_declaration_type = td_event_bsw_declaration_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ENTRY-MODE-REF":
+                setattr(obj, "entry_mode_ref", ARRef.deserialize(child))
+            elif tag == "EXIT-MODE-REF":
+                setattr(obj, "exit_mode_ref", ARRef.deserialize(child))
+            elif tag == "MODE-REF":
+                setattr(obj, "mode_ref", ARRef.deserialize(child))
+            elif tag == "TD-EVENT-BSW-DECLARATION-TYPE":
+                setattr(obj, "td_event_bsw_declaration_type", SerializationHelper.deserialize_by_tag(child, "any (TDEventBswMode)"))
 
         return obj
 

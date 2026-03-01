@@ -38,8 +38,8 @@ class FlexrayAbsolutelyScheduledTiming(ARObject):
     communication_cycle_cycle: Optional[CommunicationCycle]
     slot_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CYCLE-CYCLE": lambda obj, elem: setattr(obj, "communication_cycle_cycle", CommunicationCycle.deserialize(elem)),
-        "SLOT-ID": lambda obj, elem: setattr(obj, "slot_id", elem.text),
+        "COMMUNICATION-CYCLE-CYCLE": ("_POLYMORPHIC", "communication_cycle_cycle", ["CycleCounter", "CycleRepetition"]),
+        "SLOT-ID": lambda obj, elem: setattr(obj, "slot_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -115,17 +115,21 @@ class FlexrayAbsolutelyScheduledTiming(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayAbsolutelyScheduledTiming, cls).deserialize(element)
 
-        # Parse communication_cycle_cycle
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CYCLE-CYCLE")
-        if child is not None:
-            communication_cycle_cycle_value = SerializationHelper.deserialize_by_tag(child, "CommunicationCycle")
-            obj.communication_cycle_cycle = communication_cycle_cycle_value
-
-        # Parse slot_id
-        child = SerializationHelper.find_child_element(element, "SLOT-ID")
-        if child is not None:
-            slot_id_value = child.text
-            obj.slot_id = slot_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMUNICATION-CYCLE-CYCLE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CYCLE-COUNTER":
+                        setattr(obj, "communication_cycle_cycle", SerializationHelper.deserialize_by_tag(child[0], "CycleCounter"))
+                    elif concrete_tag == "CYCLE-REPETITION":
+                        setattr(obj, "communication_cycle_cycle", SerializationHelper.deserialize_by_tag(child[0], "CycleRepetition"))
+            elif tag == "SLOT-ID":
+                setattr(obj, "slot_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -38,8 +38,8 @@ class DhcpServerConfiguration(ARObject):
     ipv4_dhcp_server: Optional[Ipv4DhcpServerConfiguration]
     ipv6_dhcp_server: Optional[Ipv6DhcpServerConfiguration]
     _DESERIALIZE_DISPATCH = {
-        "IPV4-DHCP-SERVER": lambda obj, elem: setattr(obj, "ipv4_dhcp_server", Ipv4DhcpServerConfiguration.deserialize(elem)),
-        "IPV6-DHCP-SERVER": lambda obj, elem: setattr(obj, "ipv6_dhcp_server", Ipv6DhcpServerConfiguration.deserialize(elem)),
+        "IPV4-DHCP-SERVER": lambda obj, elem: setattr(obj, "ipv4_dhcp_server", SerializationHelper.deserialize_by_tag(elem, "Ipv4DhcpServerConfiguration")),
+        "IPV6-DHCP-SERVER": lambda obj, elem: setattr(obj, "ipv6_dhcp_server", SerializationHelper.deserialize_by_tag(elem, "Ipv6DhcpServerConfiguration")),
     }
 
 
@@ -115,17 +115,15 @@ class DhcpServerConfiguration(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DhcpServerConfiguration, cls).deserialize(element)
 
-        # Parse ipv4_dhcp_server
-        child = SerializationHelper.find_child_element(element, "IPV4-DHCP-SERVER")
-        if child is not None:
-            ipv4_dhcp_server_value = SerializationHelper.deserialize_by_tag(child, "Ipv4DhcpServerConfiguration")
-            obj.ipv4_dhcp_server = ipv4_dhcp_server_value
-
-        # Parse ipv6_dhcp_server
-        child = SerializationHelper.find_child_element(element, "IPV6-DHCP-SERVER")
-        if child is not None:
-            ipv6_dhcp_server_value = SerializationHelper.deserialize_by_tag(child, "Ipv6DhcpServerConfiguration")
-            obj.ipv6_dhcp_server = ipv6_dhcp_server_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "IPV4-DHCP-SERVER":
+                setattr(obj, "ipv4_dhcp_server", SerializationHelper.deserialize_by_tag(child, "Ipv4DhcpServerConfiguration"))
+            elif tag == "IPV6-DHCP-SERVER":
+                setattr(obj, "ipv6_dhcp_server", SerializationHelper.deserialize_by_tag(child, "Ipv6DhcpServerConfiguration"))
 
         return obj
 

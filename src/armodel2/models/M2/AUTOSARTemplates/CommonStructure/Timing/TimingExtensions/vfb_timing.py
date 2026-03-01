@@ -40,7 +40,7 @@ class VfbTiming(TimingExtension):
 
     component_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "COMPONENT-REF": lambda obj, elem: setattr(obj, "component_ref", ARRef.deserialize(elem)),
+        "COMPONENT-REF": ("_POLYMORPHIC", "component_ref", ["AtomicSwComponentType", "CompositionSwComponentType", "ParameterSwComponentType"]),
     }
 
 
@@ -101,11 +101,21 @@ class VfbTiming(TimingExtension):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(VfbTiming, cls).deserialize(element)
 
-        # Parse component_ref
-        child = SerializationHelper.find_child_element(element, "COMPONENT-REF")
-        if child is not None:
-            component_ref_value = ARRef.deserialize(child)
-            obj.component_ref = component_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMPONENT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATOMIC-SW-COMPONENT-TYPE":
+                        setattr(obj, "component_ref", SerializationHelper.deserialize_by_tag(child[0], "AtomicSwComponentType"))
+                    elif concrete_tag == "COMPOSITION-SW-COMPONENT-TYPE":
+                        setattr(obj, "component_ref", SerializationHelper.deserialize_by_tag(child[0], "CompositionSwComponentType"))
+                    elif concrete_tag == "PARAMETER-SW-COMPONENT-TYPE":
+                        setattr(obj, "component_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterSwComponentType"))
 
         return obj
 

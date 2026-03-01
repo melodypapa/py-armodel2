@@ -48,10 +48,10 @@ class LinCommunicationConnector(CommunicationConnector):
     lin_ordereds: list[LinOrderedConfigurableFrame]
     schedule: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "INITIAL-NAD": lambda obj, elem: setattr(obj, "initial_nad", elem.text),
-        "LIN-CONFIGURABLE-FRAMES": lambda obj, elem: obj.lin_configurable_frames.append(LinConfigurableFrame.deserialize(elem)),
-        "LIN-ORDEREDS": lambda obj, elem: obj.lin_ordereds.append(LinOrderedConfigurableFrame.deserialize(elem)),
-        "SCHEDULE": lambda obj, elem: setattr(obj, "schedule", elem.text),
+        "INITIAL-NAD": lambda obj, elem: setattr(obj, "initial_nad", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "LIN-CONFIGURABLE-FRAMES": lambda obj, elem: obj.lin_configurable_frames.append(SerializationHelper.deserialize_by_tag(elem, "LinConfigurableFrame")),
+        "LIN-ORDEREDS": lambda obj, elem: obj.lin_ordereds.append(SerializationHelper.deserialize_by_tag(elem, "LinOrderedConfigurableFrame")),
+        "SCHEDULE": lambda obj, elem: setattr(obj, "schedule", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -149,37 +149,19 @@ class LinCommunicationConnector(CommunicationConnector):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinCommunicationConnector, cls).deserialize(element)
 
-        # Parse initial_nad
-        child = SerializationHelper.find_child_element(element, "INITIAL-NAD")
-        if child is not None:
-            initial_nad_value = child.text
-            obj.initial_nad = initial_nad_value
-
-        # Parse lin_configurable_frames (list from container "LIN-CONFIGURABLE-FRAMES")
-        obj.lin_configurable_frames = []
-        container = SerializationHelper.find_child_element(element, "LIN-CONFIGURABLE-FRAMES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.lin_configurable_frames.append(child_value)
-
-        # Parse lin_ordereds (list from container "LIN-ORDEREDS")
-        obj.lin_ordereds = []
-        container = SerializationHelper.find_child_element(element, "LIN-ORDEREDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.lin_ordereds.append(child_value)
-
-        # Parse schedule
-        child = SerializationHelper.find_child_element(element, "SCHEDULE")
-        if child is not None:
-            schedule_value = child.text
-            obj.schedule = schedule_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INITIAL-NAD":
+                setattr(obj, "initial_nad", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "LIN-CONFIGURABLE-FRAMES":
+                obj.lin_configurable_frames.append(SerializationHelper.deserialize_by_tag(child, "LinConfigurableFrame"))
+            elif tag == "LIN-ORDEREDS":
+                obj.lin_ordereds.append(SerializationHelper.deserialize_by_tag(child, "LinOrderedConfigurableFrame"))
+            elif tag == "SCHEDULE":
+                setattr(obj, "schedule", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

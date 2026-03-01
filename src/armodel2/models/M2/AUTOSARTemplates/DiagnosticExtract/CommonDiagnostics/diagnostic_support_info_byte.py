@@ -35,8 +35,8 @@ class DiagnosticSupportInfoByte(ARObject):
     position: Optional[PositiveInteger]
     size: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "POSITION": lambda obj, elem: setattr(obj, "position", elem.text),
-        "SIZE": lambda obj, elem: setattr(obj, "size", elem.text),
+        "POSITION": lambda obj, elem: setattr(obj, "position", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SIZE": lambda obj, elem: setattr(obj, "size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -112,17 +112,15 @@ class DiagnosticSupportInfoByte(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSupportInfoByte, cls).deserialize(element)
 
-        # Parse position
-        child = SerializationHelper.find_child_element(element, "POSITION")
-        if child is not None:
-            position_value = child.text
-            obj.position = position_value
-
-        # Parse size
-        child = SerializationHelper.find_child_element(element, "SIZE")
-        if child is not None:
-            size_value = child.text
-            obj.size = size_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "POSITION":
+                setattr(obj, "position", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SIZE":
+                setattr(obj, "size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

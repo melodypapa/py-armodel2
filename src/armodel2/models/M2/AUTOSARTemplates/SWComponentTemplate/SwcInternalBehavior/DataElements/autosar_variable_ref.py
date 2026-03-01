@@ -40,7 +40,7 @@ class AutosarVariableRef(ARObject):
     autosar_variable: Optional[Any]
     local_variable_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "AUTOSAR-VARIABLE": lambda obj, elem: setattr(obj, "autosar_variable", any (ArVariableIn).deserialize(elem)),
+        "AUTOSAR-VARIABLE": lambda obj, elem: setattr(obj, "autosar_variable", SerializationHelper.deserialize_by_tag(elem, "any (ArVariableIn)")),
         "LOCAL-VARIABLE-REF": lambda obj, elem: setattr(obj, "local_variable_ref", ARRef.deserialize(elem)),
     }
 
@@ -117,17 +117,15 @@ class AutosarVariableRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AutosarVariableRef, cls).deserialize(element)
 
-        # Parse autosar_variable
-        child = SerializationHelper.find_child_element(element, "AUTOSAR-VARIABLE")
-        if child is not None:
-            autosar_variable_value = child.text
-            obj.autosar_variable = autosar_variable_value
-
-        # Parse local_variable_ref
-        child = SerializationHelper.find_child_element(element, "LOCAL-VARIABLE-REF")
-        if child is not None:
-            local_variable_ref_value = ARRef.deserialize(child)
-            obj.local_variable_ref = local_variable_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AUTOSAR-VARIABLE":
+                setattr(obj, "autosar_variable", SerializationHelper.deserialize_by_tag(child, "any (ArVariableIn)"))
+            elif tag == "LOCAL-VARIABLE-REF":
+                setattr(obj, "local_variable_ref", ARRef.deserialize(child))
 
         return obj
 

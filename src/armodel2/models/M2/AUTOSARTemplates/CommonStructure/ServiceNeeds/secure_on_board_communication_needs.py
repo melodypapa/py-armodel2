@@ -99,11 +99,13 @@ class SecureOnBoardCommunicationNeeds(ServiceNeeds):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecureOnBoardCommunicationNeeds, cls).deserialize(element)
 
-        # Parse verification
-        child = SerializationHelper.find_child_element(element, "VERIFICATION")
-        if child is not None:
-            verification_value = VerificationStatusIndicationModeEnum.deserialize(child)
-            obj.verification = verification_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "VERIFICATION":
+                setattr(obj, "verification", VerificationStatusIndicationModeEnum.deserialize(child))
 
         return obj
 

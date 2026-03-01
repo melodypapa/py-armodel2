@@ -61,16 +61,16 @@ class NmEcu(Identifiable):
     nm_state_change: Optional[Boolean]
     nm_user_data_enabled: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "BUS-DEPENDENT-NM-ECUS": lambda obj, elem: obj.bus_dependent_nm_ecus.append(BusspecificNmEcu.deserialize(elem)),
+        "BUS-DEPENDENT-NM-ECUS": ("_POLYMORPHIC_LIST", "bus_dependent_nm_ecus", ["CanNmEcu", "FlexrayNmEcu", "J1939NmEcu", "UdpNmEcu"]),
         "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
-        "NM-BUS-SYNCHRONIZATION": lambda obj, elem: setattr(obj, "nm_bus_synchronization", any (BooleanEnabled).deserialize(elem)),
-        "NM-COM-CONTROL-ENABLED": lambda obj, elem: setattr(obj, "nm_com_control_enabled", elem.text),
-        "NM-COORDINATOR": lambda obj, elem: setattr(obj, "nm_coordinator", NmCoordinator.deserialize(elem)),
-        "NM-CYCLETIME": lambda obj, elem: setattr(obj, "nm_cycletime", elem.text),
-        "NM-PDU-RX-INDICATION": lambda obj, elem: setattr(obj, "nm_pdu_rx_indication", any (BooleanEnabled).deserialize(elem)),
-        "NM-REMOTE-SLEEP-IND": lambda obj, elem: setattr(obj, "nm_remote_sleep_ind", any (BooleanEnabled).deserialize(elem)),
-        "NM-STATE-CHANGE": lambda obj, elem: setattr(obj, "nm_state_change", elem.text),
-        "NM-USER-DATA-ENABLED": lambda obj, elem: setattr(obj, "nm_user_data_enabled", elem.text),
+        "NM-BUS-SYNCHRONIZATION": lambda obj, elem: setattr(obj, "nm_bus_synchronization", SerializationHelper.deserialize_by_tag(elem, "any (BooleanEnabled)")),
+        "NM-COM-CONTROL-ENABLED": lambda obj, elem: setattr(obj, "nm_com_control_enabled", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-COORDINATOR": lambda obj, elem: setattr(obj, "nm_coordinator", SerializationHelper.deserialize_by_tag(elem, "NmCoordinator")),
+        "NM-CYCLETIME": lambda obj, elem: setattr(obj, "nm_cycletime", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "NM-PDU-RX-INDICATION": lambda obj, elem: setattr(obj, "nm_pdu_rx_indication", SerializationHelper.deserialize_by_tag(elem, "any (BooleanEnabled)")),
+        "NM-REMOTE-SLEEP-IND": lambda obj, elem: setattr(obj, "nm_remote_sleep_ind", SerializationHelper.deserialize_by_tag(elem, "any (BooleanEnabled)")),
+        "NM-STATE-CHANGE": lambda obj, elem: setattr(obj, "nm_state_change", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-USER-DATA-ENABLED": lambda obj, elem: setattr(obj, "nm_user_data_enabled", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -262,69 +262,41 @@ class NmEcu(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NmEcu, cls).deserialize(element)
 
-        # Parse bus_dependent_nm_ecus (list from container "BUS-DEPENDENT-NM-ECUS")
-        obj.bus_dependent_nm_ecus = []
-        container = SerializationHelper.find_child_element(element, "BUS-DEPENDENT-NM-ECUS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.bus_dependent_nm_ecus.append(child_value)
-
-        # Parse ecu_instance_ref
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
-        if child is not None:
-            ecu_instance_ref_value = ARRef.deserialize(child)
-            obj.ecu_instance_ref = ecu_instance_ref_value
-
-        # Parse nm_bus_synchronization
-        child = SerializationHelper.find_child_element(element, "NM-BUS-SYNCHRONIZATION")
-        if child is not None:
-            nm_bus_synchronization_value = child.text
-            obj.nm_bus_synchronization = nm_bus_synchronization_value
-
-        # Parse nm_com_control_enabled
-        child = SerializationHelper.find_child_element(element, "NM-COM-CONTROL-ENABLED")
-        if child is not None:
-            nm_com_control_enabled_value = child.text
-            obj.nm_com_control_enabled = nm_com_control_enabled_value
-
-        # Parse nm_coordinator
-        child = SerializationHelper.find_child_element(element, "NM-COORDINATOR")
-        if child is not None:
-            nm_coordinator_value = SerializationHelper.deserialize_by_tag(child, "NmCoordinator")
-            obj.nm_coordinator = nm_coordinator_value
-
-        # Parse nm_cycletime
-        child = SerializationHelper.find_child_element(element, "NM-CYCLETIME")
-        if child is not None:
-            nm_cycletime_value = child.text
-            obj.nm_cycletime = nm_cycletime_value
-
-        # Parse nm_pdu_rx_indication
-        child = SerializationHelper.find_child_element(element, "NM-PDU-RX-INDICATION")
-        if child is not None:
-            nm_pdu_rx_indication_value = child.text
-            obj.nm_pdu_rx_indication = nm_pdu_rx_indication_value
-
-        # Parse nm_remote_sleep_ind
-        child = SerializationHelper.find_child_element(element, "NM-REMOTE-SLEEP-IND")
-        if child is not None:
-            nm_remote_sleep_ind_value = child.text
-            obj.nm_remote_sleep_ind = nm_remote_sleep_ind_value
-
-        # Parse nm_state_change
-        child = SerializationHelper.find_child_element(element, "NM-STATE-CHANGE")
-        if child is not None:
-            nm_state_change_value = child.text
-            obj.nm_state_change = nm_state_change_value
-
-        # Parse nm_user_data_enabled
-        child = SerializationHelper.find_child_element(element, "NM-USER-DATA-ENABLED")
-        if child is not None:
-            nm_user_data_enabled_value = child.text
-            obj.nm_user_data_enabled = nm_user_data_enabled_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BUS-DEPENDENT-NM-ECUS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CAN-NM-ECU":
+                        obj.bus_dependent_nm_ecus.append(SerializationHelper.deserialize_by_tag(child[0], "CanNmEcu"))
+                    elif concrete_tag == "FLEXRAY-NM-ECU":
+                        obj.bus_dependent_nm_ecus.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayNmEcu"))
+                    elif concrete_tag == "J1939-NM-ECU":
+                        obj.bus_dependent_nm_ecus.append(SerializationHelper.deserialize_by_tag(child[0], "J1939NmEcu"))
+                    elif concrete_tag == "UDP-NM-ECU":
+                        obj.bus_dependent_nm_ecus.append(SerializationHelper.deserialize_by_tag(child[0], "UdpNmEcu"))
+            elif tag == "ECU-INSTANCE-REF":
+                setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
+            elif tag == "NM-BUS-SYNCHRONIZATION":
+                setattr(obj, "nm_bus_synchronization", SerializationHelper.deserialize_by_tag(child, "any (BooleanEnabled)"))
+            elif tag == "NM-COM-CONTROL-ENABLED":
+                setattr(obj, "nm_com_control_enabled", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-COORDINATOR":
+                setattr(obj, "nm_coordinator", SerializationHelper.deserialize_by_tag(child, "NmCoordinator"))
+            elif tag == "NM-CYCLETIME":
+                setattr(obj, "nm_cycletime", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "NM-PDU-RX-INDICATION":
+                setattr(obj, "nm_pdu_rx_indication", SerializationHelper.deserialize_by_tag(child, "any (BooleanEnabled)"))
+            elif tag == "NM-REMOTE-SLEEP-IND":
+                setattr(obj, "nm_remote_sleep_ind", SerializationHelper.deserialize_by_tag(child, "any (BooleanEnabled)"))
+            elif tag == "NM-STATE-CHANGE":
+                setattr(obj, "nm_state_change", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-USER-DATA-ENABLED":
+                setattr(obj, "nm_user_data_enabled", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

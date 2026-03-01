@@ -40,9 +40,9 @@ class BinaryManifestResource(Identifiable, ABC):
     resource_ref: Optional[Any]
     resource_guard: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "GLOBAL-RESOURCE": lambda obj, elem: setattr(obj, "global_resource", elem.text),
+        "GLOBAL-RESOURCE": lambda obj, elem: setattr(obj, "global_resource", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "RESOURCE-REF": lambda obj, elem: setattr(obj, "resource_ref", ARRef.deserialize(elem)),
-        "RESOURCE-GUARD": lambda obj, elem: setattr(obj, "resource_guard", elem.text),
+        "RESOURCE-GUARD": lambda obj, elem: setattr(obj, "resource_guard", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -133,23 +133,17 @@ class BinaryManifestResource(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BinaryManifestResource, cls).deserialize(element)
 
-        # Parse global_resource
-        child = SerializationHelper.find_child_element(element, "GLOBAL-RESOURCE")
-        if child is not None:
-            global_resource_value = child.text
-            obj.global_resource = global_resource_value
-
-        # Parse resource_ref
-        child = SerializationHelper.find_child_element(element, "RESOURCE-REF")
-        if child is not None:
-            resource_ref_value = ARRef.deserialize(child)
-            obj.resource_ref = resource_ref_value
-
-        # Parse resource_guard
-        child = SerializationHelper.find_child_element(element, "RESOURCE-GUARD")
-        if child is not None:
-            resource_guard_value = child.text
-            obj.resource_guard = resource_guard_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "GLOBAL-RESOURCE":
+                setattr(obj, "global_resource", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "RESOURCE-REF":
+                setattr(obj, "resource_ref", ARRef.deserialize(child))
+            elif tag == "RESOURCE-GUARD":
+                setattr(obj, "resource_guard", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

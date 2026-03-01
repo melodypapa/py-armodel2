@@ -42,9 +42,9 @@ class Ipv4Props(ARObject):
     auto_ip_props: Optional[Ipv4AutoIpProps]
     fragmentation: Optional[Ipv4FragmentationProps]
     _DESERIALIZE_DISPATCH = {
-        "ARP-PROPS": lambda obj, elem: setattr(obj, "arp_props", Ipv4ArpProps.deserialize(elem)),
-        "AUTO-IP-PROPS": lambda obj, elem: setattr(obj, "auto_ip_props", Ipv4AutoIpProps.deserialize(elem)),
-        "FRAGMENTATION": lambda obj, elem: setattr(obj, "fragmentation", Ipv4FragmentationProps.deserialize(elem)),
+        "ARP-PROPS": lambda obj, elem: setattr(obj, "arp_props", SerializationHelper.deserialize_by_tag(elem, "Ipv4ArpProps")),
+        "AUTO-IP-PROPS": lambda obj, elem: setattr(obj, "auto_ip_props", SerializationHelper.deserialize_by_tag(elem, "Ipv4AutoIpProps")),
+        "FRAGMENTATION": lambda obj, elem: setattr(obj, "fragmentation", SerializationHelper.deserialize_by_tag(elem, "Ipv4FragmentationProps")),
     }
 
 
@@ -135,23 +135,17 @@ class Ipv4Props(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ipv4Props, cls).deserialize(element)
 
-        # Parse arp_props
-        child = SerializationHelper.find_child_element(element, "ARP-PROPS")
-        if child is not None:
-            arp_props_value = SerializationHelper.deserialize_by_tag(child, "Ipv4ArpProps")
-            obj.arp_props = arp_props_value
-
-        # Parse auto_ip_props
-        child = SerializationHelper.find_child_element(element, "AUTO-IP-PROPS")
-        if child is not None:
-            auto_ip_props_value = SerializationHelper.deserialize_by_tag(child, "Ipv4AutoIpProps")
-            obj.auto_ip_props = auto_ip_props_value
-
-        # Parse fragmentation
-        child = SerializationHelper.find_child_element(element, "FRAGMENTATION")
-        if child is not None:
-            fragmentation_value = SerializationHelper.deserialize_by_tag(child, "Ipv4FragmentationProps")
-            obj.fragmentation = fragmentation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ARP-PROPS":
+                setattr(obj, "arp_props", SerializationHelper.deserialize_by_tag(child, "Ipv4ArpProps"))
+            elif tag == "AUTO-IP-PROPS":
+                setattr(obj, "auto_ip_props", SerializationHelper.deserialize_by_tag(child, "Ipv4AutoIpProps"))
+            elif tag == "FRAGMENTATION":
+                setattr(obj, "fragmentation", SerializationHelper.deserialize_by_tag(child, "Ipv4FragmentationProps"))
 
         return obj
 

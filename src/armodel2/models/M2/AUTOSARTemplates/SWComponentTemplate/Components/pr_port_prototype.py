@@ -41,7 +41,7 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
 
     provided: Optional[PortInterface]
     _DESERIALIZE_DISPATCH = {
-        "PROVIDED": lambda obj, elem: setattr(obj, "provided", PortInterface.deserialize(elem)),
+        "PROVIDED": ("_POLYMORPHIC", "provided", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
     }
 
 
@@ -102,11 +102,23 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PRPortPrototype, cls).deserialize(element)
 
-        # Parse provided
-        child = SerializationHelper.find_child_element(element, "PROVIDED")
-        if child is not None:
-            provided_value = SerializationHelper.deserialize_by_tag(child, "PortInterface")
-            obj.provided = provided_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PROVIDED":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CLIENT-SERVER-INTERFACE":
+                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "ClientServerInterface"))
+                    elif concrete_tag == "DATA-INTERFACE":
+                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "DataInterface"))
+                    elif concrete_tag == "MODE-SWITCH-INTERFACE":
+                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchInterface"))
+                    elif concrete_tag == "TRIGGER-INTERFACE":
+                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "TriggerInterface"))
 
         return obj
 

@@ -48,8 +48,8 @@ class VariationPointProxy(Identifiable):
     implementation_ref: Optional[ARRef]
     post_build_value_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "CONDITION-ACCESS": lambda obj, elem: setattr(obj, "condition_access", ConditionByFormula.deserialize(elem)),
-        "IMPLEMENTATION-REF": lambda obj, elem: setattr(obj, "implementation_ref", ARRef.deserialize(elem)),
+        "CONDITION-ACCESS": lambda obj, elem: setattr(obj, "condition_access", SerializationHelper.deserialize_by_tag(elem, "ConditionByFormula")),
+        "IMPLEMENTATION-REF": ("_POLYMORPHIC", "implementation_ref", ["ImplementationDataType"]),
         "POST-BUILD-VALUE-REF": lambda obj, elem: setattr(obj, "post_build_value_ref", ARRef.deserialize(elem)),
     }
 
@@ -141,23 +141,21 @@ class VariationPointProxy(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(VariationPointProxy, cls).deserialize(element)
 
-        # Parse condition_access
-        child = SerializationHelper.find_child_element(element, "CONDITION-ACCESS")
-        if child is not None:
-            condition_access_value = SerializationHelper.deserialize_by_tag(child, "ConditionByFormula")
-            obj.condition_access = condition_access_value
-
-        # Parse implementation_ref
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REF")
-        if child is not None:
-            implementation_ref_value = ARRef.deserialize(child)
-            obj.implementation_ref = implementation_ref_value
-
-        # Parse post_build_value_ref
-        child = SerializationHelper.find_child_element(element, "POST-BUILD-VALUE-REF")
-        if child is not None:
-            post_build_value_ref_value = ARRef.deserialize(child)
-            obj.post_build_value_ref = post_build_value_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONDITION-ACCESS":
+                setattr(obj, "condition_access", SerializationHelper.deserialize_by_tag(child, "ConditionByFormula"))
+            elif tag == "IMPLEMENTATION-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "IMPLEMENTATION-DATA-TYPE":
+                        setattr(obj, "implementation_ref", SerializationHelper.deserialize_by_tag(child[0], "ImplementationDataType"))
+            elif tag == "POST-BUILD-VALUE-REF":
+                setattr(obj, "post_build_value_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -59,28 +59,28 @@ class Area(ARObject):
     tabindex: Optional[String]
     title: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "ACCESSKEY": lambda obj, elem: setattr(obj, "accesskey", elem.text),
-        "ALT": lambda obj, elem: setattr(obj, "alt", elem.text),
-        "CLASS": lambda obj, elem: setattr(obj, "class_", elem.text),
-        "COORDS": lambda obj, elem: setattr(obj, "coords", elem.text),
-        "HREF": lambda obj, elem: setattr(obj, "href", elem.text),
+        "ACCESSKEY": lambda obj, elem: setattr(obj, "accesskey", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ALT": lambda obj, elem: setattr(obj, "alt", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "CLASS": lambda obj, elem: setattr(obj, "class_", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "COORDS": lambda obj, elem: setattr(obj, "coords", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "HREF": lambda obj, elem: setattr(obj, "href", SerializationHelper.deserialize_by_tag(elem, "String")),
         "NOHREF": lambda obj, elem: setattr(obj, "nohref", AreaEnumNohref.deserialize(elem)),
-        "ONBLUR": lambda obj, elem: setattr(obj, "onblur", elem.text),
-        "ONCLICK": lambda obj, elem: setattr(obj, "onclick", elem.text),
-        "ONDBLCLICK": lambda obj, elem: setattr(obj, "ondblclick", elem.text),
-        "ONFOCUS": lambda obj, elem: setattr(obj, "onfocus", elem.text),
-        "ONKEYDOWN": lambda obj, elem: setattr(obj, "onkeydown", elem.text),
-        "ONKEYPRESS": lambda obj, elem: setattr(obj, "onkeypress", elem.text),
-        "ONKEYUP": lambda obj, elem: setattr(obj, "onkeyup", elem.text),
-        "ONMOUSEDOWN": lambda obj, elem: setattr(obj, "onmousedown", elem.text),
-        "ONMOUSEMOVE": lambda obj, elem: setattr(obj, "onmousemove", elem.text),
-        "ONMOUSEOUT": lambda obj, elem: setattr(obj, "onmouseout", elem.text),
-        "ONMOUSEOVER": lambda obj, elem: setattr(obj, "onmouseover", elem.text),
-        "ONMOUSEUP": lambda obj, elem: setattr(obj, "onmouseup", elem.text),
+        "ONBLUR": lambda obj, elem: setattr(obj, "onblur", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ONCLICK": lambda obj, elem: setattr(obj, "onclick", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ONDBLCLICK": lambda obj, elem: setattr(obj, "ondblclick", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ONFOCUS": lambda obj, elem: setattr(obj, "onfocus", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ONKEYDOWN": lambda obj, elem: setattr(obj, "onkeydown", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ONKEYPRESS": lambda obj, elem: setattr(obj, "onkeypress", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ONKEYUP": lambda obj, elem: setattr(obj, "onkeyup", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ONMOUSEDOWN": lambda obj, elem: setattr(obj, "onmousedown", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ONMOUSEMOVE": lambda obj, elem: setattr(obj, "onmousemove", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ONMOUSEOUT": lambda obj, elem: setattr(obj, "onmouseout", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ONMOUSEOVER": lambda obj, elem: setattr(obj, "onmouseover", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ONMOUSEUP": lambda obj, elem: setattr(obj, "onmouseup", SerializationHelper.deserialize_by_tag(elem, "String")),
         "SHAPE": lambda obj, elem: setattr(obj, "shape", AreaEnumShape.deserialize(elem)),
-        "STYLE": lambda obj, elem: setattr(obj, "style", elem.text),
-        "TABINDEX": lambda obj, elem: setattr(obj, "tabindex", elem.text),
-        "TITLE": lambda obj, elem: setattr(obj, "title", elem.text),
+        "STYLE": lambda obj, elem: setattr(obj, "style", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "TABINDEX": lambda obj, elem: setattr(obj, "tabindex", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "TITLE": lambda obj, elem: setattr(obj, "title", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -456,137 +456,55 @@ class Area(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Area, cls).deserialize(element)
 
-        # Parse accesskey
-        child = SerializationHelper.find_child_element(element, "ACCESSKEY")
-        if child is not None:
-            accesskey_value = child.text
-            obj.accesskey = accesskey_value
-
-        # Parse alt
-        child = SerializationHelper.find_child_element(element, "ALT")
-        if child is not None:
-            alt_value = child.text
-            obj.alt = alt_value
-
-        # Parse class_
-        child = SerializationHelper.find_child_element(element, "CLASS")
-        if child is not None:
-            class__value = child.text
-            obj.class_ = class__value
-
-        # Parse coords
-        child = SerializationHelper.find_child_element(element, "COORDS")
-        if child is not None:
-            coords_value = child.text
-            obj.coords = coords_value
-
-        # Parse href
-        child = SerializationHelper.find_child_element(element, "HREF")
-        if child is not None:
-            href_value = child.text
-            obj.href = href_value
-
-        # Parse nohref
-        child = SerializationHelper.find_child_element(element, "NOHREF")
-        if child is not None:
-            nohref_value = AreaEnumNohref.deserialize(child)
-            obj.nohref = nohref_value
-
-        # Parse onblur
-        child = SerializationHelper.find_child_element(element, "ONBLUR")
-        if child is not None:
-            onblur_value = child.text
-            obj.onblur = onblur_value
-
-        # Parse onclick
-        child = SerializationHelper.find_child_element(element, "ONCLICK")
-        if child is not None:
-            onclick_value = child.text
-            obj.onclick = onclick_value
-
-        # Parse ondblclick
-        child = SerializationHelper.find_child_element(element, "ONDBLCLICK")
-        if child is not None:
-            ondblclick_value = child.text
-            obj.ondblclick = ondblclick_value
-
-        # Parse onfocus
-        child = SerializationHelper.find_child_element(element, "ONFOCUS")
-        if child is not None:
-            onfocus_value = child.text
-            obj.onfocus = onfocus_value
-
-        # Parse onkeydown
-        child = SerializationHelper.find_child_element(element, "ONKEYDOWN")
-        if child is not None:
-            onkeydown_value = child.text
-            obj.onkeydown = onkeydown_value
-
-        # Parse onkeypress
-        child = SerializationHelper.find_child_element(element, "ONKEYPRESS")
-        if child is not None:
-            onkeypress_value = child.text
-            obj.onkeypress = onkeypress_value
-
-        # Parse onkeyup
-        child = SerializationHelper.find_child_element(element, "ONKEYUP")
-        if child is not None:
-            onkeyup_value = child.text
-            obj.onkeyup = onkeyup_value
-
-        # Parse onmousedown
-        child = SerializationHelper.find_child_element(element, "ONMOUSEDOWN")
-        if child is not None:
-            onmousedown_value = child.text
-            obj.onmousedown = onmousedown_value
-
-        # Parse onmousemove
-        child = SerializationHelper.find_child_element(element, "ONMOUSEMOVE")
-        if child is not None:
-            onmousemove_value = child.text
-            obj.onmousemove = onmousemove_value
-
-        # Parse onmouseout
-        child = SerializationHelper.find_child_element(element, "ONMOUSEOUT")
-        if child is not None:
-            onmouseout_value = child.text
-            obj.onmouseout = onmouseout_value
-
-        # Parse onmouseover
-        child = SerializationHelper.find_child_element(element, "ONMOUSEOVER")
-        if child is not None:
-            onmouseover_value = child.text
-            obj.onmouseover = onmouseover_value
-
-        # Parse onmouseup
-        child = SerializationHelper.find_child_element(element, "ONMOUSEUP")
-        if child is not None:
-            onmouseup_value = child.text
-            obj.onmouseup = onmouseup_value
-
-        # Parse shape
-        child = SerializationHelper.find_child_element(element, "SHAPE")
-        if child is not None:
-            shape_value = AreaEnumShape.deserialize(child)
-            obj.shape = shape_value
-
-        # Parse style
-        child = SerializationHelper.find_child_element(element, "STYLE")
-        if child is not None:
-            style_value = child.text
-            obj.style = style_value
-
-        # Parse tabindex
-        child = SerializationHelper.find_child_element(element, "TABINDEX")
-        if child is not None:
-            tabindex_value = child.text
-            obj.tabindex = tabindex_value
-
-        # Parse title
-        child = SerializationHelper.find_child_element(element, "TITLE")
-        if child is not None:
-            title_value = child.text
-            obj.title = title_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACCESSKEY":
+                setattr(obj, "accesskey", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ALT":
+                setattr(obj, "alt", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "CLASS":
+                setattr(obj, "class_", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "COORDS":
+                setattr(obj, "coords", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "HREF":
+                setattr(obj, "href", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "NOHREF":
+                setattr(obj, "nohref", AreaEnumNohref.deserialize(child))
+            elif tag == "ONBLUR":
+                setattr(obj, "onblur", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ONCLICK":
+                setattr(obj, "onclick", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ONDBLCLICK":
+                setattr(obj, "ondblclick", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ONFOCUS":
+                setattr(obj, "onfocus", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ONKEYDOWN":
+                setattr(obj, "onkeydown", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ONKEYPRESS":
+                setattr(obj, "onkeypress", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ONKEYUP":
+                setattr(obj, "onkeyup", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ONMOUSEDOWN":
+                setattr(obj, "onmousedown", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ONMOUSEMOVE":
+                setattr(obj, "onmousemove", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ONMOUSEOUT":
+                setattr(obj, "onmouseout", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ONMOUSEOVER":
+                setattr(obj, "onmouseover", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ONMOUSEUP":
+                setattr(obj, "onmouseup", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "SHAPE":
+                setattr(obj, "shape", AreaEnumShape.deserialize(child))
+            elif tag == "STYLE":
+                setattr(obj, "style", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "TABINDEX":
+                setattr(obj, "tabindex", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "TITLE":
+                setattr(obj, "title", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

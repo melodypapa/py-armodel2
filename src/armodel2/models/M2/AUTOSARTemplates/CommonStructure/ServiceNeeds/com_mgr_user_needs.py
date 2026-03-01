@@ -100,11 +100,13 @@ class ComMgrUserNeeds(ServiceNeeds):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ComMgrUserNeeds, cls).deserialize(element)
 
-        # Parse max_comm_mode_enum
-        child = SerializationHelper.find_child_element(element, "MAX-COMM-MODE-ENUM")
-        if child is not None:
-            max_comm_mode_enum_value = MaxCommModeEnum.deserialize(child)
-            obj.max_comm_mode_enum = max_comm_mode_enum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAX-COMM-MODE-ENUM":
+                setattr(obj, "max_comm_mode_enum", MaxCommModeEnum.deserialize(child))
 
         return obj
 

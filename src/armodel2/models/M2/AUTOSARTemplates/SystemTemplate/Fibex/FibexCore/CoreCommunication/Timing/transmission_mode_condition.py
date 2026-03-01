@@ -39,7 +39,7 @@ class TransmissionModeCondition(ARObject):
     data_filter: Optional[DataFilter]
     i_signal_in_i_pdu_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DATA-FILTER": lambda obj, elem: setattr(obj, "data_filter", DataFilter.deserialize(elem)),
+        "DATA-FILTER": lambda obj, elem: setattr(obj, "data_filter", SerializationHelper.deserialize_by_tag(elem, "DataFilter")),
         "I-SIGNAL-IN-I-PDU-REF": lambda obj, elem: setattr(obj, "i_signal_in_i_pdu_ref", ARRef.deserialize(elem)),
     }
 
@@ -116,17 +116,15 @@ class TransmissionModeCondition(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TransmissionModeCondition, cls).deserialize(element)
 
-        # Parse data_filter
-        child = SerializationHelper.find_child_element(element, "DATA-FILTER")
-        if child is not None:
-            data_filter_value = SerializationHelper.deserialize_by_tag(child, "DataFilter")
-            obj.data_filter = data_filter_value
-
-        # Parse i_signal_in_i_pdu_ref
-        child = SerializationHelper.find_child_element(element, "I-SIGNAL-IN-I-PDU-REF")
-        if child is not None:
-            i_signal_in_i_pdu_ref_value = ARRef.deserialize(child)
-            obj.i_signal_in_i_pdu_ref = i_signal_in_i_pdu_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-FILTER":
+                setattr(obj, "data_filter", SerializationHelper.deserialize_by_tag(child, "DataFilter"))
+            elif tag == "I-SIGNAL-IN-I-PDU-REF":
+                setattr(obj, "i_signal_in_i_pdu_ref", ARRef.deserialize(child))
 
         return obj
 

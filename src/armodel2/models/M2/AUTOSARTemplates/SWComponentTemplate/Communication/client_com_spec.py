@@ -47,9 +47,9 @@ class ClientComSpec(RPortComSpec):
     operation_ref: Optional[ARRef]
     transformation_com_spec_props: list[TransformationComSpecProps]
     _DESERIALIZE_DISPATCH = {
-        "END-TO-END-CALL-RESPONSE-TIMEOUT": lambda obj, elem: setattr(obj, "end_to_end_call_response_timeout", elem.text),
+        "END-TO-END-CALL-RESPONSE-TIMEOUT": lambda obj, elem: setattr(obj, "end_to_end_call_response_timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "OPERATION-REF": lambda obj, elem: setattr(obj, "operation_ref", ARRef.deserialize(elem)),
-        "TRANSFORMATION-COM-SPEC-PROPS": lambda obj, elem: obj.transformation_com_spec_props.append(TransformationComSpecProps.deserialize(elem)),
+        "TRANSFORMATION-COM-SPEC-PROPS": ("_POLYMORPHIC_LIST", "transformation_com_spec_props", ["EndToEndTransformationComSpecProps", "UserDefinedTransformationComSpecProps"]),
     }
 
 
@@ -136,27 +136,23 @@ class ClientComSpec(RPortComSpec):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientComSpec, cls).deserialize(element)
 
-        # Parse end_to_end_call_response_timeout
-        child = SerializationHelper.find_child_element(element, "END-TO-END-CALL-RESPONSE-TIMEOUT")
-        if child is not None:
-            end_to_end_call_response_timeout_value = child.text
-            obj.end_to_end_call_response_timeout = end_to_end_call_response_timeout_value
-
-        # Parse operation_ref
-        child = SerializationHelper.find_child_element(element, "OPERATION-REF")
-        if child is not None:
-            operation_ref_value = ARRef.deserialize(child)
-            obj.operation_ref = operation_ref_value
-
-        # Parse transformation_com_spec_props (list from container "TRANSFORMATION-COM-SPEC-PROPS")
-        obj.transformation_com_spec_props = []
-        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-COM-SPEC-PROPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.transformation_com_spec_props.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "END-TO-END-CALL-RESPONSE-TIMEOUT":
+                setattr(obj, "end_to_end_call_response_timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "OPERATION-REF":
+                setattr(obj, "operation_ref", ARRef.deserialize(child))
+            elif tag == "TRANSFORMATION-COM-SPEC-PROPS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "END-TO-END-TRANSFORMATION-COM-SPEC-PROPS":
+                        obj.transformation_com_spec_props.append(SerializationHelper.deserialize_by_tag(child[0], "EndToEndTransformationComSpecProps"))
+                    elif concrete_tag == "USER-DEFINED-TRANSFORMATION-COM-SPEC-PROPS":
+                        obj.transformation_com_spec_props.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedTransformationComSpecProps"))
 
         return obj
 

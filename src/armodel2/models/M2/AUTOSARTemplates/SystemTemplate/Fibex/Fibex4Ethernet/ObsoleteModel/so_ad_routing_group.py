@@ -100,11 +100,13 @@ class SoAdRoutingGroup(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SoAdRoutingGroup, cls).deserialize(element)
 
-        # Parse event_group_ref
-        child = SerializationHelper.find_child_element(element, "EVENT-GROUP-REF")
-        if child is not None:
-            event_group_ref_value = ARRef.deserialize(child)
-            obj.event_group_ref = event_group_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "EVENT-GROUP-REF":
+                setattr(obj, "event_group_ref", EventGroupControlTypeEnum.deserialize(child))
 
         return obj
 

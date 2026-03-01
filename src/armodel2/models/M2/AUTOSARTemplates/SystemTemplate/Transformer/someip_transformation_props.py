@@ -42,11 +42,11 @@ class SOMEIPTransformationProps(TransformationProps):
     size_of_struct: Optional[PositiveInteger]
     size_of_union: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ALIGNMENT": lambda obj, elem: setattr(obj, "alignment", elem.text),
-        "SIZE-OF-ARRAY": lambda obj, elem: setattr(obj, "size_of_array", elem.text),
-        "SIZE-OF-STRING": lambda obj, elem: setattr(obj, "size_of_string", elem.text),
-        "SIZE-OF-STRUCT": lambda obj, elem: setattr(obj, "size_of_struct", elem.text),
-        "SIZE-OF-UNION": lambda obj, elem: setattr(obj, "size_of_union", elem.text),
+        "ALIGNMENT": lambda obj, elem: setattr(obj, "alignment", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SIZE-OF-ARRAY": lambda obj, elem: setattr(obj, "size_of_array", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SIZE-OF-STRING": lambda obj, elem: setattr(obj, "size_of_string", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SIZE-OF-STRUCT": lambda obj, elem: setattr(obj, "size_of_struct", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SIZE-OF-UNION": lambda obj, elem: setattr(obj, "size_of_union", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -167,35 +167,21 @@ class SOMEIPTransformationProps(TransformationProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SOMEIPTransformationProps, cls).deserialize(element)
 
-        # Parse alignment
-        child = SerializationHelper.find_child_element(element, "ALIGNMENT")
-        if child is not None:
-            alignment_value = child.text
-            obj.alignment = alignment_value
-
-        # Parse size_of_array
-        child = SerializationHelper.find_child_element(element, "SIZE-OF-ARRAY")
-        if child is not None:
-            size_of_array_value = child.text
-            obj.size_of_array = size_of_array_value
-
-        # Parse size_of_string
-        child = SerializationHelper.find_child_element(element, "SIZE-OF-STRING")
-        if child is not None:
-            size_of_string_value = child.text
-            obj.size_of_string = size_of_string_value
-
-        # Parse size_of_struct
-        child = SerializationHelper.find_child_element(element, "SIZE-OF-STRUCT")
-        if child is not None:
-            size_of_struct_value = child.text
-            obj.size_of_struct = size_of_struct_value
-
-        # Parse size_of_union
-        child = SerializationHelper.find_child_element(element, "SIZE-OF-UNION")
-        if child is not None:
-            size_of_union_value = child.text
-            obj.size_of_union = size_of_union_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALIGNMENT":
+                setattr(obj, "alignment", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SIZE-OF-ARRAY":
+                setattr(obj, "size_of_array", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SIZE-OF-STRING":
+                setattr(obj, "size_of_string", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SIZE-OF-STRUCT":
+                setattr(obj, "size_of_struct", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SIZE-OF-UNION":
+                setattr(obj, "size_of_union", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

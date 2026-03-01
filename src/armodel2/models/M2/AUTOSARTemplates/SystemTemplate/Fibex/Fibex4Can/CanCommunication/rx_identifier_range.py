@@ -35,8 +35,8 @@ class RxIdentifierRange(ARObject):
     lower_can_id: Optional[PositiveInteger]
     upper_can_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "LOWER-CAN-ID": lambda obj, elem: setattr(obj, "lower_can_id", elem.text),
-        "UPPER-CAN-ID": lambda obj, elem: setattr(obj, "upper_can_id", elem.text),
+        "LOWER-CAN-ID": lambda obj, elem: setattr(obj, "lower_can_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "UPPER-CAN-ID": lambda obj, elem: setattr(obj, "upper_can_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -112,17 +112,15 @@ class RxIdentifierRange(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RxIdentifierRange, cls).deserialize(element)
 
-        # Parse lower_can_id
-        child = SerializationHelper.find_child_element(element, "LOWER-CAN-ID")
-        if child is not None:
-            lower_can_id_value = child.text
-            obj.lower_can_id = lower_can_id_value
-
-        # Parse upper_can_id
-        child = SerializationHelper.find_child_element(element, "UPPER-CAN-ID")
-        if child is not None:
-            upper_can_id_value = child.text
-            obj.upper_can_id = upper_can_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LOWER-CAN-ID":
+                setattr(obj, "lower_can_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "UPPER-CAN-ID":
+                setattr(obj, "upper_can_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

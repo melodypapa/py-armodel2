@@ -46,10 +46,10 @@ class DiagnosticFreezeFrame(DiagnosticCommonElement):
     trigger: Optional[DiagnosticRecordTriggerEnum]
     update: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "CUSTOM-TRIGGER": lambda obj, elem: setattr(obj, "custom_trigger", elem.text),
-        "RECORD-NUMBER": lambda obj, elem: setattr(obj, "record_number", elem.text),
+        "CUSTOM-TRIGGER": lambda obj, elem: setattr(obj, "custom_trigger", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "RECORD-NUMBER": lambda obj, elem: setattr(obj, "record_number", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "TRIGGER": lambda obj, elem: setattr(obj, "trigger", DiagnosticRecordTriggerEnum.deserialize(elem)),
-        "UPDATE": lambda obj, elem: setattr(obj, "update", elem.text),
+        "UPDATE": lambda obj, elem: setattr(obj, "update", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -155,29 +155,19 @@ class DiagnosticFreezeFrame(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticFreezeFrame, cls).deserialize(element)
 
-        # Parse custom_trigger
-        child = SerializationHelper.find_child_element(element, "CUSTOM-TRIGGER")
-        if child is not None:
-            custom_trigger_value = child.text
-            obj.custom_trigger = custom_trigger_value
-
-        # Parse record_number
-        child = SerializationHelper.find_child_element(element, "RECORD-NUMBER")
-        if child is not None:
-            record_number_value = child.text
-            obj.record_number = record_number_value
-
-        # Parse trigger
-        child = SerializationHelper.find_child_element(element, "TRIGGER")
-        if child is not None:
-            trigger_value = DiagnosticRecordTriggerEnum.deserialize(child)
-            obj.trigger = trigger_value
-
-        # Parse update
-        child = SerializationHelper.find_child_element(element, "UPDATE")
-        if child is not None:
-            update_value = child.text
-            obj.update = update_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CUSTOM-TRIGGER":
+                setattr(obj, "custom_trigger", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "RECORD-NUMBER":
+                setattr(obj, "record_number", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "TRIGGER":
+                setattr(obj, "trigger", DiagnosticRecordTriggerEnum.deserialize(child))
+            elif tag == "UPDATE":
+                setattr(obj, "update", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

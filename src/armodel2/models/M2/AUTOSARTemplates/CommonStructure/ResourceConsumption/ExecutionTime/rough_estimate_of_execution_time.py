@@ -42,8 +42,8 @@ class RoughEstimateOfExecutionTime(ExecutionTime):
     additional: Optional[String]
     estimated_execution_time: Optional[MultidimensionalTime]
     _DESERIALIZE_DISPATCH = {
-        "ADDITIONAL": lambda obj, elem: setattr(obj, "additional", elem.text),
-        "ESTIMATED-EXECUTION-TIME": lambda obj, elem: setattr(obj, "estimated_execution_time", MultidimensionalTime.deserialize(elem)),
+        "ADDITIONAL": lambda obj, elem: setattr(obj, "additional", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ESTIMATED-EXECUTION-TIME": lambda obj, elem: setattr(obj, "estimated_execution_time", SerializationHelper.deserialize_by_tag(elem, "MultidimensionalTime")),
     }
 
 
@@ -119,17 +119,15 @@ class RoughEstimateOfExecutionTime(ExecutionTime):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RoughEstimateOfExecutionTime, cls).deserialize(element)
 
-        # Parse additional
-        child = SerializationHelper.find_child_element(element, "ADDITIONAL")
-        if child is not None:
-            additional_value = child.text
-            obj.additional = additional_value
-
-        # Parse estimated_execution_time
-        child = SerializationHelper.find_child_element(element, "ESTIMATED-EXECUTION-TIME")
-        if child is not None:
-            estimated_execution_time_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
-            obj.estimated_execution_time = estimated_execution_time_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ADDITIONAL":
+                setattr(obj, "additional", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ESTIMATED-EXECUTION-TIME":
+                setattr(obj, "estimated_execution_time", SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime"))
 
         return obj
 

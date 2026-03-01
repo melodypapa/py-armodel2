@@ -47,8 +47,8 @@ class RPortPrototype(AbstractRequiredPortPrototype):
     may_be_unconnected: Optional[Boolean]
     required_interface_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "MAY-BE-UNCONNECTED": lambda obj, elem: setattr(obj, "may_be_unconnected", elem.text),
-        "REQUIRED-INTERFACE-TREF": lambda obj, elem: setattr(obj, "required_interface_ref", ARRef.deserialize(elem)),
+        "MAY-BE-UNCONNECTED": lambda obj, elem: setattr(obj, "may_be_unconnected", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "REQUIRED-INTERFACE-TREF": ("_POLYMORPHIC", "required_interface_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "TriggerInterface"]),
     }
 
 
@@ -124,17 +124,25 @@ class RPortPrototype(AbstractRequiredPortPrototype):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RPortPrototype, cls).deserialize(element)
 
-        # Parse may_be_unconnected
-        child = SerializationHelper.find_child_element(element, "MAY-BE-UNCONNECTED")
-        if child is not None:
-            may_be_unconnected_value = child.text
-            obj.may_be_unconnected = may_be_unconnected_value
-
-        # Parse required_interface_ref
-        child = SerializationHelper.find_child_element(element, "REQUIRED-INTERFACE-TREF")
-        if child is not None:
-            required_interface_ref_value = ARRef.deserialize(child)
-            obj.required_interface_ref = required_interface_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAY-BE-UNCONNECTED":
+                setattr(obj, "may_be_unconnected", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "REQUIRED-INTERFACE-TREF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CLIENT-SERVER-INTERFACE":
+                        setattr(obj, "required_interface_ref", SerializationHelper.deserialize_by_tag(child[0], "ClientServerInterface"))
+                    elif concrete_tag == "DATA-INTERFACE":
+                        setattr(obj, "required_interface_ref", SerializationHelper.deserialize_by_tag(child[0], "DataInterface"))
+                    elif concrete_tag == "MODE-SWITCH-INTERFACE":
+                        setattr(obj, "required_interface_ref", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchInterface"))
+                    elif concrete_tag == "TRIGGER-INTERFACE":
+                        setattr(obj, "required_interface_ref", SerializationHelper.deserialize_by_tag(child[0], "TriggerInterface"))
 
         return obj
 

@@ -58,13 +58,13 @@ class MemorySection(Identifiable):
     sw_addrmethod_ref: Optional[ARRef]
     symbol: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "ALIGNMENT": lambda obj, elem: setattr(obj, "alignment", elem.text),
-        "EXECUTABLE-ENTITIES": lambda obj, elem: obj.executable_entity_refs.append(ARRef.deserialize(elem)),
-        "OPTIONS": lambda obj, elem: obj.options.append(elem.text),
+        "ALIGNMENT": lambda obj, elem: setattr(obj, "alignment", SerializationHelper.deserialize_by_tag(elem, "AlignmentType")),
+        "EXECUTABLE-ENTITIES": ("_POLYMORPHIC_LIST", "executable_entity_refs", ["BswModuleEntity", "RunnableEntity"]),
+        "OPTIONS": lambda obj, elem: obj.options.append(SerializationHelper.deserialize_by_tag(elem, "Identifier")),
         "PREFIX-REF": lambda obj, elem: setattr(obj, "prefix_ref", ARRef.deserialize(elem)),
-        "SIZE": lambda obj, elem: setattr(obj, "size", elem.text),
+        "SIZE": lambda obj, elem: setattr(obj, "size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SW-ADDRMETHOD-REF": lambda obj, elem: setattr(obj, "sw_addrmethod_ref", ARRef.deserialize(elem)),
-        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", elem.text),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -221,61 +221,31 @@ class MemorySection(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MemorySection, cls).deserialize(element)
 
-        # Parse alignment
-        child = SerializationHelper.find_child_element(element, "ALIGNMENT")
-        if child is not None:
-            alignment_value = child.text
-            obj.alignment = alignment_value
-
-        # Parse executable_entity_refs (list from container "EXECUTABLE-ENTITY-REFS")
-        obj.executable_entity_refs = []
-        container = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITY-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.executable_entity_refs.append(child_value)
-
-        # Parse options (list from container "OPTIONS")
-        obj.options = []
-        container = SerializationHelper.find_child_element(element, "OPTIONS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (Identifier) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.options.append(child_value)
-
-        # Parse prefix_ref
-        child = SerializationHelper.find_child_element(element, "PREFIX-REF")
-        if child is not None:
-            prefix_ref_value = ARRef.deserialize(child)
-            obj.prefix_ref = prefix_ref_value
-
-        # Parse size
-        child = SerializationHelper.find_child_element(element, "SIZE")
-        if child is not None:
-            size_value = child.text
-            obj.size = size_value
-
-        # Parse sw_addrmethod_ref
-        child = SerializationHelper.find_child_element(element, "SW-ADDRMETHOD-REF")
-        if child is not None:
-            sw_addrmethod_ref_value = ARRef.deserialize(child)
-            obj.sw_addrmethod_ref = sw_addrmethod_ref_value
-
-        # Parse symbol
-        child = SerializationHelper.find_child_element(element, "SYMBOL")
-        if child is not None:
-            symbol_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.symbol = symbol_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALIGNMENT":
+                setattr(obj, "alignment", SerializationHelper.deserialize_by_tag(child, "AlignmentType"))
+            elif tag == "EXECUTABLE-ENTITIES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-MODULE-ENTITY":
+                        obj.executable_entity_refs.append(SerializationHelper.deserialize_by_tag(child[0], "BswModuleEntity"))
+                    elif concrete_tag == "RUNNABLE-ENTITY":
+                        obj.executable_entity_refs.append(SerializationHelper.deserialize_by_tag(child[0], "RunnableEntity"))
+            elif tag == "OPTIONS":
+                obj.options.append(SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "PREFIX-REF":
+                setattr(obj, "prefix_ref", ARRef.deserialize(child))
+            elif tag == "SIZE":
+                setattr(obj, "size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SW-ADDRMETHOD-REF":
+                setattr(obj, "sw_addrmethod_ref", ARRef.deserialize(child))
+            elif tag == "SYMBOL":
+                setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

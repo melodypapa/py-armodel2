@@ -116,17 +116,15 @@ class MemorySectionLocation(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MemorySectionLocation, cls).deserialize(element)
 
-        # Parse provided_memory_ref
-        child = SerializationHelper.find_child_element(element, "PROVIDED-MEMORY-REF")
-        if child is not None:
-            provided_memory_ref_value = ARRef.deserialize(child)
-            obj.provided_memory_ref = provided_memory_ref_value
-
-        # Parse software_ref
-        child = SerializationHelper.find_child_element(element, "SOFTWARE-REF")
-        if child is not None:
-            software_ref_value = ARRef.deserialize(child)
-            obj.software_ref = software_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PROVIDED-MEMORY-REF":
+                setattr(obj, "provided_memory_ref", ARRef.deserialize(child))
+            elif tag == "SOFTWARE-REF":
+                setattr(obj, "software_ref", ARRef.deserialize(child))
 
         return obj
 

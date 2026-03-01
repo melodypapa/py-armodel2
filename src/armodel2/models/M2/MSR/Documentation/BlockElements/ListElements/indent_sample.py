@@ -39,7 +39,7 @@ class IndentSample(ARObject):
     l2: LOverviewParagraph
     _DESERIALIZE_DISPATCH = {
         "ITEM-LABEL-POS-ENUM": lambda obj, elem: setattr(obj, "item_label_pos_enum", ItemLabelPosEnum.deserialize(elem)),
-        "L2": lambda obj, elem: setattr(obj, "l2", LOverviewParagraph.deserialize(elem)),
+        "L2": lambda obj, elem: setattr(obj, "l2", SerializationHelper.deserialize_by_tag(elem, "LOverviewParagraph")),
     }
 
 
@@ -115,17 +115,15 @@ class IndentSample(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IndentSample, cls).deserialize(element)
 
-        # Parse item_label_pos_enum
-        child = SerializationHelper.find_child_element(element, "ITEM-LABEL-POS-ENUM")
-        if child is not None:
-            item_label_pos_enum_value = ItemLabelPosEnum.deserialize(child)
-            obj.item_label_pos_enum = item_label_pos_enum_value
-
-        # Parse l2
-        child = SerializationHelper.find_child_element(element, "L2")
-        if child is not None:
-            l2_value = SerializationHelper.deserialize_by_tag(child, "LOverviewParagraph")
-            obj.l2 = l2_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ITEM-LABEL-POS-ENUM":
+                setattr(obj, "item_label_pos_enum", ItemLabelPosEnum.deserialize(child))
+            elif tag == "L2":
+                setattr(obj, "l2", SerializationHelper.deserialize_by_tag(child, "LOverviewParagraph"))
 
         return obj
 

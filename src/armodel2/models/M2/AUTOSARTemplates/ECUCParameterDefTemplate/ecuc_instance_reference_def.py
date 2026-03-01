@@ -39,8 +39,8 @@ class EcucInstanceReferenceDef(EcucAbstractExternalReferenceDef):
     destination: Optional[String]
     destination_type: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "DESTINATION": lambda obj, elem: setattr(obj, "destination", elem.text),
-        "DESTINATION-TYPE": lambda obj, elem: setattr(obj, "destination_type", elem.text),
+        "DESTINATION": lambda obj, elem: setattr(obj, "destination", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "DESTINATION-TYPE": lambda obj, elem: setattr(obj, "destination_type", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -116,17 +116,15 @@ class EcucInstanceReferenceDef(EcucAbstractExternalReferenceDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucInstanceReferenceDef, cls).deserialize(element)
 
-        # Parse destination
-        child = SerializationHelper.find_child_element(element, "DESTINATION")
-        if child is not None:
-            destination_value = child.text
-            obj.destination = destination_value
-
-        # Parse destination_type
-        child = SerializationHelper.find_child_element(element, "DESTINATION-TYPE")
-        if child is not None:
-            destination_type_value = child.text
-            obj.destination_type = destination_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DESTINATION":
+                setattr(obj, "destination", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "DESTINATION-TYPE":
+                setattr(obj, "destination_type", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

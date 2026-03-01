@@ -43,7 +43,7 @@ class ReferenceTailoring(AttributeTailoring):
     type_tailorings: list[ClassTailoring]
     unresolved_restriction_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TYPE-TAILORINGS": lambda obj, elem: obj.type_tailorings.append(ClassTailoring.deserialize(elem)),
+        "TYPE-TAILORINGS": ("_POLYMORPHIC_LIST", "type_tailorings", ["AbstractClassTailoring", "ConcreteClassTailoring"]),
         "UNRESOLVED-RESTRICTION-REF": lambda obj, elem: setattr(obj, "unresolved_restriction_ref", ARRef.deserialize(elem)),
     }
 
@@ -116,21 +116,21 @@ class ReferenceTailoring(AttributeTailoring):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ReferenceTailoring, cls).deserialize(element)
 
-        # Parse type_tailorings (list from container "TYPE-TAILORINGS")
-        obj.type_tailorings = []
-        container = SerializationHelper.find_child_element(element, "TYPE-TAILORINGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.type_tailorings.append(child_value)
-
-        # Parse unresolved_restriction_ref
-        child = SerializationHelper.find_child_element(element, "UNRESOLVED-RESTRICTION-REF")
-        if child is not None:
-            unresolved_restriction_ref_value = ARRef.deserialize(child)
-            obj.unresolved_restriction_ref = unresolved_restriction_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TYPE-TAILORINGS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CLASS-TAILORING":
+                        obj.type_tailorings.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractClassTailoring"))
+                    elif concrete_tag == "CONCRETE-CLASS-TAILORING":
+                        obj.type_tailorings.append(SerializationHelper.deserialize_by_tag(child[0], "ConcreteClassTailoring"))
+            elif tag == "UNRESOLVED-RESTRICTION-REF":
+                setattr(obj, "unresolved_restriction_ref", ARRef.deserialize(child))
 
         return obj
 

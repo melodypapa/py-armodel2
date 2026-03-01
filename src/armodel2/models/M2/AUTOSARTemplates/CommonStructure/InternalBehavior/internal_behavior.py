@@ -67,12 +67,12 @@ class InternalBehavior(Identifiable, ABC):
     exclusive_area_nesting_orders: list[ExclusiveAreaNestingOrder]
     static_memories: list[VariableDataPrototype]
     _DESERIALIZE_DISPATCH = {
-        "CONSTANT-MEMORIES": lambda obj, elem: obj.constant_memories.append(ParameterDataPrototype.deserialize(elem)),
+        "CONSTANT-MEMORIES": lambda obj, elem: obj.constant_memories.append(SerializationHelper.deserialize_by_tag(elem, "ParameterDataPrototype")),
         "CONSTANT-VALUE-MAPPINGS": lambda obj, elem: obj.constant_value_mapping_refs.append(ARRef.deserialize(elem)),
         "DATA-TYPE-MAPPINGS": lambda obj, elem: obj.data_type_mapping_refs.append(ARRef.deserialize(elem)),
-        "EXCLUSIVE-AREAS": lambda obj, elem: obj.exclusive_areas.append(ExclusiveArea.deserialize(elem)),
-        "EXCLUSIVE-AREA-NESTING-ORDERS": lambda obj, elem: obj.exclusive_area_nesting_orders.append(ExclusiveAreaNestingOrder.deserialize(elem)),
-        "STATIC-MEMORIES": lambda obj, elem: obj.static_memories.append(VariableDataPrototype.deserialize(elem)),
+        "EXCLUSIVE-AREAS": lambda obj, elem: obj.exclusive_areas.append(SerializationHelper.deserialize_by_tag(elem, "ExclusiveArea")),
+        "EXCLUSIVE-AREA-NESTING-ORDERS": lambda obj, elem: obj.exclusive_area_nesting_orders.append(SerializationHelper.deserialize_by_tag(elem, "ExclusiveAreaNestingOrder")),
+        "STATIC-MEMORIES": lambda obj, elem: obj.static_memories.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
     }
 
 
@@ -198,77 +198,23 @@ class InternalBehavior(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InternalBehavior, cls).deserialize(element)
 
-        # Parse constant_memories (list from container "CONSTANT-MEMORIES")
-        obj.constant_memories = []
-        container = SerializationHelper.find_child_element(element, "CONSTANT-MEMORIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.constant_memories.append(child_value)
-
-        # Parse constant_value_mapping_refs (list from container "CONSTANT-VALUE-MAPPING-REFS")
-        obj.constant_value_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "CONSTANT-VALUE-MAPPING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.constant_value_mapping_refs.append(child_value)
-
-        # Parse data_type_mapping_refs (list from container "DATA-TYPE-MAPPING-REFS")
-        obj.data_type_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-TYPE-MAPPING-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.data_type_mapping_refs.append(child_value)
-
-        # Parse exclusive_areas (list from container "EXCLUSIVE-AREAS")
-        obj.exclusive_areas = []
-        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREAS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.exclusive_areas.append(child_value)
-
-        # Parse exclusive_area_nesting_orders (list from container "EXCLUSIVE-AREA-NESTING-ORDERS")
-        obj.exclusive_area_nesting_orders = []
-        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-NESTING-ORDERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.exclusive_area_nesting_orders.append(child_value)
-
-        # Parse static_memories (list from container "STATIC-MEMORIES")
-        obj.static_memories = []
-        container = SerializationHelper.find_child_element(element, "STATIC-MEMORIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.static_memories.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONSTANT-MEMORIES":
+                obj.constant_memories.append(SerializationHelper.deserialize_by_tag(child, "ParameterDataPrototype"))
+            elif tag == "CONSTANT-VALUE-MAPPINGS":
+                obj.constant_value_mapping_refs.append(ARRef.deserialize(child))
+            elif tag == "DATA-TYPE-MAPPINGS":
+                obj.data_type_mapping_refs.append(ARRef.deserialize(child))
+            elif tag == "EXCLUSIVE-AREAS":
+                obj.exclusive_areas.append(SerializationHelper.deserialize_by_tag(child, "ExclusiveArea"))
+            elif tag == "EXCLUSIVE-AREA-NESTING-ORDERS":
+                obj.exclusive_area_nesting_orders.append(SerializationHelper.deserialize_by_tag(child, "ExclusiveAreaNestingOrder"))
+            elif tag == "STATIC-MEMORIES":
+                obj.static_memories.append(SerializationHelper.deserialize_by_tag(child, "VariableDataPrototype"))
 
         return obj
 

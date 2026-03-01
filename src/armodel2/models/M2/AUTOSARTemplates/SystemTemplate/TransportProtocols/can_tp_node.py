@@ -49,10 +49,10 @@ class CanTpNode(Identifiable):
     tp_address_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CONNECTOR-REF": lambda obj, elem: setattr(obj, "connector_ref", ARRef.deserialize(elem)),
-        "MAX-FC-WAIT": lambda obj, elem: setattr(obj, "max_fc_wait", elem.text),
-        "ST-MIN": lambda obj, elem: setattr(obj, "st_min", elem.text),
-        "TIMEOUT-AR": lambda obj, elem: setattr(obj, "timeout_ar", elem.text),
-        "TIMEOUT-AS": lambda obj, elem: setattr(obj, "timeout_as", elem.text),
+        "MAX-FC-WAIT": lambda obj, elem: setattr(obj, "max_fc_wait", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "ST-MIN": lambda obj, elem: setattr(obj, "st_min", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-AR": lambda obj, elem: setattr(obj, "timeout_ar", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT-AS": lambda obj, elem: setattr(obj, "timeout_as", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TP-ADDRESS-REF": lambda obj, elem: setattr(obj, "tp_address_ref", ARRef.deserialize(elem)),
     }
 
@@ -189,41 +189,23 @@ class CanTpNode(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanTpNode, cls).deserialize(element)
 
-        # Parse connector_ref
-        child = SerializationHelper.find_child_element(element, "CONNECTOR-REF")
-        if child is not None:
-            connector_ref_value = ARRef.deserialize(child)
-            obj.connector_ref = connector_ref_value
-
-        # Parse max_fc_wait
-        child = SerializationHelper.find_child_element(element, "MAX-FC-WAIT")
-        if child is not None:
-            max_fc_wait_value = child.text
-            obj.max_fc_wait = max_fc_wait_value
-
-        # Parse st_min
-        child = SerializationHelper.find_child_element(element, "ST-MIN")
-        if child is not None:
-            st_min_value = child.text
-            obj.st_min = st_min_value
-
-        # Parse timeout_ar
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-AR")
-        if child is not None:
-            timeout_ar_value = child.text
-            obj.timeout_ar = timeout_ar_value
-
-        # Parse timeout_as
-        child = SerializationHelper.find_child_element(element, "TIMEOUT-AS")
-        if child is not None:
-            timeout_as_value = child.text
-            obj.timeout_as = timeout_as_value
-
-        # Parse tp_address_ref
-        child = SerializationHelper.find_child_element(element, "TP-ADDRESS-REF")
-        if child is not None:
-            tp_address_ref_value = ARRef.deserialize(child)
-            obj.tp_address_ref = tp_address_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONNECTOR-REF":
+                setattr(obj, "connector_ref", ARRef.deserialize(child))
+            elif tag == "MAX-FC-WAIT":
+                setattr(obj, "max_fc_wait", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "ST-MIN":
+                setattr(obj, "st_min", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-AR":
+                setattr(obj, "timeout_ar", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT-AS":
+                setattr(obj, "timeout_as", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TP-ADDRESS-REF":
+                setattr(obj, "tp_address_ref", ARRef.deserialize(child))
 
         return obj
 

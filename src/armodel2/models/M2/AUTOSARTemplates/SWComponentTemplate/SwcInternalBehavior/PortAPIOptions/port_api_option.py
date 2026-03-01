@@ -58,12 +58,12 @@ class PortAPIOption(ARObject):
     supported_features: list[SwcSupportedFeature]
     transformer_status_forwarding: Optional[DataTransformationStatusForwardingEnum]
     _DESERIALIZE_DISPATCH = {
-        "ENABLE-TAKE-ADDRESS": lambda obj, elem: setattr(obj, "enable_take_address", elem.text),
+        "ENABLE-TAKE-ADDRESS": lambda obj, elem: setattr(obj, "enable_take_address", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "ERROR-HANDLING": lambda obj, elem: setattr(obj, "error_handling", DataTransformationErrorHandlingEnum.deserialize(elem)),
-        "INDIRECT-API": lambda obj, elem: setattr(obj, "indirect_api", elem.text),
-        "PORT-REF": lambda obj, elem: setattr(obj, "port_ref", ARRef.deserialize(elem)),
-        "PORT-ARG-VALUES": lambda obj, elem: obj.port_arg_values.append(PortDefinedArgumentValue.deserialize(elem)),
-        "SUPPORTED-FEATURES": lambda obj, elem: obj.supported_features.append(SwcSupportedFeature.deserialize(elem)),
+        "INDIRECT-API": lambda obj, elem: setattr(obj, "indirect_api", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
+        "PORT-ARG-VALUES": lambda obj, elem: obj.port_arg_values.append(SerializationHelper.deserialize_by_tag(elem, "PortDefinedArgumentValue")),
+        "SUPPORTED-FEATURES": ("_POLYMORPHIC_LIST", "supported_features", ["CommunicationBufferLocking"]),
         "TRANSFORMER-STATUS-FORWARDING": lambda obj, elem: setattr(obj, "transformer_status_forwarding", DataTransformationStatusForwardingEnum.deserialize(elem)),
     }
 
@@ -207,55 +207,35 @@ class PortAPIOption(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortAPIOption, cls).deserialize(element)
 
-        # Parse enable_take_address
-        child = SerializationHelper.find_child_element(element, "ENABLE-TAKE-ADDRESS")
-        if child is not None:
-            enable_take_address_value = child.text
-            obj.enable_take_address = enable_take_address_value
-
-        # Parse error_handling
-        child = SerializationHelper.find_child_element(element, "ERROR-HANDLING")
-        if child is not None:
-            error_handling_value = DataTransformationErrorHandlingEnum.deserialize(child)
-            obj.error_handling = error_handling_value
-
-        # Parse indirect_api
-        child = SerializationHelper.find_child_element(element, "INDIRECT-API")
-        if child is not None:
-            indirect_api_value = child.text
-            obj.indirect_api = indirect_api_value
-
-        # Parse port_ref
-        child = SerializationHelper.find_child_element(element, "PORT-REF")
-        if child is not None:
-            port_ref_value = ARRef.deserialize(child)
-            obj.port_ref = port_ref_value
-
-        # Parse port_arg_values (list from container "PORT-ARG-VALUES")
-        obj.port_arg_values = []
-        container = SerializationHelper.find_child_element(element, "PORT-ARG-VALUES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.port_arg_values.append(child_value)
-
-        # Parse supported_features (list from container "SUPPORTED-FEATURES")
-        obj.supported_features = []
-        container = SerializationHelper.find_child_element(element, "SUPPORTED-FEATURES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.supported_features.append(child_value)
-
-        # Parse transformer_status_forwarding
-        child = SerializationHelper.find_child_element(element, "TRANSFORMER-STATUS-FORWARDING")
-        if child is not None:
-            transformer_status_forwarding_value = DataTransformationStatusForwardingEnum.deserialize(child)
-            obj.transformer_status_forwarding = transformer_status_forwarding_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ENABLE-TAKE-ADDRESS":
+                setattr(obj, "enable_take_address", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "ERROR-HANDLING":
+                setattr(obj, "error_handling", DataTransformationErrorHandlingEnum.deserialize(child))
+            elif tag == "INDIRECT-API":
+                setattr(obj, "indirect_api", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PORT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
+                        setattr(obj, "port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
+                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
+                        setattr(obj, "port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
+            elif tag == "PORT-ARG-VALUES":
+                obj.port_arg_values.append(SerializationHelper.deserialize_by_tag(child, "PortDefinedArgumentValue"))
+            elif tag == "SUPPORTED-FEATURES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "COMMUNICATION-BUFFER-LOCKING":
+                        obj.supported_features.append(SerializationHelper.deserialize_by_tag(child[0], "CommunicationBufferLocking"))
+            elif tag == "TRANSFORMER-STATUS-FORWARDING":
+                setattr(obj, "transformer_status_forwarding", DataTransformationStatusForwardingEnum.deserialize(child))
 
         return obj
 

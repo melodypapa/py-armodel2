@@ -49,10 +49,10 @@ class EthernetCommunicationConnector(CommunicationConnector):
     path_mtu_timeout: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
         "ETH-IP-PROPS-REF": lambda obj, elem: setattr(obj, "eth_ip_props_ref", ARRef.deserialize(elem)),
-        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", elem.text),
-        "NEIGHBOR-CACHE": lambda obj, elem: setattr(obj, "neighbor_cache", elem.text),
-        "PATH-MTU": lambda obj, elem: setattr(obj, "path_mtu", elem.text),
-        "PATH-MTU-TIMEOUT": lambda obj, elem: setattr(obj, "path_mtu_timeout", elem.text),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "NEIGHBOR-CACHE": lambda obj, elem: setattr(obj, "neighbor_cache", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PATH-MTU": lambda obj, elem: setattr(obj, "path_mtu", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PATH-MTU-TIMEOUT": lambda obj, elem: setattr(obj, "path_mtu_timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -173,35 +173,21 @@ class EthernetCommunicationConnector(CommunicationConnector):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthernetCommunicationConnector, cls).deserialize(element)
 
-        # Parse eth_ip_props_ref
-        child = SerializationHelper.find_child_element(element, "ETH-IP-PROPS-REF")
-        if child is not None:
-            eth_ip_props_ref_value = ARRef.deserialize(child)
-            obj.eth_ip_props_ref = eth_ip_props_ref_value
-
-        # Parse maximum
-        child = SerializationHelper.find_child_element(element, "MAXIMUM")
-        if child is not None:
-            maximum_value = child.text
-            obj.maximum = maximum_value
-
-        # Parse neighbor_cache
-        child = SerializationHelper.find_child_element(element, "NEIGHBOR-CACHE")
-        if child is not None:
-            neighbor_cache_value = child.text
-            obj.neighbor_cache = neighbor_cache_value
-
-        # Parse path_mtu
-        child = SerializationHelper.find_child_element(element, "PATH-MTU")
-        if child is not None:
-            path_mtu_value = child.text
-            obj.path_mtu = path_mtu_value
-
-        # Parse path_mtu_timeout
-        child = SerializationHelper.find_child_element(element, "PATH-MTU-TIMEOUT")
-        if child is not None:
-            path_mtu_timeout_value = child.text
-            obj.path_mtu_timeout = path_mtu_timeout_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ETH-IP-PROPS-REF":
+                setattr(obj, "eth_ip_props_ref", ARRef.deserialize(child))
+            elif tag == "MAXIMUM":
+                setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "NEIGHBOR-CACHE":
+                setattr(obj, "neighbor_cache", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PATH-MTU":
+                setattr(obj, "path_mtu", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PATH-MTU-TIMEOUT":
+                setattr(obj, "path_mtu_timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

@@ -35,7 +35,7 @@ class GlobalTimeEthSlave(GlobalTimeSlave):
 
     crc_validated: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "CRC-VALIDATED": lambda obj, elem: setattr(obj, "crc_validated", any (GlobalTimeCrc).deserialize(elem)),
+        "CRC-VALIDATED": lambda obj, elem: setattr(obj, "crc_validated", SerializationHelper.deserialize_by_tag(elem, "any (GlobalTimeCrc)")),
     }
 
 
@@ -96,11 +96,13 @@ class GlobalTimeEthSlave(GlobalTimeSlave):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeEthSlave, cls).deserialize(element)
 
-        # Parse crc_validated
-        child = SerializationHelper.find_child_element(element, "CRC-VALIDATED")
-        if child is not None:
-            crc_validated_value = child.text
-            obj.crc_validated = crc_validated_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CRC-VALIDATED":
+                setattr(obj, "crc_validated", SerializationHelper.deserialize_by_tag(child, "any (GlobalTimeCrc)"))
 
         return obj
 

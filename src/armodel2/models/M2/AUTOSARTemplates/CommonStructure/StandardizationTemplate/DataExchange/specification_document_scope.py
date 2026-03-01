@@ -44,7 +44,7 @@ class SpecificationDocumentScope(SpecElementReference):
     documents: list[DocumentElementScope]
     _DESERIALIZE_DISPATCH = {
         "CUSTOM-DOCUMENTATION-REF": lambda obj, elem: setattr(obj, "custom_documentation_ref", ARRef.deserialize(elem)),
-        "DOCUMENTS": lambda obj, elem: obj.documents.append(DocumentElementScope.deserialize(elem)),
+        "DOCUMENTS": lambda obj, elem: obj.documents.append(SerializationHelper.deserialize_by_tag(elem, "DocumentElementScope")),
     }
 
 
@@ -116,21 +116,15 @@ class SpecificationDocumentScope(SpecElementReference):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SpecificationDocumentScope, cls).deserialize(element)
 
-        # Parse custom_documentation_ref
-        child = SerializationHelper.find_child_element(element, "CUSTOM-DOCUMENTATION-REF")
-        if child is not None:
-            custom_documentation_ref_value = ARRef.deserialize(child)
-            obj.custom_documentation_ref = custom_documentation_ref_value
-
-        # Parse documents (list from container "DOCUMENTS")
-        obj.documents = []
-        container = SerializationHelper.find_child_element(element, "DOCUMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.documents.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CUSTOM-DOCUMENTATION-REF":
+                setattr(obj, "custom_documentation_ref", ARRef.deserialize(child))
+            elif tag == "DOCUMENTS":
+                obj.documents.append(SerializationHelper.deserialize_by_tag(child, "DocumentElementScope"))
 
         return obj
 

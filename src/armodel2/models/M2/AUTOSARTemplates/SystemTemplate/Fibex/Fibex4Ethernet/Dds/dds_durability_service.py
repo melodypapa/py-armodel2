@@ -34,7 +34,7 @@ class DdsDurabilityService(ARObject):
 
     durability: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "DURABILITY": lambda obj, elem: setattr(obj, "durability", elem.text),
+        "DURABILITY": lambda obj, elem: setattr(obj, "durability", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -95,11 +95,13 @@ class DdsDurabilityService(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsDurabilityService, cls).deserialize(element)
 
-        # Parse durability
-        child = SerializationHelper.find_child_element(element, "DURABILITY")
-        if child is not None:
-            durability_value = child.text
-            obj.durability = durability_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DURABILITY":
+                setattr(obj, "durability", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

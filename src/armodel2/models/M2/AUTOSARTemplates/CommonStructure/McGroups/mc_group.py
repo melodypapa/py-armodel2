@@ -161,49 +161,19 @@ class McGroup(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(McGroup, cls).deserialize(element)
 
-        # Parse mc_function_refs (list from container "MC-FUNCTION-REFS")
-        obj.mc_function_refs = []
-        container = SerializationHelper.find_child_element(element, "MC-FUNCTION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mc_function_refs.append(child_value)
-
-        # Parse ref_calprm_set_ref
-        child = SerializationHelper.find_child_element(element, "REF-CALPRM-SET-REF")
-        if child is not None:
-            ref_calprm_set_ref_value = ARRef.deserialize(child)
-            obj.ref_calprm_set_ref = ref_calprm_set_ref_value
-
-        # Parse ref_ref
-        child = SerializationHelper.find_child_element(element, "REF-REF")
-        if child is not None:
-            ref_ref_value = ARRef.deserialize(child)
-            obj.ref_ref = ref_ref_value
-
-        # Parse sub_group_refs (list from container "SUB-GROUP-REFS")
-        obj.sub_group_refs = []
-        container = SerializationHelper.find_child_element(element, "SUB-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sub_group_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MC-FUNCTIONS":
+                obj.mc_function_refs.append(ARRef.deserialize(child))
+            elif tag == "REF-CALPRM-SET-REF":
+                setattr(obj, "ref_calprm_set_ref", ARRef.deserialize(child))
+            elif tag == "REF-REF":
+                setattr(obj, "ref_ref", ARRef.deserialize(child))
+            elif tag == "SUB-GROUPS":
+                obj.sub_group_refs.append(ARRef.deserialize(child))
 
         return obj
 

@@ -39,8 +39,8 @@ class EthernetPriorityRegeneration(Referrable):
     ingress_priority: Optional[PositiveInteger]
     regenerated: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "INGRESS-PRIORITY": lambda obj, elem: setattr(obj, "ingress_priority", elem.text),
-        "REGENERATED": lambda obj, elem: setattr(obj, "regenerated", elem.text),
+        "INGRESS-PRIORITY": lambda obj, elem: setattr(obj, "ingress_priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "REGENERATED": lambda obj, elem: setattr(obj, "regenerated", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -116,17 +116,15 @@ class EthernetPriorityRegeneration(Referrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthernetPriorityRegeneration, cls).deserialize(element)
 
-        # Parse ingress_priority
-        child = SerializationHelper.find_child_element(element, "INGRESS-PRIORITY")
-        if child is not None:
-            ingress_priority_value = child.text
-            obj.ingress_priority = ingress_priority_value
-
-        # Parse regenerated
-        child = SerializationHelper.find_child_element(element, "REGENERATED")
-        if child is not None:
-            regenerated_value = child.text
-            obj.regenerated = regenerated_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INGRESS-PRIORITY":
+                setattr(obj, "ingress_priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "REGENERATED":
+                setattr(obj, "regenerated", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

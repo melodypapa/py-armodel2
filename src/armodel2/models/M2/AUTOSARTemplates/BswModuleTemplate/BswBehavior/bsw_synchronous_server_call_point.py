@@ -120,17 +120,15 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswSynchronousServerCallPoint, cls).deserialize(element)
 
-        # Parse called_entry_entry_ref
-        child = SerializationHelper.find_child_element(element, "CALLED-ENTRY-ENTRY-REF")
-        if child is not None:
-            called_entry_entry_ref_value = ARRef.deserialize(child)
-            obj.called_entry_entry_ref = called_entry_entry_ref_value
-
-        # Parse called_from_ref
-        child = SerializationHelper.find_child_element(element, "CALLED-FROM-REF")
-        if child is not None:
-            called_from_ref_value = ARRef.deserialize(child)
-            obj.called_from_ref = called_from_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CALLED-ENTRY-ENTRY-REF":
+                setattr(obj, "called_entry_entry_ref", ARRef.deserialize(child))
+            elif tag == "CALLED-FROM-REF":
+                setattr(obj, "called_from_ref", ARRef.deserialize(child))
 
         return obj
 

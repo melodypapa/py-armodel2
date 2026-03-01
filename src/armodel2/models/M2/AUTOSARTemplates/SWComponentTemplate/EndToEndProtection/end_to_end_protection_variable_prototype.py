@@ -43,7 +43,7 @@ class EndToEndProtectionVariablePrototype(ARObject):
     _DESERIALIZE_DISPATCH = {
         "RECEIVERS": lambda obj, elem: obj.receiver_refs.append(ARRef.deserialize(elem)),
         "SENDER-REF": lambda obj, elem: setattr(obj, "sender_ref", ARRef.deserialize(elem)),
-        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -137,33 +137,17 @@ class EndToEndProtectionVariablePrototype(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EndToEndProtectionVariablePrototype, cls).deserialize(element)
 
-        # Parse receiver_refs (list from container "RECEIVER-REFS")
-        obj.receiver_refs = []
-        container = SerializationHelper.find_child_element(element, "RECEIVER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.receiver_refs.append(child_value)
-
-        # Parse sender_ref
-        child = SerializationHelper.find_child_element(element, "SENDER-REF")
-        if child is not None:
-            sender_ref_value = ARRef.deserialize(child)
-            obj.sender_ref = sender_ref_value
-
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RECEIVERS":
+                obj.receiver_refs.append(ARRef.deserialize(child))
+            elif tag == "SENDER-REF":
+                setattr(obj, "sender_ref", ARRef.deserialize(child))
+            elif tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

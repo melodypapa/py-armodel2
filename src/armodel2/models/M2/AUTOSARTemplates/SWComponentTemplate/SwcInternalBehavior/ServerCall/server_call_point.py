@@ -47,8 +47,8 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
     operation_instance_ref: Optional[ClientServerOperation]
     timeout: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "OPERATION-INSTANCE-REF": lambda obj, elem: setattr(obj, "operation_instance_ref", ClientServerOperation.deserialize(elem)),
-        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", elem.text),
+        "OPERATION-INSTANCE-REF": lambda obj, elem: setattr(obj, "operation_instance_ref", SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
+        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -124,17 +124,15 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ServerCallPoint, cls).deserialize(element)
 
-        # Parse operation_instance_ref
-        child = SerializationHelper.find_child_element(element, "OPERATION-INSTANCE-REF")
-        if child is not None:
-            operation_instance_ref_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
-            obj.operation_instance_ref = operation_instance_ref_value
-
-        # Parse timeout
-        child = SerializationHelper.find_child_element(element, "TIMEOUT")
-        if child is not None:
-            timeout_value = child.text
-            obj.timeout = timeout_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "OPERATION-INSTANCE-REF":
+                setattr(obj, "operation_instance_ref", SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
+            elif tag == "TIMEOUT":
+                setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

@@ -46,9 +46,9 @@ class SwitchStreamFilterRule(Identifiable):
     ieee1722_tp: Optional[StreamFilterIEEE1722Tp]
     ip_tp_rule: Optional[StreamFilterRuleIpTp]
     _DESERIALIZE_DISPATCH = {
-        "DATA-LINK-LAYER": lambda obj, elem: setattr(obj, "data_link_layer", StreamFilterRuleDataLinkLayer.deserialize(elem)),
-        "IEEE1722-TP": lambda obj, elem: setattr(obj, "ieee1722_tp", StreamFilterIEEE1722Tp.deserialize(elem)),
-        "IP-TP-RULE": lambda obj, elem: setattr(obj, "ip_tp_rule", StreamFilterRuleIpTp.deserialize(elem)),
+        "DATA-LINK-LAYER": lambda obj, elem: setattr(obj, "data_link_layer", SerializationHelper.deserialize_by_tag(elem, "StreamFilterRuleDataLinkLayer")),
+        "IEEE1722-TP": lambda obj, elem: setattr(obj, "ieee1722_tp", SerializationHelper.deserialize_by_tag(elem, "StreamFilterIEEE1722Tp")),
+        "IP-TP-RULE": lambda obj, elem: setattr(obj, "ip_tp_rule", SerializationHelper.deserialize_by_tag(elem, "StreamFilterRuleIpTp")),
     }
 
 
@@ -139,23 +139,17 @@ class SwitchStreamFilterRule(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwitchStreamFilterRule, cls).deserialize(element)
 
-        # Parse data_link_layer
-        child = SerializationHelper.find_child_element(element, "DATA-LINK-LAYER")
-        if child is not None:
-            data_link_layer_value = SerializationHelper.deserialize_by_tag(child, "StreamFilterRuleDataLinkLayer")
-            obj.data_link_layer = data_link_layer_value
-
-        # Parse ieee1722_tp
-        child = SerializationHelper.find_child_element(element, "IEEE1722-TP")
-        if child is not None:
-            ieee1722_tp_value = SerializationHelper.deserialize_by_tag(child, "StreamFilterIEEE1722Tp")
-            obj.ieee1722_tp = ieee1722_tp_value
-
-        # Parse ip_tp_rule
-        child = SerializationHelper.find_child_element(element, "IP-TP-RULE")
-        if child is not None:
-            ip_tp_rule_value = SerializationHelper.deserialize_by_tag(child, "StreamFilterRuleIpTp")
-            obj.ip_tp_rule = ip_tp_rule_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-LINK-LAYER":
+                setattr(obj, "data_link_layer", SerializationHelper.deserialize_by_tag(child, "StreamFilterRuleDataLinkLayer"))
+            elif tag == "IEEE1722-TP":
+                setattr(obj, "ieee1722_tp", SerializationHelper.deserialize_by_tag(child, "StreamFilterIEEE1722Tp"))
+            elif tag == "IP-TP-RULE":
+                setattr(obj, "ip_tp_rule", SerializationHelper.deserialize_by_tag(child, "StreamFilterRuleIpTp"))
 
         return obj
 

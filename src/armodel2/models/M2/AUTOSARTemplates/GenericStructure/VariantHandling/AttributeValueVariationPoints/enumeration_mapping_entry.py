@@ -36,8 +36,8 @@ class EnumerationMappingEntry(ARObject):
     enumerator: NameToken
     numerical_value: PositiveInteger
     _DESERIALIZE_DISPATCH = {
-        "ENUMERATOR": lambda obj, elem: setattr(obj, "enumerator", elem.text),
-        "NUMERICAL-VALUE": lambda obj, elem: setattr(obj, "numerical_value", elem.text),
+        "ENUMERATOR": lambda obj, elem: setattr(obj, "enumerator", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "NUMERICAL-VALUE": lambda obj, elem: setattr(obj, "numerical_value", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -113,17 +113,15 @@ class EnumerationMappingEntry(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EnumerationMappingEntry, cls).deserialize(element)
 
-        # Parse enumerator
-        child = SerializationHelper.find_child_element(element, "ENUMERATOR")
-        if child is not None:
-            enumerator_value = child.text
-            obj.enumerator = enumerator_value
-
-        # Parse numerical_value
-        child = SerializationHelper.find_child_element(element, "NUMERICAL-VALUE")
-        if child is not None:
-            numerical_value_value = child.text
-            obj.numerical_value = numerical_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ENUMERATOR":
+                setattr(obj, "enumerator", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "NUMERICAL-VALUE":
+                setattr(obj, "numerical_value", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -40,8 +40,8 @@ class TimingEvent(RTEEvent):
     offset: Optional[TimeValue]
     period: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "OFFSET": lambda obj, elem: setattr(obj, "offset", elem.text),
-        "PERIOD": lambda obj, elem: setattr(obj, "period", elem.text),
+        "OFFSET": lambda obj, elem: setattr(obj, "offset", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "PERIOD": lambda obj, elem: setattr(obj, "period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -117,17 +117,15 @@ class TimingEvent(RTEEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingEvent, cls).deserialize(element)
 
-        # Parse offset
-        child = SerializationHelper.find_child_element(element, "OFFSET")
-        if child is not None:
-            offset_value = child.text
-            obj.offset = offset_value
-
-        # Parse period
-        child = SerializationHelper.find_child_element(element, "PERIOD")
-        if child is not None:
-            period_value = child.text
-            obj.period = period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "OFFSET":
+                setattr(obj, "offset", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "PERIOD":
+                setattr(obj, "period", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

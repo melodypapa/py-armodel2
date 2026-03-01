@@ -39,7 +39,7 @@ class SwRecordLayout(ARElement):
 
     sw_record_layout_group: Optional[SwRecordLayoutGroup]
     _DESERIALIZE_DISPATCH = {
-        "SW-RECORD-LAYOUT-GROUP": lambda obj, elem: setattr(obj, "sw_record_layout_group", SwRecordLayoutGroup.deserialize(elem)),
+        "SW-RECORD-LAYOUT-GROUP": lambda obj, elem: setattr(obj, "sw_record_layout_group", SerializationHelper.deserialize_by_tag(elem, "SwRecordLayoutGroup")),
     }
 
 
@@ -100,11 +100,13 @@ class SwRecordLayout(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwRecordLayout, cls).deserialize(element)
 
-        # Parse sw_record_layout_group
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP")
-        if child is not None:
-            sw_record_layout_group_value = SerializationHelper.deserialize_by_tag(child, "SwRecordLayoutGroup")
-            obj.sw_record_layout_group = sw_record_layout_group_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SW-RECORD-LAYOUT-GROUP":
+                setattr(obj, "sw_record_layout_group", SerializationHelper.deserialize_by_tag(child, "SwRecordLayoutGroup"))
 
         return obj
 

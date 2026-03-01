@@ -48,7 +48,7 @@ class ECUMapping(Identifiable):
     ecu_instance_ref: Optional[ARRef]
     hw_port_mapping_ref: ARRef
     _DESERIALIZE_DISPATCH = {
-        "COMM-CONTROLLERS": lambda obj, elem: obj.comm_controllers.append(any (Communication).deserialize(elem)),
+        "COMM-CONTROLLERS": lambda obj, elem: obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(elem, "any (Communication)")),
         "ECU-REF": lambda obj, elem: setattr(obj, "ecu_ref", ARRef.deserialize(elem)),
         "ECU-INSTANCE-REF": lambda obj, elem: setattr(obj, "ecu_instance_ref", ARRef.deserialize(elem)),
         "HW-PORT-MAPPING-REF": lambda obj, elem: setattr(obj, "hw_port_mapping_ref", ARRef.deserialize(elem)),
@@ -153,33 +153,19 @@ class ECUMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ECUMapping, cls).deserialize(element)
 
-        # Parse comm_controllers (list from container "COMM-CONTROLLERS")
-        obj.comm_controllers = []
-        container = SerializationHelper.find_child_element(element, "COMM-CONTROLLERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.comm_controllers.append(child_value)
-
-        # Parse ecu_ref
-        child = SerializationHelper.find_child_element(element, "ECU-REF")
-        if child is not None:
-            ecu_ref_value = ARRef.deserialize(child)
-            obj.ecu_ref = ecu_ref_value
-
-        # Parse ecu_instance_ref
-        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
-        if child is not None:
-            ecu_instance_ref_value = ARRef.deserialize(child)
-            obj.ecu_instance_ref = ecu_instance_ref_value
-
-        # Parse hw_port_mapping_ref
-        child = SerializationHelper.find_child_element(element, "HW-PORT-MAPPING-REF")
-        if child is not None:
-            hw_port_mapping_ref_value = ARRef.deserialize(child)
-            obj.hw_port_mapping_ref = hw_port_mapping_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMM-CONTROLLERS":
+                obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(child, "any (Communication)"))
+            elif tag == "ECU-REF":
+                setattr(obj, "ecu_ref", ARRef.deserialize(child))
+            elif tag == "ECU-INSTANCE-REF":
+                setattr(obj, "ecu_instance_ref", ARRef.deserialize(child))
+            elif tag == "HW-PORT-MAPPING-REF":
+                setattr(obj, "hw_port_mapping_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -39,8 +39,8 @@ class FlexrayNmEcu(BusspecificNmEcu):
     nm_hw_vote: Optional[Boolean]
     nm_main: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "NM-HW-VOTE": lambda obj, elem: setattr(obj, "nm_hw_vote", elem.text),
-        "NM-MAIN": lambda obj, elem: setattr(obj, "nm_main", elem.text),
+        "NM-HW-VOTE": lambda obj, elem: setattr(obj, "nm_hw_vote", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-MAIN": lambda obj, elem: setattr(obj, "nm_main", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -116,17 +116,15 @@ class FlexrayNmEcu(BusspecificNmEcu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayNmEcu, cls).deserialize(element)
 
-        # Parse nm_hw_vote
-        child = SerializationHelper.find_child_element(element, "NM-HW-VOTE")
-        if child is not None:
-            nm_hw_vote_value = child.text
-            obj.nm_hw_vote = nm_hw_vote_value
-
-        # Parse nm_main
-        child = SerializationHelper.find_child_element(element, "NM-MAIN")
-        if child is not None:
-            nm_main_value = child.text
-            obj.nm_main = nm_main_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "NM-HW-VOTE":
+                setattr(obj, "nm_hw_vote", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-MAIN":
+                setattr(obj, "nm_main", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

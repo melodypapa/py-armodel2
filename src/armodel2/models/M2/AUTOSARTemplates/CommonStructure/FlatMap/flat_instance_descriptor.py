@@ -56,11 +56,11 @@ class FlatInstanceDescriptor(Identifiable):
     sw_data_def: Optional[SwDataDefProps]
     upstream: Optional[AtpFeature]
     _DESERIALIZE_DISPATCH = {
-        "ECU-EXTRACT": lambda obj, elem: setattr(obj, "ecu_extract", AtpFeature.deserialize(elem)),
-        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
-        "RTE-PLUGIN-PROPS": lambda obj, elem: setattr(obj, "rte_plugin_props", RtePluginProps.deserialize(elem)),
-        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SwDataDefProps.deserialize(elem)),
-        "UPSTREAM": lambda obj, elem: setattr(obj, "upstream", AtpFeature.deserialize(elem)),
+        "ECU-EXTRACT": ("_POLYMORPHIC", "ecu_extract", ["AtpPrototype", "AtpStructureElement"]),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "RTE-PLUGIN-PROPS": lambda obj, elem: setattr(obj, "rte_plugin_props", SerializationHelper.deserialize_by_tag(elem, "RtePluginProps")),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "UPSTREAM": ("_POLYMORPHIC", "upstream", ["AtpPrototype", "AtpStructureElement"]),
     }
 
 
@@ -181,35 +181,33 @@ class FlatInstanceDescriptor(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlatInstanceDescriptor, cls).deserialize(element)
 
-        # Parse ecu_extract
-        child = SerializationHelper.find_child_element(element, "ECU-EXTRACT")
-        if child is not None:
-            ecu_extract_value = SerializationHelper.deserialize_by_tag(child, "AtpFeature")
-            obj.ecu_extract = ecu_extract_value
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
-
-        # Parse rte_plugin_props
-        child = SerializationHelper.find_child_element(element, "RTE-PLUGIN-PROPS")
-        if child is not None:
-            rte_plugin_props_value = SerializationHelper.deserialize_by_tag(child, "RtePluginProps")
-            obj.rte_plugin_props = rte_plugin_props_value
-
-        # Parse sw_data_def
-        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
-        if child is not None:
-            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.sw_data_def = sw_data_def_value
-
-        # Parse upstream
-        child = SerializationHelper.find_child_element(element, "UPSTREAM")
-        if child is not None:
-            upstream_value = SerializationHelper.deserialize_by_tag(child, "AtpFeature")
-            obj.upstream = upstream_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ECU-EXTRACT":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATP-PROTOTYPE":
+                        setattr(obj, "ecu_extract", SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
+                    elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
+                        setattr(obj, "ecu_extract", SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "RTE-PLUGIN-PROPS":
+                setattr(obj, "rte_plugin_props", SerializationHelper.deserialize_by_tag(child, "RtePluginProps"))
+            elif tag == "SW-DATA-DEF":
+                setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            elif tag == "UPSTREAM":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATP-PROTOTYPE":
+                        setattr(obj, "upstream", SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
+                    elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
+                        setattr(obj, "upstream", SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
 
         return obj
 

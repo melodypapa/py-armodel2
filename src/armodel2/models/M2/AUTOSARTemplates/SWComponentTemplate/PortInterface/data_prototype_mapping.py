@@ -50,9 +50,9 @@ class DataPrototypeMapping(ARObject):
     sub_element_refs: list[ARRef]
     text_table_ref: ARRef
     _DESERIALIZE_DISPATCH = {
-        "FIRST-DATA-REF": lambda obj, elem: setattr(obj, "first_data_ref", ARRef.deserialize(elem)),
+        "FIRST-DATA-REF": ("_POLYMORPHIC", "first_data_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "FIRST-TO-SECOND-REF": lambda obj, elem: setattr(obj, "first_to_second_ref", ARRef.deserialize(elem)),
-        "SECOND-DATA-REF": lambda obj, elem: setattr(obj, "second_data_ref", ARRef.deserialize(elem)),
+        "SECOND-DATA-REF": ("_POLYMORPHIC", "second_data_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
         "SECOND-TO-FIRST-REF": lambda obj, elem: setattr(obj, "second_to_first_ref", ARRef.deserialize(elem)),
         "SUB-ELEMENTS": lambda obj, elem: obj.sub_element_refs.append(ARRef.deserialize(elem)),
         "TEXT-TABLE-REF": lambda obj, elem: setattr(obj, "text_table_ref", ARRef.deserialize(elem)),
@@ -194,51 +194,39 @@ class DataPrototypeMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototypeMapping, cls).deserialize(element)
 
-        # Parse first_data_ref
-        child = SerializationHelper.find_child_element(element, "FIRST-DATA-REF")
-        if child is not None:
-            first_data_ref_value = ARRef.deserialize(child)
-            obj.first_data_ref = first_data_ref_value
-
-        # Parse first_to_second_ref
-        child = SerializationHelper.find_child_element(element, "FIRST-TO-SECOND-REF")
-        if child is not None:
-            first_to_second_ref_value = ARRef.deserialize(child)
-            obj.first_to_second_ref = first_to_second_ref_value
-
-        # Parse second_data_ref
-        child = SerializationHelper.find_child_element(element, "SECOND-DATA-REF")
-        if child is not None:
-            second_data_ref_value = ARRef.deserialize(child)
-            obj.second_data_ref = second_data_ref_value
-
-        # Parse second_to_first_ref
-        child = SerializationHelper.find_child_element(element, "SECOND-TO-FIRST-REF")
-        if child is not None:
-            second_to_first_ref_value = ARRef.deserialize(child)
-            obj.second_to_first_ref = second_to_first_ref_value
-
-        # Parse sub_element_refs (list from container "SUB-ELEMENT-REFS")
-        obj.sub_element_refs = []
-        container = SerializationHelper.find_child_element(element, "SUB-ELEMENT-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sub_element_refs.append(child_value)
-
-        # Parse text_table_ref
-        child = SerializationHelper.find_child_element(element, "TEXT-TABLE-REF")
-        if child is not None:
-            text_table_ref_value = ARRef.deserialize(child)
-            obj.text_table_ref = text_table_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FIRST-DATA-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
+                        setattr(obj, "first_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
+                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
+                        setattr(obj, "first_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
+                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
+                        setattr(obj, "first_data_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
+            elif tag == "FIRST-TO-SECOND-REF":
+                setattr(obj, "first_to_second_ref", ARRef.deserialize(child))
+            elif tag == "SECOND-DATA-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
+                        setattr(obj, "second_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
+                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
+                        setattr(obj, "second_data_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
+                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
+                        setattr(obj, "second_data_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
+            elif tag == "SECOND-TO-FIRST-REF":
+                setattr(obj, "second_to_first_ref", ARRef.deserialize(child))
+            elif tag == "SUB-ELEMENTS":
+                obj.sub_element_refs.append(ARRef.deserialize(child))
+            elif tag == "TEXT-TABLE-REF":
+                setattr(obj, "text_table_ref", ARRef.deserialize(child))
 
         return obj
 

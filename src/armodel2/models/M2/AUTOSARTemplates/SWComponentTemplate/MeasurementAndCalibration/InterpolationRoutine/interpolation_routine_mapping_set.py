@@ -39,7 +39,7 @@ class InterpolationRoutineMappingSet(ARElement):
 
     interpolation_routines: list[InterpolationRoutine]
     _DESERIALIZE_DISPATCH = {
-        "INTERPOLATION-ROUTINES": lambda obj, elem: obj.interpolation_routines.append(InterpolationRoutine.deserialize(elem)),
+        "INTERPOLATION-ROUTINES": lambda obj, elem: obj.interpolation_routines.append(SerializationHelper.deserialize_by_tag(elem, "InterpolationRoutine")),
     }
 
 
@@ -96,15 +96,13 @@ class InterpolationRoutineMappingSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InterpolationRoutineMappingSet, cls).deserialize(element)
 
-        # Parse interpolation_routines (list from container "INTERPOLATION-ROUTINES")
-        obj.interpolation_routines = []
-        container = SerializationHelper.find_child_element(element, "INTERPOLATION-ROUTINES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.interpolation_routines.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INTERPOLATION-ROUTINES":
+                obj.interpolation_routines.append(SerializationHelper.deserialize_by_tag(child, "InterpolationRoutine"))
 
         return obj
 

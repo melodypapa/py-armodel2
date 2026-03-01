@@ -46,8 +46,8 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
     successor_refs: list[Any]
     _DESERIALIZE_DISPATCH = {
         "BSW-MODULE-REF": lambda obj, elem: setattr(obj, "bsw_module_ref", ARRef.deserialize(elem)),
-        "COMPONENT": lambda obj, elem: setattr(obj, "component", any (SwComponent).deserialize(elem)),
-        "EXECUTABLE-ENTITY-REF": lambda obj, elem: setattr(obj, "executable_entity_ref", ARRef.deserialize(elem)),
+        "COMPONENT": lambda obj, elem: setattr(obj, "component", SerializationHelper.deserialize_by_tag(elem, "any (SwComponent)")),
+        "EXECUTABLE-ENTITY-REF": ("_POLYMORPHIC", "executable_entity_ref", ["BswModuleEntity", "RunnableEntity"]),
         "SUCCESSORS": lambda obj, elem: obj.successor_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -157,39 +157,25 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EOCExecutableEntityRef, cls).deserialize(element)
 
-        # Parse bsw_module_ref
-        child = SerializationHelper.find_child_element(element, "BSW-MODULE-REF")
-        if child is not None:
-            bsw_module_ref_value = ARRef.deserialize(child)
-            obj.bsw_module_ref = bsw_module_ref_value
-
-        # Parse component
-        child = SerializationHelper.find_child_element(element, "COMPONENT")
-        if child is not None:
-            component_value = child.text
-            obj.component = component_value
-
-        # Parse executable_entity_ref
-        child = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITY-REF")
-        if child is not None:
-            executable_entity_ref_value = ARRef.deserialize(child)
-            obj.executable_entity_ref = executable_entity_ref_value
-
-        # Parse successor_refs (list from container "SUCCESSOR-REFS")
-        obj.successor_refs = []
-        container = SerializationHelper.find_child_element(element, "SUCCESSOR-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.successor_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BSW-MODULE-REF":
+                setattr(obj, "bsw_module_ref", ARRef.deserialize(child))
+            elif tag == "COMPONENT":
+                setattr(obj, "component", SerializationHelper.deserialize_by_tag(child, "any (SwComponent)"))
+            elif tag == "EXECUTABLE-ENTITY-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "BSW-MODULE-ENTITY":
+                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "BswModuleEntity"))
+                    elif concrete_tag == "RUNNABLE-ENTITY":
+                        setattr(obj, "executable_entity_ref", SerializationHelper.deserialize_by_tag(child[0], "RunnableEntity"))
+            elif tag == "SUCCESSORS":
+                obj.successor_refs.append(ARRef.deserialize(child))
 
         return obj
 

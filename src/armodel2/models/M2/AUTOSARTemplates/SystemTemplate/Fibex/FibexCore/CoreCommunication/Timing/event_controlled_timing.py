@@ -42,8 +42,8 @@ class EventControlledTiming(Describable):
     number_of_repetitions: Optional[Integer]
     repetition_period: Optional[TimeRangeType]
     _DESERIALIZE_DISPATCH = {
-        "NUMBER-OF-REPETITIONS": lambda obj, elem: setattr(obj, "number_of_repetitions", elem.text),
-        "REPETITION-PERIOD": lambda obj, elem: setattr(obj, "repetition_period", TimeRangeType.deserialize(elem)),
+        "NUMBER-OF-REPETITIONS": lambda obj, elem: setattr(obj, "number_of_repetitions", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "REPETITION-PERIOD": lambda obj, elem: setattr(obj, "repetition_period", SerializationHelper.deserialize_by_tag(elem, "TimeRangeType")),
     }
 
 
@@ -119,17 +119,15 @@ class EventControlledTiming(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EventControlledTiming, cls).deserialize(element)
 
-        # Parse number_of_repetitions
-        child = SerializationHelper.find_child_element(element, "NUMBER-OF-REPETITIONS")
-        if child is not None:
-            number_of_repetitions_value = child.text
-            obj.number_of_repetitions = number_of_repetitions_value
-
-        # Parse repetition_period
-        child = SerializationHelper.find_child_element(element, "REPETITION-PERIOD")
-        if child is not None:
-            repetition_period_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeType")
-            obj.repetition_period = repetition_period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "NUMBER-OF-REPETITIONS":
+                setattr(obj, "number_of_repetitions", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "REPETITION-PERIOD":
+                setattr(obj, "repetition_period", SerializationHelper.deserialize_by_tag(child, "TimeRangeType"))
 
         return obj
 

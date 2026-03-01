@@ -113,17 +113,15 @@ class ClientServerApplicationErrorMapping(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerApplicationErrorMapping, cls).deserialize(element)
 
-        # Parse first_application_ref
-        child = SerializationHelper.find_child_element(element, "FIRST-APPLICATION-REF")
-        if child is not None:
-            first_application_ref_value = ARRef.deserialize(child)
-            obj.first_application_ref = first_application_ref_value
-
-        # Parse second_ref
-        child = SerializationHelper.find_child_element(element, "SECOND-REF")
-        if child is not None:
-            second_ref_value = ARRef.deserialize(child)
-            obj.second_ref = second_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FIRST-APPLICATION-REF":
+                setattr(obj, "first_application_ref", ARRef.deserialize(child))
+            elif tag == "SECOND-REF":
+                setattr(obj, "second_ref", ARRef.deserialize(child))
 
         return obj
 

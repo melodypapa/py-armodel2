@@ -93,11 +93,13 @@ class SwGenericAxisParam(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwGenericAxisParam, cls).deserialize(element)
 
-        # Parse sw_generic_axis_param_ref
-        child = SerializationHelper.find_child_element(element, "SW-GENERIC-AXIS-PARAM-REF")
-        if child is not None:
-            sw_generic_axis_param_ref_value = ARRef.deserialize(child)
-            obj.sw_generic_axis_param_ref = sw_generic_axis_param_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SW-GENERIC-AXIS-PARAM-REF":
+                setattr(obj, "sw_generic_axis_param_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -54,7 +54,7 @@ class PModeInSystemInstanceRef(ARObject):
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
         "CONTEXT-REF": lambda obj, elem: setattr(obj, "context_ref", ARRef.deserialize(elem)),
         "CONTEXT-MODE-GROUP-REF": lambda obj, elem: setattr(obj, "context_mode_group_ref", ARRef.deserialize(elem)),
-        "CONTEXT-P-PORT-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "context_p_port_prototype_ref", ARRef.deserialize(elem)),
+        "CONTEXT-P-PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "context_p_port_prototype_ref", ["PPortPrototype", "PRPortPrototype"]),
         "TARGET-MODE-REF": lambda obj, elem: setattr(obj, "target_mode_ref", ARRef.deserialize(elem)),
     }
 
@@ -176,35 +176,27 @@ class PModeInSystemInstanceRef(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PModeInSystemInstanceRef, cls).deserialize(element)
 
-        # Parse base_ref
-        child = SerializationHelper.find_child_element(element, "BASE-REF")
-        if child is not None:
-            base_ref_value = ARRef.deserialize(child)
-            obj.base_ref = base_ref_value
-
-        # Parse context_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-REF")
-        if child is not None:
-            context_ref_value = ARRef.deserialize(child)
-            obj.context_ref = context_ref_value
-
-        # Parse context_mode_group_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-MODE-GROUP-REF")
-        if child is not None:
-            context_mode_group_ref_value = ARRef.deserialize(child)
-            obj.context_mode_group_ref = context_mode_group_ref_value
-
-        # Parse context_p_port_prototype_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-P-PORT-PROTOTYPE-REF")
-        if child is not None:
-            context_p_port_prototype_ref_value = ARRef.deserialize(child)
-            obj.context_p_port_prototype_ref = context_p_port_prototype_ref_value
-
-        # Parse target_mode_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-MODE-REF")
-        if child is not None:
-            target_mode_ref_value = ARRef.deserialize(child)
-            obj.target_mode_ref = target_mode_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BASE-REF":
+                setattr(obj, "base_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-REF":
+                setattr(obj, "context_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-MODE-GROUP-REF":
+                setattr(obj, "context_mode_group_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-P-PORT-PROTOTYPE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "P-PORT-PROTOTYPE":
+                        setattr(obj, "context_p_port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "PPortPrototype"))
+                    elif concrete_tag == "P-R-PORT-PROTOTYPE":
+                        setattr(obj, "context_p_port_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "PRPortPrototype"))
+            elif tag == "TARGET-MODE-REF":
+                setattr(obj, "target_mode_ref", ARRef.deserialize(child))
 
         return obj
 

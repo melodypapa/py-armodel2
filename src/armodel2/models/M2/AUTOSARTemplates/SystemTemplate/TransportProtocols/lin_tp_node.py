@@ -50,10 +50,10 @@ class LinTpNode(Identifiable):
     tp_address_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CONNECTOR-REF": lambda obj, elem: setattr(obj, "connector_ref", ARRef.deserialize(elem)),
-        "DROP-NOT": lambda obj, elem: setattr(obj, "drop_not", elem.text),
-        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", elem.text),
-        "P2-MAX": lambda obj, elem: setattr(obj, "p2_max", elem.text),
-        "P2-TIMING": lambda obj, elem: setattr(obj, "p2_timing", elem.text),
+        "DROP-NOT": lambda obj, elem: setattr(obj, "drop_not", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "P2-MAX": lambda obj, elem: setattr(obj, "p2_max", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "P2-TIMING": lambda obj, elem: setattr(obj, "p2_timing", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TP-ADDRESS-REF": lambda obj, elem: setattr(obj, "tp_address_ref", ARRef.deserialize(elem)),
     }
 
@@ -190,41 +190,23 @@ class LinTpNode(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinTpNode, cls).deserialize(element)
 
-        # Parse connector_ref
-        child = SerializationHelper.find_child_element(element, "CONNECTOR-REF")
-        if child is not None:
-            connector_ref_value = ARRef.deserialize(child)
-            obj.connector_ref = connector_ref_value
-
-        # Parse drop_not
-        child = SerializationHelper.find_child_element(element, "DROP-NOT")
-        if child is not None:
-            drop_not_value = child.text
-            obj.drop_not = drop_not_value
-
-        # Parse max_number_of
-        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
-        if child is not None:
-            max_number_of_value = child.text
-            obj.max_number_of = max_number_of_value
-
-        # Parse p2_max
-        child = SerializationHelper.find_child_element(element, "P2-MAX")
-        if child is not None:
-            p2_max_value = child.text
-            obj.p2_max = p2_max_value
-
-        # Parse p2_timing
-        child = SerializationHelper.find_child_element(element, "P2-TIMING")
-        if child is not None:
-            p2_timing_value = child.text
-            obj.p2_timing = p2_timing_value
-
-        # Parse tp_address_ref
-        child = SerializationHelper.find_child_element(element, "TP-ADDRESS-REF")
-        if child is not None:
-            tp_address_ref_value = ARRef.deserialize(child)
-            obj.tp_address_ref = tp_address_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CONNECTOR-REF":
+                setattr(obj, "connector_ref", ARRef.deserialize(child))
+            elif tag == "DROP-NOT":
+                setattr(obj, "drop_not", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "MAX-NUMBER-OF":
+                setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "P2-MAX":
+                setattr(obj, "p2_max", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "P2-TIMING":
+                setattr(obj, "p2_timing", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TP-ADDRESS-REF":
+                setattr(obj, "tp_address_ref", ARRef.deserialize(child))
 
         return obj
 

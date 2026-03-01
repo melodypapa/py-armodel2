@@ -41,9 +41,9 @@ class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
     frame_sync_enabled: Optional[Boolean]
     timestamp: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "BASE-FREQUENCY": lambda obj, elem: setattr(obj, "base_frequency", elem.text),
-        "FRAME-SYNC-ENABLED": lambda obj, elem: setattr(obj, "frame_sync_enabled", elem.text),
-        "TIMESTAMP": lambda obj, elem: setattr(obj, "timestamp", elem.text),
+        "BASE-FREQUENCY": lambda obj, elem: setattr(obj, "base_frequency", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "FRAME-SYNC-ENABLED": lambda obj, elem: setattr(obj, "frame_sync_enabled", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "TIMESTAMP": lambda obj, elem: setattr(obj, "timestamp", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -134,23 +134,17 @@ class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpAcfLin, cls).deserialize(element)
 
-        # Parse base_frequency
-        child = SerializationHelper.find_child_element(element, "BASE-FREQUENCY")
-        if child is not None:
-            base_frequency_value = child.text
-            obj.base_frequency = base_frequency_value
-
-        # Parse frame_sync_enabled
-        child = SerializationHelper.find_child_element(element, "FRAME-SYNC-ENABLED")
-        if child is not None:
-            frame_sync_enabled_value = child.text
-            obj.frame_sync_enabled = frame_sync_enabled_value
-
-        # Parse timestamp
-        child = SerializationHelper.find_child_element(element, "TIMESTAMP")
-        if child is not None:
-            timestamp_value = child.text
-            obj.timestamp = timestamp_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BASE-FREQUENCY":
+                setattr(obj, "base_frequency", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "FRAME-SYNC-ENABLED":
+                setattr(obj, "frame_sync_enabled", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TIMESTAMP":
+                setattr(obj, "timestamp", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

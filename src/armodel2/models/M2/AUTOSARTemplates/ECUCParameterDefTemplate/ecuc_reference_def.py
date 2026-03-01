@@ -41,7 +41,7 @@ class EcucReferenceDef(EcucAbstractInternalReferenceDef):
 
     destination_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DESTINATION-REF": lambda obj, elem: setattr(obj, "destination_ref", ARRef.deserialize(elem)),
+        "DESTINATION-REF": ("_POLYMORPHIC", "destination_ref", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
     }
 
 
@@ -102,11 +102,19 @@ class EcucReferenceDef(EcucAbstractInternalReferenceDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucReferenceDef, cls).deserialize(element)
 
-        # Parse destination_ref
-        child = SerializationHelper.find_child_element(element, "DESTINATION-REF")
-        if child is not None:
-            destination_ref_value = ARRef.deserialize(child)
-            obj.destination_ref = destination_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DESTINATION-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ECUC-CHOICE-CONTAINER-DEF":
+                        setattr(obj, "destination_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucChoiceContainerDef"))
+                    elif concrete_tag == "ECUC-PARAM-CONF-CONTAINER-DEF":
+                        setattr(obj, "destination_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucParamConfContainerDef"))
 
         return obj
 

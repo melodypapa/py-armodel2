@@ -38,7 +38,7 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
 
     required_com_specs: list[RPortComSpec]
     _DESERIALIZE_DISPATCH = {
-        "REQUIRED-COM-SPECS": lambda obj, elem: obj.required_com_specs.append(RPortComSpec.deserialize(elem)),
+        "REQUIRED-COM-SPECS": ("_POLYMORPHIC_LIST", "required_com_specs", ["ClientComSpec", "ModeSwitchReceiverComSpec", "NvRequireComSpec", "ParameterRequireComSpec"]),
     }
 
 
@@ -95,15 +95,23 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractRequiredPortPrototype, cls).deserialize(element)
 
-        # Parse required_com_specs (list from container "REQUIRED-COM-SPECS")
-        obj.required_com_specs = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-COM-SPECS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.required_com_specs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "REQUIRED-COM-SPECS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CLIENT-COM-SPEC":
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(child[0], "ClientComSpec"))
+                    elif concrete_tag == "MODE-SWITCH-RECEIVER-COM-SPEC":
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchReceiverComSpec"))
+                    elif concrete_tag == "NV-REQUIRE-COM-SPEC":
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(child[0], "NvRequireComSpec"))
+                    elif concrete_tag == "PARAMETER-REQUIRE-COM-SPEC":
+                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(child[0], "ParameterRequireComSpec"))
 
         return obj
 

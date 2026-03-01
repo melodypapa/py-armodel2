@@ -41,9 +41,9 @@ class GeneralAnnotation(ARObject, ABC):
     annotation_text: DocumentationBlock
     label: Optional[MultilanguageLongName]
     _DESERIALIZE_DISPATCH = {
-        "ANNOTATION": lambda obj, elem: setattr(obj, "annotation", elem.text),
-        "ANNOTATION-TEXT": lambda obj, elem: setattr(obj, "annotation_text", DocumentationBlock.deserialize(elem)),
-        "LABEL": lambda obj, elem: setattr(obj, "label", MultilanguageLongName.deserialize(elem)),
+        "ANNOTATION": lambda obj, elem: setattr(obj, "annotation", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ANNOTATION-TEXT": lambda obj, elem: setattr(obj, "annotation_text", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
+        "LABEL": lambda obj, elem: setattr(obj, "label", SerializationHelper.deserialize_by_tag(elem, "MultilanguageLongName")),
     }
 
 
@@ -134,23 +134,17 @@ class GeneralAnnotation(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GeneralAnnotation, cls).deserialize(element)
 
-        # Parse annotation
-        child = SerializationHelper.find_child_element(element, "ANNOTATION")
-        if child is not None:
-            annotation_value = child.text
-            obj.annotation = annotation_value
-
-        # Parse annotation_text
-        child = SerializationHelper.find_child_element(element, "ANNOTATION-TEXT")
-        if child is not None:
-            annotation_text_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
-            obj.annotation_text = annotation_text_value
-
-        # Parse label
-        child = SerializationHelper.find_child_element(element, "LABEL")
-        if child is not None:
-            label_value = SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName")
-            obj.label = label_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ANNOTATION":
+                setattr(obj, "annotation", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ANNOTATION-TEXT":
+                setattr(obj, "annotation_text", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
+            elif tag == "LABEL":
+                setattr(obj, "label", SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName"))
 
         return obj
 

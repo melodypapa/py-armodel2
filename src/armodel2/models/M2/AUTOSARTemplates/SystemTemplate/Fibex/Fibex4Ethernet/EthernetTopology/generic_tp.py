@@ -39,8 +39,8 @@ class GenericTp(TransportProtocolConfiguration):
     tp_address: Optional[String]
     tp_technology: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "TP-ADDRESS": lambda obj, elem: setattr(obj, "tp_address", elem.text),
-        "TP-TECHNOLOGY": lambda obj, elem: setattr(obj, "tp_technology", elem.text),
+        "TP-ADDRESS": lambda obj, elem: setattr(obj, "tp_address", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "TP-TECHNOLOGY": lambda obj, elem: setattr(obj, "tp_technology", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -116,17 +116,15 @@ class GenericTp(TransportProtocolConfiguration):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GenericTp, cls).deserialize(element)
 
-        # Parse tp_address
-        child = SerializationHelper.find_child_element(element, "TP-ADDRESS")
-        if child is not None:
-            tp_address_value = child.text
-            obj.tp_address = tp_address_value
-
-        # Parse tp_technology
-        child = SerializationHelper.find_child_element(element, "TP-TECHNOLOGY")
-        if child is not None:
-            tp_technology_value = child.text
-            obj.tp_technology = tp_technology_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TP-ADDRESS":
+                setattr(obj, "tp_address", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "TP-TECHNOLOGY":
+                setattr(obj, "tp_technology", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

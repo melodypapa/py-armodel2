@@ -42,9 +42,9 @@ class Ipv6Props(ARObject):
     fragmentation: Optional[Ipv6FragmentationProps]
     ndp_props: Optional[Ipv6NdpProps]
     _DESERIALIZE_DISPATCH = {
-        "DHCP-PROPS": lambda obj, elem: setattr(obj, "dhcp_props", Dhcpv6Props.deserialize(elem)),
-        "FRAGMENTATION": lambda obj, elem: setattr(obj, "fragmentation", Ipv6FragmentationProps.deserialize(elem)),
-        "NDP-PROPS": lambda obj, elem: setattr(obj, "ndp_props", Ipv6NdpProps.deserialize(elem)),
+        "DHCP-PROPS": lambda obj, elem: setattr(obj, "dhcp_props", SerializationHelper.deserialize_by_tag(elem, "Dhcpv6Props")),
+        "FRAGMENTATION": lambda obj, elem: setattr(obj, "fragmentation", SerializationHelper.deserialize_by_tag(elem, "Ipv6FragmentationProps")),
+        "NDP-PROPS": lambda obj, elem: setattr(obj, "ndp_props", SerializationHelper.deserialize_by_tag(elem, "Ipv6NdpProps")),
     }
 
 
@@ -135,23 +135,17 @@ class Ipv6Props(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ipv6Props, cls).deserialize(element)
 
-        # Parse dhcp_props
-        child = SerializationHelper.find_child_element(element, "DHCP-PROPS")
-        if child is not None:
-            dhcp_props_value = SerializationHelper.deserialize_by_tag(child, "Dhcpv6Props")
-            obj.dhcp_props = dhcp_props_value
-
-        # Parse fragmentation
-        child = SerializationHelper.find_child_element(element, "FRAGMENTATION")
-        if child is not None:
-            fragmentation_value = SerializationHelper.deserialize_by_tag(child, "Ipv6FragmentationProps")
-            obj.fragmentation = fragmentation_value
-
-        # Parse ndp_props
-        child = SerializationHelper.find_child_element(element, "NDP-PROPS")
-        if child is not None:
-            ndp_props_value = SerializationHelper.deserialize_by_tag(child, "Ipv6NdpProps")
-            obj.ndp_props = ndp_props_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DHCP-PROPS":
+                setattr(obj, "dhcp_props", SerializationHelper.deserialize_by_tag(child, "Dhcpv6Props"))
+            elif tag == "FRAGMENTATION":
+                setattr(obj, "fragmentation", SerializationHelper.deserialize_by_tag(child, "Ipv6FragmentationProps"))
+            elif tag == "NDP-PROPS":
+                setattr(obj, "ndp_props", SerializationHelper.deserialize_by_tag(child, "Ipv6NdpProps"))
 
         return obj
 

@@ -34,7 +34,7 @@ class DiagnosticParameterSupportInfo(ARObject):
 
     support_info_bit: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "SUPPORT-INFO-BIT": lambda obj, elem: setattr(obj, "support_info_bit", elem.text),
+        "SUPPORT-INFO-BIT": lambda obj, elem: setattr(obj, "support_info_bit", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -95,11 +95,13 @@ class DiagnosticParameterSupportInfo(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticParameterSupportInfo, cls).deserialize(element)
 
-        # Parse support_info_bit
-        child = SerializationHelper.find_child_element(element, "SUPPORT-INFO-BIT")
-        if child is not None:
-            support_info_bit_value = child.text
-            obj.support_info_bit = support_info_bit_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SUPPORT-INFO-BIT":
+                setattr(obj, "support_info_bit", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -46,12 +46,12 @@ class InternalConstrs(ARObject):
     scale_constrs: list[ScaleConstr]
     upper_limit: Optional[Limit]
     _DESERIALIZE_DISPATCH = {
-        "LOWER-LIMIT": lambda obj, elem: setattr(obj, "lower_limit", elem.text),
-        "MAX-DIFF": lambda obj, elem: setattr(obj, "max_diff", elem.text),
-        "MAX-GRADIENT": lambda obj, elem: setattr(obj, "max_gradient", elem.text),
+        "LOWER-LIMIT": lambda obj, elem: setattr(obj, "lower_limit", SerializationHelper.deserialize_by_tag(elem, "Limit")),
+        "MAX-DIFF": lambda obj, elem: setattr(obj, "max_diff", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "MAX-GRADIENT": lambda obj, elem: setattr(obj, "max_gradient", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "MONOTONY": lambda obj, elem: setattr(obj, "monotony", MonotonyEnum.deserialize(elem)),
-        "SCALE-CONSTRS": lambda obj, elem: obj.scale_constrs.append(ScaleConstr.deserialize(elem)),
-        "UPPER-LIMIT": lambda obj, elem: setattr(obj, "upper_limit", elem.text),
+        "SCALE-CONSTRS": lambda obj, elem: obj.scale_constrs.append(SerializationHelper.deserialize_by_tag(elem, "ScaleConstr")),
+        "UPPER-LIMIT": lambda obj, elem: setattr(obj, "upper_limit", SerializationHelper.deserialize_by_tag(elem, "Limit")),
     }
 
 
@@ -183,45 +183,23 @@ class InternalConstrs(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InternalConstrs, cls).deserialize(element)
 
-        # Parse lower_limit
-        child = SerializationHelper.find_child_element(element, "LOWER-LIMIT")
-        if child is not None:
-            lower_limit_value = SerializationHelper.deserialize_by_tag(child, "Limit")
-            obj.lower_limit = lower_limit_value
-
-        # Parse max_diff
-        child = SerializationHelper.find_child_element(element, "MAX-DIFF")
-        if child is not None:
-            max_diff_value = child.text
-            obj.max_diff = max_diff_value
-
-        # Parse max_gradient
-        child = SerializationHelper.find_child_element(element, "MAX-GRADIENT")
-        if child is not None:
-            max_gradient_value = child.text
-            obj.max_gradient = max_gradient_value
-
-        # Parse monotony
-        child = SerializationHelper.find_child_element(element, "MONOTONY")
-        if child is not None:
-            monotony_value = MonotonyEnum.deserialize(child)
-            obj.monotony = monotony_value
-
-        # Parse scale_constrs (list from container "SCALE-CONSTRS")
-        obj.scale_constrs = []
-        container = SerializationHelper.find_child_element(element, "SCALE-CONSTRS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.scale_constrs.append(child_value)
-
-        # Parse upper_limit
-        child = SerializationHelper.find_child_element(element, "UPPER-LIMIT")
-        if child is not None:
-            upper_limit_value = SerializationHelper.deserialize_by_tag(child, "Limit")
-            obj.upper_limit = upper_limit_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LOWER-LIMIT":
+                setattr(obj, "lower_limit", SerializationHelper.deserialize_by_tag(child, "Limit"))
+            elif tag == "MAX-DIFF":
+                setattr(obj, "max_diff", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "MAX-GRADIENT":
+                setattr(obj, "max_gradient", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "MONOTONY":
+                setattr(obj, "monotony", MonotonyEnum.deserialize(child))
+            elif tag == "SCALE-CONSTRS":
+                obj.scale_constrs.append(SerializationHelper.deserialize_by_tag(child, "ScaleConstr"))
+            elif tag == "UPPER-LIMIT":
+                setattr(obj, "upper_limit", SerializationHelper.deserialize_by_tag(child, "Limit"))
 
         return obj
 

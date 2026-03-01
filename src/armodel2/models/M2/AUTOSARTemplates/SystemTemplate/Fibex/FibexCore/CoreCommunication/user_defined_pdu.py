@@ -39,7 +39,7 @@ class UserDefinedPdu(Pdu):
 
     cdd_type: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "CDD-TYPE": lambda obj, elem: setattr(obj, "cdd_type", elem.text),
+        "CDD-TYPE": lambda obj, elem: setattr(obj, "cdd_type", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -100,11 +100,13 @@ class UserDefinedPdu(Pdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(UserDefinedPdu, cls).deserialize(element)
 
-        # Parse cdd_type
-        child = SerializationHelper.find_child_element(element, "CDD-TYPE")
-        if child is not None:
-            cdd_type_value = child.text
-            obj.cdd_type = cdd_type_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CDD-TYPE":
+                setattr(obj, "cdd_type", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

@@ -38,7 +38,7 @@ class RoughEstimateStackUsage(StackUsage):
 
     memory_consumption: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "MEMORY-CONSUMPTION": lambda obj, elem: setattr(obj, "memory_consumption", elem.text),
+        "MEMORY-CONSUMPTION": lambda obj, elem: setattr(obj, "memory_consumption", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -99,11 +99,13 @@ class RoughEstimateStackUsage(StackUsage):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RoughEstimateStackUsage, cls).deserialize(element)
 
-        # Parse memory_consumption
-        child = SerializationHelper.find_child_element(element, "MEMORY-CONSUMPTION")
-        if child is not None:
-            memory_consumption_value = child.text
-            obj.memory_consumption = memory_consumption_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MEMORY-CONSUMPTION":
+                setattr(obj, "memory_consumption", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

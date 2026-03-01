@@ -46,11 +46,11 @@ class Colspec(ARObject):
     rowsep: Optional[TableSeparatorString]
     _DESERIALIZE_DISPATCH = {
         "ALIGN": lambda obj, elem: setattr(obj, "align", AlignEnum.deserialize(elem)),
-        "COLNAME": lambda obj, elem: setattr(obj, "colname", elem.text),
-        "COLNUM": lambda obj, elem: setattr(obj, "colnum", elem.text),
-        "COLSEP": lambda obj, elem: setattr(obj, "colsep", elem.text),
-        "COLWIDTH": lambda obj, elem: setattr(obj, "colwidth", elem.text),
-        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", elem.text),
+        "COLNAME": lambda obj, elem: setattr(obj, "colname", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "COLNUM": lambda obj, elem: setattr(obj, "colnum", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "COLSEP": lambda obj, elem: setattr(obj, "colsep", SerializationHelper.deserialize_by_tag(elem, "TableSeparatorString")),
+        "COLWIDTH": lambda obj, elem: setattr(obj, "colwidth", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "ROWSEP": lambda obj, elem: setattr(obj, "rowsep", SerializationHelper.deserialize_by_tag(elem, "TableSeparatorString")),
     }
 
 
@@ -186,41 +186,23 @@ class Colspec(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Colspec, cls).deserialize(element)
 
-        # Parse align
-        child = SerializationHelper.find_child_element(element, "ALIGN")
-        if child is not None:
-            align_value = AlignEnum.deserialize(child)
-            obj.align = align_value
-
-        # Parse colname
-        child = SerializationHelper.find_child_element(element, "COLNAME")
-        if child is not None:
-            colname_value = child.text
-            obj.colname = colname_value
-
-        # Parse colnum
-        child = SerializationHelper.find_child_element(element, "COLNUM")
-        if child is not None:
-            colnum_value = child.text
-            obj.colnum = colnum_value
-
-        # Parse colsep
-        child = SerializationHelper.find_child_element(element, "COLSEP")
-        if child is not None:
-            colsep_value = child.text
-            obj.colsep = colsep_value
-
-        # Parse colwidth
-        child = SerializationHelper.find_child_element(element, "COLWIDTH")
-        if child is not None:
-            colwidth_value = child.text
-            obj.colwidth = colwidth_value
-
-        # Parse rowsep
-        child = SerializationHelper.find_child_element(element, "ROWSEP")
-        if child is not None:
-            rowsep_value = child.text
-            obj.rowsep = rowsep_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALIGN":
+                setattr(obj, "align", AlignEnum.deserialize(child))
+            elif tag == "COLNAME":
+                setattr(obj, "colname", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "COLNUM":
+                setattr(obj, "colnum", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "COLSEP":
+                setattr(obj, "colsep", SerializationHelper.deserialize_by_tag(child, "TableSeparatorString"))
+            elif tag == "COLWIDTH":
+                setattr(obj, "colwidth", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ROWSEP":
+                setattr(obj, "rowsep", SerializationHelper.deserialize_by_tag(child, "TableSeparatorString"))
 
         return obj
 

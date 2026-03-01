@@ -35,8 +35,8 @@ class ReceptionComSpecProps(ARObject):
     data_update: Optional[TimeValue]
     timeout: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "DATA-UPDATE": lambda obj, elem: setattr(obj, "data_update", elem.text),
-        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", elem.text),
+        "DATA-UPDATE": lambda obj, elem: setattr(obj, "data_update", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -112,17 +112,15 @@ class ReceptionComSpecProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ReceptionComSpecProps, cls).deserialize(element)
 
-        # Parse data_update
-        child = SerializationHelper.find_child_element(element, "DATA-UPDATE")
-        if child is not None:
-            data_update_value = child.text
-            obj.data_update = data_update_value
-
-        # Parse timeout
-        child = SerializationHelper.find_child_element(element, "TIMEOUT")
-        if child is not None:
-            timeout_value = child.text
-            obj.timeout = timeout_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-UPDATE":
+                setattr(obj, "data_update", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TIMEOUT":
+                setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

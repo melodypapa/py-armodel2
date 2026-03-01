@@ -34,7 +34,7 @@ class DdsOwnershipStrength(ARObject):
 
     ownership: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "OWNERSHIP": lambda obj, elem: setattr(obj, "ownership", elem.text),
+        "OWNERSHIP": lambda obj, elem: setattr(obj, "ownership", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -95,11 +95,13 @@ class DdsOwnershipStrength(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsOwnershipStrength, cls).deserialize(element)
 
-        # Parse ownership
-        child = SerializationHelper.find_child_element(element, "OWNERSHIP")
-        if child is not None:
-            ownership_value = child.text
-            obj.ownership = ownership_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "OWNERSHIP":
+                setattr(obj, "ownership", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -100,11 +100,13 @@ class BswOperationInvokedEvent(BswEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswOperationInvokedEvent, cls).deserialize(element)
 
-        # Parse entry_ref
-        child = SerializationHelper.find_child_element(element, "ENTRY-REF")
-        if child is not None:
-            entry_ref_value = ARRef.deserialize(child)
-            obj.entry_ref = entry_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ENTRY-REF":
+                setattr(obj, "entry_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -45,10 +45,10 @@ class BuildActionIoElement(ARObject):
     role: Optional[Identifier]
     sdgs: list[Sdg]
     _DESERIALIZE_DISPATCH = {
-        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
-        "ECUC-DEFINITION-REF": lambda obj, elem: setattr(obj, "ecuc_definition_ref", ARRef.deserialize(elem)),
-        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
-        "SDGS": lambda obj, elem: obj.sdgs.append(Sdg.deserialize(elem)),
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "ECUC-DEFINITION-REF": ("_POLYMORPHIC", "ecuc_definition_ref", ["EcucCommonAttributes", "EcucContainerDef", "EcucModuleDef"]),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "SDGS": lambda obj, elem: obj.sdgs.append(SerializationHelper.deserialize_by_tag(elem, "Sdg")),
     }
 
 
@@ -150,33 +150,27 @@ class BuildActionIoElement(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BuildActionIoElement, cls).deserialize(element)
 
-        # Parse category
-        child = SerializationHelper.find_child_element(element, "CATEGORY")
-        if child is not None:
-            category_value = child.text
-            obj.category = category_value
-
-        # Parse ecuc_definition_ref
-        child = SerializationHelper.find_child_element(element, "ECUC-DEFINITION-REF")
-        if child is not None:
-            ecuc_definition_ref_value = ARRef.deserialize(child)
-            obj.ecuc_definition_ref = ecuc_definition_ref_value
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
-
-        # Parse sdgs (list from container "SDGS")
-        obj.sdgs = []
-        container = SerializationHelper.find_child_element(element, "SDGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sdgs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CATEGORY":
+                setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "ECUC-DEFINITION-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ECUC-COMMON-ATTRIBUTES":
+                        setattr(obj, "ecuc_definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucCommonAttributes"))
+                    elif concrete_tag == "ECUC-CONTAINER-DEF":
+                        setattr(obj, "ecuc_definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucContainerDef"))
+                    elif concrete_tag == "ECUC-MODULE-DEF":
+                        setattr(obj, "ecuc_definition_ref", SerializationHelper.deserialize_by_tag(child[0], "EcucModuleDef"))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "SDGS":
+                obj.sdgs.append(SerializationHelper.deserialize_by_tag(child, "Sdg"))
 
         return obj
 

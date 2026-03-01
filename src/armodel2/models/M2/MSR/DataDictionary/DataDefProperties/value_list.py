@@ -40,7 +40,7 @@ class ValueList(ARObject):
 
     v: Optional[Numerical]
     _DESERIALIZE_DISPATCH = {
-        "V": lambda obj, elem: setattr(obj, "v", elem.text),
+        "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
     }
 
 

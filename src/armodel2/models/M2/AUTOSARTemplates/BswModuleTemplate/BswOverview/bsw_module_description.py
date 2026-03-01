@@ -85,20 +85,20 @@ class BswModuleDescription(ARElement):
     required_mode_groups: list[ModeDeclarationGroup]
     required_triggers: list[Trigger]
     _DESERIALIZE_DISPATCH = {
-        "BSW-MODULES-DEPENDENCIES": lambda obj, elem: obj.bsw_modules_dependencies.append(BswModuleDependency.deserialize(elem)),
-        "BSW-MODULE-DOCUMENTATION": lambda obj, elem: setattr(obj, "bsw_module_documentation", SwComponentDocumentation.deserialize(elem)),
+        "BSW-MODULES-DEPENDENCIES": lambda obj, elem: obj.bsw_modules_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleDependency")),
+        "BSW-MODULE-DOCUMENTATION": lambda obj, elem: setattr(obj, "bsw_module_documentation", SerializationHelper.deserialize_by_tag(elem, "SwComponentDocumentation")),
         "EXPECTED-ENTRIES": lambda obj, elem: obj.expected_entry_refs.append(ARRef.deserialize(elem)),
         "IMPLEMENTED-ENTRIES": lambda obj, elem: obj.implemented_entry_refs.append(ARRef.deserialize(elem)),
-        "INTERNAL-BEHAVIORS": lambda obj, elem: obj.internal_behaviors.append(BswInternalBehavior.deserialize(elem)),
-        "MODULE-ID": lambda obj, elem: setattr(obj, "module_id", elem.text),
-        "PROVIDED-CLIENT-SERVER-ENTRIES": lambda obj, elem: obj._provided_client_server_entries.append(BswModuleClientServerEntry.deserialize(elem)),
-        "PROVIDED-DATAS": lambda obj, elem: obj.provided_datas.append(VariableDataPrototype.deserialize(elem)),
-        "PROVIDED-MODE-GROUPS": lambda obj, elem: obj.provided_mode_groups.append(ModeDeclarationGroup.deserialize(elem)),
-        "RELEASED-TRIGGERS": lambda obj, elem: obj.released_triggers.append(Trigger.deserialize(elem)),
-        "REQUIRED-CLIENT-SERVER-ENTRIES": lambda obj, elem: obj._required_client_server_entries.append(BswModuleClientServerEntry.deserialize(elem)),
-        "REQUIRED-DATAS": lambda obj, elem: obj.required_datas.append(VariableDataPrototype.deserialize(elem)),
-        "REQUIRED-MODE-GROUPS": lambda obj, elem: obj.required_mode_groups.append(ModeDeclarationGroup.deserialize(elem)),
-        "REQUIRED-TRIGGERS": lambda obj, elem: obj.required_triggers.append(Trigger.deserialize(elem)),
+        "INTERNAL-BEHAVIORS": lambda obj, elem: obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalBehavior")),
+        "MODULE-ID": lambda obj, elem: setattr(obj, "module_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PROVIDED-CLIENT-SERVER-ENTRIES": lambda obj, elem: obj._provided_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
+        "PROVIDED-DATAS": lambda obj, elem: obj.provided_datas.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
+        "PROVIDED-MODE-GROUPS": lambda obj, elem: obj.provided_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroup")),
+        "RELEASED-TRIGGERS": lambda obj, elem: obj.released_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
+        "REQUIRED-CLIENT-SERVER-ENTRIES": lambda obj, elem: obj._required_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
+        "REQUIRED-DATAS": lambda obj, elem: obj.required_datas.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
+        "REQUIRED-MODE-GROUPS": lambda obj, elem: obj.required_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroup")),
+        "REQUIRED-TRIGGERS": lambda obj, elem: obj.required_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
     }
 
 
@@ -342,149 +342,39 @@ class BswModuleDescription(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleDescription, cls).deserialize(element)
 
-        # Parse bsw_modules_dependencies (list from container "BSW-MODULES-DEPENDENCIES")
-        obj.bsw_modules_dependencies = []
-        container = SerializationHelper.find_child_element(element, "BSW-MODULES-DEPENDENCIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.bsw_modules_dependencies.append(child_value)
-
-        # Parse bsw_module_documentation
-        child = SerializationHelper.find_child_element(element, "BSW-MODULE-DOCUMENTATION")
-        if child is not None:
-            bsw_module_documentation_value = SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation")
-            obj.bsw_module_documentation = bsw_module_documentation_value
-
-        # Parse expected_entry_refs (list from container "EXPECTED-ENTRY-REFS")
-        obj.expected_entry_refs = []
-        container = SerializationHelper.find_child_element(element, "EXPECTED-ENTRY-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.expected_entry_refs.append(child_value)
-
-        # Parse implemented_entry_refs (list from container "IMPLEMENTED-ENTRY-REFS")
-        obj.implemented_entry_refs = []
-        container = SerializationHelper.find_child_element(element, "IMPLEMENTED-ENTRY-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.implemented_entry_refs.append(child_value)
-
-        # Parse internal_behaviors (list from container "INTERNAL-BEHAVIORS")
-        obj.internal_behaviors = []
-        container = SerializationHelper.find_child_element(element, "INTERNAL-BEHAVIORS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.internal_behaviors.append(child_value)
-
-        # Parse module_id
-        child = SerializationHelper.find_child_element(element, "MODULE-ID")
-        if child is not None:
-            module_id_value = child.text
-            obj.module_id = module_id_value
-
-        # Parse provided_client_server_entries (list from container "PROVIDED-ENTRYS")
-        obj.provided_client_server_entries = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-ENTRYS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.provided_client_server_entries.append(child_value)
-
-        # Parse provided_datas (list from container "PROVIDED-DATAS")
-        obj.provided_datas = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-DATAS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.provided_datas.append(child_value)
-
-        # Parse provided_mode_groups (list from container "PROVIDED-MODE-GROUPS")
-        obj.provided_mode_groups = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-MODE-GROUPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.provided_mode_groups.append(child_value)
-
-        # Parse released_triggers (list from container "RELEASED-TRIGGERS")
-        obj.released_triggers = []
-        container = SerializationHelper.find_child_element(element, "RELEASED-TRIGGERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.released_triggers.append(child_value)
-
-        # Parse required_client_server_entries (list from container "REQUIRED-ENTRYS")
-        obj.required_client_server_entries = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-ENTRYS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.required_client_server_entries.append(child_value)
-
-        # Parse required_datas (list from container "REQUIRED-DATAS")
-        obj.required_datas = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-DATAS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.required_datas.append(child_value)
-
-        # Parse required_mode_groups (list from container "REQUIRED-MODE-GROUPS")
-        obj.required_mode_groups = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-MODE-GROUPS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.required_mode_groups.append(child_value)
-
-        # Parse required_triggers (list from container "REQUIRED-TRIGGERS")
-        obj.required_triggers = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-TRIGGERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.required_triggers.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BSW-MODULES-DEPENDENCIES":
+                obj.bsw_modules_dependencies.append(SerializationHelper.deserialize_by_tag(child, "BswModuleDependency"))
+            elif tag == "BSW-MODULE-DOCUMENTATION":
+                setattr(obj, "bsw_module_documentation", SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation"))
+            elif tag == "EXPECTED-ENTRIES":
+                obj.expected_entry_refs.append(ARRef.deserialize(child))
+            elif tag == "IMPLEMENTED-ENTRIES":
+                obj.implemented_entry_refs.append(ARRef.deserialize(child))
+            elif tag == "INTERNAL-BEHAVIORS":
+                obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(child, "BswInternalBehavior"))
+            elif tag == "MODULE-ID":
+                setattr(obj, "module_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PROVIDED-CLIENT-SERVER-ENTRIES":
+                obj._provided_client_server_entries.append(SerializationHelper.deserialize_by_tag(child, "BswModuleClientServerEntry"))
+            elif tag == "PROVIDED-DATAS":
+                obj.provided_datas.append(SerializationHelper.deserialize_by_tag(child, "VariableDataPrototype"))
+            elif tag == "PROVIDED-MODE-GROUPS":
+                obj.provided_mode_groups.append(SerializationHelper.deserialize_by_tag(child, "ModeDeclarationGroup"))
+            elif tag == "RELEASED-TRIGGERS":
+                obj.released_triggers.append(SerializationHelper.deserialize_by_tag(child, "Trigger"))
+            elif tag == "REQUIRED-CLIENT-SERVER-ENTRIES":
+                obj._required_client_server_entries.append(SerializationHelper.deserialize_by_tag(child, "BswModuleClientServerEntry"))
+            elif tag == "REQUIRED-DATAS":
+                obj.required_datas.append(SerializationHelper.deserialize_by_tag(child, "VariableDataPrototype"))
+            elif tag == "REQUIRED-MODE-GROUPS":
+                obj.required_mode_groups.append(SerializationHelper.deserialize_by_tag(child, "ModeDeclarationGroup"))
+            elif tag == "REQUIRED-TRIGGERS":
+                obj.required_triggers.append(SerializationHelper.deserialize_by_tag(child, "Trigger"))
 
         return obj
 

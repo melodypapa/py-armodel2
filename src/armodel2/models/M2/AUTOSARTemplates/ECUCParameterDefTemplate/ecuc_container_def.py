@@ -51,10 +51,10 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
     requires_index: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
         "DESTINATION-URIS": lambda obj, elem: obj.destination_uri_refs.append(ARRef.deserialize(elem)),
-        "MULTIPLICITIES": lambda obj, elem: obj.multiplicities.append(EcucMultiplicityConfigurationClass.deserialize(elem)),
-        "ORIGIN": lambda obj, elem: setattr(obj, "origin", elem.text),
-        "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", elem.text),
-        "REQUIRES-INDEX": lambda obj, elem: setattr(obj, "requires_index", elem.text),
+        "MULTIPLICITIES": lambda obj, elem: obj.multiplicities.append(SerializationHelper.deserialize_by_tag(elem, "EcucMultiplicityConfigurationClass")),
+        "ORIGIN": lambda obj, elem: setattr(obj, "origin", SerializationHelper.deserialize_by_tag(elem, "String")),
+        "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "REQUIRES-INDEX": lambda obj, elem: setattr(obj, "requires_index", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -174,49 +174,21 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucContainerDef, cls).deserialize(element)
 
-        # Parse destination_uri_refs (list from container "DESTINATION-URI-REFS")
-        obj.destination_uri_refs = []
-        container = SerializationHelper.find_child_element(element, "DESTINATION-URI-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.destination_uri_refs.append(child_value)
-
-        # Parse multiplicities (list from container "MULTIPLICITIES")
-        obj.multiplicities = []
-        container = SerializationHelper.find_child_element(element, "MULTIPLICITIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.multiplicities.append(child_value)
-
-        # Parse origin
-        child = SerializationHelper.find_child_element(element, "ORIGIN")
-        if child is not None:
-            origin_value = child.text
-            obj.origin = origin_value
-
-        # Parse post_build_variant
-        child = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANT")
-        if child is not None:
-            post_build_variant_value = child.text
-            obj.post_build_variant = post_build_variant_value
-
-        # Parse requires_index
-        child = SerializationHelper.find_child_element(element, "REQUIRES-INDEX")
-        if child is not None:
-            requires_index_value = child.text
-            obj.requires_index = requires_index_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DESTINATION-URIS":
+                obj.destination_uri_refs.append(ARRef.deserialize(child))
+            elif tag == "MULTIPLICITIES":
+                obj.multiplicities.append(SerializationHelper.deserialize_by_tag(child, "EcucMultiplicityConfigurationClass"))
+            elif tag == "ORIGIN":
+                setattr(obj, "origin", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "POST-BUILD-VARIANT":
+                setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "REQUIRES-INDEX":
+                setattr(obj, "requires_index", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

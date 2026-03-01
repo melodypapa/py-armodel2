@@ -52,14 +52,14 @@ class Ipv6Configuration(NetworkEndpointAddress):
     ipv6_address: Optional[Ip6AddressString]
     ipv6_address_source: Optional[Ipv6AddressSourceEnum]
     _DESERIALIZE_DISPATCH = {
-        "ASSIGNMENT": lambda obj, elem: setattr(obj, "assignment", elem.text),
-        "DEFAULT-ROUTER": lambda obj, elem: setattr(obj, "default_router", elem.text),
-        "DNS-SERVERS": lambda obj, elem: obj.dns_servers.append(elem.text),
-        "ENABLE-ANYCAST": lambda obj, elem: setattr(obj, "enable_anycast", elem.text),
-        "HOP-COUNT": lambda obj, elem: setattr(obj, "hop_count", elem.text),
+        "ASSIGNMENT": lambda obj, elem: setattr(obj, "assignment", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "DEFAULT-ROUTER": lambda obj, elem: setattr(obj, "default_router", SerializationHelper.deserialize_by_tag(elem, "Ip6AddressString")),
+        "DNS-SERVERS": lambda obj, elem: obj.dns_servers.append(SerializationHelper.deserialize_by_tag(elem, "Ip6AddressString")),
+        "ENABLE-ANYCAST": lambda obj, elem: setattr(obj, "enable_anycast", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "HOP-COUNT": lambda obj, elem: setattr(obj, "hop_count", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "IP-ADDRESS-KEEP-ENUM": lambda obj, elem: setattr(obj, "ip_address_keep_enum", IpAddressKeepEnum.deserialize(elem)),
-        "IP-ADDRESS-PREFIX": lambda obj, elem: setattr(obj, "ip_address_prefix", elem.text),
-        "IPV6-ADDRESS": lambda obj, elem: setattr(obj, "ipv6_address", elem.text),
+        "IP-ADDRESS-PREFIX": lambda obj, elem: setattr(obj, "ip_address_prefix", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "IPV6-ADDRESS": lambda obj, elem: setattr(obj, "ipv6_address", SerializationHelper.deserialize_by_tag(elem, "Ip6AddressString")),
         "IPV6-ADDRESS-SOURCE": lambda obj, elem: setattr(obj, "ipv6_address_source", Ipv6AddressSourceEnum.deserialize(elem)),
     }
 
@@ -244,63 +244,29 @@ class Ipv6Configuration(NetworkEndpointAddress):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ipv6Configuration, cls).deserialize(element)
 
-        # Parse assignment
-        child = SerializationHelper.find_child_element(element, "ASSIGNMENT")
-        if child is not None:
-            assignment_value = child.text
-            obj.assignment = assignment_value
-
-        # Parse default_router
-        child = SerializationHelper.find_child_element(element, "DEFAULT-ROUTER")
-        if child is not None:
-            default_router_value = child.text
-            obj.default_router = default_router_value
-
-        # Parse dns_servers (list from container "DNS-SERVERS")
-        obj.dns_servers = []
-        container = SerializationHelper.find_child_element(element, "DNS-SERVERS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (Ip6AddressString) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.dns_servers.append(child_value)
-
-        # Parse enable_anycast
-        child = SerializationHelper.find_child_element(element, "ENABLE-ANYCAST")
-        if child is not None:
-            enable_anycast_value = child.text
-            obj.enable_anycast = enable_anycast_value
-
-        # Parse hop_count
-        child = SerializationHelper.find_child_element(element, "HOP-COUNT")
-        if child is not None:
-            hop_count_value = child.text
-            obj.hop_count = hop_count_value
-
-        # Parse ip_address_keep_enum
-        child = SerializationHelper.find_child_element(element, "IP-ADDRESS-KEEP-ENUM")
-        if child is not None:
-            ip_address_keep_enum_value = IpAddressKeepEnum.deserialize(child)
-            obj.ip_address_keep_enum = ip_address_keep_enum_value
-
-        # Parse ip_address_prefix
-        child = SerializationHelper.find_child_element(element, "IP-ADDRESS-PREFIX")
-        if child is not None:
-            ip_address_prefix_value = child.text
-            obj.ip_address_prefix = ip_address_prefix_value
-
-        # Parse ipv6_address
-        child = SerializationHelper.find_child_element(element, "IPV6-ADDRESS")
-        if child is not None:
-            ipv6_address_value = child.text
-            obj.ipv6_address = ipv6_address_value
-
-        # Parse ipv6_address_source
-        child = SerializationHelper.find_child_element(element, "IPV6-ADDRESS-SOURCE")
-        if child is not None:
-            ipv6_address_source_value = Ipv6AddressSourceEnum.deserialize(child)
-            obj.ipv6_address_source = ipv6_address_source_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ASSIGNMENT":
+                setattr(obj, "assignment", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "DEFAULT-ROUTER":
+                setattr(obj, "default_router", SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
+            elif tag == "DNS-SERVERS":
+                obj.dns_servers.append(SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
+            elif tag == "ENABLE-ANYCAST":
+                setattr(obj, "enable_anycast", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "HOP-COUNT":
+                setattr(obj, "hop_count", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IP-ADDRESS-KEEP-ENUM":
+                setattr(obj, "ip_address_keep_enum", IpAddressKeepEnum.deserialize(child))
+            elif tag == "IP-ADDRESS-PREFIX":
+                setattr(obj, "ip_address_prefix", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "IPV6-ADDRESS":
+                setattr(obj, "ipv6_address", SerializationHelper.deserialize_by_tag(child, "Ip6AddressString"))
+            elif tag == "IPV6-ADDRESS-SOURCE":
+                setattr(obj, "ipv6_address_source", Ipv6AddressSourceEnum.deserialize(child))
 
         return obj
 

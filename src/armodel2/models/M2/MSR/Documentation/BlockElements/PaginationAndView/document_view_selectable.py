@@ -36,8 +36,8 @@ class DocumentViewSelectable(ARObject, ABC):
     si: NameTokens
     view: Optional[ViewTokens]
     _DESERIALIZE_DISPATCH = {
-        "SI": lambda obj, elem: setattr(obj, "si", elem.text),
-        "VIEW": lambda obj, elem: setattr(obj, "view", elem.text),
+        "SI": lambda obj, elem: setattr(obj, "si", SerializationHelper.deserialize_by_tag(elem, "NameTokens")),
+        "VIEW": lambda obj, elem: setattr(obj, "view", SerializationHelper.deserialize_by_tag(elem, "ViewTokens")),
     }
 
 
@@ -113,17 +113,15 @@ class DocumentViewSelectable(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DocumentViewSelectable, cls).deserialize(element)
 
-        # Parse si
-        child = SerializationHelper.find_child_element(element, "SI")
-        if child is not None:
-            si_value = child.text
-            obj.si = si_value
-
-        # Parse view
-        child = SerializationHelper.find_child_element(element, "VIEW")
-        if child is not None:
-            view_value = child.text
-            obj.view = view_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SI":
+                setattr(obj, "si", SerializationHelper.deserialize_by_tag(child, "NameTokens"))
+            elif tag == "VIEW":
+                setattr(obj, "view", SerializationHelper.deserialize_by_tag(child, "ViewTokens"))
 
         return obj
 

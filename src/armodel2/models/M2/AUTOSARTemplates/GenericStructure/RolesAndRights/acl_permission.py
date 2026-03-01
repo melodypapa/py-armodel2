@@ -56,7 +56,7 @@ class AclPermission(ARElement):
     acl_role_refs: list[ARRef]
     acl_scope: AclScopeEnum
     _DESERIALIZE_DISPATCH = {
-        "ACL-CONTEXTS": lambda obj, elem: obj.acl_contexts.append(elem.text),
+        "ACL-CONTEXTS": lambda obj, elem: obj.acl_contexts.append(SerializationHelper.deserialize_by_tag(elem, "NameToken")),
         "ACL-OBJECT-SETS": lambda obj, elem: obj.acl_object_set_refs.append(ARRef.deserialize(elem)),
         "ACL-OPERATIONS": lambda obj, elem: obj.acl_operation_refs.append(ARRef.deserialize(elem)),
         "ACL-ROLES": lambda obj, elem: obj.acl_role_refs.append(ARRef.deserialize(elem)),
@@ -193,69 +193,21 @@ class AclPermission(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AclPermission, cls).deserialize(element)
 
-        # Parse acl_contexts (list from container "ACL-CONTEXTS")
-        obj.acl_contexts = []
-        container = SerializationHelper.find_child_element(element, "ACL-CONTEXTS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (NameToken) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.acl_contexts.append(child_value)
-
-        # Parse acl_object_set_refs (list from container "ACL-OBJECT-SET-REFS")
-        obj.acl_object_set_refs = []
-        container = SerializationHelper.find_child_element(element, "ACL-OBJECT-SET-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.acl_object_set_refs.append(child_value)
-
-        # Parse acl_operation_refs (list from container "ACL-OPERATION-REFS")
-        obj.acl_operation_refs = []
-        container = SerializationHelper.find_child_element(element, "ACL-OPERATION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.acl_operation_refs.append(child_value)
-
-        # Parse acl_role_refs (list from container "ACL-ROLE-REFS")
-        obj.acl_role_refs = []
-        container = SerializationHelper.find_child_element(element, "ACL-ROLE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.acl_role_refs.append(child_value)
-
-        # Parse acl_scope
-        child = SerializationHelper.find_child_element(element, "ACL-SCOPE")
-        if child is not None:
-            acl_scope_value = AclScopeEnum.deserialize(child)
-            obj.acl_scope = acl_scope_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACL-CONTEXTS":
+                obj.acl_contexts.append(SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "ACL-OBJECT-SETS":
+                obj.acl_object_set_refs.append(ARRef.deserialize(child))
+            elif tag == "ACL-OPERATIONS":
+                obj.acl_operation_refs.append(ARRef.deserialize(child))
+            elif tag == "ACL-ROLES":
+                obj.acl_role_refs.append(ARRef.deserialize(child))
+            elif tag == "ACL-SCOPE":
+                setattr(obj, "acl_scope", AclScopeEnum.deserialize(child))
 
         return obj
 

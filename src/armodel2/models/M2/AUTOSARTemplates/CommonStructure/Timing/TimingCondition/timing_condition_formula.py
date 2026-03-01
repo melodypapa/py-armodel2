@@ -50,7 +50,7 @@ class TimingConditionFormula(ARObject):
     _DESERIALIZE_DISPATCH = {
         "TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF": lambda obj, elem: setattr(obj, "timing_argument_argument_instance_ref", ARRef.deserialize(elem)),
         "TIMING-CONDITION-REF": lambda obj, elem: setattr(obj, "timing_condition_ref", ARRef.deserialize(elem)),
-        "TIMING-EVENT-REF": lambda obj, elem: setattr(obj, "timing_event_ref", ARRef.deserialize(elem)),
+        "TIMING-EVENT-REF": ("_POLYMORPHIC", "timing_event_ref", ["TDEventBsw", "TDEventBswInternalBehavior", "TDEventCom", "TDEventComplex", "TDEventSLLET", "TDEventSwc", "TDEventVfb"]),
         "TIMING-MODE-REF": lambda obj, elem: setattr(obj, "timing_mode_ref", ARRef.deserialize(elem)),
         "TIMING-VARIABLE-INSTANCE-REF": lambda obj, elem: setattr(obj, "timing_variable_instance_ref", ARRef.deserialize(elem)),
     }
@@ -173,35 +173,37 @@ class TimingConditionFormula(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingConditionFormula, cls).deserialize(element)
 
-        # Parse timing_argument_argument_instance_ref
-        child = SerializationHelper.find_child_element(element, "TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF")
-        if child is not None:
-            timing_argument_argument_instance_ref_value = ARRef.deserialize(child)
-            obj.timing_argument_argument_instance_ref = timing_argument_argument_instance_ref_value
-
-        # Parse timing_condition_ref
-        child = SerializationHelper.find_child_element(element, "TIMING-CONDITION-REF")
-        if child is not None:
-            timing_condition_ref_value = ARRef.deserialize(child)
-            obj.timing_condition_ref = timing_condition_ref_value
-
-        # Parse timing_event_ref
-        child = SerializationHelper.find_child_element(element, "TIMING-EVENT-REF")
-        if child is not None:
-            timing_event_ref_value = ARRef.deserialize(child)
-            obj.timing_event_ref = timing_event_ref_value
-
-        # Parse timing_mode_ref
-        child = SerializationHelper.find_child_element(element, "TIMING-MODE-REF")
-        if child is not None:
-            timing_mode_ref_value = ARRef.deserialize(child)
-            obj.timing_mode_ref = timing_mode_ref_value
-
-        # Parse timing_variable_instance_ref
-        child = SerializationHelper.find_child_element(element, "TIMING-VARIABLE-INSTANCE-REF")
-        if child is not None:
-            timing_variable_instance_ref_value = ARRef.deserialize(child)
-            obj.timing_variable_instance_ref = timing_variable_instance_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF":
+                setattr(obj, "timing_argument_argument_instance_ref", ARRef.deserialize(child))
+            elif tag == "TIMING-CONDITION-REF":
+                setattr(obj, "timing_condition_ref", ARRef.deserialize(child))
+            elif tag == "TIMING-EVENT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "T-D-EVENT-BSW":
+                        setattr(obj, "timing_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBsw"))
+                    elif concrete_tag == "T-D-EVENT-BSW-INTERNAL-BEHAVIOR":
+                        setattr(obj, "timing_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventBswInternalBehavior"))
+                    elif concrete_tag == "T-D-EVENT-COM":
+                        setattr(obj, "timing_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventCom"))
+                    elif concrete_tag == "T-D-EVENT-COMPLEX":
+                        setattr(obj, "timing_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventComplex"))
+                    elif concrete_tag == "T-D-EVENT-S-L-L-E-T":
+                        setattr(obj, "timing_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSLLET"))
+                    elif concrete_tag == "T-D-EVENT-SWC":
+                        setattr(obj, "timing_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventSwc"))
+                    elif concrete_tag == "T-D-EVENT-VFB":
+                        setattr(obj, "timing_event_ref", SerializationHelper.deserialize_by_tag(child[0], "TDEventVfb"))
+            elif tag == "TIMING-MODE-REF":
+                setattr(obj, "timing_mode_ref", ARRef.deserialize(child))
+            elif tag == "TIMING-VARIABLE-INSTANCE-REF":
+                setattr(obj, "timing_variable_instance_ref", ARRef.deserialize(child))
 
         return obj
 

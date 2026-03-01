@@ -69,14 +69,14 @@ class TlsCryptoCipherSuite(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "AUTHENTICATION-REF": lambda obj, elem: setattr(obj, "authentication_ref", ARRef.deserialize(elem)),
         "CERTIFICATE-REF": lambda obj, elem: setattr(obj, "certificate_ref", ARRef.deserialize(elem)),
-        "CIPHER-SUITE-ID": lambda obj, elem: setattr(obj, "cipher_suite_id", elem.text),
-        "CIPHER-SUITE": lambda obj, elem: setattr(obj, "cipher_suite", elem.text),
+        "CIPHER-SUITE-ID": lambda obj, elem: setattr(obj, "cipher_suite_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "CIPHER-SUITE": lambda obj, elem: setattr(obj, "cipher_suite", SerializationHelper.deserialize_by_tag(elem, "String")),
         "ELLIPTIC-CURVES": lambda obj, elem: obj.elliptic_curf_refs.append(ARRef.deserialize(elem)),
         "ENCRYPTION-REF": lambda obj, elem: setattr(obj, "encryption_ref", ARRef.deserialize(elem)),
         "KEY-EXCHANGES": lambda obj, elem: obj.key_exchange_refs.append(ARRef.deserialize(elem)),
-        "PRIORITY": lambda obj, elem: setattr(obj, "priority", elem.text),
-        "PROPS": lambda obj, elem: setattr(obj, "props", TlsCryptoCipherSuite.deserialize(elem)),
-        "PSK-IDENTITY": lambda obj, elem: setattr(obj, "psk_identity", TlsPskIdentity.deserialize(elem)),
+        "PRIORITY": lambda obj, elem: setattr(obj, "priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PROPS": lambda obj, elem: setattr(obj, "props", SerializationHelper.deserialize_by_tag(elem, "TlsCryptoCipherSuite")),
+        "PSK-IDENTITY": lambda obj, elem: setattr(obj, "psk_identity", SerializationHelper.deserialize_by_tag(elem, "TlsPskIdentity")),
         "REMOTE-REF": lambda obj, elem: setattr(obj, "remote_ref", ARRef.deserialize(elem)),
         "SIGNATURES": lambda obj, elem: obj.signature_refs.append(ARRef.deserialize(elem)),
         "VERSION": lambda obj, elem: setattr(obj, "version", TlsVersionEnum.deserialize(elem)),
@@ -329,113 +329,37 @@ class TlsCryptoCipherSuite(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TlsCryptoCipherSuite, cls).deserialize(element)
 
-        # Parse authentication_ref
-        child = SerializationHelper.find_child_element(element, "AUTHENTICATION-REF")
-        if child is not None:
-            authentication_ref_value = ARRef.deserialize(child)
-            obj.authentication_ref = authentication_ref_value
-
-        # Parse certificate_ref
-        child = SerializationHelper.find_child_element(element, "CERTIFICATE-REF")
-        if child is not None:
-            certificate_ref_value = ARRef.deserialize(child)
-            obj.certificate_ref = certificate_ref_value
-
-        # Parse cipher_suite_id
-        child = SerializationHelper.find_child_element(element, "CIPHER-SUITE-ID")
-        if child is not None:
-            cipher_suite_id_value = child.text
-            obj.cipher_suite_id = cipher_suite_id_value
-
-        # Parse cipher_suite
-        child = SerializationHelper.find_child_element(element, "CIPHER-SUITE")
-        if child is not None:
-            cipher_suite_value = child.text
-            obj.cipher_suite = cipher_suite_value
-
-        # Parse elliptic_curf_refs (list from container "ELLIPTIC-CURF-REFS")
-        obj.elliptic_curf_refs = []
-        container = SerializationHelper.find_child_element(element, "ELLIPTIC-CURF-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.elliptic_curf_refs.append(child_value)
-
-        # Parse encryption_ref
-        child = SerializationHelper.find_child_element(element, "ENCRYPTION-REF")
-        if child is not None:
-            encryption_ref_value = ARRef.deserialize(child)
-            obj.encryption_ref = encryption_ref_value
-
-        # Parse key_exchange_refs (list from container "KEY-EXCHANGE-REFS")
-        obj.key_exchange_refs = []
-        container = SerializationHelper.find_child_element(element, "KEY-EXCHANGE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.key_exchange_refs.append(child_value)
-
-        # Parse priority
-        child = SerializationHelper.find_child_element(element, "PRIORITY")
-        if child is not None:
-            priority_value = child.text
-            obj.priority = priority_value
-
-        # Parse props
-        child = SerializationHelper.find_child_element(element, "PROPS")
-        if child is not None:
-            props_value = SerializationHelper.deserialize_by_tag(child, "TlsCryptoCipherSuite")
-            obj.props = props_value
-
-        # Parse psk_identity
-        child = SerializationHelper.find_child_element(element, "PSK-IDENTITY")
-        if child is not None:
-            psk_identity_value = SerializationHelper.deserialize_by_tag(child, "TlsPskIdentity")
-            obj.psk_identity = psk_identity_value
-
-        # Parse remote_ref
-        child = SerializationHelper.find_child_element(element, "REMOTE-REF")
-        if child is not None:
-            remote_ref_value = ARRef.deserialize(child)
-            obj.remote_ref = remote_ref_value
-
-        # Parse signature_refs (list from container "SIGNATURE-REFS")
-        obj.signature_refs = []
-        container = SerializationHelper.find_child_element(element, "SIGNATURE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.signature_refs.append(child_value)
-
-        # Parse version
-        child = SerializationHelper.find_child_element(element, "VERSION")
-        if child is not None:
-            version_value = TlsVersionEnum.deserialize(child)
-            obj.version = version_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AUTHENTICATION-REF":
+                setattr(obj, "authentication_ref", ARRef.deserialize(child))
+            elif tag == "CERTIFICATE-REF":
+                setattr(obj, "certificate_ref", ARRef.deserialize(child))
+            elif tag == "CIPHER-SUITE-ID":
+                setattr(obj, "cipher_suite_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "CIPHER-SUITE":
+                setattr(obj, "cipher_suite", SerializationHelper.deserialize_by_tag(child, "String"))
+            elif tag == "ELLIPTIC-CURVES":
+                obj.elliptic_curf_refs.append(ARRef.deserialize(child))
+            elif tag == "ENCRYPTION-REF":
+                setattr(obj, "encryption_ref", ARRef.deserialize(child))
+            elif tag == "KEY-EXCHANGES":
+                obj.key_exchange_refs.append(ARRef.deserialize(child))
+            elif tag == "PRIORITY":
+                setattr(obj, "priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PROPS":
+                setattr(obj, "props", SerializationHelper.deserialize_by_tag(child, "TlsCryptoCipherSuite"))
+            elif tag == "PSK-IDENTITY":
+                setattr(obj, "psk_identity", SerializationHelper.deserialize_by_tag(child, "TlsPskIdentity"))
+            elif tag == "REMOTE-REF":
+                setattr(obj, "remote_ref", ARRef.deserialize(child))
+            elif tag == "SIGNATURES":
+                obj.signature_refs.append(ARRef.deserialize(child))
+            elif tag == "VERSION":
+                setattr(obj, "version", TlsVersionEnum.deserialize(child))
 
         return obj
 

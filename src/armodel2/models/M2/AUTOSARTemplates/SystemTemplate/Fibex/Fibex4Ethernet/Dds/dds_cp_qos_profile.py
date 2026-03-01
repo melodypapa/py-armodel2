@@ -82,18 +82,18 @@ class DdsCpQosProfile(Identifiable):
     topic_data: Optional[DdsTopicData]
     transport_priority: Optional[DdsTransportPriority]
     _DESERIALIZE_DISPATCH = {
-        "DEADLINE": lambda obj, elem: setattr(obj, "deadline", DdsDeadline.deserialize(elem)),
-        "DESTINATION-ORDER": lambda obj, elem: setattr(obj, "destination_order", DdsDestinationOrder.deserialize(elem)),
-        "DURABILITY": lambda obj, elem: setattr(obj, "durability", DdsDurabilityService.deserialize(elem)),
-        "HISTORY": lambda obj, elem: setattr(obj, "history", DdsHistory.deserialize(elem)),
-        "LATENCY-BUDGET": lambda obj, elem: setattr(obj, "latency_budget", DdsLatencyBudget.deserialize(elem)),
-        "LIFESPAN": lambda obj, elem: setattr(obj, "lifespan", DdsLifespan.deserialize(elem)),
-        "LIVELINESS": lambda obj, elem: setattr(obj, "liveliness", DdsLiveliness.deserialize(elem)),
-        "OWNERSHIP": lambda obj, elem: setattr(obj, "ownership", DdsOwnershipStrength.deserialize(elem)),
-        "RELIABILITY": lambda obj, elem: setattr(obj, "reliability", DdsReliability.deserialize(elem)),
-        "RESOURCE-LIMITS": lambda obj, elem: setattr(obj, "resource_limits", DdsResourceLimits.deserialize(elem)),
-        "TOPIC-DATA": lambda obj, elem: setattr(obj, "topic_data", DdsTopicData.deserialize(elem)),
-        "TRANSPORT-PRIORITY": lambda obj, elem: setattr(obj, "transport_priority", DdsTransportPriority.deserialize(elem)),
+        "DEADLINE": lambda obj, elem: setattr(obj, "deadline", SerializationHelper.deserialize_by_tag(elem, "DdsDeadline")),
+        "DESTINATION-ORDER": lambda obj, elem: setattr(obj, "destination_order", SerializationHelper.deserialize_by_tag(elem, "DdsDestinationOrder")),
+        "DURABILITY": lambda obj, elem: setattr(obj, "durability", SerializationHelper.deserialize_by_tag(elem, "DdsDurabilityService")),
+        "HISTORY": lambda obj, elem: setattr(obj, "history", SerializationHelper.deserialize_by_tag(elem, "DdsHistory")),
+        "LATENCY-BUDGET": lambda obj, elem: setattr(obj, "latency_budget", SerializationHelper.deserialize_by_tag(elem, "DdsLatencyBudget")),
+        "LIFESPAN": lambda obj, elem: setattr(obj, "lifespan", SerializationHelper.deserialize_by_tag(elem, "DdsLifespan")),
+        "LIVELINESS": lambda obj, elem: setattr(obj, "liveliness", SerializationHelper.deserialize_by_tag(elem, "DdsLiveliness")),
+        "OWNERSHIP": lambda obj, elem: setattr(obj, "ownership", SerializationHelper.deserialize_by_tag(elem, "DdsOwnershipStrength")),
+        "RELIABILITY": lambda obj, elem: setattr(obj, "reliability", SerializationHelper.deserialize_by_tag(elem, "DdsReliability")),
+        "RESOURCE-LIMITS": lambda obj, elem: setattr(obj, "resource_limits", SerializationHelper.deserialize_by_tag(elem, "DdsResourceLimits")),
+        "TOPIC-DATA": lambda obj, elem: setattr(obj, "topic_data", SerializationHelper.deserialize_by_tag(elem, "DdsTopicData")),
+        "TRANSPORT-PRIORITY": lambda obj, elem: setattr(obj, "transport_priority", SerializationHelper.deserialize_by_tag(elem, "DdsTransportPriority")),
     }
 
 
@@ -319,77 +319,35 @@ class DdsCpQosProfile(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpQosProfile, cls).deserialize(element)
 
-        # Parse deadline
-        child = SerializationHelper.find_child_element(element, "DEADLINE")
-        if child is not None:
-            deadline_value = SerializationHelper.deserialize_by_tag(child, "DdsDeadline")
-            obj.deadline = deadline_value
-
-        # Parse destination_order
-        child = SerializationHelper.find_child_element(element, "DESTINATION-ORDER")
-        if child is not None:
-            destination_order_value = SerializationHelper.deserialize_by_tag(child, "DdsDestinationOrder")
-            obj.destination_order = destination_order_value
-
-        # Parse durability
-        child = SerializationHelper.find_child_element(element, "DURABILITY")
-        if child is not None:
-            durability_value = SerializationHelper.deserialize_by_tag(child, "DdsDurabilityService")
-            obj.durability = durability_value
-
-        # Parse history
-        child = SerializationHelper.find_child_element(element, "HISTORY")
-        if child is not None:
-            history_value = SerializationHelper.deserialize_by_tag(child, "DdsHistory")
-            obj.history = history_value
-
-        # Parse latency_budget
-        child = SerializationHelper.find_child_element(element, "LATENCY-BUDGET")
-        if child is not None:
-            latency_budget_value = SerializationHelper.deserialize_by_tag(child, "DdsLatencyBudget")
-            obj.latency_budget = latency_budget_value
-
-        # Parse lifespan
-        child = SerializationHelper.find_child_element(element, "LIFESPAN")
-        if child is not None:
-            lifespan_value = SerializationHelper.deserialize_by_tag(child, "DdsLifespan")
-            obj.lifespan = lifespan_value
-
-        # Parse liveliness
-        child = SerializationHelper.find_child_element(element, "LIVELINESS")
-        if child is not None:
-            liveliness_value = SerializationHelper.deserialize_by_tag(child, "DdsLiveliness")
-            obj.liveliness = liveliness_value
-
-        # Parse ownership
-        child = SerializationHelper.find_child_element(element, "OWNERSHIP")
-        if child is not None:
-            ownership_value = SerializationHelper.deserialize_by_tag(child, "DdsOwnershipStrength")
-            obj.ownership = ownership_value
-
-        # Parse reliability
-        child = SerializationHelper.find_child_element(element, "RELIABILITY")
-        if child is not None:
-            reliability_value = SerializationHelper.deserialize_by_tag(child, "DdsReliability")
-            obj.reliability = reliability_value
-
-        # Parse resource_limits
-        child = SerializationHelper.find_child_element(element, "RESOURCE-LIMITS")
-        if child is not None:
-            resource_limits_value = SerializationHelper.deserialize_by_tag(child, "DdsResourceLimits")
-            obj.resource_limits = resource_limits_value
-
-        # Parse topic_data
-        child = SerializationHelper.find_child_element(element, "TOPIC-DATA")
-        if child is not None:
-            topic_data_value = SerializationHelper.deserialize_by_tag(child, "DdsTopicData")
-            obj.topic_data = topic_data_value
-
-        # Parse transport_priority
-        child = SerializationHelper.find_child_element(element, "TRANSPORT-PRIORITY")
-        if child is not None:
-            transport_priority_value = SerializationHelper.deserialize_by_tag(child, "DdsTransportPriority")
-            obj.transport_priority = transport_priority_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEADLINE":
+                setattr(obj, "deadline", SerializationHelper.deserialize_by_tag(child, "DdsDeadline"))
+            elif tag == "DESTINATION-ORDER":
+                setattr(obj, "destination_order", SerializationHelper.deserialize_by_tag(child, "DdsDestinationOrder"))
+            elif tag == "DURABILITY":
+                setattr(obj, "durability", SerializationHelper.deserialize_by_tag(child, "DdsDurabilityService"))
+            elif tag == "HISTORY":
+                setattr(obj, "history", SerializationHelper.deserialize_by_tag(child, "DdsHistory"))
+            elif tag == "LATENCY-BUDGET":
+                setattr(obj, "latency_budget", SerializationHelper.deserialize_by_tag(child, "DdsLatencyBudget"))
+            elif tag == "LIFESPAN":
+                setattr(obj, "lifespan", SerializationHelper.deserialize_by_tag(child, "DdsLifespan"))
+            elif tag == "LIVELINESS":
+                setattr(obj, "liveliness", SerializationHelper.deserialize_by_tag(child, "DdsLiveliness"))
+            elif tag == "OWNERSHIP":
+                setattr(obj, "ownership", SerializationHelper.deserialize_by_tag(child, "DdsOwnershipStrength"))
+            elif tag == "RELIABILITY":
+                setattr(obj, "reliability", SerializationHelper.deserialize_by_tag(child, "DdsReliability"))
+            elif tag == "RESOURCE-LIMITS":
+                setattr(obj, "resource_limits", SerializationHelper.deserialize_by_tag(child, "DdsResourceLimits"))
+            elif tag == "TOPIC-DATA":
+                setattr(obj, "topic_data", SerializationHelper.deserialize_by_tag(child, "DdsTopicData"))
+            elif tag == "TRANSPORT-PRIORITY":
+                setattr(obj, "transport_priority", SerializationHelper.deserialize_by_tag(child, "DdsTransportPriority"))
 
         return obj
 

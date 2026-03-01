@@ -80,13 +80,13 @@ class PortPrototype(Identifiable, ABC):
     sender_receivers: list[Any]
     trigger_port_annotation_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CLIENT-SERVERS": lambda obj, elem: obj.client_servers.append(ClientServerAnnotation.deserialize(elem)),
-        "DELEGATED-PORT": lambda obj, elem: setattr(obj, "delegated_port", DelegatedPortAnnotation.deserialize(elem)),
-        "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS": lambda obj, elem: obj.io_hw_abstraction_server_annotations.append(IoHwAbstractionServerAnnotation.deserialize(elem)),
-        "MODE-PORT-ANNOTATIONS": lambda obj, elem: obj.mode_port_annotations.append(ModePortAnnotation.deserialize(elem)),
-        "NV-DATA-PORT-ANNOTATIONS": lambda obj, elem: obj.nv_data_port_annotations.append(NvDataPortAnnotation.deserialize(elem)),
-        "PARAMETER-PORTS": lambda obj, elem: obj.parameter_ports.append(ParameterPortAnnotation.deserialize(elem)),
-        "SENDER-RECEIVERS": lambda obj, elem: obj.sender_receivers.append(any (SenderReceiver).deserialize(elem)),
+        "CLIENT-SERVERS": lambda obj, elem: obj.client_servers.append(SerializationHelper.deserialize_by_tag(elem, "ClientServerAnnotation")),
+        "DELEGATED-PORT": lambda obj, elem: setattr(obj, "delegated_port", SerializationHelper.deserialize_by_tag(elem, "DelegatedPortAnnotation")),
+        "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS": lambda obj, elem: obj.io_hw_abstraction_server_annotations.append(SerializationHelper.deserialize_by_tag(elem, "IoHwAbstractionServerAnnotation")),
+        "MODE-PORT-ANNOTATIONS": lambda obj, elem: obj.mode_port_annotations.append(SerializationHelper.deserialize_by_tag(elem, "ModePortAnnotation")),
+        "NV-DATA-PORT-ANNOTATIONS": lambda obj, elem: obj.nv_data_port_annotations.append(SerializationHelper.deserialize_by_tag(elem, "NvDataPortAnnotation")),
+        "PARAMETER-PORTS": lambda obj, elem: obj.parameter_ports.append(SerializationHelper.deserialize_by_tag(elem, "ParameterPortAnnotation")),
+        "SENDER-RECEIVERS": lambda obj, elem: obj.sender_receivers.append(SerializationHelper.deserialize_by_tag(elem, "any (SenderReceiver)")),
         "TRIGGER-PORT-ANNOTATIONS": lambda obj, elem: obj.trigger_port_annotation_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -232,87 +232,27 @@ class PortPrototype(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortPrototype, cls).deserialize(element)
 
-        # Parse client_servers (list from container "CLIENT-SERVERS")
-        obj.client_servers = []
-        container = SerializationHelper.find_child_element(element, "CLIENT-SERVERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.client_servers.append(child_value)
-
-        # Parse delegated_port
-        child = SerializationHelper.find_child_element(element, "DELEGATED-PORT")
-        if child is not None:
-            delegated_port_value = SerializationHelper.deserialize_by_tag(child, "DelegatedPortAnnotation")
-            obj.delegated_port = delegated_port_value
-
-        # Parse io_hw_abstraction_server_annotations (list from container "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS")
-        obj.io_hw_abstraction_server_annotations = []
-        container = SerializationHelper.find_child_element(element, "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.io_hw_abstraction_server_annotations.append(child_value)
-
-        # Parse mode_port_annotations (list from container "MODE-PORT-ANNOTATIONS")
-        obj.mode_port_annotations = []
-        container = SerializationHelper.find_child_element(element, "MODE-PORT-ANNOTATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mode_port_annotations.append(child_value)
-
-        # Parse nv_data_port_annotations (list from container "NV-DATA-PORT-ANNOTATIONS")
-        obj.nv_data_port_annotations = []
-        container = SerializationHelper.find_child_element(element, "NV-DATA-PORT-ANNOTATIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.nv_data_port_annotations.append(child_value)
-
-        # Parse parameter_ports (list from container "PARAMETER-PORTS")
-        obj.parameter_ports = []
-        container = SerializationHelper.find_child_element(element, "PARAMETER-PORTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.parameter_ports.append(child_value)
-
-        # Parse sender_receivers (list from container "SENDER-RECEIVERS")
-        obj.sender_receivers = []
-        container = SerializationHelper.find_child_element(element, "SENDER-RECEIVERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sender_receivers.append(child_value)
-
-        # Parse trigger_port_annotation_refs (list from container "TRIGGER-PORT-ANNOTATION-REFS")
-        obj.trigger_port_annotation_refs = []
-        container = SerializationHelper.find_child_element(element, "TRIGGER-PORT-ANNOTATION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.trigger_port_annotation_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CLIENT-SERVERS":
+                obj.client_servers.append(SerializationHelper.deserialize_by_tag(child, "ClientServerAnnotation"))
+            elif tag == "DELEGATED-PORT":
+                setattr(obj, "delegated_port", SerializationHelper.deserialize_by_tag(child, "DelegatedPortAnnotation"))
+            elif tag == "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS":
+                obj.io_hw_abstraction_server_annotations.append(SerializationHelper.deserialize_by_tag(child, "IoHwAbstractionServerAnnotation"))
+            elif tag == "MODE-PORT-ANNOTATIONS":
+                obj.mode_port_annotations.append(SerializationHelper.deserialize_by_tag(child, "ModePortAnnotation"))
+            elif tag == "NV-DATA-PORT-ANNOTATIONS":
+                obj.nv_data_port_annotations.append(SerializationHelper.deserialize_by_tag(child, "NvDataPortAnnotation"))
+            elif tag == "PARAMETER-PORTS":
+                obj.parameter_ports.append(SerializationHelper.deserialize_by_tag(child, "ParameterPortAnnotation"))
+            elif tag == "SENDER-RECEIVERS":
+                obj.sender_receivers.append(SerializationHelper.deserialize_by_tag(child, "any (SenderReceiver)"))
+            elif tag == "TRIGGER-PORT-ANNOTATIONS":
+                obj.trigger_port_annotation_refs.append(ARRef.deserialize(child))
 
         return obj
 

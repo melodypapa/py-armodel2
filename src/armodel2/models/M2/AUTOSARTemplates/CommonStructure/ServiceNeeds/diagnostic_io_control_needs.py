@@ -48,9 +48,9 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
     short_term: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
         "CURRENT-VALUE-REF": lambda obj, elem: setattr(obj, "current_value_ref", ARRef.deserialize(elem)),
-        "FREEZE-CURRENT": lambda obj, elem: setattr(obj, "freeze_current", elem.text),
-        "RESET-TO-DEFAULT": lambda obj, elem: setattr(obj, "reset_to_default", elem.text),
-        "SHORT-TERM": lambda obj, elem: setattr(obj, "short_term", elem.text),
+        "FREEZE-CURRENT": lambda obj, elem: setattr(obj, "freeze_current", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RESET-TO-DEFAULT": lambda obj, elem: setattr(obj, "reset_to_default", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SHORT-TERM": lambda obj, elem: setattr(obj, "short_term", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -156,29 +156,19 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticIoControlNeeds, cls).deserialize(element)
 
-        # Parse current_value_ref
-        child = SerializationHelper.find_child_element(element, "CURRENT-VALUE-REF")
-        if child is not None:
-            current_value_ref_value = ARRef.deserialize(child)
-            obj.current_value_ref = current_value_ref_value
-
-        # Parse freeze_current
-        child = SerializationHelper.find_child_element(element, "FREEZE-CURRENT")
-        if child is not None:
-            freeze_current_value = child.text
-            obj.freeze_current = freeze_current_value
-
-        # Parse reset_to_default
-        child = SerializationHelper.find_child_element(element, "RESET-TO-DEFAULT")
-        if child is not None:
-            reset_to_default_value = child.text
-            obj.reset_to_default = reset_to_default_value
-
-        # Parse short_term
-        child = SerializationHelper.find_child_element(element, "SHORT-TERM")
-        if child is not None:
-            short_term_value = child.text
-            obj.short_term = short_term_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CURRENT-VALUE-REF":
+                setattr(obj, "current_value_ref", ARRef.deserialize(child))
+            elif tag == "FREEZE-CURRENT":
+                setattr(obj, "freeze_current", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RESET-TO-DEFAULT":
+                setattr(obj, "reset_to_default", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SHORT-TERM":
+                setattr(obj, "short_term", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

@@ -42,8 +42,8 @@ class LGraphic(LanguageSpecific):
     graphic: Graphic
     map: Optional[Map]
     _DESERIALIZE_DISPATCH = {
-        "GRAPHIC": lambda obj, elem: setattr(obj, "graphic", Graphic.deserialize(elem)),
-        "MAP": lambda obj, elem: setattr(obj, "map", Map.deserialize(elem)),
+        "GRAPHIC": lambda obj, elem: setattr(obj, "graphic", SerializationHelper.deserialize_by_tag(elem, "Graphic")),
+        "MAP": lambda obj, elem: setattr(obj, "map", SerializationHelper.deserialize_by_tag(elem, "Map")),
     }
 
 
@@ -119,17 +119,15 @@ class LGraphic(LanguageSpecific):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LGraphic, cls).deserialize(element)
 
-        # Parse graphic
-        child = SerializationHelper.find_child_element(element, "GRAPHIC")
-        if child is not None:
-            graphic_value = SerializationHelper.deserialize_by_tag(child, "Graphic")
-            obj.graphic = graphic_value
-
-        # Parse map
-        child = SerializationHelper.find_child_element(element, "MAP")
-        if child is not None:
-            map_value = SerializationHelper.deserialize_by_tag(child, "Map")
-            obj.map = map_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "GRAPHIC":
+                setattr(obj, "graphic", SerializationHelper.deserialize_by_tag(child, "Graphic"))
+            elif tag == "MAP":
+                setattr(obj, "map", SerializationHelper.deserialize_by_tag(child, "Map"))
 
         return obj
 

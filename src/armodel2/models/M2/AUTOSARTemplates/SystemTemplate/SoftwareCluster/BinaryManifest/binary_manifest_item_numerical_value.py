@@ -38,7 +38,7 @@ class BinaryManifestItemNumericalValue(BinaryManifestItemValue):
 
     value: Optional[Numerical]
     _DESERIALIZE_DISPATCH = {
-        "VALUE": lambda obj, elem: setattr(obj, "value", elem.text),
+        "VALUE": lambda obj, elem: setattr(obj, "value", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
     }
 
 
@@ -99,11 +99,13 @@ class BinaryManifestItemNumericalValue(BinaryManifestItemValue):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BinaryManifestItemNumericalValue, cls).deserialize(element)
 
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = child.text
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "VALUE":
+                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "Numerical"))
 
         return obj
 

@@ -40,7 +40,7 @@ class PortInterfaceMappingSet(ARElement):
 
     port_interface_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "PORT-INTERFACES": lambda obj, elem: obj.port_interface_refs.append(ARRef.deserialize(elem)),
+        "PORT-INTERFACES": ("_POLYMORPHIC_LIST", "port_interface_refs", ["ClientServerInterfaceMapping", "ModeInterfaceMapping", "TriggerInterfaceMapping", "VariableAndParameter"]),
     }
 
 
@@ -104,21 +104,23 @@ class PortInterfaceMappingSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortInterfaceMappingSet, cls).deserialize(element)
 
-        # Parse port_interface_refs (list from container "PORT-INTERFACE-REFS")
-        obj.port_interface_refs = []
-        container = SerializationHelper.find_child_element(element, "PORT-INTERFACE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.port_interface_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PORT-INTERFACES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CLIENT-SERVER-INTERFACE-MAPPING":
+                        obj.port_interface_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ClientServerInterfaceMapping"))
+                    elif concrete_tag == "MODE-INTERFACE-MAPPING":
+                        obj.port_interface_refs.append(SerializationHelper.deserialize_by_tag(child[0], "ModeInterfaceMapping"))
+                    elif concrete_tag == "TRIGGER-INTERFACE-MAPPING":
+                        obj.port_interface_refs.append(SerializationHelper.deserialize_by_tag(child[0], "TriggerInterfaceMapping"))
+                    elif concrete_tag == "VARIABLE-AND-PARAMETER":
+                        obj.port_interface_refs.append(SerializationHelper.deserialize_by_tag(child[0], "VariableAndParameter"))
 
         return obj
 

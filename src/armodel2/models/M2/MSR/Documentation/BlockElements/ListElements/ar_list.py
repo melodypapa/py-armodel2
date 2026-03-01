@@ -46,7 +46,7 @@ class ARList(Paginateable):
     _items: list[Item]
     _type: Optional[ListEnum]
     _DESERIALIZE_DISPATCH = {
-        "ITEMS": lambda obj, elem: obj._items.append(Item.deserialize(elem)),
+        "ITEMS": lambda obj, elem: obj._items.append(SerializationHelper.deserialize_by_tag(elem, "Item")),
     }
 
 
@@ -133,19 +133,17 @@ class ARList(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ARList, cls).deserialize(element)
 
-        # Parse items (list of direct "ITEM" children, no container)
-        obj.items = []
-        for child in element:
-            child_element_tag = SerializationHelper.strip_namespace(child.tag)
-            if child_element_tag == "ITEM":                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.items.append(child_value)
-
         # Parse type from XML attribute
         if "TYPE" in element.attrib:
-            type_value = ListEnum(element.attrib["TYPE"])
-            obj.type = type_value
+            obj.type = element.attrib["TYPE"]
+
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ITEMS":
+                obj._items.append(SerializationHelper.deserialize_by_tag(child, "Item"))
 
         return obj
 

@@ -36,7 +36,7 @@ class DiagnosticAbstractDataIdentifier(DiagnosticCommonElement, ABC):
 
     id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ID": lambda obj, elem: setattr(obj, "id", elem.text),
+        "ID": lambda obj, elem: setattr(obj, "id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -97,11 +97,13 @@ class DiagnosticAbstractDataIdentifier(DiagnosticCommonElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAbstractDataIdentifier, cls).deserialize(element)
 
-        # Parse id
-        child = SerializationHelper.find_child_element(element, "ID")
-        if child is not None:
-            id_value = child.text
-            obj.id = id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ID":
+                setattr(obj, "id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

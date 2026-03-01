@@ -44,9 +44,9 @@ class ViewMap(Identifiable):
     role: Optional[Identifier]
     second_elements: list[AtpFeature]
     _DESERIALIZE_DISPATCH = {
-        "FIRST-ELEMENTS": lambda obj, elem: obj.first_elements.append(AtpFeature.deserialize(elem)),
-        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
-        "SECOND-ELEMENTS": lambda obj, elem: obj.second_elements.append(AtpFeature.deserialize(elem)),
+        "FIRST-ELEMENTS": ("_POLYMORPHIC_LIST", "first_elements", ["AtpPrototype", "AtpStructureElement"]),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "SECOND-ELEMENTS": ("_POLYMORPHIC_LIST", "second_elements", ["AtpPrototype", "AtpStructureElement"]),
     }
 
 
@@ -129,31 +129,29 @@ class ViewMap(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ViewMap, cls).deserialize(element)
 
-        # Parse first_elements (list from container "FIRST-ELEMENTS")
-        obj.first_elements = []
-        container = SerializationHelper.find_child_element(element, "FIRST-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.first_elements.append(child_value)
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
-
-        # Parse second_elements (list from container "SECOND-ELEMENTS")
-        obj.second_elements = []
-        container = SerializationHelper.find_child_element(element, "SECOND-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.second_elements.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FIRST-ELEMENTS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATP-PROTOTYPE":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
+                    elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
+                        obj.first_elements.append(SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "SECOND-ELEMENTS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATP-PROTOTYPE":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(child[0], "AtpPrototype"))
+                    elif concrete_tag == "ATP-STRUCTURE-ELEMENT":
+                        obj.second_elements.append(SerializationHelper.deserialize_by_tag(child[0], "AtpStructureElement"))
 
         return obj
 

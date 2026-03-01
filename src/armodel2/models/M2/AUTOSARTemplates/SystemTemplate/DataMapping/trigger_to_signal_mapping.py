@@ -120,17 +120,15 @@ class TriggerToSignalMapping(DataMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TriggerToSignalMapping, cls).deserialize(element)
 
-        # Parse system_signal_ref
-        child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
-        if child is not None:
-            system_signal_ref_value = ARRef.deserialize(child)
-            obj.system_signal_ref = system_signal_ref_value
-
-        # Parse trigger_ref
-        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
-        if child is not None:
-            trigger_ref_value = ARRef.deserialize(child)
-            obj.trigger_ref = trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SYSTEM-SIGNAL-REF":
+                setattr(obj, "system_signal_ref", ARRef.deserialize(child))
+            elif tag == "TRIGGER-REF":
+                setattr(obj, "trigger_ref", ARRef.deserialize(child))
 
         return obj
 

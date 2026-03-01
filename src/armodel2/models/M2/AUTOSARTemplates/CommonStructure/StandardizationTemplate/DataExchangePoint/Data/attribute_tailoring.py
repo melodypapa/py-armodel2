@@ -37,8 +37,8 @@ class AttributeTailoring(DataFormatElementScope, ABC):
     multiplicity: Optional[Any]
     variation: Optional[VariationRestrictionWithSeverity]
     _DESERIALIZE_DISPATCH = {
-        "MULTIPLICITY": lambda obj, elem: setattr(obj, "multiplicity", any (MultiplicityRestriction).deserialize(elem)),
-        "VARIATION": lambda obj, elem: setattr(obj, "variation", VariationRestrictionWithSeverity.deserialize(elem)),
+        "MULTIPLICITY": lambda obj, elem: setattr(obj, "multiplicity", SerializationHelper.deserialize_by_tag(elem, "any (MultiplicityRestriction)")),
+        "VARIATION": lambda obj, elem: setattr(obj, "variation", SerializationHelper.deserialize_by_tag(elem, "VariationRestrictionWithSeverity")),
     }
 
 
@@ -114,17 +114,15 @@ class AttributeTailoring(DataFormatElementScope, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AttributeTailoring, cls).deserialize(element)
 
-        # Parse multiplicity
-        child = SerializationHelper.find_child_element(element, "MULTIPLICITY")
-        if child is not None:
-            multiplicity_value = child.text
-            obj.multiplicity = multiplicity_value
-
-        # Parse variation
-        child = SerializationHelper.find_child_element(element, "VARIATION")
-        if child is not None:
-            variation_value = SerializationHelper.deserialize_by_tag(child, "VariationRestrictionWithSeverity")
-            obj.variation = variation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MULTIPLICITY":
+                setattr(obj, "multiplicity", SerializationHelper.deserialize_by_tag(child, "any (MultiplicityRestriction)"))
+            elif tag == "VARIATION":
+                setattr(obj, "variation", SerializationHelper.deserialize_by_tag(child, "VariationRestrictionWithSeverity"))
 
         return obj
 

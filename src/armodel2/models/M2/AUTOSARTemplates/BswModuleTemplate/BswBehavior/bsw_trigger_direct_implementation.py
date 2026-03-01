@@ -40,9 +40,9 @@ class BswTriggerDirectImplementation(ARObject):
     mastered_trigger_ref: Optional[ARRef]
     task: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "CAT2-ISR": lambda obj, elem: setattr(obj, "cat2_isr", elem.text),
+        "CAT2-ISR": lambda obj, elem: setattr(obj, "cat2_isr", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
         "MASTERED-TRIGGER-REF": lambda obj, elem: setattr(obj, "mastered_trigger_ref", ARRef.deserialize(elem)),
-        "TASK": lambda obj, elem: setattr(obj, "task", elem.text),
+        "TASK": lambda obj, elem: setattr(obj, "task", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -133,23 +133,17 @@ class BswTriggerDirectImplementation(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswTriggerDirectImplementation, cls).deserialize(element)
 
-        # Parse cat2_isr
-        child = SerializationHelper.find_child_element(element, "CAT2-ISR")
-        if child is not None:
-            cat2_isr_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.cat2_isr = cat2_isr_value
-
-        # Parse mastered_trigger_ref
-        child = SerializationHelper.find_child_element(element, "MASTERED-TRIGGER-REF")
-        if child is not None:
-            mastered_trigger_ref_value = ARRef.deserialize(child)
-            obj.mastered_trigger_ref = mastered_trigger_ref_value
-
-        # Parse task
-        child = SerializationHelper.find_child_element(element, "TASK")
-        if child is not None:
-            task_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.task = task_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CAT2-ISR":
+                setattr(obj, "cat2_isr", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "MASTERED-TRIGGER-REF":
+                setattr(obj, "mastered_trigger_ref", ARRef.deserialize(child))
+            elif tag == "TASK":
+                setattr(obj, "task", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

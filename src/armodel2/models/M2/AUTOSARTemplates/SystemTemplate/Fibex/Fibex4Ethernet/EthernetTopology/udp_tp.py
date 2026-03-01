@@ -38,7 +38,7 @@ class UdpTp(TcpUdpConfig):
 
     udp_tp_port: Optional[TpPort]
     _DESERIALIZE_DISPATCH = {
-        "UDP-TP-PORT": lambda obj, elem: setattr(obj, "udp_tp_port", TpPort.deserialize(elem)),
+        "UDP-TP-PORT": lambda obj, elem: setattr(obj, "udp_tp_port", SerializationHelper.deserialize_by_tag(elem, "TpPort")),
     }
 
 
@@ -99,11 +99,13 @@ class UdpTp(TcpUdpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(UdpTp, cls).deserialize(element)
 
-        # Parse udp_tp_port
-        child = SerializationHelper.find_child_element(element, "UDP-TP-PORT")
-        if child is not None:
-            udp_tp_port_value = SerializationHelper.deserialize_by_tag(child, "TpPort")
-            obj.udp_tp_port = udp_tp_port_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "UDP-TP-PORT":
+                setattr(obj, "udp_tp_port", SerializationHelper.deserialize_by_tag(child, "TpPort"))
 
         return obj
 

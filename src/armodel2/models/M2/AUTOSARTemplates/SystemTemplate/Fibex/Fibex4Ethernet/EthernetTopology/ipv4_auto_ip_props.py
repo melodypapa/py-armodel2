@@ -34,7 +34,7 @@ class Ipv4AutoIpProps(ARObject):
 
     tcp_ip_auto_ip_init: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "TCP-IP-AUTO-IP-INIT": lambda obj, elem: setattr(obj, "tcp_ip_auto_ip_init", elem.text),
+        "TCP-IP-AUTO-IP-INIT": lambda obj, elem: setattr(obj, "tcp_ip_auto_ip_init", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -95,11 +95,13 @@ class Ipv4AutoIpProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Ipv4AutoIpProps, cls).deserialize(element)
 
-        # Parse tcp_ip_auto_ip_init
-        child = SerializationHelper.find_child_element(element, "TCP-IP-AUTO-IP-INIT")
-        if child is not None:
-            tcp_ip_auto_ip_init_value = child.text
-            obj.tcp_ip_auto_ip_init = tcp_ip_auto_ip_init_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TCP-IP-AUTO-IP-INIT":
+                setattr(obj, "tcp_ip_auto_ip_init", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

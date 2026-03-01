@@ -34,7 +34,7 @@ class DdsDeadline(ARObject):
 
     deadline_period: Optional[Float]
     _DESERIALIZE_DISPATCH = {
-        "DEADLINE-PERIOD": lambda obj, elem: setattr(obj, "deadline_period", elem.text),
+        "DEADLINE-PERIOD": lambda obj, elem: setattr(obj, "deadline_period", SerializationHelper.deserialize_by_tag(elem, "Float")),
     }
 
 
@@ -95,11 +95,13 @@ class DdsDeadline(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsDeadline, cls).deserialize(element)
 
-        # Parse deadline_period
-        child = SerializationHelper.find_child_element(element, "DEADLINE-PERIOD")
-        if child is not None:
-            deadline_period_value = child.text
-            obj.deadline_period = deadline_period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DEADLINE-PERIOD":
+                setattr(obj, "deadline_period", SerializationHelper.deserialize_by_tag(child, "Float"))
 
         return obj
 

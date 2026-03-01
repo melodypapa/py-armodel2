@@ -48,9 +48,9 @@ class NmPdu(Pdu):
     unused_bit: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
         "I-SIGNAL-TO-I-PDUS": lambda obj, elem: obj.i_signal_to_i_pdu_refs.append(ARRef.deserialize(elem)),
-        "NM-DATA": lambda obj, elem: setattr(obj, "nm_data", elem.text),
-        "NM-VOTE-INFORMATION": lambda obj, elem: setattr(obj, "nm_vote_information", elem.text),
-        "UNUSED-BIT": lambda obj, elem: setattr(obj, "unused_bit", elem.text),
+        "NM-DATA": lambda obj, elem: setattr(obj, "nm_data", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "NM-VOTE-INFORMATION": lambda obj, elem: setattr(obj, "nm_vote_information", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "UNUSED-BIT": lambda obj, elem: setattr(obj, "unused_bit", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -159,39 +159,19 @@ class NmPdu(Pdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NmPdu, cls).deserialize(element)
 
-        # Parse i_signal_to_i_pdu_refs (list from container "I-SIGNAL-TO-I-PDU-REFS")
-        obj.i_signal_to_i_pdu_refs = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-TO-I-PDU-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.i_signal_to_i_pdu_refs.append(child_value)
-
-        # Parse nm_data
-        child = SerializationHelper.find_child_element(element, "NM-DATA")
-        if child is not None:
-            nm_data_value = child.text
-            obj.nm_data = nm_data_value
-
-        # Parse nm_vote_information
-        child = SerializationHelper.find_child_element(element, "NM-VOTE-INFORMATION")
-        if child is not None:
-            nm_vote_information_value = child.text
-            obj.nm_vote_information = nm_vote_information_value
-
-        # Parse unused_bit
-        child = SerializationHelper.find_child_element(element, "UNUSED-BIT")
-        if child is not None:
-            unused_bit_value = child.text
-            obj.unused_bit = unused_bit_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "I-SIGNAL-TO-I-PDUS":
+                obj.i_signal_to_i_pdu_refs.append(ARRef.deserialize(child))
+            elif tag == "NM-DATA":
+                setattr(obj, "nm_data", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "NM-VOTE-INFORMATION":
+                setattr(obj, "nm_vote_information", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "UNUSED-BIT":
+                setattr(obj, "unused_bit", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

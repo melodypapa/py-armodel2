@@ -117,17 +117,15 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMasterToSlaveEventMapping, cls).deserialize(element)
 
-        # Parse master_event_ref
-        child = SerializationHelper.find_child_element(element, "MASTER-EVENT-REF")
-        if child is not None:
-            master_event_ref_value = ARRef.deserialize(child)
-            obj.master_event_ref = master_event_ref_value
-
-        # Parse slave_event_ref
-        child = SerializationHelper.find_child_element(element, "SLAVE-EVENT-REF")
-        if child is not None:
-            slave_event_ref_value = ARRef.deserialize(child)
-            obj.slave_event_ref = slave_event_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MASTER-EVENT-REF":
+                setattr(obj, "master_event_ref", ARRef.deserialize(child))
+            elif tag == "SLAVE-EVENT-REF":
+                setattr(obj, "slave_event_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -50,10 +50,10 @@ class AdminData(ARObject):
     sdgs: list[Sdg]
     used_languages: Optional[MultiLanguagePlainText]
     _DESERIALIZE_DISPATCH = {
-        "DOC-REVISIONS": lambda obj, elem: obj.doc_revisions.append(DocRevision.deserialize(elem)),
+        "DOC-REVISIONS": lambda obj, elem: obj.doc_revisions.append(SerializationHelper.deserialize_by_tag(elem, "DocRevision")),
         "LANGUAGE": lambda obj, elem: setattr(obj, "language", LEnum.deserialize(elem)),
-        "SDGS": lambda obj, elem: obj.sdgs.append(Sdg.deserialize(elem)),
-        "USED-LANGUAGES": lambda obj, elem: setattr(obj, "used_languages", MultiLanguagePlainText.deserialize(elem)),
+        "SDGS": lambda obj, elem: obj.sdgs.append(SerializationHelper.deserialize_by_tag(elem, "Sdg")),
+        "USED-LANGUAGES": lambda obj, elem: setattr(obj, "used_languages", SerializationHelper.deserialize_by_tag(elem, "MultiLanguagePlainText")),
     }
 
 
@@ -151,37 +151,19 @@ class AdminData(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AdminData, cls).deserialize(element)
 
-        # Parse doc_revisions (list from container "DOC-REVISIONS")
-        obj.doc_revisions = []
-        container = SerializationHelper.find_child_element(element, "DOC-REVISIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.doc_revisions.append(child_value)
-
-        # Parse language
-        child = SerializationHelper.find_child_element(element, "LANGUAGE")
-        if child is not None:
-            language_value = LEnum.deserialize(child)
-            obj.language = language_value
-
-        # Parse sdgs (list from container "SDGS")
-        obj.sdgs = []
-        container = SerializationHelper.find_child_element(element, "SDGS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sdgs.append(child_value)
-
-        # Parse used_languages
-        child = SerializationHelper.find_child_element(element, "USED-LANGUAGES")
-        if child is not None:
-            used_languages_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText")
-            obj.used_languages = used_languages_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DOC-REVISIONS":
+                obj.doc_revisions.append(SerializationHelper.deserialize_by_tag(child, "DocRevision"))
+            elif tag == "LANGUAGE":
+                setattr(obj, "language", LEnum.deserialize(child))
+            elif tag == "SDGS":
+                obj.sdgs.append(SerializationHelper.deserialize_by_tag(child, "Sdg"))
+            elif tag == "USED-LANGUAGES":
+                setattr(obj, "used_languages", SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText"))
 
         return obj
 

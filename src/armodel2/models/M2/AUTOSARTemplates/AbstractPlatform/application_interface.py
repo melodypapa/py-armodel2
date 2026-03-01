@@ -47,8 +47,8 @@ class ApplicationInterface(PortInterface):
     commands: list[ClientServerOperation]
     indication_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ATTRIBUTES": lambda obj, elem: obj.attributes.append(Field.deserialize(elem)),
-        "COMMANDS": lambda obj, elem: obj.commands.append(ClientServerOperation.deserialize(elem)),
+        "ATTRIBUTES": lambda obj, elem: obj.attributes.append(SerializationHelper.deserialize_by_tag(elem, "Field")),
+        "COMMANDS": lambda obj, elem: obj.commands.append(SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
         "INDICATIONS": lambda obj, elem: obj.indication_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -135,41 +135,17 @@ class ApplicationInterface(PortInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationInterface, cls).deserialize(element)
 
-        # Parse attributes (list from container "ATTRIBUTES")
-        obj.attributes = []
-        container = SerializationHelper.find_child_element(element, "ATTRIBUTES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.attributes.append(child_value)
-
-        # Parse commands (list from container "COMMANDS")
-        obj.commands = []
-        container = SerializationHelper.find_child_element(element, "COMMANDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.commands.append(child_value)
-
-        # Parse indication_refs (list from container "INDICATION-REFS")
-        obj.indication_refs = []
-        container = SerializationHelper.find_child_element(element, "INDICATION-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.indication_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ATTRIBUTES":
+                obj.attributes.append(SerializationHelper.deserialize_by_tag(child, "Field"))
+            elif tag == "COMMANDS":
+                obj.commands.append(SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
+            elif tag == "INDICATIONS":
+                obj.indication_refs.append(ARRef.deserialize(child))
 
         return obj
 

@@ -37,7 +37,7 @@ class DiagnosticCondition(DiagnosticCommonElement, ABC):
 
     _init_value: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "INIT-VALUE": lambda obj, elem: setattr(obj, "_init_value", elem.text),
+        "INIT-VALUE": lambda obj, elem: setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -104,11 +104,13 @@ class DiagnosticCondition(DiagnosticCommonElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticCondition, cls).deserialize(element)
 
-        # Parse init_value (polymorphic wrapper "INIT-VALUE")
-        wrapper = SerializationHelper.find_child_element(element, "INIT-VALUE")
-        if wrapper is not None:
-            init_value_value = SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
-            obj.init_value = init_value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INIT-VALUE":
+                setattr(obj, "_init_value", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

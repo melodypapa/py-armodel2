@@ -78,18 +78,18 @@ class McDataInstance(Identifiable):
     sub_elements: list[McDataInstance]
     symbol: Optional[SymbolString]
     _DESERIALIZE_DISPATCH = {
-        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", elem.text),
-        "DISPLAY-IDENTIFIER": lambda obj, elem: setattr(obj, "display_identifier", elem.text),
+        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "DISPLAY-IDENTIFIER": lambda obj, elem: setattr(obj, "display_identifier", SerializationHelper.deserialize_by_tag(elem, "McdIdentifier")),
         "FLAT-MAP-ENTRY-REF": lambda obj, elem: setattr(obj, "flat_map_entry_ref", ARRef.deserialize(elem)),
-        "INSTANCE-IN": lambda obj, elem: setattr(obj, "instance_in", ImplementationElementInParameterInstanceRef.deserialize(elem)),
-        "MC-DATA-ACCESS-DETAILS": lambda obj, elem: setattr(obj, "mc_data_access_details", McDataAccessDetails.deserialize(elem)),
-        "MC-DATAS": lambda obj, elem: obj.mc_datas.append(RoleBasedMcDataAssignment.deserialize(elem)),
-        "RESULTING": lambda obj, elem: setattr(obj, "resulting", SwDataDefProps.deserialize(elem)),
-        "RESULTING-RPT-SW": lambda obj, elem: setattr(obj, "resulting_rpt_sw", RptSwPrototypingAccess.deserialize(elem)),
-        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
-        "RPT-IMPL-POLICY": lambda obj, elem: setattr(obj, "rpt_impl_policy", RptImplPolicy.deserialize(elem)),
-        "SUB-ELEMENTS": lambda obj, elem: obj.sub_elements.append(McDataInstance.deserialize(elem)),
-        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", elem.text),
+        "INSTANCE-IN": lambda obj, elem: setattr(obj, "instance_in", SerializationHelper.deserialize_by_tag(elem, "ImplementationElementInParameterInstanceRef")),
+        "MC-DATA-ACCESS-DETAILS": lambda obj, elem: setattr(obj, "mc_data_access_details", SerializationHelper.deserialize_by_tag(elem, "McDataAccessDetails")),
+        "MC-DATAS": lambda obj, elem: obj.mc_datas.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
+        "RESULTING": lambda obj, elem: setattr(obj, "resulting", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "RESULTING-RPT-SW": lambda obj, elem: setattr(obj, "resulting_rpt_sw", SerializationHelper.deserialize_by_tag(elem, "RptSwPrototypingAccess")),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "RPT-IMPL-POLICY": lambda obj, elem: setattr(obj, "rpt_impl_policy", SerializationHelper.deserialize_by_tag(elem, "RptImplPolicy")),
+        "SUB-ELEMENTS": lambda obj, elem: obj.sub_elements.append(SerializationHelper.deserialize_by_tag(elem, "McDataInstance")),
+        "SYMBOL": lambda obj, elem: setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(elem, "SymbolString")),
     }
 
 
@@ -307,85 +307,35 @@ class McDataInstance(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(McDataInstance, cls).deserialize(element)
 
-        # Parse array_size
-        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE")
-        if child is not None:
-            array_size_value = child.text
-            obj.array_size = array_size_value
-
-        # Parse display_identifier
-        child = SerializationHelper.find_child_element(element, "DISPLAY-IDENTIFIER")
-        if child is not None:
-            display_identifier_value = child.text
-            obj.display_identifier = display_identifier_value
-
-        # Parse flat_map_entry_ref
-        child = SerializationHelper.find_child_element(element, "FLAT-MAP-ENTRY-REF")
-        if child is not None:
-            flat_map_entry_ref_value = ARRef.deserialize(child)
-            obj.flat_map_entry_ref = flat_map_entry_ref_value
-
-        # Parse instance_in
-        child = SerializationHelper.find_child_element(element, "INSTANCE-IN")
-        if child is not None:
-            instance_in_value = SerializationHelper.deserialize_by_tag(child, "ImplementationElementInParameterInstanceRef")
-            obj.instance_in = instance_in_value
-
-        # Parse mc_data_access_details
-        child = SerializationHelper.find_child_element(element, "MC-DATA-ACCESS-DETAILS")
-        if child is not None:
-            mc_data_access_details_value = SerializationHelper.deserialize_by_tag(child, "McDataAccessDetails")
-            obj.mc_data_access_details = mc_data_access_details_value
-
-        # Parse mc_datas (list from container "MC-DATAS")
-        obj.mc_datas = []
-        container = SerializationHelper.find_child_element(element, "MC-DATAS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.mc_datas.append(child_value)
-
-        # Parse resulting
-        child = SerializationHelper.find_child_element(element, "RESULTING")
-        if child is not None:
-            resulting_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.resulting = resulting_value
-
-        # Parse resulting_rpt_sw
-        child = SerializationHelper.find_child_element(element, "RESULTING-RPT-SW")
-        if child is not None:
-            resulting_rpt_sw_value = SerializationHelper.deserialize_by_tag(child, "RptSwPrototypingAccess")
-            obj.resulting_rpt_sw = resulting_rpt_sw_value
-
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
-
-        # Parse rpt_impl_policy
-        child = SerializationHelper.find_child_element(element, "RPT-IMPL-POLICY")
-        if child is not None:
-            rpt_impl_policy_value = SerializationHelper.deserialize_by_tag(child, "RptImplPolicy")
-            obj.rpt_impl_policy = rpt_impl_policy_value
-
-        # Parse sub_elements (list from container "SUB-ELEMENTS")
-        obj.sub_elements = []
-        container = SerializationHelper.find_child_element(element, "SUB-ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.sub_elements.append(child_value)
-
-        # Parse symbol
-        child = SerializationHelper.find_child_element(element, "SYMBOL")
-        if child is not None:
-            symbol_value = SerializationHelper.deserialize_by_tag(child, "SymbolString")
-            obj.symbol = symbol_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ARRAY-SIZE":
+                setattr(obj, "array_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "DISPLAY-IDENTIFIER":
+                setattr(obj, "display_identifier", SerializationHelper.deserialize_by_tag(child, "McdIdentifier"))
+            elif tag == "FLAT-MAP-ENTRY-REF":
+                setattr(obj, "flat_map_entry_ref", ARRef.deserialize(child))
+            elif tag == "INSTANCE-IN":
+                setattr(obj, "instance_in", SerializationHelper.deserialize_by_tag(child, "ImplementationElementInParameterInstanceRef"))
+            elif tag == "MC-DATA-ACCESS-DETAILS":
+                setattr(obj, "mc_data_access_details", SerializationHelper.deserialize_by_tag(child, "McDataAccessDetails"))
+            elif tag == "MC-DATAS":
+                obj.mc_datas.append(SerializationHelper.deserialize_by_tag(child, "RoleBasedMcDataAssignment"))
+            elif tag == "RESULTING":
+                setattr(obj, "resulting", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            elif tag == "RESULTING-RPT-SW":
+                setattr(obj, "resulting_rpt_sw", SerializationHelper.deserialize_by_tag(child, "RptSwPrototypingAccess"))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "RPT-IMPL-POLICY":
+                setattr(obj, "rpt_impl_policy", SerializationHelper.deserialize_by_tag(child, "RptImplPolicy"))
+            elif tag == "SUB-ELEMENTS":
+                obj.sub_elements.append(SerializationHelper.deserialize_by_tag(child, "McDataInstance"))
+            elif tag == "SYMBOL":
+                setattr(obj, "symbol", SerializationHelper.deserialize_by_tag(child, "SymbolString"))
 
         return obj
 

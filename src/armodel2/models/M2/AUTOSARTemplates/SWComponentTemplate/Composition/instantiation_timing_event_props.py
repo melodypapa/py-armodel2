@@ -38,7 +38,7 @@ class InstantiationTimingEventProps(InstantiationRTEEventProps):
 
     period: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "PERIOD": lambda obj, elem: setattr(obj, "period", elem.text),
+        "PERIOD": lambda obj, elem: setattr(obj, "period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -99,11 +99,13 @@ class InstantiationTimingEventProps(InstantiationRTEEventProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InstantiationTimingEventProps, cls).deserialize(element)
 
-        # Parse period
-        child = SerializationHelper.find_child_element(element, "PERIOD")
-        if child is not None:
-            period_value = child.text
-            obj.period = period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PERIOD":
+                setattr(obj, "period", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

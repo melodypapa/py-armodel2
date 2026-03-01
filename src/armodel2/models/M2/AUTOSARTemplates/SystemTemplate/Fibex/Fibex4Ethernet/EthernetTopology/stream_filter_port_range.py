@@ -35,8 +35,8 @@ class StreamFilterPortRange(ARObject):
     max: Optional[PositiveInteger]
     min: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "MAX": lambda obj, elem: setattr(obj, "max", elem.text),
-        "MIN": lambda obj, elem: setattr(obj, "min", elem.text),
+        "MAX": lambda obj, elem: setattr(obj, "max", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MIN": lambda obj, elem: setattr(obj, "min", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -112,17 +112,15 @@ class StreamFilterPortRange(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StreamFilterPortRange, cls).deserialize(element)
 
-        # Parse max
-        child = SerializationHelper.find_child_element(element, "MAX")
-        if child is not None:
-            max_value = child.text
-            obj.max = max_value
-
-        # Parse min
-        child = SerializationHelper.find_child_element(element, "MIN")
-        if child is not None:
-            min_value = child.text
-            obj.min = min_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAX":
+                setattr(obj, "max", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MIN":
+                setattr(obj, "min", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

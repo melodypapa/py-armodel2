@@ -37,10 +37,10 @@ class EngineeringObject(ARObject, ABC):
     domain: Optional[NameToken]
     revision_labels: list[RevisionLabelString]
     _DESERIALIZE_DISPATCH = {
-        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
-        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
-        "DOMAIN": lambda obj, elem: setattr(obj, "domain", elem.text),
-        "REVISION-LABELS": lambda obj, elem: obj.revision_labels.append(elem.text),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "DOMAIN": lambda obj, elem: setattr(obj, "domain", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "REVISION-LABELS": lambda obj, elem: obj.revision_labels.append(SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
     }
 
 
@@ -149,33 +149,19 @@ class EngineeringObject(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EngineeringObject, cls).deserialize(element)
 
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = child.text
-            obj.short_label = short_label_value
-
-        # Parse category
-        child = SerializationHelper.find_child_element(element, "CATEGORY")
-        if child is not None:
-            category_value = child.text
-            obj.category = category_value
-
-        # Parse domain
-        child = SerializationHelper.find_child_element(element, "DOMAIN")
-        if child is not None:
-            domain_value = child.text
-            obj.domain = domain_value
-
-        # Parse revision_labels (list from container "REVISION-LABELS")
-        obj.revision_labels = []
-        container = SerializationHelper.find_child_element(element, "REVISION-LABELS")
-        if container is not None:
-            for child in container:
-                # Extract primitive value (RevisionLabelString) as text
-                child_value = child.text
-                if child_value is not None:
-                    obj.revision_labels.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "CATEGORY":
+                setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "DOMAIN":
+                setattr(obj, "domain", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "REVISION-LABELS":
+                obj.revision_labels.append(SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
 
         return obj
 

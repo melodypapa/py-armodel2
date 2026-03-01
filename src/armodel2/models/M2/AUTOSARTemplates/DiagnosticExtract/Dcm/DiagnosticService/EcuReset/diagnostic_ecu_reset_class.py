@@ -99,11 +99,13 @@ class DiagnosticEcuResetClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEcuResetClass, cls).deserialize(element)
 
-        # Parse respond_to
-        child = SerializationHelper.find_child_element(element, "RESPOND-TO")
-        if child is not None:
-            respond_to_value = DiagnosticResponseToEcuResetEnum.deserialize(child)
-            obj.respond_to = respond_to_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "RESPOND-TO":
+                setattr(obj, "respond_to", DiagnosticResponseToEcuResetEnum.deserialize(child))
 
         return obj
 

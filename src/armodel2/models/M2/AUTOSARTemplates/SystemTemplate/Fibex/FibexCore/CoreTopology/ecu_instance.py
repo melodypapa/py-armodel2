@@ -110,29 +110,29 @@ class EcuInstance(FibexElement):
         "ASSOCIATED-COM-I-PDU-GROUPS": lambda obj, elem: obj.associated_com_i_pdu_group_refs.append(ARRef.deserialize(elem)),
         "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUPS": lambda obj, elem: obj.associated_consumed_provided_service_instance_group_refs.append(ARRef.deserialize(elem)),
         "ASSOCIATED-PDUR-I-PDU-GROUPS": lambda obj, elem: obj.associated_pdur_i_pdu_group_refs.append(ARRef.deserialize(elem)),
-        "CHANNEL-SYNCHRONOUS-WAKEUP": lambda obj, elem: setattr(obj, "channel_synchronous_wakeup", elem.text),
-        "CLIENT-ID-RANGE": lambda obj, elem: setattr(obj, "client_id_range", ClientIdRange.deserialize(elem)),
-        "COM-CONFIGURATION-GW-TIME-BASE": lambda obj, elem: setattr(obj, "com_configuration_gw_time_base", elem.text),
-        "COM-CONFIGURATION-RX-TIME-BASE": lambda obj, elem: setattr(obj, "com_configuration_rx_time_base", elem.text),
-        "COM-CONFIGURATION-TX-TIME-BASE": lambda obj, elem: setattr(obj, "com_configuration_tx_time_base", elem.text),
-        "COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION": lambda obj, elem: setattr(obj, "com_enable_mdt_for_cyclic_transmission", elem.text),
-        "COMM-CONTROLLERS": lambda obj, elem: obj.comm_controllers.append(CommunicationController.deserialize(elem)),
-        "CONNECTORS": lambda obj, elem: obj.connectors.append(CommunicationConnector.deserialize(elem)),
-        "DLT-CONFIG": lambda obj, elem: setattr(obj, "dlt_config", DltConfig.deserialize(elem)),
-        "DO-IP-CONFIG": lambda obj, elem: setattr(obj, "do_ip_config", DoIpConfig.deserialize(elem)),
+        "CHANNEL-SYNCHRONOUS-WAKEUP": lambda obj, elem: setattr(obj, "channel_synchronous_wakeup", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CLIENT-ID-RANGE": lambda obj, elem: setattr(obj, "client_id_range", SerializationHelper.deserialize_by_tag(elem, "ClientIdRange")),
+        "COM-CONFIGURATION-GW-TIME-BASE": lambda obj, elem: setattr(obj, "com_configuration_gw_time_base", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "COM-CONFIGURATION-RX-TIME-BASE": lambda obj, elem: setattr(obj, "com_configuration_rx_time_base", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "COM-CONFIGURATION-TX-TIME-BASE": lambda obj, elem: setattr(obj, "com_configuration_tx_time_base", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION": lambda obj, elem: setattr(obj, "com_enable_mdt_for_cyclic_transmission", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "COMM-CONTROLLERS": ("_POLYMORPHIC_LIST", "comm_controllers", ["AbstractCanCommunicationController", "EthernetCommunicationController", "FlexrayCommunicationController", "LinCommunicationController", "UserDefinedCommunicationController"]),
+        "CONNECTORS": ("_POLYMORPHIC_LIST", "connectors", ["AbstractCanCommunicationConnector", "EthernetCommunicationConnector", "FlexrayCommunicationConnector", "LinCommunicationConnector", "UserDefinedCommunicationConnector"]),
+        "DLT-CONFIG": lambda obj, elem: setattr(obj, "dlt_config", SerializationHelper.deserialize_by_tag(elem, "DltConfig")),
+        "DO-IP-CONFIG": lambda obj, elem: setattr(obj, "do_ip_config", SerializationHelper.deserialize_by_tag(elem, "DoIpConfig")),
         "ECU-TASK-PROXIES": lambda obj, elem: obj.ecu_task_proxy_refs.append(ARRef.deserialize(elem)),
-        "ETH-SWITCH-PORT-GROUP-DERIVATION": lambda obj, elem: setattr(obj, "eth_switch_port_group_derivation", elem.text),
+        "ETH-SWITCH-PORT-GROUP-DERIVATION": lambda obj, elem: setattr(obj, "eth_switch_port_group_derivation", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "FIREWALL-RULES": lambda obj, elem: obj.firewall_rule_refs.append(ARRef.deserialize(elem)),
-        "PARTITIONS": lambda obj, elem: obj.partitions.append(EcuPartition.deserialize(elem)),
-        "PNC-NM-REQUEST": lambda obj, elem: setattr(obj, "pnc_nm_request", elem.text),
-        "PNC-PREPARE-SLEEP-TIMER": lambda obj, elem: setattr(obj, "pnc_prepare_sleep_timer", elem.text),
-        "PNC-SYNCHRONOUS-WAKEUP": lambda obj, elem: setattr(obj, "pnc_synchronous_wakeup", elem.text),
-        "PN-RESET-TIME": lambda obj, elem: setattr(obj, "pn_reset_time", elem.text),
-        "SLEEP-MODE-SUPPORTED": lambda obj, elem: setattr(obj, "sleep_mode_supported", elem.text),
+        "PARTITIONS": lambda obj, elem: obj.partitions.append(SerializationHelper.deserialize_by_tag(elem, "EcuPartition")),
+        "PNC-NM-REQUEST": lambda obj, elem: setattr(obj, "pnc_nm_request", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PNC-PREPARE-SLEEP-TIMER": lambda obj, elem: setattr(obj, "pnc_prepare_sleep_timer", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "PNC-SYNCHRONOUS-WAKEUP": lambda obj, elem: setattr(obj, "pnc_synchronous_wakeup", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PN-RESET-TIME": lambda obj, elem: setattr(obj, "pn_reset_time", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "SLEEP-MODE-SUPPORTED": lambda obj, elem: setattr(obj, "sleep_mode_supported", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "TCP-IP-ICMP-PROPS-REF": lambda obj, elem: setattr(obj, "tcp_ip_icmp_props_ref", ARRef.deserialize(elem)),
         "TCP-IP-PROPS-REF": lambda obj, elem: setattr(obj, "tcp_ip_props_ref", ARRef.deserialize(elem)),
-        "V2X-SUPPORTED": lambda obj, elem: setattr(obj, "v2x_supported", V2xSupportEnum.deserialize(elem)),
-        "WAKE-UP-OVER-BUS-SUPPORTED": lambda obj, elem: setattr(obj, "wake_up_over_bus_supported", elem.text),
+        "V2X-SUPPORTED": lambda obj, elem: setattr(obj, "v2x_supported", SerializationHelper.deserialize_by_tag(elem, "V2xSupportEnum")),
+        "WAKE-UP-OVER-BUS-SUPPORTED": lambda obj, elem: setattr(obj, "wake_up_over_bus_supported", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -571,223 +571,87 @@ class EcuInstance(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcuInstance, cls).deserialize(element)
 
-        # Parse associated_com_i_pdu_group_refs (list from container "ASSOCIATED-COM-I-PDU-GROUP-REFS")
-        obj.associated_com_i_pdu_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ASSOCIATED-COM-I-PDU-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.associated_com_i_pdu_group_refs.append(child_value)
-
-        # Parse associated_consumed_provided_service_instance_group_refs (list from container "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REFS")
-        obj.associated_consumed_provided_service_instance_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.associated_consumed_provided_service_instance_group_refs.append(child_value)
-
-        # Parse associated_pdur_i_pdu_group_refs (list from container "ASSOCIATED-PDUR-I-PDU-GROUP-REFS")
-        obj.associated_pdur_i_pdu_group_refs = []
-        container = SerializationHelper.find_child_element(element, "ASSOCIATED-PDUR-I-PDU-GROUP-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.associated_pdur_i_pdu_group_refs.append(child_value)
-
-        # Parse channel_synchronous_wakeup
-        child = SerializationHelper.find_child_element(element, "CHANNEL-SYNCHRONOUS-WAKEUP")
-        if child is not None:
-            channel_synchronous_wakeup_value = child.text
-            obj.channel_synchronous_wakeup = channel_synchronous_wakeup_value
-
-        # Parse client_id_range
-        child = SerializationHelper.find_child_element(element, "CLIENT-ID-RANGE")
-        if child is not None:
-            client_id_range_value = SerializationHelper.deserialize_by_tag(child, "ClientIdRange")
-            obj.client_id_range = client_id_range_value
-
-        # Parse com_configuration_gw_time_base
-        child = SerializationHelper.find_child_element(element, "COM-CONFIGURATION-GW-TIME-BASE")
-        if child is not None:
-            com_configuration_gw_time_base_value = child.text
-            obj.com_configuration_gw_time_base = com_configuration_gw_time_base_value
-
-        # Parse com_configuration_rx_time_base
-        child = SerializationHelper.find_child_element(element, "COM-CONFIGURATION-RX-TIME-BASE")
-        if child is not None:
-            com_configuration_rx_time_base_value = child.text
-            obj.com_configuration_rx_time_base = com_configuration_rx_time_base_value
-
-        # Parse com_configuration_tx_time_base
-        child = SerializationHelper.find_child_element(element, "COM-CONFIGURATION-TX-TIME-BASE")
-        if child is not None:
-            com_configuration_tx_time_base_value = child.text
-            obj.com_configuration_tx_time_base = com_configuration_tx_time_base_value
-
-        # Parse com_enable_mdt_for_cyclic_transmission
-        child = SerializationHelper.find_child_element(element, "COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION")
-        if child is not None:
-            com_enable_mdt_for_cyclic_transmission_value = child.text
-            obj.com_enable_mdt_for_cyclic_transmission = com_enable_mdt_for_cyclic_transmission_value
-
-        # Parse comm_controllers (list from container "COMM-CONTROLLERS")
-        obj.comm_controllers = []
-        container = SerializationHelper.find_child_element(element, "COMM-CONTROLLERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.comm_controllers.append(child_value)
-
-        # Parse connectors (list from container "CONNECTORS")
-        obj.connectors = []
-        container = SerializationHelper.find_child_element(element, "CONNECTORS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.connectors.append(child_value)
-
-        # Parse dlt_config
-        child = SerializationHelper.find_child_element(element, "DLT-CONFIG")
-        if child is not None:
-            dlt_config_value = SerializationHelper.deserialize_by_tag(child, "DltConfig")
-            obj.dlt_config = dlt_config_value
-
-        # Parse do_ip_config
-        child = SerializationHelper.find_child_element(element, "DO-IP-CONFIG")
-        if child is not None:
-            do_ip_config_value = SerializationHelper.deserialize_by_tag(child, "DoIpConfig")
-            obj.do_ip_config = do_ip_config_value
-
-        # Parse ecu_task_proxy_refs (list from container "ECU-TASK-PROXY-REFS")
-        obj.ecu_task_proxy_refs = []
-        container = SerializationHelper.find_child_element(element, "ECU-TASK-PROXY-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ecu_task_proxy_refs.append(child_value)
-
-        # Parse eth_switch_port_group_derivation
-        child = SerializationHelper.find_child_element(element, "ETH-SWITCH-PORT-GROUP-DERIVATION")
-        if child is not None:
-            eth_switch_port_group_derivation_value = child.text
-            obj.eth_switch_port_group_derivation = eth_switch_port_group_derivation_value
-
-        # Parse firewall_rule_refs (list from container "FIREWALL-RULE-REFS")
-        obj.firewall_rule_refs = []
-        container = SerializationHelper.find_child_element(element, "FIREWALL-RULE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.firewall_rule_refs.append(child_value)
-
-        # Parse partitions (list from container "PARTITIONS")
-        obj.partitions = []
-        container = SerializationHelper.find_child_element(element, "PARTITIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.partitions.append(child_value)
-
-        # Parse pnc_nm_request
-        child = SerializationHelper.find_child_element(element, "PNC-NM-REQUEST")
-        if child is not None:
-            pnc_nm_request_value = child.text
-            obj.pnc_nm_request = pnc_nm_request_value
-
-        # Parse pnc_prepare_sleep_timer
-        child = SerializationHelper.find_child_element(element, "PNC-PREPARE-SLEEP-TIMER")
-        if child is not None:
-            pnc_prepare_sleep_timer_value = child.text
-            obj.pnc_prepare_sleep_timer = pnc_prepare_sleep_timer_value
-
-        # Parse pnc_synchronous_wakeup
-        child = SerializationHelper.find_child_element(element, "PNC-SYNCHRONOUS-WAKEUP")
-        if child is not None:
-            pnc_synchronous_wakeup_value = child.text
-            obj.pnc_synchronous_wakeup = pnc_synchronous_wakeup_value
-
-        # Parse pn_reset_time
-        child = SerializationHelper.find_child_element(element, "PN-RESET-TIME")
-        if child is not None:
-            pn_reset_time_value = child.text
-            obj.pn_reset_time = pn_reset_time_value
-
-        # Parse sleep_mode_supported
-        child = SerializationHelper.find_child_element(element, "SLEEP-MODE-SUPPORTED")
-        if child is not None:
-            sleep_mode_supported_value = child.text
-            obj.sleep_mode_supported = sleep_mode_supported_value
-
-        # Parse tcp_ip_icmp_props_ref
-        child = SerializationHelper.find_child_element(element, "TCP-IP-ICMP-PROPS-REF")
-        if child is not None:
-            tcp_ip_icmp_props_ref_value = ARRef.deserialize(child)
-            obj.tcp_ip_icmp_props_ref = tcp_ip_icmp_props_ref_value
-
-        # Parse tcp_ip_props_ref
-        child = SerializationHelper.find_child_element(element, "TCP-IP-PROPS-REF")
-        if child is not None:
-            tcp_ip_props_ref_value = ARRef.deserialize(child)
-            obj.tcp_ip_props_ref = tcp_ip_props_ref_value
-
-        # Parse v2x_supported
-        child = SerializationHelper.find_child_element(element, "V2X-SUPPORTED")
-        if child is not None:
-            v2x_supported_value = SerializationHelper.deserialize_by_tag(child, "V2xSupportEnum")
-            obj.v2x_supported = v2x_supported_value
-
-        # Parse wake_up_over_bus_supported
-        child = SerializationHelper.find_child_element(element, "WAKE-UP-OVER-BUS-SUPPORTED")
-        if child is not None:
-            wake_up_over_bus_supported_value = child.text
-            obj.wake_up_over_bus_supported = wake_up_over_bus_supported_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ASSOCIATED-COM-I-PDU-GROUPS":
+                obj.associated_com_i_pdu_group_refs.append(ARRef.deserialize(child))
+            elif tag == "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUPS":
+                obj.associated_consumed_provided_service_instance_group_refs.append(ARRef.deserialize(child))
+            elif tag == "ASSOCIATED-PDUR-I-PDU-GROUPS":
+                obj.associated_pdur_i_pdu_group_refs.append(ARRef.deserialize(child))
+            elif tag == "CHANNEL-SYNCHRONOUS-WAKEUP":
+                setattr(obj, "channel_synchronous_wakeup", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "CLIENT-ID-RANGE":
+                setattr(obj, "client_id_range", SerializationHelper.deserialize_by_tag(child, "ClientIdRange"))
+            elif tag == "COM-CONFIGURATION-GW-TIME-BASE":
+                setattr(obj, "com_configuration_gw_time_base", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "COM-CONFIGURATION-RX-TIME-BASE":
+                setattr(obj, "com_configuration_rx_time_base", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "COM-CONFIGURATION-TX-TIME-BASE":
+                setattr(obj, "com_configuration_tx_time_base", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION":
+                setattr(obj, "com_enable_mdt_for_cyclic_transmission", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "COMM-CONTROLLERS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONTROLLER":
+                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCommunicationController"))
+                    elif concrete_tag == "ETHERNET-COMMUNICATION-CONTROLLER":
+                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetCommunicationController"))
+                    elif concrete_tag == "FLEXRAY-COMMUNICATION-CONTROLLER":
+                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayCommunicationController"))
+                    elif concrete_tag == "LIN-COMMUNICATION-CONTROLLER":
+                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(child[0], "LinCommunicationController"))
+                    elif concrete_tag == "USER-DEFINED-COMMUNICATION-CONTROLLER":
+                        obj.comm_controllers.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCommunicationController"))
+            elif tag == "CONNECTORS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-CAN-COMMUNICATION-CONNECTOR":
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "AbstractCanCommunicationConnector"))
+                    elif concrete_tag == "ETHERNET-COMMUNICATION-CONNECTOR":
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "EthernetCommunicationConnector"))
+                    elif concrete_tag == "FLEXRAY-COMMUNICATION-CONNECTOR":
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "FlexrayCommunicationConnector"))
+                    elif concrete_tag == "LIN-COMMUNICATION-CONNECTOR":
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "LinCommunicationConnector"))
+                    elif concrete_tag == "USER-DEFINED-COMMUNICATION-CONNECTOR":
+                        obj.connectors.append(SerializationHelper.deserialize_by_tag(child[0], "UserDefinedCommunicationConnector"))
+            elif tag == "DLT-CONFIG":
+                setattr(obj, "dlt_config", SerializationHelper.deserialize_by_tag(child, "DltConfig"))
+            elif tag == "DO-IP-CONFIG":
+                setattr(obj, "do_ip_config", SerializationHelper.deserialize_by_tag(child, "DoIpConfig"))
+            elif tag == "ECU-TASK-PROXIES":
+                obj.ecu_task_proxy_refs.append(ARRef.deserialize(child))
+            elif tag == "ETH-SWITCH-PORT-GROUP-DERIVATION":
+                setattr(obj, "eth_switch_port_group_derivation", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "FIREWALL-RULES":
+                obj.firewall_rule_refs.append(ARRef.deserialize(child))
+            elif tag == "PARTITIONS":
+                obj.partitions.append(SerializationHelper.deserialize_by_tag(child, "EcuPartition"))
+            elif tag == "PNC-NM-REQUEST":
+                setattr(obj, "pnc_nm_request", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PNC-PREPARE-SLEEP-TIMER":
+                setattr(obj, "pnc_prepare_sleep_timer", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "PNC-SYNCHRONOUS-WAKEUP":
+                setattr(obj, "pnc_synchronous_wakeup", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PN-RESET-TIME":
+                setattr(obj, "pn_reset_time", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "SLEEP-MODE-SUPPORTED":
+                setattr(obj, "sleep_mode_supported", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TCP-IP-ICMP-PROPS-REF":
+                setattr(obj, "tcp_ip_icmp_props_ref", ARRef.deserialize(child))
+            elif tag == "TCP-IP-PROPS-REF":
+                setattr(obj, "tcp_ip_props_ref", ARRef.deserialize(child))
+            elif tag == "V2X-SUPPORTED":
+                setattr(obj, "v2x_supported", SerializationHelper.deserialize_by_tag(child, "V2xSupportEnum"))
+            elif tag == "WAKE-UP-OVER-BUS-SUPPORTED":
+                setattr(obj, "wake_up_over_bus_supported", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

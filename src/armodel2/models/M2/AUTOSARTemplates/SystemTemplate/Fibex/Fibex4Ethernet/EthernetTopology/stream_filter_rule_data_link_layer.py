@@ -41,11 +41,11 @@ class StreamFilterRuleDataLinkLayer(ARObject):
     vlan_id: Optional[PositiveInteger]
     vlan_priority: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "DESTINATION-MAC": lambda obj, elem: setattr(obj, "destination_mac", StreamFilterMACAddress.deserialize(elem)),
-        "ETHER-TYPE": lambda obj, elem: setattr(obj, "ether_type", elem.text),
-        "SOURCE-MAC": lambda obj, elem: setattr(obj, "source_mac", StreamFilterMACAddress.deserialize(elem)),
-        "VLAN-ID": lambda obj, elem: setattr(obj, "vlan_id", elem.text),
-        "VLAN-PRIORITY": lambda obj, elem: setattr(obj, "vlan_priority", elem.text),
+        "DESTINATION-MAC": lambda obj, elem: setattr(obj, "destination_mac", SerializationHelper.deserialize_by_tag(elem, "StreamFilterMACAddress")),
+        "ETHER-TYPE": lambda obj, elem: setattr(obj, "ether_type", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SOURCE-MAC": lambda obj, elem: setattr(obj, "source_mac", SerializationHelper.deserialize_by_tag(elem, "StreamFilterMACAddress")),
+        "VLAN-ID": lambda obj, elem: setattr(obj, "vlan_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "VLAN-PRIORITY": lambda obj, elem: setattr(obj, "vlan_priority", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -166,35 +166,21 @@ class StreamFilterRuleDataLinkLayer(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StreamFilterRuleDataLinkLayer, cls).deserialize(element)
 
-        # Parse destination_mac
-        child = SerializationHelper.find_child_element(element, "DESTINATION-MAC")
-        if child is not None:
-            destination_mac_value = SerializationHelper.deserialize_by_tag(child, "StreamFilterMACAddress")
-            obj.destination_mac = destination_mac_value
-
-        # Parse ether_type
-        child = SerializationHelper.find_child_element(element, "ETHER-TYPE")
-        if child is not None:
-            ether_type_value = child.text
-            obj.ether_type = ether_type_value
-
-        # Parse source_mac
-        child = SerializationHelper.find_child_element(element, "SOURCE-MAC")
-        if child is not None:
-            source_mac_value = SerializationHelper.deserialize_by_tag(child, "StreamFilterMACAddress")
-            obj.source_mac = source_mac_value
-
-        # Parse vlan_id
-        child = SerializationHelper.find_child_element(element, "VLAN-ID")
-        if child is not None:
-            vlan_id_value = child.text
-            obj.vlan_id = vlan_id_value
-
-        # Parse vlan_priority
-        child = SerializationHelper.find_child_element(element, "VLAN-PRIORITY")
-        if child is not None:
-            vlan_priority_value = child.text
-            obj.vlan_priority = vlan_priority_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DESTINATION-MAC":
+                setattr(obj, "destination_mac", SerializationHelper.deserialize_by_tag(child, "StreamFilterMACAddress"))
+            elif tag == "ETHER-TYPE":
+                setattr(obj, "ether_type", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SOURCE-MAC":
+                setattr(obj, "source_mac", SerializationHelper.deserialize_by_tag(child, "StreamFilterMACAddress"))
+            elif tag == "VLAN-ID":
+                setattr(obj, "vlan_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "VLAN-PRIORITY":
+                setattr(obj, "vlan_priority", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

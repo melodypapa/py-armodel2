@@ -39,8 +39,8 @@ class LinConfigurableFrame(ARObject):
     frame_ref: Optional[ARRef]
     message_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "FRAME-REF": lambda obj, elem: setattr(obj, "frame_ref", ARRef.deserialize(elem)),
-        "MESSAGE-ID": lambda obj, elem: setattr(obj, "message_id", elem.text),
+        "FRAME-REF": ("_POLYMORPHIC", "frame_ref", ["LinEventTriggeredFrame", "LinSporadicFrame", "LinUnconditionalFrame"]),
+        "MESSAGE-ID": lambda obj, elem: setattr(obj, "message_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -116,17 +116,23 @@ class LinConfigurableFrame(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinConfigurableFrame, cls).deserialize(element)
 
-        # Parse frame_ref
-        child = SerializationHelper.find_child_element(element, "FRAME-REF")
-        if child is not None:
-            frame_ref_value = ARRef.deserialize(child)
-            obj.frame_ref = frame_ref_value
-
-        # Parse message_id
-        child = SerializationHelper.find_child_element(element, "MESSAGE-ID")
-        if child is not None:
-            message_id_value = child.text
-            obj.message_id = message_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "FRAME-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "LIN-EVENT-TRIGGERED-FRAME":
+                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "LinEventTriggeredFrame"))
+                    elif concrete_tag == "LIN-SPORADIC-FRAME":
+                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "LinSporadicFrame"))
+                    elif concrete_tag == "LIN-UNCONDITIONAL-FRAME":
+                        setattr(obj, "frame_ref", SerializationHelper.deserialize_by_tag(child[0], "LinUnconditionalFrame"))
+            elif tag == "MESSAGE-ID":
+                setattr(obj, "message_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

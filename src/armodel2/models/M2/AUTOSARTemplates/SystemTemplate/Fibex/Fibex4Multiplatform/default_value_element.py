@@ -35,8 +35,8 @@ class DefaultValueElement(ARObject):
     element_byte_value: Optional[Integer]
     element_position: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "ELEMENT-BYTE-VALUE": lambda obj, elem: setattr(obj, "element_byte_value", elem.text),
-        "ELEMENT-POSITION": lambda obj, elem: setattr(obj, "element_position", elem.text),
+        "ELEMENT-BYTE-VALUE": lambda obj, elem: setattr(obj, "element_byte_value", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "ELEMENT-POSITION": lambda obj, elem: setattr(obj, "element_position", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -112,17 +112,15 @@ class DefaultValueElement(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DefaultValueElement, cls).deserialize(element)
 
-        # Parse element_byte_value
-        child = SerializationHelper.find_child_element(element, "ELEMENT-BYTE-VALUE")
-        if child is not None:
-            element_byte_value_value = child.text
-            obj.element_byte_value = element_byte_value_value
-
-        # Parse element_position
-        child = SerializationHelper.find_child_element(element, "ELEMENT-POSITION")
-        if child is not None:
-            element_position_value = child.text
-            obj.element_position = element_position_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ELEMENT-BYTE-VALUE":
+                setattr(obj, "element_byte_value", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "ELEMENT-POSITION":
+                setattr(obj, "element_position", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

@@ -34,7 +34,7 @@ class GlobalTimeCouplingPortProps(ARObject):
 
     propagation: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "PROPAGATION": lambda obj, elem: setattr(obj, "propagation", elem.text),
+        "PROPAGATION": lambda obj, elem: setattr(obj, "propagation", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
 
@@ -95,11 +95,13 @@ class GlobalTimeCouplingPortProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeCouplingPortProps, cls).deserialize(element)
 
-        # Parse propagation
-        child = SerializationHelper.find_child_element(element, "PROPAGATION")
-        if child is not None:
-            propagation_value = child.text
-            obj.propagation = propagation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PROPAGATION":
+                setattr(obj, "propagation", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
         return obj
 

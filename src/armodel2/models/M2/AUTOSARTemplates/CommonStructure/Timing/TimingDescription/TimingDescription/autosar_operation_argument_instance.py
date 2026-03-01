@@ -39,7 +39,7 @@ class AutosarOperationArgumentInstance(Identifiable):
 
     operation_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "OPERATION-REF": lambda obj, elem: setattr(obj, "operation_ref", ARRef.deserialize(elem)),
+        "OPERATION-REF": ("_POLYMORPHIC", "operation_ref", ["ApplicationCompositeElementDataPrototype", "AutosarDataPrototype"]),
     }
 
 
@@ -100,11 +100,19 @@ class AutosarOperationArgumentInstance(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AutosarOperationArgumentInstance, cls).deserialize(element)
 
-        # Parse operation_ref
-        child = SerializationHelper.find_child_element(element, "OPERATION-REF")
-        if child is not None:
-            operation_ref_value = ARRef.deserialize(child)
-            obj.operation_ref = operation_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "OPERATION-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "APPLICATION-COMPOSITE-ELEMENT-DATA-PROTOTYPE":
+                        setattr(obj, "operation_ref", SerializationHelper.deserialize_by_tag(child[0], "ApplicationCompositeElementDataPrototype"))
+                    elif concrete_tag == "AUTOSAR-DATA-PROTOTYPE":
+                        setattr(obj, "operation_ref", SerializationHelper.deserialize_by_tag(child[0], "AutosarDataPrototype"))
 
         return obj
 

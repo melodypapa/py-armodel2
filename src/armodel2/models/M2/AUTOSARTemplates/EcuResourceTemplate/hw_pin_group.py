@@ -103,19 +103,13 @@ class HwPinGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwPinGroup, cls).deserialize(element)
 
-        # Parse hw_pin_group_content_ref (atp_mixed - children appear directly)
-        # Check if element contains expected children for HwPinGroupContent
-        has_mixed_children = False
-        child_tags_to_check = ['HW-PIN', 'HW-PIN-GROUP']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            hw_pin_group_content_ref_value = SerializationHelper.deserialize_by_tag(element, "HwPinGroupContent")
-            obj.hw_pin_group_content_ref = hw_pin_group_content_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "HW-PIN-GROUP-CONTENT-REF":
+                setattr(obj, "hw_pin_group_content_ref", ARRef.deserialize(child))
 
         return obj
 

@@ -97,11 +97,13 @@ class DiagnosticReadDataByPeriodicID(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticReadDataByPeriodicID, cls).deserialize(element)
 
-        # Parse read_data_class_ref
-        child = SerializationHelper.find_child_element(element, "READ-DATA-CLASS-REF")
-        if child is not None:
-            read_data_class_ref_value = ARRef.deserialize(child)
-            obj.read_data_class_ref = read_data_class_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "READ-DATA-CLASS-REF":
+                setattr(obj, "read_data_class_ref", ARRef.deserialize(child))
 
         return obj
 

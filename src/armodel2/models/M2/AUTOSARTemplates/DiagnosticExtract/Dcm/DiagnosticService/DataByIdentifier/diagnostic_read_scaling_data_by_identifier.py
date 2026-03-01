@@ -97,11 +97,13 @@ class DiagnosticReadScalingDataByIdentifier(DiagnosticDataByIdentifier):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticReadScalingDataByIdentifier, cls).deserialize(element)
 
-        # Parse read_scaling_ref
-        child = SerializationHelper.find_child_element(element, "READ-SCALING-REF")
-        if child is not None:
-            read_scaling_ref_value = ARRef.deserialize(child)
-            obj.read_scaling_ref = read_scaling_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "READ-SCALING-REF":
+                setattr(obj, "read_scaling_ref", ARRef.deserialize(child))
 
         return obj
 

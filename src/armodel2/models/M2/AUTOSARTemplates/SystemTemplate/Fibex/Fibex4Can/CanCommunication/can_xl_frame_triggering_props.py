@@ -37,10 +37,10 @@ class CanXlFrameTriggeringProps(ARObject):
     sdu_type: Optional[PositiveInteger]
     vcid: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ACCEPTANCE-FIELD": lambda obj, elem: setattr(obj, "acceptance_field", elem.text),
-        "PRIORITY-ID": lambda obj, elem: setattr(obj, "priority_id", elem.text),
-        "SDU-TYPE": lambda obj, elem: setattr(obj, "sdu_type", elem.text),
-        "VCID": lambda obj, elem: setattr(obj, "vcid", elem.text),
+        "ACCEPTANCE-FIELD": lambda obj, elem: setattr(obj, "acceptance_field", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PRIORITY-ID": lambda obj, elem: setattr(obj, "priority_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "SDU-TYPE": lambda obj, elem: setattr(obj, "sdu_type", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "VCID": lambda obj, elem: setattr(obj, "vcid", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -146,29 +146,19 @@ class CanXlFrameTriggeringProps(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanXlFrameTriggeringProps, cls).deserialize(element)
 
-        # Parse acceptance_field
-        child = SerializationHelper.find_child_element(element, "ACCEPTANCE-FIELD")
-        if child is not None:
-            acceptance_field_value = child.text
-            obj.acceptance_field = acceptance_field_value
-
-        # Parse priority_id
-        child = SerializationHelper.find_child_element(element, "PRIORITY-ID")
-        if child is not None:
-            priority_id_value = child.text
-            obj.priority_id = priority_id_value
-
-        # Parse sdu_type
-        child = SerializationHelper.find_child_element(element, "SDU-TYPE")
-        if child is not None:
-            sdu_type_value = child.text
-            obj.sdu_type = sdu_type_value
-
-        # Parse vcid
-        child = SerializationHelper.find_child_element(element, "VCID")
-        if child is not None:
-            vcid_value = child.text
-            obj.vcid = vcid_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACCEPTANCE-FIELD":
+                setattr(obj, "acceptance_field", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PRIORITY-ID":
+                setattr(obj, "priority_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "SDU-TYPE":
+                setattr(obj, "sdu_type", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "VCID":
+                setattr(obj, "vcid", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

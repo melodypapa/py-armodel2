@@ -95,11 +95,13 @@ class DiagnosticAuthentication(DiagnosticServiceInstance, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAuthentication, cls).deserialize(element)
 
-        # Parse authentication_ref
-        child = SerializationHelper.find_child_element(element, "AUTHENTICATION-REF")
-        if child is not None:
-            authentication_ref_value = ARRef.deserialize(child)
-            obj.authentication_ref = authentication_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "AUTHENTICATION-REF":
+                setattr(obj, "authentication_ref", ARRef.deserialize(child))
 
         return obj
 

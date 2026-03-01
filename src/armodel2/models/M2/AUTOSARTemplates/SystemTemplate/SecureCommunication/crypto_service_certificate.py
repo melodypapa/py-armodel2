@@ -48,11 +48,11 @@ class CryptoServiceCertificate(ARElement):
     next_higher_ref: Optional[Any]
     server_name: Optional[String]
     _DESERIALIZE_DISPATCH = {
-        "ALGORITHM-FAMILY": lambda obj, elem: setattr(obj, "algorithm_family", any (CryptoCertificate).deserialize(elem)),
+        "ALGORITHM-FAMILY": lambda obj, elem: setattr(obj, "algorithm_family", SerializationHelper.deserialize_by_tag(elem, "any (CryptoCertificate)")),
         "FORMAT": lambda obj, elem: setattr(obj, "format", CryptoCertificateFormatEnum.deserialize(elem)),
-        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", elem.text),
+        "MAXIMUM": lambda obj, elem: setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "NEXT-HIGHER-REF": lambda obj, elem: setattr(obj, "next_higher_ref", ARRef.deserialize(elem)),
-        "SERVER-NAME": lambda obj, elem: setattr(obj, "server_name", elem.text),
+        "SERVER-NAME": lambda obj, elem: setattr(obj, "server_name", SerializationHelper.deserialize_by_tag(elem, "String")),
     }
 
 
@@ -173,35 +173,21 @@ class CryptoServiceCertificate(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CryptoServiceCertificate, cls).deserialize(element)
 
-        # Parse algorithm_family
-        child = SerializationHelper.find_child_element(element, "ALGORITHM-FAMILY")
-        if child is not None:
-            algorithm_family_value = child.text
-            obj.algorithm_family = algorithm_family_value
-
-        # Parse format
-        child = SerializationHelper.find_child_element(element, "FORMAT")
-        if child is not None:
-            format_value = CryptoCertificateFormatEnum.deserialize(child)
-            obj.format = format_value
-
-        # Parse maximum
-        child = SerializationHelper.find_child_element(element, "MAXIMUM")
-        if child is not None:
-            maximum_value = child.text
-            obj.maximum = maximum_value
-
-        # Parse next_higher_ref
-        child = SerializationHelper.find_child_element(element, "NEXT-HIGHER-REF")
-        if child is not None:
-            next_higher_ref_value = ARRef.deserialize(child)
-            obj.next_higher_ref = next_higher_ref_value
-
-        # Parse server_name
-        child = SerializationHelper.find_child_element(element, "SERVER-NAME")
-        if child is not None:
-            server_name_value = child.text
-            obj.server_name = server_name_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ALGORITHM-FAMILY":
+                setattr(obj, "algorithm_family", SerializationHelper.deserialize_by_tag(child, "any (CryptoCertificate)"))
+            elif tag == "FORMAT":
+                setattr(obj, "format", CryptoCertificateFormatEnum.deserialize(child))
+            elif tag == "MAXIMUM":
+                setattr(obj, "maximum", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "NEXT-HIGHER-REF":
+                setattr(obj, "next_higher_ref", ARRef.deserialize(child))
+            elif tag == "SERVER-NAME":
+                setattr(obj, "server_name", SerializationHelper.deserialize_by_tag(child, "String"))
 
         return obj
 

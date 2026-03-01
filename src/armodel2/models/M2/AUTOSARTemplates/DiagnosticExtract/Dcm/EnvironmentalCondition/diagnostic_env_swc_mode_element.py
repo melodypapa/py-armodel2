@@ -38,7 +38,7 @@ class DiagnosticEnvSwcModeElement(DiagnosticEnvModeElement):
 
     mode: Optional[ModeDeclaration]
     _DESERIALIZE_DISPATCH = {
-        "MODE": lambda obj, elem: setattr(obj, "mode", ModeDeclaration.deserialize(elem)),
+        "MODE": lambda obj, elem: setattr(obj, "mode", SerializationHelper.deserialize_by_tag(elem, "ModeDeclaration")),
     }
 
 
@@ -99,11 +99,13 @@ class DiagnosticEnvSwcModeElement(DiagnosticEnvModeElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEnvSwcModeElement, cls).deserialize(element)
 
-        # Parse mode
-        child = SerializationHelper.find_child_element(element, "MODE")
-        if child is not None:
-            mode_value = SerializationHelper.deserialize_by_tag(child, "ModeDeclaration")
-            obj.mode = mode_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MODE":
+                setattr(obj, "mode", SerializationHelper.deserialize_by_tag(child, "ModeDeclaration"))
 
         return obj
 

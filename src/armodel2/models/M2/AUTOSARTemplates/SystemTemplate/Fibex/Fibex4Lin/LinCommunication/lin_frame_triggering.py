@@ -42,7 +42,7 @@ class LinFrameTriggering(FrameTriggering):
     identifier: Optional[Integer]
     lin_checksum: Optional[LinChecksumType]
     _DESERIALIZE_DISPATCH = {
-        "IDENTIFIER": lambda obj, elem: setattr(obj, "identifier", elem.text),
+        "IDENTIFIER": lambda obj, elem: setattr(obj, "identifier", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "LIN-CHECKSUM": lambda obj, elem: setattr(obj, "lin_checksum", LinChecksumType.deserialize(elem)),
     }
 
@@ -119,17 +119,15 @@ class LinFrameTriggering(FrameTriggering):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinFrameTriggering, cls).deserialize(element)
 
-        # Parse identifier
-        child = SerializationHelper.find_child_element(element, "IDENTIFIER")
-        if child is not None:
-            identifier_value = child.text
-            obj.identifier = identifier_value
-
-        # Parse lin_checksum
-        child = SerializationHelper.find_child_element(element, "LIN-CHECKSUM")
-        if child is not None:
-            lin_checksum_value = LinChecksumType.deserialize(child)
-            obj.lin_checksum = lin_checksum_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "IDENTIFIER":
+                setattr(obj, "identifier", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "LIN-CHECKSUM":
+                setattr(obj, "lin_checksum", LinChecksumType.deserialize(child))
 
         return obj
 

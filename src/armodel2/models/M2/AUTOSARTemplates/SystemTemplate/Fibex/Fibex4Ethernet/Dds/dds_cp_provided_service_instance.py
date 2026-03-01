@@ -46,8 +46,8 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
     static_remote_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
         "LOCAL-UNICAST-REF": lambda obj, elem: setattr(obj, "local_unicast_ref", ARRef.deserialize(elem)),
-        "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", elem.text),
-        "PROVIDED-DDSES": lambda obj, elem: obj.provided_ddses.append(DdsCpServiceInstance.deserialize(elem)),
+        "MINOR-VERSION": lambda obj, elem: setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PROVIDED-DDSES": ("_POLYMORPHIC_LIST", "provided_ddses", ["DdsCpConsumedServiceInstance", "DdsCpProvidedServiceInstance"]),
         "STATIC-REMOTES": lambda obj, elem: obj.static_remote_refs.append(ARRef.deserialize(elem)),
     }
 
@@ -153,43 +153,25 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpProvidedServiceInstance, cls).deserialize(element)
 
-        # Parse local_unicast_ref
-        child = SerializationHelper.find_child_element(element, "LOCAL-UNICAST-REF")
-        if child is not None:
-            local_unicast_ref_value = ARRef.deserialize(child)
-            obj.local_unicast_ref = local_unicast_ref_value
-
-        # Parse minor_version
-        child = SerializationHelper.find_child_element(element, "MINOR-VERSION")
-        if child is not None:
-            minor_version_value = child.text
-            obj.minor_version = minor_version_value
-
-        # Parse provided_ddses (list from container "PROVIDED-DDSES")
-        obj.provided_ddses = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-DDSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.provided_ddses.append(child_value)
-
-        # Parse static_remote_refs (list from container "STATIC-REMOTE-REFS")
-        obj.static_remote_refs = []
-        container = SerializationHelper.find_child_element(element, "STATIC-REMOTE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.static_remote_refs.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LOCAL-UNICAST-REF":
+                setattr(obj, "local_unicast_ref", ARRef.deserialize(child))
+            elif tag == "MINOR-VERSION":
+                setattr(obj, "minor_version", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PROVIDED-DDSES":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "DDS-CP-CONSUMED-SERVICE-INSTANCE":
+                        obj.provided_ddses.append(SerializationHelper.deserialize_by_tag(child[0], "DdsCpConsumedServiceInstance"))
+                    elif concrete_tag == "DDS-CP-PROVIDED-SERVICE-INSTANCE":
+                        obj.provided_ddses.append(SerializationHelper.deserialize_by_tag(child[0], "DdsCpProvidedServiceInstance"))
+            elif tag == "STATIC-REMOTES":
+                obj.static_remote_refs.append(ARRef.deserialize(child))
 
         return obj
 

@@ -30,8 +30,8 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
     can_controller_fd: Optional[Any]
     can_controller_xl: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "CAN-CONTROLLER-FD": lambda obj, elem: setattr(obj, "can_controller_fd", any (CanControllerFd).deserialize(elem)),
-        "CAN-CONTROLLER-XL": lambda obj, elem: setattr(obj, "can_controller_xl", any (CanControllerXl).deserialize(elem)),
+        "CAN-CONTROLLER-FD": lambda obj, elem: setattr(obj, "can_controller_fd", SerializationHelper.deserialize_by_tag(elem, "any (CanControllerFd)")),
+        "CAN-CONTROLLER-XL": lambda obj, elem: setattr(obj, "can_controller_xl", SerializationHelper.deserialize_by_tag(elem, "any (CanControllerXl)")),
     }
 
 
@@ -107,17 +107,15 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractCanCommunicationControllerAttributes, cls).deserialize(element)
 
-        # Parse can_controller_fd
-        child = SerializationHelper.find_child_element(element, "CAN-CONTROLLER-FD")
-        if child is not None:
-            can_controller_fd_value = child.text
-            obj.can_controller_fd = can_controller_fd_value
-
-        # Parse can_controller_xl
-        child = SerializationHelper.find_child_element(element, "CAN-CONTROLLER-XL")
-        if child is not None:
-            can_controller_xl_value = child.text
-            obj.can_controller_xl = can_controller_xl_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CAN-CONTROLLER-FD":
+                setattr(obj, "can_controller_fd", SerializationHelper.deserialize_by_tag(child, "any (CanControllerFd)"))
+            elif tag == "CAN-CONTROLLER-XL":
+                setattr(obj, "can_controller_xl", SerializationHelper.deserialize_by_tag(child, "any (CanControllerXl)"))
 
         return obj
 

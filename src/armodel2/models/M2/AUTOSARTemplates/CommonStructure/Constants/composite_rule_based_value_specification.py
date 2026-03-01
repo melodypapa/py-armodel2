@@ -45,10 +45,10 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
     max_size_to_fill: Optional[PositiveInteger]
     rule: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "ARGUMENTS": lambda obj, elem: obj.arguments.append(CompositeValueSpecification.deserialize(elem)),
-        "COMPOUNDS": lambda obj, elem: obj.compounds.append(any (CompositeRuleBased).deserialize(elem)),
-        "MAX-SIZE-TO-FILL": lambda obj, elem: setattr(obj, "max_size_to_fill", elem.text),
-        "RULE": lambda obj, elem: setattr(obj, "rule", elem.text),
+        "ARGUMENTS": ("_POLYMORPHIC_LIST", "arguments", ["ArrayValueSpecification", "RecordValueSpecification"]),
+        "COMPOUNDS": lambda obj, elem: obj.compounds.append(SerializationHelper.deserialize_by_tag(elem, "any (CompositeRuleBased)")),
+        "MAX-SIZE-TO-FILL": lambda obj, elem: setattr(obj, "max_size_to_fill", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "RULE": lambda obj, elem: setattr(obj, "rule", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -146,37 +146,25 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CompositeRuleBasedValueSpecification, cls).deserialize(element)
 
-        # Parse arguments (list from container "ARGUMENTS")
-        obj.arguments = []
-        container = SerializationHelper.find_child_element(element, "ARGUMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.arguments.append(child_value)
-
-        # Parse compounds (list from container "COMPOUNDS")
-        obj.compounds = []
-        container = SerializationHelper.find_child_element(element, "COMPOUNDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.compounds.append(child_value)
-
-        # Parse max_size_to_fill
-        child = SerializationHelper.find_child_element(element, "MAX-SIZE-TO-FILL")
-        if child is not None:
-            max_size_to_fill_value = child.text
-            obj.max_size_to_fill = max_size_to_fill_value
-
-        # Parse rule
-        child = SerializationHelper.find_child_element(element, "RULE")
-        if child is not None:
-            rule_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.rule = rule_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ARGUMENTS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ARRAY-VALUE-SPECIFICATION":
+                        obj.arguments.append(SerializationHelper.deserialize_by_tag(child[0], "ArrayValueSpecification"))
+                    elif concrete_tag == "RECORD-VALUE-SPECIFICATION":
+                        obj.arguments.append(SerializationHelper.deserialize_by_tag(child[0], "RecordValueSpecification"))
+            elif tag == "COMPOUNDS":
+                obj.compounds.append(SerializationHelper.deserialize_by_tag(child, "any (CompositeRuleBased)"))
+            elif tag == "MAX-SIZE-TO-FILL":
+                setattr(obj, "max_size_to_fill", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "RULE":
+                setattr(obj, "rule", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 

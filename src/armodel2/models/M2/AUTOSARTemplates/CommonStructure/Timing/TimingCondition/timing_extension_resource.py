@@ -43,9 +43,9 @@ class TimingExtensionResource(Identifiable):
     timing_modes: list[TimingModeInstance]
     timing_variables: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "TIMING-ARGUMENTS": lambda obj, elem: obj.timing_arguments.append(AutosarOperationArgumentInstance.deserialize(elem)),
-        "TIMING-MODES": lambda obj, elem: obj.timing_modes.append(TimingModeInstance.deserialize(elem)),
-        "TIMING-VARIABLES": lambda obj, elem: obj.timing_variables.append(any (AutosarVariable).deserialize(elem)),
+        "TIMING-ARGUMENTS": lambda obj, elem: obj.timing_arguments.append(SerializationHelper.deserialize_by_tag(elem, "AutosarOperationArgumentInstance")),
+        "TIMING-MODES": lambda obj, elem: obj.timing_modes.append(SerializationHelper.deserialize_by_tag(elem, "TimingModeInstance")),
+        "TIMING-VARIABLES": lambda obj, elem: obj.timing_variables.append(SerializationHelper.deserialize_by_tag(elem, "any (AutosarVariable)")),
     }
 
 
@@ -124,35 +124,17 @@ class TimingExtensionResource(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingExtensionResource, cls).deserialize(element)
 
-        # Parse timing_arguments (list from container "TIMING-ARGUMENTS")
-        obj.timing_arguments = []
-        container = SerializationHelper.find_child_element(element, "TIMING-ARGUMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.timing_arguments.append(child_value)
-
-        # Parse timing_modes (list from container "TIMING-MODES")
-        obj.timing_modes = []
-        container = SerializationHelper.find_child_element(element, "TIMING-MODES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.timing_modes.append(child_value)
-
-        # Parse timing_variables (list from container "TIMING-VARIABLES")
-        obj.timing_variables = []
-        container = SerializationHelper.find_child_element(element, "TIMING-VARIABLES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.timing_variables.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TIMING-ARGUMENTS":
+                obj.timing_arguments.append(SerializationHelper.deserialize_by_tag(child, "AutosarOperationArgumentInstance"))
+            elif tag == "TIMING-MODES":
+                obj.timing_modes.append(SerializationHelper.deserialize_by_tag(child, "TimingModeInstance"))
+            elif tag == "TIMING-VARIABLES":
+                obj.timing_variables.append(SerializationHelper.deserialize_by_tag(child, "any (AutosarVariable)"))
 
         return obj
 

@@ -42,8 +42,8 @@ class PortPrototypeBlueprintInitValue(ARObject):
     data_prototype_ref: ARRef
     value: ValueSpecification
     _DESERIALIZE_DISPATCH = {
-        "DATA-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "data_prototype_ref", ARRef.deserialize(elem)),
-        "VALUE": lambda obj, elem: setattr(obj, "value", ValueSpecification.deserialize(elem)),
+        "DATA-PROTOTYPE-REF": ("_POLYMORPHIC", "data_prototype_ref", ["ArgumentDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
+        "VALUE": ("_POLYMORPHIC", "value", ["AbstractRuleBasedValueSpecification", "ApplicationValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
     }
 
 
@@ -119,17 +119,41 @@ class PortPrototypeBlueprintInitValue(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortPrototypeBlueprintInitValue, cls).deserialize(element)
 
-        # Parse data_prototype_ref
-        child = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-REF")
-        if child is not None:
-            data_prototype_ref_value = ARRef.deserialize(child)
-            obj.data_prototype_ref = data_prototype_ref_value
-
-        # Parse value
-        child = SerializationHelper.find_child_element(element, "VALUE")
-        if child is not None:
-            value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
-            obj.value = value_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-PROTOTYPE-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ARGUMENT-DATA-PROTOTYPE":
+                        setattr(obj, "data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "ArgumentDataPrototype"))
+                    elif concrete_tag == "PARAMETER-DATA-PROTOTYPE":
+                        setattr(obj, "data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterDataPrototype"))
+                    elif concrete_tag == "VARIABLE-DATA-PROTOTYPE":
+                        setattr(obj, "data_prototype_ref", SerializationHelper.deserialize_by_tag(child[0], "VariableDataPrototype"))
+            elif tag == "VALUE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
+                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                    elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
+                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                    elif concrete_tag == "CONSTANT-REFERENCE":
+                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                    elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
+                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                    elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
+                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                    elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
+                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                    elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
+                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
 
         return obj
 

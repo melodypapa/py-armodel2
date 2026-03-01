@@ -37,7 +37,7 @@ class PostBuildVariantCriterionValueSet(ARElement):
 
     post_build_variants: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "POST-BUILD-VARIANTS": lambda obj, elem: obj.post_build_variants.append(any (PostBuildVariant).deserialize(elem)),
+        "POST-BUILD-VARIANTS": lambda obj, elem: obj.post_build_variants.append(SerializationHelper.deserialize_by_tag(elem, "any (PostBuildVariant)")),
     }
 
 
@@ -94,15 +94,13 @@ class PostBuildVariantCriterionValueSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PostBuildVariantCriterionValueSet, cls).deserialize(element)
 
-        # Parse post_build_variants (list from container "POST-BUILD-VARIANTS")
-        obj.post_build_variants = []
-        container = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.post_build_variants.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "POST-BUILD-VARIANTS":
+                obj.post_build_variants.append(SerializationHelper.deserialize_by_tag(child, "any (PostBuildVariant)"))
 
         return obj
 

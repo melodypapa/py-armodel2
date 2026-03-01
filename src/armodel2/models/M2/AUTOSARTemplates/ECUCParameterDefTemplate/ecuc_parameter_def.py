@@ -42,9 +42,9 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
     symbolic_name: Optional[Boolean]
     with_auto: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "DERIVATION": lambda obj, elem: setattr(obj, "derivation", EcucDerivationSpecification.deserialize(elem)),
-        "SYMBOLIC-NAME": lambda obj, elem: setattr(obj, "symbolic_name", elem.text),
-        "WITH-AUTO": lambda obj, elem: setattr(obj, "with_auto", elem.text),
+        "DERIVATION": lambda obj, elem: setattr(obj, "derivation", SerializationHelper.deserialize_by_tag(elem, "EcucDerivationSpecification")),
+        "SYMBOLIC-NAME": lambda obj, elem: setattr(obj, "symbolic_name", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "WITH-AUTO": lambda obj, elem: setattr(obj, "with_auto", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -135,23 +135,17 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucParameterDef, cls).deserialize(element)
 
-        # Parse derivation
-        child = SerializationHelper.find_child_element(element, "DERIVATION")
-        if child is not None:
-            derivation_value = SerializationHelper.deserialize_by_tag(child, "EcucDerivationSpecification")
-            obj.derivation = derivation_value
-
-        # Parse symbolic_name
-        child = SerializationHelper.find_child_element(element, "SYMBOLIC-NAME")
-        if child is not None:
-            symbolic_name_value = child.text
-            obj.symbolic_name = symbolic_name_value
-
-        # Parse with_auto
-        child = SerializationHelper.find_child_element(element, "WITH-AUTO")
-        if child is not None:
-            with_auto_value = child.text
-            obj.with_auto = with_auto_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DERIVATION":
+                setattr(obj, "derivation", SerializationHelper.deserialize_by_tag(child, "EcucDerivationSpecification"))
+            elif tag == "SYMBOLIC-NAME":
+                setattr(obj, "symbolic_name", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "WITH-AUTO":
+                setattr(obj, "with_auto", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 

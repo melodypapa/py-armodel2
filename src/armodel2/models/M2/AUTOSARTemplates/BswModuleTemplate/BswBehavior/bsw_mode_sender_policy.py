@@ -45,10 +45,10 @@ class BswModeSenderPolicy(ARObject):
     provided_mode_ref: Optional[ARRef]
     queue_length: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ACK-REQUEST-REQUEST": lambda obj, elem: setattr(obj, "ack_request_request", BswModeSwitchAckRequest.deserialize(elem)),
-        "ENHANCED-MODE": lambda obj, elem: setattr(obj, "enhanced_mode", elem.text),
+        "ACK-REQUEST-REQUEST": lambda obj, elem: setattr(obj, "ack_request_request", SerializationHelper.deserialize_by_tag(elem, "BswModeSwitchAckRequest")),
+        "ENHANCED-MODE": lambda obj, elem: setattr(obj, "enhanced_mode", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "PROVIDED-MODE-REF": lambda obj, elem: setattr(obj, "provided_mode_ref", ARRef.deserialize(elem)),
-        "QUEUE-LENGTH": lambda obj, elem: setattr(obj, "queue_length", elem.text),
+        "QUEUE-LENGTH": lambda obj, elem: setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -154,29 +154,19 @@ class BswModeSenderPolicy(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModeSenderPolicy, cls).deserialize(element)
 
-        # Parse ack_request_request
-        child = SerializationHelper.find_child_element(element, "ACK-REQUEST-REQUEST")
-        if child is not None:
-            ack_request_request_value = SerializationHelper.deserialize_by_tag(child, "BswModeSwitchAckRequest")
-            obj.ack_request_request = ack_request_request_value
-
-        # Parse enhanced_mode
-        child = SerializationHelper.find_child_element(element, "ENHANCED-MODE")
-        if child is not None:
-            enhanced_mode_value = child.text
-            obj.enhanced_mode = enhanced_mode_value
-
-        # Parse provided_mode_ref
-        child = SerializationHelper.find_child_element(element, "PROVIDED-MODE-REF")
-        if child is not None:
-            provided_mode_ref_value = ARRef.deserialize(child)
-            obj.provided_mode_ref = provided_mode_ref_value
-
-        # Parse queue_length
-        child = SerializationHelper.find_child_element(element, "QUEUE-LENGTH")
-        if child is not None:
-            queue_length_value = child.text
-            obj.queue_length = queue_length_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ACK-REQUEST-REQUEST":
+                setattr(obj, "ack_request_request", SerializationHelper.deserialize_by_tag(child, "BswModeSwitchAckRequest"))
+            elif tag == "ENHANCED-MODE":
+                setattr(obj, "enhanced_mode", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PROVIDED-MODE-REF":
+                setattr(obj, "provided_mode_ref", ARRef.deserialize(child))
+            elif tag == "QUEUE-LENGTH":
+                setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -99,11 +99,13 @@ class GlobalTimeFrMaster(GlobalTimeMaster):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeFrMaster, cls).deserialize(element)
 
-        # Parse crc_secured
-        child = SerializationHelper.find_child_element(element, "CRC-SECURED")
-        if child is not None:
-            crc_secured_value = GlobalTimeCrcSupportEnum.deserialize(child)
-            obj.crc_secured = crc_secured_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CRC-SECURED":
+                setattr(obj, "crc_secured", GlobalTimeCrcSupportEnum.deserialize(child))
 
         return obj
 

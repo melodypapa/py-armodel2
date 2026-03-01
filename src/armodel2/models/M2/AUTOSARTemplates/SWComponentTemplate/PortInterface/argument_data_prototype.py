@@ -124,17 +124,15 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ArgumentDataPrototype, cls).deserialize(element)
 
-        # Parse direction
-        child = SerializationHelper.find_child_element(element, "DIRECTION")
-        if child is not None:
-            direction_value = ArgumentDirectionEnum.deserialize(child)
-            obj.direction = direction_value
-
-        # Parse server_argument_impl
-        child = SerializationHelper.find_child_element(element, "SERVER-ARGUMENT-IMPL")
-        if child is not None:
-            server_argument_impl_value = ServerArgumentImplPolicyEnum.deserialize(child)
-            obj.server_argument_impl = server_argument_impl_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DIRECTION":
+                setattr(obj, "direction", ArgumentDirectionEnum.deserialize(child))
+            elif tag == "SERVER-ARGUMENT-IMPL":
+                setattr(obj, "server_argument_impl", ServerArgumentImplPolicyEnum.deserialize(child))
 
         return obj
 

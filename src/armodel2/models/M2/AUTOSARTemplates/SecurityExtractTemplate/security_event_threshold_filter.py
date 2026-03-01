@@ -40,8 +40,8 @@ class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
     interval_length: Optional[TimeValue]
     threshold: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "INTERVAL-LENGTH": lambda obj, elem: setattr(obj, "interval_length", elem.text),
-        "THRESHOLD": lambda obj, elem: setattr(obj, "threshold", elem.text),
+        "INTERVAL-LENGTH": lambda obj, elem: setattr(obj, "interval_length", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "THRESHOLD": lambda obj, elem: setattr(obj, "threshold", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -117,17 +117,15 @@ class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventThresholdFilter, cls).deserialize(element)
 
-        # Parse interval_length
-        child = SerializationHelper.find_child_element(element, "INTERVAL-LENGTH")
-        if child is not None:
-            interval_length_value = child.text
-            obj.interval_length = interval_length_value
-
-        # Parse threshold
-        child = SerializationHelper.find_child_element(element, "THRESHOLD")
-        if child is not None:
-            threshold_value = child.text
-            obj.threshold = threshold_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INTERVAL-LENGTH":
+                setattr(obj, "interval_length", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "THRESHOLD":
+                setattr(obj, "threshold", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

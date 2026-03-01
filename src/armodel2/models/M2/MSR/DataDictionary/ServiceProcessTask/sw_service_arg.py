@@ -56,7 +56,7 @@ class SwServiceArg(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "DIRECTION": lambda obj, elem: setattr(obj, "direction", ArgumentDirectionEnum.deserialize(elem)),
         "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
-        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SwDataDefProps.deserialize(elem)),
+        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
     }
 
 
@@ -146,31 +146,17 @@ class SwServiceArg(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwServiceArg, cls).deserialize(element)
 
-        # Parse direction
-        child = SerializationHelper.find_child_element(element, "DIRECTION")
-        if child is not None:
-            direction_value = ArgumentDirectionEnum.deserialize(child)
-            obj.direction = direction_value
-
-        # Parse sw_arraysize_ref (atp_mixed - children appear directly)
-        # Check if element contains expected children for ValueList
-        has_mixed_children = False
-        child_tags_to_check = ['V']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            sw_arraysize_ref_value = SerializationHelper.deserialize_by_tag(element, "ValueList")
-            obj.sw_arraysize_ref = sw_arraysize_ref_value
-
-        # Parse sw_data_def
-        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
-        if child is not None:
-            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
-            obj.sw_data_def = sw_data_def_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DIRECTION":
+                setattr(obj, "direction", ArgumentDirectionEnum.deserialize(child))
+            elif tag == "SW-ARRAYSIZE-REF":
+                setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
+            elif tag == "SW-DATA-DEF":
+                setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
         return obj
 

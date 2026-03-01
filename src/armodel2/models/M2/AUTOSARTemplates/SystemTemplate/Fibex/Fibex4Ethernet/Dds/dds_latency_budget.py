@@ -34,7 +34,7 @@ class DdsLatencyBudget(ARObject):
 
     latency_budget: Optional[Float]
     _DESERIALIZE_DISPATCH = {
-        "LATENCY-BUDGET": lambda obj, elem: setattr(obj, "latency_budget", elem.text),
+        "LATENCY-BUDGET": lambda obj, elem: setattr(obj, "latency_budget", SerializationHelper.deserialize_by_tag(elem, "Float")),
     }
 
 
@@ -95,11 +95,13 @@ class DdsLatencyBudget(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsLatencyBudget, cls).deserialize(element)
 
-        # Parse latency_budget
-        child = SerializationHelper.find_child_element(element, "LATENCY-BUDGET")
-        if child is not None:
-            latency_budget_value = child.text
-            obj.latency_budget = latency_budget_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "LATENCY-BUDGET":
+                setattr(obj, "latency_budget", SerializationHelper.deserialize_by_tag(child, "Float"))
 
         return obj
 

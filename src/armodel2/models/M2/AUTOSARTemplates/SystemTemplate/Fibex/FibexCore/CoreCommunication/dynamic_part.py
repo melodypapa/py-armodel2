@@ -38,7 +38,7 @@ class DynamicPart(MultiplexedPart):
 
     dynamic_parts: list[DynamicPartAlternative]
     _DESERIALIZE_DISPATCH = {
-        "DYNAMIC-PARTS": lambda obj, elem: obj.dynamic_parts.append(DynamicPartAlternative.deserialize(elem)),
+        "DYNAMIC-PARTS": lambda obj, elem: obj.dynamic_parts.append(SerializationHelper.deserialize_by_tag(elem, "DynamicPartAlternative")),
     }
 
 
@@ -95,15 +95,13 @@ class DynamicPart(MultiplexedPart):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DynamicPart, cls).deserialize(element)
 
-        # Parse dynamic_parts (list from container "DYNAMIC-PARTS")
-        obj.dynamic_parts = []
-        container = SerializationHelper.find_child_element(element, "DYNAMIC-PARTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dynamic_parts.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DYNAMIC-PARTS":
+                obj.dynamic_parts.append(SerializationHelper.deserialize_by_tag(child, "DynamicPartAlternative"))
 
         return obj
 

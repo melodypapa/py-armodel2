@@ -100,11 +100,13 @@ class MacMulticastConfiguration(NetworkEndpointAddress):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacMulticastConfiguration, cls).deserialize(element)
 
-        # Parse mac_multicast_group_group_ref
-        child = SerializationHelper.find_child_element(element, "MAC-MULTICAST-GROUP-GROUP-REF")
-        if child is not None:
-            mac_multicast_group_group_ref_value = ARRef.deserialize(child)
-            obj.mac_multicast_group_group_ref = mac_multicast_group_group_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAC-MULTICAST-GROUP-GROUP-REF":
+                setattr(obj, "mac_multicast_group_group_ref", ARRef.deserialize(child))
 
         return obj
 

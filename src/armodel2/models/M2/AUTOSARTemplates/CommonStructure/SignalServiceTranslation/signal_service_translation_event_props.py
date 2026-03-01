@@ -45,9 +45,9 @@ class SignalServiceTranslationEventProps(Identifiable):
     secure: Optional[Boolean]
     translation_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ELEMENT-PROPSES": lambda obj, elem: obj.element_propses.append(any (SignalService).deserialize(elem)),
-        "SAFE-TRANSLATION": lambda obj, elem: setattr(obj, "safe_translation", elem.text),
-        "SECURE": lambda obj, elem: setattr(obj, "secure", elem.text),
+        "ELEMENT-PROPSES": lambda obj, elem: obj.element_propses.append(SerializationHelper.deserialize_by_tag(elem, "any (SignalService)")),
+        "SAFE-TRANSLATION": lambda obj, elem: setattr(obj, "safe_translation", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SECURE": lambda obj, elem: setattr(obj, "secure", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "TRANSLATION-REF": lambda obj, elem: setattr(obj, "translation_ref", ARRef.deserialize(elem)),
     }
 
@@ -150,33 +150,19 @@ class SignalServiceTranslationEventProps(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SignalServiceTranslationEventProps, cls).deserialize(element)
 
-        # Parse element_propses (list from container "ELEMENT-PROPSES")
-        obj.element_propses = []
-        container = SerializationHelper.find_child_element(element, "ELEMENT-PROPSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.element_propses.append(child_value)
-
-        # Parse safe_translation
-        child = SerializationHelper.find_child_element(element, "SAFE-TRANSLATION")
-        if child is not None:
-            safe_translation_value = child.text
-            obj.safe_translation = safe_translation_value
-
-        # Parse secure
-        child = SerializationHelper.find_child_element(element, "SECURE")
-        if child is not None:
-            secure_value = child.text
-            obj.secure = secure_value
-
-        # Parse translation_ref
-        child = SerializationHelper.find_child_element(element, "TRANSLATION-REF")
-        if child is not None:
-            translation_ref_value = ARRef.deserialize(child)
-            obj.translation_ref = translation_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ELEMENT-PROPSES":
+                obj.element_propses.append(SerializationHelper.deserialize_by_tag(child, "any (SignalService)"))
+            elif tag == "SAFE-TRANSLATION":
+                setattr(obj, "safe_translation", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SECURE":
+                setattr(obj, "secure", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "TRANSLATION-REF":
+                setattr(obj, "translation_ref", ARRef.deserialize(child))
 
         return obj
 

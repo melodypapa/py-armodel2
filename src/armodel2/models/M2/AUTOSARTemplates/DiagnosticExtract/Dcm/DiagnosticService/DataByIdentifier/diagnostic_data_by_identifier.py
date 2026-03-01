@@ -37,7 +37,7 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
 
     data_identifier_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DATA-IDENTIFIER-REF": lambda obj, elem: setattr(obj, "data_identifier_ref", ARRef.deserialize(elem)),
+        "DATA-IDENTIFIER-REF": ("_POLYMORPHIC", "data_identifier_ref", ["DiagnosticDataIdentifier", "DiagnosticDynamicDataIdentifier"]),
     }
 
 
@@ -98,11 +98,19 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDataByIdentifier, cls).deserialize(element)
 
-        # Parse data_identifier_ref
-        child = SerializationHelper.find_child_element(element, "DATA-IDENTIFIER-REF")
-        if child is not None:
-            data_identifier_ref_value = ARRef.deserialize(child)
-            obj.data_identifier_ref = data_identifier_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-IDENTIFIER-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "DIAGNOSTIC-DATA-IDENTIFIER":
+                        setattr(obj, "data_identifier_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticDataIdentifier"))
+                    elif concrete_tag == "DIAGNOSTIC-DYNAMIC-DATA-IDENTIFIER":
+                        setattr(obj, "data_identifier_ref", SerializationHelper.deserialize_by_tag(child[0], "DiagnosticDynamicDataIdentifier"))
 
         return obj
 

@@ -97,11 +97,13 @@ class DiagnosticClearDiagnosticInformation(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticClearDiagnosticInformation, cls).deserialize(element)
 
-        # Parse clear_diagnostic_ref
-        child = SerializationHelper.find_child_element(element, "CLEAR-DIAGNOSTIC-REF")
-        if child is not None:
-            clear_diagnostic_ref_value = ARRef.deserialize(child)
-            obj.clear_diagnostic_ref = clear_diagnostic_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CLEAR-DIAGNOSTIC-REF":
+                setattr(obj, "clear_diagnostic_ref", ARRef.deserialize(child))
 
         return obj
 

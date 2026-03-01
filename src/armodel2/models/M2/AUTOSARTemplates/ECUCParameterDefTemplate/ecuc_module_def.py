@@ -49,11 +49,11 @@ class EcucModuleDef(EcucDefinitionElement):
     refined_module_ref: Optional[ARRef]
     supporteds: list[Any]
     _DESERIALIZE_DISPATCH = {
-        "API-SERVICE-PREFIX": lambda obj, elem: setattr(obj, "api_service_prefix", elem.text),
-        "CONTAINERS": lambda obj, elem: obj.containers.append(EcucContainerDef.deserialize(elem)),
-        "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", elem.text),
+        "API-SERVICE-PREFIX": lambda obj, elem: setattr(obj, "api_service_prefix", SerializationHelper.deserialize_by_tag(elem, "CIdentifier")),
+        "CONTAINERS": ("_POLYMORPHIC_LIST", "containers", ["EcucChoiceContainerDef", "EcucParamConfContainerDef"]),
+        "POST-BUILD-VARIANT": lambda obj, elem: setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "REFINED-MODULE-REF": lambda obj, elem: setattr(obj, "refined_module_ref", ARRef.deserialize(elem)),
-        "SUPPORTEDS": lambda obj, elem: obj.supporteds.append(any (EcucConfiguration).deserialize(elem)),
+        "SUPPORTEDS": lambda obj, elem: obj.supporteds.append(SerializationHelper.deserialize_by_tag(elem, "any (EcucConfiguration)")),
     }
 
 
@@ -166,43 +166,27 @@ class EcucModuleDef(EcucDefinitionElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucModuleDef, cls).deserialize(element)
 
-        # Parse api_service_prefix
-        child = SerializationHelper.find_child_element(element, "API-SERVICE-PREFIX")
-        if child is not None:
-            api_service_prefix_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
-            obj.api_service_prefix = api_service_prefix_value
-
-        # Parse containers (list from container "CONTAINERS")
-        obj.containers = []
-        container = SerializationHelper.find_child_element(element, "CONTAINERS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.containers.append(child_value)
-
-        # Parse post_build_variant
-        child = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANT")
-        if child is not None:
-            post_build_variant_value = child.text
-            obj.post_build_variant = post_build_variant_value
-
-        # Parse refined_module_ref
-        child = SerializationHelper.find_child_element(element, "REFINED-MODULE-REF")
-        if child is not None:
-            refined_module_ref_value = ARRef.deserialize(child)
-            obj.refined_module_ref = refined_module_ref_value
-
-        # Parse supporteds (list from container "SUPPORTEDS")
-        obj.supporteds = []
-        container = SerializationHelper.find_child_element(element, "SUPPORTEDS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.supporteds.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "API-SERVICE-PREFIX":
+                setattr(obj, "api_service_prefix", SerializationHelper.deserialize_by_tag(child, "CIdentifier"))
+            elif tag == "CONTAINERS":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ECUC-CHOICE-CONTAINER-DEF":
+                        obj.containers.append(SerializationHelper.deserialize_by_tag(child[0], "EcucChoiceContainerDef"))
+                    elif concrete_tag == "ECUC-PARAM-CONF-CONTAINER-DEF":
+                        obj.containers.append(SerializationHelper.deserialize_by_tag(child[0], "EcucParamConfContainerDef"))
+            elif tag == "POST-BUILD-VARIANT":
+                setattr(obj, "post_build_variant", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "REFINED-MODULE-REF":
+                setattr(obj, "refined_module_ref", ARRef.deserialize(child))
+            elif tag == "SUPPORTEDS":
+                obj.supporteds.append(SerializationHelper.deserialize_by_tag(child, "any (EcucConfiguration)"))
 
         return obj
 

@@ -46,7 +46,7 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
     _DESERIALIZE_DISPATCH = {
         "APP-TASK-PROXY-REF": lambda obj, elem: setattr(obj, "app_task_proxy_ref", ARRef.deserialize(elem)),
         "ECU-TASK-PROXY-REF": lambda obj, elem: setattr(obj, "ecu_task_proxy_ref", ARRef.deserialize(elem)),
-        "OFFSET": lambda obj, elem: setattr(obj, "offset", elem.text),
+        "OFFSET": lambda obj, elem: setattr(obj, "offset", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -137,23 +137,17 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AppOsTaskProxyToEcuTaskProxyMapping, cls).deserialize(element)
 
-        # Parse app_task_proxy_ref
-        child = SerializationHelper.find_child_element(element, "APP-TASK-PROXY-REF")
-        if child is not None:
-            app_task_proxy_ref_value = ARRef.deserialize(child)
-            obj.app_task_proxy_ref = app_task_proxy_ref_value
-
-        # Parse ecu_task_proxy_ref
-        child = SerializationHelper.find_child_element(element, "ECU-TASK-PROXY-REF")
-        if child is not None:
-            ecu_task_proxy_ref_value = ARRef.deserialize(child)
-            obj.ecu_task_proxy_ref = ecu_task_proxy_ref_value
-
-        # Parse offset
-        child = SerializationHelper.find_child_element(element, "OFFSET")
-        if child is not None:
-            offset_value = child.text
-            obj.offset = offset_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "APP-TASK-PROXY-REF":
+                setattr(obj, "app_task_proxy_ref", ARRef.deserialize(child))
+            elif tag == "ECU-TASK-PROXY-REF":
+                setattr(obj, "ecu_task_proxy_ref", ARRef.deserialize(child))
+            elif tag == "OFFSET":
+                setattr(obj, "offset", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

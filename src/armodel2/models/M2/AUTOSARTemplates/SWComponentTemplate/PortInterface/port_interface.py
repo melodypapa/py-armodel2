@@ -45,7 +45,7 @@ class PortInterface(ARElement, ABC):
     is_service: Optional[Boolean]
     service_kind: Optional[ServiceProviderEnum]
     _DESERIALIZE_DISPATCH = {
-        "IS-SERVICE": lambda obj, elem: setattr(obj, "is_service", elem.text),
+        "IS-SERVICE": lambda obj, elem: setattr(obj, "is_service", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "SERVICE-KIND": lambda obj, elem: setattr(obj, "service_kind", ServiceProviderEnum.deserialize(elem)),
     }
 
@@ -122,17 +122,15 @@ class PortInterface(ARElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PortInterface, cls).deserialize(element)
 
-        # Parse is_service
-        child = SerializationHelper.find_child_element(element, "IS-SERVICE")
-        if child is not None:
-            is_service_value = child.text
-            obj.is_service = is_service_value
-
-        # Parse service_kind
-        child = SerializationHelper.find_child_element(element, "SERVICE-KIND")
-        if child is not None:
-            service_kind_value = ServiceProviderEnum.deserialize(child)
-            obj.service_kind = service_kind_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "IS-SERVICE":
+                setattr(obj, "is_service", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SERVICE-KIND":
+                setattr(obj, "service_kind", ServiceProviderEnum.deserialize(child))
 
         return obj
 

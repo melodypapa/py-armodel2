@@ -45,8 +45,8 @@ class EcucValidationCondition(Identifiable):
     ecuc_queries: list[EcucQuery]
     validation: Optional[EcucConditionFormula]
     _DESERIALIZE_DISPATCH = {
-        "ECUC-QUERIES": lambda obj, elem: obj.ecuc_queries.append(EcucQuery.deserialize(elem)),
-        "VALIDATION": lambda obj, elem: setattr(obj, "validation", EcucConditionFormula.deserialize(elem)),
+        "ECUC-QUERIES": lambda obj, elem: obj.ecuc_queries.append(SerializationHelper.deserialize_by_tag(elem, "EcucQuery")),
+        "VALIDATION": lambda obj, elem: setattr(obj, "validation", SerializationHelper.deserialize_by_tag(elem, "EcucConditionFormula")),
     }
 
 
@@ -118,21 +118,15 @@ class EcucValidationCondition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucValidationCondition, cls).deserialize(element)
 
-        # Parse ecuc_queries (list from container "ECUC-QUERIES")
-        obj.ecuc_queries = []
-        container = SerializationHelper.find_child_element(element, "ECUC-QUERIES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.ecuc_queries.append(child_value)
-
-        # Parse validation
-        child = SerializationHelper.find_child_element(element, "VALIDATION")
-        if child is not None:
-            validation_value = SerializationHelper.deserialize_by_tag(child, "EcucConditionFormula")
-            obj.validation = validation_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ECUC-QUERIES":
+                obj.ecuc_queries.append(SerializationHelper.deserialize_by_tag(child, "EcucQuery"))
+            elif tag == "VALIDATION":
+                setattr(obj, "validation", SerializationHelper.deserialize_by_tag(child, "EcucConditionFormula"))
 
         return obj
 

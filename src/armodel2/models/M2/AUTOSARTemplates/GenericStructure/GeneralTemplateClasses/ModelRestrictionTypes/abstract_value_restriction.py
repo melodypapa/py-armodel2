@@ -39,11 +39,11 @@ class AbstractValueRestriction(ARObject, ABC):
     min_length: Optional[PositiveInteger]
     pattern: Optional[RegularExpression]
     _DESERIALIZE_DISPATCH = {
-        "MAX": lambda obj, elem: setattr(obj, "max", elem.text),
-        "MAX-LENGTH": lambda obj, elem: setattr(obj, "max_length", elem.text),
-        "MIN": lambda obj, elem: setattr(obj, "min", elem.text),
-        "MIN-LENGTH": lambda obj, elem: setattr(obj, "min_length", elem.text),
-        "PATTERN": lambda obj, elem: setattr(obj, "pattern", elem.text),
+        "MAX": lambda obj, elem: setattr(obj, "max", SerializationHelper.deserialize_by_tag(elem, "Limit")),
+        "MAX-LENGTH": lambda obj, elem: setattr(obj, "max_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "MIN": lambda obj, elem: setattr(obj, "min", SerializationHelper.deserialize_by_tag(elem, "Limit")),
+        "MIN-LENGTH": lambda obj, elem: setattr(obj, "min_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "PATTERN": lambda obj, elem: setattr(obj, "pattern", SerializationHelper.deserialize_by_tag(elem, "RegularExpression")),
     }
 
 
@@ -164,35 +164,21 @@ class AbstractValueRestriction(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractValueRestriction, cls).deserialize(element)
 
-        # Parse max
-        child = SerializationHelper.find_child_element(element, "MAX")
-        if child is not None:
-            max_value = SerializationHelper.deserialize_by_tag(child, "Limit")
-            obj.max = max_value
-
-        # Parse max_length
-        child = SerializationHelper.find_child_element(element, "MAX-LENGTH")
-        if child is not None:
-            max_length_value = child.text
-            obj.max_length = max_length_value
-
-        # Parse min
-        child = SerializationHelper.find_child_element(element, "MIN")
-        if child is not None:
-            min_value = SerializationHelper.deserialize_by_tag(child, "Limit")
-            obj.min = min_value
-
-        # Parse min_length
-        child = SerializationHelper.find_child_element(element, "MIN-LENGTH")
-        if child is not None:
-            min_length_value = child.text
-            obj.min_length = min_length_value
-
-        # Parse pattern
-        child = SerializationHelper.find_child_element(element, "PATTERN")
-        if child is not None:
-            pattern_value = child.text
-            obj.pattern = pattern_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MAX":
+                setattr(obj, "max", SerializationHelper.deserialize_by_tag(child, "Limit"))
+            elif tag == "MAX-LENGTH":
+                setattr(obj, "max_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "MIN":
+                setattr(obj, "min", SerializationHelper.deserialize_by_tag(child, "Limit"))
+            elif tag == "MIN-LENGTH":
+                setattr(obj, "min_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "PATTERN":
+                setattr(obj, "pattern", SerializationHelper.deserialize_by_tag(child, "RegularExpression"))
 
         return obj
 

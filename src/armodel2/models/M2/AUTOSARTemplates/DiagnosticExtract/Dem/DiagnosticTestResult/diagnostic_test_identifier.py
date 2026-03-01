@@ -35,8 +35,8 @@ class DiagnosticTestIdentifier(ARObject):
     id: Optional[PositiveInteger]
     uas_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "ID": lambda obj, elem: setattr(obj, "id", elem.text),
-        "UAS-ID": lambda obj, elem: setattr(obj, "uas_id", elem.text),
+        "ID": lambda obj, elem: setattr(obj, "id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "UAS-ID": lambda obj, elem: setattr(obj, "uas_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -112,17 +112,15 @@ class DiagnosticTestIdentifier(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTestIdentifier, cls).deserialize(element)
 
-        # Parse id
-        child = SerializationHelper.find_child_element(element, "ID")
-        if child is not None:
-            id_value = child.text
-            obj.id = id_value
-
-        # Parse uas_id
-        child = SerializationHelper.find_child_element(element, "UAS-ID")
-        if child is not None:
-            uas_id_value = child.text
-            obj.uas_id = uas_id_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ID":
+                setattr(obj, "id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "UAS-ID":
+                setattr(obj, "uas_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

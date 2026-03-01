@@ -32,7 +32,7 @@ class EcucIndexableValue(ARObject, ABC):
 
     index: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "INDEX": lambda obj, elem: setattr(obj, "index", elem.text),
+        "INDEX": lambda obj, elem: setattr(obj, "index", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -93,11 +93,13 @@ class EcucIndexableValue(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucIndexableValue, cls).deserialize(element)
 
-        # Parse index
-        child = SerializationHelper.find_child_element(element, "INDEX")
-        if child is not None:
-            index_value = child.text
-            obj.index = index_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INDEX":
+                setattr(obj, "index", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

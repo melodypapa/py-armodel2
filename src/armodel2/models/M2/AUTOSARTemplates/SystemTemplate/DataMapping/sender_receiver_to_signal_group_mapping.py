@@ -49,7 +49,7 @@ class SenderReceiverToSignalGroupMapping(DataMapping):
     _DESERIALIZE_DISPATCH = {
         "DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "data_element_ref", ARRef.deserialize(elem)),
         "SIGNAL-GROUP-REF": lambda obj, elem: setattr(obj, "signal_group_ref", ARRef.deserialize(elem)),
-        "TYPE-MAPPING": lambda obj, elem: setattr(obj, "type_mapping", SenderRecCompositeTypeMapping.deserialize(elem)),
+        "TYPE-MAPPING": ("_POLYMORPHIC", "type_mapping", ["SenderRecArrayTypeMapping", "SenderRecRecordTypeMapping"]),
     }
 
 
@@ -140,23 +140,23 @@ class SenderReceiverToSignalGroupMapping(DataMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderReceiverToSignalGroupMapping, cls).deserialize(element)
 
-        # Parse data_element_ref
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
-        if child is not None:
-            data_element_ref_value = ARRef.deserialize(child)
-            obj.data_element_ref = data_element_ref_value
-
-        # Parse signal_group_ref
-        child = SerializationHelper.find_child_element(element, "SIGNAL-GROUP-REF")
-        if child is not None:
-            signal_group_ref_value = ARRef.deserialize(child)
-            obj.signal_group_ref = signal_group_ref_value
-
-        # Parse type_mapping
-        child = SerializationHelper.find_child_element(element, "TYPE-MAPPING")
-        if child is not None:
-            type_mapping_value = SerializationHelper.deserialize_by_tag(child, "SenderRecCompositeTypeMapping")
-            obj.type_mapping = type_mapping_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DATA-ELEMENT-REF":
+                setattr(obj, "data_element_ref", ARRef.deserialize(child))
+            elif tag == "SIGNAL-GROUP-REF":
+                setattr(obj, "signal_group_ref", ARRef.deserialize(child))
+            elif tag == "TYPE-MAPPING":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "SENDER-REC-ARRAY-TYPE-MAPPING":
+                        setattr(obj, "type_mapping", SerializationHelper.deserialize_by_tag(child[0], "SenderRecArrayTypeMapping"))
+                    elif concrete_tag == "SENDER-REC-RECORD-TYPE-MAPPING":
+                        setattr(obj, "type_mapping", SerializationHelper.deserialize_by_tag(child[0], "SenderRecRecordTypeMapping"))
 
         return obj
 

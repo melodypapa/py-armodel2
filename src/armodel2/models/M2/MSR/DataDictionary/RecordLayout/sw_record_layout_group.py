@@ -59,17 +59,17 @@ class SwRecordLayoutGroup(ARObject):
     sw_record_layout_group_index: Optional[NameToken]
     sw_record_layout_group_step: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "CATEGORY": lambda obj, elem: setattr(obj, "category", elem.text),
-        "DESC": lambda obj, elem: setattr(obj, "desc", MultiLanguageOverviewParagraph.deserialize(elem)),
-        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", elem.text),
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", SerializationHelper.deserialize_by_tag(elem, "AsamRecordLayoutSemantics")),
+        "DESC": lambda obj, elem: setattr(obj, "desc", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageOverviewParagraph")),
+        "SHORT-LABEL": lambda obj, elem: setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
         "SW-GENERIC-AXIS-PARAM-TYPE-REF": lambda obj, elem: setattr(obj, "sw_generic_axis_param_type_ref", ARRef.deserialize(elem)),
-        "SW-RECORD-LAYOUT-COMPONENT": lambda obj, elem: setattr(obj, "sw_record_layout_component", elem.text),
-        "SW-RECORD-LAYOUT-GROUP-AXIS": lambda obj, elem: setattr(obj, "sw_record_layout_group_axis", elem.text),
-        "SW-RECORD-LAYOUT-GROUP-FROM": lambda obj, elem: setattr(obj, "sw_record_layout_group_from", elem.text),
-        "SW-RECORD-LAYOUT-GROUP-TO": lambda obj, elem: setattr(obj, "sw_record_layout_group_to", elem.text),
-        "SW-RECORD-LAYOUT-GROUP-CONTENT-TYPE": lambda obj, elem: setattr(obj, "sw_record_layout_group_content_type", swRecordLayoutGroupContent.deserialize(elem)),
-        "SW-RECORD-LAYOUT-GROUP-INDEX": lambda obj, elem: setattr(obj, "sw_record_layout_group_index", elem.text),
-        "SW-RECORD-LAYOUT-GROUP-STEP": lambda obj, elem: setattr(obj, "sw_record_layout_group_step", elem.text),
+        "SW-RECORD-LAYOUT-COMPONENT": lambda obj, elem: setattr(obj, "sw_record_layout_component", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "SW-RECORD-LAYOUT-GROUP-AXIS": lambda obj, elem: setattr(obj, "sw_record_layout_group_axis", SerializationHelper.deserialize_by_tag(elem, "AxisIndexType")),
+        "SW-RECORD-LAYOUT-GROUP-FROM": lambda obj, elem: setattr(obj, "sw_record_layout_group_from", SerializationHelper.deserialize_by_tag(elem, "RecordLayoutIteratorPoint")),
+        "SW-RECORD-LAYOUT-GROUP-TO": lambda obj, elem: setattr(obj, "sw_record_layout_group_to", SerializationHelper.deserialize_by_tag(elem, "RecordLayoutIteratorPoint")),
+        "SW-RECORD-LAYOUT-GROUP-CONTENT-TYPE": lambda obj, elem: setattr(obj, "sw_record_layout_group_content_type", SerializationHelper.deserialize_by_tag(elem, "swRecordLayoutGroupContent")),
+        "SW-RECORD-LAYOUT-GROUP-INDEX": lambda obj, elem: setattr(obj, "sw_record_layout_group_index", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
+        "SW-RECORD-LAYOUT-GROUP-STEP": lambda obj, elem: setattr(obj, "sw_record_layout_group_step", SerializationHelper.deserialize_by_tag(elem, "Integer")),
     }
 
 
@@ -279,79 +279,33 @@ class SwRecordLayoutGroup(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwRecordLayoutGroup, cls).deserialize(element)
 
-        # Parse category
-        child = SerializationHelper.find_child_element(element, "CATEGORY")
-        if child is not None:
-            category_value = child.text
-            obj.category = category_value
-
-        # Parse desc
-        child = SerializationHelper.find_child_element(element, "DESC")
-        if child is not None:
-            desc_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
-            obj.desc = desc_value
-
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
-
-        # Parse sw_generic_axis_param_type_ref
-        child = SerializationHelper.find_child_element(element, "SW-GENERIC-AXIS-PARAM-TYPE-REF")
-        if child is not None:
-            sw_generic_axis_param_type_ref_value = ARRef.deserialize(child)
-            obj.sw_generic_axis_param_type_ref = sw_generic_axis_param_type_ref_value
-
-        # Parse sw_record_layout_component
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-COMPONENT")
-        if child is not None:
-            sw_record_layout_component_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.sw_record_layout_component = sw_record_layout_component_value
-
-        # Parse sw_record_layout_group_axis
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-AXIS")
-        if child is not None:
-            sw_record_layout_group_axis_value = child.text
-            obj.sw_record_layout_group_axis = sw_record_layout_group_axis_value
-
-        # Parse sw_record_layout_group_from
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-FROM")
-        if child is not None:
-            sw_record_layout_group_from_value = child.text
-            obj.sw_record_layout_group_from = sw_record_layout_group_from_value
-
-        # Parse sw_record_layout_group_to
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-TO")
-        if child is not None:
-            sw_record_layout_group_to_value = child.text
-            obj.sw_record_layout_group_to = sw_record_layout_group_to_value
-
-        # Parse sw_record_layout_group_content_type (atp_mixed - children appear directly)
-        # Check if element contains expected children for swRecordLayoutGroupContent
-        has_mixed_children = False
-        child_tags_to_check = ['SW-RECORD-LAYOUT', 'SW-RECORD-LAYOUT-GROUP', 'SW-RECORD-LAYOUT-V']
-        for tag in child_tags_to_check:
-            if SerializationHelper.find_child_element(element, tag) is not None:
-                has_mixed_children = True
-                break
-
-        if has_mixed_children:
-            # Deserialize directly from current element (no wrapper)
-            sw_record_layout_group_content_type_value = SerializationHelper.deserialize_by_tag(element, "swRecordLayoutGroupContent")
-            obj.sw_record_layout_group_content_type = sw_record_layout_group_content_type_value
-
-        # Parse sw_record_layout_group_index
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-INDEX")
-        if child is not None:
-            sw_record_layout_group_index_value = child.text
-            obj.sw_record_layout_group_index = sw_record_layout_group_index_value
-
-        # Parse sw_record_layout_group_step
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP-STEP")
-        if child is not None:
-            sw_record_layout_group_step_value = child.text
-            obj.sw_record_layout_group_step = sw_record_layout_group_step_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "CATEGORY":
+                setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "AsamRecordLayoutSemantics"))
+            elif tag == "DESC":
+                setattr(obj, "desc", SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph"))
+            elif tag == "SHORT-LABEL":
+                setattr(obj, "short_label", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "SW-GENERIC-AXIS-PARAM-TYPE-REF":
+                setattr(obj, "sw_generic_axis_param_type_ref", ARRef.deserialize(child))
+            elif tag == "SW-RECORD-LAYOUT-COMPONENT":
+                setattr(obj, "sw_record_layout_component", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "SW-RECORD-LAYOUT-GROUP-AXIS":
+                setattr(obj, "sw_record_layout_group_axis", SerializationHelper.deserialize_by_tag(child, "AxisIndexType"))
+            elif tag == "SW-RECORD-LAYOUT-GROUP-FROM":
+                setattr(obj, "sw_record_layout_group_from", SerializationHelper.deserialize_by_tag(child, "RecordLayoutIteratorPoint"))
+            elif tag == "SW-RECORD-LAYOUT-GROUP-TO":
+                setattr(obj, "sw_record_layout_group_to", SerializationHelper.deserialize_by_tag(child, "RecordLayoutIteratorPoint"))
+            elif tag == "SW-RECORD-LAYOUT-GROUP-CONTENT-TYPE":
+                setattr(obj, "sw_record_layout_group_content_type", SerializationHelper.deserialize_by_tag(child, "swRecordLayoutGroupContent"))
+            elif tag == "SW-RECORD-LAYOUT-GROUP-INDEX":
+                setattr(obj, "sw_record_layout_group_index", SerializationHelper.deserialize_by_tag(child, "NameToken"))
+            elif tag == "SW-RECORD-LAYOUT-GROUP-STEP":
+                setattr(obj, "sw_record_layout_group_step", SerializationHelper.deserialize_by_tag(child, "Integer"))
 
         return obj
 

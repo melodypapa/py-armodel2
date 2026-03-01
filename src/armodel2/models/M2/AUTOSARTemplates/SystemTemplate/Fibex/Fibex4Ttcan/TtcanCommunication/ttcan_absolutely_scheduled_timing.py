@@ -43,8 +43,8 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
     time_mark: Optional[Integer]
     trigger_ref: Optional[TtcanTriggerType]
     _DESERIALIZE_DISPATCH = {
-        "COMMUNICATION-CYCLE-CYCLE": lambda obj, elem: setattr(obj, "communication_cycle_cycle", CommunicationCycle.deserialize(elem)),
-        "TIME-MARK": lambda obj, elem: setattr(obj, "time_mark", elem.text),
+        "COMMUNICATION-CYCLE-CYCLE": ("_POLYMORPHIC", "communication_cycle_cycle", ["CycleCounter", "CycleRepetition"]),
+        "TIME-MARK": lambda obj, elem: setattr(obj, "time_mark", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", TtcanTriggerType.deserialize(elem)),
     }
 
@@ -136,23 +136,23 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TtcanAbsolutelyScheduledTiming, cls).deserialize(element)
 
-        # Parse communication_cycle_cycle
-        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CYCLE-CYCLE")
-        if child is not None:
-            communication_cycle_cycle_value = SerializationHelper.deserialize_by_tag(child, "CommunicationCycle")
-            obj.communication_cycle_cycle = communication_cycle_cycle_value
-
-        # Parse time_mark
-        child = SerializationHelper.find_child_element(element, "TIME-MARK")
-        if child is not None:
-            time_mark_value = child.text
-            obj.time_mark = time_mark_value
-
-        # Parse trigger_ref
-        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
-        if child is not None:
-            trigger_ref_value = ARRef.deserialize(child)
-            obj.trigger_ref = trigger_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "COMMUNICATION-CYCLE-CYCLE":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "CYCLE-COUNTER":
+                        setattr(obj, "communication_cycle_cycle", SerializationHelper.deserialize_by_tag(child[0], "CycleCounter"))
+                    elif concrete_tag == "CYCLE-REPETITION":
+                        setattr(obj, "communication_cycle_cycle", SerializationHelper.deserialize_by_tag(child[0], "CycleRepetition"))
+            elif tag == "TIME-MARK":
+                setattr(obj, "time_mark", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "TRIGGER-REF":
+                setattr(obj, "trigger_ref", TtcanTriggerType.deserialize(child))
 
         return obj
 

@@ -37,9 +37,9 @@ class DiagnosticAbstractParameter(ARObject, ABC):
     data_element: Optional[DiagnosticDataElement]
     parameter_size: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "BIT-OFFSET": lambda obj, elem: setattr(obj, "bit_offset", elem.text),
-        "DATA-ELEMENT": lambda obj, elem: setattr(obj, "data_element", DiagnosticDataElement.deserialize(elem)),
-        "PARAMETER-SIZE": lambda obj, elem: setattr(obj, "parameter_size", elem.text),
+        "BIT-OFFSET": lambda obj, elem: setattr(obj, "bit_offset", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "DATA-ELEMENT": lambda obj, elem: setattr(obj, "data_element", SerializationHelper.deserialize_by_tag(elem, "DiagnosticDataElement")),
+        "PARAMETER-SIZE": lambda obj, elem: setattr(obj, "parameter_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -130,23 +130,17 @@ class DiagnosticAbstractParameter(ARObject, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAbstractParameter, cls).deserialize(element)
 
-        # Parse bit_offset
-        child = SerializationHelper.find_child_element(element, "BIT-OFFSET")
-        if child is not None:
-            bit_offset_value = child.text
-            obj.bit_offset = bit_offset_value
-
-        # Parse data_element
-        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT")
-        if child is not None:
-            data_element_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticDataElement")
-            obj.data_element = data_element_value
-
-        # Parse parameter_size
-        child = SerializationHelper.find_child_element(element, "PARAMETER-SIZE")
-        if child is not None:
-            parameter_size_value = child.text
-            obj.parameter_size = parameter_size_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "BIT-OFFSET":
+                setattr(obj, "bit_offset", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "DATA-ELEMENT":
+                setattr(obj, "data_element", SerializationHelper.deserialize_by_tag(child, "DiagnosticDataElement"))
+            elif tag == "PARAMETER-SIZE":
+                setattr(obj, "parameter_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

@@ -42,8 +42,8 @@ class DoIpLogicAddress(Identifiable):
     address: Optional[Integer]
     do_ip_logic: Optional[AbstractDoIpLogicAddressProps]
     _DESERIALIZE_DISPATCH = {
-        "ADDRESS": lambda obj, elem: setattr(obj, "address", elem.text),
-        "DO-IP-LOGIC": lambda obj, elem: setattr(obj, "do_ip_logic", AbstractDoIpLogicAddressProps.deserialize(elem)),
+        "ADDRESS": lambda obj, elem: setattr(obj, "address", SerializationHelper.deserialize_by_tag(elem, "Integer")),
+        "DO-IP-LOGIC": ("_POLYMORPHIC", "do_ip_logic", ["DoIpLogicTargetAddressProps", "DoIpLogicTesterAddressProps"]),
     }
 
 
@@ -119,17 +119,21 @@ class DoIpLogicAddress(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpLogicAddress, cls).deserialize(element)
 
-        # Parse address
-        child = SerializationHelper.find_child_element(element, "ADDRESS")
-        if child is not None:
-            address_value = child.text
-            obj.address = address_value
-
-        # Parse do_ip_logic
-        child = SerializationHelper.find_child_element(element, "DO-IP-LOGIC")
-        if child is not None:
-            do_ip_logic_value = SerializationHelper.deserialize_by_tag(child, "AbstractDoIpLogicAddressProps")
-            obj.do_ip_logic = do_ip_logic_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ADDRESS":
+                setattr(obj, "address", SerializationHelper.deserialize_by_tag(child, "Integer"))
+            elif tag == "DO-IP-LOGIC":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "DO-IP-LOGIC-TARGET-ADDRESS-PROPS":
+                        setattr(obj, "do_ip_logic", SerializationHelper.deserialize_by_tag(child[0], "DoIpLogicTargetAddressProps"))
+                    elif concrete_tag == "DO-IP-LOGIC-TESTER-ADDRESS-PROPS":
+                        setattr(obj, "do_ip_logic", SerializationHelper.deserialize_by_tag(child[0], "DoIpLogicTesterAddressProps"))
 
         return obj
 

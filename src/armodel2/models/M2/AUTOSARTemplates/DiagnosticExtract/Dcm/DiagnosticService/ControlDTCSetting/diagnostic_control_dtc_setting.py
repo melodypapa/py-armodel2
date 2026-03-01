@@ -97,11 +97,13 @@ class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticControlDTCSetting, cls).deserialize(element)
 
-        # Parse dtc_setting_class_ref
-        child = SerializationHelper.find_child_element(element, "DTC-SETTING-CLASS-REF")
-        if child is not None:
-            dtc_setting_class_ref_value = ARRef.deserialize(child)
-            obj.dtc_setting_class_ref = dtc_setting_class_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DTC-SETTING-CLASS-REF":
+                setattr(obj, "dtc_setting_class_ref", ARRef.deserialize(child))
 
         return obj
 

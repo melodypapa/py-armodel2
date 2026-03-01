@@ -39,8 +39,8 @@ class CyclicTiming(Describable):
     time_offset: Optional[TimeRangeType]
     time_period: Optional[TimeRangeType]
     _DESERIALIZE_DISPATCH = {
-        "TIME-OFFSET": lambda obj, elem: setattr(obj, "time_offset", TimeRangeType.deserialize(elem)),
-        "TIME-PERIOD": lambda obj, elem: setattr(obj, "time_period", TimeRangeType.deserialize(elem)),
+        "TIME-OFFSET": lambda obj, elem: setattr(obj, "time_offset", SerializationHelper.deserialize_by_tag(elem, "TimeRangeType")),
+        "TIME-PERIOD": lambda obj, elem: setattr(obj, "time_period", SerializationHelper.deserialize_by_tag(elem, "TimeRangeType")),
     }
 
 
@@ -116,17 +116,15 @@ class CyclicTiming(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CyclicTiming, cls).deserialize(element)
 
-        # Parse time_offset
-        child = SerializationHelper.find_child_element(element, "TIME-OFFSET")
-        if child is not None:
-            time_offset_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeType")
-            obj.time_offset = time_offset_value
-
-        # Parse time_period
-        child = SerializationHelper.find_child_element(element, "TIME-PERIOD")
-        if child is not None:
-            time_period_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeType")
-            obj.time_period = time_period_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TIME-OFFSET":
+                setattr(obj, "time_offset", SerializationHelper.deserialize_by_tag(child, "TimeRangeType"))
+            elif tag == "TIME-PERIOD":
+                setattr(obj, "time_period", SerializationHelper.deserialize_by_tag(child, "TimeRangeType"))
 
         return obj
 

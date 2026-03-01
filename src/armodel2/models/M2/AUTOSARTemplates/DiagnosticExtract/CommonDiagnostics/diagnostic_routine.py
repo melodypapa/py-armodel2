@@ -48,11 +48,11 @@ class DiagnosticRoutine(DiagnosticCommonElement):
     start: Optional[DiagnosticStartRoutine]
     stop: Optional[DiagnosticStopRoutine]
     _DESERIALIZE_DISPATCH = {
-        "ID": lambda obj, elem: setattr(obj, "id", elem.text),
-        "REQUEST-RESULT": lambda obj, elem: setattr(obj, "request_result", any (DiagnosticRequest).deserialize(elem)),
-        "ROUTINE-INFO": lambda obj, elem: setattr(obj, "routine_info", elem.text),
-        "START": lambda obj, elem: setattr(obj, "start", DiagnosticStartRoutine.deserialize(elem)),
-        "STOP": lambda obj, elem: setattr(obj, "stop", DiagnosticStopRoutine.deserialize(elem)),
+        "ID": lambda obj, elem: setattr(obj, "id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "REQUEST-RESULT": lambda obj, elem: setattr(obj, "request_result", SerializationHelper.deserialize_by_tag(elem, "any (DiagnosticRequest)")),
+        "ROUTINE-INFO": lambda obj, elem: setattr(obj, "routine_info", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "START": lambda obj, elem: setattr(obj, "start", SerializationHelper.deserialize_by_tag(elem, "DiagnosticStartRoutine")),
+        "STOP": lambda obj, elem: setattr(obj, "stop", SerializationHelper.deserialize_by_tag(elem, "DiagnosticStopRoutine")),
     }
 
 
@@ -173,35 +173,21 @@ class DiagnosticRoutine(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRoutine, cls).deserialize(element)
 
-        # Parse id
-        child = SerializationHelper.find_child_element(element, "ID")
-        if child is not None:
-            id_value = child.text
-            obj.id = id_value
-
-        # Parse request_result
-        child = SerializationHelper.find_child_element(element, "REQUEST-RESULT")
-        if child is not None:
-            request_result_value = child.text
-            obj.request_result = request_result_value
-
-        # Parse routine_info
-        child = SerializationHelper.find_child_element(element, "ROUTINE-INFO")
-        if child is not None:
-            routine_info_value = child.text
-            obj.routine_info = routine_info_value
-
-        # Parse start
-        child = SerializationHelper.find_child_element(element, "START")
-        if child is not None:
-            start_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticStartRoutine")
-            obj.start = start_value
-
-        # Parse stop
-        child = SerializationHelper.find_child_element(element, "STOP")
-        if child is not None:
-            stop_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticStopRoutine")
-            obj.stop = stop_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ID":
+                setattr(obj, "id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "REQUEST-RESULT":
+                setattr(obj, "request_result", SerializationHelper.deserialize_by_tag(child, "any (DiagnosticRequest)"))
+            elif tag == "ROUTINE-INFO":
+                setattr(obj, "routine_info", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "START":
+                setattr(obj, "start", SerializationHelper.deserialize_by_tag(child, "DiagnosticStartRoutine"))
+            elif tag == "STOP":
+                setattr(obj, "stop", SerializationHelper.deserialize_by_tag(child, "DiagnosticStopRoutine"))
 
         return obj
 

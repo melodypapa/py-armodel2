@@ -46,8 +46,8 @@ class DelegationSwConnector(SwConnector):
     _inner_port_iref: Optional[PortInCompositionTypeInstanceRef]
     outer_port_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "INNER-PORT": lambda obj, elem: setattr(obj, "_inner_port_iref", ARRef.deserialize(elem)),
-        "OUTER-PORT-REF": lambda obj, elem: setattr(obj, "outer_port_ref", ARRef.deserialize(elem)),
+        "INNER-PORT": ("_POLYMORPHIC", "_inner_port_iref", ["PPortInCompositionInstanceRef", "RPortInCompositionInstanceRef"]),
+        "OUTER-PORT-REF": ("_POLYMORPHIC", "outer_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype"]),
     }
 
 
@@ -130,21 +130,27 @@ class DelegationSwConnector(SwConnector):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DelegationSwConnector, cls).deserialize(element)
 
-        # Parse inner_port_iref (instance reference from wrapper "INNER-PORT-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "INNER-PORT-IREF")
-        if wrapper is not None:
-            # Get the first child element (the actual reference)
-            children = list(wrapper)
-            if children:
-                inner_elem = children[0]
-                inner_port_iref_value = SerializationHelper.deserialize_by_tag(inner_elem)
-                obj.inner_port_iref = inner_port_iref_value
-
-        # Parse outer_port_ref
-        child = SerializationHelper.find_child_element(element, "OUTER-PORT-REF")
-        if child is not None:
-            outer_port_ref_value = ARRef.deserialize(child)
-            obj.outer_port_ref = outer_port_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INNER-PORT":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "P-PORT-IN-COMPOSITION-INSTANCE-REF":
+                        setattr(obj, "_inner_port_iref", SerializationHelper.deserialize_by_tag(child[0], "PPortInCompositionInstanceRef"))
+                    elif concrete_tag == "R-PORT-IN-COMPOSITION-INSTANCE-REF":
+                        setattr(obj, "_inner_port_iref", SerializationHelper.deserialize_by_tag(child[0], "RPortInCompositionInstanceRef"))
+            elif tag == "OUTER-PORT-REF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ABSTRACT-PROVIDED-PORT-PROTOTYPE":
+                        setattr(obj, "outer_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractProvidedPortPrototype"))
+                    elif concrete_tag == "ABSTRACT-REQUIRED-PORT-PROTOTYPE":
+                        setattr(obj, "outer_port_ref", SerializationHelper.deserialize_by_tag(child[0], "AbstractRequiredPortPrototype"))
 
         return obj
 

@@ -38,7 +38,7 @@ class LogAndTraceMessageCollectionSet(ARElement):
 
     dlt_messages: list[DltMessage]
     _DESERIALIZE_DISPATCH = {
-        "DLT-MESSAGES": lambda obj, elem: obj.dlt_messages.append(DltMessage.deserialize(elem)),
+        "DLT-MESSAGES": lambda obj, elem: obj.dlt_messages.append(SerializationHelper.deserialize_by_tag(elem, "DltMessage")),
     }
 
 
@@ -95,15 +95,13 @@ class LogAndTraceMessageCollectionSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LogAndTraceMessageCollectionSet, cls).deserialize(element)
 
-        # Parse dlt_messages (list from container "DLT-MESSAGES")
-        obj.dlt_messages = []
-        container = SerializationHelper.find_child_element(element, "DLT-MESSAGES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.dlt_messages.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "DLT-MESSAGES":
+                obj.dlt_messages.append(SerializationHelper.deserialize_by_tag(child, "DltMessage"))
 
         return obj
 

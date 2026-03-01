@@ -37,9 +37,9 @@ class InitialSdDelayConfig(ARObject):
     initial_delay_min: Optional[TimeValue]
     initial: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
-        "INITIAL-DELAY-MAX": lambda obj, elem: setattr(obj, "initial_delay_max", elem.text),
-        "INITIAL-DELAY-MIN": lambda obj, elem: setattr(obj, "initial_delay_min", elem.text),
-        "INITIAL": lambda obj, elem: setattr(obj, "initial", elem.text),
+        "INITIAL-DELAY-MAX": lambda obj, elem: setattr(obj, "initial_delay_max", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "INITIAL-DELAY-MIN": lambda obj, elem: setattr(obj, "initial_delay_min", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "INITIAL": lambda obj, elem: setattr(obj, "initial", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -130,23 +130,17 @@ class InitialSdDelayConfig(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InitialSdDelayConfig, cls).deserialize(element)
 
-        # Parse initial_delay_max
-        child = SerializationHelper.find_child_element(element, "INITIAL-DELAY-MAX")
-        if child is not None:
-            initial_delay_max_value = child.text
-            obj.initial_delay_max = initial_delay_max_value
-
-        # Parse initial_delay_min
-        child = SerializationHelper.find_child_element(element, "INITIAL-DELAY-MIN")
-        if child is not None:
-            initial_delay_min_value = child.text
-            obj.initial_delay_min = initial_delay_min_value
-
-        # Parse initial
-        child = SerializationHelper.find_child_element(element, "INITIAL")
-        if child is not None:
-            initial_value = child.text
-            obj.initial = initial_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "INITIAL-DELAY-MAX":
+                setattr(obj, "initial_delay_max", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "INITIAL-DELAY-MIN":
+                setattr(obj, "initial_delay_min", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "INITIAL":
+                setattr(obj, "initial", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 

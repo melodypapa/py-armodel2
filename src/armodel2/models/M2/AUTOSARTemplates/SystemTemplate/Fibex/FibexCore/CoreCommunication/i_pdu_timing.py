@@ -42,8 +42,8 @@ class IPduTiming(Describable):
     minimum_delay: Optional[TimeValue]
     transmission_mode_declaration: Optional[TransmissionModeDeclaration]
     _DESERIALIZE_DISPATCH = {
-        "MINIMUM-DELAY": lambda obj, elem: setattr(obj, "minimum_delay", elem.text),
-        "TRANSMISSION-MODE-DECLARATION": lambda obj, elem: setattr(obj, "transmission_mode_declaration", TransmissionModeDeclaration.deserialize(elem)),
+        "MINIMUM-DELAY": lambda obj, elem: setattr(obj, "minimum_delay", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TRANSMISSION-MODE-DECLARATION": lambda obj, elem: setattr(obj, "transmission_mode_declaration", SerializationHelper.deserialize_by_tag(elem, "TransmissionModeDeclaration")),
     }
 
 
@@ -119,17 +119,15 @@ class IPduTiming(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IPduTiming, cls).deserialize(element)
 
-        # Parse minimum_delay
-        child = SerializationHelper.find_child_element(element, "MINIMUM-DELAY")
-        if child is not None:
-            minimum_delay_value = child.text
-            obj.minimum_delay = minimum_delay_value
-
-        # Parse transmission_mode_declaration
-        child = SerializationHelper.find_child_element(element, "TRANSMISSION-MODE-DECLARATION")
-        if child is not None:
-            transmission_mode_declaration_value = SerializationHelper.deserialize_by_tag(child, "TransmissionModeDeclaration")
-            obj.transmission_mode_declaration = transmission_mode_declaration_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "MINIMUM-DELAY":
+                setattr(obj, "minimum_delay", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TRANSMISSION-MODE-DECLARATION":
+                setattr(obj, "transmission_mode_declaration", SerializationHelper.deserialize_by_tag(child, "TransmissionModeDeclaration"))
 
         return obj
 

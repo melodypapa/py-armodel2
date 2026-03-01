@@ -117,17 +117,15 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestCurrentPowertrainData, cls).deserialize(element)
 
-        # Parse pid_ref
-        child = SerializationHelper.find_child_element(element, "PID-REF")
-        if child is not None:
-            pid_ref_value = ARRef.deserialize(child)
-            obj.pid_ref = pid_ref_value
-
-        # Parse request_current_ref
-        child = SerializationHelper.find_child_element(element, "REQUEST-CURRENT-REF")
-        if child is not None:
-            request_current_ref_value = ARRef.deserialize(child)
-            obj.request_current_ref = request_current_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "PID-REF":
+                setattr(obj, "pid_ref", ARRef.deserialize(child))
+            elif tag == "REQUEST-CURRENT-REF":
+                setattr(obj, "request_current_ref", ARRef.deserialize(child))
 
         return obj
 

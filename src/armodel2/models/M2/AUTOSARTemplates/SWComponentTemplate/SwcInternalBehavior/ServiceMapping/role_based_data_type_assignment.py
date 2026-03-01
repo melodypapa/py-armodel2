@@ -37,7 +37,7 @@ class RoleBasedDataTypeAssignment(ARObject):
     role: Optional[Identifier]
     used_ref: Optional[Any]
     _DESERIALIZE_DISPATCH = {
-        "ROLE": lambda obj, elem: setattr(obj, "role", elem.text),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
         "USED-REF": lambda obj, elem: setattr(obj, "used_ref", ARRef.deserialize(elem)),
     }
 
@@ -114,17 +114,15 @@ class RoleBasedDataTypeAssignment(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RoleBasedDataTypeAssignment, cls).deserialize(element)
 
-        # Parse role
-        child = SerializationHelper.find_child_element(element, "ROLE")
-        if child is not None:
-            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
-            obj.role = role_value
-
-        # Parse used_ref
-        child = SerializationHelper.find_child_element(element, "USED-REF")
-        if child is not None:
-            used_ref_value = ARRef.deserialize(child)
-            obj.used_ref = used_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "USED-REF":
+                setattr(obj, "used_ref", ARRef.deserialize(child))
 
         return obj
 

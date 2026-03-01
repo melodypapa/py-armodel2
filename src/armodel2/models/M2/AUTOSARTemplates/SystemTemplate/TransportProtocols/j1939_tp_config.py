@@ -46,9 +46,9 @@ class J1939TpConfig(TpConfig):
     tp_connections: list[J1939TpConnection]
     tp_nodes: list[J1939TpNode]
     _DESERIALIZE_DISPATCH = {
-        "TP-ADDRESSES": lambda obj, elem: obj.tp_addresses.append(TpAddress.deserialize(elem)),
-        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(J1939TpConnection.deserialize(elem)),
-        "TP-NODES": lambda obj, elem: obj.tp_nodes.append(J1939TpNode.deserialize(elem)),
+        "TP-ADDRESSES": lambda obj, elem: obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(elem, "TpAddress")),
+        "TP-CONNECTIONS": lambda obj, elem: obj.tp_connections.append(SerializationHelper.deserialize_by_tag(elem, "J1939TpConnection")),
+        "TP-NODES": lambda obj, elem: obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(elem, "J1939TpNode")),
     }
 
 
@@ -127,35 +127,17 @@ class J1939TpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939TpConfig, cls).deserialize(element)
 
-        # Parse tp_addresses (list from container "TP-ADDRESSES")
-        obj.tp_addresses = []
-        container = SerializationHelper.find_child_element(element, "TP-ADDRESSES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_addresses.append(child_value)
-
-        # Parse tp_connections (list from container "TP-CONNECTIONS")
-        obj.tp_connections = []
-        container = SerializationHelper.find_child_element(element, "TP-CONNECTIONS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_connections.append(child_value)
-
-        # Parse tp_nodes (list from container "TP-NODES")
-        obj.tp_nodes = []
-        container = SerializationHelper.find_child_element(element, "TP-NODES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.tp_nodes.append(child_value)
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TP-ADDRESSES":
+                obj.tp_addresses.append(SerializationHelper.deserialize_by_tag(child, "TpAddress"))
+            elif tag == "TP-CONNECTIONS":
+                obj.tp_connections.append(SerializationHelper.deserialize_by_tag(child, "J1939TpConnection"))
+            elif tag == "TP-NODES":
+                obj.tp_nodes.append(SerializationHelper.deserialize_by_tag(child, "J1939TpNode"))
 
         return obj
 

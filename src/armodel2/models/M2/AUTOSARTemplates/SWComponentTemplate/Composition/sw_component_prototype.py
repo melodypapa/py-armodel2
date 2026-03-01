@@ -47,7 +47,7 @@ class SwComponentPrototype(Identifiable):
 
     type_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "TYPE-TREF": lambda obj, elem: setattr(obj, "type_ref", ARRef.deserialize(elem)),
+        "TYPE-TREF": ("_POLYMORPHIC", "type_ref", ["AtomicSwComponentType", "CompositionSwComponentType", "ParameterSwComponentType"]),
     }
 
 
@@ -108,11 +108,21 @@ class SwComponentPrototype(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwComponentPrototype, cls).deserialize(element)
 
-        # Parse type_ref
-        child = SerializationHelper.find_child_element(element, "TYPE-TREF")
-        if child is not None:
-            type_ref_value = ARRef.deserialize(child)
-            obj.type_ref = type_ref_value
+        # Single-pass deserialization with if-elif-else chain
+        ns_split = '}'
+        for child in element:
+            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
+            child_tag = tag  # Alias for polymorphic type checking
+            if tag == "TYPE-TREF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "ATOMIC-SW-COMPONENT-TYPE":
+                        setattr(obj, "type_ref", SerializationHelper.deserialize_by_tag(child[0], "AtomicSwComponentType"))
+                    elif concrete_tag == "COMPOSITION-SW-COMPONENT-TYPE":
+                        setattr(obj, "type_ref", SerializationHelper.deserialize_by_tag(child[0], "CompositionSwComponentType"))
+                    elif concrete_tag == "PARAMETER-SW-COMPONENT-TYPE":
+                        setattr(obj, "type_ref", SerializationHelper.deserialize_by_tag(child[0], "ParameterSwComponentType"))
 
         return obj
 
