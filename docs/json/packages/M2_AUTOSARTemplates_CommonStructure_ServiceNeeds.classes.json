@@ -63,7 +63,7 @@
     },
     {
       "name": "RoleBasedDataAssignment",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "is_abstract": false,
       "atp_type": null,
@@ -103,18 +103,18 @@
           "is_ref": false,
           "note": "This is the role of the assigned data in the given context."
         },
-        "usedData": {
+        "usedDataElement": {
           "type": "AutosarVariableRef",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "The VariableDataPrototype used in this role, e.g. Permanent RAM Block of an NVRAM Block which shall the same SwcInternalBehavior or Bsw the role signalBasedDiagnostics it has to refer to a a SenderReceiverInterface or"
         },
-        "usedParameter": {
+        "usedParameterElement": {
           "type": "AutosarParameterRef",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "The ParameterDataPrototype used in this role, e.g. ROM Block of an NVRAM Block. It shall belong to the or BswInternalbehavior. the role signalBasedDiagnostics it has to refer to a a ParameterInterface."
         },
         "usedPim": {

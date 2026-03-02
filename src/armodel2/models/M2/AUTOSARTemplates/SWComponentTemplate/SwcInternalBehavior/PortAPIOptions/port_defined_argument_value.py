@@ -8,12 +8,17 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_PortAPIOptions.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import polymorphic
 
 from armodel2.models.M2.builder_base import BuilderBase
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.implementation_data_type import (
+        ImplementationDataType,
+    )
     from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
         ValueSpecification,
     )
@@ -37,19 +42,30 @@ class PortDefinedArgumentValue(ARObject):
     _XML_TAG = "PORT-DEFINED-ARGUMENT-VALUE"
 
 
-    value: Optional[ValueSpecification]
-    value_type: Optional[Any]
+    _value: Optional[ValueSpecification]
+    value_type_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "VALUE": ("_POLYMORPHIC", "value", ["AbstractRuleBasedValueSpecification", "ApplicationRuleBasedValueSpecification", "ApplicationValueSpecification", "ArrayValueSpecification", "CompositeRuleBasedValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "RecordValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
-        "VALUE-TYPE": lambda obj, elem: setattr(obj, "value_type", SerializationHelper.deserialize_by_tag(elem, "any (ImplementationData)")),
+        "VALUE": ("_POLYMORPHIC", "_value", ["AbstractRuleBasedValueSpecification", "ApplicationRuleBasedValueSpecification", "ApplicationValueSpecification", "ArrayValueSpecification", "CompositeRuleBasedValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "RecordValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
+        "VALUE-TYPE-TREF": lambda obj, elem: setattr(obj, "value_type_ref", ARRef.deserialize(elem)),
     }
 
 
     def __init__(self) -> None:
         """Initialize PortDefinedArgumentValue."""
         super().__init__()
-        self.value: Optional[ValueSpecification] = None
-        self.value_type: Optional[Any] = None
+        self._value: Optional[ValueSpecification] = None
+        self.value_type_ref: Optional[ARRef] = None
+    @property
+    @polymorphic({"VALUE": "ValueSpecification"})
+    def value(self) -> Optional[ValueSpecification]:
+        """Get value with polymorphic wrapper handling."""
+        return self._value
+
+    @value.setter
+    def value(self, value: Optional[ValueSpecification]) -> None:
+        """Set value with polymorphic wrapper handling."""
+        self._value = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize PortDefinedArgumentValue to XML element.
@@ -74,26 +90,21 @@ class PortDefinedArgumentValue(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize value
+        # Serialize value (polymorphic wrapper "VALUE")
         if self.value is not None:
             serialized = SerializationHelper.serialize_item(self.value, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
+                # For polymorphic types, wrap the serialized element (preserving concrete type)
                 wrapped = ET.Element("VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
+                wrapped.append(serialized)
                 elem.append(wrapped)
 
-        # Serialize value_type
-        if self.value_type is not None:
-            serialized = SerializationHelper.serialize_item(self.value_type, "Any")
+        # Serialize value_type_ref
+        if self.value_type_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.value_type_ref, "ImplementationDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("VALUE-TYPE")
+                wrapped = ET.Element("VALUE-TYPE-TREF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -126,31 +137,31 @@ class PortDefinedArgumentValue(ARObject):
                 if len(child) > 0:
                     concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
                     if concrete_tag == "ABSTRACT-RULE-BASED-VALUE-SPECIFICATION":
-                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
+                        setattr(obj, "_value", SerializationHelper.deserialize_by_tag(child[0], "AbstractRuleBasedValueSpecification"))
                     elif concrete_tag == "APPLICATION-RULE-BASED-VALUE-SPECIFICATION":
-                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationRuleBasedValueSpecification"))
+                        setattr(obj, "_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationRuleBasedValueSpecification"))
                     elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
-                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
+                        setattr(obj, "_value", SerializationHelper.deserialize_by_tag(child[0], "ApplicationValueSpecification"))
                     elif concrete_tag == "ARRAY-VALUE-SPECIFICATION":
-                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "ArrayValueSpecification"))
+                        setattr(obj, "_value", SerializationHelper.deserialize_by_tag(child[0], "ArrayValueSpecification"))
                     elif concrete_tag == "COMPOSITE-RULE-BASED-VALUE-SPECIFICATION":
-                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "CompositeRuleBasedValueSpecification"))
+                        setattr(obj, "_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeRuleBasedValueSpecification"))
                     elif concrete_tag == "COMPOSITE-VALUE-SPECIFICATION":
-                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
+                        setattr(obj, "_value", SerializationHelper.deserialize_by_tag(child[0], "CompositeValueSpecification"))
                     elif concrete_tag == "CONSTANT-REFERENCE":
-                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
+                        setattr(obj, "_value", SerializationHelper.deserialize_by_tag(child[0], "ConstantReference"))
                     elif concrete_tag == "NOT-AVAILABLE-VALUE-SPECIFICATION":
-                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
+                        setattr(obj, "_value", SerializationHelper.deserialize_by_tag(child[0], "NotAvailableValueSpecification"))
                     elif concrete_tag == "NUMERICAL-VALUE-SPECIFICATION":
-                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
+                        setattr(obj, "_value", SerializationHelper.deserialize_by_tag(child[0], "NumericalValueSpecification"))
                     elif concrete_tag == "RECORD-VALUE-SPECIFICATION":
-                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "RecordValueSpecification"))
+                        setattr(obj, "_value", SerializationHelper.deserialize_by_tag(child[0], "RecordValueSpecification"))
                     elif concrete_tag == "REFERENCE-VALUE-SPECIFICATION":
-                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
+                        setattr(obj, "_value", SerializationHelper.deserialize_by_tag(child[0], "ReferenceValueSpecification"))
                     elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
-                        setattr(obj, "value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
-            elif tag == "VALUE-TYPE":
-                setattr(obj, "value_type", SerializationHelper.deserialize_by_tag(child, "any (ImplementationData)"))
+                        setattr(obj, "_value", SerializationHelper.deserialize_by_tag(child[0], "TextValueSpecification"))
+            elif tag == "VALUE-TYPE-TREF":
+                setattr(obj, "value_type_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -179,7 +190,7 @@ class PortDefinedArgumentValueBuilder(BuilderBase):
         self._obj.value = value
         return self
 
-    def with_value_type(self, value: Optional[any (ImplementationData)]) -> "PortDefinedArgumentValueBuilder":
+    def with_value_type(self, value: Optional[ImplementationDataType]) -> "PortDefinedArgumentValueBuilder":
         """Set value_type attribute.
 
         Args:

@@ -15,8 +15,8 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import RTEEventBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
-    VariableDataPrototype,
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.r_variable_in_atomic_swc_instance_ref import (
+    RVariableInAtomicSwcInstanceRef,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -37,16 +37,16 @@ class DataReceivedEvent(RTEEvent):
     _XML_TAG = "DATA-RECEIVED-EVENT"
 
 
-    data_ref: Optional[ARRef]
+    data_iref: Optional[RVariableInAtomicSwcInstanceRef]
     _DESERIALIZE_DISPATCH = {
-        "DATA-REF": lambda obj, elem: setattr(obj, "data_ref", ARRef.deserialize(elem)),
+        "DATA-IREF": lambda obj, elem: setattr(obj, "data_iref", SerializationHelper.deserialize_by_tag(elem, "RVariableInAtomicSwcInstanceRef")),
     }
 
 
     def __init__(self) -> None:
         """Initialize DataReceivedEvent."""
         super().__init__()
-        self.data_ref: Optional[ARRef] = None
+        self.data_iref: Optional[RVariableInAtomicSwcInstanceRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DataReceivedEvent to XML element.
@@ -71,19 +71,16 @@ class DataReceivedEvent(RTEEvent):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_ref
-        if self.data_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.data_ref, "VariableDataPrototype")
+        # Serialize data_iref (instance reference with wrapper "DATA-IREF")
+        if self.data_iref is not None:
+            serialized = SerializationHelper.serialize_item(self.data_iref, "RVariableInAtomicSwcInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("DATA-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         return elem
 
@@ -104,8 +101,8 @@ class DataReceivedEvent(RTEEvent):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DATA-REF":
-                setattr(obj, "data_ref", ARRef.deserialize(child))
+            if tag == "DATA-IREF":
+                setattr(obj, "data_iref", SerializationHelper.deserialize_by_tag(child, "RVariableInAtomicSwcInstanceRef"))
 
         return obj
 
@@ -120,7 +117,7 @@ class DataReceivedEventBuilder(RTEEventBuilder):
         self._obj: DataReceivedEvent = DataReceivedEvent()
 
 
-    def with_data(self, value: Optional[VariableDataPrototype]) -> "DataReceivedEventBuilder":
+    def with_data(self, value: Optional[RVariableInAtomicSwcInstanceRef]) -> "DataReceivedEventBuilder":
         """Set data attribute.
 
         Args:

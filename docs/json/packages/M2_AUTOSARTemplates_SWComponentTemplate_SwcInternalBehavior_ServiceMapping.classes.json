@@ -195,6 +195,7 @@
           "multiplicity": "0..1",
           "kind": "aggr",
           "is_ref": false,
+          "decorator": "polymorphic:SERVICE-NEEDS=ServiceNeeds",
           "note": "The associated ServiceNeeds."
         }
       }

@@ -47,13 +47,13 @@ class RoleBasedDataAssignment(ARObject):
 
 
     role: Optional[Identifier]
-    used_data_ref: Optional[ARRef]
-    used_parameter_ref: Optional[ARRef]
+    used_data_element: Optional[AutosarVariableRef]
+    used_parameter_element: Optional[AutosarParameterRef]
     used_pim_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
-        "USED-DATA-REF": lambda obj, elem: setattr(obj, "used_data_ref", ARRef.deserialize(elem)),
-        "USED-PARAMETER-REF": lambda obj, elem: setattr(obj, "used_parameter_ref", ARRef.deserialize(elem)),
+        "USED-DATA-ELEMENT": lambda obj, elem: setattr(obj, "used_data_element", SerializationHelper.deserialize_by_tag(elem, "AutosarVariableRef")),
+        "USED-PARAMETER-ELEMENT": lambda obj, elem: setattr(obj, "used_parameter_element", SerializationHelper.deserialize_by_tag(elem, "AutosarParameterRef")),
         "USED-PIM-REF": lambda obj, elem: setattr(obj, "used_pim_ref", ARRef.deserialize(elem)),
     }
 
@@ -62,8 +62,8 @@ class RoleBasedDataAssignment(ARObject):
         """Initialize RoleBasedDataAssignment."""
         super().__init__()
         self.role: Optional[Identifier] = None
-        self.used_data_ref: Optional[ARRef] = None
-        self.used_parameter_ref: Optional[ARRef] = None
+        self.used_data_element: Optional[AutosarVariableRef] = None
+        self.used_parameter_element: Optional[AutosarParameterRef] = None
         self.used_pim_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -103,12 +103,12 @@ class RoleBasedDataAssignment(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize used_data_ref
-        if self.used_data_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.used_data_ref, "AutosarVariableRef")
+        # Serialize used_data_element
+        if self.used_data_element is not None:
+            serialized = SerializationHelper.serialize_item(self.used_data_element, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("USED-DATA-REF")
+                wrapped = ET.Element("USED-DATA-ELEMENT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -117,12 +117,12 @@ class RoleBasedDataAssignment(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize used_parameter_ref
-        if self.used_parameter_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.used_parameter_ref, "AutosarParameterRef")
+        # Serialize used_parameter_element
+        if self.used_parameter_element is not None:
+            serialized = SerializationHelper.serialize_item(self.used_parameter_element, "AutosarParameterRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("USED-PARAMETER-REF")
+                wrapped = ET.Element("USED-PARAMETER-ELEMENT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -166,10 +166,10 @@ class RoleBasedDataAssignment(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ROLE":
                 setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
-            elif tag == "USED-DATA-REF":
-                setattr(obj, "used_data_ref", ARRef.deserialize(child))
-            elif tag == "USED-PARAMETER-REF":
-                setattr(obj, "used_parameter_ref", ARRef.deserialize(child))
+            elif tag == "USED-DATA-ELEMENT":
+                setattr(obj, "used_data_element", SerializationHelper.deserialize_by_tag(child, "AutosarVariableRef"))
+            elif tag == "USED-PARAMETER-ELEMENT":
+                setattr(obj, "used_parameter_element", SerializationHelper.deserialize_by_tag(child, "AutosarParameterRef"))
             elif tag == "USED-PIM-REF":
                 setattr(obj, "used_pim_ref", ARRef.deserialize(child))
 
@@ -200,8 +200,8 @@ class RoleBasedDataAssignmentBuilder(BuilderBase):
         self._obj.role = value
         return self
 
-    def with_used_data(self, value: Optional[AutosarVariableRef]) -> "RoleBasedDataAssignmentBuilder":
-        """Set used_data attribute.
+    def with_used_data_element(self, value: Optional[AutosarVariableRef]) -> "RoleBasedDataAssignmentBuilder":
+        """Set used_data_element attribute.
 
         Args:
             value: Value to set
@@ -211,11 +211,11 @@ class RoleBasedDataAssignmentBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.used_data = value
+        self._obj.used_data_element = value
         return self
 
-    def with_used_parameter(self, value: Optional[AutosarParameterRef]) -> "RoleBasedDataAssignmentBuilder":
-        """Set used_parameter attribute.
+    def with_used_parameter_element(self, value: Optional[AutosarParameterRef]) -> "RoleBasedDataAssignmentBuilder":
+        """Set used_parameter_element attribute.
 
         Args:
             value: Value to set
@@ -225,7 +225,7 @@ class RoleBasedDataAssignmentBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.used_parameter = value
+        self._obj.used_parameter_element = value
         return self
 
     def with_used_pim(self, value: Optional[PerInstanceMemory]) -> "RoleBasedDataAssignmentBuilder":

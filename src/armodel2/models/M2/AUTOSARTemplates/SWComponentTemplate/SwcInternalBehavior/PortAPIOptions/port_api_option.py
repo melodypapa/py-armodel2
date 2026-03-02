@@ -19,14 +19,14 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions.port_defined_argument_value import (
-    PortDefinedArgumentValue,
-)
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions.swc_supported_feature import (
     SwcSupportedFeature,
 )
 
 if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions.port_defined_argument_value import (
+        PortDefinedArgumentValue,
+    )
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
         PortPrototype,
     )
@@ -53,16 +53,16 @@ class PortAPIOption(ARObject):
     enable_take_address: Optional[Boolean]
     error_handling: Optional[DataTransformationErrorHandlingEnum]
     indirect_api: Optional[Boolean]
-    port_ref: Optional[ARRef]
     port_arg_values: list[PortDefinedArgumentValue]
+    port_ref: Optional[ARRef]
     supported_features: list[SwcSupportedFeature]
     transformer_status_forwarding: Optional[DataTransformationStatusForwardingEnum]
     _DESERIALIZE_DISPATCH = {
         "ENABLE-TAKE-ADDRESS": lambda obj, elem: setattr(obj, "enable_take_address", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "ERROR-HANDLING": lambda obj, elem: setattr(obj, "error_handling", DataTransformationErrorHandlingEnum.deserialize(elem)),
         "INDIRECT-API": lambda obj, elem: setattr(obj, "indirect_api", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
         "PORT-ARG-VALUES": lambda obj, elem: obj.port_arg_values.append(SerializationHelper.deserialize_by_tag(elem, "PortDefinedArgumentValue")),
+        "PORT-REF": ("_POLYMORPHIC", "port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
         "SUPPORTED-FEATURES": ("_POLYMORPHIC_LIST", "supported_features", ["CommunicationBufferLocking"]),
         "TRANSFORMER-STATUS-FORWARDING": lambda obj, elem: setattr(obj, "transformer_status_forwarding", DataTransformationStatusForwardingEnum.deserialize(elem)),
     }
@@ -74,8 +74,8 @@ class PortAPIOption(ARObject):
         self.enable_take_address: Optional[Boolean] = None
         self.error_handling: Optional[DataTransformationErrorHandlingEnum] = None
         self.indirect_api: Optional[Boolean] = None
-        self.port_ref: Optional[ARRef] = None
         self.port_arg_values: list[PortDefinedArgumentValue] = []
+        self.port_ref: Optional[ARRef] = None
         self.supported_features: list[SwcSupportedFeature] = []
         self.transformer_status_forwarding: Optional[DataTransformationStatusForwardingEnum] = None
 
@@ -144,6 +144,16 @@ class PortAPIOption(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
+        # Serialize port_arg_values (list to container "PORT-ARG-VALUES")
+        if self.port_arg_values:
+            wrapper = ET.Element("PORT-ARG-VALUES")
+            for item in self.port_arg_values:
+                serialized = SerializationHelper.serialize_item(item, "PortDefinedArgumentValue")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
         # Serialize port_ref
         if self.port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.port_ref, "PortPrototype")
@@ -157,16 +167,6 @@ class PortAPIOption(ARObject):
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
-
-        # Serialize port_arg_values (list to container "PORT-ARG-VALUES")
-        if self.port_arg_values:
-            wrapper = ET.Element("PORT-ARG-VALUES")
-            for item in self.port_arg_values:
-                serialized = SerializationHelper.serialize_item(item, "PortDefinedArgumentValue")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
 
         # Serialize supported_features (list to container "SUPPORTED-FEATURES")
         if self.supported_features:
@@ -217,12 +217,12 @@ class PortAPIOption(ARObject):
                 setattr(obj, "error_handling", DataTransformationErrorHandlingEnum.deserialize(child))
             elif tag == "INDIRECT-API":
                 setattr(obj, "indirect_api", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "PORT-REF":
-                setattr(obj, "port_ref", ARRef.deserialize(child))
             elif tag == "PORT-ARG-VALUES":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.port_arg_values.append(SerializationHelper.deserialize_by_tag(item_elem, "PortDefinedArgumentValue"))
+            elif tag == "PORT-REF":
+                setattr(obj, "port_ref", ARRef.deserialize(child))
             elif tag == "SUPPORTED-FEATURES":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
@@ -287,6 +287,18 @@ class PortAPIOptionBuilder(BuilderBase):
         self._obj.indirect_api = value
         return self
 
+    def with_port_arg_values(self, items: list[PortDefinedArgumentValue]) -> "PortAPIOptionBuilder":
+        """Set port_arg_values list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.port_arg_values = list(items) if items else []
+        return self
+
     def with_port(self, value: Optional[PortPrototype]) -> "PortAPIOptionBuilder":
         """Set port attribute.
 
@@ -299,18 +311,6 @@ class PortAPIOptionBuilder(BuilderBase):
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
         self._obj.port = value
-        return self
-
-    def with_port_arg_values(self, items: list[PortDefinedArgumentValue]) -> "PortAPIOptionBuilder":
-        """Set port_arg_values list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.port_arg_values = list(items) if items else []
         return self
 
     def with_supported_features(self, items: list[SwcSupportedFeature]) -> "PortAPIOptionBuilder":
