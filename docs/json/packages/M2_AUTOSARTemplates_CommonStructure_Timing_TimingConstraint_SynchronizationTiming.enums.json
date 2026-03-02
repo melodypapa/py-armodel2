@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "SynchronizationTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::SynchronizationTiming",
       "note": "Specifies the synchronizationConstraintType for a SynchronizationTimingConstraint. Aggregated by SynchronizationTimingConstraint.synchronizationConstraintType",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "EventOccurrenceKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::SynchronizationTiming",
       "note": "Specifies the eventOccurrenceKind for a SynchronizationTimingConstraint. Aggregated by SynchronizationTimingConstraint.eventOccurrenceKind",
       "sources": [

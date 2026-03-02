@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "ProcessingKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "note": "Kind of processing which has been applied to a data element. Aggregated by SenderReceiverAnnotation.processingKind",
       "sources": [
@@ -33,6 +34,7 @@
     },
     {
       "name": "DataLimitKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "note": "Indicates whether the data element carries a minimum or maximum value, thereby limiting the current range of another value. Aggregated by SenderReceiverAnnotation.limitKind",
       "sources": [
@@ -73,6 +75,7 @@
     },
     {
       "name": "FilterDebouncingEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "note": "This enumeration defines possible values for the filter debouncing strategy. Aggregated by IoHwAbstractionServerAnnotation.filteringDebouncing",
       "sources": [
@@ -103,6 +106,7 @@
     },
     {
       "name": "PulseTestEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "note": "This element indicates to the connected Actuator Software component whether the data-element can be used to generate pulse test sequences using the IoHwAbstraction layer Aggregated by IoHwAbstractionServerAnnotation.pulseTest",
       "sources": [
@@ -123,6 +127,7 @@
     },
     {
       "name": "SignalFanEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::ApplicationAttributes",
       "note": "Signal Fan inside the Composition Component Type. Aggregated by DelegatedPortAnnotation.signalFan",
       "sources": [

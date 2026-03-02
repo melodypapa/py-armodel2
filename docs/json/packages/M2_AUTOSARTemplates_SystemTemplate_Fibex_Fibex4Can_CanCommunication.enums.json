@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "CanAddressingModeType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanCommunication",
       "note": "Indicates whether standard or extended CAN identifiers are used Aggregated by CanFrameTriggering.canAddressingMode, IEEE1722TpAcfCanPart.canAddressingMode",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "CanFrameRxBehaviorEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanCommunication",
       "note": "Defines different CAN protocols for frame reception behavior. Aggregated by CanFrameTriggering.canFrameRxBehavior",
       "sources": [
@@ -58,6 +60,7 @@
     },
     {
       "name": "CanFrameTxBehaviorEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanCommunication",
       "note": "Defines different CAN protocols for frame transmission behavior. Aggregated by CanFrameTriggering.canFrameTxBehavior, IEEE1722TpAcfCanPart.canFrameTxBehavior",
       "sources": [

@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticTestResultUpdateEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTestResult",
       "note": "This meta-class represents the ability to define the update behavior of a DiagnosticTestResult. Aggregated by DiagnosticTestResult.updateKind",
       "sources": [

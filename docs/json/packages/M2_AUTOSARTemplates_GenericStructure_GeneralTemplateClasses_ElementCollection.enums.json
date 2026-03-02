@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "AutoCollectEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ElementCollection",
       "note": "This enumerator defines the possible approaches to determine the final set of elements in a collection. Aggregated by Collection.autoCollect",
       "sources": [

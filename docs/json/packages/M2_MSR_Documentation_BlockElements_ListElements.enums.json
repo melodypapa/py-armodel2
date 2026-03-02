@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "ListEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::ListElements",
       "note": "This meta-class represents the notation of the various types of lists. Aggregated by List.type",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "ItemLabelPosEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::ListElements",
       "note": "This enumerator specifies, how the label of a labeled list shall be rendered. Aggregated by IndentSample.itemLabelPos",
       "sources": [

@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "ChapterEnumBreak",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::PaginationAndView",
       "note": "This allows to specify the page break policy of a paginatable element. Aggregated by Paginateable.break",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "KeepWithPreviousEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::PaginationAndView",
       "note": "This enumerator specifies a page break policy by controlling blocks which shall be kept together. Aggregated by Paginateable.keepWithPrevious",
       "sources": [

@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticPeriodicRateCategoryEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::ReadDataByPeriodicID",
       "note": "This meta-class provides possible values for the setting of the periodic rate. Aggregated by DiagnosticPeriodicRate.periodicRateCategory",
       "sources": [

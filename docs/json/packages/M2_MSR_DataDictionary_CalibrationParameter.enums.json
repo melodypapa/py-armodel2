@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "CalprmAxisCategoryEnum",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::CalibrationParameter",
       "note": "This enum specifies the possible values of the category property within SwCalprmAxis. Aggregated by RuleBasedAxisCont.category, SwAxisCont.category, SwCalprmAxis.category",
       "sources": [

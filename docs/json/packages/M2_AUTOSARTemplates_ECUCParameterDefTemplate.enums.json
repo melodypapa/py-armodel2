@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "EcucScopeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "note": "Possible scope settings for a configuration element. Aggregated by EcucDefinitionElement.scope",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "EcucConfigurationClassEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "note": "Possible configuration classes for the AUTOSAR configuration parameters. Aggregated by EcucAbstractConfigurationClass.configClass",
       "sources": [
@@ -63,6 +65,7 @@
     },
     {
       "name": "EcucConfigurationVariantEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "note": "Specifies the possible Configuration Variants used for AUTOSAR BSW Modules. Aggregated by EcucAbstractConfigurationClass.configVariant, EcucModuleConfigurationValues.implementation ConfigVariant, EcucModuleDef.supportedConfigVariant",
       "sources": [
@@ -108,6 +111,7 @@
     },
     {
       "name": "EcucDestinationUriNestingContractEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::ECUCParameterDefTemplate",
       "note": "EcucDestinationUriNestingContractEnum is used to determine what is qualified by the Ecuc DestinationUriPolicy. Aggregated by EcucDestinationUriPolicy.destinationUriNestingContract",
       "sources": [

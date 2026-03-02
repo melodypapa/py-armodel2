@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticJumpToBootLoaderEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm",
       "note": "This enumeration contains the options for jumping to a boot loader. Aggregated by DiagnosticSession.jumpToBootLoader",
       "sources": [

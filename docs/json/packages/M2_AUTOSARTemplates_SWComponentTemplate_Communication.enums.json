@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "HandleInvalidEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "note": "Strategies of handling the reception of invalidValue. Aggregated by InvalidationPolicy.handleInvalid, ISignalPort.handleInvalid",
       "sources": [
@@ -44,6 +45,7 @@
     },
     {
       "name": "HandleOutOfRangeStatusEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "note": "This enumeration defines how the RTE handles values that are out of range. Aggregated by ReceiverComSpec.handleOutOfRangeStatus",
       "sources": [
@@ -69,6 +71,7 @@
     },
     {
       "name": "HandleTimeoutEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "note": "Strategies of handling a reception timeout violation. Aggregated by NonqueuedReceiverComSpec.handleTimeoutType",
       "sources": [
@@ -99,6 +102,7 @@
     },
     {
       "name": "HandleOutOfRangeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "note": "A value of this type is taken for controlling the range checking behavior of the AUTOSAR RTE. Aggregated by ISignalProps.handleOutOfRange, ReceiverComSpec.handleOutOfRange, SenderComSpec.handle OutOfRange",
       "sources": [
@@ -145,6 +149,7 @@
     },
     {
       "name": "TransmissionModeDefinitionEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "note": "This meta-class defines possible settings for the transmission mode. Aggregated by TransmissionComSpecProps.transmissionMode",
       "sources": [

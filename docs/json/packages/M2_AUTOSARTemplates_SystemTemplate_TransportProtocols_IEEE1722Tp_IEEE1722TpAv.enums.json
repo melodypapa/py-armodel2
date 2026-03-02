@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "IEEE1722TpCrfTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAv",
       "note": "Definition of the CRF stream type. Tags: atp.Status=candidate Aggregated by IEEE1722TpCrfConnection.crfType",
       "sources": [
@@ -43,6 +44,7 @@
     },
     {
       "name": "IEEE1722TpCrfPullEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAv",
       "note": "Definition of the CRF stream pull value. Tags: atp.Status=candidate Aggregated by IEEE1722TpCrfConnection.crfPull (cid:53) 640 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 (cid:52)",
       "sources": [
@@ -88,6 +90,7 @@
     },
     {
       "name": "IEEE1722TpAafNominalRateEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAv",
       "note": "Definition of the AAF nominal sample / frame rate. Tags: atp.Status=candidate Aggregated by IEEE1722TpAafConnection.aafNominalRate",
       "sources": [
@@ -163,6 +166,7 @@
     },
     {
       "name": "IEEE1722TpAafFormatEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAv",
       "note": "Definition of the AAF stream format. Tags: atp.Status=candidate Aggregated by IEEE1722TpAafConnection.aafFormat",
       "sources": [
@@ -193,6 +197,7 @@
     },
     {
       "name": "IEEE1722TpAafAes3DataTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAv",
       "note": "Definition of the AAF AES3 stream aes3_data_type reference. Tags: atp.Status=candidate Aggregated by IEEE1722TpAafConnection.aafAes3DataType",
       "sources": [
@@ -233,6 +238,7 @@
     },
     {
       "name": "IEEE1722TpRvfPixelDepthEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAv",
       "note": "Definition of the RVF Pixel Depth. Tags: atp.Status=candidate Aggregated by IEEE1722TpRvfConnection.rvfPixelDepth",
       "sources": [
@@ -253,6 +259,7 @@
     },
     {
       "name": "IEEE1722TpRvfPixelFormatEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAv",
       "note": "Definition of the RVF Pixel Format. Tags: atp.Status=candidate (cid:53) 650 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 (cid:52)",
       "sources": [
@@ -273,6 +280,7 @@
     },
     {
       "name": "IEEE1722TpRvfColorSpaceEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAv",
       "note": "Definition of the RVF stream colorspace. Tags: atp.Status=candidate Aggregated by IEEE1722TpRvfConnection.rvfColorSpace",
       "sources": [
@@ -333,6 +341,7 @@
     },
     {
       "name": "IEEE1722TpRvfFrameRateEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAv",
       "note": "Definition of the RVF stream frame_rate. Tags: atp.Status=candidate Aggregated by IEEE1722TpRvfConnection.rvfFrameRate",
       "sources": [

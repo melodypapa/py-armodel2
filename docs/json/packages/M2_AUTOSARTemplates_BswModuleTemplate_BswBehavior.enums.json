@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "BswInterruptCategory",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "note": "Category of the interrupt service Aggregated by BswInterruptEntity.interruptCategory",
       "sources": [

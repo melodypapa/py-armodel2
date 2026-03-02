@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "IEEE1722TpAcfCanMessageTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols::IEEE1722Tp::IEEE1722TpAcf",
       "note": "Definition of the ACF CAN stream message type. Tags: atp.Status=candidate Aggregated by IEEE1722TpAcfCan.messageType",
       "sources": [

@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "AreaEnumNohref",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::Figure",
       "note": "This enumerator specifies the fact that the area has no reference. Aggregated by Area.nohref",
       "sources": [
@@ -23,6 +24,7 @@
     },
     {
       "name": "AreaEnumShape",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::Figure",
       "note": "This enumerator specifies the shape of the area. Aggregated by Area.shape",
       "sources": [
@@ -58,6 +60,7 @@
     },
     {
       "name": "GraphicFitEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::Figure",
       "note": "This enumerator specifies the policy how to place and scale the figure on the page. Aggregated by Graphic.editfit, Graphic.fit, Graphic.htmlFit",
       "sources": [
@@ -143,6 +146,7 @@
     },
     {
       "name": "GraphicNotationEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::Figure",
       "note": "This enumerator specifies the various notations (finally file types) used to represent the figure. Aggregated by Graphic.notation",
       "sources": [

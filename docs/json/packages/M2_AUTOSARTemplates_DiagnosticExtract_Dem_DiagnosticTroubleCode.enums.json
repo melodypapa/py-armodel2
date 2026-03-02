@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticTypeOfDtcSupportedEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "note": "Supported Dtc Types Aggregated by DiagnosticMemoryDestinationPrimary.typeOfDtcSupported",
       "sources": [
@@ -43,6 +44,7 @@
     },
     {
       "name": "DiagnosticStatusBitHandlingTestFailedSinceLastClearEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "note": "This enumeration controls whether the aging and displacement mechanism shall be applied to the ’TestFailedSinceLastClear’ status bits. Aggregated by DiagnosticMemoryDestination.statusBitHandlingTestFailedSinceLastClear (cid:53) 183 of 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Diagnostic Extract Template AUTOSAR CP R23-11 (cid:52)",
       "sources": [
@@ -68,6 +70,7 @@
     },
     {
       "name": "DiagnosticSignificanceEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "note": "Significance level of a diagnostic event. Aggregated by DiagnosticTroubleCodeProps.significance",
       "sources": [
@@ -93,6 +96,7 @@
     },
     {
       "name": "DiagnosticUdsSeverityEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "note": "Severity types for a DTC according to ISO 14229-1. Aggregated by DiagnosticTroubleCodeUds.severity",
       "sources": [
@@ -128,6 +132,7 @@
     },
     {
       "name": "DiagnosticWwhObdDtcClassEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "note": "This meta-class represents the ability to model severity classes of an WWH-OBD DTC. Aggregated by DiagnosticTroubleCodeUds.wwhObdDtcClass",
       "sources": [
@@ -173,6 +178,7 @@
     },
     {
       "name": "DiagnosticTroubleCodeJ1939DtcKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticTroubleCode",
       "note": "This meta-class represents the ability to further specify a J1939 DTC in terms of its semantics. Aggregated by DiagnosticTroubleCodeJ1939.kind",
       "sources": [

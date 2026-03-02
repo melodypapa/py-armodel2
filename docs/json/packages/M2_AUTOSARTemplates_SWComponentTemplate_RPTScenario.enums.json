@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "RptServicePointEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::RPTScenario",
       "note": "Specifies whether the invocation of ExecutableEntitys due to activation of specific RteEvents/Bsw Events requires the insertion of Service Points. Aggregated by RptExecutableEntityProperties.rptServicePoint",
       "sources": [

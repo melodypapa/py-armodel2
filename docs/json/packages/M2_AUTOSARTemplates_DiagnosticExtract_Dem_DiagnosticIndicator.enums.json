@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticIndicatorTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticIndicator",
       "note": "Type of an indicator. Aggregated by DiagnosticIndicator.type, IndicatorStatusNeeds.type",
       "sources": [

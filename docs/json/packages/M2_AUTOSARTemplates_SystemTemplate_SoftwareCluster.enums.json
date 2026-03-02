@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DataConsistencyPolicyEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster",
       "note": "Defines how data consistency is ensured in the cross cluster communication. Aggregated by DataComProps.dataConsistencyPolicy",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "SendIndicationEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SoftwareCluster",
       "note": "This meta-class provides a way to specify in which way redundancy shall be applied on collection level. Aggregated by DataComProps.sendIndication",
       "sources": [

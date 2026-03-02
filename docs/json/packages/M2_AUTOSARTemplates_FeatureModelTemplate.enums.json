@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "FMFeatureSelectionState",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::FeatureModelTemplate",
       "note": "Defines how a particular FMFeature contributes to a FMFSelectionSet. Aggregated by FMFeatureSelection.state",
       "sources": [

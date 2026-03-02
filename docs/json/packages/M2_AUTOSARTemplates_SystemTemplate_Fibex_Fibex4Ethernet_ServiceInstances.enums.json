@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "PduCollectionTriggerEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::ServiceInstances",
       "note": "Defines whether a Pdu contributes to the triggering of the data transmission if Pdu collection is enabled. Aggregated by ContainedIPduProps.trigger, IEEE1722TpAcfBusPart.collectionTrigger, SocketConnectionIpdu Identifier.pduCollectionTrigger, SoConIPduIdentifier.pduCollectionTrigger",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "UdpChecksumCalculationEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::ServiceInstances",
       "note": "This enumeration defines the UDP checksum calculation. Aggregated by SocketAddress.udpChecksumHandling, SocketConnectionBundle.udpChecksumHandling",
       "sources": [
@@ -53,6 +55,7 @@
     },
     {
       "name": "EventGroupControlTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::ServiceInstances",
       "note": "Types of a RoutingGroups for the event communication. Aggregated by PduActivationRoutingGroup.eventGroupControlType, SoAdRoutingGroup.eventGroupControlType",
       "sources": [
@@ -88,6 +91,7 @@
     },
     {
       "name": "PduCollectionSemanticsEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::ServiceInstances",
       "note": "Defines the collection semantics for the PDU collection feature. Aggregated by SocketConnectionIpduIdentifier.pduCollectionSemantics, SoConIPduIdentifier.pduCollection Semantics",
       "sources": [
@@ -113,6 +117,7 @@
     },
     {
       "name": "ServiceVersionAcceptanceKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::ServiceInstances",
       "note": "Defined the possible acceptance kinds for required service instances. Aggregated by ConsumedServiceInstance.versionDrivenFindBehavior, RequiredSomeipServiceInstance.version DrivenFindBehavior",
       "sources": [
@@ -148,6 +153,7 @@
     },
     {
       "name": "TcpRoleEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::ServiceInstances",
       "note": "This enumeration defines whether a TCP node has the tcp server role or the client role. Aggregated by StaticSocketConnection.tcpRole",
       "sources": [

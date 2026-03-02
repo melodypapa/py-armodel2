@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "StandardNameEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::DocumentationOnM1",
       "note": "This enumeration lists all allowed standard abbreviations. Aggregated by AppliedStandard.appliesTo, StructuredReq.appliesTo",
       "sources": [

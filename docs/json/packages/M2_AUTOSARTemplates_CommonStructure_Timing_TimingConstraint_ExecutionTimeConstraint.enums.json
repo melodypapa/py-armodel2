@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "ExecutionTimeTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::ExecutionTimeConstraint",
       "note": "Specifies the type of the executionTimeType for a ExecutionTimeConstraint. Aggregated by ExecutionTimeConstraint.executionTimeType (cid:53) 130 of 277 Document ID 411: AUTOSAR_CP_TPS_TimingExtensions Specification of Timing Extensions for Classic Platform AUTOSAR CP R23-11 (cid:52)",
       "sources": [

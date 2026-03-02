@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "EthGlobalTimeMessageFormatEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::ETH",
       "note": "Specifies which message formats are available to for the Ethernet time sync protocol. Aggregated by EthGlobalTimeDomainProps.messageCompliance",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "GlobalTimePortRoleEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime::ETH",
       "note": "Selection of port behavior to Time Slave, Time Master or Dynamic (Time Slave or Time Master at runtime). Aggregated by EthGlobalTimeManagedCouplingPort.globalTimePortRole",
       "sources": [

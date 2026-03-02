@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "AclScopeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::RolesAndRights",
       "note": "This enumerator represents the scope of a definition in context of access control. Aggregated by AclObjectSet.aclScope, AclPermission.aclScope",
       "sources": [

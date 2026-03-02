@@ -3,6 +3,7 @@
   "primitives": [
     {
       "name": "Superscript",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineTextElements",
       "note": "This is text which is rendered superscript or subscript depending on the role. Tags: xml.xsd.customType=SUPSCRIPT xml.xsd.type=string Table 9.38: Superscript",
       "sources": [

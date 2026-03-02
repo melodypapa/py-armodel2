@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "TDEventVariableDataPrototypeTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "note": "This is used to describe the specific event type of a TDEventVariableDataPrototype Aggregated by TDEventVariableDataPrototype.tdEventVariableDataPrototypeType",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "TDEventOperationTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "note": "This is used to describe the specific event type of a TDEventOperation. Aggregated by TDEventOperation.tdEventOperationType",
       "sources": [
@@ -63,6 +65,7 @@
     },
     {
       "name": "TDEventModeDeclarationTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "note": "This is used to describe the specific event type of a TDEventModeDeclaration Aggregated by TDEventModeDeclaration.tdEventModeDeclarationType",
       "sources": [
@@ -88,6 +91,7 @@
     },
     {
       "name": "TDEventTriggerTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "note": "This is used to describe the specific event type of a TDEventTrigger. Aggregated by TDEventTrigger.tdEventTriggerType",
       "sources": [
@@ -113,6 +117,7 @@
     },
     {
       "name": "TDEventSwcInternalBehaviorTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "note": "This is used to describe the specific event type of a TDEventSwcInternalBehavior. Aggregated by TDEventSwcInternalBehavior.tdEventSwcInternalBehaviorType",
       "sources": [
@@ -148,6 +153,7 @@
     },
     {
       "name": "TDEventISignalTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "note": "This is used to describe the specific event type of a TDEventISignal. Aggregated by TDEventISignal.tdEventType",
       "sources": [
@@ -178,6 +184,7 @@
     },
     {
       "name": "TDEventIPduTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "note": "This is used to describe the specific event type of a TDEventIPdu. Aggregated by TDEventIPdu.tdEventType",
       "sources": [
@@ -208,6 +215,7 @@
     },
     {
       "name": "TDEventFrameTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "note": "This is used to describe the specific event type of a TDEventFrame. Aggregated by TDEventFrame.tdEventType",
       "sources": [
@@ -238,6 +246,7 @@
     },
     {
       "name": "TDEventFrameEthernetTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "note": "This is used to describe the specific event type of a TDEventFrameEthernet. Aggregated by TDEventFrameEthernet.tdEventType",
       "sources": [
@@ -273,6 +282,7 @@
     },
     {
       "name": "TDEventBswInternalBehaviorTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "note": "This is used to describe the specific event type of a TDEventBswInternalBehavior. Aggregated by TDEventBswInternalBehavior.tdEventBswInternalBehaviorType",
       "sources": [
@@ -303,6 +313,7 @@
     },
     {
       "name": "TDEventBswModuleTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "note": "This is used to describe the specific event type of a TDEventBswModule. Aggregated by TDEventBswModule.tdEventBswModuleType",
       "sources": [
@@ -328,6 +339,7 @@
     },
     {
       "name": "TDEventBswModeDeclarationTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingDescription::TimingDescription",
       "note": "This is used to describe the specific event type of a TDEventBswModeDeclaration. Aggregated by TDEventBswModeDeclaration.tdEventBswModeDeclarationType",
       "sources": [

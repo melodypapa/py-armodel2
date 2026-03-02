@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "SecurityEventContextDataSourceEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "note": "This enumeration controls the elements used to creating the resulting qualified security event Tags: atp.Status=candidate Aggregated by SecurityEventAggregationFilter.contextDataSource",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "SecurityEventReportingModeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SecurityExtractTemplate",
       "note": "This enumeration controls the reporting mode of a security event. Tags: atp.Status=candidate Aggregated by SecurityEventContextProps.defaultReportingMode",
       "sources": [

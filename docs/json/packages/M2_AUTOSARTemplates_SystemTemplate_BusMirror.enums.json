@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "MirroringProtocolEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::BusMirror",
       "note": "Eunumeration that defines the supported bus mirroring protocol options) with two literals. Aggregated by BusMirrorChannelMapping.mirroringProtocol",
       "sources": [

@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "ArraySizeHandlingEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "note": "This enumeration defines different ways to handle the sizes of variable size arrays. Aggregated by ApplicationArrayElement.arraySizeHandling, ImplementationDataTypeElement.arraySizeHandling",
       "sources": [

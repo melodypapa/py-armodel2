@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DltDefaultTraceStateEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Dlt",
       "note": "This enumeration defines the supported values for the Dlt default trace state. Aggregated by DltLogChannel.defaultTraceState",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "LogTraceDefaultLogLevelEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Dlt",
       "note": "This enum defines available log&trace log levels that may be used to define the severity level of a log message. Aggregated by DltLogChannel.logTraceDefaultLogThreshold, DltLogSink.defaultLogThreshold",
       "sources": [

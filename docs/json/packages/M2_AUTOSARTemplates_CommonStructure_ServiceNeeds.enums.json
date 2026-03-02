@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "NvBlockNeedsReliabilityEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "Reliability against data loss on the non-volatile medium. These requirements give only a relative indication, for example on the required degree of redundancy for storage. They do, however, not specify by which means (e.g. software or hardware) the reliability is actually achieved. Aggregated by NvBlockNeeds.reliability",
       "sources": [
@@ -39,6 +40,7 @@
     },
     {
       "name": "NvBlockNeedsWritingPriorityEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "Specifies the priority of writing this block in case of concurrent requests to write other blocks. Aggregated by NvBlockNeeds.writingPriority",
       "sources": [
@@ -75,6 +77,7 @@
     },
     {
       "name": "MaxCommModeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "Maximum bus communication mode required by a user of the Communication Manager Service. Aggregated by ComMgrUserNeeds.maxCommMode (cid:53) 233 of 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Basic Software Module Description Template AUTOSAR CP R23-11 (cid:52)",
       "sources": [
@@ -111,6 +114,7 @@
     },
     {
       "name": "DiagnosticValueAccessEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "Defines the access of the configured diagnostic current values which will be used by the Dem or Dcm module. Aggregated by DiagnosticValueNeeds.diagnosticValueAccess",
       "sources": [
@@ -153,6 +157,7 @@
     },
     {
       "name": "DiagnosticProcessingStyleEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "This meta-class represents the ability to define the processing style of diagnostic requests. Aggregated by DiagnosticValueNeeds.processingStyle",
       "sources": [
@@ -195,6 +200,7 @@
     },
     {
       "name": "DiagnosticRoutineTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "This enumerator specifies the different types of diagnostic routines. Aggregated by DiagnosticRoutineNeeds.diagRoutineType",
       "sources": [
@@ -221,6 +227,7 @@
     },
     {
       "name": "ServiceProviderEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "This represents a list of possible service providers Aggregated by PortInterface.serviceKind",
       "sources": [
@@ -366,6 +373,7 @@
     },
     {
       "name": "ServiceDiagnosticRelevanceEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "This enumeration provides values to describe the diagnostic relevance of a SwcServiceDependency (specifically if the aggregated ServiceNeeds itself does not indicate a relevance for diagnostics). Aggregated by ServiceDependency.diagnosticRelevance",
       "sources": [
@@ -380,6 +388,7 @@
     },
     {
       "name": "DiagnosticAudienceEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "The possible values of the intended audience for a diagnostic object. Aggregated by DiagnosticCapabilityElement.audience",
       "sources": [
@@ -420,6 +429,7 @@
     },
     {
       "name": "OperationCycleTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "The possible values of the operation cycles types for the Dem. Aggregated by DiagnosticOperationCycleNeeds.operationCycle",
       "sources": [
@@ -465,6 +475,7 @@
     },
     {
       "name": "EventAcceptanceStatusEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "This enumerator specifies the initial status for enable or disable of acceptance of event reports of a diagnostic event. Aggregated by DiagnosticEnableConditionNeeds.initialStatus",
       "sources": [
@@ -490,6 +501,7 @@
     },
     {
       "name": "StorageConditionStatusEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "This enumeration specifies the initial status for enable or disable of storage of a diagnostic event. Aggregated by DiagnosticStorageConditionNeeds.initialStatus",
       "sources": [
@@ -515,6 +527,7 @@
     },
     {
       "name": "DiagnosticClearDtcNotificationEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "This enumeration supports the specification of the time when the ClearDtcNotification callback is supposed to be executed. Aggregated by DtcStatusChangeNotificationNeeds.notificationTime",
       "sources": [
@@ -540,6 +553,7 @@
     },
     {
       "name": "DiagnosticServiceRequestCallbackTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "This represents the ability to define whether a Service Request Notification was used in the role of a manufacturer or a supplier. Aggregated by DiagnosticCommunicationManagerNeeds.serviceRequestCallbackType",
       "sources": [
@@ -565,6 +579,7 @@
     },
     {
       "name": "ObdRatioConnectionKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "Defines the way how the IUMPR service connection between the Dem and the client component or module is handled (for details see the DEM Specification). Aggregated by ObdRatioServiceNeeds.connectionType",
       "sources": [
@@ -590,6 +605,7 @@
     },
     {
       "name": "DiagnosticMonitorUpdateKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "This enumeration indicates the acceptance criteria for a diagnostic monitor. Aggregated by ObdMonitorServiceNeeds.updateKind",
       "sources": [
@@ -615,6 +631,7 @@
     },
     {
       "name": "DiagnosticDenominatorConditionEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "This enumeration contains valid denominator types. Aggregated by ObdRatioDenominatorNeeds.denominatorCondition",
       "sources": [
@@ -660,6 +677,7 @@
     },
     {
       "name": "VerificationStatusIndicationModeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "note": "This enumeration provides options for setting the mode of a verification status indication. Aggregated by SecureOnBoardCommunicationNeeds.verificationStatusIndicationMode",
       "sources": [
