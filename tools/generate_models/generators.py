@@ -3149,6 +3149,7 @@ def _generate_serialize_method(
     attribute_types: Dict[str, Dict[str, Any]],
     parent_class: Optional[str],
     package_data: Dict[str, Dict[str, Any]],
+    polymorphic_types: Optional[Dict[str, List[str]]] = None,
 ) -> str:
     """Generate optimized serialize() method for a class.
 
@@ -3162,10 +3163,13 @@ def _generate_serialize_method(
         attribute_types: Dictionary of attribute information
         parent_class: Name of parent class (if any)
         package_data: Package data dictionary
+        polymorphic_types: Dict mapping base types to lists of concrete implementations
 
     Returns:
         Generated serialize() method code
     """
+    if polymorphic_types is None:
+        polymorphic_types = {}
     code = f'''    def serialize(self) -> ET.Element:
         """Serialize {class_name} to XML element.
 
@@ -3269,7 +3273,8 @@ def _generate_serialize_method(
                 decorator_params = attr_info.get("decorator_params")
                 
                 # Determine if this should be flattened based on decorator parameter
-                should_flatten = False
+                # Default to True for AUTOSAR instance references (flatten children into IREF wrapper)
+                should_flatten = True
                 list_type = "single"  # Default: single-wrapper behavior
                 if decorator_name == "instance_ref" and decorator_params:
                     # Parse decorator params (format: "flatten=True,list_type=multi" or "flatten=False")
@@ -3720,7 +3725,21 @@ def _generate_serialize_method(
 
 '''
                     else:
-                        code += f'''        # Serialize {python_name}
+                        # Check if this is a polymorphic type that needs to preserve its concrete wrapper
+                        is_polymorphic_type = effective_type in polymorphic_types
+                        if is_polymorphic_type:
+                            code += f'''        # Serialize {python_name} (polymorphic type - preserve concrete wrapper)
+        if self.{python_name} is not None:
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("{xml_tag}")
+                wrapped.append(serialized)
+                elem.append(wrapped)
+
+'''
+                        else:
+                            code += f'''        # Serialize {python_name}
         if self.{python_name} is not None:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:

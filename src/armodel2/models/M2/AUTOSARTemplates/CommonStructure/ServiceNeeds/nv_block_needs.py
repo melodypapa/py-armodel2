@@ -16,6 +16,7 @@ from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_ne
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import ServiceNeedsBuilder
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
+    NvBlockNeedsReliabilityEnum,
     NvBlockNeedsWritingPriorityEnum,
 )
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.NvBlockComponent import (
@@ -45,50 +46,50 @@ class NvBlockNeeds(ServiceNeeds):
     _XML_TAG = "NV-BLOCK-NEEDS"
 
 
-    calc_ram_block: Optional[Boolean]
+    calc_ram_block_crc: Optional[Boolean]
     check_static_block_id: Optional[Boolean]
-    cyclic_writing: Optional[TimeValue]
+    cyclic_writing_period: Optional[TimeValue]
     n_data_sets: Optional[PositiveInteger]
     n_rom_blocks: Optional[PositiveInteger]
     ram_block_status_control: Optional[RamBlockStatusControlEnum]
     readonly: Optional[Boolean]
-    reliability_reliability_enum: Optional[NvBlockNeeds]
-    resistant_to: Optional[Boolean]
+    reliability: Optional[NvBlockNeedsReliabilityEnum]
+    resistant_to_changed_sw: Optional[Boolean]
     restore_at_start: Optional[Boolean]
-    select_block_for: Optional[Boolean]
-    store_at: Optional[Boolean]
+    select_block_for_first_init_all: Optional[Boolean]
+    store_at_shutdown: Optional[Boolean]
     store_cyclic: Optional[Boolean]
-    store: Optional[Boolean]
+    store_emergency: Optional[Boolean]
     store_immediate: Optional[Boolean]
     store_on_change: Optional[Boolean]
-    use_auto: Optional[Boolean]
-    use_crc_comp: Optional[Boolean]
+    use_auto_validation_at_shut_down: Optional[Boolean]
+    use_crc_comp_mechanism: Optional[Boolean]
     write_only_once: Optional[Boolean]
     write_verification: Optional[Boolean]
-    writing: Optional[PositiveInteger]
+    writing_frequency: Optional[PositiveInteger]
     writing_priority: Optional[NvBlockNeedsWritingPriorityEnum]
     _DESERIALIZE_DISPATCH = {
-        "CALC-RAM-BLOCK": lambda obj, elem: setattr(obj, "calc_ram_block", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "CALC-RAM-BLOCK-CRC": lambda obj, elem: setattr(obj, "calc_ram_block_crc", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "CHECK-STATIC-BLOCK-ID": lambda obj, elem: setattr(obj, "check_static_block_id", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "CYCLIC-WRITING": lambda obj, elem: setattr(obj, "cyclic_writing", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "CYCLIC-WRITING-PERIOD": lambda obj, elem: setattr(obj, "cyclic_writing_period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "N-DATA-SETS": lambda obj, elem: setattr(obj, "n_data_sets", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "N-ROM-BLOCKS": lambda obj, elem: setattr(obj, "n_rom_blocks", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "RAM-BLOCK-STATUS-CONTROL": lambda obj, elem: setattr(obj, "ram_block_status_control", RamBlockStatusControlEnum.deserialize(elem)),
         "READONLY": lambda obj, elem: setattr(obj, "readonly", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "RELIABILITY-RELIABILITY-ENUM": lambda obj, elem: setattr(obj, "reliability_reliability_enum", SerializationHelper.deserialize_by_tag(elem, "NvBlockNeeds")),
-        "RESISTANT-TO": lambda obj, elem: setattr(obj, "resistant_to", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "RELIABILITY": lambda obj, elem: setattr(obj, "reliability", NvBlockNeedsReliabilityEnum.deserialize(elem)),
+        "RESISTANT-TO-CHANGED-SW": lambda obj, elem: setattr(obj, "resistant_to_changed_sw", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "RESTORE-AT-START": lambda obj, elem: setattr(obj, "restore_at_start", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "SELECT-BLOCK-FOR": lambda obj, elem: setattr(obj, "select_block_for", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "STORE-AT": lambda obj, elem: setattr(obj, "store_at", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SELECT-BLOCK-FOR-FIRST-INIT-ALL": lambda obj, elem: setattr(obj, "select_block_for_first_init_all", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "STORE-AT-SHUTDOWN": lambda obj, elem: setattr(obj, "store_at_shutdown", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "STORE-CYCLIC": lambda obj, elem: setattr(obj, "store_cyclic", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "STORE": lambda obj, elem: setattr(obj, "store", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "STORE-EMERGENCY": lambda obj, elem: setattr(obj, "store_emergency", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "STORE-IMMEDIATE": lambda obj, elem: setattr(obj, "store_immediate", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "STORE-ON-CHANGE": lambda obj, elem: setattr(obj, "store_on_change", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "USE-AUTO": lambda obj, elem: setattr(obj, "use_auto", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "USE-CRC-COMP": lambda obj, elem: setattr(obj, "use_crc_comp", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "USE-AUTO-VALIDATION-AT-SHUT-DOWN": lambda obj, elem: setattr(obj, "use_auto_validation_at_shut_down", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "USE-CRC-COMP-MECHANISM": lambda obj, elem: setattr(obj, "use_crc_comp_mechanism", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "WRITE-ONLY-ONCE": lambda obj, elem: setattr(obj, "write_only_once", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "WRITE-VERIFICATION": lambda obj, elem: setattr(obj, "write_verification", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "WRITING": lambda obj, elem: setattr(obj, "writing", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "WRITING-FREQUENCY": lambda obj, elem: setattr(obj, "writing_frequency", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "WRITING-PRIORITY": lambda obj, elem: setattr(obj, "writing_priority", NvBlockNeedsWritingPriorityEnum.deserialize(elem)),
     }
 
@@ -96,27 +97,27 @@ class NvBlockNeeds(ServiceNeeds):
     def __init__(self) -> None:
         """Initialize NvBlockNeeds."""
         super().__init__()
-        self.calc_ram_block: Optional[Boolean] = None
+        self.calc_ram_block_crc: Optional[Boolean] = None
         self.check_static_block_id: Optional[Boolean] = None
-        self.cyclic_writing: Optional[TimeValue] = None
+        self.cyclic_writing_period: Optional[TimeValue] = None
         self.n_data_sets: Optional[PositiveInteger] = None
         self.n_rom_blocks: Optional[PositiveInteger] = None
         self.ram_block_status_control: Optional[RamBlockStatusControlEnum] = None
         self.readonly: Optional[Boolean] = None
-        self.reliability_reliability_enum: Optional[NvBlockNeeds] = None
-        self.resistant_to: Optional[Boolean] = None
+        self.reliability: Optional[NvBlockNeedsReliabilityEnum] = None
+        self.resistant_to_changed_sw: Optional[Boolean] = None
         self.restore_at_start: Optional[Boolean] = None
-        self.select_block_for: Optional[Boolean] = None
-        self.store_at: Optional[Boolean] = None
+        self.select_block_for_first_init_all: Optional[Boolean] = None
+        self.store_at_shutdown: Optional[Boolean] = None
         self.store_cyclic: Optional[Boolean] = None
-        self.store: Optional[Boolean] = None
+        self.store_emergency: Optional[Boolean] = None
         self.store_immediate: Optional[Boolean] = None
         self.store_on_change: Optional[Boolean] = None
-        self.use_auto: Optional[Boolean] = None
-        self.use_crc_comp: Optional[Boolean] = None
+        self.use_auto_validation_at_shut_down: Optional[Boolean] = None
+        self.use_crc_comp_mechanism: Optional[Boolean] = None
         self.write_only_once: Optional[Boolean] = None
         self.write_verification: Optional[Boolean] = None
-        self.writing: Optional[PositiveInteger] = None
+        self.writing_frequency: Optional[PositiveInteger] = None
         self.writing_priority: Optional[NvBlockNeedsWritingPriorityEnum] = None
 
     def serialize(self) -> ET.Element:
@@ -142,12 +143,12 @@ class NvBlockNeeds(ServiceNeeds):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize calc_ram_block
-        if self.calc_ram_block is not None:
-            serialized = SerializationHelper.serialize_item(self.calc_ram_block, "Boolean")
+        # Serialize calc_ram_block_crc
+        if self.calc_ram_block_crc is not None:
+            serialized = SerializationHelper.serialize_item(self.calc_ram_block_crc, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CALC-RAM-BLOCK")
+                wrapped = ET.Element("CALC-RAM-BLOCK-CRC")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -170,12 +171,12 @@ class NvBlockNeeds(ServiceNeeds):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize cyclic_writing
-        if self.cyclic_writing is not None:
-            serialized = SerializationHelper.serialize_item(self.cyclic_writing, "TimeValue")
+        # Serialize cyclic_writing_period
+        if self.cyclic_writing_period is not None:
+            serialized = SerializationHelper.serialize_item(self.cyclic_writing_period, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CYCLIC-WRITING")
+                wrapped = ET.Element("CYCLIC-WRITING-PERIOD")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -240,12 +241,12 @@ class NvBlockNeeds(ServiceNeeds):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize reliability_reliability_enum
-        if self.reliability_reliability_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.reliability_reliability_enum, "NvBlockNeeds")
+        # Serialize reliability
+        if self.reliability is not None:
+            serialized = SerializationHelper.serialize_item(self.reliability, "NvBlockNeedsReliabilityEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RELIABILITY-RELIABILITY-ENUM")
+                wrapped = ET.Element("RELIABILITY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -254,12 +255,12 @@ class NvBlockNeeds(ServiceNeeds):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize resistant_to
-        if self.resistant_to is not None:
-            serialized = SerializationHelper.serialize_item(self.resistant_to, "Boolean")
+        # Serialize resistant_to_changed_sw
+        if self.resistant_to_changed_sw is not None:
+            serialized = SerializationHelper.serialize_item(self.resistant_to_changed_sw, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RESISTANT-TO")
+                wrapped = ET.Element("RESISTANT-TO-CHANGED-SW")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -282,12 +283,12 @@ class NvBlockNeeds(ServiceNeeds):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize select_block_for
-        if self.select_block_for is not None:
-            serialized = SerializationHelper.serialize_item(self.select_block_for, "Boolean")
+        # Serialize select_block_for_first_init_all
+        if self.select_block_for_first_init_all is not None:
+            serialized = SerializationHelper.serialize_item(self.select_block_for_first_init_all, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SELECT-BLOCK-FOR")
+                wrapped = ET.Element("SELECT-BLOCK-FOR-FIRST-INIT-ALL")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -296,12 +297,12 @@ class NvBlockNeeds(ServiceNeeds):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize store_at
-        if self.store_at is not None:
-            serialized = SerializationHelper.serialize_item(self.store_at, "Boolean")
+        # Serialize store_at_shutdown
+        if self.store_at_shutdown is not None:
+            serialized = SerializationHelper.serialize_item(self.store_at_shutdown, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("STORE-AT")
+                wrapped = ET.Element("STORE-AT-SHUTDOWN")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -324,12 +325,12 @@ class NvBlockNeeds(ServiceNeeds):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize store
-        if self.store is not None:
-            serialized = SerializationHelper.serialize_item(self.store, "Boolean")
+        # Serialize store_emergency
+        if self.store_emergency is not None:
+            serialized = SerializationHelper.serialize_item(self.store_emergency, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("STORE")
+                wrapped = ET.Element("STORE-EMERGENCY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -366,12 +367,12 @@ class NvBlockNeeds(ServiceNeeds):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize use_auto
-        if self.use_auto is not None:
-            serialized = SerializationHelper.serialize_item(self.use_auto, "Boolean")
+        # Serialize use_auto_validation_at_shut_down
+        if self.use_auto_validation_at_shut_down is not None:
+            serialized = SerializationHelper.serialize_item(self.use_auto_validation_at_shut_down, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("USE-AUTO")
+                wrapped = ET.Element("USE-AUTO-VALIDATION-AT-SHUT-DOWN")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -380,12 +381,12 @@ class NvBlockNeeds(ServiceNeeds):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize use_crc_comp
-        if self.use_crc_comp is not None:
-            serialized = SerializationHelper.serialize_item(self.use_crc_comp, "Boolean")
+        # Serialize use_crc_comp_mechanism
+        if self.use_crc_comp_mechanism is not None:
+            serialized = SerializationHelper.serialize_item(self.use_crc_comp_mechanism, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("USE-CRC-COMP")
+                wrapped = ET.Element("USE-CRC-COMP-MECHANISM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -422,12 +423,12 @@ class NvBlockNeeds(ServiceNeeds):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize writing
-        if self.writing is not None:
-            serialized = SerializationHelper.serialize_item(self.writing, "PositiveInteger")
+        # Serialize writing_frequency
+        if self.writing_frequency is not None:
+            serialized = SerializationHelper.serialize_item(self.writing_frequency, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("WRITING")
+                wrapped = ET.Element("WRITING-FREQUENCY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -469,12 +470,12 @@ class NvBlockNeeds(ServiceNeeds):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CALC-RAM-BLOCK":
-                setattr(obj, "calc_ram_block", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            if tag == "CALC-RAM-BLOCK-CRC":
+                setattr(obj, "calc_ram_block_crc", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "CHECK-STATIC-BLOCK-ID":
                 setattr(obj, "check_static_block_id", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "CYCLIC-WRITING":
-                setattr(obj, "cyclic_writing", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "CYCLIC-WRITING-PERIOD":
+                setattr(obj, "cyclic_writing_period", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "N-DATA-SETS":
                 setattr(obj, "n_data_sets", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "N-ROM-BLOCKS":
@@ -483,34 +484,34 @@ class NvBlockNeeds(ServiceNeeds):
                 setattr(obj, "ram_block_status_control", RamBlockStatusControlEnum.deserialize(child))
             elif tag == "READONLY":
                 setattr(obj, "readonly", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "RELIABILITY-RELIABILITY-ENUM":
-                setattr(obj, "reliability_reliability_enum", SerializationHelper.deserialize_by_tag(child, "NvBlockNeeds"))
-            elif tag == "RESISTANT-TO":
-                setattr(obj, "resistant_to", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RELIABILITY":
+                setattr(obj, "reliability", NvBlockNeedsReliabilityEnum.deserialize(child))
+            elif tag == "RESISTANT-TO-CHANGED-SW":
+                setattr(obj, "resistant_to_changed_sw", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "RESTORE-AT-START":
                 setattr(obj, "restore_at_start", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "SELECT-BLOCK-FOR":
-                setattr(obj, "select_block_for", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "STORE-AT":
-                setattr(obj, "store_at", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SELECT-BLOCK-FOR-FIRST-INIT-ALL":
+                setattr(obj, "select_block_for_first_init_all", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "STORE-AT-SHUTDOWN":
+                setattr(obj, "store_at_shutdown", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "STORE-CYCLIC":
                 setattr(obj, "store_cyclic", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "STORE":
-                setattr(obj, "store", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "STORE-EMERGENCY":
+                setattr(obj, "store_emergency", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "STORE-IMMEDIATE":
                 setattr(obj, "store_immediate", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "STORE-ON-CHANGE":
                 setattr(obj, "store_on_change", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "USE-AUTO":
-                setattr(obj, "use_auto", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "USE-CRC-COMP":
-                setattr(obj, "use_crc_comp", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "USE-AUTO-VALIDATION-AT-SHUT-DOWN":
+                setattr(obj, "use_auto_validation_at_shut_down", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "USE-CRC-COMP-MECHANISM":
+                setattr(obj, "use_crc_comp_mechanism", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "WRITE-ONLY-ONCE":
                 setattr(obj, "write_only_once", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "WRITE-VERIFICATION":
                 setattr(obj, "write_verification", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "WRITING":
-                setattr(obj, "writing", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "WRITING-FREQUENCY":
+                setattr(obj, "writing_frequency", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "WRITING-PRIORITY":
                 setattr(obj, "writing_priority", NvBlockNeedsWritingPriorityEnum.deserialize(child))
 
@@ -527,8 +528,8 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         self._obj: NvBlockNeeds = NvBlockNeeds()
 
 
-    def with_calc_ram_block(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
-        """Set calc_ram_block attribute.
+    def with_calc_ram_block_crc(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
+        """Set calc_ram_block_crc attribute.
 
         Args:
             value: Value to set
@@ -538,7 +539,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.calc_ram_block = value
+        self._obj.calc_ram_block_crc = value
         return self
 
     def with_check_static_block_id(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
@@ -555,8 +556,8 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         self._obj.check_static_block_id = value
         return self
 
-    def with_cyclic_writing(self, value: Optional[TimeValue]) -> "NvBlockNeedsBuilder":
-        """Set cyclic_writing attribute.
+    def with_cyclic_writing_period(self, value: Optional[TimeValue]) -> "NvBlockNeedsBuilder":
+        """Set cyclic_writing_period attribute.
 
         Args:
             value: Value to set
@@ -566,7 +567,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.cyclic_writing = value
+        self._obj.cyclic_writing_period = value
         return self
 
     def with_n_data_sets(self, value: Optional[PositiveInteger]) -> "NvBlockNeedsBuilder":
@@ -625,8 +626,8 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         self._obj.readonly = value
         return self
 
-    def with_reliability_reliability_enum(self, value: Optional[NvBlockNeeds]) -> "NvBlockNeedsBuilder":
-        """Set reliability_reliability_enum attribute.
+    def with_reliability(self, value: Optional[NvBlockNeedsReliabilityEnum]) -> "NvBlockNeedsBuilder":
+        """Set reliability attribute.
 
         Args:
             value: Value to set
@@ -636,11 +637,11 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.reliability_reliability_enum = value
+        self._obj.reliability = value
         return self
 
-    def with_resistant_to(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
-        """Set resistant_to attribute.
+    def with_resistant_to_changed_sw(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
+        """Set resistant_to_changed_sw attribute.
 
         Args:
             value: Value to set
@@ -650,7 +651,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.resistant_to = value
+        self._obj.resistant_to_changed_sw = value
         return self
 
     def with_restore_at_start(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
@@ -667,8 +668,8 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         self._obj.restore_at_start = value
         return self
 
-    def with_select_block_for(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
-        """Set select_block_for attribute.
+    def with_select_block_for_first_init_all(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
+        """Set select_block_for_first_init_all attribute.
 
         Args:
             value: Value to set
@@ -678,11 +679,11 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.select_block_for = value
+        self._obj.select_block_for_first_init_all = value
         return self
 
-    def with_store_at(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
-        """Set store_at attribute.
+    def with_store_at_shutdown(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
+        """Set store_at_shutdown attribute.
 
         Args:
             value: Value to set
@@ -692,7 +693,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.store_at = value
+        self._obj.store_at_shutdown = value
         return self
 
     def with_store_cyclic(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
@@ -709,8 +710,8 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         self._obj.store_cyclic = value
         return self
 
-    def with_store(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
-        """Set store attribute.
+    def with_store_emergency(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
+        """Set store_emergency attribute.
 
         Args:
             value: Value to set
@@ -720,7 +721,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.store = value
+        self._obj.store_emergency = value
         return self
 
     def with_store_immediate(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
@@ -751,8 +752,8 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         self._obj.store_on_change = value
         return self
 
-    def with_use_auto(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
-        """Set use_auto attribute.
+    def with_use_auto_validation_at_shut_down(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
+        """Set use_auto_validation_at_shut_down attribute.
 
         Args:
             value: Value to set
@@ -762,11 +763,11 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.use_auto = value
+        self._obj.use_auto_validation_at_shut_down = value
         return self
 
-    def with_use_crc_comp(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
-        """Set use_crc_comp attribute.
+    def with_use_crc_comp_mechanism(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
+        """Set use_crc_comp_mechanism attribute.
 
         Args:
             value: Value to set
@@ -776,7 +777,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.use_crc_comp = value
+        self._obj.use_crc_comp_mechanism = value
         return self
 
     def with_write_only_once(self, value: Optional[Boolean]) -> "NvBlockNeedsBuilder":
@@ -807,8 +808,8 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         self._obj.write_verification = value
         return self
 
-    def with_writing(self, value: Optional[PositiveInteger]) -> "NvBlockNeedsBuilder":
-        """Set writing attribute.
+    def with_writing_frequency(self, value: Optional[PositiveInteger]) -> "NvBlockNeedsBuilder":
+        """Set writing_frequency attribute.
 
         Args:
             value: Value to set
@@ -818,7 +819,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.writing = value
+        self._obj.writing_frequency = value
         return self
 
     def with_writing_priority(self, value: Optional[NvBlockNeedsWritingPriorityEnum]) -> "NvBlockNeedsBuilder":

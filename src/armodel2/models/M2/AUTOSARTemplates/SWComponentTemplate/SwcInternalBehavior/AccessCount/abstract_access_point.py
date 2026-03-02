@@ -15,9 +15,6 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount import (
-    RteApiReturnValueProvisionEnum,
-)
 from abc import ABC, abstractmethod
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -35,16 +32,9 @@ class AbstractAccessPoint(Identifiable, ABC):
         """
         return True
 
-    return_value: Optional[RteApiReturnValueProvisionEnum]
-    _DESERIALIZE_DISPATCH = {
-        "RETURN-VALUE": lambda obj, elem: setattr(obj, "return_value", RteApiReturnValueProvisionEnum.deserialize(elem)),
-    }
-
-
     def __init__(self) -> None:
         """Initialize AbstractAccessPoint."""
         super().__init__()
-        self.return_value: Optional[RteApiReturnValueProvisionEnum] = None
 
     def serialize(self) -> ET.Element:
         """Serialize AbstractAccessPoint to XML element.
@@ -69,20 +59,6 @@ class AbstractAccessPoint(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize return_value
-        if self.return_value is not None:
-            serialized = SerializationHelper.serialize_item(self.return_value, "RteApiReturnValueProvisionEnum")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RETURN-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
         return elem
 
     @classmethod
@@ -95,17 +71,8 @@ class AbstractAccessPoint(Identifiable, ABC):
         Returns:
             Deserialized AbstractAccessPoint object
         """
-        # First, call parent's deserialize to handle inherited attributes
-        obj = super(AbstractAccessPoint, cls).deserialize(element)
-
-        # Single-pass deserialization with if-elif-else chain
-        ns_split = '}'
-        for child in element:
-            tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "RETURN-VALUE":
-                setattr(obj, "return_value", RteApiReturnValueProvisionEnum.deserialize(child))
-
-        return obj
+        # Delegate to parent class to handle inherited attributes
+        return super(AbstractAccessPoint, cls).deserialize(element)
 
 
 
@@ -117,20 +84,6 @@ class AbstractAccessPointBuilder(IdentifiableBuilder):
         super().__init__()
         self._obj: AbstractAccessPoint = AbstractAccessPoint()
 
-
-    def with_return_value(self, value: Optional[RteApiReturnValueProvisionEnum]) -> "AbstractAccessPointBuilder":
-        """Set return_value attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.return_value = value
-        return self
 
 
 
