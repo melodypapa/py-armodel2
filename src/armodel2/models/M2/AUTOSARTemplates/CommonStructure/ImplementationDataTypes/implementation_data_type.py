@@ -26,16 +26,19 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
     NameToken,
     String,
 )
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.implementation_data_type_element import (
-    ImplementationDataTypeElement,
-)
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.symbol_props import (
     SymbolProps,
 )
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.implementation_data_type_element import (
+        ImplementationDataTypeElement,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class ImplementationDataType(AbstractImplementationDataType):
     """AUTOSAR ImplementationDataType."""
 

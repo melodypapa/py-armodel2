@@ -692,7 +692,7 @@
     },
     {
       "name": "ValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": true,
       "atp_type": null,

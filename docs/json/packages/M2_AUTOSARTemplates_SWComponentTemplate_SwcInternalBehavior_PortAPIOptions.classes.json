@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "PortDefinedArgumentValue",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::PortAPIOptions",
       "is_abstract": false,
       "atp_type": null,
@@ -45,20 +45,21 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "polymorphic:VALUE=ValueSpecification",
           "note": "Specifies the actual value."
         },
         "valueType": {
-          "type": "any (ImplementationData)",
+          "type": "ImplementationDataType",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "tref",
+          "is_ref": true,
           "note": "be composite type or a pointer."
         }
       }
     },
     {
       "name": "PortAPIOption",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::PortAPIOptions",
       "is_abstract": false,
       "atp_type": null,
@@ -110,19 +111,19 @@
           "is_ref": false,
           "note": "If set to true this attribute specifies an \"indirect API\" to be the associated port which means that the able to access the actions on a a pointer to an object representing a port. This iterating over ports in a loop. This option has for PPortPrototypes of client/server interfaces."
         },
-        "port": {
-          "type": "PortPrototype",
-          "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
-          "note": "The option is valid for generated functions related to this port"
-        },
         "portArgValue": {
           "type": "PortDefinedArgumentValue",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "An argument value defined by this port."
+        },
+        "port": {
+          "type": "PortPrototype",
+          "multiplicity": "0..1",
+          "kind": "ref",
+          "is_ref": true,
+          "note": "The option is valid for generated functions related to this port"
         },
         "supportedFeature": {
           "type": "SwcSupportedFeature",

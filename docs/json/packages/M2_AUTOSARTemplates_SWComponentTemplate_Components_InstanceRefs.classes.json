@@ -57,7 +57,7 @@
     },
     {
       "name": "RVariableInAtomicSwcInstanceRef",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
