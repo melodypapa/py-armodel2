@@ -16,13 +16,14 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import AbstractAccessPointBuilder
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
 
 if TYPE_CHECKING:
-    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
-        ClientServerOperation,
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.r_operation_in_atomic_swc_instance_ref import (
+        ROperationInAtomicSwcInstanceRef,
     )
 
 
@@ -44,10 +45,10 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
         """
         return True
 
-    operation_instance_ref: Optional[ClientServerOperation]
+    operation_iref: Optional[ROperationInAtomicSwcInstanceRef]
     timeout: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "OPERATION-INSTANCE-REF": lambda obj, elem: setattr(obj, "operation_instance_ref", SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
+        "OPERATION-IREF": lambda obj, elem: setattr(obj, "operation_iref", SerializationHelper.deserialize_by_tag(elem, "ROperationInAtomicSwcInstanceRef")),
         "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
@@ -55,7 +56,7 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
     def __init__(self) -> None:
         """Initialize ServerCallPoint."""
         super().__init__()
-        self.operation_instance_ref: Optional[ClientServerOperation] = None
+        self.operation_iref: Optional[ROperationInAtomicSwcInstanceRef] = None
         self.timeout: Optional[TimeValue] = None
 
     def serialize(self) -> ET.Element:
@@ -81,19 +82,16 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize operation_instance_ref
-        if self.operation_instance_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.operation_instance_ref, "ClientServerOperation")
+        # Serialize operation_iref (instance reference with wrapper "OPERATION-IREF")
+        if self.operation_iref is not None:
+            serialized = SerializationHelper.serialize_item(self.operation_iref, "ROperationInAtomicSwcInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OPERATION-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("OPERATION-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         # Serialize timeout
         if self.timeout is not None:
@@ -128,8 +126,8 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "OPERATION-INSTANCE-REF":
-                setattr(obj, "operation_instance_ref", SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
+            if tag == "OPERATION-IREF":
+                setattr(obj, "operation_iref", SerializationHelper.deserialize_by_tag(child, "ROperationInAtomicSwcInstanceRef"))
             elif tag == "TIMEOUT":
                 setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
@@ -146,8 +144,8 @@ class ServerCallPointBuilder(AbstractAccessPointBuilder):
         self._obj: ServerCallPoint = ServerCallPoint()
 
 
-    def with_operation_instance_ref(self, value: Optional[ClientServerOperation]) -> "ServerCallPointBuilder":
-        """Set operation_instance_ref attribute.
+    def with_operation(self, value: Optional[ROperationInAtomicSwcInstanceRef]) -> "ServerCallPointBuilder":
+        """Set operation attribute.
 
         Args:
             value: Value to set
@@ -157,7 +155,7 @@ class ServerCallPointBuilder(AbstractAccessPointBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.operation_instance_ref = value
+        self._obj.operation = value
         return self
 
     def with_timeout(self, value: Optional[TimeValue]) -> "ServerCallPointBuilder":

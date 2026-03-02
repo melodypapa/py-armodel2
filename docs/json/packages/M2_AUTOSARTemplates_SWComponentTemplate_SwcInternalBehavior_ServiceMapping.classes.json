@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "RoleBasedDataTypeAssignment",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServiceMapping",
       "is_abstract": false,
       "atp_type": null,
@@ -41,12 +41,26 @@
           "is_ref": false,
           "note": "This is the role of the associated data type in the given"
         },
-        "used": {
-          "type": "any (ImplementationData)",
+        "usedDataElement": {
+          "type": "AutosarVariableRef",
+          "multiplicity": "0..1",
+          "kind": "aggr",
+          "is_ref": false,
+          "note": "This represents the associated ImplementationDataType."
+        },
+        "usedParameterElement": {
+          "type": "AutosarParameterRef ",
+          "multiplicity": "0..1",
+          "kind": "aggr",
+          "is_ref": false,
+          "note": "This represents the associated ImplementationDataType."
+        },
+        "usedPim": {
+          "type": "PerInstanceMemory",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
-          "note": "This represents the associated ImplementationDataType."
+          "note": "This represents the associated PerInstanceMemory."
         }
       }
     },

@@ -98,7 +98,7 @@ class SwcInternalBehavior(InternalBehavior):
     runnables: list[RunnableEntity]
     service_dependencies: list[SwcServiceDependency]
     shared_parameters: list[ParameterDataPrototype]
-    support_multiple_instantiations: Optional[Boolean]
+    support_multiple_instantiation: Optional[Boolean]
     variation_point_proxies: list[VariationPointProxy]
     _DESERIALIZE_DISPATCH = {
         "AR-TYPED-PER-INSTANCE-MEMORYS": lambda obj, elem: obj.ar_typed_per_instance_memories.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
@@ -116,7 +116,7 @@ class SwcInternalBehavior(InternalBehavior):
         "RUNNABLES": lambda obj, elem: obj.runnables.append(SerializationHelper.deserialize_by_tag(elem, "RunnableEntity")),
         "SERVICE-DEPENDENCYS": lambda obj, elem: obj.service_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "SwcServiceDependency")),
         "SHARED-PARAMETERS": lambda obj, elem: obj.shared_parameters.append(SerializationHelper.deserialize_by_tag(elem, "ParameterDataPrototype")),
-        "SUPPORT-MULTIPLE-INSTANTIATIONS": lambda obj, elem: setattr(obj, "support_multiple_instantiations", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SUPPORT-MULTIPLE-INSTANTIATION": lambda obj, elem: setattr(obj, "support_multiple_instantiation", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "VARIATION-POINT-PROXYS": lambda obj, elem: obj.variation_point_proxies.append(SerializationHelper.deserialize_by_tag(elem, "VariationPointProxy")),
     }
 
@@ -139,7 +139,7 @@ class SwcInternalBehavior(InternalBehavior):
         self.runnables: list[RunnableEntity] = []
         self.service_dependencies: list[SwcServiceDependency] = []
         self.shared_parameters: list[ParameterDataPrototype] = []
-        self.support_multiple_instantiations: Optional[Boolean] = None
+        self.support_multiple_instantiation: Optional[Boolean] = None
         self.variation_point_proxies: list[VariationPointProxy] = []
 
     def serialize(self) -> ET.Element:
@@ -319,12 +319,12 @@ class SwcInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize support_multiple_instantiations
-        if self.support_multiple_instantiations is not None:
-            serialized = SerializationHelper.serialize_item(self.support_multiple_instantiations, "Boolean")
+        # Serialize support_multiple_instantiation
+        if self.support_multiple_instantiation is not None:
+            serialized = SerializationHelper.serialize_item(self.support_multiple_instantiation, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SUPPORT-MULTIPLE-INSTANTIATIONS")
+                wrapped = ET.Element("SUPPORT-MULTIPLE-INSTANTIATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -452,8 +452,8 @@ class SwcInternalBehavior(InternalBehavior):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.shared_parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterDataPrototype"))
-            elif tag == "SUPPORT-MULTIPLE-INSTANTIATIONS":
-                setattr(obj, "support_multiple_instantiations", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SUPPORT-MULTIPLE-INSTANTIATION":
+                setattr(obj, "support_multiple_instantiation", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "VARIATION-POINT-PROXYS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -654,8 +654,8 @@ class SwcInternalBehaviorBuilder(InternalBehaviorBuilder):
         self._obj.shared_parameters = list(items) if items else []
         return self
 
-    def with_support_multiple_instantiations(self, value: Optional[Boolean]) -> "SwcInternalBehaviorBuilder":
-        """Set support_multiple_instantiations attribute.
+    def with_support_multiple_instantiation(self, value: Optional[Boolean]) -> "SwcInternalBehaviorBuilder":
+        """Set support_multiple_instantiation attribute.
 
         Args:
             value: Value to set
@@ -665,7 +665,7 @@ class SwcInternalBehaviorBuilder(InternalBehaviorBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.support_multiple_instantiations = value
+        self._obj.support_multiple_instantiation = value
         return self
 
     def with_variation_point_proxies(self, items: list[VariationPointProxy]) -> "SwcInternalBehaviorBuilder":

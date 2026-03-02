@@ -54,7 +54,7 @@
     },
     {
       "name": "ServerCallPoint",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServerCall",
       "is_abstract": true,
       "atp_type": null,
@@ -106,11 +106,11 @@
         }
       ],
       "attributes": {
-        "operationInstanceRef": {
-          "type": "ClientServerOperation",
+        "operation": {
+          "type": "ROperationInAtomicSwcInstanceRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "iref",
+          "is_ref": true,
           "note": "by: ROperationInAtomicSwc"
         },
         "timeout": {
@@ -124,7 +124,7 @@
     },
     {
       "name": "SynchronousServerCallPoint",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServerCall",
       "is_abstract": false,
       "atp_type": null,
@@ -165,7 +165,7 @@
         }
       ],
       "attributes": {
-        "calledFrom": {
+        "calledFromWithinExclusiveArea": {
           "type": "ExclusiveAreaNestingOrder",
           "multiplicity": "0..1",
           "kind": "ref",
@@ -176,7 +176,7 @@
     },
     {
       "name": "AsynchronousServerCallPoint",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServerCall",
       "is_abstract": false,
       "atp_type": null,

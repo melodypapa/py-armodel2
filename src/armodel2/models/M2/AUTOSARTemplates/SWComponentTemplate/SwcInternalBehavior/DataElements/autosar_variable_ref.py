@@ -89,8 +89,9 @@ class AutosarVariableRef(ARObject):
             if serialized is not None:
                 # Wrap in IREF wrapper element
                 iref_wrapper = ET.Element("AUTOSAR-VARIABLE-IREF")
-                # Append the serialized element as a child (don't flatten it)
-                iref_wrapper.append(serialized)
+                # Flatten: append children of serialized element directly to iref wrapper
+                for child in serialized:
+                    iref_wrapper.append(child)
                 elem.append(iref_wrapper)
 
         # Serialize autosar_variable_in_impl_datatype

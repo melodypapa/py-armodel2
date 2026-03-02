@@ -10,22 +10,30 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
+)
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     ServiceDiagnosticRelevanceEnum,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServiceMapping.role_based_data_type_assignment import (
-    RoleBasedDataTypeAssignment,
-)
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.symbolic_name_props import (
     SymbolicNameProps,
 )
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServiceMapping.role_based_data_type_assignment import (
+        RoleBasedDataTypeAssignment,
+    )
+
+
+
 from abc import ABC, abstractmethod
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
 
-class ServiceDependency(ARObject, ABC):
+class ServiceDependency(Identifiable, ABC):
     """AUTOSAR ServiceDependency."""
 
     @property

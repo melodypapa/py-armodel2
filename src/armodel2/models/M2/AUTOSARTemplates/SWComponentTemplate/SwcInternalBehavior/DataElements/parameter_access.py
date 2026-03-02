@@ -15,7 +15,6 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import AbstractAccessPointBuilder
-from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
@@ -44,19 +43,19 @@ class ParameterAccess(AbstractAccessPoint):
     _XML_TAG = "PARAMETER-ACCESS"
 
 
-    accessed_parameter_ref: Optional[ARRef]
-    sw_data_def: Optional[SwDataDefProps]
+    accessed_parameter: Optional[AutosarParameterRef]
+    sw_data_def_props: Optional[SwDataDefProps]
     _DESERIALIZE_DISPATCH = {
-        "ACCESSED-PARAMETER-REF": lambda obj, elem: setattr(obj, "accessed_parameter_ref", ARRef.deserialize(elem)),
-        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "ACCESSED-PARAMETER": lambda obj, elem: setattr(obj, "accessed_parameter", SerializationHelper.deserialize_by_tag(elem, "AutosarParameterRef")),
+        "SW-DATA-DEF-PROPS": lambda obj, elem: setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
     }
 
 
     def __init__(self) -> None:
         """Initialize ParameterAccess."""
         super().__init__()
-        self.accessed_parameter_ref: Optional[ARRef] = None
-        self.sw_data_def: Optional[SwDataDefProps] = None
+        self.accessed_parameter: Optional[AutosarParameterRef] = None
+        self.sw_data_def_props: Optional[SwDataDefProps] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ParameterAccess to XML element.
@@ -81,12 +80,12 @@ class ParameterAccess(AbstractAccessPoint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize accessed_parameter_ref
-        if self.accessed_parameter_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.accessed_parameter_ref, "AutosarParameterRef")
+        # Serialize accessed_parameter
+        if self.accessed_parameter is not None:
+            serialized = SerializationHelper.serialize_item(self.accessed_parameter, "AutosarParameterRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ACCESSED-PARAMETER-REF")
+                wrapped = ET.Element("ACCESSED-PARAMETER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -95,12 +94,12 @@ class ParameterAccess(AbstractAccessPoint):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_data_def
-        if self.sw_data_def is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
+        # Serialize sw_data_def_props
+        if self.sw_data_def_props is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_data_def_props, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-DATA-DEF")
+                wrapped = ET.Element("SW-DATA-DEF-PROPS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -128,10 +127,10 @@ class ParameterAccess(AbstractAccessPoint):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ACCESSED-PARAMETER-REF":
-                setattr(obj, "accessed_parameter_ref", ARRef.deserialize(child))
-            elif tag == "SW-DATA-DEF":
-                setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            if tag == "ACCESSED-PARAMETER":
+                setattr(obj, "accessed_parameter", SerializationHelper.deserialize_by_tag(child, "AutosarParameterRef"))
+            elif tag == "SW-DATA-DEF-PROPS":
+                setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
         return obj
 
@@ -160,8 +159,8 @@ class ParameterAccessBuilder(AbstractAccessPointBuilder):
         self._obj.accessed_parameter = value
         return self
 
-    def with_sw_data_def(self, value: Optional[SwDataDefProps]) -> "ParameterAccessBuilder":
-        """Set sw_data_def attribute.
+    def with_sw_data_def_props(self, value: Optional[SwDataDefProps]) -> "ParameterAccessBuilder":
+        """Set sw_data_def_props attribute.
 
         Args:
             value: Value to set
@@ -171,7 +170,7 @@ class ParameterAccessBuilder(AbstractAccessPointBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_data_def = value
+        self._obj.sw_data_def_props = value
         return self
 
 

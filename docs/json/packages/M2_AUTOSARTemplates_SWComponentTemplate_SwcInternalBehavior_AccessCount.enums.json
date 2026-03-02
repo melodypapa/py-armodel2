@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "RteApiReturnValueProvisionEnum",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::AccessCount",
       "note": "This meta-class provides values to control how return values from RTE APIs are provided. Aggregated by AbstractAccessPoint.returnValueProvision",
       "sources": [

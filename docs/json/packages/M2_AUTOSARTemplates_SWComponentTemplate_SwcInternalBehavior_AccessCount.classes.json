@@ -89,7 +89,7 @@
     },
     {
       "name": "AbstractAccessPoint",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::AccessCount",
       "is_abstract": true,
       "atp_type": null,
@@ -142,7 +142,7 @@
           "standard_release": "R23-11"
         }
       ],
-      "attributes": {
+      "attributesProvision": {
         "returnValue": {
           "type": "RteApiReturnValueProvisionEnum",
           "multiplicity": "0..1",

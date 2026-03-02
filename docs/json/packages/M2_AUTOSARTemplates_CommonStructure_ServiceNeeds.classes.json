@@ -7,7 +7,7 @@
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "is_abstract": true,
       "atp_type": null,
-      "parent": "ARObject",
+      "parent": "Identifiable",
       "bases": [
         "ARObject"
       ],
@@ -128,7 +128,7 @@
     },
     {
       "name": "ServiceNeeds",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "is_abstract": true,
       "atp_type": null,
@@ -244,7 +244,7 @@
     },
     {
       "name": "NvBlockNeeds",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::ServiceNeeds",
       "is_abstract": false,
       "atp_type": null,
@@ -281,7 +281,7 @@
         }
       ],
       "attributes": {
-        "calcRamBlock": {
+        "calcRamBlockCrc": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -295,7 +295,7 @@
           "is_ref": false,
           "note": "Defines if the Static Block Id check shall be enabled."
         },
-        "cyclicWriting": {
+        "cyclicWritingPeriod": {
           "type": "TimeValue",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -330,14 +330,14 @@
           "is_ref": false,
           "note": "true: data of this NVRAM Block are write protected for"
         },
-        "reliabilityReliabilityEnum": {
-          "type": "NvBlockNeeds",
+        "reliability": {
+          "type": "NvBlockNeedsReliabilityEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Reliability against data loss on the non-volatile medium."
         },
-        "resistantTo": {
+        "resistantToChangedSw": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -351,14 +351,14 @@
           "is_ref": false,
           "note": "Defines whether the associated RAM Block shall be"
         },
-        "selectBlockFor": {
+        "selectBlockForFirstInitAll": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "If this attribute is set to true the NvM shall process this"
         },
-        "storeAt": {
+        "storeAtShutdown": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -372,7 +372,7 @@
           "is_ref": false,
           "note": "Defines whether or not the associated RAM Block shall"
         },
-        "store": {
+        "storeEmergency": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -393,14 +393,14 @@
           "is_ref": false,
           "note": "This attribute defines whether the associated RAM Block"
         },
-        "useAuto": {
+        "useAutoValidationAtShutDown": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "If set to true the RAM Block shall be auto validated during"
         },
-        "useCRCComp": {
+        "useCRCCompMechanism": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -421,7 +421,7 @@
           "is_ref": false,
           "note": "Defines if Write Verification shall be enabled for this"
         },
-        "writing": {
+        "writingFrequency": {
           "type": "PositiveInteger",
           "multiplicity": "0..1",
           "kind": "attribute",

@@ -15,16 +15,19 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.Instance
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.operation_in_atomic_swc_instance_ref import OperationInAtomicSwcInstanceRefBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
-    AbstractRequiredPortPrototype,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
-    ClientServerOperation,
-)
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
+        AbstractRequiredPortPrototype,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
+        ClientServerOperation,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class ROperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
     """AUTOSAR ROperationInAtomicSwcInstanceRef."""
 

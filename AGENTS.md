@@ -503,7 +503,7 @@ concrete_cls = factory.resolve_polymorphic_type(
 **YAML Mappings File:** `src/armodel2/cfg/model_mappings.yaml`
 
 The YAML file is generated from JSON mapping data and contains:
-- XML tag to class name mappings (1623+ classes)
+- XML tag to class name mappings (1,623+ classes)
 - Polymorphic type mappings (233 base classes with concrete implementations)
 - Class name to import path mappings
 
@@ -1113,6 +1113,7 @@ class CustomClass(ParentClass):
 
 ### Examples
 - **New API Example**: `examples/new_api_example.py`
+- **Builder Classes Example**: `examples/builder_classes_example.py`
 
 ## Dependencies
 
@@ -1222,3 +1223,15 @@ These tests ensure:
 - Easier to maintain and update manually maintained classes
 - Explicit TYPE_CHECKING import configuration for circular imports
 - Located at `tools/skip_classes.yaml`
+
+### Builder Pattern Enhancements
+- All generated classes now include builders with fluent API
+- Supports method chaining, inherited attributes, type coercion, and list methods
+- Configurable validation modes (STRICT, LENIENT, DISABLED)
+- Abstract classes do not have builders generated
+
+### Polymorphic Type Resolution
+- ModelFactory supports polymorphic type resolution
+- Uses YAML mappings (`model_mappings.yaml`) for type resolution
+- Supports dynamic type determination based on abstract base classes
+- Cached class imports for performance

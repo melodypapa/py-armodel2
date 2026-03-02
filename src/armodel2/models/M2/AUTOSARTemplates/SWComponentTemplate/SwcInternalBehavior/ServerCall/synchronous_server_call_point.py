@@ -38,16 +38,16 @@ class SynchronousServerCallPoint(ServerCallPoint):
     _XML_TAG = "SYNCHRONOUS-SERVER-CALL-POINT"
 
 
-    called_from_ref: Optional[ARRef]
+    called_from_within_exclusive_area_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CALLED-FROM-REF": lambda obj, elem: setattr(obj, "called_from_ref", ARRef.deserialize(elem)),
+        "CALLED-FROM-WITHIN-EXCLUSIVE-AREA-REF": lambda obj, elem: setattr(obj, "called_from_within_exclusive_area_ref", ARRef.deserialize(elem)),
     }
 
 
     def __init__(self) -> None:
         """Initialize SynchronousServerCallPoint."""
         super().__init__()
-        self.called_from_ref: Optional[ARRef] = None
+        self.called_from_within_exclusive_area_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SynchronousServerCallPoint to XML element.
@@ -72,12 +72,12 @@ class SynchronousServerCallPoint(ServerCallPoint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize called_from_ref
-        if self.called_from_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.called_from_ref, "ExclusiveAreaNestingOrder")
+        # Serialize called_from_within_exclusive_area_ref
+        if self.called_from_within_exclusive_area_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.called_from_within_exclusive_area_ref, "ExclusiveAreaNestingOrder")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CALLED-FROM-REF")
+                wrapped = ET.Element("CALLED-FROM-WITHIN-EXCLUSIVE-AREA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -105,8 +105,8 @@ class SynchronousServerCallPoint(ServerCallPoint):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CALLED-FROM-REF":
-                setattr(obj, "called_from_ref", ARRef.deserialize(child))
+            if tag == "CALLED-FROM-WITHIN-EXCLUSIVE-AREA-REF":
+                setattr(obj, "called_from_within_exclusive_area_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -121,8 +121,8 @@ class SynchronousServerCallPointBuilder(ServerCallPointBuilder):
         self._obj: SynchronousServerCallPoint = SynchronousServerCallPoint()
 
 
-    def with_called_from(self, value: Optional[ExclusiveAreaNestingOrder]) -> "SynchronousServerCallPointBuilder":
-        """Set called_from attribute.
+    def with_called_from_within_exclusive_area(self, value: Optional[ExclusiveAreaNestingOrder]) -> "SynchronousServerCallPointBuilder":
+        """Set called_from_within_exclusive_area attribute.
 
         Args:
             value: Value to set
@@ -132,7 +132,7 @@ class SynchronousServerCallPointBuilder(ServerCallPointBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.called_from = value
+        self._obj.called_from_within_exclusive_area = value
         return self
 
 

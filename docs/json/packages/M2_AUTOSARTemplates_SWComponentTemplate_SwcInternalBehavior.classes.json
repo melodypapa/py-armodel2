@@ -201,7 +201,7 @@
     },
     {
       "name": "SwcInternalBehavior",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -370,7 +370,7 @@
           "is_ref": false,
           "note": "Defines parameter(s) or characteristic value(s) shared between SwComponentPrototypes of the same Sw aggregation of sharedParameter is variability with the purpose to support variability software components implementations. Typically in the implementation are requiring of memory objects. atpVariation"
         },
-        "supportMultipleInstantiations": {
+        "supportMultipleInstantiation": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
