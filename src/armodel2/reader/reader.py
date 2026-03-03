@@ -71,8 +71,12 @@ class ARXMLReader:
         if autosar is None:
             autosar = AUTOSAR()
 
-        root = self._load_file(filepath)
+        root, encoding = self._load_file(filepath)
         self._populate_autosar(autosar, root)
+
+        # Store detected encoding in AUTOSAR object
+        if encoding is not None:
+            autosar._encoding = encoding
 
         if validate:
             self._validate_against_schema(root, autosar)
@@ -109,32 +113,65 @@ class ARXMLReader:
         AUTOSAR().clear()
         return self.load_arxml(filepath, validate=validate)
 
-    def _load_file(self, filepath: Union[str, Path]) -> ET.Element:
-        """Load ARXML file and return root element.
+    def _load_file(self, filepath: Union[str, Path]) -> tuple[ET.Element, Optional[str]]:
+        """Load ARXML file and return root element and detected encoding.
 
         Args:
             filepath: Path to ARXML file
 
         Returns:
-            Root XML element
+            Tuple of (root XML element, detected encoding string or None)
 
         Raises:
             FileNotFoundError: If file doesn't exist
             ET.ParseError: If XML is malformed
-            UnicodeDecodeError: If file is not valid UTF-8
+            UnicodeDecodeError: If file encoding is not supported
         """
         filepath = Path(filepath)
 
         if not filepath.exists():
             raise FileNotFoundError(f"ARXML file not found: {filepath}")
 
-        # Explicitly open with UTF-8 encoding to avoid system default encoding issues
-        # On Windows with non-UTF-8 locales (e.g., Chinese GBK), ET.parse(filepath)
-        # would use system default encoding instead of the XML declaration's encoding
-        with open(filepath, 'r', encoding='utf-8') as f:
-            tree = ET.parse(f)
+        # Detect encoding from XML declaration
+        encoding = self._detect_encoding(filepath)
 
-        return tree.getroot()
+        # Let Python's XML parser handle encoding detection automatically
+        # Python's ET.parse() detects encoding from BOM and XML declaration
+        tree = ET.parse(filepath)
+
+        return tree.getroot(), encoding
+
+    def _detect_encoding(self, filepath: Path) -> Optional[str]:
+        """Detect encoding from XML declaration.
+
+        Reads the first few lines of the file to find the XML declaration
+        and extract the encoding attribute.
+
+        Args:
+            filepath: Path to ARXML file
+
+        Returns:
+            Encoding string (e.g., "UTF-8", "ISO-8859-1") or None if not found
+        """
+        try:
+            # Read first 1KB to find XML declaration
+            with open(filepath, 'rb') as f:
+                header = f.read(1024)
+
+            # Decode as ASCII to search for encoding attribute
+            # XML declaration is always ASCII
+            header_str = header.decode('ascii', errors='ignore')
+
+            # Search for encoding="..." or encoding='...'
+            import re
+            match = re.search(r'encoding=["\']([^"\']+)["\']', header_str)
+            if match:
+                return match.group(1)
+
+            return None
+        except Exception:
+            # If detection fails, return None (will use default)
+            return None
 
     def _populate_autosar(self, autosar: AUTOSAR, root: ET.Element) -> AUTOSAR:
         """Populate AUTOSAR object from XML element.
@@ -213,5 +250,5 @@ class ARXMLReader:
         Returns:
             Schema version string or None if unknown
         """
-        root = self._load_file(filepath)
+        root, _ = self._load_file(filepath)
         return self._version_manager.detect_schema_version(root)
