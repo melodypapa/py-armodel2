@@ -29,7 +29,7 @@
     },
     {
       "name": "BswExecutionContext",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "note": "Specifies the execution context required or guaranteed for the call associated with this service. Aggregated by BswModuleEntry.executionContext",
       "sources": [
@@ -42,9 +42,19 @@
       ],
       "literals": [
         {
-          "name": "hookinterruptCat1interruptCat2",
+          "name": "hook",
+          "index": 0,
+          "description": "Context of an OS \"hook\" routine always<br>Tags: atp.EnumerationLiteralIndex=0"
+        },
+        {
+          "name": "interruptCat1",
+          "index": 1,
+          "description": "CAT1 interrupt context always <br>Tags: atp.EnumerationLiteralIndex=1"
+        },
+        {
+          "name": "interruptCat2",
           "index": 2,
-          "description": "Context of an OS \"hook\" routine always<br>Tags: atp.EnumerationLiteralIndex=2"
+          "description": "CAT2 interrupt context always <br>Tags: atp.EnumerationLiteralIndex=2"
         },
         {
           "name": "task",
@@ -60,7 +70,7 @@
     },
     {
       "name": "BswCallType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "note": "Denotes the mechanism by which the entry into the Bsw module shall be called. Aggregated by BswModuleEntry.callType",
       "sources": [
@@ -78,9 +88,14 @@
           "description": "Callback (i.e. the caller specifies the signature)<br>Tags: atp.EnumerationLiteralIndex=0"
         },
         {
-          "name": "calloutinterrupt",
+          "name": "callout",
+          "index": 4,
+          "description": "Callout - provide defined means to extend the functionality of an existing module. In this case caller specifies the signature.<br>Tags: atp.EnumerationLiteralIndex=4"
+        },
+        {
+          "name": "interrupt",
           "index": 1,
-          "description": "Callout - provide defined means to extend the functionality of an existing module. In this case caller specifies the signature.<br>Tags: atp.EnumerationLiteralIndex=1"
+          "description": "Interrupt routine. Tags: atp.EnumerationLiteralIndex=1"
         },
         {
           "name": "regular",

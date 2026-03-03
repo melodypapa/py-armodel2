@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "BswInternalBehavior",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -220,7 +220,7 @@
     },
     {
       "name": "BswModuleEntity",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": true,
       "atp_type": null,
@@ -270,7 +270,7 @@
       ],
       "attributes": {
         "accessedModeGroup": {
-          "type": "ModeDeclarationGroup",
+          "type": "ModeDeclarationGroupPrototype",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
@@ -286,21 +286,21 @@
         "callPoint": {
           "type": "BswModuleCallPoint",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "A call point used in the code of this entity. of this association is especially targeted at It is possible to have one variant calling AUTOSAR debug module and another one which atpVariation"
         },
         "dataReceivePoint": {
           "type": "BswVariableAccess",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "The data is received via the BSW Scheduler. atpSplitable; atpVariation"
         },
         "dataSendPoint": {
           "type": "BswVariableAccess",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "The data is sent via the BSW Scheduler. atpVariation"
         },
@@ -336,7 +336,7 @@
     },
     {
       "name": "BswCalledEntity",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -375,7 +375,7 @@
     },
     {
       "name": "BswSchedulableEntity",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,
@@ -414,7 +414,7 @@
     },
     {
       "name": "BswInterruptEntity",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": false,
       "atp_type": null,

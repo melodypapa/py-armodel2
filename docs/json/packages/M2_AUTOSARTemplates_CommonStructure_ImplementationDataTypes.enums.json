@@ -3,7 +3,7 @@
   "enumerations": [
     {
       "name": "ArraySizeSemanticsEnum",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::ImplementationDataTypes",
       "note": "This type controls how the information about the number of elements in an ApplicationArrayDataType is to be interpreted. Aggregated by ApplicationArrayElement.arraySizeSemantics, DiagnosticDataElement.arraySizeSemantics, ImplementationDataTypeElement.arraySizeSemantics, SwTextProps.arraySizeSemantics",
       "sources": [
@@ -35,7 +35,7 @@
     },
     {
       "name": "ArrayImplPolicyEnum",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::ImplementationDataTypes",
       "note": "This meta-class provides values to configure the implementation of the payload part of an array. Aggregated by ImplementationDataTypeElement.arrayImplPolicy",
       "sources": [

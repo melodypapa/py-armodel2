@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "BswModuleEntry",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "is_abstract": false,
       "atp_type": null,
@@ -64,21 +64,21 @@
         "argument": {
           "type": "SwServiceArg",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "An argument belonging to this BswModuleEntry."
         },
         "bswEntryKind": {
           "type": "BswEntryKindEnum",
           "multiplicity": "0..1",
-          "kind": "aggr",
+          "kind": "attribute",
           "is_ref": false,
           "note": "This describes whether the entry is concrete or abstract. attribute is missing the entry is considered as"
         },
         "callType": {
           "type": "BswCallType",
           "multiplicity": "0..1",
-          "kind": "aggr",
+          "kind": "attribute",
           "is_ref": false,
           "note": "The type of call associated with this service."
         },

@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "InternalBehavior",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::InternalBehavior",
       "is_abstract": true,
       "atp_type": null,
