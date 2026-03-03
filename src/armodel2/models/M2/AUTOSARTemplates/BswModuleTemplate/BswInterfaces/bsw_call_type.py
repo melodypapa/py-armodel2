@@ -27,6 +27,7 @@ class BswCallType(AREnum):
         self._value_ = value
 
     CALLBACK = "CALLBACK"
-    CALLOUTINTERRUPT = "CALLOUTINTERRUPT"
+    CALLOUT = "CALLOUT"
+    INTERRUPT = "INTERRUPT"
     REGULAR = "REGULAR"
     SCHEDULED = "SCHEDULED"

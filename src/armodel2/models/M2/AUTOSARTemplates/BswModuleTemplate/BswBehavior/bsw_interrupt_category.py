@@ -26,5 +26,5 @@ class BswInterruptCategory(AREnum):
         """
         self._value_ = value
 
-    CAT1 = "CAT1"
-    CAT2_INTERRUPT_ENTITY = "CAT2-INTERRUPT-ENTITY"
+    CAT1 = "CAT-1"
+    CAT2 = "CAT-2"

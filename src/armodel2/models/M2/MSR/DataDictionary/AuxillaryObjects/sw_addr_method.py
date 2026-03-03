@@ -43,14 +43,14 @@ class SwAddrMethod(ARElement):
     _XML_TAG = "SW-ADDR-METHOD"
 
 
-    memory: Optional[MemoryAllocationKeywordPolicyType]
+    memory_allocation_keyword_policy: Optional[MemoryAllocationKeywordPolicyType]
     options: list[Identifier]
-    section: Optional[SectionInitializationPolicyType]
+    section_initialization_policy: Optional[SectionInitializationPolicyType]
     section_type: Optional[MemorySectionType]
     _DESERIALIZE_DISPATCH = {
-        "MEMORY": lambda obj, elem: setattr(obj, "memory", MemoryAllocationKeywordPolicyType.deserialize(elem)),
+        "MEMORY-ALLOCATION-KEYWORD-POLICY": lambda obj, elem: setattr(obj, "memory_allocation_keyword_policy", MemoryAllocationKeywordPolicyType.deserialize(elem)),
         "OPTIONS": lambda obj, elem: obj.options.append(SerializationHelper.deserialize_by_tag(elem, "Identifier")),
-        "SECTION": lambda obj, elem: setattr(obj, "section", SerializationHelper.deserialize_by_tag(elem, "SectionInitializationPolicyType")),
+        "SECTION-INITIALIZATION-POLICY": lambda obj, elem: setattr(obj, "section_initialization_policy", SerializationHelper.deserialize_by_tag(elem, "SectionInitializationPolicyType")),
         "SECTION-TYPE": lambda obj, elem: setattr(obj, "section_type", MemorySectionType.deserialize(elem)),
     }
 
@@ -58,9 +58,9 @@ class SwAddrMethod(ARElement):
     def __init__(self) -> None:
         """Initialize SwAddrMethod."""
         super().__init__()
-        self.memory: Optional[MemoryAllocationKeywordPolicyType] = None
+        self.memory_allocation_keyword_policy: Optional[MemoryAllocationKeywordPolicyType] = None
         self.options: list[Identifier] = []
-        self.section: Optional[SectionInitializationPolicyType] = None
+        self.section_initialization_policy: Optional[SectionInitializationPolicyType] = None
         self.section_type: Optional[MemorySectionType] = None
 
     def serialize(self) -> ET.Element:
@@ -86,12 +86,12 @@ class SwAddrMethod(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize memory
-        if self.memory is not None:
-            serialized = SerializationHelper.serialize_item(self.memory, "MemoryAllocationKeywordPolicyType")
+        # Serialize memory_allocation_keyword_policy
+        if self.memory_allocation_keyword_policy is not None:
+            serialized = SerializationHelper.serialize_item(self.memory_allocation_keyword_policy, "MemoryAllocationKeywordPolicyType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MEMORY")
+                wrapped = ET.Element("MEMORY-ALLOCATION-KEYWORD-POLICY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -117,12 +117,12 @@ class SwAddrMethod(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize section
-        if self.section is not None:
-            serialized = SerializationHelper.serialize_item(self.section, "SectionInitializationPolicyType")
+        # Serialize section_initialization_policy
+        if self.section_initialization_policy is not None:
+            serialized = SerializationHelper.serialize_item(self.section_initialization_policy, "SectionInitializationPolicyType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SECTION")
+                wrapped = ET.Element("SECTION-INITIALIZATION-POLICY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -164,14 +164,14 @@ class SwAddrMethod(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "MEMORY":
-                setattr(obj, "memory", MemoryAllocationKeywordPolicyType.deserialize(child))
+            if tag == "MEMORY-ALLOCATION-KEYWORD-POLICY":
+                setattr(obj, "memory_allocation_keyword_policy", MemoryAllocationKeywordPolicyType.deserialize(child))
             elif tag == "OPTIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.options.append(SerializationHelper.deserialize_by_tag(item_elem, "Identifier"))
-            elif tag == "SECTION":
-                setattr(obj, "section", SerializationHelper.deserialize_by_tag(child, "SectionInitializationPolicyType"))
+            elif tag == "SECTION-INITIALIZATION-POLICY":
+                setattr(obj, "section_initialization_policy", SerializationHelper.deserialize_by_tag(child, "SectionInitializationPolicyType"))
             elif tag == "SECTION-TYPE":
                 setattr(obj, "section_type", MemorySectionType.deserialize(child))
 
@@ -188,8 +188,8 @@ class SwAddrMethodBuilder(ARElementBuilder):
         self._obj: SwAddrMethod = SwAddrMethod()
 
 
-    def with_memory(self, value: Optional[MemoryAllocationKeywordPolicyType]) -> "SwAddrMethodBuilder":
-        """Set memory attribute.
+    def with_memory_allocation_keyword_policy(self, value: Optional[MemoryAllocationKeywordPolicyType]) -> "SwAddrMethodBuilder":
+        """Set memory_allocation_keyword_policy attribute.
 
         Args:
             value: Value to set
@@ -199,7 +199,7 @@ class SwAddrMethodBuilder(ARElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.memory = value
+        self._obj.memory_allocation_keyword_policy = value
         return self
 
     def with_options(self, items: list[Identifier]) -> "SwAddrMethodBuilder":
@@ -214,8 +214,8 @@ class SwAddrMethodBuilder(ARElementBuilder):
         self._obj.options = list(items) if items else []
         return self
 
-    def with_section(self, value: Optional[SectionInitializationPolicyType]) -> "SwAddrMethodBuilder":
-        """Set section attribute.
+    def with_section_initialization_policy(self, value: Optional[SectionInitializationPolicyType]) -> "SwAddrMethodBuilder":
+        """Set section_initialization_policy attribute.
 
         Args:
             value: Value to set
@@ -225,7 +225,7 @@ class SwAddrMethodBuilder(ARElementBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.section = value
+        self._obj.section_initialization_policy = value
         return self
 
     def with_section_type(self, value: Optional[MemorySectionType]) -> "SwAddrMethodBuilder":
