@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticHandleDDDIConfigurationEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::DynamicallyDefineData",
       "note": "This meta-class represents the options for controlling how the configuration of the DynamicallyDefine DataIdentifiers is done in the given context. Aggregated by DiagnosticDynamicallyDefineDataIdentifierClass.configurationHandling",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "DiagnosticDynamicallyDefineDataIdentifierSubfunctionEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::DynamicallyDefineData",
       "note": "This meta-class contains a list of possible subfunctions for the UDS service 0x2C. Aggregated by DiagnosticDynamicallyDefineDataIdentifierClass.subfunction",
       "sources": [

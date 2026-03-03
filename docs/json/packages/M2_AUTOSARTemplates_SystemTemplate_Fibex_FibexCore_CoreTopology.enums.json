@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "PncGatewayTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "note": "Defines the PncGateway roles. Aggregated by CommunicationConnector.pncGatewayType",
       "sources": [
@@ -33,6 +34,7 @@
     },
     {
       "name": "CycleRepetitionType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "note": "The number of communication cycles (after the first cycle) whenever the frame is sent again. The FlexRay communication controller allows only determined values. Aggregated by CycleRepetition.CycleRepetition",
       "sources": [

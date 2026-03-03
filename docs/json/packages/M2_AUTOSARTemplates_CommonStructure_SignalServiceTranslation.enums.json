@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "SignalServiceTranslationControlEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::SignalServiceTranslation",
       "note": "This enumeration allows to define how the service instance offer/subscribe control shall behave. Aggregated by SignalServiceTranslationProps.serviceControl",
       "sources": [

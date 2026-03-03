@@ -14,29 +14,51 @@ Decorators in py-armodel2 provide a declarative way to handle edge cases in XML 
 
 ## Available Decorators
 
-| Decorator | Purpose | Type |
-|-----------|---------|------|
-| `@xml_attribute` | Mark property as XML attribute instead of element | Attribute-level |
-| `@atp_variant()` | Mark class as using atpVariation pattern (nested wrappers) | Class-level |
-| `@l_prefix("L-1")` | Mark attribute as using language-specific L-N pattern | Attribute-level |
-| `@lang_abbr("L")` | Mark attribute as language abbreviation XML attribute | Attribute-level |
-| `@xml_element_name("TAG")` | Specify custom XML element name for attributes | Attribute-level |
-| `@ref_conditional("TAG")` | Mark attribute as using -REF-CONDITIONAL pattern | Attribute-level |
-| `@instance_ref(flatten=True, list_type='single')` | Mark attribute as instance reference with flattening and list wrapping control | Attribute-level |
+| Decorator | Purpose | Type | JSON Configuration |
+|-----------|---------|------|-------------------|
+| `@xml_attribute` | Mark property as XML attribute instead of element | Attribute-level | `"decorator": "xml_attribute"` or `"decorator": "xml_attribute:T"` |
+| `@atp_variant()` | Mark class as using atpVariation pattern (nested wrappers) | Class-level | `"atp_type": "atpVariation"` |
+| `@atp_mixed()` | Mark class as mixed content container (no wrapping) | Class-level | `"atp_type": "atpMixed"` |
+| `@lang_prefix("L-N")` | Mark attribute as using language-specific L-N pattern | Attribute-level | `"decorator": "lang_prefix:L-N"` |
+| `@lang_abbr("L")` | Mark attribute as language abbreviation XML attribute | Attribute-level | `"decorator": "lang_abbr:L"` |
+| `@xml_element_name("TAG")` | Specify custom XML element name for attributes | Attribute-level | `"decorator": "xml_element_name:TAG"` or `"decorator": "xml_element_name:TAG1/TAG2/TAG3"` |
+| `@ref_conditional("TAG")` | Mark attribute as using -REF-CONDITIONAL pattern | Attribute-level | `"decorator": "ref_conditional:TAG"` |
+| `@instance_ref(flatten, list_type)` | Mark attribute as instance reference with flattening control | Attribute-level | `"decorator": "instance_ref:flatten=True,list_type=single"` |
+| `@polymorphic({...})` | Mark attribute as polymorphic with wrapper-to-type mapping | Attribute-level | `"decorator": "polymorphic:TAG=BaseType"` |
 
 ---
 
-### 1. `@xml_attribute`
+## 1. `@xml_attribute`
 
 Mark a property/attribute to be serialized as an **XML attribute** instead of a child element.
 
-**When to use**:
-- When the XML schema requires data as an attribute (e.g., `<AUTOSAR schema-version="4.5.0">`)
-- For metadata like IDs, versions, UUIDs, etc.
+### Description
 
-**Location**: `decorators.py:9-30`
+By default, all attributes are serialized as child elements. The `@xml_attribute` decorator changes this behavior to serialize the attribute as an XML attribute on the parent element.
 
-#### Syntax
+### JSON Configuration
+
+```json
+{
+  "name": "AUTOSAR",
+  "attributes": {
+    "schemaVersion": {
+      "type": "String",
+      "multiplicity": "1",
+      "kind": "xml_attribute",
+      "is_ref": false,
+      "decorator": "xml_attribute",
+      "note": "AUTOSAR schema version"
+    }
+  }
+}
+```
+
+**JSON decorator format**:
+- `"decorator": "xml_attribute"` - Auto-generates XML attribute name from property name
+- `"decorator": "xml_attribute:T"` - Uses custom XML attribute name (e.g., "T")
+
+### Usage
 
 ```python
 from armodel2.serialization.decorators import xml_attribute
@@ -70,15 +92,7 @@ class ARObject(ARObject):
         self._timestamp = value
 ```
 
-#### Implementation Details
-
-1. **Decorator order**: `@xml_attribute` must come **before** `@property`
-2. **Property pattern**: Requires property getter/setter pattern with private backing field
-3. **Marker**: Sets `_is_xml_attribute = True` on the property's `fget` function
-4. **Custom attribute name**: Optional parameter to specify a custom XML attribute name (e.g., `"T"` instead of auto-generated `"TIMESTAMP"`)
-5. **Marker**: Sets `_xml_attr_name = <custom_name>` on the property's `fget` function when custom name is provided
-
-#### Example Output
+### Generated XML Structure
 
 ```xml
 <!-- With @xml_attribute decorator (auto-generated name) -->
@@ -98,27 +112,53 @@ class ARObject(ARObject):
 </AUTOSAR>
 ```
 
-#### Common Use Cases
+### Common Use Cases
 
-- `schema_version` - AUTOSAR schema version
+- `schema_version` - AUTOSAR schema version attribute
 - `uuid` - Unique identifiers
 - `id` - Element IDs
 - `version` - Version attributes
-- `L` - Language abbreviation (use `@language_abbr` instead for exact control)
+- `timestamp` - Timestamp with custom "T" attribute name
 
 ---
 
-### 2. `@atp_variant()`
+## 2. `@atp_variant()`
 
 Mark a class as using the AUTOSAR **atpVariation** pattern, which wraps all class attributes in nested XML elements.
 
-**When to use**:
-- When AUTOSAR schema defines elements with `<CLASS-TAG>-VARIANTS/<CLASS-TAG>-CONDITIONAL` wrapper structure
-- Automatically applied by code generator based on JSON mapping data
+### Description
 
-**Location**: `decorators.py:33-68`
+The atpVariation pattern is used in AUTOSAR schemas to support conditional variants. All attributes of a class marked with `@atp_variant()` are wrapped in a two-level nested structure: `<CLASS-TAG>-VARIANTS/<CLASS-TAG>-CONDITIONAL`.
 
-#### Syntax
+### JSON Configuration
+
+```json
+{
+  "name": "SwDataDefProps",
+  "maturity": "draft",
+  "package": "M2::AUTOSARTemplates::MSR::DataDictionary",
+  "is_abstract": false,
+  "atp_type": "atpVariation",
+  "attributes": {
+    "baseType": {
+      "type": "DataTypeReference",
+      "multiplicity": "0..1",
+      "kind": "ref",
+      "is_ref": true
+    },
+    "swCalibrationAccess": {
+      "type": "SwCalibrationAccessEnum",
+      "multiplicity": "0..1",
+      "kind": "attribute",
+      "is_ref": false
+    }
+  }
+}
+```
+
+**Note**: The `@atp_variant()` decorator is applied by the code generator when `"atp_type": "atpVariation"` is present in the JSON class definition. It is not configured via the `decorator` field.
+
+### Usage
 
 ```python
 from armodel2.serialization.decorators import atp_variant
@@ -129,16 +169,7 @@ class SwDataDefProps(ARObject):
     sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
 ```
 
-#### Implementation Details
-
-1. **Class-level decorator**: Applied to the class, not individual attributes
-2. **Wrapper path**: Automatically derived from class name:
-   - First level: `<CLASS-TAG>-VARIANTS`
-   - Second level: `<CLASS-TAG>-CONDITIONAL`
-3. **Marker**: Sets `_atp_variant = True` on the class
-4. **Automatic handling**: ARObject serialization framework creates/navigates wrappers automatically
-
-#### Example Output
+### Generated XML Structure
 
 ```xml
 <SW-DATA-DEF-PROPS>
@@ -151,9 +182,7 @@ class SwDataDefProps(ARObject):
 </SW-DATA-DEF-PROPS>
 ```
 
-#### AUTOSAR atpVariation Pattern
-
-The atpVariation pattern is used in AUTOSAR schemas to support conditional variants:
+### AUTOSAR atpVariation Pattern Structure
 
 ```
 <Class-Tag>
@@ -165,19 +194,125 @@ The atpVariation pattern is used in AUTOSAR schemas to support conditional varia
 </Class-Tag>
 ```
 
+### Common Use Cases
+
+- `SwDataDefProps` - Data definition properties with variant support
+- `J1939Cluster` - J1939 CAN cluster with conditional variants
+- `AbstractCanCluster` - Abstract CAN cluster base class
+
 ---
 
-### 3. `@lang_prefix(xml_tag: str)`
+## 3. `@atp_mixed()`
+
+Mark a class as using the AUTOSAR **atpMixed** pattern, which allows mixed content without wrapper elements.
+
+### Description
+
+The atpMixed pattern is used for container classes that can hold multiple different child types. Unlike atpVariation, children are serialized directly without any wrapper elements.
+
+### JSON Configuration
+
+```json
+{
+  "name": "SwRecordLayoutGroupContent",
+  "maturity": "draft",
+  "package": "M2::AUTOSARTemplates::MSR::DataDictionary::RecordLayout",
+  "is_abstract": false,
+  "atp_type": "atpMixed",
+  "attributes": {
+    "swRecordLayoutRef": {
+      "type": "SwRecordLayout",
+      "multiplicity": "0..1",
+      "kind": "ref",
+      "is_ref": true
+    },
+    "swRecordLayoutGroup": {
+      "type": "SwRecordLayoutGroup",
+      "multiplicity": "0..1",
+      "kind": "aggr",
+      "is_ref": false
+    },
+    "swRecordLayoutV": {
+      "type": "SwRecordLayoutV",
+      "multiplicity": "0..1",
+      "kind": "aggr",
+      "is_ref": false
+    }
+  }
+}
+```
+
+**Note**: The `@atp_mixed()` decorator is applied by the code generator when `"atp_type": "atpMixed"` is present in the JSON class definition. It is not configured via the `decorator` field.
+
+### Usage
+
+```python
+from armodel2.serialization.decorators import atp_mixed
+
+@atp_mixed()
+class SwRecordLayoutGroupContent(ARObject):
+    sw_record_layout_ref: Optional[ARRef] = None
+    sw_record_layout_group: Optional[SwRecordLayoutGroup] = None
+    sw_record_layout_v: Optional[SwRecordLayoutV] = None
+```
+
+### Generated XML Structure
+
+```xml
+<SW-RECORD-LAYOUT-GROUP-CONTENT>
+  <SW-RECORD-LAYOUT-REF DEST="SW-RECORD-LAYOUT">/path/to/layout</SW-RECORD-LAYOUT-REF>
+  <SW-RECORD-LAYOUT-GROUP>...</SW-RECORD-LAYOUT-GROUP>
+  <SW-RECORD-LAYOUT-V>...</SW-RECORD-LAYOUT-V>
+</SW-RECORD-LAYOUT-GROUP-CONTENT>
+```
+
+### Common Use Cases
+
+- `SwRecordLayoutGroupContent` - Mixed content container for record layout elements
+- Container classes that hold heterogeneous child elements
+
+---
+
+## 4. `@lang_prefix(xml_tag: str)`
 
 Mark an attribute as using the **language-specific L-N** naming pattern for multilanguage text.
 
-**When to use**:
-- For MultiLanguage* classes where content is wrapped in language tags (e.g., L-1, L-2, L-4, L-5, L-10)
-- Automatically applied by code generator based on JSON `decorator: "lang_prefix:L-N"` mapping
+### Description
 
-**Location**: `decorators.py:71-102`
+The lang_prefix pattern wraps child elements in language-specific XML tags (L-1, L-2, L-4, L-5, L-10, etc.). This is used for MultiLanguage* classes where content needs to be provided in multiple languages.
 
-#### Syntax
+### JSON Configuration
+
+```json
+{
+  "name": "MultiLanguagePlainText",
+  "maturity": "draft",
+  "package": "M2::MSR::Documentation::TextModel::MultilanguageData",
+  "is_abstract": false,
+  "attributes": {
+    "l10": {
+      "type": "LPlainText",
+      "multiplicity": "*",
+      "kind": "aggr",
+      "is_ref": false,
+      "decorator": "lang_prefix:L-10",
+      "note": "Language-specific plain text content"
+    },
+    "l4": {
+      "type": "LParagraph",
+      "multiplicity": "*",
+      "kind": "aggr",
+      "is_ref": false,
+      "decorator": "lang_prefix:L-4",
+      "note": "Language-specific paragraph content"
+    }
+  }
+}
+```
+
+**JSON decorator format**: `"decorator": "lang_prefix:L-N"` where N is the language slot number (1, 2, 4, 5, 10, etc.)
+
+### Usage
 
 ```python
 from armodel2.serialization.decorators import lang_prefix
@@ -186,8 +321,8 @@ class MultiLanguagePlainText(ARObject):
     def __init__(self) -> None:
         self._l10: LPlainText = None
 
-    @property
     @lang_prefix("L-10")
+    @property
     def l10(self) -> LPlainText:
         return self._l10
 
@@ -196,44 +331,69 @@ class MultiLanguagePlainText(ARObject):
         self._l10 = value
 ```
 
-#### Implementation Details
+**Note**: The `@lang_prefix` decorator must come AFTER `@property` (unlike `@xml_attribute`).
 
-1. **Decorator order**: `@lang_prefix("L-N")` must come **before** `@property`
-2. **Parameter**: Accepts the exact XML tag name (e.g., "L-10", "L-4", "L-2")
-3. **Markers**: Sets `_lang_prefix = True` and `_lang_prefix_tag = xml_tag` on the attribute
-4. **Property pattern**: Requires property getter/setter with private backing field
-
-#### Example Output
+### Generated XML Structure
 
 ```xml
 <L-10 L="EN">English text</L-10>
+<L-4 L="DE">German paragraph</L-4>
 ```
 
-#### Language Tag Pattern
+### Language Tag Pattern
 
 The lang_prefix pattern is used for AUTOSAR multilanguage support:
 
-```
+```xml
 <L-1 L="EN">English text</L-1>
 <L-2 L="DE">German text</L-2>
 <L-4 L="FR">French text</L-4>
 <L-5 L="ES">Spanish text</L-5>
 <L-10 L="EN">Long English text</L-10>
+<L-GRAPHIC L="EN">Graphic description</L-GRAPHIC>
 ```
+
+### Common Use Cases
+
+- `MultiLanguagePlainText.l10` - Long plain text content
+- `MultiLanguageParagraph.l4` - Paragraph content
+- `MultiLanguageLongName.l1` - Long name content
+- `DocumentationBlock` - Language-specific documentation elements
 
 ---
 
-### 4. `@lang_abbr(xml_attr_name: str)`
+## 5. `@lang_abbr(xml_attr_name: str)`
 
 Mark an attribute as a language abbreviation XML attribute with exact control over the attribute name.
 
-**When to use**:
-- For LanguageSpecific series classes where the language abbreviation attribute (typically 'l') should be serialized as an XML attribute
-- When you need exact control over the XML attribute name (not auto-converted by NameConverter)
+### Description
 
-**Location**: `decorators.py:105-137`
+This decorator is used for LanguageSpecific series classes where the language abbreviation attribute (typically 'l') should be serialized as an XML attribute with a specific name (typically 'L'). Unlike `@xml_attribute` which uses NameConverter to auto-convert names, `@lang_abbr` allows specifying the exact XML attribute name.
 
-#### Syntax
+### JSON Configuration
+
+```json
+{
+  "name": "LanguageSpecific",
+  "maturity": "draft",
+  "package": "M2::MSR::Documentation::TextModel::MultilanguageData",
+  "is_abstract": false,
+  "attributes": {
+    "l": {
+      "type": "LEnum",
+      "multiplicity": "1",
+      "kind": "attribute",
+      "is_ref": false,
+      "decorator": "lang_abbr:L",
+      "note": "Language abbreviation"
+    }
+  }
+}
+```
+
+**JSON decorator format**: `"decorator": "lang_abbr:L"` where L is the exact XML attribute name to use.
+
+### Usage
 
 ```python
 from armodel2.serialization.decorators import lang_abbr
@@ -252,201 +412,118 @@ class LanguageSpecific(ARObject):
         self._l = value
 ```
 
-#### Implementation Details
+**Note**: The `@lang_abbr` decorator must come AFTER `@property` (unlike `@xml_attribute`).
 
-1. **Decorator order**: `@lang_abbr("L")` must come **before** `@property`
-2. **Parameter**: Accepts the exact XML attribute name (e.g., "L")
-3. **Markers**: Sets `_language_abbr = True` and `_xml_attr_name = xml_attr_name` on the attribute
-4. **Property pattern**: Requires property getter/setter with private backing field
-
-#### Difference from @xml_attribute
-
-| Decorator | Name Conversion | Use Case |
-|-----------|----------------|----------|
-| `@xml_attribute` | Auto-converted via NameConverter | General XML attributes |
-| `@lang_abbr` | Exact attribute name specified | Language abbreviation attributes |
-
-#### Example Output
+### Generated XML Structure
 
 ```xml
 <L-LONG-NAME L="EN">Long Name</L-LONG-NAME>
+<L-PLAIN-TEXT L="DE">Plain text in German</L-PLAIN-TEXT>
 ```
+
+### Difference from @xml_attribute
+
+| Decorator | Name Conversion | Use Case |
+|-----------|----------------|----------|
+| `@xml_attribute` | Auto-converted via NameConverter | General XML attributes (e.g., SCHEMA-VERSION) |
+| `@lang_abbr` | Exact attribute name specified | Language abbreviation attributes (always "L") |
+
+### Common Use Cases
+
+- `LanguageSpecific.l` - Language abbreviation for all language-specific elements
+- Used in combination with `@lang_prefix` for multilanguage content
 
 ---
 
-### 5. `@ref_conditional(xml_tag: str)`
-
-Mark an attribute as using the AUTOSAR **-REF-CONDITIONAL** pattern for reference lists in atpVariation scenarios.
-
-**When to use**:
-- For reference lists that use the atpVariation pattern with -REF-CONDITIONAL wrappers
-- When AUTOSAR schema defines references wrapped in `<TAG>-REF-CONDITIONAL/<TAG>-REF` structure
-- Common in FIBEX-related elements (e.g., System.fibexElements, PhysicalChannel.comm_connector_refs)
-
-**Location**: `decorators.py:140-178`
-
-#### Syntax
-
-```python
-from armodel2.serialization.decorators import ref_conditional
-
-class System(ARElement):
-    def __init__(self) -> None:
-        self._fibex_element_refs: list[ARRef] = []
-
-    @property
-    @ref_conditional("FIBEX-ELEMENTS")
-    def fibex_element_refs(self) -> list[ARRef]:
-        """Get fibex_element_refs with ref_conditional wrapper."""
-        return self._fibex_element_refs
-
-    @fibex_element_refs.setter
-    def fibex_element_refs(self, value: list[ARRef]) -> None:
-        """Set fibex_element_refs with ref_conditional wrapper."""
-        self._fibex_element_refs = value
-```
-
-#### JSON Configuration
-
-The `@ref_conditional` decorator is configured via JSON mapping data in the class definition:
-
-```json
-{
-  "name": "System",
-  "attributes": {
-    "fibexElements": {
-      "type": "FibexElement",
-      "multiplicity": "*",
-      "kind": "ref",
-      "is_ref": true,
-      "decorator": "ref_conditional:FIBEX-ELEMENTS"
-    }
-  }
-}
-```
-
-**JSON decorator format**: `"decorator_name:decorator_params"`
-
-- **decorator_name**: The decorator function name (e.g., `ref_conditional`)
-- **decorator_params**: Parameters passed to the decorator (e.g., `FIBEX-ELEMENTS`)
-
-#### Implementation Details
-
-1. **Decorator order**: `@ref_conditional("TAG")` must come **before** `@property`
-2. **Parameter**: Accepts the container element name (e.g., "FIBEX-ELEMENTS")
-3. **Markers**: Sets `_is_ref_conditional = True` and `_xml_tag = xml_tag` on the attribute
-4. **Property pattern**: Requires property getter/setter with private backing field
-5. **Automatic code generation**: The decorator is processed by the code generator to generate correct serialize/deserialize methods
-6. **Type tag derivation**: The code generator uses `NameConverter.to_xml_tag(attr_type)` to derive the correct type XML tag for the `-REF-CONDITIONAL` and `-REF` elements. This ensures that:
-   - `CommunicationConnector` type → `COMMUNICATION-CONNECTOR-REF-CONDITIONAL` / `COMMUNICATION-CONNECTOR-REF`
-   - `FibexElement` type → `FIBEX-ELEMENT-REF-CONDITIONAL` / `FIBEX-ELEMENT-REF`
-   - Correctly handles abbreviated container names like `COMM-CONNECTORS` without incorrect truncation
-
-#### XML Structure
-
-The -REF-CONDITIONAL pattern creates a three-level nesting:
-
-```
-<CONTAINER-TAG>
-  <TYPE-TAG>-REF-CONDITIONAL>
-    <TYPE-TAG>-REF DEST="...">...</TYPE-TAG>-REF>
-  </TYPE-TAG>-REF-CONDITIONAL>
-</CONTAINER-TAG>
-```
-
-Where:
-- **CONTAINER-TAG**: The container element name from decorator params (e.g., "FIBEX-ELEMENTS", "COMM-CONNECTORS")
-- **TYPE-TAG**: The XML tag derived from the attribute's type name via `NameConverter.to_xml_tag()` (e.g., "FIBEX-ELEMENT", "COMMUNICATION-CONNECTOR")
-- **-REF-CONDITIONAL**: The atpVariation wrapper
-- **-REF**: The actual reference element with DEST attribute
-
-**Important**: The `TYPE-TAG` is derived from the **attribute's type name** (e.g., `CommunicationConnector` → `COMMUNICATION-CONNECTOR`), not from the container tag via simple string truncation. This ensures correct tag generation for abbreviated container names like `COMM-CONNECTORS` → `COMMUNICATION-CONNECTOR-REF-CONDITIONAL` (not `COMM-CONNECTOR-REF-CONDITIONAL`).
-
-#### Example Output
-
-```xml
-<FIBEX-ELEMENTS>
-  <FIBEX-ELEMENT-REF-CONDITIONAL>
-    <FIBEX-ELEMENT-REF DEST="CAN-CLUSTER">/CanSystem/CLUSTERS/CanNetwork</FIBEX-ELEMENT-REF>
-  </FIBEX-ELEMENT-REF-CONDITIONAL>
-  <FIBEX-ELEMENT-REF-CONDITIONAL>
-    <FIBEX-ELEMENT-REF DEST="I-SIGNAL">/CanSystem/ISIGNALS/CounterIn</FIBEX-ELEMENT-REF>
-  </FIBEX-ELEMENT-REF-CONDITIONAL>
-  <FIBEX-ELEMENT-REF-CONDITIONAL>
-    <FIBEX-ELEMENT-REF DEST="ECU-INSTANCE">/CanSystem/ECUINSTANCES/DebugNode</FIBEX-ELEMENT-REF>
-  </FIBEX-ELEMENT-REF-CONDITIONAL>
-</FIBEX-ELEMENTS>
-```
-
-**Real-world example - PhysicalChannel.comm_connector_refs:**
-
-```json
-{
-  "name": "PhysicalChannel",
-  "attributes": {
-    "commConnectors": {
-      "type": "CommunicationConnector",
-      "multiplicity": "*",
-      "kind": "ref",
-      "is_ref": true,
-      "decorator": "ref_conditional:COMM-CONNECTORS"
-    }
-  }
-}
-```
-
-```xml
-<COMM-CONNECTORS>
-  <COMMUNICATION-CONNECTOR-REF-CONDITIONAL>
-    <COMMUNICATION-CONNECTOR-REF DEST="CAN-COMMUNICATION-CONNECTOR">/CanSystem/ECUINSTANCES/DebugNode/Conn_DebugNode</COMMUNICATION-CONNECTOR-REF>
-  </COMMUNICATION-CONNECTOR-REF-CONDITIONAL>
-  <COMMUNICATION-CONNECTOR-REF-CONDITIONAL>
-    <COMMUNICATION-CONNECTOR-REF DEST="CAN-COMMUNICATION-CONNECTOR">/CanSystem/ECUINSTANCES/EcuTestNode/Conn_EcuTestNode</COMMUNICATION-CONNECTOR-REF>
-  </COMMUNICATION-CONNECTOR-REF-CONDITIONAL>
-</COMM-CONNECTORS>
-```
-
-**Note**: The type tag `COMMUNICATION-CONNECTOR` is correctly derived from the `CommunicationConnector` type name, not from the abbreviated container `COMM-CONNECTORS` via simple truncation (which would incorrectly produce `COMM-CONNECTOR`).
-
-#### Difference from Standard Reference Lists
-
-| Pattern | Container | Child Wrapper | Reference |
-|---------|-----------|---------------|-----------|
-| Standard (no decorator) | `<TAG>-REFS` | None | `<TAG>-REF` |
-| ref_conditional | `<TAG>S` | `<TAG>-REF-CONDITIONAL` | `<TAG>-REF` |
-
-#### Common Use Cases
-
-- **System.fibexElements**: References to FIBEX topology elements
-- **PhysicalChannel.comm_connector_refs**: CAN communication connectors
-- **EcuInstance.managed_refs**: Managed references in ECU instances
-
----
-
-### 6. `@xml_element_name(xml_tag: str)`
+## 6. `@xml_element_name(xml_tag: str)`
 
 Specify a custom XML element name for attributes when the auto-generated name differs from the schema, or when multi-level nesting is required.
 
-**When to use**:
-- When the XML element name differs from the auto-generated name via NameConverter
-- When AUTOSAR schema uses non-standard naming (e.g., "PROVIDED-ENTRYS" instead of "PROVIDED-CLIENT-SERVER-ENTRIES")
-- When multi-level nesting is required (nested container elements)
-- When reference lists need custom wrapper elements
+### Description
 
-**Location**: `decorators.py:140-167`
+This decorator is used when the XML element name differs from the auto-generated name via NameConverter. It supports both single-level override and multi-level path nesting.
 
-#### Syntax
+### JSON Configuration
+
+**Single parameter** (override container tag):
+```json
+{
+  "name": "BswModuleDescription",
+  "maturity": "draft",
+  "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswOverview",
+  "is_abstract": false,
+  "attributes": {
+    "providedClientServerEntries": {
+      "type": "BswModuleClientServerEntry",
+      "multiplicity": "*",
+      "kind": "aggr",
+      "is_ref": false,
+      "decorator": "xml_element_name:PROVIDED-ENTRYS",
+      "note": "Provided client/server entries"
+    },
+    "requiredClientServerEntries": {
+      "type": "BswModuleClientServerEntry",
+      "multiplicity": "*",
+      "kind": "aggr",
+      "is_ref": false,
+      "decorator": "xml_element_name:REQUIRED-ENTRYS",
+      "note": "Required client/server entries"
+    }
+  }
+}
+```
+
+**Multi-level path** (nested containers):
+```json
+{
+  "name": "ExecutableEntity",
+  "maturity": "draft",
+  "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses",
+  "is_abstract": false,
+  "attributes": {
+    "canEnterRefs": {
+      "type": "ARRef",
+      "multiplicity": "*",
+      "kind": "ref",
+      "is_ref": true,
+      "decorator": "xml_element_name:CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF",
+      "note": "References to exclusive areas that can be entered"
+    }
+  }
+}
+```
+
+**JSON decorator format**:
+- Single level: `"decorator": "xml_element_name:TAG"` - Override container element name
+- Multi-level: `"decorator": "xml_element_name:TAG1/TAG2/TAG3"` - Nested container path
+
+### Usage
 
 **Single parameter** (override container tag):
 ```python
 from armodel2.serialization.decorators import xml_element_name
 
 class BswModuleDescription(ARElement):
-    @xml_element_name("PROVIDED-ENTRYS")
-    provided_client_server_entries: list[BswModuleClientServerEntry] = []
+    _provided_client_server_entries: list[BswModuleClientServerEntry] = []
+    _required_client_server_entries: list[BswModuleClientServerEntry] = []
 
+    @property
+    @xml_element_name("PROVIDED-ENTRYS")
+    def provided_client_server_entries(self) -> list[BswModuleClientServerEntry]:
+        return self._provided_client_server_entries
+
+    @provided_client_server_entries.setter
+    def provided_client_server_entries(self, value: list[BswModuleClientServerEntry]) -> None:
+        self._provided_client_server_entries = value
+
+    @property
     @xml_element_name("REQUIRED-ENTRYS")
-    required_client_server_entries: list[BswModuleClientServerEntry] = []
+    def required_client_server_entries(self) -> list[BswModuleClientServerEntry]:
+        return self._required_client_server_entries
+
+    @required_client_server_entries.setter
+    def required_client_server_entries(self, value: list[BswModuleClientServerEntry]) -> None:
+        self._required_client_server_entries = value
 ```
 
 **Multi-level path** (nested containers):
@@ -455,33 +532,22 @@ from armodel2.serialization.decorators import xml_element_name
 
 class ExecutableEntity(ARObject):
     _can_enter_refs: list[ARRef] = []
-    
+
     @property
     @xml_element_name("CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF")
     def can_enter_refs(self) -> list[ARRef]:
         """Get can_enter_refs with custom XML element name."""
         return self._can_enter_refs
-    
+
     @can_enter_refs.setter
     def can_enter_refs(self, value: list[ARRef]) -> None:
         """Set can_enter_refs with custom XML element name."""
         self._can_enter_refs = value
 ```
 
-#### Implementation Details
+**Note**: The `@xml_element_name` decorator must come AFTER `@property`.
 
-1. **Attribute-level decorator**: Applied to individual attributes
-2. **Parameter formats**:
-   - **Single parameter**: Accepts the exact XML element name (e.g., "PROVIDED-ENTRYS")
-   - **Multi-level path**: Accepts nested container path separated by `/` (e.g., "TAG1/TAG2/TAG3")
-3. **Markers**: Sets `_xml_element_name = True` and `_xml_tag = xml_tag` on the attribute
-4. **Overrides NameConverter**: The specified tag(s) are used instead of auto-conversion
-5. **Multi-level nesting**: When `/` separator is used, the code generator:
-   - Creates nested wrapper elements during serialization
-   - Navigates through nested containers during deserialization
-   - Uses the last level tag for individual child elements
-
-#### Example Output
+### Generated XML Structure
 
 **Single parameter** (override container tag):
 ```xml
@@ -515,26 +581,227 @@ class ExecutableEntity(ARObject):
 </EXECUTABLE-ENTITY>
 ```
 
-#### When to Use
+### Common Use Cases
 
-- AUTOSAR schema irregularities where element names don't follow standard conventions
-- Legacy schema versions with non-standard naming
-- Compatibility with existing ARXML files that use older naming
+- `BswModuleDescription.provided_client_server_entries` - Custom "PROVIDED-ENTRYS" instead of auto-generated name
+- `ExecutableEntity.can_enter_refs` - Multi-level nested container structure
+- Legacy schema compatibility where element names don't follow standard conventions
 
 ---
 
-### 7. `@instance_ref(flatten: bool = False, list_type: str = 'single')`
+## 7. `@ref_conditional(xml_tag: str)`
+
+Mark an attribute as using the AUTOSAR **-REF-CONDITIONAL** pattern for reference lists in atpVariation scenarios.
+
+### Description
+
+The -REF-CONDITIONAL pattern is used in AUTOSAR atpVariation for reference lists where each reference is wrapped in a `<TAG>-REF-CONDITIONAL` element containing the actual `<TAG>-REF` element. This is different from the standard reference list pattern.
+
+### JSON Configuration
+
+```json
+{
+  "name": "System",
+  "maturity": "draft",
+  "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
+  "is_abstract": false,
+  "attributes": {
+    "fibexElements": {
+      "type": "FibexElement",
+      "multiplicity": "*",
+      "kind": "ref",
+      "is_ref": true,
+      "decorator": "ref_conditional:FIBEX-ELEMENTS",
+      "note": "Reference to ASAM FIBEX elements specifying Topology"
+    }
+  }
+}
+```
+
+**JSON decorator format**: `"decorator": "ref_conditional:CONTAINER-TAG"` where CONTAINER-TAG is the container element name (e.g., "FIBEX-ELEMENTS", "COMM-CONNECTORS").
+
+### Usage
+
+```python
+from armodel2.serialization.decorators import ref_conditional
+
+class System(ARElement):
+    def __init__(self) -> None:
+        self._fibex_element_refs: list[ARRef] = []
+
+    @property
+    @ref_conditional("FIBEX-ELEMENTS")
+    def fibex_element_refs(self) -> list[ARRef]:
+        """Get fibex_element_refs with ref_conditional wrapper."""
+        return self._fibex_element_refs
+
+    @fibex_element_refs.setter
+    def fibex_element_refs(self, value: list[ARRef]) -> None:
+        """Set fibex_element_refs with ref_conditional wrapper."""
+        self._fibex_element_refs = value
+```
+
+**Note**: The `@ref_conditional` decorator must come AFTER `@property`.
+
+### Generated XML Structure
+
+```xml
+<FIBEX-ELEMENTS>
+  <FIBEX-ELEMENT-REF-CONDITIONAL>
+    <FIBEX-ELEMENT-REF DEST="CAN-CLUSTER">/CanSystem/CLUSTERS/CanNetwork</FIBEX-ELEMENT-REF>
+  </FIBEX-ELEMENT-REF-CONDITIONAL>
+  <FIBEX-ELEMENT-REF-CONDITIONAL>
+    <FIBEX-ELEMENT-REF DEST="I-SIGNAL">/CanSystem/ISIGNALS/CounterIn</FIBEX-ELEMENT-REF>
+  </FIBEX-ELEMENT-REF-CONDITIONAL>
+  <FIBEX-ELEMENT-REF-CONDITIONAL>
+    <FIBEX-ELEMENT-REF DEST="ECU-INSTANCE">/CanSystem/ECUINSTANCES/DebugNode</FIBEX-ELEMENT-REF>
+  </FIBEX-ELEMENT-REF-CONDITIONAL>
+</FIBEX-ELEMENTS>
+```
+
+### XML Structure Breakdown
+
+```
+<CONTAINER-TAG>
+  <TYPE-TAG>-REF-CONDITIONAL>
+    <TYPE-TAG>-REF DEST="...">...</TYPE-TAG>-REF>
+  </TYPE-TAG>-REF-CONDITIONAL>
+</CONTAINER-TAG>
+```
+
+Where:
+- **CONTAINER-TAG**: The container element name from decorator params (e.g., "FIBEX-ELEMENTS", "COMM-CONNECTORS")
+- **TYPE-TAG**: The XML tag derived from the attribute's type name via `NameConverter.to_xml_tag()` (e.g., "FIBEX-ELEMENT", "COMMUNICATION-CONNECTOR")
+- **-REF-CONDITIONAL**: The atpVariation wrapper
+- **-REF**: The actual reference element with DEST attribute
+
+**Important**: The `TYPE-TAG` is derived from the **attribute's type name** (e.g., `CommunicationConnector` → `COMMUNICATION-CONNECTOR`), not from the container tag via simple string truncation. This ensures correct tag generation for abbreviated container names like `COMM-CONNECTORS` → `COMMUNICATION-CONNECTOR-REF-CONDITIONAL` (not `COMM-CONNECTOR-REF-CONDITIONAL`).
+
+### Real-world Example - PhysicalChannel.comm_connector_refs
+
+**JSON Configuration**:
+```json
+{
+  "name": "PhysicalChannel",
+  "attributes": {
+    "commConnectors": {
+      "type": "CommunicationConnector",
+      "multiplicity": "*",
+      "kind": "ref",
+      "is_ref": true,
+      "decorator": "ref_conditional:COMM-CONNECTORS"
+    }
+  }
+}
+```
+
+**Generated XML**:
+```xml
+<COMM-CONNECTORS>
+  <COMMUNICATION-CONNECTOR-REF-CONDITIONAL>
+    <COMMUNICATION-CONNECTOR-REF DEST="CAN-COMMUNICATION-CONNECTOR">/CanSystem/ECUINSTANCES/DebugNode/Conn_DebugNode</COMMUNICATION-CONNECTOR-REF>
+  </COMMUNICATION-CONNECTOR-REF-CONDITIONAL>
+  <COMMUNICATION-CONNECTOR-REF-CONDITIONAL>
+    <COMMUNICATION-CONNECTOR-REF DEST="CAN-COMMUNICATION-CONNECTOR">/CanSystem/ECUINSTANCES/EcuTestNode/Conn_EcuTestNode</COMMUNICATION-CONNECTOR-REF>
+  </COMMUNICATION-CONNECTOR-REF-CONDITIONAL>
+</COMM-CONNECTORS>
+```
+
+### Difference from Standard Reference Lists
+
+| Pattern | Container | Child Wrapper | Reference |
+|---------|-----------|---------------|-----------|
+| Standard (no decorator) | `<TAG>-REFS` | None | `<TAG>-REF` |
+| ref_conditional | `<TAG>S` | `<TAG>-REF-CONDITIONAL` | `<TAG>-REF` |
+
+### Common Use Cases
+
+- `System.fibexElements` - References to FIBEX topology elements
+- `PhysicalChannel.comm_connector_refs` - CAN communication connectors
+- `EcuInstance.managed_refs` - Managed references in ECU instances
+
+---
+
+## 8. `@instance_ref(flatten: bool = False, list_type: str = 'single')`
 
 Mark an attribute as an **instance reference (iref)**. Instance references are wrapped in a `<TAG>-IREF` element. The `flatten` parameter controls whether children are flattened directly into the wrapper or wrapped in their own element.
 
-**When to use**:
-- For instance reference attributes in AUTOSAR connector classes (AssemblySwConnector, DelegationSwConnector)
-- When XML structure requires `<TAG>-IREF` wrapper for instance references
-- Common in SW Component Template (Composition) and System Template (InstanceRefs)
+### Description
 
-**Location**: `decorators.py:181-237`
+Instance references are used in AUTOSAR connector classes (AssemblySwConnector, DelegationSwConnector) where the XML structure requires a `<TAG>-IREF` wrapper. The `flatten` parameter controls the internal structure, and `list_type` controls how list attributes are wrapped.
 
-#### Syntax
+### JSON Configuration
+
+**Flattened structure** (AssemblySwConnector):
+```json
+{
+  "name": "AssemblySwConnector",
+  "maturity": "draft",
+  "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition",
+  "is_abstract": false,
+  "attributes": {
+    "provider": {
+      "type": "PPortInCompositionInstanceRef",
+      "multiplicity": "0..1",
+      "kind": "iref",
+      "is_ref": true,
+      "decorator": "instance_ref:flatten=True",
+      "note": "Provider instance reference"
+    },
+    "requester": {
+      "type": "RPortInCompositionInstanceRef",
+      "multiplicity": "0..1",
+      "kind": "iref",
+      "is_ref": true,
+      "decorator": "instance_ref:flatten=True",
+      "note": "Requester instance reference"
+    }
+  }
+}
+```
+
+**Non-flattened structure** (DelegationSwConnector):
+```json
+{
+  "name": "DelegationSwConnector",
+  "maturity": "draft",
+  "package": "M2::AUTOSARTemplates::SWComponentTemplate::Composition",
+  "is_abstract": false,
+  "attributes": {
+    "innerPort": {
+      "type": "PortInCompositionTypeInstanceRef",
+      "multiplicity": "0..1",
+      "kind": "iref",
+      "is_ref": true,
+      "decorator": "instance_ref:flatten=False",
+      "note": "Inner port instance reference"
+    }
+  }
+}
+```
+
+**Multi-wrapper list pattern**:
+```json
+{
+  "name": "SwcToEcuMapping",
+  "attributes": {
+    "components": {
+      "type": "ComponentInSystemInstanceRef",
+      "multiplicity": "*",
+      "kind": "iref",
+      "is_ref": true,
+      "decorator": "instance_ref:flatten=True,list_type=multi",
+      "note": "Component instance references"
+    }
+  }
+}
+```
+
+**JSON decorator format**: `"decorator": "instance_ref:flatten=True,list_type=single"`
+- `flatten=True/False` - Controls whether children are flattened into wrapper
+- `list_type=single/multi` - For lists, controls single vs multi-wrapper pattern
+
+### Usage
 
 **Flattened structure** (AssemblySwConnector):
 ```python
@@ -588,50 +855,9 @@ class DelegationSwConnector(SwConnector):
         self._inner_port_iref = value
 ```
 
-#### Implementation Details
+**Note**: The `@instance_ref` decorator must come AFTER `@property`.
 
-1. **Decorator order**: `@instance_ref(flatten=True)` must come **before** `@property`
-2. **Parameters**:
-   - `flatten` (bool): If True, children are flattened directly into wrapper. If False, the element is wrapped. Default: False
-   - `list_type` (str): For list attributes, controls wrapping pattern. 'single' for single wrapper, 'multi' for multi-wrapper. Default: 'single'
-3. **Markers**: Sets `_is_instance_ref = True`, `_flatten = flatten`, and `_list_type = list_type` on the attribute
-4. **Property pattern**: Requires property getter/setter with private backing field
-5. **Automatic code generation**: The decorator is processed by the code generator to generate correct serialize/deserialize methods
-
-#### JSON Configuration
-
-The `@instance_ref` decorator is configured via JSON mapping data in the class definition:
-
-```json
-{
-  "name": "AssemblySwConnector",
-  "attributes": {
-    "provider": {
-      "type": "PPortInCompositionInstanceRef",
-      "multiplicity": "0..1",
-      "kind": "iref",
-      "is_ref": true,
-      "decorator": "instance_ref:flatten=True",
-      "note": "implemented by: PPortInCompositionInstanceRef"
-    },
-    "requester": {
-      "type": "RPortInCompositionInstanceRef",
-      "multiplicity": "0..1",
-      "kind": "iref",
-      "is_ref": true,
-      "decorator": "instance_ref:flatten=True",
-      "note": "implemented by: RPortInCompositionInstanceRef"
-    }
-  }
-}
-```
-
-**JSON decorator format**: `"decorator_name:decorator_params"`
-
-- **decorator_name**: The decorator function name (e.g., `instance_ref`)
-- **decorator_params**: Parameters passed to the decorator (e.g., `flatten=True`, `flatten=False`)
-
-#### Example Output
+### Generated XML Structure
 
 **Flattened structure** (`flatten=True`):
 ```xml
@@ -658,104 +884,206 @@ The `@instance_ref` decorator is configured via JSON mapping data in the class d
 </INNER-PORT-IREF>
 ```
 
-**Without decorator** (for comparison):
+**Multi-wrapper list** (`flatten=True, list_type='multi'`):
 ```xml
-<!-- Default behavior would serialize as child element -->
-<ASSEMBLY-SW-CONNECTOR>
-  <PROVIDER>
-    <CONTEXT-COMPONENT-REF>...</CONTEXT-COMPONENT-REF>
-    <TARGET-P-PORT-REF>...</TARGET-P-PORT-REF>
-  </PROVIDER>
-</ASSEMBLY-SW-CONNECTOR>
+<COMPONENT-IREFS>
+  <COMPONENT-IREF>
+    <CONTEXT-COMPOSITION-REF DEST="SW-COMPONENT-PROTOTYPE">/path/to/component1</CONTEXT-COMPOSITION-REF>
+    <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/path/to/component1</TARGET-COMPONENT-REF>
+  </COMPONENT-IREF>
+  <COMPONENT-IREF>
+    <CONTEXT-COMPOSITION-REF DEST="SW-COMPONENT-PROTOTYPE">/path/to/component2</CONTEXT-COMPOSITION-REF>
+    <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/path/to/component2</TARGET-COMPONENT-REF>
+  </COMPONENT-IREF>
+</COMPONENT-IREFS>
 ```
 
-#### When to Use Flattened vs Non-Flattened
+**Single-wrapper list** (`flatten=True, list_type='single'`):
+```xml
+<COMPONENTS-IREF>
+  <CONTEXT-COMPOSITION-REF DEST="SW-COMPONENT-PROTOTYPE">/path/to/component1</CONTEXT-COMPOSITION-REF>
+  <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/path/to/component1</TARGET-COMPONENT-REF>
+  <CONTEXT-COMPOSITION-REF DEST="SW-COMPONENT-PROTOTYPE">/path/to/component2</CONTEXT-COMPOSITION-REF>
+  <TARGET-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/path/to/component2</TARGET-COMPONENT-REF>
+</COMPONENTS-IREF>
+```
+
+### When to Use Flattened vs Non-Flattened
 
 | Mode | Use Case | Type | Example |
 |------|----------|------|---------|
 | `flatten=True` | Concrete instance reference types where XML structure is flattened | `PPortInCompositionInstanceRef`, `RPortInCompositionInstanceRef` | AssemblySwConnector |
 | `flatten=False` | Abstract instance reference types where concrete type is determined at runtime | `PortInCompositionTypeInstanceRef` | DelegationSwConnector |
 
-**Flattened (`flatten=True`)**:
-- Used for concrete instance reference types
-- Children are serialized directly inside the `<TAG>-IREF` wrapper
-- The concrete type is known at compile time
-- Common in `AssemblySwConnector` for `provider` and `requester` attributes
+### List Handling with `list_type` Parameter
 
-**Non-flattened (`flatten=False`)**:
-- Used for abstract instance reference types
-- The element is wrapped in its own XML element
-- The concrete type is determined at runtime via XML tag
-- Common in `DelegationSwConnector` for `innerPort` attribute
+| list_type | Pattern | XML Structure |
+|-----------|---------|---------------|
+| `'single'` (default) | Single wrapper | All items in one `<TAG>-IREF` container |
+| `'multi'` | Multi-wrapper | Each item in its own `<TAG>-IREF`, wrapped in `<TAG>-IREFS` |
 
-#### Common Use Cases
+### Common Use Cases
 
-- **AssemblySwConnector.provider**: PPortInCompositionInstanceRef with flattened structure
-- **AssemblySwConnector.requester**: RPortInCompositionInstanceRef with flattened structure
-- **DelegationSwConnector.innerPort**: PortInCompositionTypeInstanceRef with non-flattened structure
-- **Collection.collectedInstance**: AnyInstanceRef with flattened structure
-- **Collection.sourceInstances**: AnyInstanceRef with flattened structure
+- `AssemblySwConnector.provider` - PPortInCompositionInstanceRef with flattened structure
+- `AssemblySwConnector.requester` - RPortInCompositionInstanceRef with flattened structure
+- `DelegationSwConnector.innerPort` - PortInCompositionTypeInstanceRef with non-flattened structure
+- `Collection.collectedInstance` - AnyInstanceRef with flattened structure
+- `SwcToEcuMapping.components` - ComponentInSystemInstanceRef list with multi-wrapper pattern
 
-#### List Handling with `list_type` Parameter
+---
 
-For list attributes (multiplicity `*`), the `list_type` parameter controls how list items are wrapped:
+## 9. `@polymorphic(mapping: dict[str, str])`
 
-**`list_type='single'` (default)**: Single wrapper pattern
-- Creates a single `<TAG>-IREF` wrapper containing all list items
-- All items are flattened together inside the wrapper
-- Example: `@instance_ref(flatten=True)` or `@instance_ref(flatten=True, list_type='single')`
+Mark an attribute as polymorphic with wrapper element mapping. Used when an XML wrapper element contains a concrete implementation of an abstract base class.
 
-**`list_type='multi'`**: Multi-wrapper pattern
-- Creates a `<TAG>-IREFS` container with multiple `<TAG>-IREF` children
-- Each list item is wrapped in its own `<TAG>-IREF` element
-- Example: `@instance_ref(flatten=True, list_type='multi')`
+### Description
 
-**JSON Configuration**:
+The polymorphic pattern is used when an XML wrapper element contains a concrete implementation of an abstract base class. The decorator accepts a dictionary mapping wrapper XML tags to base class names, enabling the deserialization framework to correctly resolve and instantiate the concrete type.
+
+### JSON Configuration
+
+**Single mapping**:
 ```json
 {
-  "components": {
-    "type": "ComponentInSystemInstanceRef",
-    "multiplicity": "*",
-    "kind": "iref",
-    "is_ref": true,
-    "decorator": "instance_ref:flatten=True,list_type=multi"
+  "name": "ConstantSpecification",
+  "maturity": "draft",
+  "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
+  "is_abstract": false,
+  "attributes": {
+    "valueSpec": {
+      "type": "ValueSpecification",
+      "multiplicity": "0..1",
+      "kind": "attribute",
+      "is_ref": false,
+      "decorator": "polymorphic:VALUE-SPEC=ValueSpecification",
+      "note": "Value specification for the constant"
+    }
   }
 }
 ```
 
-**Example Output - Single Wrapper** (`list_type='single'`):
-```xml
-<COMPONENTS-IREF>
-  <CONTEXT-COMPOSITION-REF>...</CONTEXT-COMPOSITION-REF>
-  <TARGET-COMPONENT-REF>...</TARGET-COMPONENT-REF>
-  <CONTEXT-COMPOSITION-REF>...</CONTEXT-COMPOSITION-REF>
-  <TARGET-COMPONENT-REF>...</TARGET-COMPONENT-REF>
-</COMPONENTS-IREF>
+**Multiple mappings** (same base type):
+```json
+{
+  "name": "CompuMethod",
+  "maturity": "draft",
+  "package": "M2::MSR::ComputationMethod",
+  "is_abstract": false,
+  "attributes": {
+    "compuInternalToPhys": {
+      "type": "CompuContent",
+      "multiplicity": "0..1",
+      "kind": "attribute",
+      "is_ref": false,
+      "decorator": "polymorphic:COMPU-INTERNAL-TO-PHYS=CompuContent",
+      "note": "Computation from internal to physical"
+    },
+    "compuPhysToInternal": {
+      "type": "CompuContent",
+      "multiplicity": "0..1",
+      "kind": "attribute",
+      "is_ref": false,
+      "decorator": "polymorphic:COMPU-PHYS-TO-INTERNAL=CompuContent",
+      "note": "Computation from physical to internal"
+    }
+  }
+}
 ```
 
-**Example Output - Multi Wrapper** (`list_type='multi'`):
-```xml
-<COMPONENT-IREFS>
-  <COMPONENT-IREF>
-    <CONTEXT-COMPOSITION-REF>...</CONTEXT-COMPOSITION-REF>
-    <TARGET-COMPONENT-REF>...</TARGET-COMPONENT-REF>
-  </COMPONENT-IREF>
-  <COMPONENT-IREF>
-    <CONTEXT-COMPOSITION-REF>...</CONTEXT-COMPOSITION-REF>
-    <TARGET-COMPONENT-REF>...</TARGET-COMPONENT-REF>
-  </COMPONENT-IREF>
-</COMPONENT-IREFS>
+**JSON decorator format**: `"decorator": "polymorphic:TAG=BaseType"` where TAG is the XML wrapper tag and BaseType is the expected base class.
+
+### Usage
+
+**Single mapping**:
+```python
+from armodel2.serialization.decorators import polymorphic
+
+class ConstantSpecification(ARElement):
+    _value_spec: Optional[ValueSpecification] = None
+
+    @property
+    @polymorphic({"VALUE-SPEC": "ValueSpecification"})
+    def value_spec(self) -> Optional[ValueSpecification]:
+        return self._value_spec
+
+    @value_spec.setter
+    def value_spec(self, value: Optional[ValueSpecification]) -> None:
+        self._value_spec = value
 ```
 
-**Use Cases**:
-- `list_type='single'`: Most common pattern for flattened lists
-- `list_type='multi'`: Required when AUTOSAR schema specifies `<TAG>-IREFS` container pattern
+**Multiple mappings** (for attribute with multiple possible wrapper tags):
+```python
+from armodel2.serialization.decorators import polymorphic
 
+class CompuMethod(ARObject):
+    _compu_internal_to_phys: Optional[CompuContent] = None
 
+    @property
+    @polymorphic({
+        "COMPU-INTERNAL-TO-PHYS": "CompuContent",
+        "COMPU-PHYS-TO-INTERNAL": "CompuContent"
+    })
+    def compu_internal_to_phys(self) -> Optional[CompuContent]:
+        return self._compu_internal_to_phys
+
+    @compu_internal_to_phys.setter
+    def compu_internal_to_phys(self, value: Optional[CompuContent]) -> None:
+        self._compu_internal_to_phys = value
+```
+
+**Note**: The `@polymorphic` decorator must come AFTER `@property`.
+
+### Generated XML Structure
+
+**Single mapping example**:
+```xml
+<CONSTANT-SPECIFICATION>
+  <SHORT-NAME>MyConstant</SHORT-NAME>
+  <VALUE-SPEC>
+    <NUMERICAL-VALUE-SPECIFICATION>
+      <SHORT-LABEL>MyValue</SHORT-LABEL>
+      <VALUE>42</VALUE>
+    </NUMERICAL-VALUE-SPECIFICATION>
+  </VALUE-SPEC>
+</CONSTANT-SPECIFICATION>
+```
+
+**Multiple mappings example**:
+```xml
+<COMPU-METHOD>
+  <SHORT-NAME>MyCompuMethod</SHORT-NAME>
+  <COMPU-INTERNAL-TO-PHYS>
+    <COMPU-SCALES>
+      <COMPU-SCALE>
+        <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+        <UPPER-LIMIT INTERVAL-TYPE="CLOSED">100</UPPER-LIMIT>
+        <COMPU-CONST>
+          <VALUE>0.0</VALUE>
+        </COMPU-CONST>
+      </COMPU-SCALE>
+    </COMPU-SCALES>
+  </COMPU-INTERNAL-TO-PHYS>
+</COMPU-METHOD>
+```
+
+### Deserialization Flow
+
+1. The framework finds the child element inside the wrapper (e.g., `<NUMERICAL-VALUE-SPECIFICATION>` inside `<VALUE-SPEC>`)
+2. Uses the mapping to verify the concrete type is a subclass of the expected base type
+3. Deserializes using the concrete class based on the XML tag
+
+### Common Use Cases
+
+- `ConstantSpecification.valueSpec` - ValueSpecification with VALUE-SPEC wrapper
+- `CompuMethod.compuInternalToPhys` - CompuContent with COMPU-INTERNAL-TO-PHYS wrapper
+- `CompuMethod.compuPhysToInternal` - CompuContent with COMPU-PHYS-TO-INTERNAL wrapper
+- `InitValue` - ValueSpecification with INIT-VALUE wrapper
+
+---
 
 ## JSON Configuration for Decorators
 
-Decorators can be configured via JSON mapping data in the AUTOSAR class definitions. This allows the code generator to automatically generate the correct decorator usage.
+Decorators are configured via JSON mapping data in the AUTOSAR class definitions. This allows the code generator to automatically generate the correct decorator usage.
 
 ### JSON Decorator Format
 
@@ -777,7 +1105,7 @@ Decorators can be configured via JSON mapping data in the AUTOSAR class definiti
 **Format**: `"decorator_name:decorator_params"`
 
 - **decorator_name**: The decorator function name (e.g., `xml_element_name`, `ref_conditional`, `lang_prefix`)
-- **decorator_params**: Parameters passed to the decorator (e.g., `FIBEX-ELEMENTS`, `L-10`)
+- **decorator_params**: Parameters passed to the decorator (e.g., `FIBEX-ELEMENTS`, `L-10`, `flatten=True`)
 
 ### Decorator Types in JSON
 
@@ -788,21 +1116,43 @@ Decorators can be configured via JSON mapping data in the AUTOSAR class definiti
 | `ref_conditional` | `"decorator": "ref_conditional:FIBEX-ELEMENTS"` | -REF-CONDITIONAL pattern |
 | `instance_ref` | `"decorator": "instance_ref:flatten=True"` | Instance reference (flattened) |
 | `instance_ref` | `"decorator": "instance_ref:flatten=False"` | Instance reference (non-flattened) |
+| `instance_ref` | `"decorator": "instance_ref:flatten=True,list_type=multi"` | Instance reference list (multi-wrapper) |
 | `lang_prefix` | `"decorator": "lang_prefix:L-10"` | Language-specific content |
 | `lang_abbr` | `"decorator": "lang_abbr:L"` | Language abbreviation attribute |
 | `xml_attribute` | `"decorator": "xml_attribute"` | XML attribute (auto-generated name) |
 | `xml_attribute` | `"decorator": "xml_attribute:T"` | XML attribute (custom name) |
+| `polymorphic` | `"decorator": "polymorphic:VALUE-SPEC=ValueSpecification"` | Polymorphic type handling |
+
+**Note**: Class-level decorators (`@atp_variant()` and `@atp_mixed()`) are not configured via the `decorator` field. Instead, they are applied by the code generator when `"atp_type": "atpVariation"` or `"atp_type": "atpMixed"` is present in the JSON class definition.
 
 ### Special Cases
 
-**Attribute-level decorators** (ref_conditional, xml_element_name, xml_attribute, lang_prefix, lang_abbr, instance_ref):
+**Attribute-level decorators** (ref_conditional, xml_element_name, xml_attribute, lang_prefix, lang_abbr, instance_ref, polymorphic):
 - Use the `decorator` field with format `"name:params"`
 - The code generator applies the decorator to the generated property
-- For xml_attribute, lang_prefix, lang_abbr, and instance_ref, params are required (e.g., "xml_attribute:T", "lang_prefix:L-10", "lang_abbr:L", "instance_ref:flatten=True")
+- For xml_attribute, lang_prefix, lang_abbr, instance_ref, and polymorphic, params are required
 
-### Example JSON Configurations
+**Class-level decorators** (atp_variant, atp_mixed):
+- Applied at the class level by the code generator
+- Triggered by `"atp_type": "atpVariation"` or `"atp_type": "atpMixed"` in JSON
+- Not configured via the `decorator` field
 
-#### ref_conditional for FIBEX-ELEMENTS
+---
+
+## Code Generator Processing
+
+The code generator processes decorator configurations in multiple stages:
+
+1. **Parse decorator field**: Extract decorator name and parameters from JSON
+2. **Generate import statements**: Add decorator imports to generated class
+3. **Generate properties**: Create property with decorator applied
+4. **Generate serialize methods**: Use decorator metadata for correct serialization
+5. **Generate deserialize methods**: Use decorator metadata for correct deserialization
+6. **Generate dispatch tables**: For polymorphic types, generate if-elif-else chains
+
+### Generated Code Example
+
+Given this JSON configuration:
 
 ```json
 {
@@ -813,170 +1163,9 @@ Decorators can be configured via JSON mapping data in the AUTOSAR class definiti
       "multiplicity": "*",
       "kind": "ref",
       "is_ref": true,
-      "decorator": "ref_conditional:FIBEX-ELEMENTS",
-      "note": "Reference to ASAM FIBEX elements specifying Topology. Elements used within a System Description shall from the System Element. order to describe a product-line, all Fibex be optional. atpVariation"
+      "decorator": "ref_conditional:FIBEX-ELEMENTS"
     }
   }
-}
-```
-
-#### xml_element_name for multi-level nesting
-
-```json
-{
-  "name": "ExecutableEntity",
-  "attributes": {
-    "canEnterRefs": {
-      "type": "ARRef",
-      "multiplicity": "*",
-      "kind": "ref",
-      "is_ref": true,
-      "decorator": "xml_element_name:CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
-    }
-  }
-}
-```
-
-#### xml_element_name for custom container name
-
-```json
-{
-  "name": "BswModuleDescription",
-  "attributes": {
-    "providedClientServerEntries": {
-      "type": "BswModuleClientServerEntry",
-      "multiplicity": "*",
-      "kind": "aggr",
-      "is_ref": false,
-      "decorator": "xml_element_name:PROVIDED-ENTRYS"
-    }
-  }
-}
-```
-
-#### xml_attribute with custom name
-
-```json
-{
-  "name": "ARObject",
-  "attributes": {
-    "timestamp": {
-      "type": "DateTime",
-      "multiplicity": "0..1",
-      "kind": "aggr",
-      "decorator": "xml_attribute:T",
-      "is_ref": false,
-      "note": "Timestamp calculated by the user's tool environment"
-    }
-  }
-}
-```
-
-#### lang_prefix for language-specific content
-
-```json
-{
-  "name": "MultiLanguageParagraph",
-  "attributes": {
-    "l1": {
-      "type": "LParagraph",
-      "multiplicity": "*",
-      "kind": "aggr",
-      "decorator": "lang_prefix:L-1",
-      "is_ref": false,
-      "note": "Language-specific paragraphs"
-    }
-  }
-}
-```
-
-#### xml_attribute without parameter (auto-generated name)
-
-```json
-{
-  "name": "AUTOSAR",
-  "attributes": {
-    "schemaVersion": {
-      "type": "String",
-      "multiplicity": "1",
-      "kind": "aggr",
-      "decorator": "xml_attribute",
-      "is_ref": false,
-      "note": "AUTOSAR schema version"
-    }
-  }
-}
-```
-
-#### instance_ref for flattened structure
-
-```json
-{
-  "name": "AssemblySwConnector",
-  "attributes": {
-    "provider": {
-      "type": "PPortInCompositionInstanceRef",
-      "multiplicity": "0..1",
-      "kind": "iref",
-      "is_ref": true,
-      "decorator": "instance_ref:flatten=True",
-      "note": "implemented by: PPortInCompositionInstanceRef"
-    }
-  }
-}
-```
-
-#### instance_ref for non-flattened structure
-
-```json
-{
-  "name": "DelegationSwConnector",
-  "attributes": {
-    "innerPort": {
-      "type": "PortInCompositionTypeInstanceRef",
-      "multiplicity": "0..1",
-      "kind": "iref",
-      "is_ref": true,
-      "decorator": "instance_ref:flatten=False",
-      "note": "by: PortInCompositionTypeInstanceRef"
-    }
-  }
-}
-```
-
-#### kind-based decorators
-
-```json
-{
-  "name": "AUTOSAR",
-  "attributes": {
-    "schemaVersion": {
-      "type": "String",
-      "multiplicity": "1",
-      "kind": "xml_attribute",
-      "is_ref": false
-    }
-  }
-}
-```
-
-### Code Generator Processing
-
-The code generator processes decorator configurations in multiple stages:
-
-1. **Parse decorator field**: Extract decorator name and parameters
-2. **Generate import statements**: Add decorator imports to generated class
-3. **Generate properties**: Create property with decorator applied
-4. **Generate serialize methods**: Use decorator metadata for correct serialization
-5. **Generate deserialize methods**: Use decorator metadata for correct deserialization
-
-### Generated Code Example
-
-Given this JSON configuration:
-
-```json
-{
-  "decorator": "ref_conditional:FIBEX-ELEMENTS"
 }
 ```
 
@@ -1010,6 +1199,8 @@ class System(ARElement):
         """Deserialize XML element to System object."""
         # ... deserialize code that unwraps FIBEX-ELEMENT-REF-CONDITIONAL
 ```
+
+---
 
 ## Decorator Detection and Processing
 
@@ -1062,15 +1253,19 @@ def deserialize(cls, element: ET.Element) -> ARObject:
 
 Each decorator sets specific marker attributes that the serialization framework checks:
 
-| Decorator | Marker Attributes | Type |
-|-----------|-------------------|------|
-| `@xml_attribute` | `_is_xml_attribute`, `_xml_attr_name` | `bool`, `str` |
-| `@atp_variant()` | `_atp_variant` | `bool` |
-| `@lang_prefix(tag)` | `_lang_prefix`, `_lang_prefix_tag` | `bool`, `str` |
-| `@lang_abbr(attr)` | `_language_abbr`, `_xml_attr_name` | `bool`, `str` |
-| `@xml_element_name(tag)` | `_xml_element_name`, `_xml_tag` | `bool`, `str` |
-| `@ref_conditional(tag)` | `_is_ref_conditional`, `_xml_tag` | `bool`, `str` |
-| `@instance_ref(flatten, list_type)` | `_is_instance_ref`, `_flatten`, `_list_type` | `bool`, `bool`, `str` |
+| Decorator | Marker Attributes | Type | Decorator Order |
+|-----------|-------------------|------|-----------------|
+| `@xml_attribute` | `_is_xml_attribute`, `_xml_attr_name` | `bool`, `str` | Before `@property` |
+| `@atp_variant()` | `_atp_variant` | `bool` | Class-level (N/A) |
+| `@atp_mixed()` | `_atp_mixed` | `bool` | Class-level (N/A) |
+| `@lang_prefix(tag)` | `_lang_prefix`, `_lang_prefix_tag` | `bool`, `str` | After `@property` |
+| `@lang_abbr(attr)` | `_language_abbr`, `_xml_attr_name` | `bool`, `str` | After `@property` |
+| `@xml_element_name(tag)` | `_xml_element_name`, `_xml_tag` | `bool`, `str` | After `@property` |
+| `@ref_conditional(tag)` | `_is_ref_conditional`, `_xml_tag` | `bool`, `str` | After `@property` |
+| `@instance_ref(flatten, list_type)` | `_is_instance_ref`, `_flatten`, `_list_type` | `bool`, `bool`, `str` | After `@property` |
+| `@polymorphic(mapping)` | `_is_polymorphic`, `_polymorphic_mapping` | `bool`, `dict` | After `@property` |
+
+---
 
 ## Usage Guidelines
 
@@ -1080,13 +1275,16 @@ Each decorator sets specific marker attributes that the serialization framework 
 |----------|-----------|---------|
 | XML attribute needed | `@xml_attribute` | `<ELEMENT uuid="abc">` |
 | AUTOSAR atpVariation pattern (class-level) | `@atp_variant()` | SwDataDefProps with VARIANTS/CONDITIONAL wrappers |
+| AUTOSAR atpMixed pattern (class-level) | `@atp_mixed()` | SwRecordLayoutGroupContent with direct children |
 | AUTOSAR atpVariation pattern (reference lists) | `@ref_conditional("TAG")` | System.fibexElements with -REF-CONDITIONAL wrappers |
 | Instance reference (flattened) | `@instance_ref(flatten=True)` | AssemblySwConnector with <PROVIDER-IREF> |
 | Instance reference (non-flattened) | `@instance_ref(flatten=False)` | DelegationSwConnector with <INNER-PORT-IREF> |
+| Instance reference list (multi-wrapper) | `@instance_ref(flatten=True, list_type='multi')` | SwcToEcuMapping with multiple COMPONENT-IREF |
 | Language-specific content | `@lang_prefix("L-N")` | MultiLanguagePlainText with L-10 wrapper |
 | Language abbreviation attribute | `@lang_abbr("L")` | LanguageSpecific with L attribute |
 | Non-standard element name | `@xml_element_name("TAG")` | BswModuleDescription with PROVIDED-ENTRYS |
 | Multi-level nesting | `@xml_element_name("TAG1/TAG2/TAG3")` | ExecutableEntity with nested containers |
+| Polymorphic type with wrapper | `@polymorphic({"TAG": "BaseType"})` | ConstantSpecification with VALUE-SPEC wrapper |
 
 ### When NOT to Use Decorators
 
@@ -1098,20 +1296,38 @@ Each decorator sets specific marker attributes that the serialization framework 
 
 ### Decorator Order
 
-For property-based decorators, the order is critical:
+For property-based decorators, the order is critical and varies by decorator:
+
+**Decorators that come BEFORE `@property`**:
+- `@xml_attribute` - Must be first
 
 ```python
-# CORRECT order
-@xml_attribute  # 1. Mark as XML attribute
+# CORRECT order for @xml_attribute
+@xml_attribute  # 1. Mark as XML attribute (before @property)
 @property       # 2. Define as property
 def schema_version(self) -> str:
     return self._schema_version
+```
 
-# WRONG order (will not work)
-@property       # 1. Define as property
-@xml_attribute  # 2. Mark as XML attribute (too late)
-def schema_version(self) -> str:
-    return self._schema_version
+**Decorators that come AFTER `@property`**:
+- `@lang_prefix`
+- `@lang_abbr`
+- `@xml_element_name`
+- `@ref_conditional`
+- `@instance_ref`
+- `@polymorphic`
+
+```python
+# CORRECT order for other decorators
+@property
+@lang_prefix("L-10")  # After @property
+def l10(self) -> LPlainText:
+    return self._l10
+
+@property
+@ref_conditional("FIBEX-ELEMENTS")  # After @property
+def fibex_element_refs(self) -> list[ARRef]:
+    return self._fibex_element_refs
 ```
 
 ### Property Pattern
@@ -1132,6 +1348,8 @@ class MyClass(ARObject):
     def uuid(self, value: str) -> None:
         self._uuid = value
 ```
+
+---
 
 ## Testing Decorators
 
@@ -1161,6 +1379,18 @@ def test_atp_variant():
     assert variants is not None
     conditional = variants.find("SW-DATA-DEF-PROPS-CONDITIONAL")
     assert conditional is not None
+
+
+def test_atp_mixed():
+    """Test @atp_mixed decorator."""
+    obj = SwRecordLayoutGroupContent()
+    obj.sw_record_layout_ref = ARRef("...")
+    elem = obj.serialize("")
+
+    # Verify no wrapper - direct child
+    ref = elem.find("SW-RECORD-LAYOUT-REF")
+    assert ref is not None
+    # Should NOT have any wrapper element
 
 
 def test_lang_prefix():
@@ -1200,7 +1430,70 @@ def test_xml_element_name():
     assert provided is not None
     # Verify it's NOT the auto-generated name
     assert elem.find("PROVIDED-CLIENT-SERVER-ENTRYS") is None
+
+
+def test_ref_conditional():
+    """Test @ref_conditional decorator."""
+    obj = System()
+    ref = ARRef(dest="CAN-CLUSTER", value="/CanSystem/Network")
+    obj.fibex_element_refs = [ref]
+    elem = obj.serialize("")
+
+    # Verify container
+    container = elem.find("FIBEX-ELEMENTS")
+    assert container is not None
+    # Verify -REF-CONDITIONAL wrapper
+    conditional = container.find("FIBEX-ELEMENT-REF-CONDITIONAL")
+    assert conditional is not None
+    # Verify actual ref
+    fibex_ref = conditional.find("FIBEX-ELEMENT-REF")
+    assert fibex_ref is not None
+    assert fibex_ref.get("DEST") == "CAN-CLUSTER"
+
+
+def test_instance_ref_flattened():
+    """Test @instance_ref(flatten=True) decorator."""
+    obj = AssemblySwConnector()
+    obj.provider_iref = PPortInCompositionInstanceRef(...)
+    elem = obj.serialize("")
+
+    # Verify -IREF wrapper
+    iref = elem.find("PROVIDER-IREF")
+    assert iref is not None
+    # Verify children are flattened directly (no additional wrapper)
+    context = iref.find("CONTEXT-COMPONENT-REF")
+    assert context is not None
+
+
+def test_instance_ref_non_flattened():
+    """Test @instance_ref(flatten=False) decorator."""
+    obj = DelegationSwConnector()
+    obj.inner_port_iref = PortInCompositionTypeInstanceRef(...)
+    elem = obj.serialize("")
+
+    # Verify -IREF wrapper
+    iref = elem.find("INNER-PORT-IREF")
+    assert iref is not None
+    # Verify element is wrapped in its own tag
+    wrapped = iref.find("R-PORT-IN-COMPOSITION-INSTANCE-REF")
+    assert wrapped is not None
+
+
+def test_polymorphic():
+    """Test @polymorphic decorator."""
+    obj = ConstantSpecification()
+    obj.value_spec = NumericalValueSpecification()
+    elem = obj.serialize("")
+
+    # Verify wrapper
+    wrapper = elem.find("VALUE-SPEC")
+    assert wrapper is not None
+    # Verify concrete type inside wrapper
+    concrete = wrapper.find("NUMERICAL-VALUE-SPECIFICATION")
+    assert concrete is not None
 ```
+
+---
 
 ## Troubleshooting
 
@@ -1209,10 +1502,13 @@ def test_xml_element_name():
 **Symptoms**: Decorator is ignored, default behavior occurs
 
 **Solutions**:
-1. Check decorator order: `@decorator` must come **before** `@property`
+1. Check decorator order:
+   - `@xml_attribute` must come **before** `@property`
+   - `@lang_prefix`, `@lang_abbr`, `@xml_element_name`, `@ref_conditional`, `@instance_ref`, `@polymorphic` must come **after** `@property`
 2. Verify property pattern: Must have both getter and setter
 3. Check private backing field: Use underscore-prefixed private field
-4. Verify import: Import from `armodel.serialization.decorators`
+4. Verify import: Import from `armodel2.serialization.decorators`
+5. Check JSON configuration: Ensure decorator format is correct (`"decorator": "name:params"`)
 
 ### Issue: Wrong XML Tag Name
 
@@ -1221,18 +1517,32 @@ def test_xml_element_name():
 **Solutions**:
 1. For `@xml_attribute`: Check that attribute name is correct in XML
 2. For `@lang_prefix`: Verify the tag parameter matches XML (e.g., "L-10")
-3. For `@language_abbr`: Verify the attr parameter matches XML (e.g., "L")
+3. For `@lang_abbr`: Verify the attr parameter matches XML (e.g., "L")
 4. For `@xml_element_name`: Verify the tag parameter matches XML exactly
+5. For multi-level paths: Verify each level is separated by `/`
 
 ### Issue: Attribute Not Serializing
 
 **Symptoms**: Expected XML element/attribute is missing
 
 **Solutions**:
-1. Check attribute is not private (doesn't start with `_`)
+1. Check attribute is not private (doesn't start with `_` in the property name)
 2. Check value is not `None`
 3. Verify decorator is applied correctly
 4. Check for typos in decorator parameters
+5. Verify the JSON `kind` field is correct (e.g., "attribute" vs "ref" vs "iref")
+
+### Issue: Polymorphic Type Not Resolving
+
+**Symptoms**: Polymorphic attribute deserializes as None or wrong type
+
+**Solutions**:
+1. Verify the polymorphic mapping includes the correct wrapper tag
+2. Ensure the concrete type is registered in the ModelFactory
+3. Check that the concrete type is a subclass of the base type in the mapping
+4. Verify the JSON decorator format: `"polymorphic:TAG=BaseType"`
+
+---
 
 ## References
 
@@ -1241,3 +1551,4 @@ def test_xml_element_name():
 - **Serialization framework**: `docs/designs/serialization.md`
 - **Design rules**: `docs/designs/design_rules.md`
 - **Model design**: `docs/designs/model_design.md`
+- **JSON mappings**: `docs/json/packages/*.classes.json`

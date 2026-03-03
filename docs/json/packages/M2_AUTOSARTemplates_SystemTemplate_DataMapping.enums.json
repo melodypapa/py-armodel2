@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DataTypePolicyEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::DataMapping",
       "note": "This class lists the supported DataTypePolicies. Aggregated by ISignal.dataTypePolicy",
       "sources": [

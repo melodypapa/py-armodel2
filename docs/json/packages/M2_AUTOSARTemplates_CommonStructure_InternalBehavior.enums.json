@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "ReentrancyLevelEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::InternalBehavior",
       "note": "Specifies if and in which kinds of environments an entity is reentrant. Aggregated by ExecutableEntity.reentrancyLevel",
       "sources": [
@@ -33,6 +34,7 @@
     },
     {
       "name": "ApiPrincipleEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::InternalBehavior",
       "note": "This enumeration represents the ability to control the granularity of API generation. Aggregated by BswExclusiveAreaPolicy.apiPrinciple, SwcExclusiveAreaPolicy.apiPrinciple",
       "sources": [

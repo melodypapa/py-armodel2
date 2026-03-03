@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "ExecutionOrderConstraintTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::ExecutionOrderConstraint",
       "note": "Specifies the type of the executionOrderConstraintType for a ExecutionOrderConstraint. Aggregated by ExecutionOrderConstraint.executionOrderConstraintType",
       "sources": [
@@ -33,6 +34,7 @@
     },
     {
       "name": "LetDataExchangeParadigmEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::ExecutionOrderConstraint",
       "note": "Specifies the data exchange paradigm between ExecutableEntitys within a LET interval. Tags: atp.Status=draft Aggregated by EOCExecutableEntityRefGroup.letDataExchangeParadigm",
       "sources": [

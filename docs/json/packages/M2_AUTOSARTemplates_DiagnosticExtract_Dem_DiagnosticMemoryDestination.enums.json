@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticMemoryEntryStorageTriggerEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticMemoryDestination",
       "note": "Trigger types to allocate an event memory entry. Aggregated by DiagnosticMemoryDestination.memoryEntryStorageTrigger",
       "sources": [
@@ -33,6 +34,7 @@
     },
     {
       "name": "DiagnosticClearDtcLimitationEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticMemoryDestination",
       "note": "Scope of the DEM_ClearDTC Api. Aggregated by DiagnosticMemoryDestination.clearDtcLimitation",
       "sources": [
@@ -58,6 +60,7 @@
     },
     {
       "name": "DiagnosticEventDisplacementStrategyEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticMemoryDestination",
       "note": "Defines the displacement strategy. Aggregated by DiagnosticMemoryDestination.eventDisplacementStrategy",
       "sources": [
@@ -88,6 +91,7 @@
     },
     {
       "name": "DiagnosticTypeOfFreezeFrameRecordNumerationEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticMemoryDestination",
       "note": "FreezeFrame record numeration type Aggregated by DiagnosticMemoryDestination.typeOfFreezeFrameRecordNumeration",
       "sources": [

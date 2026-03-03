@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "LEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::LanguageDataModel",
       "note": "This denotes the possible language designators according to the two letter code of ISO 639. Aggregated by AdminData.language, LanguageSpecific.l",
       "sources": [

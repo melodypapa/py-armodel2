@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "GlobalTimeCrcSupportEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime",
       "note": "This enumeration is used to define whether and how CRC on the TX side shall be utilized. Aggregated by GlobalTimeCanMaster.crcSecured, GlobalTimeEthMaster.crcSecured, GlobalTimeFrMaster.crc Secured",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "GlobalTimeCrcValidationEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime",
       "note": "This enumeration provides values for the evaluation of the CRC Aggregated by GlobalTimeCanSlave.crcValidated, GlobalTimeEthSlave.crcValidated, GlobalTimeFrSlave.crc Validated",
       "sources": [
@@ -63,6 +65,7 @@
     },
     {
       "name": "GlobalTimeIcvSupportEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime",
       "note": "Defines whether an Integrity Check Value (ICV) shall be added to the sent time sync messages. Tags: atp.Status=candidate Aggregated by GlobalTimeMaster.icvSecured",
       "sources": [
@@ -88,6 +91,7 @@
     },
     {
       "name": "GlobalTimeIcvVerificationEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::GlobalTime",
       "note": "This enumeration is used to define how an Integrity Check Value (ICV) shall be handled at the receiver. Tags: atp.Status=candidate Aggregated by GlobalTimeSlave.icvVerification",
       "sources": [

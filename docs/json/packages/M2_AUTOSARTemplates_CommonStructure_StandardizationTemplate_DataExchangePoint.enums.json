@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DataExchangePointKind",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint",
       "note": "Specifies the kind of a DataExchangePoint. Aggregated by DataExchangePoint.kind",
       "sources": [
@@ -23,6 +24,7 @@
     },
     {
       "name": "SeverityEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint",
       "note": "Definition of severity levels. Aggregated by RestrictionWithSeverity.severity",
       "sources": [

@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DependencyUsageEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Implementation",
       "note": "Enumeration describing the process steps a dependency is valid in. Aggregated by DependencyOnArtifact.usage",
       "sources": [
@@ -43,6 +44,7 @@
     },
     {
       "name": "ProgramminglanguageEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Implementation",
       "note": "Programming language the implementation was created in. Aggregated by Implementation.programmingLanguage",
       "sources": [

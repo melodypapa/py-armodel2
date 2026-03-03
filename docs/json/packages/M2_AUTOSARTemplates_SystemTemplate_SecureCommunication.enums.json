@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "MacSecConfidentialityOffsetEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "This enum defines the MACsec capability options. Tags: atp.Status=candidate Aggregated by MacSecCryptoAlgoConfig.confidentialityOffset",
       "sources": [
@@ -33,6 +34,7 @@
     },
     {
       "name": "MacSecCapabilityEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "This enum defines the MACsec capability options. Tags: atp.Status=candidate Aggregated by MacSecCryptoAlgoConfig.capability",
       "sources": [
@@ -58,6 +60,7 @@
     },
     {
       "name": "MacSecRoleEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "This enum defines the MACsec Role options. Tags: atp.Status=candidate Aggregated by MacSecLocalKayProps.role",
       "sources": [
@@ -83,6 +86,7 @@
     },
     {
       "name": "MacSecFailPermissiveModeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "Behavior options of the Port Access Entity in case MACsec does not succeed. Tags: atp.Status=candidate Aggregated by MacSecProps.onFailPermissiveMode",
       "sources": [
@@ -118,6 +122,7 @@
     },
     {
       "name": "CryptoServiceKeyGenerationEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "This enumeration shall be taken to express the handling of a crypto key in terms of whether it is obtained from e.g. a diagnostic tester or whether it is created by derivation from a master key. Aggregated by CryptoServiceKey.keyGeneration",
       "sources": [
@@ -143,6 +148,7 @@
     },
     {
       "name": "TlsVersionEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "This meta-class has the ability to identify a specific version of the transport-layer security (TLS) protocol. Aggregated by TlsCryptoCipherSuite.version",
       "sources": [
@@ -168,6 +174,7 @@
     },
     {
       "name": "CryptoCertificateAlgorithmFamilyEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "This meta-class defies possible cryptographic algorithm families used to create public keys and signatures within the certificate. Aggregated by CryptoServiceCertificate.algorithmFamily",
       "sources": [
@@ -193,6 +200,7 @@
     },
     {
       "name": "CryptoCertificateFormatEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "This meta-class defines possible formats of cryptographic certificates. Aggregated by CryptoServiceCertificate.format",
       "sources": [
@@ -218,6 +226,7 @@
     },
     {
       "name": "IPsecIpProtocolEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "Definition of supported TcpIp protocols that are supported in Security Policy Database (SPD) entries in IPSec configurations. Aggregated by IPSecRule.ipProtocol",
       "sources": [
@@ -253,6 +262,7 @@
     },
     {
       "name": "IPsecPolicyEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "Defines the filter actions that are supported by IPsec. Aggregated by IPSecRule.policy",
       "sources": [
@@ -288,6 +298,7 @@
     },
     {
       "name": "IPsecModeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "This enumeration describes the supported IPSec modes. Aggregated by IPSecRule.mode",
       "sources": [
@@ -313,6 +324,7 @@
     },
     {
       "name": "IPsecHeaderTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "IPsec Header Type options Aggregated by IPSecRule.headerType",
       "sources": [
@@ -343,6 +355,7 @@
     },
     {
       "name": "IPsecDpdActionEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SecureCommunication",
       "note": "Potential Dead Peer Detection (Dpd) Actions Aggregated by IPSecConfigProps.dpdAction",
       "sources": [

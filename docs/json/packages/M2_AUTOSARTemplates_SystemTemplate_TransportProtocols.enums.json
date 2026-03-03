@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "FrArTpAckType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "note": "Type of Acknowledgement. Aggregated by FlexrayArTpChannel.ackType",
       "sources": [
@@ -33,6 +34,7 @@
     },
     {
       "name": "MaximumMessageLengthType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "note": "Type of Acknowledgement. Aggregated by FlexrayArTpChannel.maximumMessageLength",
       "sources": [
@@ -68,6 +70,7 @@
     },
     {
       "name": "CanTpAddressingFormatType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "note": "Declares which communication addressing mode is supported. Aggregated by CanTpConnection.addressingFormat",
       "sources": [
@@ -118,6 +121,7 @@
     },
     {
       "name": "NetworkTargetAddressType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::TransportProtocols",
       "note": "Network Target Address type (see ISO 15765-2). Aggregated by CanTpConnection.taType",
       "sources": [

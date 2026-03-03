@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "LatencyConstraintTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Timing::TimingConstraint::LatencyTimingConstraint",
       "note": "Specifies the latencyConstraintType for a LatencyTimingConstraint. Aggregated by LatencyTimingConstraint.latencyConstraintType",
       "sources": [

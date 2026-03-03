@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "NoteTypeEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::Note",
       "note": "This enumerator specifies the type of the note. It can be used to render a note label or even a note icon. Aggregated by Note.noteType",
       "sources": [

@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "BswEntryKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "note": "Denotes the mechanism by which the entry into the Bsw module shall be called. Aggregated by BswModuleEntry.bswEntryKind",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "BswExecutionContext",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "note": "Specifies the execution context required or guaranteed for the call associated with this service. Aggregated by BswModuleEntry.executionContext",
       "sources": [
@@ -58,6 +60,7 @@
     },
     {
       "name": "BswCallType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "note": "Denotes the mechanism by which the entry into the Bsw module shall be called. Aggregated by BswModuleEntry.callType",
       "sources": [
@@ -93,6 +96,7 @@
     },
     {
       "name": "BswEntryRelationshipEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "note": "Define the type of relationship between two BswModuleEntrys. Aggregated by BswEntryRelationship.bswEntryRelationshipType",
       "sources": [

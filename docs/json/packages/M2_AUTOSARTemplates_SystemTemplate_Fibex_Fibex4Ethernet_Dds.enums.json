@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DdsDurabilityKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "note": "Defines the DDS DURABILITY kind. Tags: atp.Status=candidate Aggregated by DdsDurability.durabilityKind",
       "sources": [
@@ -23,6 +24,7 @@
     },
     {
       "name": "DdsDurabilityServiceHistoryKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "note": "Defines the DDS DURABILITY_SERVICE HISTORY kind. Tags: atp.Status=candidate Aggregated by DdsDurabilityService.durabilityServiceHistoryKind",
       "sources": [
@@ -43,6 +45,7 @@
     },
     {
       "name": "DdsOwnershipKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "note": "Defines the DDS OWNERSHIP kind. Tags: atp.Status=candidate Aggregated by DdsOwnership.ownershipKind",
       "sources": [
@@ -63,6 +66,7 @@
     },
     {
       "name": "DdsLivenessKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "note": "Defines the DDS LIVELINESS kind. Tags: atp.Status=candidate Aggregated by DdsLiveliness.livenessKind",
       "sources": [
@@ -83,6 +87,7 @@
     },
     {
       "name": "DdsReliabilityKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "note": "See \"RELIABILITY\" chapter of DDS. Tags: atp.Status=candidate Aggregated by DdsReliability.reliabilityKind",
       "sources": [
@@ -103,6 +108,7 @@
     },
     {
       "name": "DdsDestinationOrderKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "note": "Defines the DDS DESTINATION_ORDER kind. Tags: atp.Status=candidate Aggregated by DdsDestinationOrder.destinationOrderKind",
       "sources": [
@@ -123,6 +129,7 @@
     },
     {
       "name": "DdsHistoryKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::Dds",
       "note": "Defines the DDS HISTORY kind. Tags: atp.Status=candidate Aggregated by DdsHistory.historyKind",
       "sources": [

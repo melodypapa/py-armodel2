@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "OsTaskPreemptabilityEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::RteEventToOsTaskMapping",
       "note": "Enumeration that defines the possible preemptability values for OsTask. Aggregated by OsTaskProxy.preemptability",
       "sources": [

@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DataFilterTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::Filter",
       "note": "This enum specifies the supported DataFilterTypes. Aggregated by DataFilter.dataFilterType",
       "sources": [

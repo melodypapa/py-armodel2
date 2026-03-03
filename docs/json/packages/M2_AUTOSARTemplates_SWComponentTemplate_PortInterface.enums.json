@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "ServerArgumentImplPolicyEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "note": "This defines how the argument type of the servers RunnableEntity is implemented. Aggregated by ArgumentDataPrototype.serverArgumentImplPolicy",
       "sources": [
@@ -23,6 +24,7 @@
     },
     {
       "name": "MappingDirectionEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "note": "Specifies the conversion direction for which the mapping is applicable. Aggregated by TextTableMapping.mappingDirection",
       "sources": [

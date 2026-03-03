@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "SwcToSwcOperationArgumentsDirectionEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SignalPaths",
       "note": "Direction addressed by this element. Aggregated by SwcToSwcOperationArguments.direction",
       "sources": [

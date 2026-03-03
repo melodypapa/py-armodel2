@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticLogicalOperatorEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::EnvironmentalCondition",
       "note": "Logical AND and OR operation (&&, ||) Aggregated by DiagnosticEnvConditionFormula.op",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "DiagnosticCompareTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::EnvironmentalCondition",
       "note": "Enumeration for the type of a comparison of values usually expressed by the following operators: ==, !=, <, <=, >, >= Aggregated by DiagnosticEnvCompareCondition.compareType",
       "sources": [

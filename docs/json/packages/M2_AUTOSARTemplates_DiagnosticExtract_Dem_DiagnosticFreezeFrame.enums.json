@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticRecordTriggerEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticFreezeFrame",
       "note": "Triggers to allocate an event memory entry. Aggregated by DiagnosticExtendedDataRecord.trigger, DiagnosticFreezeFrame.trigger",
       "sources": [

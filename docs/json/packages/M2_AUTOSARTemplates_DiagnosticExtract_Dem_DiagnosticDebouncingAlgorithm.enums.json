@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticDebounceBehaviorEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticDebouncingAlgorithm",
       "note": "Event debounce algorithm behavior options. Aggregated by DiagnosticDebounceAlgorithmProps.debounceBehavior",
       "sources": [

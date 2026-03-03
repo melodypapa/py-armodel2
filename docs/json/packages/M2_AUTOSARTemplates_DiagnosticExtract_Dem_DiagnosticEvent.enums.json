@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticClearEventAllowedBehaviorEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "note": "This enumeration defines the possible behavior for clear event allowed Aggregated by DiagnosticEvent.clearEventAllowedBehavior",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "DiagnosticEventClearAllowedEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "note": "Denotes whether clearing of events is allowed. Aggregated by DiagnosticEvent.eventClearAllowed",
       "sources": [
@@ -58,6 +60,7 @@
     },
     {
       "name": "DiagnosticEventKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "note": "Applicability of the diagnostic event. Aggregated by DiagnosticEvent.eventKind",
       "sources": [
@@ -83,6 +86,7 @@
     },
     {
       "name": "DiagnosticConnectedIndicatorBehaviorEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "note": "Behavior of the indicator. Aggregated by DiagnosticConnectedIndicator.behavior",
       "sources": [
@@ -123,6 +127,7 @@
     },
     {
       "name": "DiagnosticIumprKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticEvent",
       "note": "This enumeration is used to control the ratio calculation behavior. Aggregated by DiagnosticIumpr.ratioKind",
       "sources": [

@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "ModeErrorReactionPolicyEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ModeDeclaration",
       "note": "This represents the ability to specify the reaction on a mode error. Aggregated by ModeErrorBehavior.errorReactionPolicy",
       "sources": [
@@ -29,6 +30,7 @@
     },
     {
       "name": "ModeActivationKind",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::ModeDeclaration",
       "note": "Kind of mode switch condition used for activation of an event, as further described for each enumeration field. Aggregated by BswModeSwitchEvent.activation, SwcModeSwitchEvent.activation",
       "sources": [

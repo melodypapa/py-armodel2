@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "MemoryAllocationKeywordPolicyType",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::AuxillaryObjects",
       "note": "Enumeration to specify the name pattern of the Memory Allocation Keyword. Aggregated by SwAddrMethod.memoryAllocationKeywordPolicy",
       "sources": [
@@ -44,6 +45,7 @@
     },
     {
       "name": "MemorySectionType",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::AuxillaryObjects",
       "note": "Enumeration to specify the essential nature of the data which can be allocated in a common memory class by the means of the AUTOSAR Memory Mapping. Aggregated by SwAddrMethod.sectionType",
       "sources": [

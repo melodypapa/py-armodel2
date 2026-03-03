@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "FloatEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::OasisExchangeTable",
       "note": "This enumerator specifies the policy how an objects floats on a page. Aggregated by MultiLanguageVerbatim.float, Table.float",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "FrameEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::OasisExchangeTable",
       "note": "This enumerator specifies the policy, where to place a frame border around the table. Aggregated by MlFigure.frame, Table.frame",
       "sources": [
@@ -73,6 +75,7 @@
     },
     {
       "name": "AlignEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::OasisExchangeTable",
       "note": "This enumerator specifies horizontal alignment. Aggregated by Colspec.align, Entry.align, Tgroup.align",
       "sources": [
@@ -103,6 +106,7 @@
     },
     {
       "name": "ValignEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::OasisExchangeTable",
       "note": "This enumerator specifies vertical alignment. Aggregated by Entry.valign, Row.valign, Tbody.valign",
       "sources": [
@@ -133,6 +137,7 @@
     },
     {
       "name": "PgwideEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::BlockElements::OasisExchangeTable",
       "note": "This enumerator specifies, if the table shall be rendered across the entire page, even if it is placed in side-head layouts. Aggregated by MlFigure.pgwide, MultiLanguageVerbatim.pgwide",
       "sources": [

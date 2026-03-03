@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticOccurrenceCounterProcessingEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticCommonProps",
       "note": "The occurrence counter triggering types. Aggregated by DiagnosticCommonProps.occurrenceCounterProcessing",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "DiagnosticEventCombinationBehaviorEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticCommonProps",
       "note": "Select type of Event Combination support Aggregated by DiagnosticCommonProps.typeOfEventCombinationSupported",
       "sources": [
@@ -53,6 +55,7 @@
     },
     {
       "name": "DiagnosticEventCombinationReportingBehaviorEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticCommonProps",
       "note": "Select reporting format of events. Applicable only for Event Combination on Retrieval. Aggregated by DiagnosticCommonProps.eventCombinationReportingBehavior",
       "sources": [

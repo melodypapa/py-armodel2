@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticResponseToEcuResetEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::EcuReset",
       "note": "This enumeration controls the point in time in which a response to the reception of an EcuReset service shall be generated. Aggregated by DiagnosticEcuResetClass.respondToReset",
       "sources": [

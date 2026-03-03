@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "RptEnablerImplTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport::RptSupport",
       "note": "Describes the required / implemented usage of enabler flags for data access in the code. Aggregated by RptImplPolicy.rptEnablerImplType, RptProfile.stimEnabler",
       "sources": [
@@ -44,6 +45,7 @@
     },
     {
       "name": "RptPreparationEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport::RptSupport",
       "note": "Determines the RP preparation level for access to VariableDataPrototypes within the generated RTE implementation. Aggregated by RptImplPolicy.rptPreparationLevel",
       "sources": [
@@ -90,6 +92,7 @@
     },
     {
       "name": "RptExecutionControlEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport::RptSupport",
       "note": "Determines rapid prototyping preparation of an ExecutableEntity. Aggregated by RptExecutableEntityProperties.rptExecutionControl",
       "sources": [
@@ -121,6 +124,7 @@
     },
     {
       "name": "RptAccessEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport::RptSupport",
       "note": "Determines the access rights to a data object with respect to rapid prototyping. Aggregated by RptSwPrototypingAccess.rptHookAccess, RptSwPrototypingAccess.rptReadAccess, RptSw PrototypingAccess.rptWriteAccess",
       "sources": [

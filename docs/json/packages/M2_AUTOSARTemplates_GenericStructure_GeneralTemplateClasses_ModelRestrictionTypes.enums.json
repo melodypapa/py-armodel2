@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "FullBindingTimeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ModelRestrictionTypes",
       "note": "This enumeration specifies the BindingTimes that can be used in AUTOSAR models. Aggregated by AbstractVariationRestriction.validBindingTime (cid:53) 104 of 535 Document ID 202: AUTOSAR_FO_TPS_GenericStructureTemplate Generic Structure Template AUTOSAR FO R23-11 (cid:52)",
       "sources": [

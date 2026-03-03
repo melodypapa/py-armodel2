@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "AdditionalBindingTimeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "note": "This enumeration specifies the additional binding times applicable for vh.latestBindingTime of variation points.",
       "sources": [
@@ -40,6 +41,7 @@
     },
     {
       "name": "BindingTimeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::GenericStructure::VariantHandling",
       "note": "This enumerator specifies the applicable binding times for the pre build variation points. Aggregated by AttributeValueVariationPoint.bindingTime, ConditionByFormula.bindingTime, FMFeature.maximum IntendedBindingTime, FMFeature.minimumIntendedBindingTime, FMFeatureSelection.maximum SelectedBindingTime, FMFeatureSelection.minimumSelectedBindingTime",
       "sources": [

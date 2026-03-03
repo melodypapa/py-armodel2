@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "RamBlockStatusControlEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::NvBlockComponent",
       "note": "This enumeration type defines options for how the management of the ramBlock status is controlled. Aggregated by NvBlockNeeds.ramBlockStatusControl",
       "sources": [

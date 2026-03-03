@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "SwServiceImplPolicyEnum",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::ServiceProcessTask",
       "note": "This specifies the legal values for the implementation policies for services (in AUTOSAR: BswModule Entry-s). Aggregated by BswModuleEntry.swServiceImplPolicy",
       "sources": [

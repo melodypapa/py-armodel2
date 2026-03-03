@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DefaultValueApplicationStrategyEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::CommonStructure::StandardizationTemplate::DataExchangePoint::Data",
       "note": "Enumeration that describes how to handle AUTOSAR defined default values. If the strategy requires application of the AUTOSAR defined default value, then the value shall be added before further validation or processing. Aggregated by PrimitiveAttributeTailoring.defaultValueHandling",
       "sources": [

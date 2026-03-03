@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "LinChecksumType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "note": "Use of classic or enhanced checksum is managed by the master node and it is determined per frame identifier; Aggregated by LinFrameTriggering.linChecksum",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "RunMode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "note": "The schedule table can be executed in two different modes. Aggregated by LinScheduleTable.runMode",
       "sources": [
@@ -53,6 +55,7 @@
     },
     {
       "name": "ResumePosition",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Lin::LinCommunication",
       "note": "Defines, where a schedule table shall be proceeded in case if it has been interrupted by a run-once table or MRF/SRF. Aggregated by LinScheduleTable.resumePosition",
       "sources": [

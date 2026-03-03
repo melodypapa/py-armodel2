@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "NmCoordinatorRoleEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "note": "Supported NmCoordinator roles. Aggregated by NmNode.nmCoordinatorRole",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "FlexrayNmScheduleVariant",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "note": "FrNm schedule variant according to FrNm SWS. Aggregated by FlexrayNmClusterCoupling.nmScheduleVariant",
       "sources": [
@@ -78,6 +80,7 @@
     },
     {
       "name": "J1939NmAddressConfigurationCapabilityEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::NetworkManagement",
       "note": "Defines the Address Configuration Capability options for the J1939NmNode. Aggregated by J1939NmNode.addressConfigurationCapability",
       "sources": [

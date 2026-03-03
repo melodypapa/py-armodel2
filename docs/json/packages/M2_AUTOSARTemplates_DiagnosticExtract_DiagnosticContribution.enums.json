@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticObdSupportEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::DiagnosticContribution",
       "note": "This meta-class represents the ability to model the roles in which a participation in OBD is foreseen. At the moment, this applies exclusively to the Dem. However, future extension of the Dcm may require this setting as well. Aggregated by DiagnosticEcuInstanceProps.obdSupport",
       "sources": [

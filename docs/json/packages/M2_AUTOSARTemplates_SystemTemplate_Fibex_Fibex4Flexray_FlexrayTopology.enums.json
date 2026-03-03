@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "FlexrayChannelName",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Flexray::FlexrayTopology",
       "note": "Name of the channel. Aggregated by FlexrayPhysicalChannel.channelName",
       "sources": [

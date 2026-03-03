@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticOperationCycleTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dem::DiagnosticOperationCycle",
       "note": "Operation cycles types used to identify certain Operation cycles with a certain semantics. Aggregated by DiagnosticOperationCycle.type",
       "sources": [

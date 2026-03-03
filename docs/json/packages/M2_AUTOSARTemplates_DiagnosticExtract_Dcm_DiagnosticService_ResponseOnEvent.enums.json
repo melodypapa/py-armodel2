@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticEventWindowTimeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::ResponseOnEvent",
       "note": "This represents the ability to define the semantics of the event window. Aggregated by DiagnosticEventWindow.eventWindowTime",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "DiagnosticResponseOnEventActionEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Dcm::DiagnosticService::ResponseOnEvent",
       "note": "This meta-class has the ability to define sub-functions of the UDS service ResponseOnEvent. Aggregated by DiagnosticResponseOnEvent.responseOnEventAction",
       "sources": [

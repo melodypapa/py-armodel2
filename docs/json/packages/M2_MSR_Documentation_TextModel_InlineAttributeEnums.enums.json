@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "EEnumFont",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineAttributeEnums",
       "note": "This specifies the possible kind of fonts to be used for emphasis. Aggregated by EmphasisText.font",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "EEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineAttributeEnums",
       "note": "This specifies the possible kinds of emphasis as proposal how to render it on paper or screen. Note that it would have been better to use plain, weak (italic), strong (bold), veryStrong (bolditalic) ... But users complained about this. Aggregated by EmphasisText.type",
       "sources": [
@@ -63,6 +65,7 @@
     },
     {
       "name": "ResolutionPolicyEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineAttributeEnums",
       "note": "This specifies if the content of the xref element follow a dedicated resolution policy. Aggregated by Xref.resolutionPolicy",
       "sources": [
@@ -88,6 +91,7 @@
     },
     {
       "name": "ShowContentEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineAttributeEnums",
       "note": "This specifies if the content of the xref element shall be rendered. Aggregated by Xref.showContent (cid:53) 322 of 535 Document ID 202: AUTOSAR_FO_TPS_GenericStructureTemplate Generic Structure Template AUTOSAR FO R23-11 (cid:52)",
       "sources": [
@@ -113,6 +117,7 @@
     },
     {
       "name": "ShowResourceAliasNameEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineAttributeEnums",
       "note": "This enumerator specifies if the alias names of the reference target shall be rendered with the xref. Aggregated by Xref.showResourceAliasName",
       "sources": [
@@ -138,6 +143,7 @@
     },
     {
       "name": "ShowResourceCategoryEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineAttributeEnums",
       "note": "This enumerator specifies if the category of the reference target shall be rendered with the xref. Aggregated by Xref.showResourceCategory",
       "sources": [
@@ -163,6 +169,7 @@
     },
     {
       "name": "ShowResourceLongNameEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineAttributeEnums",
       "note": "This enumerator specifies if the long name of the reference target shall be rendered with the xref. Aggregated by Xref.showResourceLongName",
       "sources": [
@@ -188,6 +195,7 @@
     },
     {
       "name": "ShowResourceNumberEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineAttributeEnums",
       "note": "This enumerator specifies if the number (e.g. chapter number) of the reference target shall be rendered with the xref. Aggregated by Xref.showResourceNumber",
       "sources": [
@@ -213,6 +221,7 @@
     },
     {
       "name": "ShowResourcePageEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineAttributeEnums",
       "note": "This enumerator specifies if the page number of the reference target shall be rendered with the xref. Aggregated by Xref.showResourcePage",
       "sources": [
@@ -238,6 +247,7 @@
     },
     {
       "name": "ShowResourceShortNameEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineAttributeEnums",
       "note": "This enumerator specifies if the short name of the reference target shall be rendered with the xref. Aggregated by Xref.showResourceShortName",
       "sources": [
@@ -263,6 +273,7 @@
     },
     {
       "name": "ShowResourceTypeEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineAttributeEnums",
       "note": "This enumerator specifies if the type (e.g. derived from the class) of the reference target shall be rendered with the xref. Aggregated by Xref.showResourceType",
       "sources": [
@@ -288,6 +299,7 @@
     },
     {
       "name": "ShowSeeEnum",
+      "maturity": "draft",
       "package": "M2::MSR::Documentation::TextModel::InlineAttributeEnums",
       "note": "This enumerator specifies if the word \"see\" shall be rendered before the xref. Aggregated by Xref.showSee",
       "sources": [

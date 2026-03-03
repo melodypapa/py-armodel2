@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "TtcanTriggerType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ttcan::TtcanCommunication",
       "note": "This type lists all trigger types for a time window. Aggregated by TtcanAbsolutelyScheduledTiming.trigger",
       "sources": [

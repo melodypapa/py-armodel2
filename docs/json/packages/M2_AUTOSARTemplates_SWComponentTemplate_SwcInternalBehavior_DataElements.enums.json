@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "VariableAccessScopeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements",
       "note": "This enumeration defines scopes for communication. Aggregated by VariableAccess.scope",
       "sources": [

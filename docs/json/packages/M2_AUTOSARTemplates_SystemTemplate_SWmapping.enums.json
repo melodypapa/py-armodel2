@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "MappingScopeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::SWmapping",
       "note": "Defines the scope for the mapping constraints. Aggregated by ComponentClustering.mappingScope, ComponentSeparation.mappingScope",
       "sources": [

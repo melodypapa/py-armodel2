@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DataTransformationKindEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "note": "This enumeration contributes to the definition of the scope of the DataTransformation. Aggregated by DataTransformation.dataTransformationKind",
       "sources": [
@@ -33,6 +34,7 @@
     },
     {
       "name": "TransformerClassEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "note": "Specifies the transformer class of a transformer. Aggregated by TransformationTechnology.transformerClass",
       "sources": [
@@ -74,6 +76,7 @@
     },
     {
       "name": "CSTransformerErrorReactionEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "note": "Possible kinds of error reaction in case of a hard transformer error. Aggregated by TransformationISignalProps.csErrorReaction",
       "sources": [
@@ -99,6 +102,7 @@
     },
     {
       "name": "SOMEIPMessageTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "note": "Depending on the style of the communication different message types shall be set in the header of a SOME/IP message. Aggregated by SOMEIPTransformationISignalProps.messageType",
       "sources": [
@@ -134,6 +138,7 @@
     },
     {
       "name": "DataIdModeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "note": "Supported inclusion modes to include the implicit two-byte Data ID in the one-byte CRC. Aggregated by E2EProfileConfiguration.dataIdMode, EndToEndTransformationDescription.dataIdMode",
       "sources": [
@@ -169,6 +174,7 @@
     },
     {
       "name": "EndToEndProfileBehaviorEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Transformer",
       "note": "Behavior of the check functionality Aggregated by EndToEndTransformationDescription.profileBehavior",
       "sources": [

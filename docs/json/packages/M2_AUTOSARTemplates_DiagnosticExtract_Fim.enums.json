@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "DiagnosticInhibitionMaskEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::Fim",
       "note": "This meta-class represents the ability to define different kinds of inhibition mask behavior. Aggregated by DiagnosticFunctionIdentifierInhibit.inhibitionMask",
       "sources": [

@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "HandleTerminationAndRestartEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior",
       "note": "Controls the behavior of an AtomicSwComponentType with respect to stop and restart.",
       "sources": [

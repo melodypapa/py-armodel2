@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "CouplingElementEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Identifies the Coupling type. Aggregated by CouplingElement.couplingType",
       "sources": [
@@ -33,6 +34,7 @@
     },
     {
       "name": "EthernetConnectionNegotiationEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Specifies connection negotiation types of Ethernet transceiver links. Aggregated by CouplingPort.connectionNegotiationBehavior",
       "sources": [
@@ -63,6 +65,7 @@
     },
     {
       "name": "EthernetMacLayerTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Specifies MAC (Media Access Control) Layer types. Aggregated by CouplingPort.macLayerType, EthernetCommunicationController.macLayerType",
       "sources": [
@@ -93,6 +96,7 @@
     },
     {
       "name": "EthernetPhysicalLayerTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Specifies physical layer types of Ethernet transceiver links. Aggregated by CouplingPort.physicalLayerType",
       "sources": [
@@ -138,6 +142,7 @@
     },
     {
       "name": "EthernetSwitchVlanIngressTagEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Defines the possible tagging behavior at an ingress port. Aggregated by CouplingPort.receiveActivity",
       "sources": [
@@ -163,6 +168,7 @@
     },
     {
       "name": "EthernetCouplingPortSchedulerEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Defines the schedule algorithm to be used. Aggregated by CouplingPortScheduler.portScheduler",
       "sources": [
@@ -193,6 +199,7 @@
     },
     {
       "name": "CouplingPortRatePolicyActionEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Defines the action to be performed when a rate policy is violated. Aggregated by CouplingPortRatePolicy.policyAction",
       "sources": [
@@ -218,6 +225,7 @@
     },
     {
       "name": "EthernetSwitchVlanEgressTaggingEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Defines the VLAN tag sending behavior. Aggregated by VlanMembership.sendActivity",
       "sources": [
@@ -238,6 +246,7 @@
     },
     {
       "name": "SwitchStreamFilterActionPortModificationEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Definition how the SwitchStreamFilterActionPortModification is applied. Tags: atp.Status=candidate Aggregated by SwitchStreamFilterActionDestPortModification.modification",
       "sources": [
@@ -263,6 +272,7 @@
     },
     {
       "name": "FlowMeteringColorModeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Defines whether Flow Metering color-aware or color-blind mode is used. Tags: atp.Status=candidate Aggregated by SwitchFlowMeteringEntry.colorMode",
       "sources": [
@@ -298,6 +308,7 @@
     },
     {
       "name": "Ipv4AddressSourceEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Defines how the node obtains its IPv4-Address. Aggregated by Ipv4Configuration.ipv4AddressSource",
       "sources": [
@@ -333,6 +344,7 @@
     },
     {
       "name": "IpAddressKeepEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Defines the behavior after a dynamic IP address has been assigned. Aggregated by Ipv4Configuration.ipAddressKeepBehavior, Ipv6Configuration.ipAddressKeepBehavior (cid:53) 465 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 (cid:52)",
       "sources": [
@@ -358,6 +370,7 @@
     },
     {
       "name": "Ipv6AddressSourceEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Defines how the node obtains its IPv6-Address. Aggregated by Ipv6Configuration.ipv6AddressSource",
       "sources": [
@@ -398,6 +411,7 @@
     },
     {
       "name": "TimeSyncTechnologyEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Timesynchronization. Server/Client configuration. Aggregated by TimeSyncClientConfiguration.timeSyncTechnology, TimeSyncServerConfiguration.timeSync Technology",
       "sources": [
@@ -433,6 +447,7 @@
     },
     {
       "name": "DoIpEntityRoleEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "DoIP role a network-node has. Aggregated by DoIpEntity.doIpEntityRole",
       "sources": [
@@ -463,6 +478,7 @@
     },
     {
       "name": "CouplingPortRoleEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Ethernet::EthernetTopology",
       "note": "Defines the role a CouplingPort takes in the context of a CouplingElement. Aggregated by CouplingPort.couplingPortRole",
       "sources": [

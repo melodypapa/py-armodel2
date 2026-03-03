@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "SwCalibrationAccessEnum",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "note": "Determines the access rights to a data object w.r.t. measurement and calibration. Aggregated by ModeDeclarationGroupPrototype.swCalibrationAccess, SwCalprmAxis.swCalibrationAccess, SwData DefProps.swCalibrationAccess",
       "sources": [
@@ -39,6 +40,7 @@
     },
     {
       "name": "SwImplPolicyEnum",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "note": "Specifies the implementation strategy with respect to consistency mechanisms of variables. Aggregated by BswInternalTriggeringPoint.swImplPolicy, InternalTriggeringPoint.swImplPolicy, SwDataDefProps.sw ImplPolicy, Trigger.swImplPolicy",
       "sources": [
@@ -101,6 +103,7 @@
     },
     {
       "name": "DisplayPresentationEnum",
+      "maturity": "draft",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "note": "This meta-class represents the ability to provide values for controlling the presentation of data within measurement and calibration tools. Aggregated by SwDataDefProps.displayPresentation",
       "sources": [

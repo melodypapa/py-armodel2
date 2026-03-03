@@ -3,6 +3,7 @@
   "enumerations": [
     {
       "name": "IPduSignalProcessingEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "note": "Definition of signal processing modes. Aggregated by IPduPort.iPduSignalProcessing",
       "sources": [
@@ -28,6 +29,7 @@
     },
     {
       "name": "ISignalTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "note": "This enumeration defines ISignal types that are used for derivation of the ComSignalType in the COM configuration. Aggregated by ISignal.iSignalType",
       "sources": [
@@ -53,6 +55,7 @@
     },
     {
       "name": "TransferPropertyEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "note": "Transfer Properties of a Signal. Aggregated by ISignalToIPduMapping.transferProperty",
       "sources": [
@@ -98,6 +101,7 @@
     },
     {
       "name": "DiagPduType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "note": "Used to distinguish a diagnostic request from a response. Aggregated by DcmIPdu.diagPduType",
       "sources": [
@@ -112,6 +116,7 @@
     },
     {
       "name": "CommunicationDirectionType",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "note": "Describes the communication direction. Aggregated by CommConnectorPort.communicationDirection, IEEE1722TpConnection.communicationDirection, IP SecRule.direction, ISignalIPduGroup.communicationDirection",
       "sources": [
@@ -137,6 +142,7 @@
     },
     {
       "name": "ContainerIPduTriggerEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "note": "Defines when the transmission of the ContainerIPdu shall be requested. Aggregated by ContainerIPdu.containerTrigger",
       "sources": [
@@ -162,6 +168,7 @@
     },
     {
       "name": "ContainerIPduHeaderTypeEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "note": "Is used to define the header type and size of ContainerIPdus. The header size includes the header id and the length information. Aggregated by ContainerIPdu.headerType",
       "sources": [
@@ -192,6 +199,7 @@
     },
     {
       "name": "RxAcceptContainedIPduEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "note": "Defines whether this ContainerIPdu has a fixed set of containedIPdus assigned for reception. Aggregated by ContainerIPdu.rxAcceptContainedIPdu",
       "sources": [
@@ -217,6 +225,7 @@
     },
     {
       "name": "ContainedIPduCollectionSemanticsEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "note": "Defines the collection semantics for ContainedIPdus. Aggregated by ContainedIPduProps.collectionSemantics",
       "sources": [
@@ -242,6 +251,7 @@
     },
     {
       "name": "SecuredPduHeaderEnum",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "note": "Defines the header which will be inserted into the SecuredIPdu. Aggregated by SecuredIPdu.useSecuredPduHeader",
       "sources": [
@@ -282,6 +292,7 @@
     },
     {
       "name": "TriggerMode",
+      "maturity": "draft",
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreCommunication",
       "note": "IPduM can be configured to send a transmission request for the new multiplexed I-PDU to the PDU-Router because of conditions/ modes. Aggregated by MultiplexedIPdu.triggerMode",
       "sources": [
