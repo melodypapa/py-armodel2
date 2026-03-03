@@ -2773,6 +2773,7 @@ def generate_enum_code(enum_def: Dict[str, Any], json_file_path: str = "") -> st
     enum_name = enum_def["name"]
     literals = enum_def.get("literals", [])
     sources = enum_def.get("sources", [])
+    decorator = enum_def.get("decorator")
 
     # Build docstring with PDF references and JSON file path
     docstring_lines = [f"AUTOSAR {enum_name} enumeration."]
@@ -2793,14 +2794,29 @@ def generate_enum_code(enum_def: Dict[str, Any], json_file_path: str = "") -> st
 
     docstring = "\n".join(docstring_lines)
 
+    # Determine if we need ET import (only for skip_validation decorator)
+    needs_et_import = decorator == "skip_validation"
+
     # Generate enum code as a class inheriting from AREnum only
     # The serialize() and deserialize() methods are inherited from AREnum
-    code = f'''"""{docstring}"""
+    # unless skip_validation decorator is present
+    if needs_et_import:
+        code = f'''"""{docstring}"""
+
+from __future__ import annotations
+import xml.etree.ElementTree as ET
+
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
+'''
+    else:
+        code = f'''"""{docstring}"""
 
 from __future__ import annotations
 
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
+'''
 
+    code += f'''
 class {enum_name}(AREnum):
     """AUTOSAR {enum_name} enumeration.
 
@@ -2847,6 +2863,35 @@ class {enum_name}(AREnum):
         # Convert enum member name to UPPER_SNAKE_CASE with underscores between words
         literal_name = to_snake_case(literal_value).upper()
         code += f'    {literal_name} = "{autosar_xml_value}"\n'
+
+    # Add custom deserialize() method if skip_validation decorator is present
+    if decorator == "skip_validation":
+        code += f'''
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "{enum_name}":
+        """Deserialize XML element to {enum_name}.
+
+        Note: Validation is skipped for this enum to support
+        legacy values not in the current AUTOSAR specification.
+        Decorator: skip_validation
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized {enum_name} instance
+
+        Raises:
+            ValueError: If element is empty
+        """
+        if element.text:
+            text = element.text.strip()
+            # Use object.__new__ to bypass Enum validation
+            obj = object.__new__(cls)
+            obj._value_ = text
+            return obj
+        raise ValueError(f"Cannot deserialize {{cls.__name__}} from empty element")
+'''
 
     return code
 
