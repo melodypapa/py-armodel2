@@ -479,7 +479,7 @@
     },
     {
       "name": "DiagnosticDataElement",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::DiagnosticExtract::CommonDiagnostics",
       "is_abstract": false,
       "atp_type": null,
@@ -514,14 +514,14 @@
         }
       ],
       "attributes": {
-        "arraySize": {
+        "arraySizeSemantics": {
           "type": "ArraySizeSemanticsEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute controls the meaning of the value of the array size."
         },
-        "maxNumberOf": {
+        "maxNumberOfElements": {
           "type": "PositiveInteger",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -535,10 +535,10 @@
           "is_ref": false,
           "note": "Size in bytes of scaling information for the DiagnosticData used with DiagnosticReadScalingDataBy"
         },
-        "swDataDef": {
+        "swDataDefProps": {
           "type": "SwDataDefProps",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This property allows to specify data definition properties"
         }

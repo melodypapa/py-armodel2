@@ -26,6 +26,8 @@ class BswExecutionContext(AREnum):
         """
         self._value_ = value
 
-    HOOKINTERRUPT_CAT1INTERRUPT_CAT2 = "HOOKINTERRUPT-CAT1INTERRUPT-CAT2"
+    HOOK = "HOOK"
+    INTERRUPT_CAT1 = "INTERRUPT-CAT-1"
+    INTERRUPT_CAT2 = "INTERRUPT-CAT-2"
     TASK = "TASK"
     UNSPECIFIED = "UNSPECIFIED"

@@ -22,24 +22,14 @@
       ],
       "literals": [
         {
-          "name": "addrMethodShort",
-          "index": null,
-          "description": "The MemorySection shortNames of referring MemorySections and therefore the belonging Memory"
-        },
-        {
-          "name": "Name",
+          "name": "addrMethodShortName",
           "index": 0,
-          "description": "Allocation Keywords in the code are build with the shortName of the SwAddrMethod. This is the default value if the attribute does not exist.<br>Tags: atp.EnumerationLiteralIndex=0"
+          "description": "The MemorySection shortNames of referring MemorySections and therefore the belonging Memory Allocation Keywords in the code are build with the shortName of the SwAddrMethod and a variable alignment postfix."
         },
         {
-          "name": "addrMethodShort",
-          "index": null,
-          "description": "The MemorySection shortNames of referring MemorySections and therefore the belonging Memory"
-        },
-        {
-          "name": "NameAndAlignment",
+          "name": "addrMethodShortNameAndAlignment",
           "index": 1,
-          "description": "Allocation Keywords in the code are build with the shortName of the SwAddrMethod and a variable alignment postfix. Thereby the alignment postfix needs to be consistent with the alignment attribute of the related<br>Tags: atp.EnumerationLiteralIndex=1"
+          "description": "The MemorySection shortNames of referring MemorySections and therefore the belonging Memory Allocation Keywords in the code are build with the shortName of the SwAddrMethod and a variable alignment postfix."
         }
       ]
     },
@@ -89,7 +79,7 @@
           "description": "To be used for global or static constants.<br>Tags: atp.EnumerationLiteralIndex=6"
         },
         {
-          "name": "excludeFromFlashtimein",
+          "name": "excludeFromFlash",
           "index": 7,
           "description": "This memory section is reserved for \"virtual parameters\" that are taken for computing the values of Virtual parameters, on the other hand, are not allocated in the ECU memory. Virtual parameters exist<br>Tags: atp.EnumerationLiteralIndex=7"
         },

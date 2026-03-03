@@ -46,25 +46,25 @@ class DiagnosticDataElement(Identifiable):
     _XML_TAG = "DIAGNOSTIC-DATA-ELEMENT"
 
 
-    array_size: Optional[ArraySizeSemanticsEnum]
-    max_number_of: Optional[PositiveInteger]
+    array_size_semantics: Optional[ArraySizeSemanticsEnum]
+    max_number_of_elements: Optional[PositiveInteger]
     scaling_info_size: Optional[PositiveInteger]
-    sw_data_def: Optional[SwDataDefProps]
+    sw_data_def_props: Optional[SwDataDefProps]
     _DESERIALIZE_DISPATCH = {
-        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(elem)),
-        "MAX-NUMBER-OF": lambda obj, elem: setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "ARRAY-SIZE-SEMANTICS": lambda obj, elem: setattr(obj, "array_size_semantics", ArraySizeSemanticsEnum.deserialize(elem)),
+        "MAX-NUMBER-OF-ELEMENTS": lambda obj, elem: setattr(obj, "max_number_of_elements", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "SCALING-INFO-SIZE": lambda obj, elem: setattr(obj, "scaling_info_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "SW-DATA-DEF-PROPS": lambda obj, elem: setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
     }
 
 
     def __init__(self) -> None:
         """Initialize DiagnosticDataElement."""
         super().__init__()
-        self.array_size: Optional[ArraySizeSemanticsEnum] = None
-        self.max_number_of: Optional[PositiveInteger] = None
+        self.array_size_semantics: Optional[ArraySizeSemanticsEnum] = None
+        self.max_number_of_elements: Optional[PositiveInteger] = None
         self.scaling_info_size: Optional[PositiveInteger] = None
-        self.sw_data_def: Optional[SwDataDefProps] = None
+        self.sw_data_def_props: Optional[SwDataDefProps] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDataElement to XML element.
@@ -89,12 +89,12 @@ class DiagnosticDataElement(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize array_size
-        if self.array_size is not None:
-            serialized = SerializationHelper.serialize_item(self.array_size, "ArraySizeSemanticsEnum")
+        # Serialize array_size_semantics
+        if self.array_size_semantics is not None:
+            serialized = SerializationHelper.serialize_item(self.array_size_semantics, "ArraySizeSemanticsEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-SIZE")
+                wrapped = ET.Element("ARRAY-SIZE-SEMANTICS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -103,12 +103,12 @@ class DiagnosticDataElement(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize max_number_of
-        if self.max_number_of is not None:
-            serialized = SerializationHelper.serialize_item(self.max_number_of, "PositiveInteger")
+        # Serialize max_number_of_elements
+        if self.max_number_of_elements is not None:
+            serialized = SerializationHelper.serialize_item(self.max_number_of_elements, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MAX-NUMBER-OF")
+                wrapped = ET.Element("MAX-NUMBER-OF-ELEMENTS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -131,12 +131,12 @@ class DiagnosticDataElement(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_data_def
-        if self.sw_data_def is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
+        # Serialize sw_data_def_props
+        if self.sw_data_def_props is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_data_def_props, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-DATA-DEF")
+                wrapped = ET.Element("SW-DATA-DEF-PROPS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -164,14 +164,14 @@ class DiagnosticDataElement(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ARRAY-SIZE":
-                setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(child))
-            elif tag == "MAX-NUMBER-OF":
-                setattr(obj, "max_number_of", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            if tag == "ARRAY-SIZE-SEMANTICS":
+                setattr(obj, "array_size_semantics", ArraySizeSemanticsEnum.deserialize(child))
+            elif tag == "MAX-NUMBER-OF-ELEMENTS":
+                setattr(obj, "max_number_of_elements", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "SCALING-INFO-SIZE":
                 setattr(obj, "scaling_info_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "SW-DATA-DEF":
-                setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            elif tag == "SW-DATA-DEF-PROPS":
+                setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
         return obj
 
@@ -186,8 +186,8 @@ class DiagnosticDataElementBuilder(IdentifiableBuilder):
         self._obj: DiagnosticDataElement = DiagnosticDataElement()
 
 
-    def with_array_size(self, value: Optional[ArraySizeSemanticsEnum]) -> "DiagnosticDataElementBuilder":
-        """Set array_size attribute.
+    def with_array_size_semantics(self, value: Optional[ArraySizeSemanticsEnum]) -> "DiagnosticDataElementBuilder":
+        """Set array_size_semantics attribute.
 
         Args:
             value: Value to set
@@ -197,11 +197,11 @@ class DiagnosticDataElementBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.array_size = value
+        self._obj.array_size_semantics = value
         return self
 
-    def with_max_number_of(self, value: Optional[PositiveInteger]) -> "DiagnosticDataElementBuilder":
-        """Set max_number_of attribute.
+    def with_max_number_of_elements(self, value: Optional[PositiveInteger]) -> "DiagnosticDataElementBuilder":
+        """Set max_number_of_elements attribute.
 
         Args:
             value: Value to set
@@ -211,7 +211,7 @@ class DiagnosticDataElementBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.max_number_of = value
+        self._obj.max_number_of_elements = value
         return self
 
     def with_scaling_info_size(self, value: Optional[PositiveInteger]) -> "DiagnosticDataElementBuilder":
@@ -228,8 +228,8 @@ class DiagnosticDataElementBuilder(IdentifiableBuilder):
         self._obj.scaling_info_size = value
         return self
 
-    def with_sw_data_def(self, value: Optional[SwDataDefProps]) -> "DiagnosticDataElementBuilder":
-        """Set sw_data_def attribute.
+    def with_sw_data_def_props(self, value: Optional[SwDataDefProps]) -> "DiagnosticDataElementBuilder":
+        """Set sw_data_def_props attribute.
 
         Args:
             value: Value to set
@@ -239,7 +239,7 @@ class DiagnosticDataElementBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_data_def = value
+        self._obj.sw_data_def_props = value
         return self
 
 

@@ -26,5 +26,5 @@ class TlsVersionEnum(AREnum):
         """
         self._value_ = value
 
-    TLS12 = "TLS12"
-    TLS13 = "TLS13"
+    TLS12 = "TLS-12"
+    TLS13 = "TLS-13"

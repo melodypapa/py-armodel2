@@ -28,5 +28,5 @@ class Ipv4AddressSourceEnum(AREnum):
 
     AUTO_IP = "AUTO-IP"
     AUTO_IP_DOIP = "AUTO-IP_DOIP"
-    DHCPV4 = "DHCPV4"
+    DHCPV4 = "DHCPV-4"
     FIXED = "FIXED"

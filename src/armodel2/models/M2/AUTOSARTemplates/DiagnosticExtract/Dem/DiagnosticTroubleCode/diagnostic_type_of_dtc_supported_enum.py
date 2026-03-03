@@ -26,8 +26,8 @@ class DiagnosticTypeOfDtcSupportedEnum(AREnum):
         """
         self._value_ = value
 
-    ISO11992_4 = "ISO11992_4"
-    ISO14229_1 = "ISO14229_1"
-    ISO15031_6 = "ISO15031_6"
-    SAE_J1939_73 = "SAE-J1939_73"
-    SAE_J2012_DA = "SAE-J2012_DA"
+    ISO11992_4 = "ISO-11992_4"
+    ISO14229_1 = "ISO-14229_1"
+    ISO15031_6 = "ISO-15031_6"
+    SAE_J1939_73 = "SAE-J-1939_73"
+    SAE_J2012_DA = "SAE-J-2012_DA"

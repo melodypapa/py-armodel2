@@ -26,6 +26,6 @@ class IEEE1722TpAafFormatEnum(AREnum):
         """
         self._value_ = value
 
-    AES3_32BIT = "AES3_32BIT"
+    AES3_32BIT = "AES-3_32BIT"
     FLOAT_32BITINT_16BITINT_24BITINT_32BIT = "FLOAT_32BITINT_16BITINT_24BITINT_32BIT"
     USER = "USER"

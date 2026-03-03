@@ -30,6 +30,6 @@ class CanTpAddressingFormatType(AREnum):
     SYSTEM = "SYSTEM"
     AUTOSAR = "A-U-T-O-S-A-R"
     MIXED = "MIXED"
-    MIXED29BIT = "MIXED29BIT"
+    MIXED29BIT = "MIXED-29BIT"
     NORMALFIXED = "NORMALFIXED"
     STANDARD = "STANDARD"

@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "SwAddrMethod",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::MSR::DataDictionary::AuxillaryObjects",
       "is_abstract": false,
       "atp_type": null,
@@ -49,7 +49,7 @@
         }
       ],
       "attributes": {
-        "memory": {
+        "memoryAllocationKeywordPolicy": {
           "type": "MemoryAllocationKeywordPolicyType",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -63,7 +63,7 @@
           "is_ref": false,
           "note": "This attribute introduces the ability to specify further"
         },
-        "section": {
+        "sectionInitializationPolicy": {
           "type": "SectionInitializationPolicyType",
           "multiplicity": "0..1",
           "kind": "attribute",

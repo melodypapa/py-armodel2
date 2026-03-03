@@ -188,13 +188,13 @@ def to_autosar_xml_format(name: str) -> str:
     """Convert camelCase name to AUTOSAR XML format (UPPER-CASE-WITH-HYPHENS).
 
     This function converts camelCase enum literal names to the AUTOSAR XML format
-    which uses uppercase letters with hyphens between words.
+    which uses uppercase letters with hyphens between words and before numbers.
 
     Args:
-        name: camelCase string (e.g., "readOnly", "notAccessible", "readWrite")
+        name: camelCase string (e.g., "readOnly", "interruptCat1")
 
     Returns:
-        UPPER-CASE-WITH-HYPHENS string (e.g., "READ-ONLY", "NOT-ACCESSIBLE", "READ-WRITE")
+        UPPER-CASE-WITH-HYPHENS string (e.g., "READ-ONLY", "INTERRUPT-CAT-1")
 
     Examples:
         >>> to_autosar_xml_format("readOnly")
@@ -205,11 +205,19 @@ def to_autosar_xml_format(name: str) -> str:
         "READ-WRITE"
         >>> to_autosar_xml_format("presentationContinuous")
         "PRESENTATION-CONTINUOUS"
+        >>> to_autosar_xml_format("interruptCat1")
+        "INTERRUPT-CAT-1"
+        >>> to_autosar_xml_format("interruptCat2")
+        "INTERRUPT-CAT-2"
     """
-    # Insert hyphens before uppercase letters and convert to uppercase
+    # Insert hyphens before uppercase letters and before digits (when following a letter)
     result = ""
     for i, char in enumerate(name):
+        # Insert hyphen before uppercase letters (except first character)
         if char.isupper() and i > 0:
+            result += "-"
+        # Insert hyphen before digits (when following a letter)
+        elif char.isdigit() and i > 0 and name[i-1].isalpha():
             result += "-"
         result += char.upper()
     return result

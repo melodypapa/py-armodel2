@@ -32,9 +32,6 @@ from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_sched
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_variable_access import (
     BswVariableAccess,
 )
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
-    ModeDeclarationGroup,
-)
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group_prototype import (
     ModeDeclarationGroupPrototype,
 )
@@ -120,7 +117,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
         if self.accessed_mode_group_refs:
             wrapper = ET.Element("ACCESSED-MODE-GROUP-REFS")
             for item in self.accessed_mode_group_refs:
-                serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
+                serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroupPrototype")
                 if serialized is not None:
                     child_elem = ET.Element("ACCESSED-MODE-GROUP-REF")
                     if hasattr(serialized, 'attrib'):
@@ -315,7 +312,7 @@ class BswModuleEntityBuilder(ExecutableEntityBuilder):
         self._obj: BswModuleEntity = BswModuleEntity()
 
 
-    def with_accessed_mode_groups(self, items: list[ModeDeclarationGroup]) -> "BswModuleEntityBuilder":
+    def with_accessed_mode_groups(self, items: list[ModeDeclarationGroupPrototype]) -> "BswModuleEntityBuilder":
         """Set accessed_mode_groups list attribute.
 
         Args:
@@ -428,7 +425,7 @@ class BswModuleEntityBuilder(ExecutableEntityBuilder):
         return self
 
 
-    def add_accessed_mode_group(self, item: ModeDeclarationGroup) -> "BswModuleEntityBuilder":
+    def add_accessed_mode_group(self, item: ModeDeclarationGroupPrototype) -> "BswModuleEntityBuilder":
         """Add a single item to accessed_mode_groups list.
 
         Args:
