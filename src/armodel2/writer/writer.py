@@ -62,7 +62,7 @@ class ARXMLWriter:
             autosar = AUTOSAR()
 
         root = self._serialize_to_xml(autosar)
-        self._save_to_file(root, filepath)
+        self._save_to_file(root, filepath, autosar)
 
     def _serialize_to_xml(self, autosar: AUTOSAR) -> ET.Element:
         """Serialize AUTOSAR object to XML element.
@@ -84,17 +84,23 @@ class ARXMLWriter:
         root = autosar.serialize()
         return root
 
-    def _save_to_file(self, root: ET.Element, filepath: Union[str, Path]) -> None:
+    def _save_to_file(self, root: ET.Element, filepath: Union[str, Path], autosar: Optional[AUTOSAR] = None) -> None:
         """Save XML element to ARXML file.
 
         Args:
             root: Root XML element
             filepath: Output file path
+            autosar: AUTOSAR object to get encoding from (optional)
         """
         filepath = Path(filepath)
 
         # Ensure parent directory exists
         filepath.parent.mkdir(parents=True, exist_ok=True)
+
+        # Use encoding from AUTOSAR object if available, otherwise use configured encoding
+        encoding = self._encoding
+        if autosar is not None and autosar.encoding is not None:
+            encoding = autosar.encoding
 
         # Create tree and write
         tree = ET.ElementTree(root)
@@ -105,17 +111,17 @@ class ARXMLWriter:
             if tree_root is not None:
                 self._indent(tree_root)
 
-        tree.write(str(filepath), encoding=self._encoding, xml_declaration=True)
-        
+        tree.write(str(filepath), encoding=encoding, xml_declaration=True)
+
         # Fix XML declaration quotes
-        self._fix_xml_declaration_quotes_file(filepath)
-        
+        self._fix_xml_declaration_quotes_file(filepath, encoding)
+
         # Convert self-closing empty elements to separate opening and closing tags
         # xml.etree.ElementTree serializes empty elements as <TAG /> but AUTOSAR uses <TAG></TAG>
         self._fix_empty_elements_file(filepath)
-        
+
         # Preserve HTML entity encoding in text content
-        self._preserve_html_entities_file(filepath)
+        self._preserve_html_entities_file(filepath, encoding)
 
     def _fix_empty_elements_file(self, filepath: Path) -> None:
         """Convert self-closing empty elements to separate opening and closing tags.
@@ -156,22 +162,27 @@ class ARXMLWriter:
         with open(filepath, 'wb') as f_out:
             f_out.write(content)
 
-    def _fix_xml_declaration_quotes_file(self, filepath: Path) -> None:
+    def _fix_xml_declaration_quotes_file(self, filepath: Path, encoding: str) -> None:
         """Replace single quotes with double quotes in XML declaration.
 
         Post-processes the file to convert:
-        <?xml version='1.0' encoding='UTF-8'?>
+        <?xml version='1.0' encoding='ISO-8859-1'?>
         to:
-        <?xml version="1.0" encoding="UTF-8"?>
+        <?xml version="1.0" encoding="ISO-8859-1"?>
 
         Args:
             filepath: Path to the ARXML file to fix
+            encoding: File encoding to use in the XML declaration
         """
         with open(filepath, 'rb') as f:
             content = f.read()
-        
-        content = content.replace(b"<?xml version='1.0'", b'<?xml version="1.0"')
-        content = content.replace(b"encoding='UTF-8'?>", b'encoding="UTF-8"?>')
+
+        # Replace the entire XML declaration at once
+        # Pattern: <?xml version='1.0' encoding='ANY_VALUE'?>
+        import re
+        pattern = rb"<\?xml version='1\.0' encoding='([^']+)'\?\>"
+        replacement = b'<?xml version="1.0" encoding="' + encoding.encode('ascii') + b'"?>'
+        content = re.sub(pattern, replacement, content)
         
         with open(filepath, 'wb') as f:
             f.write(content)
@@ -189,7 +200,7 @@ class ARXMLWriter:
         xml_str = xml_str.replace("encoding='UTF-8'?>", 'encoding="UTF-8"?>')
         return xml_str
 
-    def _preserve_html_entities_file(self, filepath: Path) -> None:
+    def _preserve_html_entities_file(self, filepath: Path, encoding: str) -> None:
         """Preserve HTML entity encoding in text content.
 
         Post-processes the file to escape special characters in text content
@@ -197,19 +208,20 @@ class ARXMLWriter:
 
         Args:
             filepath: Path to the ARXML file to process
+            encoding: File encoding to use for decoding/encoding
         """
         with open(filepath, 'rb') as f:
             content = f.read()
-        
+
         # Decode to string for processing
-        xml_str = content.decode(self._encoding)
-        
+        xml_str = content.decode(encoding)
+
         # Apply HTML entity preservation
         xml_str = self._preserve_html_entities_str(xml_str)
-        
+
         # Write back
         with open(filepath, 'wb') as f:
-            f.write(xml_str.encode(self._encoding))
+            f.write(xml_str.encode(encoding))
 
     def _preserve_html_entities_str(self, xml_str: str) -> str:
         """Preserve HTML entity encoding in XML string.

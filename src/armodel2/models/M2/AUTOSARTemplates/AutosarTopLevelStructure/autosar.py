@@ -78,6 +78,15 @@ class AUTOSAR(ARObject):
         """
         return False
 
+    @property
+    def encoding(self) -> Optional[str]:
+        """Get the encoding from the loaded ARXML file.
+
+        Returns:
+            The encoding string (e.g., "UTF-8", "ISO-8859-1") or None if not set
+        """
+        return self._encoding
+
     admin_data: Optional[AdminData]
     ar_packages: list[ARPackage]
     file_info_comment: Optional[FileInfoComment]
@@ -113,6 +122,7 @@ class AUTOSAR(ARObject):
         self.file_info_comment: Optional[FileInfoComment] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.schema_location: Optional[str] = None
+        self._encoding: Optional[str] = None
 
         self._initialized = True
 
@@ -134,6 +144,7 @@ class AUTOSAR(ARObject):
         self.file_info_comment = None
         self.introduction = None
         self.schema_location = None
+        self._encoding = None
 
     @classmethod
     def reset(cls) -> None:
