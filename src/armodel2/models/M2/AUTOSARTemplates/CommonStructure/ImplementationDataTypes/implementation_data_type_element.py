@@ -9,7 +9,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ImplementationDataTypes.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type_element import (
@@ -26,6 +26,7 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes 
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
+    PositiveInteger,
 )
 
 if TYPE_CHECKING:
@@ -52,31 +53,34 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
     _XML_TAG = "IMPLEMENTATION-DATA-TYPE-ELEMENT"
 
 
-    array_impl_policy_enum: Optional[ArrayImplPolicyEnum]
-    array_size: Optional[ArraySizeSemanticsEnum]
+    array_impl_policy: Optional[ArrayImplPolicyEnum]
+    array_size: Optional[PositiveInteger]
     array_size_handling: Optional[ArraySizeHandlingEnum]
+    array_size_semantics: Optional[ArraySizeSemanticsEnum]
     is_optional: Optional[Boolean]
-    sub_elements: list[Any]
-    sw_data_def: Optional[SwDataDefProps]
+    sub_elements: list[ImplementationDataTypeElement]
+    sw_data_def_props: Optional[SwDataDefProps]
     _DESERIALIZE_DISPATCH = {
-        "ARRAY-IMPL-POLICY-ENUM": lambda obj, elem: setattr(obj, "array_impl_policy_enum", ArrayImplPolicyEnum.deserialize(elem)),
-        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(elem)),
+        "ARRAY-IMPL-POLICY": lambda obj, elem: setattr(obj, "array_impl_policy", ArrayImplPolicyEnum.deserialize(elem)),
+        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "ARRAY-SIZE-HANDLING": lambda obj, elem: setattr(obj, "array_size_handling", ArraySizeHandlingEnum.deserialize(elem)),
+        "ARRAY-SIZE-SEMANTICS": lambda obj, elem: setattr(obj, "array_size_semantics", ArraySizeSemanticsEnum.deserialize(elem)),
         "IS-OPTIONAL": lambda obj, elem: setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "SUB-ELEMENTS": lambda obj, elem: obj.sub_elements.append(SerializationHelper.deserialize_by_tag(elem, "any (ImplementationData)")),
-        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "SUB-ELEMENTS": lambda obj, elem: obj.sub_elements.append(SerializationHelper.deserialize_by_tag(elem, "ImplementationDataTypeElement")),
+        "SW-DATA-DEF-PROPS": lambda obj, elem: setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
     }
 
 
     def __init__(self) -> None:
         """Initialize ImplementationDataTypeElement."""
         super().__init__()
-        self.array_impl_policy_enum: Optional[ArrayImplPolicyEnum] = None
-        self.array_size: Optional[ArraySizeSemanticsEnum] = None
+        self.array_impl_policy: Optional[ArrayImplPolicyEnum] = None
+        self.array_size: Optional[PositiveInteger] = None
         self.array_size_handling: Optional[ArraySizeHandlingEnum] = None
+        self.array_size_semantics: Optional[ArraySizeSemanticsEnum] = None
         self.is_optional: Optional[Boolean] = None
-        self.sub_elements: list[Any] = []
-        self.sw_data_def: Optional[SwDataDefProps] = None
+        self.sub_elements: list[ImplementationDataTypeElement] = []
+        self.sw_data_def_props: Optional[SwDataDefProps] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ImplementationDataTypeElement to XML element.
@@ -101,12 +105,12 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize array_impl_policy_enum
-        if self.array_impl_policy_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.array_impl_policy_enum, "ArrayImplPolicyEnum")
+        # Serialize array_impl_policy
+        if self.array_impl_policy is not None:
+            serialized = SerializationHelper.serialize_item(self.array_impl_policy, "ArrayImplPolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-IMPL-POLICY-ENUM")
+                wrapped = ET.Element("ARRAY-IMPL-POLICY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -117,7 +121,7 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
 
         # Serialize array_size
         if self.array_size is not None:
-            serialized = SerializationHelper.serialize_item(self.array_size, "ArraySizeSemanticsEnum")
+            serialized = SerializationHelper.serialize_item(self.array_size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARRAY-SIZE")
@@ -135,6 +139,20 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARRAY-SIZE-HANDLING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize array_size_semantics
+        if self.array_size_semantics is not None:
+            serialized = SerializationHelper.serialize_item(self.array_size_semantics, "ArraySizeSemanticsEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ARRAY-SIZE-SEMANTICS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -161,18 +179,18 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         if self.sub_elements:
             wrapper = ET.Element("SUB-ELEMENTS")
             for item in self.sub_elements:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "ImplementationDataTypeElement")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sw_data_def
-        if self.sw_data_def is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
+        # Serialize sw_data_def_props
+        if self.sw_data_def_props is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_data_def_props, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-DATA-DEF")
+                wrapped = ET.Element("SW-DATA-DEF-PROPS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -200,20 +218,22 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ARRAY-IMPL-POLICY-ENUM":
-                setattr(obj, "array_impl_policy_enum", ArrayImplPolicyEnum.deserialize(child))
+            if tag == "ARRAY-IMPL-POLICY":
+                setattr(obj, "array_impl_policy", ArrayImplPolicyEnum.deserialize(child))
             elif tag == "ARRAY-SIZE":
-                setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(child))
+                setattr(obj, "array_size", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "ARRAY-SIZE-HANDLING":
                 setattr(obj, "array_size_handling", ArraySizeHandlingEnum.deserialize(child))
+            elif tag == "ARRAY-SIZE-SEMANTICS":
+                setattr(obj, "array_size_semantics", ArraySizeSemanticsEnum.deserialize(child))
             elif tag == "IS-OPTIONAL":
                 setattr(obj, "is_optional", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "SUB-ELEMENTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.sub_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "any (ImplementationData)"))
-            elif tag == "SW-DATA-DEF":
-                setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+                    obj.sub_elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ImplementationDataTypeElement"))
+            elif tag == "SW-DATA-DEF-PROPS":
+                setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
         return obj
 
@@ -228,8 +248,8 @@ class ImplementationDataTypeElementBuilder(AbstractImplementationDataTypeElement
         self._obj: ImplementationDataTypeElement = ImplementationDataTypeElement()
 
 
-    def with_array_impl_policy_enum(self, value: Optional[ArrayImplPolicyEnum]) -> "ImplementationDataTypeElementBuilder":
-        """Set array_impl_policy_enum attribute.
+    def with_array_impl_policy(self, value: Optional[ArrayImplPolicyEnum]) -> "ImplementationDataTypeElementBuilder":
+        """Set array_impl_policy attribute.
 
         Args:
             value: Value to set
@@ -239,10 +259,10 @@ class ImplementationDataTypeElementBuilder(AbstractImplementationDataTypeElement
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.array_impl_policy_enum = value
+        self._obj.array_impl_policy = value
         return self
 
-    def with_array_size(self, value: Optional[ArraySizeSemanticsEnum]) -> "ImplementationDataTypeElementBuilder":
+    def with_array_size(self, value: Optional[PositiveInteger]) -> "ImplementationDataTypeElementBuilder":
         """Set array_size attribute.
 
         Args:
@@ -270,6 +290,20 @@ class ImplementationDataTypeElementBuilder(AbstractImplementationDataTypeElement
         self._obj.array_size_handling = value
         return self
 
+    def with_array_size_semantics(self, value: Optional[ArraySizeSemanticsEnum]) -> "ImplementationDataTypeElementBuilder":
+        """Set array_size_semantics attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.array_size_semantics = value
+        return self
+
     def with_is_optional(self, value: Optional[Boolean]) -> "ImplementationDataTypeElementBuilder":
         """Set is_optional attribute.
 
@@ -284,7 +318,7 @@ class ImplementationDataTypeElementBuilder(AbstractImplementationDataTypeElement
         self._obj.is_optional = value
         return self
 
-    def with_sub_elements(self, items: list[any (ImplementationData)]) -> "ImplementationDataTypeElementBuilder":
+    def with_sub_elements(self, items: list[ImplementationDataTypeElement]) -> "ImplementationDataTypeElementBuilder":
         """Set sub_elements list attribute.
 
         Args:
@@ -296,8 +330,8 @@ class ImplementationDataTypeElementBuilder(AbstractImplementationDataTypeElement
         self._obj.sub_elements = list(items) if items else []
         return self
 
-    def with_sw_data_def(self, value: Optional[SwDataDefProps]) -> "ImplementationDataTypeElementBuilder":
-        """Set sw_data_def attribute.
+    def with_sw_data_def_props(self, value: Optional[SwDataDefProps]) -> "ImplementationDataTypeElementBuilder":
+        """Set sw_data_def_props attribute.
 
         Args:
             value: Value to set
@@ -307,11 +341,11 @@ class ImplementationDataTypeElementBuilder(AbstractImplementationDataTypeElement
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_data_def = value
+        self._obj.sw_data_def_props = value
         return self
 
 
-    def add_sub_element(self, item: any (ImplementationData)) -> "ImplementationDataTypeElementBuilder":
+    def add_sub_element(self, item: ImplementationDataTypeElement) -> "ImplementationDataTypeElementBuilder":
         """Add a single item to sub_elements list.
 
         Args:

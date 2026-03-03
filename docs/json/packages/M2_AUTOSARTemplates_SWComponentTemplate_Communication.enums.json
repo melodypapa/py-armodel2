@@ -102,7 +102,7 @@
     },
     {
       "name": "HandleOutOfRangeEnum",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "note": "A value of this type is taken for controlling the range checking behavior of the AUTOSAR RTE. Aggregated by ISignalProps.handleOutOfRange, ReceiverComSpec.handleOutOfRange, SenderComSpec.handle OutOfRange",
       "sources": [
@@ -131,9 +131,14 @@
           "description": "This indicates that the value replacement is sourced from the attribute replaceWith.<br>Tags: atp.EnumerationLiteralIndex=1"
         },
         {
-          "name": "ignoreinvalid",
-          "index": 3,
+          "name": "ignore",
+          "index": 2,
           "description": "The RTE will ignore any attempt to send or receive the corresponding dataElement if the value is out of the specified range.<br>Tags: atp.EnumerationLiteralIndex=3"
+        },
+         {
+          "name": "invalid",
+          "index": 3,
+          "description": "The RTE will use the invalidValue if the value is out of the specified bounds."
         },
         {
           "name": "none",

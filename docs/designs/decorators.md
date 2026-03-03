@@ -29,6 +29,7 @@ The py-armodel2 project uses a **decorator-based XML serialization system** to h
 | `@ref_conditional()`  | REF-CONDITIONAL wrapper pattern      | Attribute | 2 configs   |
 | `@instance_ref()`     | Instance reference pattern           | Attribute | 10 configs  |
 | `@polymorphic()`      | Polymorphic deserialization          | Attribute | 14 configs  |
+| `@skip_validation`    | Skip enum validation                 | Enum      | 1 config    |
 
 ## Decorator Reference
 
@@ -666,6 +667,112 @@ class CompuMethod(ARObject):
 
 ---
 
+### `@skip_validation`
+
+**Purpose:** Skip validation for enumeration values during deserialization.
+
+**Use Case:** When an enum needs to accept legacy or deprecated values not in the current AUTOSAR specification.
+
+**JSON Configuration:**
+```json
+{
+  "name": "MemorySectionType",
+  "decorator": "skip_validation",
+  "literals": [
+    {"name": "calibrationVariables", "index": 2},
+    {"name": "calprm", "index": 3},
+    {"name": "code", "index": 4},
+    {"name": "configData", "index": 5},
+    {"name": "const", "index": 6},
+    {"name": "excludeFromFlash", "index": 7},
+    {"name": "var", "index": 9}
+  ]
+}
+```
+
+**Generated Python Code:**
+```python
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import AREnum
+import xml.etree.ElementTree as ET
+
+class MemorySectionType(AREnum):
+    """AUTOSAR MemorySectionType enumeration.
+
+    This enum inherits from AREnum, which provides:
+    - serialize(): XML serialization
+    - deserialize(): XML deserialization with automatic member matching
+    - Transparent equality comparison with string values
+    """
+
+    def __init__(self, value: str) -> None:
+        """Initialize enum member.
+
+        Args:
+            value: The enum value as a string
+        """
+        self._value_ = value
+
+    CALIBRATION_VARIABLES = "CALIBRATION-VARIABLES"
+    CALPRM = "CALPRM"
+    CODE = "CODE"
+    CONFIG_DATA = "CONFIG-DATA"
+    CONST = "CONST"
+    EXCLUDE_FROM_FLASH = "EXCLUDE-FROM-FLASH"
+    VAR = "VAR"
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MemorySectionType":
+        """Deserialize XML element to MemorySectionType.
+
+        Note: Validation is skipped for this enum to support
+        legacy values not in the current AUTOSAR specification.
+        Decorator: skip_validation
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MemorySectionType instance
+
+        Raises:
+            ValueError: If element is empty
+        """
+        if element.text:
+            text = element.text.strip()
+            return cls(text)
+        raise ValueError(f"Cannot deserialize {cls.__name__} from empty element")
+```
+
+**Before/After Behavior:**
+```python
+# Without decorator - would fail with validation error
+element = ET.Element("SECTION-TYPE")
+element.text = "VAR-FAST"  # Legacy value not in enum
+try:
+    result = MemorySectionType.deserialize(element)
+except ValueError:
+    # "VAR-FAST is not a valid MemorySectionType"
+    pass
+
+# With @skip_validation - accepts any value
+element = ET.Element("SECTION-TYPE")
+element.text = "VAR-FAST"  # Legacy value
+result = MemorySectionType.deserialize(element)
+# Success! result.value == "VAR-FAST"
+```
+
+**Real-World Examples:**
+- `MemorySectionType` → `src/armodel2/models/M2/MSR/DataDictionary/AuxillaryObjects/memory_section_type.py`
+  - Accepts legacy `VAR-FAST` value alongside standard values
+  - Used in BSW (Basic Software) module descriptions
+  - `VAR-FAST` was removed in later AUTOSAR specifications but exists in legacy ARXML files
+
+**Note:** This decorator is primarily for backward compatibility with legacy ARXML files. New files should only use valid enum values from the current AUTOSAR specification.
+
+**Related Decorators:** None (standalone)
+
+---
+
 ## Decorator Processing
 
 ### How the Generator Reads Decorator Configurations
@@ -767,30 +874,36 @@ def attribute_name(self, value: Type) -> None:
 **Decision Tree:**
 
 ```
-Is the attribute an XML attribute instead of element?
-├─ Yes → Use @xml_attribute
+Is it an enumeration?
+├─ Yes → Does it need to accept legacy/deprecated values?
+│  ├─ Yes → Use @skip_validation
+│  └─ No → Use default AREnum.deserialize()
 └─ No
-   └─ Is it a class-level wrapper pattern?
-      ├─ Yes → Use @atp_variant() or @atp_mixed()
+   └─ Is the attribute an XML attribute instead of element?
+      ├─ Yes → Use @xml_attribute
       └─ No
-         └─ Does XML use non-standard element name?
-            ├─ Yes → Use @xml_element_name()
+         └─ Is it a class-level wrapper pattern?
+            ├─ Yes → Use @atp_variant() or @atp_mixed()
             └─ No
-               └─ Is it a reference with special wrapper?
-                  ├─ Yes → Use @ref_conditional() or @instance_ref()
+               └─ Does XML use non-standard element name?
+                  ├─ Yes → Use @xml_element_name()
                   └─ No
-                     └─ Is it polymorphic (abstract base class)?
-                        ├─ Yes → Use @polymorphic()
+                     └─ Is it a reference with special wrapper?
+                        ├─ Yes → Use @ref_conditional() or @instance_ref()
                         └─ No
-                           └─ Is it language-specific?
-                              ├─ Yes → Use @lang_prefix() or @lang_abbr()
-                              └─ No → Use default serialization
+                           └─ Is it polymorphic (abstract base class)?
+                              ├─ Yes → Use @polymorphic()
+                              └─ No
+                                 └─ Is it language-specific?
+                                    ├─ Yes → Use @lang_prefix() or @lang_abbr()
+                                    └─ No → Use default serialization
 ```
 
 **Use Case Mapping:**
 
 | Scenario                    | Decorator           | Example                            |
 | --------------------------- | ------------------- | ---------------------------------- |
+| Skip enum validation        | `@skip_validation`  | Legacy enum values (VAR-FAST)      |
 | XML attribute               | `@xml_attribute`    | `<AUTOSAR SCHEMA-VERSION="4.5.0">` |
 | Non-standard plural         | `@xml_element_name` | `entries` → `<ENTRYS>`             |
 | atpVariation wrapper        | `@atp_variant()`    | `<SW-DATA-DEF-PROPS-VARIANTS>`     |

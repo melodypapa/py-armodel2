@@ -122,7 +122,7 @@
     },
     {
       "name": "ImplementationDataTypeElement",
-      "maturity": "draft",
+      "maturity": "reviewer",
       "package": "M2::AUTOSARTemplates::CommonStructure::ImplementationDataTypes",
       "is_abstract": false,
       "atp_type": null,
@@ -175,7 +175,7 @@
         }
       ],
       "attributes": {
-        "arrayImplPolicyEnum": {
+        "arrayImplPolicy": {
           "type": "ArrayImplPolicyEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -183,11 +183,11 @@
           "note": "This attribute controls the implementation of the payload array. It shall only be used if the enclosing an array. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
         "arraySize": {
-          "type": "ArraySizeSemanticsEnum",
+          "type": "PositiveInteger",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This attribute controls the meaning of the value of the array size."
+          "note": "This attribute controls the implementation of the payload array. It shall only be used if the enclosing an array. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
         "arraySizeHandling": {
           "type": "ArraySizeHandlingEnum",
@@ -195,6 +195,13 @@
           "kind": "attribute",
           "is_ref": false,
           "note": "The way how the size of the array is handled in case of a variable size array."
+        },
+        "arraySizeSemantics": {
+          "type": "ArraySizeSemanticsEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute controls the meaning of the value of the array size."
         },
         "isOptional": {
           "type": "Boolean",
@@ -204,13 +211,13 @@
           "note": "This attribute represents the ability to declare the"
         },
         "subElement": {
-          "type": "any (ImplementationData)",
+          "type": "ImplementationDataTypeElement",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Element of an array, struct, or union in case of a nested declaration (i.e. without using \"typedefs\"). of ImplementionDataTypeElement is variability with the purpose to support the of elements inside a Implementation a structure. atpVariation"
         },
-        "swDataDef": {
+        "swDataDefProps": {
           "type": "SwDataDefProps",
           "multiplicity": "0..1",
           "kind": "attribute",
