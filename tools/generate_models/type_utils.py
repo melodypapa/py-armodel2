@@ -634,3 +634,53 @@ def flatten_atp_mixed_attributes(
                 seen_attr_names.add(attr_name)
 
     return result
+
+
+def extract_attribute_requirements(
+    class_name: str,
+    package_path: str,
+    package_data: Dict[str, Dict[str, Any]],
+) -> tuple[Set[str], Set[str]]:
+    """Extract required and optional attributes for a class.
+
+    Args:
+        class_name: Name of the class to extract attributes for
+        package_path: Path to the package containing the class
+        package_data: Package data dictionary
+
+    Returns:
+        Tuple of (required_attributes_set, optional_attributes_set)
+    """
+    required_attrs: Set[str] = set()
+    optional_attrs: Set[str] = set()
+
+    if package_path not in package_data:
+        return required_attrs, optional_attrs
+
+    package_info = package_data[package_path]
+    classes = package_info.get("classes", [])
+
+    # Find the class definition
+    class_info = None
+    for cls in classes:
+        if cls["name"] == class_name:
+            class_info = cls
+            break
+
+    if class_info is None or "attributes" not in class_info:
+        return required_attrs, optional_attrs
+
+    # Process each attribute
+    for attr_name, attr_info in class_info["attributes"].items():
+        multiplicity = attr_info.get("multiplicity", "1")
+
+        # Determine if attribute is required or optional
+        # Multiplicity "1" means required
+        # Multiplicity "0..1" means optional
+        # Multiplicity "*" or "0..*" means list (optional to have elements)
+        if multiplicity == "1":
+            required_attrs.add(attr_name)
+        else:
+            optional_attrs.add(attr_name)
+
+    return required_attrs, optional_attrs

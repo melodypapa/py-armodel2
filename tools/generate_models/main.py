@@ -123,6 +123,7 @@ def generate_all_models(
                 hierarchy_info,
                 package_data,
                 include_members,
+                package_path,
             )
 
             class_code = generate_class_code(
