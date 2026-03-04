@@ -52,7 +52,7 @@
     },
     {
       "name": "ModeSwitchPoint",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ModeDeclarationGroup",
       "is_abstract": false,
       "atp_type": null,
@@ -92,18 +92,18 @@
         }
       ],
       "attributes": {
-        "modeGroupSwcInstanceRef": {
-          "type": "ModeDeclarationGroup",
+        "modeGroup": {
+          "type": "PModeGroupInAtomicSwcInstanceRef",
           "multiplicity": "0..1",
-          "kind": "ref",
+          "kind": "iref",
           "is_ref": true,
-          "note": "by: PModeGroupInAtomic"
+          "note": "The mode declaration group that is switched by thisrunnable."
         }
       }
     },
     {
       "name": "IncludedModeDeclarationGroupSet",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ModeDeclarationGroup",
       "is_abstract": false,
       "atp_type": null,
@@ -129,7 +129,7 @@
         }
       ],
       "attributes": {
-        "mode": {
+        "modeDeclarationGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "*",
           "kind": "ref",

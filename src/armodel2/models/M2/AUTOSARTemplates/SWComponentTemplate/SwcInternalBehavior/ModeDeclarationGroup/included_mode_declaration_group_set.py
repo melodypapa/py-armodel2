@@ -36,10 +36,10 @@ class IncludedModeDeclarationGroupSet(ARObject):
     _XML_TAG = "INCLUDED-MODE-DECLARATION-GROUP-SET"
 
 
-    mode_refs: list[ARRef]
+    mode_declaration_group_refs: list[ARRef]
     prefix: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "MODE-REFS": lambda obj, elem: [obj.mode_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "MODE-DECLARATION-GROUP-REFS": lambda obj, elem: [obj.mode_declaration_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PREFIX": lambda obj, elem: setattr(obj, "prefix", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
@@ -47,7 +47,7 @@ class IncludedModeDeclarationGroupSet(ARObject):
     def __init__(self) -> None:
         """Initialize IncludedModeDeclarationGroupSet."""
         super().__init__()
-        self.mode_refs: list[ARRef] = []
+        self.mode_declaration_group_refs: list[ARRef] = []
         self.prefix: Optional[Identifier] = None
 
     def serialize(self) -> ET.Element:
@@ -73,13 +73,13 @@ class IncludedModeDeclarationGroupSet(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize mode_refs (list to container "MODE-REFS")
-        if self.mode_refs:
-            wrapper = ET.Element("MODE-REFS")
-            for item in self.mode_refs:
+        # Serialize mode_declaration_group_refs (list to container "MODE-DECLARATION-GROUP-REFS")
+        if self.mode_declaration_group_refs:
+            wrapper = ET.Element("MODE-DECLARATION-GROUP-REFS")
+            for item in self.mode_declaration_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("MODE-REF")
+                    child_elem = ET.Element("MODE-DECLARATION-GROUP-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -123,10 +123,10 @@ class IncludedModeDeclarationGroupSet(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "MODE-REFS":
+            if tag == "MODE-DECLARATION-GROUP-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.mode_refs.append(ARRef.deserialize(item_elem))
+                    obj.mode_declaration_group_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PREFIX":
                 setattr(obj, "prefix", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
@@ -143,8 +143,8 @@ class IncludedModeDeclarationGroupSetBuilder(BuilderBase):
         self._obj: IncludedModeDeclarationGroupSet = IncludedModeDeclarationGroupSet()
 
 
-    def with_modes(self, items: list[ModeDeclarationGroup]) -> "IncludedModeDeclarationGroupSetBuilder":
-        """Set modes list attribute.
+    def with_mode_declaration_groups(self, items: list[ModeDeclarationGroup]) -> "IncludedModeDeclarationGroupSetBuilder":
+        """Set mode_declaration_groups list attribute.
 
         Args:
             items: List of items to set
@@ -152,7 +152,7 @@ class IncludedModeDeclarationGroupSetBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.modes = list(items) if items else []
+        self._obj.mode_declaration_groups = list(items) if items else []
         return self
 
     def with_prefix(self, value: Optional[Identifier]) -> "IncludedModeDeclarationGroupSetBuilder":
@@ -170,8 +170,8 @@ class IncludedModeDeclarationGroupSetBuilder(BuilderBase):
         return self
 
 
-    def add_mode(self, item: ModeDeclarationGroup) -> "IncludedModeDeclarationGroupSetBuilder":
-        """Add a single item to modes list.
+    def add_mode_declaration_group(self, item: ModeDeclarationGroup) -> "IncludedModeDeclarationGroupSetBuilder":
+        """Add a single item to mode_declaration_groups list.
 
         Args:
             item: Item to add
@@ -179,16 +179,16 @@ class IncludedModeDeclarationGroupSetBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.modes.append(item)
+        self._obj.mode_declaration_groups.append(item)
         return self
 
-    def clear_modes(self) -> "IncludedModeDeclarationGroupSetBuilder":
-        """Clear all items from modes list.
+    def clear_mode_declaration_groups(self) -> "IncludedModeDeclarationGroupSetBuilder":
+        """Clear all items from mode_declaration_groups list.
 
         Returns:
             self for method chaining
         """
-        self._obj.modes = []
+        self._obj.mode_declaration_groups = []
         return self
 
 

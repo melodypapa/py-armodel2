@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "AtpInstanceRef",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::GenericStructure::AbstractStructure",
       "is_abstract": true,
       "atp_type": null,

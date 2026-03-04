@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_call_point import (
@@ -15,6 +15,9 @@ from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_modul
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_call_point import BswModuleCallPointBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_asynchronous_server_call_point import (
+    BswAsynchronousServerCallPoint,
+)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
@@ -34,16 +37,16 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
     _XML_TAG = "BSW-ASYNCHRONOUS-SERVER-CALL-RESULT-POINT"
 
 
-    asynchronous_ref: Optional[Any]
+    asynchronous_server_call_point_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ASYNCHRONOUS-REF": lambda obj, elem: setattr(obj, "asynchronous_ref", ARRef.deserialize(elem)),
+        "ASYNCHRONOUS-SERVER-CALL-POINT-REF": lambda obj, elem: setattr(obj, "asynchronous_server_call_point_ref", ARRef.deserialize(elem)),
     }
 
 
     def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallResultPoint."""
         super().__init__()
-        self.asynchronous_ref: Optional[Any] = None
+        self.asynchronous_server_call_point_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswAsynchronousServerCallResultPoint to XML element.
@@ -68,12 +71,12 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize asynchronous_ref
-        if self.asynchronous_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.asynchronous_ref, "Any")
+        # Serialize asynchronous_server_call_point_ref
+        if self.asynchronous_server_call_point_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.asynchronous_server_call_point_ref, "BswAsynchronousServerCallPoint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ASYNCHRONOUS-REF")
+                wrapped = ET.Element("ASYNCHRONOUS-SERVER-CALL-POINT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -101,8 +104,8 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ASYNCHRONOUS-REF":
-                setattr(obj, "asynchronous_ref", ARRef.deserialize(child))
+            if tag == "ASYNCHRONOUS-SERVER-CALL-POINT-REF":
+                setattr(obj, "asynchronous_server_call_point_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -117,8 +120,8 @@ class BswAsynchronousServerCallResultPointBuilder(BswModuleCallPointBuilder):
         self._obj: BswAsynchronousServerCallResultPoint = BswAsynchronousServerCallResultPoint()
 
 
-    def with_asynchronous(self, value: Optional[any (BswAsynchronous)]) -> "BswAsynchronousServerCallResultPointBuilder":
-        """Set asynchronous attribute.
+    def with_asynchronous_server_call_point(self, value: Optional[BswAsynchronousServerCallPoint]) -> "BswAsynchronousServerCallResultPointBuilder":
+        """Set asynchronous_server_call_point attribute.
 
         Args:
             value: Value to set
@@ -128,7 +131,7 @@ class BswAsynchronousServerCallResultPointBuilder(BswModuleCallPointBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.asynchronous = value
+        self._obj.asynchronous_server_call_point = value
         return self
 
 

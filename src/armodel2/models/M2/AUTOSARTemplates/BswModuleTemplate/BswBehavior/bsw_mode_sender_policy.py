@@ -18,8 +18,8 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_mode_switch_ack_request import (
     BswModeSwitchAckRequest,
 )
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
-    ModeDeclarationGroup,
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group_prototype import (
+    ModeDeclarationGroupPrototype,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -41,13 +41,13 @@ class BswModeSenderPolicy(ARObject):
 
 
     ack_request_request: Optional[BswModeSwitchAckRequest]
-    enhanced_mode: Optional[Boolean]
-    provided_mode_ref: Optional[ARRef]
+    enhanced_mode_api: Optional[Boolean]
+    provided_mode_group_ref: Optional[ARRef]
     queue_length: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
         "ACK-REQUEST-REQUEST": lambda obj, elem: setattr(obj, "ack_request_request", SerializationHelper.deserialize_by_tag(elem, "BswModeSwitchAckRequest")),
-        "ENHANCED-MODE": lambda obj, elem: setattr(obj, "enhanced_mode", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "PROVIDED-MODE-REF": lambda obj, elem: setattr(obj, "provided_mode_ref", ARRef.deserialize(elem)),
+        "ENHANCED-MODE-API": lambda obj, elem: setattr(obj, "enhanced_mode_api", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "PROVIDED-MODE-GROUP-REF": lambda obj, elem: setattr(obj, "provided_mode_group_ref", ARRef.deserialize(elem)),
         "QUEUE-LENGTH": lambda obj, elem: setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
@@ -56,8 +56,8 @@ class BswModeSenderPolicy(ARObject):
         """Initialize BswModeSenderPolicy."""
         super().__init__()
         self.ack_request_request: Optional[BswModeSwitchAckRequest] = None
-        self.enhanced_mode: Optional[Boolean] = None
-        self.provided_mode_ref: Optional[ARRef] = None
+        self.enhanced_mode_api: Optional[Boolean] = None
+        self.provided_mode_group_ref: Optional[ARRef] = None
         self.queue_length: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -97,12 +97,12 @@ class BswModeSenderPolicy(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize enhanced_mode
-        if self.enhanced_mode is not None:
-            serialized = SerializationHelper.serialize_item(self.enhanced_mode, "Boolean")
+        # Serialize enhanced_mode_api
+        if self.enhanced_mode_api is not None:
+            serialized = SerializationHelper.serialize_item(self.enhanced_mode_api, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ENHANCED-MODE")
+                wrapped = ET.Element("ENHANCED-MODE-API")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -111,12 +111,12 @@ class BswModeSenderPolicy(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize provided_mode_ref
-        if self.provided_mode_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.provided_mode_ref, "ModeDeclarationGroup")
+        # Serialize provided_mode_group_ref
+        if self.provided_mode_group_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.provided_mode_group_ref, "ModeDeclarationGroupPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PROVIDED-MODE-REF")
+                wrapped = ET.Element("PROVIDED-MODE-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -160,10 +160,10 @@ class BswModeSenderPolicy(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ACK-REQUEST-REQUEST":
                 setattr(obj, "ack_request_request", SerializationHelper.deserialize_by_tag(child, "BswModeSwitchAckRequest"))
-            elif tag == "ENHANCED-MODE":
-                setattr(obj, "enhanced_mode", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "PROVIDED-MODE-REF":
-                setattr(obj, "provided_mode_ref", ARRef.deserialize(child))
+            elif tag == "ENHANCED-MODE-API":
+                setattr(obj, "enhanced_mode_api", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "PROVIDED-MODE-GROUP-REF":
+                setattr(obj, "provided_mode_group_ref", ARRef.deserialize(child))
             elif tag == "QUEUE-LENGTH":
                 setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
@@ -194,8 +194,8 @@ class BswModeSenderPolicyBuilder(BuilderBase):
         self._obj.ack_request_request = value
         return self
 
-    def with_enhanced_mode(self, value: Optional[Boolean]) -> "BswModeSenderPolicyBuilder":
-        """Set enhanced_mode attribute.
+    def with_enhanced_mode_api(self, value: Optional[Boolean]) -> "BswModeSenderPolicyBuilder":
+        """Set enhanced_mode_api attribute.
 
         Args:
             value: Value to set
@@ -205,11 +205,11 @@ class BswModeSenderPolicyBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.enhanced_mode = value
+        self._obj.enhanced_mode_api = value
         return self
 
-    def with_provided_mode(self, value: Optional[ModeDeclarationGroup]) -> "BswModeSenderPolicyBuilder":
-        """Set provided_mode attribute.
+    def with_provided_mode_group(self, value: Optional[ModeDeclarationGroupPrototype]) -> "BswModeSenderPolicyBuilder":
+        """Set provided_mode_group attribute.
 
         Args:
             value: Value to set
@@ -219,7 +219,7 @@ class BswModeSenderPolicyBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.provided_mode = value
+        self._obj.provided_mode_group = value
         return self
 
     def with_queue_length(self, value: Optional[PositiveInteger]) -> "BswModeSenderPolicyBuilder":

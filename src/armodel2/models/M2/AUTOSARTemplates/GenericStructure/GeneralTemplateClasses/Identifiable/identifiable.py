@@ -60,17 +60,17 @@ class Identifiable(MultilanguageReferrable, ABC):
         """
         return True
 
+    category: Optional[CategoryString]
     admin_data: Optional[AdminData]
     annotations: list[Annotation]
     desc: Optional[MultiLanguageOverviewParagraph]
-    category: Optional[CategoryString]
     introduction: Optional[DocumentationBlock]
     _uuid: Optional[String]
     _DESERIALIZE_DISPATCH = {
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", SerializationHelper.deserialize_by_tag(elem, "CategoryString")),
         "ADMIN-DATA": lambda obj, elem: setattr(obj, "admin_data", SerializationHelper.deserialize_by_tag(elem, "AdminData")),
         "ANNOTATIONS": lambda obj, elem: obj.annotations.append(SerializationHelper.deserialize_by_tag(elem, "Annotation")),
         "DESC": lambda obj, elem: setattr(obj, "desc", SerializationHelper.deserialize_by_tag(elem, "MultiLanguageOverviewParagraph")),
-        "CATEGORY": lambda obj, elem: setattr(obj, "category", SerializationHelper.deserialize_by_tag(elem, "CategoryString")),
         "INTRODUCTION": lambda obj, elem: setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
     }
 
@@ -78,10 +78,10 @@ class Identifiable(MultilanguageReferrable, ABC):
     def __init__(self) -> None:
         """Initialize Identifiable."""
         super().__init__()
+        self.category: Optional[CategoryString] = None
         self.admin_data: Optional[AdminData] = None
         self.annotations: list[Annotation] = []
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
-        self.category: Optional[CategoryString] = None
         self.introduction: Optional[DocumentationBlock] = None
         self._uuid: Optional[String] = None
     @property
@@ -119,6 +119,20 @@ class Identifiable(MultilanguageReferrable, ABC):
         for child in parent_elem:
             elem.append(child)
 
+        # Serialize category
+        if self.category is not None:
+            serialized = SerializationHelper.serialize_item(self.category, "CategoryString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CATEGORY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
         # Serialize admin_data
         if self.admin_data is not None:
             serialized = SerializationHelper.serialize_item(self.admin_data, "AdminData")
@@ -149,20 +163,6 @@ class Identifiable(MultilanguageReferrable, ABC):
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize category
-        if self.category is not None:
-            serialized = SerializationHelper.serialize_item(self.category, "CategoryString")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CATEGORY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -212,7 +212,9 @@ class Identifiable(MultilanguageReferrable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ADMIN-DATA":
+            if tag == "CATEGORY":
+                setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "CategoryString"))
+            elif tag == "ADMIN-DATA":
                 setattr(obj, "admin_data", SerializationHelper.deserialize_by_tag(child, "AdminData"))
             elif tag == "ANNOTATIONS":
                 # Iterate through wrapper children
@@ -220,8 +222,6 @@ class Identifiable(MultilanguageReferrable, ABC):
                     obj.annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "Annotation"))
             elif tag == "DESC":
                 setattr(obj, "desc", SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph"))
-            elif tag == "CATEGORY":
-                setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "CategoryString"))
             elif tag == "INTRODUCTION":
                 setattr(obj, "introduction", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
 
@@ -237,6 +237,20 @@ class IdentifiableBuilder(MultilanguageReferrableBuilder):
         super().__init__()
         self._obj: Identifiable = Identifiable()
 
+
+    def with_category(self, value: Optional[CategoryString]) -> "IdentifiableBuilder":
+        """Set category attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.category = value
+        return self
 
     def with_admin_data(self, value: Optional[AdminData]) -> "IdentifiableBuilder":
         """Set admin_data attribute.
@@ -276,20 +290,6 @@ class IdentifiableBuilder(MultilanguageReferrableBuilder):
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
         self._obj.desc = value
-        return self
-
-    def with_category(self, value: Optional[CategoryString]) -> "IdentifiableBuilder":
-        """Set category attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.category = value
         return self
 
     def with_introduction(self, value: Optional[DocumentationBlock]) -> "IdentifiableBuilder":

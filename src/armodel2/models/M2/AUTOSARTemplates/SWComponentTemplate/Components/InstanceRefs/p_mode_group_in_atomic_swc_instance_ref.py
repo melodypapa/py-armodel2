@@ -15,16 +15,19 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.Instance
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.mode_group_in_atomic_swc_instance_ref import ModeGroupInAtomicSwcInstanceRefBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
-    AbstractProvidedPortPrototype,
-)
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
 )
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
+        AbstractProvidedPortPrototype,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
     """AUTOSAR PModeGroupInAtomicSwcInstanceRef."""
 
@@ -41,10 +44,10 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
 
 
     context_p_port_ref: Optional[ARRef]
-    target_mode_ref: Optional[ARRef]
+    target_mode_group_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CONTEXT-P-PORT-REF": ("_POLYMORPHIC", "context_p_port_ref", ["PPortPrototype", "PRPortPrototype"]),
-        "TARGET-MODE-REF": lambda obj, elem: setattr(obj, "target_mode_ref", ARRef.deserialize(elem)),
+        "TARGET-MODE-GROUP-REF": lambda obj, elem: setattr(obj, "target_mode_group_ref", ARRef.deserialize(elem)),
     }
 
 
@@ -52,7 +55,7 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         """Initialize PModeGroupInAtomicSwcInstanceRef."""
         super().__init__()
         self.context_p_port_ref: Optional[ARRef] = None
-        self.target_mode_ref: Optional[ARRef] = None
+        self.target_mode_group_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize PModeGroupInAtomicSwcInstanceRef to XML element.
@@ -91,12 +94,12 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_mode_ref
-        if self.target_mode_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.target_mode_ref, "ModeDeclarationGroup")
+        # Serialize target_mode_group_ref
+        if self.target_mode_group_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.target_mode_group_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-MODE-REF")
+                wrapped = ET.Element("TARGET-MODE-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -126,8 +129,8 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "CONTEXT-P-PORT-REF":
                 setattr(obj, "context_p_port_ref", ARRef.deserialize(child))
-            elif tag == "TARGET-MODE-REF":
-                setattr(obj, "target_mode_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-MODE-GROUP-REF":
+                setattr(obj, "target_mode_group_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -156,8 +159,8 @@ class PModeGroupInAtomicSwcInstanceRefBuilder(ModeGroupInAtomicSwcInstanceRefBui
         self._obj.context_p_port = value
         return self
 
-    def with_target_mode(self, value: Optional[ModeDeclarationGroup]) -> "PModeGroupInAtomicSwcInstanceRefBuilder":
-        """Set target_mode attribute.
+    def with_target_mode_group(self, value: Optional[ModeDeclarationGroup]) -> "PModeGroupInAtomicSwcInstanceRefBuilder":
+        """Set target_mode_group attribute.
 
         Args:
             value: Value to set
@@ -167,7 +170,7 @@ class PModeGroupInAtomicSwcInstanceRefBuilder(ModeGroupInAtomicSwcInstanceRefBui
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.target_mode = value
+        self._obj.target_mode_group = value
         return self
 
 

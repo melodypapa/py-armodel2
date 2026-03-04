@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "SwPointerTargetProps",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": null,
@@ -46,32 +46,32 @@
         }
       ],
       "attributes": {
-        "functionPointer": {
-          "type": "BswModuleEntry",
-          "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
-          "note": "The referenced BswModuleEntry serves as the signature a function pointer definition. Primary use case: function as argument to other function."
-        },
-        "swDataDef": {
-          "type": "SwDataDefProps",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "The properties of the target data type."
-        },
         "targetCategory": {
           "type": "Identifier",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This specifies the category of the target:"
+        },
+        "functionPointerSignature": {
+          "type": "BswModuleEntry",
+          "multiplicity": "0..1",
+          "kind": "ref",
+          "is_ref": true,
+          "note": "The referenced BswModuleEntry serves as the signature a function pointer definition. Primary use case: function as argument to other function."
+        },
+        "swDataDefProps": {
+          "type": "SwDataDefProps",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The properties of the target data type."
         }
       }
     },
     {
       "name": "SwDataDefProps",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": "atpVariation",

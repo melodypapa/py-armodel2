@@ -24,17 +24,14 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
-from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_internal_behavior import (
-    BswInternalBehavior,
-)
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_client_server_entry import (
     BswModuleClientServerEntry,
 )
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
 )
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
-    ModeDeclarationGroup,
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group_prototype import (
+    ModeDeclarationGroupPrototype,
 )
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SoftwareComponentDocumentation.sw_component_documentation import (
     SwComponentDocumentation,
@@ -47,6 +44,9 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataProtot
 )
 
 if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_internal_behavior import (
+        BswInternalBehavior,
+    )
     from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_dependency import (
         BswModuleDependency,
     )
@@ -70,55 +70,55 @@ class BswModuleDescription(ARElement):
     _XML_TAG = "BSW-MODULE-DESCRIPTION"
 
 
+    module_id: Optional[PositiveInteger]
     bsw_modules_dependencies: list[BswModuleDependency]
     bsw_module_documentation: Optional[SwComponentDocumentation]
     expected_entry_refs: list[ARRef]
     implemented_entry_refs: list[ARRef]
-    internal_behaviors: list[BswInternalBehavior]
-    module_id: Optional[PositiveInteger]
     _provided_client_server_entries: list[BswModuleClientServerEntry]
     provided_datas: list[VariableDataPrototype]
-    provided_mode_groups: list[ModeDeclarationGroup]
+    provided_mode_groups: list[ModeDeclarationGroupPrototype]
     released_triggers: list[Trigger]
     _required_client_server_entries: list[BswModuleClientServerEntry]
     required_datas: list[VariableDataPrototype]
-    required_mode_groups: list[ModeDeclarationGroup]
+    required_mode_groups: list[ModeDeclarationGroupPrototype]
     required_triggers: list[Trigger]
+    internal_behaviors: list[BswInternalBehavior]
     _DESERIALIZE_DISPATCH = {
+        "MODULE-ID": lambda obj, elem: setattr(obj, "module_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "BSW-MODULES-DEPENDENCYS": lambda obj, elem: obj.bsw_modules_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleDependency")),
         "BSW-MODULE-DOCUMENTATION": lambda obj, elem: setattr(obj, "bsw_module_documentation", SerializationHelper.deserialize_by_tag(elem, "SwComponentDocumentation")),
         "EXPECTED-ENTRY-REFS": lambda obj, elem: [obj.expected_entry_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "IMPLEMENTED-ENTRY-REFS": lambda obj, elem: [obj.implemented_entry_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "INTERNAL-BEHAVIORS": lambda obj, elem: obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalBehavior")),
-        "MODULE-ID": lambda obj, elem: setattr(obj, "module_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PROVIDED-ENTRYS": lambda obj, elem: obj._provided_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
         "PROVIDED-DATAS": lambda obj, elem: obj.provided_datas.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
-        "PROVIDED-MODE-GROUPS": lambda obj, elem: obj.provided_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroup")),
+        "PROVIDED-MODE-GROUPS": lambda obj, elem: obj.provided_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroupPrototype")),
         "RELEASED-TRIGGERS": lambda obj, elem: obj.released_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
         "REQUIRED-ENTRYS": lambda obj, elem: obj._required_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
         "REQUIRED-DATAS": lambda obj, elem: obj.required_datas.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
-        "REQUIRED-MODE-GROUPS": lambda obj, elem: obj.required_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroup")),
+        "REQUIRED-MODE-GROUPS": lambda obj, elem: obj.required_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroupPrototype")),
         "REQUIRED-TRIGGERS": lambda obj, elem: obj.required_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
+        "INTERNAL-BEHAVIORS": lambda obj, elem: obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalBehavior")),
     }
 
 
     def __init__(self) -> None:
         """Initialize BswModuleDescription."""
         super().__init__()
+        self.module_id: Optional[PositiveInteger] = None
         self.bsw_modules_dependencies: list[BswModuleDependency] = []
         self.bsw_module_documentation: Optional[SwComponentDocumentation] = None
         self.expected_entry_refs: list[ARRef] = []
         self.implemented_entry_refs: list[ARRef] = []
-        self.internal_behaviors: list[BswInternalBehavior] = []
-        self.module_id: Optional[PositiveInteger] = None
         self._provided_client_server_entries: list[BswModuleClientServerEntry] = []
         self.provided_datas: list[VariableDataPrototype] = []
-        self.provided_mode_groups: list[ModeDeclarationGroup] = []
+        self.provided_mode_groups: list[ModeDeclarationGroupPrototype] = []
         self.released_triggers: list[Trigger] = []
         self._required_client_server_entries: list[BswModuleClientServerEntry] = []
         self.required_datas: list[VariableDataPrototype] = []
-        self.required_mode_groups: list[ModeDeclarationGroup] = []
+        self.required_mode_groups: list[ModeDeclarationGroupPrototype] = []
         self.required_triggers: list[Trigger] = []
+        self.internal_behaviors: list[BswInternalBehavior] = []
     @property
     @xml_element_name("PROVIDED-ENTRYS")
     def provided_client_server_entries(self) -> list[BswModuleClientServerEntry]:
@@ -164,6 +164,20 @@ class BswModuleDescription(ARElement):
         # Copy all children from parent element
         for child in parent_elem:
             elem.append(child)
+
+        # Serialize module_id
+        if self.module_id is not None:
+            serialized = SerializationHelper.serialize_item(self.module_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MODULE-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize bsw_modules_dependencies (list to container "BSW-MODULES-DEPENDENCYS")
         if self.bsw_modules_dependencies:
@@ -223,30 +237,6 @@ class BswModuleDescription(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize internal_behaviors (list to container "INTERNAL-BEHAVIORS")
-        if self.internal_behaviors:
-            wrapper = ET.Element("INTERNAL-BEHAVIORS")
-            for item in self.internal_behaviors:
-                serialized = SerializationHelper.serialize_item(item, "BswInternalBehavior")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
-
-        # Serialize module_id
-        if self.module_id is not None:
-            serialized = SerializationHelper.serialize_item(self.module_id, "PositiveInteger")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODULE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
         # Serialize provided_client_server_entries (list to container "PROVIDED-ENTRYS")
         if self.provided_client_server_entries:
             wrapper = ET.Element("PROVIDED-ENTRYS")
@@ -271,7 +261,7 @@ class BswModuleDescription(ARElement):
         if self.provided_mode_groups:
             wrapper = ET.Element("PROVIDED-MODE-GROUPS")
             for item in self.provided_mode_groups:
-                serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
+                serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroupPrototype")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -311,7 +301,7 @@ class BswModuleDescription(ARElement):
         if self.required_mode_groups:
             wrapper = ET.Element("REQUIRED-MODE-GROUPS")
             for item in self.required_mode_groups:
-                serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
+                serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroupPrototype")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -322,6 +312,16 @@ class BswModuleDescription(ARElement):
             wrapper = ET.Element("REQUIRED-TRIGGERS")
             for item in self.required_triggers:
                 serialized = SerializationHelper.serialize_item(item, "Trigger")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize internal_behaviors (list to container "INTERNAL-BEHAVIORS")
+        if self.internal_behaviors:
+            wrapper = ET.Element("INTERNAL-BEHAVIORS")
+            for item in self.internal_behaviors:
+                serialized = SerializationHelper.serialize_item(item, "BswInternalBehavior")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -346,7 +346,9 @@ class BswModuleDescription(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "BSW-MODULES-DEPENDENCYS":
+            if tag == "MODULE-ID":
+                setattr(obj, "module_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "BSW-MODULES-DEPENDENCYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.bsw_modules_dependencies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleDependency"))
@@ -360,12 +362,6 @@ class BswModuleDescription(ARElement):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.implemented_entry_refs.append(ARRef.deserialize(item_elem))
-            elif tag == "INTERNAL-BEHAVIORS":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalBehavior"))
-            elif tag == "MODULE-ID":
-                setattr(obj, "module_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "PROVIDED-ENTRYS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -377,7 +373,7 @@ class BswModuleDescription(ARElement):
             elif tag == "PROVIDED-MODE-GROUPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.provided_mode_groups.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroup"))
+                    obj.provided_mode_groups.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroupPrototype"))
             elif tag == "RELEASED-TRIGGERS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -393,11 +389,15 @@ class BswModuleDescription(ARElement):
             elif tag == "REQUIRED-MODE-GROUPS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.required_mode_groups.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroup"))
+                    obj.required_mode_groups.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroupPrototype"))
             elif tag == "REQUIRED-TRIGGERS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.required_triggers.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
+            elif tag == "INTERNAL-BEHAVIORS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalBehavior"))
 
         return obj
 
@@ -411,6 +411,20 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         super().__init__()
         self._obj: BswModuleDescription = BswModuleDescription()
 
+
+    def with_module_id(self, value: Optional[PositiveInteger]) -> "BswModuleDescriptionBuilder":
+        """Set module_id attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.module_id = value
+        return self
 
     def with_bsw_modules_dependencies(self, items: list[BswModuleDependency]) -> "BswModuleDescriptionBuilder":
         """Set bsw_modules_dependencies list attribute.
@@ -462,32 +476,6 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.implemented_entries = list(items) if items else []
         return self
 
-    def with_internal_behaviors(self, items: list[BswInternalBehavior]) -> "BswModuleDescriptionBuilder":
-        """Set internal_behaviors list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.internal_behaviors = list(items) if items else []
-        return self
-
-    def with_module_id(self, value: Optional[PositiveInteger]) -> "BswModuleDescriptionBuilder":
-        """Set module_id attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.module_id = value
-        return self
-
     def with_provided_client_server_entries(self, items: list[BswModuleClientServerEntry]) -> "BswModuleDescriptionBuilder":
         """Set provided_client_server_entries list attribute.
 
@@ -512,7 +500,7 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.provided_datas = list(items) if items else []
         return self
 
-    def with_provided_mode_groups(self, items: list[ModeDeclarationGroup]) -> "BswModuleDescriptionBuilder":
+    def with_provided_mode_groups(self, items: list[ModeDeclarationGroupPrototype]) -> "BswModuleDescriptionBuilder":
         """Set provided_mode_groups list attribute.
 
         Args:
@@ -560,7 +548,7 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.required_datas = list(items) if items else []
         return self
 
-    def with_required_mode_groups(self, items: list[ModeDeclarationGroup]) -> "BswModuleDescriptionBuilder":
+    def with_required_mode_groups(self, items: list[ModeDeclarationGroupPrototype]) -> "BswModuleDescriptionBuilder":
         """Set required_mode_groups list attribute.
 
         Args:
@@ -582,6 +570,18 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
             self for method chaining
         """
         self._obj.required_triggers = list(items) if items else []
+        return self
+
+    def with_internal_behaviors(self, items: list[BswInternalBehavior]) -> "BswModuleDescriptionBuilder":
+        """Set internal_behaviors list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.internal_behaviors = list(items) if items else []
         return self
 
 
@@ -648,27 +648,6 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.implemented_entries = []
         return self
 
-    def add_internal_behavior(self, item: BswInternalBehavior) -> "BswModuleDescriptionBuilder":
-        """Add a single item to internal_behaviors list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.internal_behaviors.append(item)
-        return self
-
-    def clear_internal_behaviors(self) -> "BswModuleDescriptionBuilder":
-        """Clear all items from internal_behaviors list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.internal_behaviors = []
-        return self
-
     def add_provided_client_server_entry(self, item: BswModuleClientServerEntry) -> "BswModuleDescriptionBuilder":
         """Add a single item to provided_client_server_entries list.
 
@@ -711,7 +690,7 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.provided_datas = []
         return self
 
-    def add_provided_mode_group(self, item: ModeDeclarationGroup) -> "BswModuleDescriptionBuilder":
+    def add_provided_mode_group(self, item: ModeDeclarationGroupPrototype) -> "BswModuleDescriptionBuilder":
         """Add a single item to provided_mode_groups list.
 
         Args:
@@ -795,7 +774,7 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.required_datas = []
         return self
 
-    def add_required_mode_group(self, item: ModeDeclarationGroup) -> "BswModuleDescriptionBuilder":
+    def add_required_mode_group(self, item: ModeDeclarationGroupPrototype) -> "BswModuleDescriptionBuilder":
         """Add a single item to required_mode_groups list.
 
         Args:
@@ -835,6 +814,27 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
             self for method chaining
         """
         self._obj.required_triggers = []
+        return self
+
+    def add_internal_behavior(self, item: BswInternalBehavior) -> "BswModuleDescriptionBuilder":
+        """Add a single item to internal_behaviors list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.internal_behaviors.append(item)
+        return self
+
+    def clear_internal_behaviors(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from internal_behaviors list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.internal_behaviors = []
         return self
 
 

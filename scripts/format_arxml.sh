@@ -25,7 +25,6 @@ OUTPUT_DIR="data/arxml"
 # Flags
 VERBOSE=false
 DRY_RUN=false
-ENCODING="UTF-8"
 PRESET=""
 
 # Parse arguments
@@ -39,10 +38,6 @@ while [[ $# -gt 0 ]]; do
         --dry-run)
             DRY_RUN=true
             shift
-            ;;
-        --encoding|-e)
-            ENCODING="$2"
-            shift 2
             ;;
         --input|-i)
             INPUT_DIR="$2"

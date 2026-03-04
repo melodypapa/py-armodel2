@@ -37,11 +37,11 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ModeDeclarationGroup.mode_access_point import (
     ModeAccessPoint,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ModeDeclarationGroup.mode_switch_point import (
-    ModeSwitchPoint,
-)
 
 if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ModeDeclarationGroup.mode_switch_point import (
+        ModeSwitchPoint,
+    )
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.parameter_access import (
         ParameterAccess,
     )

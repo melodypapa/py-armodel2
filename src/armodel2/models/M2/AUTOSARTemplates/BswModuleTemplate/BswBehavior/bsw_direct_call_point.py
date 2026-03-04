@@ -41,10 +41,10 @@ class BswDirectCallPoint(BswModuleCallPoint):
 
 
     called_entry_ref: Optional[ARRef]
-    called_from_ref: Optional[ARRef]
+    called_from_within_exclusive_area_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CALLED-ENTRY-REF": lambda obj, elem: setattr(obj, "called_entry_ref", ARRef.deserialize(elem)),
-        "CALLED-FROM-REF": lambda obj, elem: setattr(obj, "called_from_ref", ARRef.deserialize(elem)),
+        "CALLED-FROM-WITHIN-EXCLUSIVE-AREA-REF": lambda obj, elem: setattr(obj, "called_from_within_exclusive_area_ref", ARRef.deserialize(elem)),
     }
 
 
@@ -52,7 +52,7 @@ class BswDirectCallPoint(BswModuleCallPoint):
         """Initialize BswDirectCallPoint."""
         super().__init__()
         self.called_entry_ref: Optional[ARRef] = None
-        self.called_from_ref: Optional[ARRef] = None
+        self.called_from_within_exclusive_area_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswDirectCallPoint to XML element.
@@ -91,12 +91,12 @@ class BswDirectCallPoint(BswModuleCallPoint):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize called_from_ref
-        if self.called_from_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.called_from_ref, "ExclusiveAreaNestingOrder")
+        # Serialize called_from_within_exclusive_area_ref
+        if self.called_from_within_exclusive_area_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.called_from_within_exclusive_area_ref, "ExclusiveAreaNestingOrder")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CALLED-FROM-REF")
+                wrapped = ET.Element("CALLED-FROM-WITHIN-EXCLUSIVE-AREA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -126,8 +126,8 @@ class BswDirectCallPoint(BswModuleCallPoint):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "CALLED-ENTRY-REF":
                 setattr(obj, "called_entry_ref", ARRef.deserialize(child))
-            elif tag == "CALLED-FROM-REF":
-                setattr(obj, "called_from_ref", ARRef.deserialize(child))
+            elif tag == "CALLED-FROM-WITHIN-EXCLUSIVE-AREA-REF":
+                setattr(obj, "called_from_within_exclusive_area_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -156,8 +156,8 @@ class BswDirectCallPointBuilder(BswModuleCallPointBuilder):
         self._obj.called_entry = value
         return self
 
-    def with_called_from(self, value: Optional[ExclusiveAreaNestingOrder]) -> "BswDirectCallPointBuilder":
-        """Set called_from attribute.
+    def with_called_from_within_exclusive_area(self, value: Optional[ExclusiveAreaNestingOrder]) -> "BswDirectCallPointBuilder":
+        """Set called_from_within_exclusive_area attribute.
 
         Args:
             value: Value to set
@@ -167,7 +167,7 @@ class BswDirectCallPointBuilder(BswModuleCallPointBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.called_from = value
+        self._obj.called_from_within_exclusive_area = value
         return self
 
 

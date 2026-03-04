@@ -11,15 +11,20 @@ import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
-    AtomicSwComponentType,
-)
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
-    PortPrototype,
-)
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
+        AtomicSwComponentType,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+        PortPrototype,
+    )
+
+
+
 from abc import ABC, abstractmethod
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
