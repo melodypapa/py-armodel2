@@ -36,16 +36,16 @@ class BswInternalTriggeringPoint(Identifiable):
     _XML_TAG = "BSW-INTERNAL-TRIGGERING-POINT"
 
 
-    sw_impl_policy_enum: Optional[SwImplPolicyEnum]
+    sw_impl_policy: Optional[SwImplPolicyEnum]
     _DESERIALIZE_DISPATCH = {
-        "SW-IMPL-POLICY-ENUM": lambda obj, elem: setattr(obj, "sw_impl_policy_enum", SwImplPolicyEnum.deserialize(elem)),
+        "SW-IMPL-POLICY": lambda obj, elem: setattr(obj, "sw_impl_policy", SwImplPolicyEnum.deserialize(elem)),
     }
 
 
     def __init__(self) -> None:
         """Initialize BswInternalTriggeringPoint."""
         super().__init__()
-        self.sw_impl_policy_enum: Optional[SwImplPolicyEnum] = None
+        self.sw_impl_policy: Optional[SwImplPolicyEnum] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswInternalTriggeringPoint to XML element.
@@ -70,12 +70,12 @@ class BswInternalTriggeringPoint(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sw_impl_policy_enum
-        if self.sw_impl_policy_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_impl_policy_enum, "SwImplPolicyEnum")
+        # Serialize sw_impl_policy
+        if self.sw_impl_policy is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_impl_policy, "SwImplPolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-IMPL-POLICY-ENUM")
+                wrapped = ET.Element("SW-IMPL-POLICY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -103,8 +103,8 @@ class BswInternalTriggeringPoint(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "SW-IMPL-POLICY-ENUM":
-                setattr(obj, "sw_impl_policy_enum", SwImplPolicyEnum.deserialize(child))
+            if tag == "SW-IMPL-POLICY":
+                setattr(obj, "sw_impl_policy", SwImplPolicyEnum.deserialize(child))
 
         return obj
 
@@ -119,8 +119,8 @@ class BswInternalTriggeringPointBuilder(IdentifiableBuilder):
         self._obj: BswInternalTriggeringPoint = BswInternalTriggeringPoint()
 
 
-    def with_sw_impl_policy_enum(self, value: Optional[SwImplPolicyEnum]) -> "BswInternalTriggeringPointBuilder":
-        """Set sw_impl_policy_enum attribute.
+    def with_sw_impl_policy(self, value: Optional[SwImplPolicyEnum]) -> "BswInternalTriggeringPointBuilder":
+        """Set sw_impl_policy attribute.
 
         Args:
             value: Value to set
@@ -130,7 +130,7 @@ class BswInternalTriggeringPointBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_impl_policy_enum = value
+        self._obj.sw_impl_policy = value
         return self
 
 

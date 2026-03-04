@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import (
@@ -15,6 +15,9 @@ from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_sched
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import BswScheduleEventBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_asynchronous_server_call_result_point import (
+    BswAsynchronousServerCallResultPoint,
+)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
@@ -34,7 +37,7 @@ class BswAsynchronousServerCallReturnsEvent(BswScheduleEvent):
     _XML_TAG = "BSW-ASYNCHRONOUS-SERVER-CALL-RETURNS-EVENT"
 
 
-    event_source_ref: Optional[Any]
+    event_source_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "EVENT-SOURCE-REF": lambda obj, elem: setattr(obj, "event_source_ref", ARRef.deserialize(elem)),
     }
@@ -43,7 +46,7 @@ class BswAsynchronousServerCallReturnsEvent(BswScheduleEvent):
     def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallReturnsEvent."""
         super().__init__()
-        self.event_source_ref: Optional[Any] = None
+        self.event_source_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswAsynchronousServerCallReturnsEvent to XML element.
@@ -70,7 +73,7 @@ class BswAsynchronousServerCallReturnsEvent(BswScheduleEvent):
 
         # Serialize event_source_ref
         if self.event_source_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.event_source_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.event_source_ref, "BswAsynchronousServerCallResultPoint")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-SOURCE-REF")
@@ -117,7 +120,7 @@ class BswAsynchronousServerCallReturnsEventBuilder(BswScheduleEventBuilder):
         self._obj: BswAsynchronousServerCallReturnsEvent = BswAsynchronousServerCallReturnsEvent()
 
 
-    def with_event_source(self, value: Optional[any (BswAsynchronous)]) -> "BswAsynchronousServerCallReturnsEventBuilder":
+    def with_event_source(self, value: Optional[BswAsynchronousServerCallResultPoint]) -> "BswAsynchronousServerCallReturnsEventBuilder":
         """Set event_source attribute.
 
         Args:

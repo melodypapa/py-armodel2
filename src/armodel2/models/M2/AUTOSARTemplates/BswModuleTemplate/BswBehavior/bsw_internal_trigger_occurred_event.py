@@ -37,16 +37,16 @@ class BswInternalTriggerOccurredEvent(BswScheduleEvent):
     _XML_TAG = "BSW-INTERNAL-TRIGGER-OCCURRED-EVENT"
 
 
-    event_source_point_ref: Optional[ARRef]
+    event_source_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "EVENT-SOURCE-POINT-REF": lambda obj, elem: setattr(obj, "event_source_point_ref", ARRef.deserialize(elem)),
+        "EVENT-SOURCE-REF": lambda obj, elem: setattr(obj, "event_source_ref", ARRef.deserialize(elem)),
     }
 
 
     def __init__(self) -> None:
         """Initialize BswInternalTriggerOccurredEvent."""
         super().__init__()
-        self.event_source_point_ref: Optional[ARRef] = None
+        self.event_source_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswInternalTriggerOccurredEvent to XML element.
@@ -71,12 +71,12 @@ class BswInternalTriggerOccurredEvent(BswScheduleEvent):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize event_source_point_ref
-        if self.event_source_point_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.event_source_point_ref, "BswInternalTriggeringPoint")
+        # Serialize event_source_ref
+        if self.event_source_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.event_source_ref, "BswInternalTriggeringPoint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EVENT-SOURCE-POINT-REF")
+                wrapped = ET.Element("EVENT-SOURCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -104,8 +104,8 @@ class BswInternalTriggerOccurredEvent(BswScheduleEvent):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "EVENT-SOURCE-POINT-REF":
-                setattr(obj, "event_source_point_ref", ARRef.deserialize(child))
+            if tag == "EVENT-SOURCE-REF":
+                setattr(obj, "event_source_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -120,8 +120,8 @@ class BswInternalTriggerOccurredEventBuilder(BswScheduleEventBuilder):
         self._obj: BswInternalTriggerOccurredEvent = BswInternalTriggerOccurredEvent()
 
 
-    def with_event_source_point(self, value: Optional[BswInternalTriggeringPoint]) -> "BswInternalTriggerOccurredEventBuilder":
-        """Set event_source_point attribute.
+    def with_event_source(self, value: Optional[BswInternalTriggeringPoint]) -> "BswInternalTriggerOccurredEventBuilder":
+        """Set event_source attribute.
 
         Args:
             value: Value to set
@@ -131,7 +131,7 @@ class BswInternalTriggerOccurredEventBuilder(BswScheduleEventBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.event_source_point = value
+        self._obj.event_source = value
         return self
 
 

@@ -15,8 +15,8 @@ from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_sched
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import BswScheduleEventBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
-    ModeDeclarationGroup,
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group_prototype import (
+    ModeDeclarationGroupPrototype,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -73,7 +73,7 @@ class BswModeManagerErrorEvent(BswScheduleEvent):
 
         # Serialize mode_group_ref
         if self.mode_group_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroupPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-GROUP-REF")
@@ -120,7 +120,7 @@ class BswModeManagerErrorEventBuilder(BswScheduleEventBuilder):
         self._obj: BswModeManagerErrorEvent = BswModeManagerErrorEvent()
 
 
-    def with_mode_group(self, value: Optional[ModeDeclarationGroup]) -> "BswModeManagerErrorEventBuilder":
+    def with_mode_group(self, value: Optional[ModeDeclarationGroupPrototype]) -> "BswModeManagerErrorEventBuilder":
         """Set mode_group attribute.
 
         Args:

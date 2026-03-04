@@ -170,6 +170,8 @@ src/armodel/models/generated/
 output.arxml
 data
 demos/arxml
+demos/test
+demos/test_validated
 
 # claude settings
 .claude/settings.local.json

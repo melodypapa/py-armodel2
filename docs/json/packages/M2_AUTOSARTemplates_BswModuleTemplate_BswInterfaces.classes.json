@@ -61,6 +61,13 @@
         }
       ],
       "attributes": {
+        "serviceId": {
+          "type": "PositiveInteger",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Refers to the service identifier of the Standardized AUTOSAR basic software. For it can optionally be used for"
+        },
         "argument": {
           "type": "SwServiceArg",
           "multiplicity": "*",
@@ -74,6 +81,20 @@
           "kind": "attribute",
           "is_ref": false,
           "note": "This describes whether the entry is concrete or abstract. attribute is missing the entry is considered as"
+        },
+        "isReentrant": {
+          "type": "Boolean",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Reentrancy from the viewpoint of function callers:"
+        },
+        "isSynchronous": {
+          "type": "Boolean",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Synchronicity from the viewpoint of function callers:"
         },
         "callType": {
           "type": "BswCallType",
@@ -96,20 +117,6 @@
           "is_ref": false,
           "note": "This attribute is used to control the generation of function"
         },
-        "isReentrant": {
-          "type": "Boolean",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "Reentrancy from the viewpoint of function callers:"
-        },
-        "isSynchronous": {
-          "type": "Boolean",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "Synchronicity from the viewpoint of function callers:"
-        },
         "returnType": {
           "type": "SwServiceArg",
           "multiplicity": "0..1",
@@ -124,13 +131,7 @@
           "is_ref": false,
           "note": "Specifies the role of the entry in the given context. It shall"
         },
-        "serviceId": {
-          "type": "PositiveInteger",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "Refers to the service identifier of the Standardized AUTOSAR basic software. For it can optionally be used for"
-        },
+        
         "swServiceImplPolicy": {
           "type": "SwServiceImplPolicyEnum",
           "multiplicity": "0..1",

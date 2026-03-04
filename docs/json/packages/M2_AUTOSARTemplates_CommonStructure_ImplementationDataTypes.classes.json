@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "ImplementationDataType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::ImplementationDataTypes",
       "is_abstract": false,
       "atp_type": null,

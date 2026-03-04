@@ -16,7 +16,7 @@
       ],
       "literals": [
         {
-          "name": "multicoreReentranton",
+          "name": "multicoreReentrant",
           "index": 0,
           "description": "Unlimited concurrent execution of this entity is possible, including preemption and parallel execution<br>Tags: atp.EnumerationLiteralIndex=0"
         },

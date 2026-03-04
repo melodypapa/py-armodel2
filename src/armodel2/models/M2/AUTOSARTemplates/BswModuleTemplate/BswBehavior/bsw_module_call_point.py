@@ -35,16 +35,16 @@ class BswModuleCallPoint(Referrable, ABC):
         """
         return True
 
-    context_refs: list[ARRef]
+    context_limitation_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-REFS": lambda obj, elem: [obj.context_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "CONTEXT-LIMITATION-REFS": lambda obj, elem: [obj.context_limitation_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
 
     def __init__(self) -> None:
         """Initialize BswModuleCallPoint."""
         super().__init__()
-        self.context_refs: list[ARRef] = []
+        self.context_limitation_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize BswModuleCallPoint to XML element.
@@ -69,13 +69,13 @@ class BswModuleCallPoint(Referrable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize context_refs (list to container "CONTEXT-REFS")
-        if self.context_refs:
-            wrapper = ET.Element("CONTEXT-REFS")
-            for item in self.context_refs:
+        # Serialize context_limitation_refs (list to container "CONTEXT-LIMITATION-REFS")
+        if self.context_limitation_refs:
+            wrapper = ET.Element("CONTEXT-LIMITATION-REFS")
+            for item in self.context_limitation_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswDistinguishedPartition")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTEXT-REF")
+                    child_elem = ET.Element("CONTEXT-LIMITATION-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -105,10 +105,10 @@ class BswModuleCallPoint(Referrable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONTEXT-REFS":
+            if tag == "CONTEXT-LIMITATION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_refs.append(ARRef.deserialize(item_elem))
+                    obj.context_limitation_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 
@@ -123,8 +123,8 @@ class BswModuleCallPointBuilder(ReferrableBuilder):
         self._obj: BswModuleCallPoint = BswModuleCallPoint()
 
 
-    def with_contexts(self, items: list[BswDistinguishedPartition]) -> "BswModuleCallPointBuilder":
-        """Set contexts list attribute.
+    def with_context_limitations(self, items: list[BswDistinguishedPartition]) -> "BswModuleCallPointBuilder":
+        """Set context_limitations list attribute.
 
         Args:
             items: List of items to set
@@ -132,12 +132,12 @@ class BswModuleCallPointBuilder(ReferrableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.contexts = list(items) if items else []
+        self._obj.context_limitations = list(items) if items else []
         return self
 
 
-    def add_context(self, item: BswDistinguishedPartition) -> "BswModuleCallPointBuilder":
-        """Add a single item to contexts list.
+    def add_context_limitation(self, item: BswDistinguishedPartition) -> "BswModuleCallPointBuilder":
+        """Add a single item to context_limitations list.
 
         Args:
             item: Item to add
@@ -145,16 +145,16 @@ class BswModuleCallPointBuilder(ReferrableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.contexts.append(item)
+        self._obj.context_limitations.append(item)
         return self
 
-    def clear_contexts(self) -> "BswModuleCallPointBuilder":
-        """Clear all items from contexts list.
+    def clear_context_limitations(self) -> "BswModuleCallPointBuilder":
+        """Clear all items from context_limitations list.
 
         Returns:
             self for method chaining
         """
-        self._obj.contexts = []
+        self._obj.context_limitations = []
         return self
 
 

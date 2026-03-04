@@ -37,16 +37,16 @@ class BswAsynchronousServerCallPoint(BswModuleCallPoint):
     _XML_TAG = "BSW-ASYNCHRONOUS-SERVER-CALL-POINT"
 
 
-    called_entry_entry_ref: Optional[ARRef]
+    called_entry_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CALLED-ENTRY-ENTRY-REF": lambda obj, elem: setattr(obj, "called_entry_entry_ref", ARRef.deserialize(elem)),
+        "CALLED-ENTRY-REF": lambda obj, elem: setattr(obj, "called_entry_ref", ARRef.deserialize(elem)),
     }
 
 
     def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallPoint."""
         super().__init__()
-        self.called_entry_entry_ref: Optional[ARRef] = None
+        self.called_entry_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswAsynchronousServerCallPoint to XML element.
@@ -71,12 +71,12 @@ class BswAsynchronousServerCallPoint(BswModuleCallPoint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize called_entry_entry_ref
-        if self.called_entry_entry_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.called_entry_entry_ref, "BswModuleClientServerEntry")
+        # Serialize called_entry_ref
+        if self.called_entry_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.called_entry_ref, "BswModuleClientServerEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CALLED-ENTRY-ENTRY-REF")
+                wrapped = ET.Element("CALLED-ENTRY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -104,8 +104,8 @@ class BswAsynchronousServerCallPoint(BswModuleCallPoint):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CALLED-ENTRY-ENTRY-REF":
-                setattr(obj, "called_entry_entry_ref", ARRef.deserialize(child))
+            if tag == "CALLED-ENTRY-REF":
+                setattr(obj, "called_entry_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -120,8 +120,8 @@ class BswAsynchronousServerCallPointBuilder(BswModuleCallPointBuilder):
         self._obj: BswAsynchronousServerCallPoint = BswAsynchronousServerCallPoint()
 
 
-    def with_called_entry_entry(self, value: Optional[BswModuleClientServerEntry]) -> "BswAsynchronousServerCallPointBuilder":
-        """Set called_entry_entry attribute.
+    def with_called_entry(self, value: Optional[BswModuleClientServerEntry]) -> "BswAsynchronousServerCallPointBuilder":
+        """Set called_entry attribute.
 
         Args:
             value: Value to set
@@ -131,7 +131,7 @@ class BswAsynchronousServerCallPointBuilder(BswModuleCallPointBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.called_entry_entry = value
+        self._obj.called_entry = value
         return self
 
 

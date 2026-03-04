@@ -11,6 +11,7 @@ JSON Source: docs/json/packages/M2_MSR_AsamHdo_SpecialData.classes.json"""
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import xml_attribute
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
@@ -47,7 +48,7 @@ class Sdg(ARObject):
     _XML_TAG = "SDG"
 
 
-    gid: NameToken
+    _gid: NameToken
     sdg_caption: Optional[SdgCaption]
     sd: Optional[Sd]
     sdf: Optional[Sdf]
@@ -55,7 +56,6 @@ class Sdg(ARObject):
     sdx: Optional[Referrable]
     sdxf: Optional[Referrable]
     _DESERIALIZE_DISPATCH = {
-        "GID": lambda obj, elem: setattr(obj, "gid", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
         "SDG-CAPTION": lambda obj, elem: setattr(obj, "sdg_caption", SerializationHelper.deserialize_by_tag(elem, "SdgCaption")),
         "SD": lambda obj, elem: setattr(obj, "sd", SerializationHelper.deserialize_by_tag(elem, "Sd")),
         "SDF": lambda obj, elem: setattr(obj, "sdf", SerializationHelper.deserialize_by_tag(elem, "Sdf")),
@@ -68,13 +68,24 @@ class Sdg(ARObject):
     def __init__(self) -> None:
         """Initialize Sdg."""
         super().__init__()
-        self.gid: NameToken = None
+        self._gid: NameToken = None
         self.sdg_caption: Optional[SdgCaption] = None
         self.sd: Optional[Sd] = None
         self.sdf: Optional[Sdf] = None
         self.sdg: Optional[Sdg] = None
         self.sdx: Optional[Referrable] = None
         self.sdxf: Optional[Referrable] = None
+    @property
+    @xml_attribute
+    def gid(self) -> NameToken:
+        """Get gid XML attribute."""
+        return self._gid
+
+    @gid.setter
+    def gid(self, value: NameToken) -> None:
+        """Set gid XML attribute."""
+        self._gid = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize Sdg to XML element.
@@ -99,19 +110,9 @@ class Sdg(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize gid
+        # Serialize gid as XML attribute
         if self.gid is not None:
-            serialized = SerializationHelper.serialize_item(self.gid, "NameToken")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+            elem.attrib["GID"] = str(self.gid)
 
         # Serialize sdg_caption
         if self.sdg_caption is not None:
@@ -212,13 +213,15 @@ class Sdg(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Sdg, cls).deserialize(element)
 
+        # Parse gid from XML attribute
+        if "GID" in element.attrib:
+            obj.gid = element.attrib["GID"]
+
         # Single-pass deserialization with if-elif-else chain
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "GID":
-                setattr(obj, "gid", SerializationHelper.deserialize_by_tag(child, "NameToken"))
-            elif tag == "SDG-CAPTION":
+            if tag == "SDG-CAPTION":
                 setattr(obj, "sdg_caption", SerializationHelper.deserialize_by_tag(child, "SdgCaption"))
             elif tag == "SD":
                 setattr(obj, "sd", SerializationHelper.deserialize_by_tag(child, "Sd"))

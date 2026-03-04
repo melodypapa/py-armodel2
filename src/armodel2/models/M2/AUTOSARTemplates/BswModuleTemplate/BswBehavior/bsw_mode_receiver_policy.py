@@ -14,8 +14,8 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
-    ModeDeclarationGroup,
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group_prototype import (
+    ModeDeclarationGroupPrototype,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -36,22 +36,22 @@ class BswModeReceiverPolicy(ARObject):
     _XML_TAG = "BSW-MODE-RECEIVER-POLICY"
 
 
-    enhanced_mode: Optional[Boolean]
-    required_mode_ref: Optional[ARRef]
-    supports: Optional[Boolean]
+    enhanced_mode_api: Optional[Boolean]
+    required_mode_group_ref: Optional[ARRef]
+    supports_asynchronous_mode_switch: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
-        "ENHANCED-MODE": lambda obj, elem: setattr(obj, "enhanced_mode", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
-        "REQUIRED-MODE-REF": lambda obj, elem: setattr(obj, "required_mode_ref", ARRef.deserialize(elem)),
-        "SUPPORTS": lambda obj, elem: setattr(obj, "supports", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "ENHANCED-MODE-API": lambda obj, elem: setattr(obj, "enhanced_mode_api", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "REQUIRED-MODE-GROUP-REF": lambda obj, elem: setattr(obj, "required_mode_group_ref", ARRef.deserialize(elem)),
+        "SUPPORTS-ASYNCHRONOUS-MODE-SWITCH": lambda obj, elem: setattr(obj, "supports_asynchronous_mode_switch", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
     def __init__(self) -> None:
         """Initialize BswModeReceiverPolicy."""
         super().__init__()
-        self.enhanced_mode: Optional[Boolean] = None
-        self.required_mode_ref: Optional[ARRef] = None
-        self.supports: Optional[Boolean] = None
+        self.enhanced_mode_api: Optional[Boolean] = None
+        self.required_mode_group_ref: Optional[ARRef] = None
+        self.supports_asynchronous_mode_switch: Optional[Boolean] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswModeReceiverPolicy to XML element.
@@ -76,12 +76,12 @@ class BswModeReceiverPolicy(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize enhanced_mode
-        if self.enhanced_mode is not None:
-            serialized = SerializationHelper.serialize_item(self.enhanced_mode, "Boolean")
+        # Serialize enhanced_mode_api
+        if self.enhanced_mode_api is not None:
+            serialized = SerializationHelper.serialize_item(self.enhanced_mode_api, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ENHANCED-MODE")
+                wrapped = ET.Element("ENHANCED-MODE-API")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -90,12 +90,12 @@ class BswModeReceiverPolicy(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize required_mode_ref
-        if self.required_mode_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.required_mode_ref, "ModeDeclarationGroup")
+        # Serialize required_mode_group_ref
+        if self.required_mode_group_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.required_mode_group_ref, "ModeDeclarationGroupPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUIRED-MODE-REF")
+                wrapped = ET.Element("REQUIRED-MODE-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -104,12 +104,12 @@ class BswModeReceiverPolicy(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize supports
-        if self.supports is not None:
-            serialized = SerializationHelper.serialize_item(self.supports, "Boolean")
+        # Serialize supports_asynchronous_mode_switch
+        if self.supports_asynchronous_mode_switch is not None:
+            serialized = SerializationHelper.serialize_item(self.supports_asynchronous_mode_switch, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SUPPORTS")
+                wrapped = ET.Element("SUPPORTS-ASYNCHRONOUS-MODE-SWITCH")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -137,12 +137,12 @@ class BswModeReceiverPolicy(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ENHANCED-MODE":
-                setattr(obj, "enhanced_mode", SerializationHelper.deserialize_by_tag(child, "Boolean"))
-            elif tag == "REQUIRED-MODE-REF":
-                setattr(obj, "required_mode_ref", ARRef.deserialize(child))
-            elif tag == "SUPPORTS":
-                setattr(obj, "supports", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            if tag == "ENHANCED-MODE-API":
+                setattr(obj, "enhanced_mode_api", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "REQUIRED-MODE-GROUP-REF":
+                setattr(obj, "required_mode_group_ref", ARRef.deserialize(child))
+            elif tag == "SUPPORTS-ASYNCHRONOUS-MODE-SWITCH":
+                setattr(obj, "supports_asynchronous_mode_switch", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 
@@ -157,8 +157,8 @@ class BswModeReceiverPolicyBuilder(BuilderBase):
         self._obj: BswModeReceiverPolicy = BswModeReceiverPolicy()
 
 
-    def with_enhanced_mode(self, value: Optional[Boolean]) -> "BswModeReceiverPolicyBuilder":
-        """Set enhanced_mode attribute.
+    def with_enhanced_mode_api(self, value: Optional[Boolean]) -> "BswModeReceiverPolicyBuilder":
+        """Set enhanced_mode_api attribute.
 
         Args:
             value: Value to set
@@ -168,11 +168,11 @@ class BswModeReceiverPolicyBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.enhanced_mode = value
+        self._obj.enhanced_mode_api = value
         return self
 
-    def with_required_mode(self, value: Optional[ModeDeclarationGroup]) -> "BswModeReceiverPolicyBuilder":
-        """Set required_mode attribute.
+    def with_required_mode_group(self, value: Optional[ModeDeclarationGroupPrototype]) -> "BswModeReceiverPolicyBuilder":
+        """Set required_mode_group attribute.
 
         Args:
             value: Value to set
@@ -182,11 +182,11 @@ class BswModeReceiverPolicyBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.required_mode = value
+        self._obj.required_mode_group = value
         return self
 
-    def with_supports(self, value: Optional[Boolean]) -> "BswModeReceiverPolicyBuilder":
-        """Set supports attribute.
+    def with_supports_asynchronous_mode_switch(self, value: Optional[Boolean]) -> "BswModeReceiverPolicyBuilder":
+        """Set supports_asynchronous_mode_switch attribute.
 
         Args:
             value: Value to set
@@ -196,7 +196,7 @@ class BswModeReceiverPolicyBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.supports = value
+        self._obj.supports_asynchronous_mode_switch = value
         return self
 
 

@@ -11,19 +11,22 @@ import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description import (
-    BswModuleDescription,
-)
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
 )
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description import (
+        BswModuleDescription,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class ModeInBswModuleDescriptionInstanceRef(ARObject):
     """AUTOSAR ModeInBswModuleDescriptionInstanceRef."""
 

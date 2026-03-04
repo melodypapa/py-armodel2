@@ -36,10 +36,10 @@ class BswExclusiveAreaPolicy(ARObject):
     _XML_TAG = "BSW-EXCLUSIVE-AREA-POLICY"
 
 
-    api_principle_enum: Optional[ApiPrincipleEnum]
+    api_principle: Optional[ApiPrincipleEnum]
     exclusive_area_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "API-PRINCIPLE-ENUM": lambda obj, elem: setattr(obj, "api_principle_enum", ApiPrincipleEnum.deserialize(elem)),
+        "API-PRINCIPLE": lambda obj, elem: setattr(obj, "api_principle", ApiPrincipleEnum.deserialize(elem)),
         "EXCLUSIVE-AREA-REF": lambda obj, elem: setattr(obj, "exclusive_area_ref", ARRef.deserialize(elem)),
     }
 
@@ -47,7 +47,7 @@ class BswExclusiveAreaPolicy(ARObject):
     def __init__(self) -> None:
         """Initialize BswExclusiveAreaPolicy."""
         super().__init__()
-        self.api_principle_enum: Optional[ApiPrincipleEnum] = None
+        self.api_principle: Optional[ApiPrincipleEnum] = None
         self.exclusive_area_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -73,12 +73,12 @@ class BswExclusiveAreaPolicy(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize api_principle_enum
-        if self.api_principle_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.api_principle_enum, "ApiPrincipleEnum")
+        # Serialize api_principle
+        if self.api_principle is not None:
+            serialized = SerializationHelper.serialize_item(self.api_principle, "ApiPrincipleEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("API-PRINCIPLE-ENUM")
+                wrapped = ET.Element("API-PRINCIPLE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -120,8 +120,8 @@ class BswExclusiveAreaPolicy(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "API-PRINCIPLE-ENUM":
-                setattr(obj, "api_principle_enum", ApiPrincipleEnum.deserialize(child))
+            if tag == "API-PRINCIPLE":
+                setattr(obj, "api_principle", ApiPrincipleEnum.deserialize(child))
             elif tag == "EXCLUSIVE-AREA-REF":
                 setattr(obj, "exclusive_area_ref", ARRef.deserialize(child))
 
@@ -138,8 +138,8 @@ class BswExclusiveAreaPolicyBuilder(BuilderBase):
         self._obj: BswExclusiveAreaPolicy = BswExclusiveAreaPolicy()
 
 
-    def with_api_principle_enum(self, value: Optional[ApiPrincipleEnum]) -> "BswExclusiveAreaPolicyBuilder":
-        """Set api_principle_enum attribute.
+    def with_api_principle(self, value: Optional[ApiPrincipleEnum]) -> "BswExclusiveAreaPolicyBuilder":
+        """Set api_principle attribute.
 
         Args:
             value: Value to set
@@ -149,7 +149,7 @@ class BswExclusiveAreaPolicyBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.api_principle_enum = value
+        self._obj.api_principle = value
         return self
 
     def with_exclusive_area(self, value: Optional[ExclusiveArea]) -> "BswExclusiveAreaPolicyBuilder":

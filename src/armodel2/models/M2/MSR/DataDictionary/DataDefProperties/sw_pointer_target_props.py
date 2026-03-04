@@ -45,22 +45,22 @@ class SwPointerTargetProps(ARObject):
     _XML_TAG = "SW-POINTER-TARGET-PROPS"
 
 
-    function_pointer_ref: Optional[ARRef]
-    sw_data_def: Optional[SwDataDefProps]
     target_category: Optional[Identifier]
+    function_pointer_signature_ref: Optional[ARRef]
+    sw_data_def_props: Optional[SwDataDefProps]
     _DESERIALIZE_DISPATCH = {
-        "FUNCTION-POINTER-REF": lambda obj, elem: setattr(obj, "function_pointer_ref", ARRef.deserialize(elem)),
-        "SW-DATA-DEF": lambda obj, elem: setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
         "TARGET-CATEGORY": lambda obj, elem: setattr(obj, "target_category", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "FUNCTION-POINTER-SIGNATURE-REF": lambda obj, elem: setattr(obj, "function_pointer_signature_ref", ARRef.deserialize(elem)),
+        "SW-DATA-DEF-PROPS": lambda obj, elem: setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
     }
 
 
     def __init__(self) -> None:
         """Initialize SwPointerTargetProps."""
         super().__init__()
-        self.function_pointer_ref: Optional[ARRef] = None
-        self.sw_data_def: Optional[SwDataDefProps] = None
         self.target_category: Optional[Identifier] = None
+        self.function_pointer_signature_ref: Optional[ARRef] = None
+        self.sw_data_def_props: Optional[SwDataDefProps] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwPointerTargetProps to XML element.
@@ -85,40 +85,40 @@ class SwPointerTargetProps(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize function_pointer_ref
-        if self.function_pointer_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.function_pointer_ref, "BswModuleEntry")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FUNCTION-POINTER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize sw_data_def
-        if self.sw_data_def is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-DATA-DEF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
         # Serialize target_category
         if self.target_category is not None:
             serialized = SerializationHelper.serialize_item(self.target_category, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-CATEGORY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize function_pointer_signature_ref
+        if self.function_pointer_signature_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.function_pointer_signature_ref, "BswModuleEntry")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FUNCTION-POINTER-SIGNATURE-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_data_def_props
+        if self.sw_data_def_props is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_data_def_props, "SwDataDefProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-DATA-DEF-PROPS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -146,12 +146,12 @@ class SwPointerTargetProps(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "FUNCTION-POINTER-REF":
-                setattr(obj, "function_pointer_ref", ARRef.deserialize(child))
-            elif tag == "SW-DATA-DEF":
-                setattr(obj, "sw_data_def", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
-            elif tag == "TARGET-CATEGORY":
+            if tag == "TARGET-CATEGORY":
                 setattr(obj, "target_category", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            elif tag == "FUNCTION-POINTER-SIGNATURE-REF":
+                setattr(obj, "function_pointer_signature_ref", ARRef.deserialize(child))
+            elif tag == "SW-DATA-DEF-PROPS":
+                setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
         return obj
 
@@ -166,34 +166,6 @@ class SwPointerTargetPropsBuilder(BuilderBase):
         self._obj: SwPointerTargetProps = SwPointerTargetProps()
 
 
-    def with_function_pointer(self, value: Optional[BswModuleEntry]) -> "SwPointerTargetPropsBuilder":
-        """Set function_pointer attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.function_pointer = value
-        return self
-
-    def with_sw_data_def(self, value: Optional[SwDataDefProps]) -> "SwPointerTargetPropsBuilder":
-        """Set sw_data_def attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_data_def = value
-        return self
-
     def with_target_category(self, value: Optional[Identifier]) -> "SwPointerTargetPropsBuilder":
         """Set target_category attribute.
 
@@ -206,6 +178,34 @@ class SwPointerTargetPropsBuilder(BuilderBase):
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
         self._obj.target_category = value
+        return self
+
+    def with_function_pointer_signature(self, value: Optional[BswModuleEntry]) -> "SwPointerTargetPropsBuilder":
+        """Set function_pointer_signature attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.function_pointer_signature = value
+        return self
+
+    def with_sw_data_def_props(self, value: Optional[SwDataDefProps]) -> "SwPointerTargetPropsBuilder":
+        """Set sw_data_def_props attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_data_def_props = value
         return self
 
 

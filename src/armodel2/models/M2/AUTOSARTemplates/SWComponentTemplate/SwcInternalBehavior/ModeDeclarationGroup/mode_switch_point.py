@@ -16,13 +16,16 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import AbstractAccessPointBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
-    ModeDeclarationGroup,
-)
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.p_mode_group_in_atomic_swc_instance_ref import (
+        PModeGroupInAtomicSwcInstanceRef,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class ModeSwitchPoint(AbstractAccessPoint):
     """AUTOSAR ModeSwitchPoint."""
 
@@ -38,16 +41,16 @@ class ModeSwitchPoint(AbstractAccessPoint):
     _XML_TAG = "MODE-SWITCH-POINT"
 
 
-    mode_group_swc_instance_ref: Optional[ARRef]
+    mode_group_iref: Optional[PModeGroupInAtomicSwcInstanceRef]
     _DESERIALIZE_DISPATCH = {
-        "MODE-GROUP-SWC-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "mode_group_swc_instance_ref", ARRef.deserialize(elem)),
+        "MODE-GROUP-IREF": lambda obj, elem: setattr(obj, "mode_group_iref", SerializationHelper.deserialize_by_tag(elem, "PModeGroupInAtomicSwcInstanceRef")),
     }
 
 
     def __init__(self) -> None:
         """Initialize ModeSwitchPoint."""
         super().__init__()
-        self.mode_group_swc_instance_ref: Optional[ARRef] = None
+        self.mode_group_iref: Optional[PModeGroupInAtomicSwcInstanceRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ModeSwitchPoint to XML element.
@@ -72,19 +75,16 @@ class ModeSwitchPoint(AbstractAccessPoint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize mode_group_swc_instance_ref
-        if self.mode_group_swc_instance_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.mode_group_swc_instance_ref, "ModeDeclarationGroup")
+        # Serialize mode_group_iref (instance reference with wrapper "MODE-GROUP-IREF")
+        if self.mode_group_iref is not None:
+            serialized = SerializationHelper.serialize_item(self.mode_group_iref, "PModeGroupInAtomicSwcInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-GROUP-SWC-INSTANCE-REF-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("MODE-GROUP-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         return elem
 
@@ -105,8 +105,8 @@ class ModeSwitchPoint(AbstractAccessPoint):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "MODE-GROUP-SWC-INSTANCE-REF-REF":
-                setattr(obj, "mode_group_swc_instance_ref", ARRef.deserialize(child))
+            if tag == "MODE-GROUP-IREF":
+                setattr(obj, "mode_group_iref", SerializationHelper.deserialize_by_tag(child, "PModeGroupInAtomicSwcInstanceRef"))
 
         return obj
 
@@ -121,8 +121,8 @@ class ModeSwitchPointBuilder(AbstractAccessPointBuilder):
         self._obj: ModeSwitchPoint = ModeSwitchPoint()
 
 
-    def with_mode_group_swc_instance_ref(self, value: Optional[ModeDeclarationGroup]) -> "ModeSwitchPointBuilder":
-        """Set mode_group_swc_instance_ref attribute.
+    def with_mode_group(self, value: Optional[PModeGroupInAtomicSwcInstanceRef]) -> "ModeSwitchPointBuilder":
+        """Set mode_group attribute.
 
         Args:
             value: Value to set
@@ -132,7 +132,7 @@ class ModeSwitchPointBuilder(AbstractAccessPointBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.mode_group_swc_instance_ref = value
+        self._obj.mode_group = value
         return self
 
 

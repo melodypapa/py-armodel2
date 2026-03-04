@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "Sdg",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::MSR::AsamHdo::SpecialData",
       "is_abstract": false,
       "atp_type": null,
@@ -58,6 +58,7 @@
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,
+          "decorator": "xml_attribute",
           "note": "This attributes specifies an identifier. Gid comes from the"
         },
         "sdgCaption": {
@@ -67,7 +68,7 @@
           "is_ref": false,
           "note": "This aggregation allows to assign the properties of"
         },
-        "sdgContents": {
+        "sdgContentsType": {
           "type": "SdgContents",
           "multiplicity": "0..1",
           "kind": "attribute",

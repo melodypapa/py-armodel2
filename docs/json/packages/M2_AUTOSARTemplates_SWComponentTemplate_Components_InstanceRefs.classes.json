@@ -561,7 +561,7 @@
     },
     {
       "name": "PModeGroupInAtomicSwcInstanceRef",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -599,7 +599,7 @@
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=20"
         },
-        "targetMode": {
+        "targetModeGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
           "kind": "ref",
@@ -610,7 +610,7 @@
     },
     {
       "name": "ModeGroupInAtomicSwcInstanceRef",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components::InstanceRefs",
       "is_abstract": true,
       "atp_type": null,

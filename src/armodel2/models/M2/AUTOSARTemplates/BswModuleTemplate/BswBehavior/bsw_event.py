@@ -22,9 +22,14 @@ from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_disti
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_entity import (
     BswModuleEntity,
 )
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
-    ModeDeclaration,
-)
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.InstanceRefs.mode_in_bsw_module_description_instance_ref import (
+        ModeInBswModuleDescriptionInstanceRef,
+    )
+
+
+
 from abc import ABC, abstractmethod
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -42,12 +47,12 @@ class BswEvent(AbstractEvent, ABC):
         """
         return True
 
-    context_refs: list[ARRef]
-    disabled_in_mode_description_instance_refs: list[ModeDeclaration]
+    context_limitation_refs: list[ARRef]
+    disabled_in_irefs: list[ModeInBswModuleDescriptionInstanceRef]
     starts_on_event_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-REFS": lambda obj, elem: [obj.context_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS": lambda obj, elem: obj.disabled_in_mode_description_instance_refs.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclaration")),
+        "CONTEXT-LIMITATION-REFS": lambda obj, elem: [obj.context_limitation_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "DISABLED-INS-IREF": lambda obj, elem: obj.disabled_in_irefs.append(SerializationHelper.deserialize_by_tag(elem, "ModeInBswModuleDescriptionInstanceRef")),
         "STARTS-ON-EVENT-REF": ("_POLYMORPHIC", "starts_on_event_ref", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
     }
 
@@ -55,8 +60,8 @@ class BswEvent(AbstractEvent, ABC):
     def __init__(self) -> None:
         """Initialize BswEvent."""
         super().__init__()
-        self.context_refs: list[ARRef] = []
-        self.disabled_in_mode_description_instance_refs: list[ModeDeclaration] = []
+        self.context_limitation_refs: list[ARRef] = []
+        self.disabled_in_irefs: list[ModeInBswModuleDescriptionInstanceRef] = []
         self.starts_on_event_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -82,13 +87,13 @@ class BswEvent(AbstractEvent, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize context_refs (list to container "CONTEXT-REFS")
-        if self.context_refs:
-            wrapper = ET.Element("CONTEXT-REFS")
-            for item in self.context_refs:
+        # Serialize context_limitation_refs (list to container "CONTEXT-LIMITATION-REFS")
+        if self.context_limitation_refs:
+            wrapper = ET.Element("CONTEXT-LIMITATION-REFS")
+            for item in self.context_limitation_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswDistinguishedPartition")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTEXT-REF")
+                    child_elem = ET.Element("CONTEXT-LIMITATION-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -99,15 +104,16 @@ class BswEvent(AbstractEvent, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize disabled_in_mode_description_instance_refs (list to container "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS")
-        if self.disabled_in_mode_description_instance_refs:
-            wrapper = ET.Element("DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS")
-            for item in self.disabled_in_mode_description_instance_refs:
-                serialized = SerializationHelper.serialize_item(item, "ModeDeclaration")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+        # Serialize disabled_in_irefs (list of instance references with wrapper "DISABLED-INS-IREF")
+        if self.disabled_in_irefs:
+            serialized = SerializationHelper.serialize_item(self.disabled_in_irefs, "ModeInBswModuleDescriptionInstanceRef")
+            if serialized is not None:
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("DISABLED-INS-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
+                for child in serialized:
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         # Serialize starts_on_event_ref
         if self.starts_on_event_ref is not None:
@@ -142,14 +148,14 @@ class BswEvent(AbstractEvent, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONTEXT-REFS":
+            if tag == "CONTEXT-LIMITATION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.context_refs.append(ARRef.deserialize(item_elem))
-            elif tag == "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS":
+                    obj.context_limitation_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "DISABLED-IN-IREFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.disabled_in_mode_description_instance_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclaration"))
+                    obj.disabled_in_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeInBswModuleDescriptionInstanceRef"))
             elif tag == "STARTS-ON-EVENT-REF":
                 setattr(obj, "starts_on_event_ref", ARRef.deserialize(child))
 
@@ -166,8 +172,8 @@ class BswEventBuilder(AbstractEventBuilder):
         self._obj: BswEvent = BswEvent()
 
 
-    def with_contexts(self, items: list[BswDistinguishedPartition]) -> "BswEventBuilder":
-        """Set contexts list attribute.
+    def with_context_limitations(self, items: list[BswDistinguishedPartition]) -> "BswEventBuilder":
+        """Set context_limitations list attribute.
 
         Args:
             items: List of items to set
@@ -175,11 +181,11 @@ class BswEventBuilder(AbstractEventBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.contexts = list(items) if items else []
+        self._obj.context_limitations = list(items) if items else []
         return self
 
-    def with_disabled_in_mode_description_instance_refs(self, items: list[ModeDeclaration]) -> "BswEventBuilder":
-        """Set disabled_in_mode_description_instance_refs list attribute.
+    def with_disabled_ins(self, items: list[ModeInBswModuleDescriptionInstanceRef]) -> "BswEventBuilder":
+        """Set disabled_ins list attribute.
 
         Args:
             items: List of items to set
@@ -187,7 +193,7 @@ class BswEventBuilder(AbstractEventBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.disabled_in_mode_description_instance_refs = list(items) if items else []
+        self._obj.disabled_ins = list(items) if items else []
         return self
 
     def with_starts_on_event(self, value: Optional[BswModuleEntity]) -> "BswEventBuilder":
@@ -205,8 +211,8 @@ class BswEventBuilder(AbstractEventBuilder):
         return self
 
 
-    def add_context(self, item: BswDistinguishedPartition) -> "BswEventBuilder":
-        """Add a single item to contexts list.
+    def add_context_limitation(self, item: BswDistinguishedPartition) -> "BswEventBuilder":
+        """Add a single item to context_limitations list.
 
         Args:
             item: Item to add
@@ -214,20 +220,20 @@ class BswEventBuilder(AbstractEventBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.contexts.append(item)
+        self._obj.context_limitations.append(item)
         return self
 
-    def clear_contexts(self) -> "BswEventBuilder":
-        """Clear all items from contexts list.
+    def clear_context_limitations(self) -> "BswEventBuilder":
+        """Clear all items from context_limitations list.
 
         Returns:
             self for method chaining
         """
-        self._obj.contexts = []
+        self._obj.context_limitations = []
         return self
 
-    def add_disabled_in_mode_description_instance_ref(self, item: ModeDeclaration) -> "BswEventBuilder":
-        """Add a single item to disabled_in_mode_description_instance_refs list.
+    def add_disabled_in(self, item: ModeInBswModuleDescriptionInstanceRef) -> "BswEventBuilder":
+        """Add a single item to disabled_ins list.
 
         Args:
             item: Item to add
@@ -235,16 +241,16 @@ class BswEventBuilder(AbstractEventBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.disabled_in_mode_description_instance_refs.append(item)
+        self._obj.disabled_ins.append(item)
         return self
 
-    def clear_disabled_in_mode_description_instance_refs(self) -> "BswEventBuilder":
-        """Clear all items from disabled_in_mode_description_instance_refs list.
+    def clear_disabled_ins(self) -> "BswEventBuilder":
+        """Clear all items from disabled_ins list.
 
         Returns:
             self for method chaining
         """
-        self._obj.disabled_in_mode_description_instance_refs = []
+        self._obj.disabled_ins = []
         return self
 
 
