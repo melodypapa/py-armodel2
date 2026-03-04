@@ -44,10 +44,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -72,10 +72,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 10</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -100,10 +100,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 11</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -128,10 +128,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 12</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -156,10 +156,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 13</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -184,10 +184,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 14</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -212,10 +212,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 2</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -240,10 +240,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 3</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -268,10 +268,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 4</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -296,10 +296,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 5</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -324,10 +324,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 7</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -352,10 +352,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 8</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -380,10 +380,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 9</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -472,10 +472,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -500,10 +500,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle 2</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -528,10 +528,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle 3</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -556,10 +556,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle 4</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -584,10 +584,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle 5</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -612,10 +612,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle 6</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -640,10 +640,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Acceleration 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">RadPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -668,10 +668,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Acceleration 2</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle acceleration</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">RadPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -696,10 +696,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -724,10 +724,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 2</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -752,10 +752,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 3</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -780,10 +780,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 4</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -808,10 +808,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 5</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -836,10 +836,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 6</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -864,10 +864,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 7</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -892,10 +892,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 8</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -2144,10 +2144,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Curvature 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for curvature</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">PerMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -2236,10 +2236,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Damper Coefficient 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for damper coefficient</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtSecPerMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -2264,10 +2264,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Day 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">It represents the value of a day in a month</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -2300,10 +2300,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Degree Centigrade Linear 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for temperature.</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -3911,10 +3911,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Force 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for force</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Nwt</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -3939,10 +3939,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Force 2</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for force</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Nwt</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -3967,10 +3967,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Force 3</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for force</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Nwt</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -3995,10 +3995,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Factor 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for factor</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -4023,10 +4023,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Factor 3</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for factor</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -4051,10 +4051,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Factor 4</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for factor</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -4079,10 +4079,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Factor 5</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for factor</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -4107,10 +4107,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Factor 7</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for factor</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -4199,10 +4199,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Friction Coefficient 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for friction coefficient</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -4227,10 +4227,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Frequency 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for frequency</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Hz</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -4255,10 +4255,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Frequency 2</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acoustic frequency</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">KiloHz</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -4740,10 +4740,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Hour 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">It represents the value of an hour in a day (24h format)</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -5422,10 +5422,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Jerk 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration change rate</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecCubd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -5450,8 +5450,8 @@
                   <LONG-NAME>
                     <L-4 L="EN">Kelvin Identical</L-4>
                   </LONG-NAME>
-                  <DESC></DESC>
                   <CATEGORY>IDENTICAL</CATEGORY>
+                  <DESC></DESC>
                   <UNIT-REF BASE="Units" DEST="UNIT">KelvinAbslt</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
@@ -5745,10 +5745,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -5773,10 +5773,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 10</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -5801,10 +5801,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 11</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -5829,10 +5829,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 14</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -5857,10 +5857,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 3</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -5885,10 +5885,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 4</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -5913,10 +5913,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 5</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -5941,10 +5941,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 6</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">KiloMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -5969,10 +5969,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 7</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -6821,10 +6821,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Mass 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for mass</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">KiloGr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -6849,10 +6849,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Mass 2</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for mass</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">KiloGr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -6949,10 +6949,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Minute 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">It represents the value of a minute in one hour</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7155,10 +7155,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Month 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">It represents the value of a month in a calendar year</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7223,10 +7223,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Rotational Speed 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for rotational speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Rpm</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7251,10 +7251,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Engine Speed Gradient</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for rotational speed gradient</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">RpmPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7287,10 +7287,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7315,10 +7315,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 10</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7343,10 +7343,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 2</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7371,10 +7371,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 3</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7399,10 +7399,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 4</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7427,10 +7427,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 5</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7455,10 +7455,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 6</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7483,10 +7483,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 7</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7511,10 +7511,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 8</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -7539,10 +7539,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 9</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -8549,10 +8549,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Pressure 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for pressure</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Bar</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -8577,10 +8577,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Pressure 4</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for pressure</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">HectoPa</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -8605,10 +8605,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Pressure 5</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for high pressure</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: fuel pressure</L-1>
@@ -8638,10 +8638,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Pressure 6</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for low pressure</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: ambient air pressure, particulate filter differential pressure</L-1>
@@ -8671,8 +8671,8 @@
                   <LONG-NAME>
                     <L-4 L="EN">Pascal Identical</L-4>
                   </LONG-NAME>
-                  <DESC></DESC>
                   <CATEGORY>IDENTICAL</CATEGORY>
+                  <DESC></DESC>
                   <UNIT-REF BASE="Units" DEST="UNIT">Pa</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
@@ -8680,10 +8680,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -8708,10 +8708,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 10</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: common solenoid actuator (EGR), Pedal</L-1>
@@ -8741,10 +8741,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 2</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -8769,10 +8769,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 6</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -8797,10 +8797,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 7</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -8825,10 +8825,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 8</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -8853,10 +8853,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 9</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -8881,10 +8881,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent Gradient 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent gradient</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">PercPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -8909,8 +8909,8 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent Identical</L-4>
                   </LONG-NAME>
-                  <DESC></DESC>
                   <CATEGORY>IDENTICAL</CATEGORY>
+                  <DESC></DESC>
                   <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
@@ -9478,8 +9478,8 @@
                   <LONG-NAME>
                     <L-4 L="EN">Powertrain Torque Clutch Max Fast Intervention Mode Type 1</L-4>
                   </LONG-NAME>
-                  <DESC></DESC>
                   <CATEGORY>TEXTTABLE</CATEGORY>
+                  <DESC></DESC>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
@@ -10023,10 +10023,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Rotational Speed Linear 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for rotational speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Rpm</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -10121,10 +10121,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Second 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">It represents the value of a second in one minute</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -10157,10 +10157,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Speed 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -10185,10 +10185,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Speed 2</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -10213,10 +10213,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Speed 3</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -10241,10 +10241,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Speed 4</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -10269,10 +10269,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Speed 5</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -10297,10 +10297,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Speed 6</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for speed</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -10325,10 +10325,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Spring Coefficient 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for spring coefficient</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtPerMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -10809,10 +10809,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Temperature 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for temperature</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -10837,10 +10837,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Temperature 3</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for temperature</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -10865,10 +10865,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Temperature 4</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for temperature</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -10893,10 +10893,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Temperature 5</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for temperature</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: glow plugs temperature, oil temperature, environment temperature, temperature differences</L-1>
@@ -11042,10 +11042,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Time 2</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for time</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Sec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11070,10 +11070,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Time 3</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for time</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Sec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11098,10 +11098,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Time 4</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for time</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Sec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11418,10 +11418,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11446,10 +11446,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 10</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11474,10 +11474,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 12</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11502,10 +11502,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 13</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: Differential Torques</L-1>
@@ -11535,10 +11535,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 14</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11563,10 +11563,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 15</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11591,10 +11591,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 16</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic torque compumethod</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11619,10 +11619,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 2</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11647,10 +11647,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 3</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11675,10 +11675,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 4</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11703,10 +11703,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 5</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: torque at clutch and torque at crankshaft signals</L-1>
@@ -11736,10 +11736,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 6</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -11764,10 +11764,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 7</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: torque at wheels signals</L-1>
@@ -11797,10 +11797,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque Gradient 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque gradient</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NwtMtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -12430,10 +12430,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Voltage 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for voltage</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">Volt</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
@@ -13228,10 +13228,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Year 1</L-4>
                   </LONG-NAME>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">It represents the value of a year in a century</L-2>
                   </DESC>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>

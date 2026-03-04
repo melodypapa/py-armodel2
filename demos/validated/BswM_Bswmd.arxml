@@ -9,6 +9,15 @@
           <ELEMENTS>
             <BSW-MODULE-DESCRIPTION>
               <SHORT-NAME>BswM</SHORT-NAME>
+              <MODULE-ID>34</MODULE-ID>
+              <PROVIDED-ENTRYS>
+                <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+                  <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_BswM/BswModuleEntrys/BswM_Init</BSW-MODULE-ENTRY-REF>
+                </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+                <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+                  <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_BswM/BswModuleEntrys/BswM_MainFunction</BSW-MODULE-ENTRY-REF>
+                </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              </PROVIDED-ENTRYS>
               <INTERNAL-BEHAVIORS>
                 <BSW-INTERNAL-BEHAVIOR>
                   <SHORT-NAME>InternalBehavior_0</SHORT-NAME>
@@ -20,7 +29,7 @@
                       <SHORT-NAME>SCHM_BSWM_EXCLUSIVE_AREA</SHORT-NAME>
                     </EXCLUSIVE-AREA>
                   </EXCLUSIVE-AREAS>
-                  <ENTITIES>
+                  <ENTITYS>
                     <BSW-SCHEDULABLE-ENTITY>
                       <SHORT-NAME>BswM_MainFunction</SHORT-NAME>
                       <CAN-ENTER-EXCLUSIVE-AREA-REFS>
@@ -29,7 +38,7 @@
                       <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
                       <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_BswM/BswModuleEntrys/BswM_MainFunction</IMPLEMENTED-ENTRY-REF>
                     </BSW-SCHEDULABLE-ENTITY>
-                  </ENTITIES>
+                  </ENTITYS>
                   <EVENTS>
                     <BSW-TIMING-EVENT>
                       <SHORT-NAME>TimingEvent_MainFunction</SHORT-NAME>
@@ -39,15 +48,6 @@
                   </EVENTS>
                 </BSW-INTERNAL-BEHAVIOR>
               </INTERNAL-BEHAVIORS>
-              <MODULE-ID>34</MODULE-ID>
-              <PROVIDED-ENTRYS>
-                <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-                  <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_BswM/BswModuleEntrys/BswM_Init</BSW-MODULE-ENTRY-REF>
-                </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-                <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-                  <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_BswM/BswModuleEntrys/BswM_MainFunction</BSW-MODULE-ENTRY-REF>
-                </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              </PROVIDED-ENTRYS>
             </BSW-MODULE-DESCRIPTION>
           </ELEMENTS>
         </AR-PACKAGE>
@@ -56,20 +56,20 @@
           <ELEMENTS>
             <BSW-MODULE-ENTRY>
               <SHORT-NAME>BswM_Init</SHORT-NAME>
-              <CALL-TYPE>REGULAR</CALL-TYPE>
-              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SERVICE-ID>0</SERVICE-ID>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
-              <SERVICE-ID>0</SERVICE-ID>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
             </BSW-MODULE-ENTRY>
             <BSW-MODULE-ENTRY>
               <SHORT-NAME>BswM_MainFunction</SHORT-NAME>
-              <CALL-TYPE>SCHEDULED</CALL-TYPE>
-              <EXECUTION-CONTEXT>TASK</EXECUTION-CONTEXT>
+              <SERVICE-ID>3</SERVICE-ID>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
-              <SERVICE-ID>3</SERVICE-ID>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
+              <EXECUTION-CONTEXT>TASK</EXECUTION-CONTEXT>
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
             </BSW-MODULE-ENTRY>
           </ELEMENTS>
