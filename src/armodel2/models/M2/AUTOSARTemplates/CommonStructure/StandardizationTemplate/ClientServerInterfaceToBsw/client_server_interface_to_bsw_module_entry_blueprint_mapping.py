@@ -249,16 +249,16 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder(ARElementBuil
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "clientServer", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'clientServer' is None")
+                raise ValueError("Required attribute 'clientServer' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'clientServer' is None", UserWarning)
+                warnings.warn("Required attribute 'clientServer' is None", UserWarning)
         if getattr(self._obj, "operation", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'operation' is None")
+                raise ValueError("Required attribute 'operation' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'operation' is None", UserWarning)
+                warnings.warn("Required attribute 'operation' is None", UserWarning)
 
 
     def build(self) -> ClientServerInterfaceToBswModuleEntryBlueprintMapping:

@@ -186,16 +186,16 @@ class ShortNameFragmentBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "fragment", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'fragment' is None")
+                raise ValueError("Required attribute 'fragment' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'fragment' is None", UserWarning)
+                warnings.warn("Required attribute 'fragment' is None", UserWarning)
         if getattr(self._obj, "role", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'role' is None")
+                raise ValueError("Required attribute 'role' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'role' is None", UserWarning)
+                warnings.warn("Required attribute 'role' is None", UserWarning)
 
 
     def build(self) -> ShortNameFragment:

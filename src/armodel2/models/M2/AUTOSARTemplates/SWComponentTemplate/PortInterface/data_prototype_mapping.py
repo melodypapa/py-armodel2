@@ -358,10 +358,10 @@ class DataPrototypeMappingBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "textTable", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'textTable' is None")
+                raise ValueError("Required attribute 'textTable' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'textTable' is None", UserWarning)
+                warnings.warn("Required attribute 'textTable' is None", UserWarning)
 
 
     def build(self) -> DataPrototypeMapping:

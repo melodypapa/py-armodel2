@@ -420,16 +420,16 @@ class TgroupBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "cols", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'cols' is None")
+                raise ValueError("Required attribute 'cols' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'cols' is None", UserWarning)
+                warnings.warn("Required attribute 'cols' is None", UserWarning)
         if getattr(self._obj, "tbody", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'tbody' is None")
+                raise ValueError("Required attribute 'tbody' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'tbody' is None", UserWarning)
+                warnings.warn("Required attribute 'tbody' is None", UserWarning)
 
 
     def build(self) -> Tgroup:

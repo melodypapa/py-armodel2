@@ -156,10 +156,10 @@ class ReferenceConditionBuilder(AttributeConditionBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "reference", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'reference' is None")
+                raise ValueError("Required attribute 'reference' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'reference' is None", UserWarning)
+                warnings.warn("Required attribute 'reference' is None", UserWarning)
 
 
     def build(self) -> ReferenceCondition:

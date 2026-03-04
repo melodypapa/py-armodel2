@@ -216,10 +216,10 @@ class KeywordBuilder(IdentifiableBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "abbrName", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'abbrName' is None")
+                raise ValueError("Required attribute 'abbrName' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'abbrName' is None", UserWarning)
+                warnings.warn("Required attribute 'abbrName' is None", UserWarning)
 
 
     def build(self) -> Keyword:

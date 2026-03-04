@@ -257,28 +257,28 @@ class CanGlobalTimeDomainPropsBuilder(AbstractGlobalTimeDomainPropsBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "fupDataIDList", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'fupDataIDList' is None")
+                raise ValueError("Required attribute 'fupDataIDList' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'fupDataIDList' is None", UserWarning)
+                warnings.warn("Required attribute 'fupDataIDList' is None", UserWarning)
         if getattr(self._obj, "ofnsDataIDList", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'ofnsDataIDList' is None")
+                raise ValueError("Required attribute 'ofnsDataIDList' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'ofnsDataIDList' is None", UserWarning)
+                warnings.warn("Required attribute 'ofnsDataIDList' is None", UserWarning)
         if getattr(self._obj, "ofsDataIDList", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'ofsDataIDList' is None")
+                raise ValueError("Required attribute 'ofsDataIDList' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'ofsDataIDList' is None", UserWarning)
+                warnings.warn("Required attribute 'ofsDataIDList' is None", UserWarning)
         if getattr(self._obj, "syncDataIDList", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'syncDataIDList' is None")
+                raise ValueError("Required attribute 'syncDataIDList' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'syncDataIDList' is None", UserWarning)
+                warnings.warn("Required attribute 'syncDataIDList' is None", UserWarning)
 
 
     def build(self) -> CanGlobalTimeDomainProps:

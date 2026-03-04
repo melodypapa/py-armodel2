@@ -218,10 +218,10 @@ class ReferrableBuilder(BuilderBase, ABC):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "shortName", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'shortName' is None")
+                raise ValueError("Required attribute 'shortName' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'shortName' is None", UserWarning)
+                warnings.warn("Required attribute 'shortName' is None", UserWarning)
 
 
     @abstractmethod

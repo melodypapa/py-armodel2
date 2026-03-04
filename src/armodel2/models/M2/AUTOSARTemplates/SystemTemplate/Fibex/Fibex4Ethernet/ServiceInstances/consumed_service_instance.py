@@ -684,16 +684,16 @@ class ConsumedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "localUnicast", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'localUnicast' is None")
+                raise ValueError("Required attribute 'localUnicast' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'localUnicast' is None", UserWarning)
+                warnings.warn("Required attribute 'localUnicast' is None", UserWarning)
         if getattr(self._obj, "remoteUnicast", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'remoteUnicast' is None")
+                raise ValueError("Required attribute 'remoteUnicast' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'remoteUnicast' is None", UserWarning)
+                warnings.warn("Required attribute 'remoteUnicast' is None", UserWarning)
 
 
     def build(self) -> ConsumedServiceInstance:

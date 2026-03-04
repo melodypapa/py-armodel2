@@ -235,10 +235,10 @@ class SwAxisGroupedBuilder(SwCalprmAxisTypePropsBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "swCalprmRefProxy", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'swCalprmRefProxy' is None")
+                raise ValueError("Required attribute 'swCalprmRefProxy' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'swCalprmRefProxy' is None", UserWarning)
+                warnings.warn("Required attribute 'swCalprmRefProxy' is None", UserWarning)
 
 
     def build(self) -> SwAxisGrouped:

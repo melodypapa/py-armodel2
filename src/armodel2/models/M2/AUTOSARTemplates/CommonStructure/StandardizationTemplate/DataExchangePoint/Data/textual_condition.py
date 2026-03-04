@@ -155,10 +155,10 @@ class TextualConditionBuilder(AbstractConditionBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "text", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'text' is None")
+                raise ValueError("Required attribute 'text' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'text' is None", UserWarning)
+                warnings.warn("Required attribute 'text' is None", UserWarning)
 
 
     def build(self) -> TextualCondition:

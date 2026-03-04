@@ -155,10 +155,10 @@ class SecurityEventContextMappingApplicationBuilder(SecurityEventContextMappingB
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "affected", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'affected' is None")
+                raise ValueError("Required attribute 'affected' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'affected' is None", UserWarning)
+                warnings.warn("Required attribute 'affected' is None", UserWarning)
 
 
     def build(self) -> SecurityEventContextMappingApplication:

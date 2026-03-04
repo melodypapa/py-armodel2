@@ -166,10 +166,10 @@ class InvertConditionBuilder(AbstractConditionBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "condition", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'condition' is None")
+                raise ValueError("Required attribute 'condition' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'condition' is None", UserWarning)
+                warnings.warn("Required attribute 'condition' is None", UserWarning)
 
 
     def build(self) -> InvertCondition:

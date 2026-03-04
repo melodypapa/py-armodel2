@@ -186,16 +186,16 @@ class EnumerationMappingEntryBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "enumerator", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'enumerator' is None")
+                raise ValueError("Required attribute 'enumerator' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'enumerator' is None", UserWarning)
+                warnings.warn("Required attribute 'enumerator' is None", UserWarning)
         if getattr(self._obj, "numericalValue", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'numericalValue' is None")
+                raise ValueError("Required attribute 'numericalValue' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'numericalValue' is None", UserWarning)
+                warnings.warn("Required attribute 'numericalValue' is None", UserWarning)
 
 
     def build(self) -> EnumerationMappingEntry:

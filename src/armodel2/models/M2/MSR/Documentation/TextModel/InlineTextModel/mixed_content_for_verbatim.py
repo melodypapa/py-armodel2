@@ -260,28 +260,28 @@ class MixedContentForVerbatimBuilder(BuilderBase, ABC):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "br", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'br' is None")
+                raise ValueError("Required attribute 'br' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'br' is None", UserWarning)
+                warnings.warn("Required attribute 'br' is None", UserWarning)
         if getattr(self._obj, "e", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'e' is None")
+                raise ValueError("Required attribute 'e' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'e' is None", UserWarning)
+                warnings.warn("Required attribute 'e' is None", UserWarning)
         if getattr(self._obj, "tt", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'tt' is None")
+                raise ValueError("Required attribute 'tt' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'tt' is None", UserWarning)
+                warnings.warn("Required attribute 'tt' is None", UserWarning)
         if getattr(self._obj, "xref", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'xref' is None")
+                raise ValueError("Required attribute 'xref' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'xref' is None", UserWarning)
+                warnings.warn("Required attribute 'xref' is None", UserWarning)
 
 
     @abstractmethod

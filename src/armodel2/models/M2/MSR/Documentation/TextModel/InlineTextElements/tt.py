@@ -222,16 +222,16 @@ class TtBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "term", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'term' is None")
+                raise ValueError("Required attribute 'term' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'term' is None", UserWarning)
+                warnings.warn("Required attribute 'term' is None", UserWarning)
         if getattr(self._obj, "type", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'type' is None")
+                raise ValueError("Required attribute 'type' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'type' is None", UserWarning)
+                warnings.warn("Required attribute 'type' is None", UserWarning)
 
 
     def build(self) -> Tt:

@@ -187,16 +187,16 @@ class AtpBlueprintMappingBuilder(BuilderBase, ABC):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "atpBlueprint", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'atpBlueprint' is None")
+                raise ValueError("Required attribute 'atpBlueprint' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'atpBlueprint' is None", UserWarning)
+                warnings.warn("Required attribute 'atpBlueprint' is None", UserWarning)
         if getattr(self._obj, "atpBlueprinted", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'atpBlueprinted' is None")
+                raise ValueError("Required attribute 'atpBlueprinted' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'atpBlueprinted' is None", UserWarning)
+                warnings.warn("Required attribute 'atpBlueprinted' is None", UserWarning)
 
 
     @abstractmethod

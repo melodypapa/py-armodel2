@@ -294,34 +294,34 @@ class MixedContentForLongNameBuilder(BuilderBase, ABC):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "e", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'e' is None")
+                raise ValueError("Required attribute 'e' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'e' is None", UserWarning)
+                warnings.warn("Required attribute 'e' is None", UserWarning)
         if getattr(self._obj, "ie", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'ie' is None")
+                raise ValueError("Required attribute 'ie' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'ie' is None", UserWarning)
+                warnings.warn("Required attribute 'ie' is None", UserWarning)
         if getattr(self._obj, "sub", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'sub' is None")
+                raise ValueError("Required attribute 'sub' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'sub' is None", UserWarning)
+                warnings.warn("Required attribute 'sub' is None", UserWarning)
         if getattr(self._obj, "sup", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'sup' is None")
+                raise ValueError("Required attribute 'sup' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'sup' is None", UserWarning)
+                warnings.warn("Required attribute 'sup' is None", UserWarning)
         if getattr(self._obj, "tt", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'tt' is None")
+                raise ValueError("Required attribute 'tt' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'tt' is None", UserWarning)
+                warnings.warn("Required attribute 'tt' is None", UserWarning)
 
 
     @abstractmethod

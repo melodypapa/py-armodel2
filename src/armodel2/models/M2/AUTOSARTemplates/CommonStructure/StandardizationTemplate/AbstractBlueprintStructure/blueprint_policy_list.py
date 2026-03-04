@@ -189,16 +189,16 @@ class BlueprintPolicyListBuilder(BlueprintPolicyBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "maxNumberOf", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'maxNumberOf' is None")
+                raise ValueError("Required attribute 'maxNumberOf' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'maxNumberOf' is None", UserWarning)
+                warnings.warn("Required attribute 'maxNumberOf' is None", UserWarning)
         if getattr(self._obj, "minNumberOf", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'minNumberOf' is None")
+                raise ValueError("Required attribute 'minNumberOf' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'minNumberOf' is None", UserWarning)
+                warnings.warn("Required attribute 'minNumberOf' is None", UserWarning)
 
 
     def build(self) -> BlueprintPolicyList:

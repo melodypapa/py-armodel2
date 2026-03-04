@@ -190,10 +190,10 @@ class IndentSampleBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "l2", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'l2' is None")
+                raise ValueError("Required attribute 'l2' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'l2' is None", UserWarning)
+                warnings.warn("Required attribute 'l2' is None", UserWarning)
 
 
     def build(self) -> IndentSample:

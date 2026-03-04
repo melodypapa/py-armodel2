@@ -153,10 +153,10 @@ class PrimitiveAttributeConditionBuilder(AttributeConditionBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "attribute", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'attribute' is None")
+                raise ValueError("Required attribute 'attribute' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'attribute' is None", UserWarning)
+                warnings.warn("Required attribute 'attribute' is None", UserWarning)
 
 
     def build(self) -> PrimitiveAttributeCondition:

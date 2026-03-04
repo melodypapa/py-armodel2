@@ -232,16 +232,16 @@ class TopicContentBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "blockLevel", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'blockLevel' is None")
+                raise ValueError("Required attribute 'blockLevel' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'blockLevel' is None", UserWarning)
+                warnings.warn("Required attribute 'blockLevel' is None", UserWarning)
         if getattr(self._obj, "traceableTable", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'traceableTable' is None")
+                raise ValueError("Required attribute 'traceableTable' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'traceableTable' is None", UserWarning)
+                warnings.warn("Required attribute 'traceableTable' is None", UserWarning)
 
 
     def build(self) -> TopicContent:

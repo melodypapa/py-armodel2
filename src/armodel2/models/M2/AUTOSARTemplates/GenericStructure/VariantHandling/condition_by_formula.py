@@ -154,10 +154,10 @@ class ConditionByFormulaBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "bindingTimeEnum", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'bindingTimeEnum' is None")
+                raise ValueError("Required attribute 'bindingTimeEnum' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'bindingTimeEnum' is None", UserWarning)
+                warnings.warn("Required attribute 'bindingTimeEnum' is None", UserWarning)
 
 
     def build(self) -> ConditionByFormula:

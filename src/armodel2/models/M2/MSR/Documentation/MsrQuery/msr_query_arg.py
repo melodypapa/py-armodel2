@@ -186,16 +186,16 @@ class MsrQueryArgBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "arg", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'arg' is None")
+                raise ValueError("Required attribute 'arg' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'arg' is None", UserWarning)
+                warnings.warn("Required attribute 'arg' is None", UserWarning)
         if getattr(self._obj, "si", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'si' is None")
+                raise ValueError("Required attribute 'si' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'si' is None", UserWarning)
+                warnings.warn("Required attribute 'si' is None", UserWarning)
 
 
     def build(self) -> MsrQueryArg:

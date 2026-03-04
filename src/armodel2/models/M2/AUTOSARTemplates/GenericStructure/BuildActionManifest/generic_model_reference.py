@@ -221,22 +221,22 @@ class GenericModelReferenceBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "base", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'base' is None")
+                raise ValueError("Required attribute 'base' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'base' is None", UserWarning)
+                warnings.warn("Required attribute 'base' is None", UserWarning)
         if getattr(self._obj, "dest", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'dest' is None")
+                raise ValueError("Required attribute 'dest' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'dest' is None", UserWarning)
+                warnings.warn("Required attribute 'dest' is None", UserWarning)
         if getattr(self._obj, "ref", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'ref' is None")
+                raise ValueError("Required attribute 'ref' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'ref' is None", UserWarning)
+                warnings.warn("Required attribute 'ref' is None", UserWarning)
 
 
     def build(self) -> GenericModelReference:

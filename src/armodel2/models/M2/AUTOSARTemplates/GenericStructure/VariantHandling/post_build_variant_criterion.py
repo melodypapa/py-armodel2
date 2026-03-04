@@ -159,10 +159,10 @@ class PostBuildVariantCriterionBuilder(ARElementBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "compuMethod", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'compuMethod' is None")
+                raise ValueError("Required attribute 'compuMethod' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'compuMethod' is None", UserWarning)
+                warnings.warn("Required attribute 'compuMethod' is None", UserWarning)
 
 
     def build(self) -> PostBuildVariantCriterion:

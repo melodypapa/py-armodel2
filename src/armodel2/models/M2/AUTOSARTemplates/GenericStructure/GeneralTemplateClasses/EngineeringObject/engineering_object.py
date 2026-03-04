@@ -279,16 +279,16 @@ class EngineeringObjectBuilder(BuilderBase, ABC):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "category", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'category' is None")
+                raise ValueError("Required attribute 'category' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'category' is None", UserWarning)
+                warnings.warn("Required attribute 'category' is None", UserWarning)
         if getattr(self._obj, "shortLabel", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'shortLabel' is None")
+                raise ValueError("Required attribute 'shortLabel' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'shortLabel' is None", UserWarning)
+                warnings.warn("Required attribute 'shortLabel' is None", UserWarning)
 
 
     @abstractmethod

@@ -629,28 +629,28 @@ class StructuredReqBuilder(PaginateableBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "date", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'date' is None")
+                raise ValueError("Required attribute 'date' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'date' is None", UserWarning)
+                warnings.warn("Required attribute 'date' is None", UserWarning)
         if getattr(self._obj, "importance", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'importance' is None")
+                raise ValueError("Required attribute 'importance' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'importance' is None", UserWarning)
+                warnings.warn("Required attribute 'importance' is None", UserWarning)
         if getattr(self._obj, "issuedBy", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'issuedBy' is None")
+                raise ValueError("Required attribute 'issuedBy' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'issuedBy' is None", UserWarning)
+                warnings.warn("Required attribute 'issuedBy' is None", UserWarning)
         if getattr(self._obj, "type", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'type' is None")
+                raise ValueError("Required attribute 'type' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'type' is None", UserWarning)
+                warnings.warn("Required attribute 'type' is None", UserWarning)
 
 
     def build(self) -> StructuredReq:

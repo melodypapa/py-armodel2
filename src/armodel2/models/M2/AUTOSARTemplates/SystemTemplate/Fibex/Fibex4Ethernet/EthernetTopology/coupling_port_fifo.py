@@ -225,10 +225,10 @@ class CouplingPortFifoBuilder(CouplingPortStructuralElementBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "assignedTraffic", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'assignedTraffic' is None")
+                raise ValueError("Required attribute 'assignedTraffic' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'assignedTraffic' is None", UserWarning)
+                warnings.warn("Required attribute 'assignedTraffic' is None", UserWarning)
 
 
     def build(self) -> CouplingPortFifo:

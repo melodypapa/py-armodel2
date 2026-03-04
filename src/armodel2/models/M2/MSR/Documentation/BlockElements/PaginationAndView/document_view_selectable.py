@@ -188,10 +188,10 @@ class DocumentViewSelectableBuilder(BuilderBase, ABC):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "si", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'si' is None")
+                raise ValueError("Required attribute 'si' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'si' is None", UserWarning)
+                warnings.warn("Required attribute 'si' is None", UserWarning)
 
 
     @abstractmethod

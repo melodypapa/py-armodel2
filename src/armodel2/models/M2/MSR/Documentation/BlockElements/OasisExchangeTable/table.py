@@ -440,10 +440,10 @@ class TableBuilder(PaginateableBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "float", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'float' is None")
+                raise ValueError("Required attribute 'float' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'float' is None", UserWarning)
+                warnings.warn("Required attribute 'float' is None", UserWarning)
 
 
     def build(self) -> Table:

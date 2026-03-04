@@ -265,16 +265,16 @@ class DataExchangePointBuilder(ARElementBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "kind", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'kind' is None")
+                raise ValueError("Required attribute 'kind' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'kind' is None", UserWarning)
+                warnings.warn("Required attribute 'kind' is None", UserWarning)
         if getattr(self._obj, "referenced", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'referenced' is None")
+                raise ValueError("Required attribute 'referenced' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'referenced' is None", UserWarning)
+                warnings.warn("Required attribute 'referenced' is None", UserWarning)
 
 
     def build(self) -> DataExchangePoint:

@@ -219,10 +219,10 @@ class EvaluatedVariantSetBuilder(ARElementBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "approvalStatus", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'approvalStatus' is None")
+                raise ValueError("Required attribute 'approvalStatus' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'approvalStatus' is None", UserWarning)
+                warnings.warn("Required attribute 'approvalStatus' is None", UserWarning)
 
 
     def build(self) -> EvaluatedVariantSet:

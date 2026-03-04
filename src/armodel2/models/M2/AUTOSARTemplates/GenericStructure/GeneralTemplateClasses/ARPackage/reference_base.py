@@ -414,28 +414,28 @@ class ReferenceBaseBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "baseIsThisPackage", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'baseIsThisPackage' is None")
+                raise ValueError("Required attribute 'baseIsThisPackage' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'baseIsThisPackage' is None", UserWarning)
+                warnings.warn("Required attribute 'baseIsThisPackage' is None", UserWarning)
         if getattr(self._obj, "isDefault", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'isDefault' is None")
+                raise ValueError("Required attribute 'isDefault' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'isDefault' is None", UserWarning)
+                warnings.warn("Required attribute 'isDefault' is None", UserWarning)
         if getattr(self._obj, "isGlobal", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'isGlobal' is None")
+                raise ValueError("Required attribute 'isGlobal' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'isGlobal' is None", UserWarning)
+                warnings.warn("Required attribute 'isGlobal' is None", UserWarning)
         if getattr(self._obj, "shortLabel", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'shortLabel' is None")
+                raise ValueError("Required attribute 'shortLabel' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'shortLabel' is None", UserWarning)
+                warnings.warn("Required attribute 'shortLabel' is None", UserWarning)
 
 
     def build(self) -> ReferenceBase:

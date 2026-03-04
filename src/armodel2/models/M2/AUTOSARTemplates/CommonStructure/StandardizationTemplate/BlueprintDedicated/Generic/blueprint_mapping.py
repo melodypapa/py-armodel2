@@ -189,16 +189,16 @@ class BlueprintMappingBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "blueprint", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'blueprint' is None")
+                raise ValueError("Required attribute 'blueprint' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'blueprint' is None", UserWarning)
+                warnings.warn("Required attribute 'blueprint' is None", UserWarning)
         if getattr(self._obj, "derivedObject", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'derivedObject' is None")
+                raise ValueError("Required attribute 'derivedObject' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'derivedObject' is None", UserWarning)
+                warnings.warn("Required attribute 'derivedObject' is None", UserWarning)
 
 
     def build(self) -> BlueprintMapping:

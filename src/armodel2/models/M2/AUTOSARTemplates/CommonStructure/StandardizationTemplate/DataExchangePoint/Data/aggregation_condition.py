@@ -156,10 +156,10 @@ class AggregationConditionBuilder(AttributeConditionBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "aggregation", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'aggregation' is None")
+                raise ValueError("Required attribute 'aggregation' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'aggregation' is None", UserWarning)
+                warnings.warn("Required attribute 'aggregation' is None", UserWarning)
 
 
     def build(self) -> AggregationCondition:

@@ -234,10 +234,10 @@ class ChapterContentBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "prms", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'prms' is None")
+                raise ValueError("Required attribute 'prms' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'prms' is None", UserWarning)
+                warnings.warn("Required attribute 'prms' is None", UserWarning)
 
 
     def build(self) -> ChapterContent:

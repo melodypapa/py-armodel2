@@ -193,16 +193,16 @@ class TopicOrMsrQueryBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "msrQuery", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'msrQuery' is None")
+                raise ValueError("Required attribute 'msrQuery' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'msrQuery' is None", UserWarning)
+                warnings.warn("Required attribute 'msrQuery' is None", UserWarning)
         if getattr(self._obj, "topic1", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'topic1' is None")
+                raise ValueError("Required attribute 'topic1' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'topic1' is None", UserWarning)
+                warnings.warn("Required attribute 'topic1' is None", UserWarning)
 
 
     def build(self) -> TopicOrMsrQuery:

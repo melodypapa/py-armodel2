@@ -351,10 +351,10 @@ class EthGlobalTimeDomainPropsBuilder(AbstractGlobalTimeDomainPropsBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "fupDataIDList", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'fupDataIDList' is None")
+                raise ValueError("Required attribute 'fupDataIDList' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'fupDataIDList' is None", UserWarning)
+                warnings.warn("Required attribute 'fupDataIDList' is None", UserWarning)
 
 
     def build(self) -> EthGlobalTimeDomainProps:

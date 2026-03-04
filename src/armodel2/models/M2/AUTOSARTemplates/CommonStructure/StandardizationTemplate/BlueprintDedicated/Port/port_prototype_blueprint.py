@@ -364,10 +364,10 @@ class PortPrototypeBlueprintBuilder(ARElementBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "interface", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'interface' is None")
+                raise ValueError("Required attribute 'interface' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'interface' is None", UserWarning)
+                warnings.warn("Required attribute 'interface' is None", UserWarning)
 
 
     def build(self) -> PortPrototypeBlueprint:

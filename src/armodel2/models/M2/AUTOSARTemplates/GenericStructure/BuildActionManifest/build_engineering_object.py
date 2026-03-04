@@ -227,16 +227,16 @@ class BuildEngineeringObjectBuilder(EngineeringObjectBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "fileType", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'fileType' is None")
+                raise ValueError("Required attribute 'fileType' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'fileType' is None", UserWarning)
+                warnings.warn("Required attribute 'fileType' is None", UserWarning)
         if getattr(self._obj, "fileTypePattern", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'fileTypePattern' is None")
+                raise ValueError("Required attribute 'fileTypePattern' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'fileTypePattern' is None", UserWarning)
+                warnings.warn("Required attribute 'fileTypePattern' is None", UserWarning)
 
 
     def build(self) -> BuildEngineeringObject:

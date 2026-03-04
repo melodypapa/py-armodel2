@@ -333,16 +333,16 @@ class EmphasisTextBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "sub", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'sub' is None")
+                raise ValueError("Required attribute 'sub' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'sub' is None", UserWarning)
+                warnings.warn("Required attribute 'sub' is None", UserWarning)
         if getattr(self._obj, "sup", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'sup' is None")
+                raise ValueError("Required attribute 'sup' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'sup' is None", UserWarning)
+                warnings.warn("Required attribute 'sup' is None", UserWarning)
 
 
     def build(self) -> EmphasisText:

@@ -189,16 +189,16 @@ class MacSecGlobalKayPropsBuilder(ARElementBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "bypassEther", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'bypassEther' is None")
+                raise ValueError("Required attribute 'bypassEther' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'bypassEther' is None", UserWarning)
+                warnings.warn("Required attribute 'bypassEther' is None", UserWarning)
         if getattr(self._obj, "bypassVlan", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'bypassVlan' is None")
+                raise ValueError("Required attribute 'bypassVlan' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'bypassVlan' is None", UserWarning)
+                warnings.warn("Required attribute 'bypassVlan' is None", UserWarning)
 
 
     def build(self) -> MacSecGlobalKayProps:

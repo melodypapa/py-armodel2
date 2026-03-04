@@ -226,16 +226,16 @@ class GeneralAnnotationBuilder(BuilderBase, ABC):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "annotation", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'annotation' is None")
+                raise ValueError("Required attribute 'annotation' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'annotation' is None", UserWarning)
+                warnings.warn("Required attribute 'annotation' is None", UserWarning)
         if getattr(self._obj, "annotationText", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'annotationText' is None")
+                raise ValueError("Required attribute 'annotationText' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'annotationText' is None", UserWarning)
+                warnings.warn("Required attribute 'annotationText' is None", UserWarning)
 
 
     @abstractmethod

@@ -263,10 +263,10 @@ class MsrQueryP1Builder(PaginateableBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "msrQueryProps", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'msrQueryProps' is None")
+                raise ValueError("Required attribute 'msrQueryProps' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'msrQueryProps' is None", UserWarning)
+                warnings.warn("Required attribute 'msrQueryProps' is None", UserWarning)
 
 
     def build(self) -> MsrQueryP1:

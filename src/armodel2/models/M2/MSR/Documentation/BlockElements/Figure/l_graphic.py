@@ -194,10 +194,10 @@ class LGraphicBuilder(LanguageSpecificBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "graphic", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'graphic' is None")
+                raise ValueError("Required attribute 'graphic' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'graphic' is None", UserWarning)
+                warnings.warn("Required attribute 'graphic' is None", UserWarning)
 
 
     def build(self) -> LGraphic:

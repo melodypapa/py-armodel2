@@ -190,16 +190,16 @@ class IdsmRateLimitationBuilder(IdentifiableBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "maxEventsIn", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'maxEventsIn' is None")
+                raise ValueError("Required attribute 'maxEventsIn' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'maxEventsIn' is None", UserWarning)
+                warnings.warn("Required attribute 'maxEventsIn' is None", UserWarning)
         if getattr(self._obj, "timeInterval", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'timeInterval' is None")
+                raise ValueError("Required attribute 'timeInterval' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'timeInterval' is None", UserWarning)
+                warnings.warn("Required attribute 'timeInterval' is None", UserWarning)
 
 
     def build(self) -> IdsmRateLimitation:

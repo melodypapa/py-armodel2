@@ -379,16 +379,16 @@ class CouplingPortDetailsBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "ethernetPriority", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'ethernetPriority' is None")
+                raise ValueError("Required attribute 'ethernetPriority' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'ethernetPriority' is None", UserWarning)
+                warnings.warn("Required attribute 'ethernetPriority' is None", UserWarning)
         if getattr(self._obj, "ethernetTraffic", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'ethernetTraffic' is None")
+                raise ValueError("Required attribute 'ethernetTraffic' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'ethernetTraffic' is None", UserWarning)
+                warnings.warn("Required attribute 'ethernetTraffic' is None", UserWarning)
 
 
     def build(self) -> CouplingPortDetails:

@@ -189,16 +189,16 @@ class BlueprintFormulaBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "ecuc", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'ecuc' is None")
+                raise ValueError("Required attribute 'ecuc' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'ecuc' is None", UserWarning)
+                warnings.warn("Required attribute 'ecuc' is None", UserWarning)
         if getattr(self._obj, "verbatim", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'verbatim' is None")
+                raise ValueError("Required attribute 'verbatim' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'verbatim' is None", UserWarning)
+                warnings.warn("Required attribute 'verbatim' is None", UserWarning)
 
 
     def build(self) -> BlueprintFormula:

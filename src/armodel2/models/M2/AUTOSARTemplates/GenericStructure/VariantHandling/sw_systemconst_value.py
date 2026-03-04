@@ -247,16 +247,16 @@ class SwSystemconstValueBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "swSystemconst", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'swSystemconst' is None")
+                raise ValueError("Required attribute 'swSystemconst' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'swSystemconst' is None", UserWarning)
+                warnings.warn("Required attribute 'swSystemconst' is None", UserWarning)
         if getattr(self._obj, "value", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'value' is None")
+                raise ValueError("Required attribute 'value' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'value' is None", UserWarning)
+                warnings.warn("Required attribute 'value' is None", UserWarning)
 
 
     def build(self) -> SwSystemconstValue:

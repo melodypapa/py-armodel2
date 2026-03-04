@@ -253,16 +253,16 @@ class AtpInstanceRefBuilder(BuilderBase, ABC):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "atpBase", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'atpBase' is None")
+                raise ValueError("Required attribute 'atpBase' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'atpBase' is None", UserWarning)
+                warnings.warn("Required attribute 'atpBase' is None", UserWarning)
         if getattr(self._obj, "atpTarget", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'atpTarget' is None")
+                raise ValueError("Required attribute 'atpTarget' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'atpTarget' is None", UserWarning)
+                warnings.warn("Required attribute 'atpTarget' is None", UserWarning)
 
 
     @abstractmethod

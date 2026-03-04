@@ -537,16 +537,16 @@ class EntryBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "bgcolor", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'bgcolor' is None")
+                raise ValueError("Required attribute 'bgcolor' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'bgcolor' is None", UserWarning)
+                warnings.warn("Required attribute 'bgcolor' is None", UserWarning)
         if getattr(self._obj, "entryContents", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'entryContents' is None")
+                raise ValueError("Required attribute 'entryContents' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'entryContents' is None", UserWarning)
+                warnings.warn("Required attribute 'entryContents' is None", UserWarning)
 
 
     def build(self) -> Entry:

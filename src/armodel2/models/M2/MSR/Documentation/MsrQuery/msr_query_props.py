@@ -241,10 +241,10 @@ class MsrQueryPropsBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "msrQueryName", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'msrQueryName' is None")
+                raise ValueError("Required attribute 'msrQueryName' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'msrQueryName' is None", UserWarning)
+                warnings.warn("Required attribute 'msrQueryName' is None", UserWarning)
 
 
     def build(self) -> MsrQueryProps:

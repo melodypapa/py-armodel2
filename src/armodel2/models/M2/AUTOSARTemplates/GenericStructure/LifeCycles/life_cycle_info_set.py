@@ -333,16 +333,16 @@ class LifeCycleInfoSetBuilder(ARElementBuilder):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "defaultLcState", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'defaultLcState' is None")
+                raise ValueError("Required attribute 'defaultLcState' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'defaultLcState' is None", UserWarning)
+                warnings.warn("Required attribute 'defaultLcState' is None", UserWarning)
         if getattr(self._obj, "usedLifeCycleStateDefinitionGroup", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'usedLifeCycleStateDefinitionGroup' is None")
+                raise ValueError("Required attribute 'usedLifeCycleStateDefinitionGroup' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'usedLifeCycleStateDefinitionGroup' is None", UserWarning)
+                warnings.warn("Required attribute 'usedLifeCycleStateDefinitionGroup' is None", UserWarning)
 
 
     def build(self) -> LifeCycleInfoSet:

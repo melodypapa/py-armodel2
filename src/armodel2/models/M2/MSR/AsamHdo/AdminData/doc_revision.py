@@ -381,10 +381,10 @@ class DocRevisionBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "date", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'date' is None")
+                raise ValueError("Required attribute 'date' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'date' is None", UserWarning)
+                warnings.warn("Required attribute 'date' is None", UserWarning)
 
 
     def build(self) -> DocRevision:

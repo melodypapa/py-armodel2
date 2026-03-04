@@ -196,16 +196,16 @@ class ChapterOrMsrQueryBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "chapter", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'chapter' is None")
+                raise ValueError("Required attribute 'chapter' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'chapter' is None", UserWarning)
+                warnings.warn("Required attribute 'chapter' is None", UserWarning)
         if getattr(self._obj, "msrQueryChapter", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'msrQueryChapter' is None")
+                raise ValueError("Required attribute 'msrQueryChapter' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'msrQueryChapter' is None", UserWarning)
+                warnings.warn("Required attribute 'msrQueryChapter' is None", UserWarning)
 
 
     def build(self) -> ChapterOrMsrQuery:

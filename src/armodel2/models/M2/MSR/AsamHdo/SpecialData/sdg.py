@@ -3619,10 +3619,10 @@ class SdgBuilder(BuilderBase):
         # This is much faster than calling get_type_hints() at runtime
         if getattr(self._obj, "gid", None) is None:
             if mode == BuilderValidationMode.STRICT:
-                raise ValueError(f"Required attribute 'gid' is None")
+                raise ValueError("Required attribute 'gid' is None")
             elif mode == BuilderValidationMode.LENIENT:
                 import warnings
-                warnings.warn(f"Required attribute 'gid' is None", UserWarning)
+                warnings.warn("Required attribute 'gid' is None", UserWarning)
 
 
     def build(self) -> Sdg:

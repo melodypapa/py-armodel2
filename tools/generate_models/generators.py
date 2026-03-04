@@ -2532,14 +2532,14 @@ def _generate_validation_constants(
     
     if required_attrs:
         required_list = sorted(required_attrs)
-        parts.append(f"    _REQUIRED_ATTRIBUTES = {{")
+        parts.append("    _REQUIRED_ATTRIBUTES = {")
         for attr in required_list:
             parts.append(f'        "{attr}",')
         parts.append("    }")
     
     if optional_attrs:
         optional_list = sorted(optional_attrs)
-        parts.append(f"    _OPTIONAL_ATTRIBUTES = {{")
+        parts.append("    _OPTIONAL_ATTRIBUTES = {")
         for attr in optional_list:
             parts.append(f'        "{attr}",')
         parts.append("    }")
@@ -2583,10 +2583,10 @@ def _generate_validation_helper(
         # Use getattr() to handle Python keywords (e.g., 'def', 'class', etc.)
         validation_lines.extend([
             f'if getattr(self._obj, "{attr}", None) is None:',
-            f'    if mode == BuilderValidationMode.STRICT:',
+            '    if mode == BuilderValidationMode.STRICT:',
             f'        raise ValueError(f"Required attribute \'{attr}\' is None")',
-            f'    elif mode == BuilderValidationMode.LENIENT:',
-            f'        import warnings',
+            '    elif mode == BuilderValidationMode.LENIENT:',
+            '        import warnings',
             f'        warnings.warn(f"Required attribute \'{attr}\' is None", UserWarning)',
         ])
     required_check = "\n        ".join(validation_lines)
