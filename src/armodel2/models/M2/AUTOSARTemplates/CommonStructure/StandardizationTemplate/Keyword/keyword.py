@@ -193,10 +193,17 @@ class KeywordBuilder(IdentifiableBuilder):
         return self
 
 
+    # Pre-computed validation constants (generated from JSON schema)
+    _REQUIRED_ATTRIBUTES = {
+        "abbrName",
+    }
+    _OPTIONAL_ATTRIBUTES = {
+        "classification",
+    }
+
 
     def _validate_instance(self) -> None:
         """Validate the built instance based on settings."""
-        from typing import get_type_hints
         from armodel2.core import GlobalSettingsManager, BuilderValidationMode
 
         settings = GlobalSettingsManager()
@@ -205,71 +212,17 @@ class KeywordBuilder(IdentifiableBuilder):
         if mode == BuilderValidationMode.DISABLED:
             return
 
-        # Get type hints for the class
-        try:
-            type_hints_dict = get_type_hints(type(self._obj))
-        except Exception:
-            # Cannot resolve type hints (e.g., forward references), skip validation
-            return
-
-        for attr_name, attr_type in type_hints_dict.items():
-            if attr_name.startswith("_"):
-                continue
-
-            value = getattr(self._obj, attr_name)
-
-            # Check required fields (not Optional)
-            if value is None and not self._is_optional_type(attr_type):
-                if mode == BuilderValidationMode.STRICT:
-                    raise ValueError(
-                        f"Required attribute '{attr_name}' is None"
-                    )
-                elif mode == BuilderValidationMode.LENIENT:
-                    import warnings
-                    warnings.warn(
-                        f"Required attribute '{attr_name}' is None",
-                        UserWarning
-                    )
-
-    @staticmethod
-    def _is_optional_type(type_hint: Any) -> bool:
-        """Check if a type hint is Optional.
-
-        Args:
-            type_hint: Type hint to check
-
-        Returns:
-            True if type is Optional, False otherwise
-        """
-        origin = getattr(type_hint, "__origin__", None)
-        return origin is Union
-
-    @staticmethod
-    def _get_expected_type(type_hint: Any) -> type:
-        """Extract expected type from type hint.
-
-        Args:
-            type_hint: Type hint to extract from
-
-        Returns:
-            Expected type
-        """
-        if isinstance(type_hint, str):
-            return object
-        origin = getattr(type_hint, "__origin__", None)
-        if origin is Union:
-            args = getattr(type_hint, "__args__", [])
-            for arg in args:
-                if arg is not type(None):
-                    return arg
-        elif origin is list:
-            args = getattr(type_hint, "__args__", [object])
-            return args[0] if args else object
-        return type_hint if isinstance(type_hint, type) else object
+        # Validate required attributes using pre-computed constants (O(1) lookup)
+        # This is much faster than calling get_type_hints() at runtime
+        if getattr(self._obj, "abbrName", None) is None:
+            if mode == BuilderValidationMode.STRICT:
+                raise ValueError("Required attribute 'abbrName' is None")
+            elif mode == BuilderValidationMode.LENIENT:
+                import warnings
+                warnings.warn("Required attribute 'abbrName' is None", UserWarning)
 
 
     def build(self) -> Keyword:
         """Build and return the Keyword instance with validation."""
         self._validate_instance()
-        pass
         return self._obj

@@ -18,6 +18,7 @@ from .type_utils import (
     is_enum_type,
     extract_base_type,
     extract_attribute_metadata,
+    extract_attribute_requirements,
     get_type_coercion_function,
     should_apply_type_coercion,
     flatten_atp_mixed_attributes,
@@ -2511,16 +2512,59 @@ def _generate_list_methods(
     return [add_method, clear_method]
 
 
-def _generate_validation_helper() -> str:
+def _generate_validation_constants(
+    required_attrs: Set[str],
+    optional_attrs: Set[str],
+) -> str:
+    """Generate validation constant class variables for Builder class.
+
+    Args:
+        required_attrs: Set of required attribute names
+        optional_attrs: Set of optional attribute names
+
+    Returns:
+        Generated validation constants code
+    """
+    if not required_attrs and not optional_attrs:
+        return ""
+
+    parts = ["    # Pre-computed validation constants (generated from JSON schema)"]
+    
+    if required_attrs:
+        required_list = sorted(required_attrs)
+        parts.append("    _REQUIRED_ATTRIBUTES = {")
+        for attr in required_list:
+            parts.append(f'        "{attr}",')
+        parts.append("    }")
+    
+    if optional_attrs:
+        optional_list = sorted(optional_attrs)
+        parts.append("    _OPTIONAL_ATTRIBUTES = {")
+        for attr in optional_list:
+            parts.append(f'        "{attr}",')
+        parts.append("    }")
+    
+    return "\n".join(parts) + "\n"
+
+
+def _generate_validation_helper(
+    required_attrs: Set[str],
+    optional_attrs: Set[str],
+) -> str:
     """Generate validation helper method for Builder class.
+
+    Args:
+        required_attrs: Set of required attribute names
+        optional_attrs: Set of optional attribute names
 
     Returns:
         Generated validation helper code
     """
-    return '''
+    # If no required attributes, generate a simple no-op validation
+    if not required_attrs:
+        return '''
     def _validate_instance(self) -> None:
         """Validate the built instance based on settings."""
-        from typing import get_type_hints
         from armodel2.core import GlobalSettingsManager, BuilderValidationMode
 
         settings = GlobalSettingsManager()
@@ -2529,67 +2573,38 @@ def _generate_validation_helper() -> str:
         if mode == BuilderValidationMode.DISABLED:
             return
 
-        # Get type hints for the class
-        try:
-            type_hints_dict = get_type_hints(type(self._obj))
-        except Exception:
-            # Cannot resolve type hints (e.g., forward references), skip validation
+        # No required attributes to validate (all are optional)
+'''
+
+    # Generate validation using pre-computed constants
+    required_list = sorted(required_attrs)
+    validation_lines = []
+    for attr in required_list:
+        # Use getattr() to handle Python keywords (e.g., 'def', 'class', etc.)
+        validation_lines.extend([
+            f'if getattr(self._obj, "{attr}", None) is None:',
+            '    if mode == BuilderValidationMode.STRICT:',
+            f'        raise ValueError(f"Required attribute \'{attr}\' is None")',
+            '    elif mode == BuilderValidationMode.LENIENT:',
+            '        import warnings',
+            f'        warnings.warn(f"Required attribute \'{attr}\' is None", UserWarning)',
+        ])
+    required_check = "\n        ".join(validation_lines)
+
+    return f'''
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from armodel2.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
             return
 
-        for attr_name, attr_type in type_hints_dict.items():
-            if attr_name.startswith("_"):
-                continue
-
-            value = getattr(self._obj, attr_name)
-
-            # Check required fields (not Optional)
-            if value is None and not self._is_optional_type(attr_type):
-                if mode == BuilderValidationMode.STRICT:
-                    raise ValueError(
-                        f"Required attribute '{attr_name}' is None"
-                    )
-                elif mode == BuilderValidationMode.LENIENT:
-                    import warnings
-                    warnings.warn(
-                        f"Required attribute '{attr_name}' is None",
-                        UserWarning
-                    )
-
-    @staticmethod
-    def _is_optional_type(type_hint: Any) -> bool:
-        """Check if a type hint is Optional.
-
-        Args:
-            type_hint: Type hint to check
-
-        Returns:
-            True if type is Optional, False otherwise
-        """
-        origin = getattr(type_hint, "__origin__", None)
-        return origin is Union
-
-    @staticmethod
-    def _get_expected_type(type_hint: Any) -> type:
-        """Extract expected type from type hint.
-
-        Args:
-            type_hint: Type hint to extract from
-
-        Returns:
-            Expected type
-        """
-        if isinstance(type_hint, str):
-            return object
-        origin = getattr(type_hint, "__origin__", None)
-        if origin is Union:
-            args = getattr(type_hint, "__args__", [])
-            for arg in args:
-                if arg is not type(None):
-                    return arg
-        elif origin is list:
-            args = getattr(type_hint, "__args__", [object])
-            return args[0] if args else object
-        return type_hint if isinstance(type_hint, type) else object
+        # Validate required attributes using pre-computed constants (O(1) lookup)
+        # This is much faster than calling get_type_hints() at runtime
+        {required_check}
 '''
 
 
@@ -2598,6 +2613,7 @@ def generate_builder_code(
     hierarchy_info: Dict[str, Dict[str, Any]],
     package_data: Dict[str, Dict[str, Any]],
     include_members: bool = False,
+    package_path: str = "",
 ) -> tuple[str, str]:
     """Generate builder class code from type definition.
 
@@ -2606,6 +2622,7 @@ def generate_builder_code(
         hierarchy_info: Class hierarchy information
         package_data: Package data containing class definitions
         include_members: Whether to include member methods
+        package_path: Path to the package containing the class
 
     Returns:
         Tuple of (builder_imports, builder_class_code) where:
@@ -2616,6 +2633,14 @@ def generate_builder_code(
     is_abstract = type_def.get("is_abstract", False)
 
     builder_name = f"{class_name}Builder"
+
+    # Extract required and optional attributes for validation
+    required_attrs: Set[str] = set()
+    optional_attrs: Set[str] = set()
+    if package_path:
+        required_attrs, optional_attrs = extract_attribute_requirements(
+            class_name, package_path, package_data
+        )
 
     # Get parent Builder class
     builder_parent = _get_builder_parent_class(class_name, hierarchy_info)
@@ -2726,8 +2751,9 @@ def generate_builder_code(
         "".join(with_methods),
         "".join(list_methods),
         "",
-        # Generate validation helper method (has access to imports in this context)
-        _generate_validation_helper(),
+        # Generate validation constants and helper method
+        _generate_validation_constants(required_attrs, optional_attrs),
+        _generate_validation_helper(required_attrs, optional_attrs),
         "",
     ]
 
@@ -2746,11 +2772,8 @@ def generate_builder_code(
         )
         code_parts.append("        self._validate_instance()")
         # Only call super().build() if parent is not abstract
-        code_parts.append(
-            "        super().build()"
-            if builder_parent and not parent_is_abstract
-            else "        pass"
-        )
+        if builder_parent and not parent_is_abstract:
+            code_parts.append("        super().build()")
         code_parts.append("        return self._obj")
 
     # Combine builder imports
