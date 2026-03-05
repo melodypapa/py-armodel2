@@ -90,7 +90,7 @@ class ARXMLWriter:
         Args:
             root: Root XML element
             filepath: Output file path
-            autosar: AUTOSAR object to get encoding from (optional)
+            autosar: AUTOSAR object to get encoding and line ending from (optional)
         """
         filepath = Path(filepath)
 
@@ -101,6 +101,11 @@ class ARXMLWriter:
         encoding = self._encoding
         if autosar is not None and autosar.encoding is not None:
             encoding = autosar.encoding
+
+        # Get line ending from AUTOSAR object or default to LF
+        line_ending = '\n'
+        if autosar is not None and hasattr(autosar, '_line_ending'):
+            line_ending = autosar._line_ending
 
         # Create tree and write
         tree = ET.ElementTree(root)
@@ -122,6 +127,9 @@ class ARXMLWriter:
 
         # Preserve HTML entity encoding in text content
         self._preserve_html_entities_file(filepath, encoding)
+
+        # Convert line endings to match original file
+        self._convert_line_endings_file(filepath, line_ending)
 
     def _fix_empty_elements_file(self, filepath: Path) -> None:
         """Convert self-closing empty elements to separate opening and closing tags.
@@ -256,8 +264,31 @@ class ARXMLWriter:
         # This regex matches >...< where ... is any text (including newlines)
         # but not another tag (which starts with <)
         processed_str = re.sub(r'>([^<]*?)<', escape_quotes_in_text, xml_str, flags=re.DOTALL)
-        
+
         return processed_str
+
+    def _convert_line_endings_file(self, filepath: Path, line_ending: str) -> None:
+        """Convert file line endings to match original.
+
+        xml.etree.ElementTree always uses Unix LF (\\n) line endings.
+        This method converts them to match the original file's line ending style.
+
+        Args:
+            filepath: Path to the ARXML file
+            line_ending: Target line ending ('\\r\\n' for CRLF, '\\n' for LF)
+        """
+        # Only convert if target is CRLF (ElementTree always outputs LF)
+        if line_ending != '\r\n':
+            return
+
+        with open(filepath, 'rb') as f:
+            content = f.read()
+
+        # Convert LF to CRLF
+        content = content.replace(b'\n', b'\r\n')
+
+        with open(filepath, 'wb') as f:
+            f.write(content)
 
     def _indent(self, elem: ET.Element, level: int = 0) -> None:
         """Add indentation to XML element for pretty printing.

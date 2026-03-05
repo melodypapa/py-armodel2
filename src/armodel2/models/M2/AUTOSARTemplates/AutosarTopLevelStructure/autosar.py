@@ -87,6 +87,24 @@ class AUTOSAR(ARObject):
         """
         return self._encoding
 
+    @property
+    def line_ending(self) -> str:
+        """Get the line ending style from the loaded ARXML file.
+
+        Returns:
+            The line ending string ('\\r\\n' for Windows CRLF, '\\n' for Unix LF)
+        """
+        return self._line_ending
+
+    @line_ending.setter
+    def line_ending(self, value: str) -> None:
+        """Set the line ending style.
+
+        Args:
+            value: The line ending string ('\\r\\n' or '\\n')
+        """
+        self._line_ending = value
+
     admin_data: Optional[AdminData]
     ar_packages: list[ARPackage]
     file_info_comment: Optional[FileInfoComment]
@@ -123,6 +141,7 @@ class AUTOSAR(ARObject):
         self.introduction: Optional[DocumentationBlock] = None
         self.schema_location: Optional[str] = None
         self._encoding: Optional[str] = None
+        self._line_ending: str = '\n'  # Default to Unix LF
 
         self._initialized = True
 
@@ -145,6 +164,7 @@ class AUTOSAR(ARObject):
         self.introduction = None
         self.schema_location = None
         self._encoding = None
+        self._line_ending = '\n'  # Reset to default Unix LF
 
     @classmethod
     def reset(cls) -> None:

@@ -69,8 +69,8 @@ class TestReaderEncoding:
 
         Test ID: SWITS-INT-0302
         """
-        # BswM.arxml uses UTF-8 encoding
-        arxml_file = Path("demos/arxml/BswM.arxml")
+        # AUTOSAR_Datatypes.arxml uses UTF-8 encoding
+        arxml_file = Path("demos/validated/AUTOSAR_Datatypes.arxml")
         if not arxml_file.exists():
             pytest.skip(f"File not found: {arxml_file}")
 
