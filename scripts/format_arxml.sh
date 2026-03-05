@@ -53,6 +53,18 @@ while [[ $# -gt 0 ]]; do
             PRESET="validated"
             shift
             ;;
+        --test)
+            INPUT_DIR="demos/test"
+            OUTPUT_DIR="data/test"
+            PRESET="test"
+            shift
+            ;;
+        --test_validated)
+            INPUT_DIR="demos/test_validated"
+            OUTPUT_DIR="data/test_validated"
+            PRESET="test_validated"
+            shift
+            ;;
         --help|-h)
             echo "Usage: $0 [OPTIONS] [files...]"
             echo ""
@@ -63,6 +75,8 @@ while [[ $# -gt 0 ]]; do
             echo "  --input, -i DIR     Set input directory (default: demos/arxml)"
             echo "  --output, -o DIR    Set output directory (default: data/arxml)"
             echo "  --validated         Use demos/validated → data/validated"
+            echo "  --test              Use demos/test → data/test"
+            echo "  --test_validated    Use demos/test_validated → data/test_validated"
             echo "  --help, -h          Show this help message"
             echo ""
             echo "Examples:"
@@ -71,6 +85,8 @@ while [[ $# -gt 0 ]]; do
             echo "  $0 --verbose                         # Format all with error details"
             echo "  $0 --dry-run                         # List files without formatting"
             echo "  $0 --validated                       # Format from demos/validated"
+            echo "  $0 --test                            # Format from demos/test"
+            echo "  $0 --test_validated                  # Format from demos/test_validated"
             echo "  $0 --input demos/validated --output data/validated  # Custom directories"
             echo "  $0 --encoding UTF-8                  # Use UTF-8 encoding"
             exit 0
@@ -192,7 +208,7 @@ if [ $failed_count -gt 0 ]; then
     echo "To debug individual files:"
     for i in "${!failed_files[@]}"; do
         filename="${failed_files[$i]}"
-        echo "  armodel2 format demos/arxml/$filename -o data/output.arxml --encoding $ENCODING -v"
+        echo "  armodel2 format $INPUT_DIR/$filename -o data/output.arxml --encoding $ENCODING -v"
     done
 fi
 
