@@ -8,6 +8,8 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavio
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import instance_ref
+from armodel2.serialization.decorators import ref_conditional
 
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import (
     BswScheduleEvent,
@@ -41,10 +43,10 @@ class BswModeSwitchEvent(BswScheduleEvent):
 
 
     activation: Optional[ModeActivationKind]
-    mode_iref: Optional[ModeInBswModuleDescriptionInstanceRef]
+    _mode_iref: Optional[ModeInBswModuleDescriptionInstanceRef]
     _DESERIALIZE_DISPATCH = {
         "ACTIVATION": lambda obj, elem: setattr(obj, "activation", ModeActivationKind.deserialize(elem)),
-        "MODE-IREF": lambda obj, elem: setattr(obj, "mode_iref", SerializationHelper.deserialize_by_tag(elem, "ModeInBswModuleDescriptionInstanceRef")),
+        "MODE-IREF": lambda obj, elem: setattr(obj, "_mode_iref", SerializationHelper.deserialize_by_tag(elem, "ModeInBswModuleDescriptionInstanceRef")),
     }
 
 
@@ -52,7 +54,18 @@ class BswModeSwitchEvent(BswScheduleEvent):
         """Initialize BswModeSwitchEvent."""
         super().__init__()
         self.activation: Optional[ModeActivationKind] = None
-        self.mode_iref: Optional[ModeInBswModuleDescriptionInstanceRef] = None
+        self._mode_iref: Optional[ModeInBswModuleDescriptionInstanceRef] = None
+    @property
+    @instance_ref(flatten=True, list_type='multi')
+    def mode_iref(self) -> Optional[ModeInBswModuleDescriptionInstanceRef]:
+        """Get mode_iref instance reference."""
+        return self._mode_iref
+
+    @mode_iref.setter
+    def mode_iref(self, value: Optional[ModeInBswModuleDescriptionInstanceRef]) -> None:
+        """Set mode_iref instance reference."""
+        self._mode_iref = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize BswModeSwitchEvent to XML element.
@@ -124,7 +137,7 @@ class BswModeSwitchEvent(BswScheduleEvent):
             if tag == "ACTIVATION":
                 setattr(obj, "activation", ModeActivationKind.deserialize(child))
             elif tag == "MODE-IREF":
-                setattr(obj, "mode_iref", SerializationHelper.deserialize_by_tag(child, "ModeInBswModuleDescriptionInstanceRef"))
+                setattr(obj, "_mode_iref", SerializationHelper.deserialize_by_tag(child, "ModeInBswModuleDescriptionInstanceRef"))
 
         return obj
 

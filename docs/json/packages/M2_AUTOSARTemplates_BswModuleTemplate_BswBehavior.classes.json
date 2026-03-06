@@ -274,7 +274,7 @@
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
-          "decorator": "",
+          "decorator": "ref_conditional:ACCESSED-MODE-GROUPS",
           "note": "A mode group which is accessed via API call by this entity. It shall be a ModeDeclarationGroupPrototype this module or cluster. atpVariation"
         },
         "activationPoint": {
@@ -1240,6 +1240,7 @@
           "multiplicity": "0..1",
           "kind": "iref",
           "is_ref": true,
+          "decorator": "instance_ref:flatten=True,list_type=multi",
           "note": "Kind of activation w.r.t. to the referred mode. ModeDeclaration 0..2 iref Reference to one or two Modes that initiate the Mode by: ModeInBswModule"
         }
       }

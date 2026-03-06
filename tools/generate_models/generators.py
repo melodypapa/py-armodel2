@@ -2584,10 +2584,10 @@ def _generate_validation_helper(
         validation_lines.extend([
             f'if getattr(self._obj, "{attr}", None) is None:',
             '    if mode == BuilderValidationMode.STRICT:',
-            f'        raise ValueError(f"Required attribute \'{attr}\' is None")',
+            f'        raise ValueError("Required attribute \'{attr}\' is None")',
             '    elif mode == BuilderValidationMode.LENIENT:',
             '        import warnings',
-            f'        warnings.warn(f"Required attribute \'{attr}\' is None", UserWarning)',
+            f'        warnings.warn("Required attribute \'{attr}\' is None", UserWarning)',
         ])
     required_check = "\n        ".join(validation_lines)
 
