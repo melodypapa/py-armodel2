@@ -63,7 +63,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
     data_send_points: list[BswVariableAccess]
     implemented_entry_ref: Optional[ARRef]
     issued_trigger_refs: list[ARRef]
-    managed_mode_group_refs: list[ARRef]
+    _managed_mode_group_refs: list[ARRef]
     scheduler_name_prefix_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "ACCESSED-MODE-GROUP-REFS": lambda obj, elem: [obj._accessed_mode_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
@@ -73,7 +73,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
         "DATA-SEND-POINTS": lambda obj, elem: obj.data_send_points.append(SerializationHelper.deserialize_by_tag(elem, "BswVariableAccess")),
         "IMPLEMENTED-ENTRY-REF": lambda obj, elem: setattr(obj, "implemented_entry_ref", ARRef.deserialize(elem)),
         "ISSUED-TRIGGER-REFS": lambda obj, elem: [obj.issued_trigger_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "MANAGED-MODE-GROUP-REFS": lambda obj, elem: [obj.managed_mode_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "MANAGED-MODE-GROUP-REFS": lambda obj, elem: [obj._managed_mode_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SCHEDULER-NAME-PREFIX-REF": lambda obj, elem: setattr(obj, "scheduler_name_prefix_ref", ARRef.deserialize(elem)),
     }
 
@@ -88,7 +88,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
         self.data_send_points: list[BswVariableAccess] = []
         self.implemented_entry_ref: Optional[ARRef] = None
         self.issued_trigger_refs: list[ARRef] = []
-        self.managed_mode_group_refs: list[ARRef] = []
+        self._managed_mode_group_refs: list[ARRef] = []
         self.scheduler_name_prefix_ref: Optional[ARRef] = None
     @property
     @ref_conditional("ACCESSED-MODE-GROUPS")
@@ -100,6 +100,17 @@ class BswModuleEntity(ExecutableEntity, ABC):
     def accessed_mode_group_refs(self, value: list[ARRef]) -> None:
         """Set accessed_mode_group_refs with ref_conditional wrapper."""
         self._accessed_mode_group_refs = value
+
+    @property
+    @ref_conditional("MANAGED-MODE-GROUPS")
+    def managed_mode_group_refs(self) -> list[ARRef]:
+        """Get managed_mode_group_refs with ref_conditional wrapper."""
+        return self._managed_mode_group_refs
+
+    @managed_mode_group_refs.setter
+    def managed_mode_group_refs(self, value: list[ARRef]) -> None:
+        """Set managed_mode_group_refs with ref_conditional wrapper."""
+        self._managed_mode_group_refs = value
 
 
     def serialize(self) -> ET.Element:
@@ -223,20 +234,23 @@ class BswModuleEntity(ExecutableEntity, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize managed_mode_group_refs (list to container "MANAGED-MODE-GROUP-REFS")
+        # Serialize managed_mode_group_refs (list to container "MANAGED-MODE-GROUPS")
         if self.managed_mode_group_refs:
-            wrapper = ET.Element("MANAGED-MODE-GROUP-REFS")
+            wrapper = ET.Element("MANAGED-MODE-GROUPS")
             for item in self.managed_mode_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroupPrototype")
                 if serialized is not None:
-                    child_elem = ET.Element("MANAGED-MODE-GROUP-REF")
+                    # Wrap in MODE-DECLARATION-GROUP-PROTOTYPE-REF-CONDITIONAL
+                    conditional = ET.Element("MODE-DECLARATION-GROUP-PROTOTYPE-REF-CONDITIONAL")
+                    ref_elem = ET.Element("MODE-DECLARATION-GROUP-PROTOTYPE-REF")
                     if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
+                        ref_elem.attrib.update(serialized.attrib)
                     if serialized.text:
-                        child_elem.text = serialized.text
+                        ref_elem.text = serialized.text
                     for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                        ref_elem.append(child)
+                    conditional.append(ref_elem)
+                    wrapper.append(conditional)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -310,10 +324,13 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.issued_trigger_refs.append(ARRef.deserialize(item_elem))
-            elif tag == "MANAGED-MODE-GROUP-REFS":
-                # Iterate through wrapper children
+            elif tag == "MANAGED-MODE-GROUPS":
+                # Unwrap ref_conditional pattern
                 for item_elem in child:
-                    obj.managed_mode_group_refs.append(ARRef.deserialize(item_elem))
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj._managed_mode_group_refs.append(ARRef.deserialize(ref_elem))
             elif tag == "SCHEDULER-NAME-PREFIX-REF":
                 setattr(obj, "scheduler_name_prefix_ref", ARRef.deserialize(child))
 

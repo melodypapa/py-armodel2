@@ -61,7 +61,7 @@
     },
     {
       "name": "Implementation",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Implementation",
       "is_abstract": true,
       "atp_type": null,
@@ -193,19 +193,19 @@
           "is_ref": false,
           "note": "All static and dynamic resources for each implementation described within the ResourceConsumption class."
         },
-        "swcBswMapping": {
-          "type": "SwcBswMapping",
-          "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
-          "note": "This allows a mapping between an SWC and a BSW to be attached to an implementation description Service, ECU Abstraction and Complex It is up to the methodology to define reference has to be set for the Swc- or Bsw for both."
-        },
         "swVersion": {
           "type": "RevisionLabelString",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Software version of this implementation. The numbering levels (like major, minor, patch), its values specific."
+        },
+        "swcBswMapping": {
+          "type": "SwcBswMapping",
+          "multiplicity": "0..1",
+          "kind": "ref",
+          "is_ref": true,
+          "note": "This allows a mapping between an SWC and a BSW to be attached to an implementation description Service, ECU Abstraction and Complex It is up to the methodology to define reference has to be set for the Swc- or Bsw for both."
         },
         "usedCodeGenerator": {
           "type": "String",

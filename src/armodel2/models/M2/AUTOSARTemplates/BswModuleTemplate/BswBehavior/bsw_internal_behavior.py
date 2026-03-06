@@ -100,8 +100,8 @@ class BswInternalBehavior(InternalBehavior):
     included_mode_declaration_group_sets: list[IncludedModeDeclarationGroupSet]
     internal_triggering_points: list[BswInternalTriggeringPoint]
     internal_triggering_point_policies: list[BswInternalTriggeringPointPolicy]
-    mode_receiver_policies: list[BswModeReceiverPolicy]
     mode_sender_policies: list[BswModeSenderPolicy]
+    mode_receiver_policies: list[BswModeReceiverPolicy]
     parameter_policies: list[BswParameterPolicy]
     per_instance_parameters: list[ParameterDataPrototype]
     reception_policies: list[BswDataReceptionPolicy]
@@ -123,8 +123,8 @@ class BswInternalBehavior(InternalBehavior):
         "INCLUDED-MODE-DECLARATION-GROUP-SETS": lambda obj, elem: obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedModeDeclarationGroupSet")),
         "INTERNAL-TRIGGERING-POINTS": lambda obj, elem: obj.internal_triggering_points.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalTriggeringPoint")),
         "INTERNAL-TRIGGERING-POINT-POLICYS": lambda obj, elem: obj.internal_triggering_point_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalTriggeringPointPolicy")),
-        "MODE-RECEIVER-POLICYS": lambda obj, elem: obj.mode_receiver_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswModeReceiverPolicy")),
         "MODE-SENDER-POLICYS": lambda obj, elem: obj.mode_sender_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswModeSenderPolicy")),
+        "MODE-RECEIVER-POLICYS": lambda obj, elem: obj.mode_receiver_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswModeReceiverPolicy")),
         "PARAMETER-POLICYS": lambda obj, elem: obj.parameter_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswParameterPolicy")),
         "PER-INSTANCE-PARAMETERS": lambda obj, elem: obj.per_instance_parameters.append(SerializationHelper.deserialize_by_tag(elem, "ParameterDataPrototype")),
         "RECEPTION-POLICYS": ("_POLYMORPHIC_LIST", "reception_policies", ["BswQueuedDataReceptionPolicy"]),
@@ -151,8 +151,8 @@ class BswInternalBehavior(InternalBehavior):
         self.included_mode_declaration_group_sets: list[IncludedModeDeclarationGroupSet] = []
         self.internal_triggering_points: list[BswInternalTriggeringPoint] = []
         self.internal_triggering_point_policies: list[BswInternalTriggeringPointPolicy] = []
-        self.mode_receiver_policies: list[BswModeReceiverPolicy] = []
         self.mode_sender_policies: list[BswModeSenderPolicy] = []
+        self.mode_receiver_policies: list[BswModeReceiverPolicy] = []
         self.parameter_policies: list[BswParameterPolicy] = []
         self.per_instance_parameters: list[ParameterDataPrototype] = []
         self.reception_policies: list[BswDataReceptionPolicy] = []
@@ -307,21 +307,21 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mode_receiver_policies (list to container "MODE-RECEIVER-POLICYS")
-        if self.mode_receiver_policies:
-            wrapper = ET.Element("MODE-RECEIVER-POLICYS")
-            for item in self.mode_receiver_policies:
-                serialized = SerializationHelper.serialize_item(item, "BswModeReceiverPolicy")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
-
         # Serialize mode_sender_policies (list to container "MODE-SENDER-POLICYS")
         if self.mode_sender_policies:
             wrapper = ET.Element("MODE-SENDER-POLICYS")
             for item in self.mode_sender_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswModeSenderPolicy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mode_receiver_policies (list to container "MODE-RECEIVER-POLICYS")
+        if self.mode_receiver_policies:
+            wrapper = ET.Element("MODE-RECEIVER-POLICYS")
+            for item in self.mode_receiver_policies:
+                serialized = SerializationHelper.serialize_item(item, "BswModeReceiverPolicy")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -512,14 +512,14 @@ class BswInternalBehavior(InternalBehavior):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.internal_triggering_point_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggeringPointPolicy"))
-            elif tag == "MODE-RECEIVER-POLICYS":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj.mode_receiver_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModeReceiverPolicy"))
             elif tag == "MODE-SENDER-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.mode_sender_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModeSenderPolicy"))
+            elif tag == "MODE-RECEIVER-POLICYS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.mode_receiver_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModeReceiverPolicy"))
             elif tag == "PARAMETER-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -704,18 +704,6 @@ class BswInternalBehaviorBuilder(InternalBehaviorBuilder):
         self._obj.internal_triggering_point_policies = list(items) if items else []
         return self
 
-    def with_mode_receiver_policies(self, items: list[BswModeReceiverPolicy]) -> "BswInternalBehaviorBuilder":
-        """Set mode_receiver_policies list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.mode_receiver_policies = list(items) if items else []
-        return self
-
     def with_mode_sender_policies(self, items: list[BswModeSenderPolicy]) -> "BswInternalBehaviorBuilder":
         """Set mode_sender_policies list attribute.
 
@@ -726,6 +714,18 @@ class BswInternalBehaviorBuilder(InternalBehaviorBuilder):
             self for method chaining
         """
         self._obj.mode_sender_policies = list(items) if items else []
+        return self
+
+    def with_mode_receiver_policies(self, items: list[BswModeReceiverPolicy]) -> "BswInternalBehaviorBuilder":
+        """Set mode_receiver_policies list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mode_receiver_policies = list(items) if items else []
         return self
 
     def with_parameter_policies(self, items: list[BswParameterPolicy]) -> "BswInternalBehaviorBuilder":
@@ -1068,27 +1068,6 @@ class BswInternalBehaviorBuilder(InternalBehaviorBuilder):
         self._obj.internal_triggering_point_policies = []
         return self
 
-    def add_mode_receiver_policy(self, item: BswModeReceiverPolicy) -> "BswInternalBehaviorBuilder":
-        """Add a single item to mode_receiver_policies list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.mode_receiver_policies.append(item)
-        return self
-
-    def clear_mode_receiver_policies(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from mode_receiver_policies list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.mode_receiver_policies = []
-        return self
-
     def add_mode_sender_policy(self, item: BswModeSenderPolicy) -> "BswInternalBehaviorBuilder":
         """Add a single item to mode_sender_policies list.
 
@@ -1108,6 +1087,27 @@ class BswInternalBehaviorBuilder(InternalBehaviorBuilder):
             self for method chaining
         """
         self._obj.mode_sender_policies = []
+        return self
+
+    def add_mode_receiver_policy(self, item: BswModeReceiverPolicy) -> "BswInternalBehaviorBuilder":
+        """Add a single item to mode_receiver_policies list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mode_receiver_policies.append(item)
+        return self
+
+    def clear_mode_receiver_policies(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from mode_receiver_policies list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mode_receiver_policies = []
         return self
 
     def add_parameter_policy(self, item: BswParameterPolicy) -> "BswInternalBehaviorBuilder":
