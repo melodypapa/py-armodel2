@@ -6,15 +6,15 @@ identical binary output, ensuring the optimized serialization framework
 preserves all data correctly.
 
 Test Strategy:
-- Read each ARXML file from demos/arxml/
+- Read each ARXML file from demos/validated/ or demos/arxml/
 - Deserialize to Python objects
 - Serialize back to XML
 - Perform binary comparison with original file
 - Report any differences with detailed diagnostics
 
 Traceability:
-- Test Documentation: docs/tests/integration/test_binary_comparison.md
-- SWITS IDs: SWITS-INT-0100 through SWITS-INT-0199
+- Test Documentation: docs/tests/integration/test_static_binary_comparison.md
+- SWITS IDs: SWITS-INT-0200 through SWITS-INT-0228
 """
 import pytest
 import shlex
@@ -25,20 +25,13 @@ from armodel2.reader import ARXMLReader
 from armodel2.writer import ARXMLWriter
 
 
-def _get_test_validated_files() -> list[str]:
-    """Discover all ARXML files in demos/test_validated/."""
-    test_validated_path = Path("demos/test_validated")
-    if not test_validated_path.exists():
-        return []
-    return sorted([f.name for f in test_validated_path.glob("*.arxml")])
+class TestStaticBinaryComparison:
+    """Test fixed ARXML files from demos/validated/ and demos/arxml/.
 
+    Each test validates a single, specific ARXML file for binary exact round-trip serialization.
+    Files in these directories are reference files that won't be changed.
 
-class TestIndividualFiles:
-    """Test individual ARXML files with specific assertions.
-
-    Each test validates a single ARXML file for binary exact round-trip serialization.
-
-    Test IDs: SWITS-INT-0200 to SWITS-INT-0299
+    Test IDs: SWITS-INT-0200 to SWITS-INT-0228
     """
 
     @pytest.fixture
@@ -60,16 +53,18 @@ class TestIndividualFiles:
     ) -> None:
         """Test a single ARXML file for binary exact round-trip serialization.
 
+        File lookup order:
+        1. First check demos/validated/
+        2. Fall back to demos/arxml/
+
         Args:
             filename: Name of the ARXML file to test
             reader: ARXML reader instance
             writer: ARXML writer instance
             tmp_path: Pytest temporary directory
         """
-        # Check demos/test_validated first, then demos/validated, then demos/arxml
-        arxml_file = Path("demos/test_validated") / filename
-        if not arxml_file.exists():
-            arxml_file = Path("demos/validated") / filename
+        # Check demos/validated first, then demos/arxml
+        arxml_file = Path("demos/validated") / filename
         if not arxml_file.exists():
             arxml_file = Path("demos/arxml") / filename
 
@@ -105,7 +100,7 @@ class TestIndividualFiles:
             f"  diff {shlex.quote(str(arxml_file))} data/output.arxml"
         )
 
-    # Primary test - enabled first
+    # Tests for files from demos/validated/
     def test_application_data_type_blueprint_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -113,8 +108,6 @@ class TestIndividualFiles:
         tmp_path: Path
     ) -> None:
         """Test AUTOSAR_MOD_AISpecification_ApplicationDataType_Blueprint.arxml for binary exact round-trip serialization.
-
-        This is the primary test being enabled first for debugging.
 
         Test ID: SWITS-INT-0200
         """
@@ -125,7 +118,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    # All other tests - marked as xfail (expected to fail)
     def test_autosar_datatypes_binary_comparison(
         self,
         reader: ARXMLReader,
@@ -597,56 +589,6 @@ class TestIndividualFiles:
         """
         self._test_single_file_binary_comparison(
             "SwRecordDemo.arxml",
-            reader,
-            writer,
-            tmp_path
-        )
-
-
-class TestTestValidated:
-    """Test all ARXML files in demos/test_validated/ with wildcard discovery.
-
-    Any .arxml file added to demos/test_validated/ will be automatically tested.
-
-    Test IDs: SWITS-INT-0229+
-    """
-
-    @pytest.fixture
-    def reader(self) -> ARXMLReader:
-        """ARXML reader instance."""
-        return ARXMLReader()
-
-    @pytest.fixture
-    def writer(self) -> ARXMLWriter:
-        """ARXML writer instance."""
-        return ARXMLWriter(pretty_print=True, encoding="UTF-8")
-
-    @pytest.mark.parametrize(
-        "filename",
-        _get_test_validated_files(),
-        ids=lambda x: x.replace(".arxml", "")
-    )
-    def test_wildcard_binary_comparison(
-        self,
-        filename: str,
-        reader: ARXMLReader,
-        writer: ARXMLWriter,
-        tmp_path: Path
-    ) -> None:
-        """Test ARXML file from demos/test_validated/ for binary exact round-trip.
-
-        This test uses wildcard discovery - any .arxml file added to
-        demos/test_validated/ will be automatically tested.
-
-        Args:
-            filename: Name of the ARXML file to test
-            reader: ARXML reader instance
-            writer: ARXML writer instance
-            tmp_path: Pytest temporary directory
-        """
-        test_instance = TestIndividualFiles()
-        test_instance._test_single_file_binary_comparison(
-            filename,
             reader,
             writer,
             tmp_path
