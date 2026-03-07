@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "ModeInBswModuleDescriptionInstanceRef",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswOverview::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -39,7 +39,7 @@
           "is_ref": true,
           "note": "Stereotypes: atpDerived"
         },
-        "contextModeGroup": {
+        "contextModeDeclarationGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
           "kind": "ref",

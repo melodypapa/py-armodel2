@@ -8,6 +8,8 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavio
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import instance_ref
+from armodel2.serialization.decorators import ref_conditional
 
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedule_event import (
     BswScheduleEvent,
@@ -41,10 +43,10 @@ class BswModeSwitchEvent(BswScheduleEvent):
 
 
     activation: Optional[ModeActivationKind]
-    mode_iref: Optional[ModeInBswModuleDescriptionInstanceRef]
+    _mode_irefs: list[ModeInBswModuleDescriptionInstanceRef]
     _DESERIALIZE_DISPATCH = {
         "ACTIVATION": lambda obj, elem: setattr(obj, "activation", ModeActivationKind.deserialize(elem)),
-        "MODE-IREF": lambda obj, elem: setattr(obj, "mode_iref", SerializationHelper.deserialize_by_tag(elem, "ModeInBswModuleDescriptionInstanceRef")),
+        "MODES-IREF": lambda obj, elem: obj._mode_irefs.append(SerializationHelper.deserialize_by_tag(elem, "ModeInBswModuleDescriptionInstanceRef")),
     }
 
 
@@ -52,7 +54,18 @@ class BswModeSwitchEvent(BswScheduleEvent):
         """Initialize BswModeSwitchEvent."""
         super().__init__()
         self.activation: Optional[ModeActivationKind] = None
-        self.mode_iref: Optional[ModeInBswModuleDescriptionInstanceRef] = None
+        self._mode_irefs: list[ModeInBswModuleDescriptionInstanceRef] = []
+    @property
+    @instance_ref(flatten=True, list_type='multi')
+    def mode_irefs(self) -> list[ModeInBswModuleDescriptionInstanceRef]:
+        """Get mode_irefs instance reference."""
+        return self._mode_irefs
+
+    @mode_irefs.setter
+    def mode_irefs(self, value: list[ModeInBswModuleDescriptionInstanceRef]) -> None:
+        """Set mode_irefs instance reference."""
+        self._mode_irefs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize BswModeSwitchEvent to XML element.
@@ -91,16 +104,19 @@ class BswModeSwitchEvent(BswScheduleEvent):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mode_iref (instance reference with wrapper "MODE-IREF")
-        if self.mode_iref is not None:
-            serialized = SerializationHelper.serialize_item(self.mode_iref, "ModeInBswModuleDescriptionInstanceRef")
-            if serialized is not None:
-                # Wrap in IREF wrapper element
-                iref_wrapper = ET.Element("MODE-IREF")
-                # Flatten: append children of serialized element directly to iref wrapper
-                for child in serialized:
-                    iref_wrapper.append(child)
-                elem.append(iref_wrapper)
+        # Serialize mode_irefs (list of instance references with multi-wrapper pattern)
+        if self.mode_irefs:
+            irefs_container = ET.Element("MODE-IREFS")
+            for item in self.mode_irefs:
+                serialized = SerializationHelper.serialize_item(item, "ModeInBswModuleDescriptionInstanceRef")
+                if serialized is not None:
+                    # Wrap each item in its own IREF wrapper
+                    iref_wrapper = ET.Element("MODE-IREF")
+                    # Flatten: append children of serialized element directly to iref wrapper
+                    for child in serialized:
+                        iref_wrapper.append(child)
+                    irefs_container.append(iref_wrapper)
+            elem.append(irefs_container)
 
         return elem
 
@@ -123,8 +139,10 @@ class BswModeSwitchEvent(BswScheduleEvent):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ACTIVATION":
                 setattr(obj, "activation", ModeActivationKind.deserialize(child))
-            elif tag == "MODE-IREF":
-                setattr(obj, "mode_iref", SerializationHelper.deserialize_by_tag(child, "ModeInBswModuleDescriptionInstanceRef"))
+            elif tag == "MODE-IREFS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj._mode_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeInBswModuleDescriptionInstanceRef"))
 
         return obj
 
@@ -153,20 +171,39 @@ class BswModeSwitchEventBuilder(BswScheduleEventBuilder):
         self._obj.activation = value
         return self
 
-    def with_mode(self, value: Optional[ModeInBswModuleDescriptionInstanceRef]) -> "BswModeSwitchEventBuilder":
-        """Set mode attribute.
+    def with_modes(self, items: list[ModeInBswModuleDescriptionInstanceRef]) -> "BswModeSwitchEventBuilder":
+        """Set modes list attribute.
 
         Args:
-            value: Value to set
+            items: List of items to set
 
         Returns:
             self for method chaining
         """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.mode = value
+        self._obj.modes = list(items) if items else []
         return self
 
+
+    def add_mode(self, item: ModeInBswModuleDescriptionInstanceRef) -> "BswModeSwitchEventBuilder":
+        """Add a single item to modes list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.modes.append(item)
+        return self
+
+    def clear_modes(self) -> "BswModeSwitchEventBuilder":
+        """Clear all items from modes list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.modes = []
+        return self
 
 
     # Pre-computed validation constants (generated from JSON schema)

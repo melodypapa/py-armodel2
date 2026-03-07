@@ -81,8 +81,8 @@ class Implementation(ARElement, ABC):
     required_artifacts: list[DependencyOnArtifact]
     required_generator_tools: list[DependencyOnArtifact]
     resource_consumption: Optional[ResourceConsumption]
-    swc_bsw_mapping_ref: Optional[ARRef]
     sw_version: Optional[RevisionLabelString]
+    swc_bsw_mapping_ref: Optional[ARRef]
     used_code_generator: Optional[String]
     vendor_id: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
@@ -97,8 +97,8 @@ class Implementation(ARElement, ABC):
         "REQUIRED-ARTIFACTS": lambda obj, elem: obj.required_artifacts.append(SerializationHelper.deserialize_by_tag(elem, "DependencyOnArtifact")),
         "REQUIRED-GENERATOR-TOOLS": lambda obj, elem: obj.required_generator_tools.append(SerializationHelper.deserialize_by_tag(elem, "DependencyOnArtifact")),
         "RESOURCE-CONSUMPTION": lambda obj, elem: setattr(obj, "resource_consumption", SerializationHelper.deserialize_by_tag(elem, "ResourceConsumption")),
-        "SWC-BSW-MAPPING-REF": lambda obj, elem: setattr(obj, "swc_bsw_mapping_ref", ARRef.deserialize(elem)),
         "SW-VERSION": lambda obj, elem: setattr(obj, "sw_version", SerializationHelper.deserialize_by_tag(elem, "RevisionLabelString")),
+        "SWC-BSW-MAPPING-REF": lambda obj, elem: setattr(obj, "swc_bsw_mapping_ref", ARRef.deserialize(elem)),
         "USED-CODE-GENERATOR": lambda obj, elem: setattr(obj, "used_code_generator", SerializationHelper.deserialize_by_tag(elem, "String")),
         "VENDOR-ID": lambda obj, elem: setattr(obj, "vendor_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
@@ -118,8 +118,8 @@ class Implementation(ARElement, ABC):
         self.required_artifacts: list[DependencyOnArtifact] = []
         self.required_generator_tools: list[DependencyOnArtifact] = []
         self.resource_consumption: Optional[ResourceConsumption] = None
-        self.swc_bsw_mapping_ref: Optional[ARRef] = None
         self.sw_version: Optional[RevisionLabelString] = None
+        self.swc_bsw_mapping_ref: Optional[ARRef] = None
         self.used_code_generator: Optional[String] = None
         self.vendor_id: Optional[PositiveInteger] = None
 
@@ -279,12 +279,12 @@ class Implementation(ARElement, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize swc_bsw_mapping_ref
-        if self.swc_bsw_mapping_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.swc_bsw_mapping_ref, "SwcBswMapping")
+        # Serialize sw_version
+        if self.sw_version is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_version, "RevisionLabelString")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SWC-BSW-MAPPING-REF")
+                wrapped = ET.Element("SW-VERSION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -293,12 +293,12 @@ class Implementation(ARElement, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_version
-        if self.sw_version is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_version, "RevisionLabelString")
+        # Serialize swc_bsw_mapping_ref
+        if self.swc_bsw_mapping_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.swc_bsw_mapping_ref, "SwcBswMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-VERSION")
+                wrapped = ET.Element("SWC-BSW-MAPPING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -390,10 +390,10 @@ class Implementation(ARElement, ABC):
                     obj.required_generator_tools.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyOnArtifact"))
             elif tag == "RESOURCE-CONSUMPTION":
                 setattr(obj, "resource_consumption", SerializationHelper.deserialize_by_tag(child, "ResourceConsumption"))
-            elif tag == "SWC-BSW-MAPPING-REF":
-                setattr(obj, "swc_bsw_mapping_ref", ARRef.deserialize(child))
             elif tag == "SW-VERSION":
                 setattr(obj, "sw_version", SerializationHelper.deserialize_by_tag(child, "RevisionLabelString"))
+            elif tag == "SWC-BSW-MAPPING-REF":
+                setattr(obj, "swc_bsw_mapping_ref", ARRef.deserialize(child))
             elif tag == "USED-CODE-GENERATOR":
                 setattr(obj, "used_code_generator", SerializationHelper.deserialize_by_tag(child, "String"))
             elif tag == "VENDOR-ID":
@@ -552,20 +552,6 @@ class ImplementationBuilder(ARElementBuilder):
         self._obj.resource_consumption = value
         return self
 
-    def with_swc_bsw_mapping(self, value: Optional[SwcBswMapping]) -> "ImplementationBuilder":
-        """Set swc_bsw_mapping attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.swc_bsw_mapping = value
-        return self
-
     def with_sw_version(self, value: Optional[RevisionLabelString]) -> "ImplementationBuilder":
         """Set sw_version attribute.
 
@@ -578,6 +564,20 @@ class ImplementationBuilder(ARElementBuilder):
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
         self._obj.sw_version = value
+        return self
+
+    def with_swc_bsw_mapping(self, value: Optional[SwcBswMapping]) -> "ImplementationBuilder":
+        """Set swc_bsw_mapping attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.swc_bsw_mapping = value
         return self
 
     def with_used_code_generator(self, value: Optional[String]) -> "ImplementationBuilder":

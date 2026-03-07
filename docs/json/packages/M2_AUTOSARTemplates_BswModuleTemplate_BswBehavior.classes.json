@@ -139,19 +139,19 @@
           "is_ref": false,
           "note": "Policy for an internalTriggeringPoint in this BswInternal Behavior.. The policy selects the options of the Schedule API generation. atpVariation"
         },
-        "modeReceiverPolicy": {
-          "type": "BswModeReceiverPolicy",
-          "multiplicity": "*",
-          "kind": "aggr",
-          "is_ref": false,
-          "note": "Implementation policy for the reception of mode switches. Stereotypes: atpSplitable; atpVariation"
-        },
         "modeSenderPolicy": {
           "type": "BswModeSenderPolicy",
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
           "note": "Implementation policy for providing a mode group. atpSplitable; atpVariation"
+        },
+        "modeReceiverPolicy": {
+          "type": "BswModeReceiverPolicy",
+          "multiplicity": "*",
+          "kind": "aggr",
+          "is_ref": false,
+          "note": "Implementation policy for the reception of mode switches. Stereotypes: atpSplitable; atpVariation"
         },
         "parameterPolicy": {
           "type": "BswParameterPolicy",
@@ -274,7 +274,7 @@
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
-          "decorator": "",
+          "decorator": "ref_conditional:ACCESSED-MODE-GROUPS",
           "note": "A mode group which is accessed via API call by this entity. It shall be a ModeDeclarationGroupPrototype this module or cluster. atpVariation"
         },
         "activationPoint": {
@@ -324,7 +324,7 @@
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
-          "decorator": "",
+          "decorator": "ref_conditional:MANAGED-MODE-GROUPS",
           "note": "A mode group which is managed by this entity. It shall be a ModeDeclarationGroupPrototype provided by this cluster. atpVariation"
         },
         "schedulerNamePrefix": {
@@ -1237,9 +1237,10 @@
         },
         "mode": {
           "type": "ModeInBswModuleDescriptionInstanceRef",
-          "multiplicity": "0..1",
+          "multiplicity": "*",
           "kind": "iref",
           "is_ref": true,
+          "decorator": "instance_ref:flatten=True,list_type=multi",
           "note": "Kind of activation w.r.t. to the referred mode. ModeDeclaration 0..2 iref Reference to one or two Modes that initiate the Mode by: ModeInBswModule"
         }
       }

@@ -43,11 +43,11 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
 
 
     base_ref: Optional[ARRef]
-    context_mode_group_ref: Optional[ARRef]
+    context_mode_declaration_group_ref: Optional[ARRef]
     target_mode_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
-        "CONTEXT-MODE-GROUP-REF": lambda obj, elem: setattr(obj, "context_mode_group_ref", ARRef.deserialize(elem)),
+        "CONTEXT-MODE-DECLARATION-GROUP-REF": lambda obj, elem: setattr(obj, "context_mode_declaration_group_ref", ARRef.deserialize(elem)),
         "TARGET-MODE-REF": lambda obj, elem: setattr(obj, "target_mode_ref", ARRef.deserialize(elem)),
     }
 
@@ -56,7 +56,7 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
         """Initialize ModeInBswModuleDescriptionInstanceRef."""
         super().__init__()
         self.base_ref: Optional[ARRef] = None
-        self.context_mode_group_ref: Optional[ARRef] = None
+        self.context_mode_declaration_group_ref: Optional[ARRef] = None
         self.target_mode_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -96,12 +96,12 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_mode_group_ref
-        if self.context_mode_group_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.context_mode_group_ref, "ModeDeclarationGroup")
+        # Serialize context_mode_declaration_group_ref
+        if self.context_mode_declaration_group_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.context_mode_declaration_group_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-MODE-GROUP-REF")
+                wrapped = ET.Element("CONTEXT-MODE-DECLARATION-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -145,8 +145,8 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "BASE-REF":
                 setattr(obj, "base_ref", ARRef.deserialize(child))
-            elif tag == "CONTEXT-MODE-GROUP-REF":
-                setattr(obj, "context_mode_group_ref", ARRef.deserialize(child))
+            elif tag == "CONTEXT-MODE-DECLARATION-GROUP-REF":
+                setattr(obj, "context_mode_declaration_group_ref", ARRef.deserialize(child))
             elif tag == "TARGET-MODE-REF":
                 setattr(obj, "target_mode_ref", ARRef.deserialize(child))
 
@@ -177,8 +177,8 @@ class ModeInBswModuleDescriptionInstanceRefBuilder(BuilderBase):
         self._obj.base = value
         return self
 
-    def with_context_mode_group(self, value: Optional[ModeDeclarationGroup]) -> "ModeInBswModuleDescriptionInstanceRefBuilder":
-        """Set context_mode_group attribute.
+    def with_context_mode_declaration_group(self, value: Optional[ModeDeclarationGroup]) -> "ModeInBswModuleDescriptionInstanceRefBuilder":
+        """Set context_mode_declaration_group attribute.
 
         Args:
             value: Value to set
@@ -188,7 +188,7 @@ class ModeInBswModuleDescriptionInstanceRefBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.context_mode_group = value
+        self._obj.context_mode_declaration_group = value
         return self
 
     def with_target_mode(self, value: Optional[ModeDeclaration]) -> "ModeInBswModuleDescriptionInstanceRefBuilder":
@@ -210,7 +210,7 @@ class ModeInBswModuleDescriptionInstanceRefBuilder(BuilderBase):
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
         "base",
-        "contextModeGroup",
+        "contextModeDeclarationGroup",
         "targetMode",
     }
 

@@ -54,8 +54,6 @@ class TestPolymorphicDecorator:
             def test_prop(self, value):
                 self._value = value
 
-        obj = TestClass()
-
         # Verify the property getter has the polymorphic markers
         assert hasattr(TestClass.test_prop.fget, '_is_polymorphic')
         assert TestClass.test_prop.fget._is_polymorphic is True
