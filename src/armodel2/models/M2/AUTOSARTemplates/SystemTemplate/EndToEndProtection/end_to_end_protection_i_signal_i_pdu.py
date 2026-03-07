@@ -171,7 +171,7 @@ class EndToEndProtectionISignalIPduBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_offset' is required and cannot be None")
         self._obj.data_offset = value
         return self
 
@@ -185,7 +185,7 @@ class EndToEndProtectionISignalIPduBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_signal_group' is required and cannot be None")
         self._obj.i_signal_group = value
         return self
 
@@ -199,7 +199,7 @@ class EndToEndProtectionISignalIPduBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_signal_i_pdu' is required and cannot be None")
         self._obj.i_signal_i_pdu = value
         return self
 

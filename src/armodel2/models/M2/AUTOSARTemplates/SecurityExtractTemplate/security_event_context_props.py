@@ -220,7 +220,7 @@ class SecurityEventContextPropsBuilder(IdentifiableBuilder):
         self._obj: SecurityEventContextProps = SecurityEventContextProps()
 
 
-    def with_context_data(self, value: Optional[any (SecurityEventContext)]) -> "SecurityEventContextPropsBuilder":
+    def with_context_data(self, value: Optional[Any]) -> "SecurityEventContextPropsBuilder":
         """Set context_data attribute.
 
         Args:
@@ -230,11 +230,11 @@ class SecurityEventContextPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_data' is required and cannot be None")
         self._obj.context_data = value
         return self
 
-    def with_default(self, value: Optional[any (SecurityEventReporting)]) -> "SecurityEventContextPropsBuilder":
+    def with_default(self, value: Optional[Any]) -> "SecurityEventContextPropsBuilder":
         """Set default attribute.
 
         Args:
@@ -244,7 +244,7 @@ class SecurityEventContextPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default' is required and cannot be None")
         self._obj.default = value
         return self
 
@@ -258,7 +258,7 @@ class SecurityEventContextPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'persistent' is required and cannot be None")
         self._obj.persistent = value
         return self
 
@@ -272,7 +272,7 @@ class SecurityEventContextPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'security_event' is required and cannot be None")
         self._obj.security_event = value
         return self
 
@@ -286,7 +286,7 @@ class SecurityEventContextPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sensor_instance' is required and cannot be None")
         self._obj.sensor_instance = value
         return self
 
@@ -300,7 +300,7 @@ class SecurityEventContextPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'severity' is required and cannot be None")
         self._obj.severity = value
         return self
 

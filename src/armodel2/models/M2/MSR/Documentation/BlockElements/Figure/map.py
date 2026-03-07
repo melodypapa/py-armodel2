@@ -376,7 +376,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'area' is required and cannot be None")
         self._obj.area = value
         return self
 
@@ -390,7 +390,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'class' is required and cannot be None")
         setattr(self._obj, 'class', value)
         return self
 
@@ -404,7 +404,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'name' is required and cannot be None")
         self._obj.name = value
         return self
 
@@ -418,7 +418,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onclick' is required and cannot be None")
         self._obj.onclick = value
         return self
 
@@ -432,7 +432,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ondblclick' is required and cannot be None")
         self._obj.ondblclick = value
         return self
 
@@ -446,7 +446,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onkeydown' is required and cannot be None")
         self._obj.onkeydown = value
         return self
 
@@ -460,7 +460,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onkeypress' is required and cannot be None")
         self._obj.onkeypress = value
         return self
 
@@ -474,7 +474,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onkeyup' is required and cannot be None")
         self._obj.onkeyup = value
         return self
 
@@ -488,7 +488,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onmousedown' is required and cannot be None")
         self._obj.onmousedown = value
         return self
 
@@ -502,7 +502,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onmousemove' is required and cannot be None")
         self._obj.onmousemove = value
         return self
 
@@ -516,7 +516,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onmouseout' is required and cannot be None")
         self._obj.onmouseout = value
         return self
 
@@ -530,7 +530,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onmouseover' is required and cannot be None")
         self._obj.onmouseover = value
         return self
 
@@ -544,7 +544,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onmouseup' is required and cannot be None")
         self._obj.onmouseup = value
         return self
 
@@ -558,7 +558,7 @@ class MapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'title' is required and cannot be None")
         self._obj.title = value
         return self
 

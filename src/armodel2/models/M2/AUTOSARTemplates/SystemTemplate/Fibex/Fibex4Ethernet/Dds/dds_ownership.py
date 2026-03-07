@@ -125,7 +125,7 @@ class DdsOwnershipBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ownership_kind' is required and cannot be None")
         self._obj.ownership_kind = value
         return self
 

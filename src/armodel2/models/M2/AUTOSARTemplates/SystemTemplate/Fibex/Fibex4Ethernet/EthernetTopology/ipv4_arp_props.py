@@ -184,7 +184,7 @@ class Ipv4ArpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_arp_num' is required and cannot be None")
         self._obj.tcp_ip_arp_num = value
         return self
 
@@ -198,7 +198,7 @@ class Ipv4ArpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_arp_packet' is required and cannot be None")
         self._obj.tcp_ip_arp_packet = value
         return self
 
@@ -212,7 +212,7 @@ class Ipv4ArpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_arp' is required and cannot be None")
         self._obj.tcp_ip_arp = value
         return self
 
@@ -226,7 +226,7 @@ class Ipv4ArpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_arp_table' is required and cannot be None")
         self._obj.tcp_ip_arp_table = value
         return self
 

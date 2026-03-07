@@ -179,11 +179,11 @@ class PostBuildVariantCriterionValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'value' is required and cannot be None")
         self._obj.value = value
         return self
 
-    def with_variant_criterion(self, value: any (PostBuildVariant)) -> "PostBuildVariantCriterionValueBuilder":
+    def with_variant_criterion(self, value: Any) -> "PostBuildVariantCriterionValueBuilder":
         """Set variant_criterion attribute.
 
         Args:
@@ -193,7 +193,7 @@ class PostBuildVariantCriterionValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'variant_criterion' is required and cannot be None")
         self._obj.variant_criterion = value
         return self
 

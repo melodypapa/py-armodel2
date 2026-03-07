@@ -243,7 +243,7 @@ class PhysicalDimensionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'current_exp' is required and cannot be None")
         self._obj.current_exp = value
         return self
 
@@ -257,7 +257,7 @@ class PhysicalDimensionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'length_exp' is required and cannot be None")
         self._obj.length_exp = value
         return self
 
@@ -271,7 +271,7 @@ class PhysicalDimensionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'luminous_intensity_exp' is required and cannot be None")
         self._obj.luminous_intensity_exp = value
         return self
 
@@ -285,7 +285,7 @@ class PhysicalDimensionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mass_exp' is required and cannot be None")
         self._obj.mass_exp = value
         return self
 
@@ -299,7 +299,7 @@ class PhysicalDimensionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'molar_amount_exp' is required and cannot be None")
         self._obj.molar_amount_exp = value
         return self
 
@@ -313,7 +313,7 @@ class PhysicalDimensionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'temperature_exp' is required and cannot be None")
         self._obj.temperature_exp = value
         return self
 
@@ -327,7 +327,7 @@ class PhysicalDimensionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_exp' is required and cannot be None")
         self._obj.time_exp = value
         return self
 

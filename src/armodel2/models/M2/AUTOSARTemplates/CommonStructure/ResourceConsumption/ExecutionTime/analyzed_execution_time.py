@@ -148,7 +148,7 @@ class AnalyzedExecutionTimeBuilder(ExecutionTimeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'best_case' is required and cannot be None")
         self._obj.best_case = value
         return self
 
@@ -162,7 +162,7 @@ class AnalyzedExecutionTimeBuilder(ExecutionTimeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'worst_case' is required and cannot be None")
         self._obj.worst_case = value
         return self
 

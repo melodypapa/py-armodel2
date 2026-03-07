@@ -145,7 +145,7 @@ class TpPortBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dynamically' is required and cannot be None")
         self._obj.dynamically = value
         return self
 
@@ -159,7 +159,7 @@ class TpPortBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'port_number' is required and cannot be None")
         self._obj.port_number = value
         return self
 

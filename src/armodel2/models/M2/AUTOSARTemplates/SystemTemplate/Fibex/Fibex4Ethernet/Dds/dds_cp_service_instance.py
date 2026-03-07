@@ -230,7 +230,7 @@ class DdsCpServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dds_field_reply' is required and cannot be None")
         self._obj.dds_field_reply = value
         return self
 
@@ -244,7 +244,7 @@ class DdsCpServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dds_field' is required and cannot be None")
         self._obj.dds_field = value
         return self
 
@@ -258,7 +258,7 @@ class DdsCpServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dds_method' is required and cannot be None")
         self._obj.dds_method = value
         return self
 
@@ -272,7 +272,7 @@ class DdsCpServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dds_service_qos' is required and cannot be None")
         self._obj.dds_service_qos = value
         return self
 
@@ -286,7 +286,7 @@ class DdsCpServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_instance' is required and cannot be None")
         self._obj.service_instance = value
         return self
 
@@ -300,7 +300,7 @@ class DdsCpServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_interface' is required and cannot be None")
         self._obj.service_interface = value
         return self
 

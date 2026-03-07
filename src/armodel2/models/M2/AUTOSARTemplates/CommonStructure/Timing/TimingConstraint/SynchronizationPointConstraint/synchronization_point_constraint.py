@@ -195,7 +195,7 @@ class SynchronizationPointConstraintBuilder(TimingConstraintBuilder):
         self._obj: SynchronizationPointConstraint = SynchronizationPointConstraint()
 
 
-    def with_source_eecs(self, items: list[any (EOCExecutableEntity)]) -> "SynchronizationPointConstraintBuilder":
+    def with_source_eecs(self, items: list[Any]) -> "SynchronizationPointConstraintBuilder":
         """Set source_eecs list attribute.
 
         Args:
@@ -219,7 +219,7 @@ class SynchronizationPointConstraintBuilder(TimingConstraintBuilder):
         self._obj.source_events = list(items) if items else []
         return self
 
-    def with_target_eecs(self, items: list[any (EOCExecutableEntity)]) -> "SynchronizationPointConstraintBuilder":
+    def with_target_eecs(self, items: list[Any]) -> "SynchronizationPointConstraintBuilder":
         """Set target_eecs list attribute.
 
         Args:
@@ -244,7 +244,7 @@ class SynchronizationPointConstraintBuilder(TimingConstraintBuilder):
         return self
 
 
-    def add_source_eec(self, item: any (EOCExecutableEntity)) -> "SynchronizationPointConstraintBuilder":
+    def add_source_eec(self, item: Any) -> "SynchronizationPointConstraintBuilder":
         """Add a single item to source_eecs list.
 
         Args:
@@ -286,7 +286,7 @@ class SynchronizationPointConstraintBuilder(TimingConstraintBuilder):
         self._obj.source_events = []
         return self
 
-    def add_target_eec(self, item: any (EOCExecutableEntity)) -> "SynchronizationPointConstraintBuilder":
+    def add_target_eec(self, item: Any) -> "SynchronizationPointConstraintBuilder":
         """Add a single item to target_eecs list.
 
         Args:

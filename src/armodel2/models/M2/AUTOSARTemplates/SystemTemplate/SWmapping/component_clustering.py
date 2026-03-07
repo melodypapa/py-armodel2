@@ -137,7 +137,7 @@ class ComponentClusteringBuilder(MappingConstraintBuilder):
         self._obj: ComponentClustering = ComponentClustering()
 
 
-    def with_clustereds(self, items: list[any (SwComponent)]) -> "ComponentClusteringBuilder":
+    def with_clustereds(self, items: list[Any]) -> "ComponentClusteringBuilder":
         """Set clustereds list attribute.
 
         Args:
@@ -159,12 +159,12 @@ class ComponentClusteringBuilder(MappingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mapping_scope_enum' is required and cannot be None")
         self._obj.mapping_scope_enum = value
         return self
 
 
-    def add_clustered(self, item: any (SwComponent)) -> "ComponentClusteringBuilder":
+    def add_clustered(self, item: Any) -> "ComponentClusteringBuilder":
         """Add a single item to clustereds list.
 
         Args:

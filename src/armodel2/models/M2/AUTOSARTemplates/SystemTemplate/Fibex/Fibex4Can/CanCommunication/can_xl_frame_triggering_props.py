@@ -182,7 +182,7 @@ class CanXlFrameTriggeringPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'acceptance_field' is required and cannot be None")
         self._obj.acceptance_field = value
         return self
 
@@ -196,7 +196,7 @@ class CanXlFrameTriggeringPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority_id' is required and cannot be None")
         self._obj.priority_id = value
         return self
 
@@ -210,7 +210,7 @@ class CanXlFrameTriggeringPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sdu_type' is required and cannot be None")
         self._obj.sdu_type = value
         return self
 
@@ -224,7 +224,7 @@ class CanXlFrameTriggeringPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vcid' is required and cannot be None")
         self._obj.vcid = value
         return self
 

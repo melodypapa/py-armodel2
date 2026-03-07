@@ -377,7 +377,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_element' is required and cannot be None")
         self._obj.data_element = value
         return self
 
@@ -391,7 +391,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'handle_out_of_range' is required and cannot be None")
         self._obj.handle_out_of_range = value
         return self
 
@@ -405,7 +405,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'handle_out_of_range_status' is required and cannot be None")
         self._obj.handle_out_of_range_status = value
         return self
 
@@ -419,7 +419,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_delta_counter_init' is required and cannot be None")
         self._obj.max_delta_counter_init = value
         return self
 
@@ -433,7 +433,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_no_new_or_repeated_data' is required and cannot be None")
         self._obj.max_no_new_or_repeated_data = value
         return self
 
@@ -447,7 +447,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network_representation' is required and cannot be None")
         self._obj.network_representation = value
         return self
 
@@ -461,7 +461,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'reception_props' is required and cannot be None")
         self._obj.reception_props = value
         return self
 
@@ -475,7 +475,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'replace_with' is required and cannot be None")
         self._obj.replace_with = value
         return self
 
@@ -489,7 +489,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sync_counter_init' is required and cannot be None")
         self._obj.sync_counter_init = value
         return self
 
@@ -515,7 +515,7 @@ class ReceiverComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'uses_end_to_end_protection' is required and cannot be None")
         self._obj.uses_end_to_end_protection = value
         return self
 

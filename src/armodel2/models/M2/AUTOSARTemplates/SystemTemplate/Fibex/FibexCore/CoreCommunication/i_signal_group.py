@@ -197,7 +197,7 @@ class ISignalGroupBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'com_based' is required and cannot be None")
         self._obj.com_based = value
         return self
 
@@ -223,11 +223,11 @@ class ISignalGroupBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'system_signal_group' is required and cannot be None")
         self._obj.system_signal_group = value
         return self
 
-    def with_transformation_i_signals(self, items: list[any (TransformationISignal)]) -> "ISignalGroupBuilder":
+    def with_transformation_i_signals(self, items: list[Any]) -> "ISignalGroupBuilder":
         """Set transformation_i_signals list attribute.
 
         Args:
@@ -261,7 +261,7 @@ class ISignalGroupBuilder(FibexElementBuilder):
         self._obj.i_signals = []
         return self
 
-    def add_transformation_i_signal(self, item: any (TransformationISignal)) -> "ISignalGroupBuilder":
+    def add_transformation_i_signal(self, item: Any) -> "ISignalGroupBuilder":
         """Add a single item to transformation_i_signals list.
 
         Args:

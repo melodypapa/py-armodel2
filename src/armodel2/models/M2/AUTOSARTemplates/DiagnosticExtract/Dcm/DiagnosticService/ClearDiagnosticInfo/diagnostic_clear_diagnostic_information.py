@@ -117,7 +117,7 @@ class DiagnosticClearDiagnosticInformationBuilder(DiagnosticServiceInstanceBuild
         self._obj: DiagnosticClearDiagnosticInformation = DiagnosticClearDiagnosticInformation()
 
 
-    def with_clear_diagnostic(self, value: Optional[any (DiagnosticClear)]) -> "DiagnosticClearDiagnosticInformationBuilder":
+    def with_clear_diagnostic(self, value: Optional[Any]) -> "DiagnosticClearDiagnosticInformationBuilder":
         """Set clear_diagnostic attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticClearDiagnosticInformationBuilder(DiagnosticServiceInstanceBuild
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'clear_diagnostic' is required and cannot be None")
         self._obj.clear_diagnostic = value
         return self
 

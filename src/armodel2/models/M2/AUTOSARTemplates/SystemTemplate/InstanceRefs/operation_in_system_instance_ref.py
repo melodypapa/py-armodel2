@@ -192,7 +192,7 @@ class OperationInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
@@ -206,7 +206,7 @@ class OperationInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context' is required and cannot be None")
         self._obj.context = value
         return self
 
@@ -220,7 +220,7 @@ class OperationInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_port' is required and cannot be None")
         self._obj.context_port = value
         return self
 
@@ -234,7 +234,7 @@ class OperationInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_operation' is required and cannot be None")
         self._obj.target_operation = value
         return self
 

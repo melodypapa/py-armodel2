@@ -186,7 +186,7 @@ class CanControllerConfigurationBuilder(AbstractCanCommunicationControllerAttrib
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'prop_seg' is required and cannot be None")
         self._obj.prop_seg = value
         return self
 
@@ -200,7 +200,7 @@ class CanControllerConfigurationBuilder(AbstractCanCommunicationControllerAttrib
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sync_jump_width' is required and cannot be None")
         self._obj.sync_jump_width = value
         return self
 
@@ -214,7 +214,7 @@ class CanControllerConfigurationBuilder(AbstractCanCommunicationControllerAttrib
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_seg1' is required and cannot be None")
         self._obj.time_seg1 = value
         return self
 
@@ -228,7 +228,7 @@ class CanControllerConfigurationBuilder(AbstractCanCommunicationControllerAttrib
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_seg2' is required and cannot be None")
         self._obj.time_seg2 = value
         return self
 

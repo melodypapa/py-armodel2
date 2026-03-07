@@ -186,7 +186,7 @@ class PortDefinedArgumentValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'value' is required and cannot be None")
         self._obj.value = value
         return self
 
@@ -200,7 +200,7 @@ class PortDefinedArgumentValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'value_type' is required and cannot be None")
         self._obj.value_type = value
         return self
 

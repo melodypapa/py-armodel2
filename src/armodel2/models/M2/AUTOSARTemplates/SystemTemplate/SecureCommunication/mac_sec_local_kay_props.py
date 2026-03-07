@@ -236,7 +236,7 @@ class MacSecLocalKayPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'destination_mac' is required and cannot be None")
         self._obj.destination_mac = value
         return self
 
@@ -250,7 +250,7 @@ class MacSecLocalKayPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'global_kay_props' is required and cannot be None")
         self._obj.global_kay_props = value
         return self
 
@@ -264,7 +264,7 @@ class MacSecLocalKayPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'key_server' is required and cannot be None")
         self._obj.key_server = value
         return self
 
@@ -290,7 +290,7 @@ class MacSecLocalKayPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'role' is required and cannot be None")
         self._obj.role = value
         return self
 
@@ -304,7 +304,7 @@ class MacSecLocalKayPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'source_mac' is required and cannot be None")
         self._obj.source_mac = value
         return self
 

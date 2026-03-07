@@ -196,7 +196,7 @@ class RoleBasedDataAssignmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'role' is required and cannot be None")
         self._obj.role = value
         return self
 
@@ -210,7 +210,7 @@ class RoleBasedDataAssignmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'used_data_element' is required and cannot be None")
         self._obj.used_data_element = value
         return self
 
@@ -224,7 +224,7 @@ class RoleBasedDataAssignmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'used_parameter_element' is required and cannot be None")
         self._obj.used_parameter_element = value
         return self
 
@@ -238,7 +238,7 @@ class RoleBasedDataAssignmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'used_pim' is required and cannot be None")
         self._obj.used_pim = value
         return self
 

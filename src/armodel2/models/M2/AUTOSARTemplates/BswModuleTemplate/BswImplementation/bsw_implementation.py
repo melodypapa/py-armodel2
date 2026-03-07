@@ -257,7 +257,7 @@ class BswImplementationBuilder(ImplementationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ar_release_version' is required and cannot be None")
         self._obj.ar_release_version = value
         return self
 
@@ -271,7 +271,7 @@ class BswImplementationBuilder(ImplementationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'behavior' is required and cannot be None")
         self._obj.behavior = value
         return self
 
@@ -309,7 +309,7 @@ class BswImplementationBuilder(ImplementationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vendor_api_infix' is required and cannot be None")
         self._obj.vendor_api_infix = value
         return self
 

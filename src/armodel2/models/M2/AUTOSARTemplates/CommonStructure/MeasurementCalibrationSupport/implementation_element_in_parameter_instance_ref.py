@@ -148,11 +148,11 @@ class ImplementationElementInParameterInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context' is required and cannot be None")
         self._obj.context = value
         return self
 
-    def with_target(self, value: Optional[any (AbstractImplementation)]) -> "ImplementationElementInParameterInstanceRefBuilder":
+    def with_target(self, value: Optional[Any]) -> "ImplementationElementInParameterInstanceRefBuilder":
         """Set target attribute.
 
         Args:
@@ -162,7 +162,7 @@ class ImplementationElementInParameterInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target' is required and cannot be None")
         self._obj.target = value
         return self
 

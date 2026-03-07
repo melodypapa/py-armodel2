@@ -146,7 +146,7 @@ class EcucValueCollectionBuilder(ARElementBuilder):
         self._obj: EcucValueCollection = EcucValueCollection()
 
 
-    def with_ecuc_values(self, items: list[any (EcucModule)]) -> "EcucValueCollectionBuilder":
+    def with_ecuc_values(self, items: list[Any]) -> "EcucValueCollectionBuilder":
         """Set ecuc_values list attribute.
 
         Args:
@@ -168,12 +168,12 @@ class EcucValueCollectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_extract' is required and cannot be None")
         self._obj.ecu_extract = value
         return self
 
 
-    def add_ecuc_value(self, item: any (EcucModule)) -> "EcucValueCollectionBuilder":
+    def add_ecuc_value(self, item: Any) -> "EcucValueCollectionBuilder":
         """Add a single item to ecuc_values list.
 
         Args:

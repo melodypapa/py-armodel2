@@ -189,7 +189,7 @@ class RptExecutableEntityPropertiesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_rpt_event_id' is required and cannot be None")
         self._obj.max_rpt_event_id = value
         return self
 
@@ -203,7 +203,7 @@ class RptExecutableEntityPropertiesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_rpt_event_id' is required and cannot be None")
         self._obj.min_rpt_event_id = value
         return self
 
@@ -217,7 +217,7 @@ class RptExecutableEntityPropertiesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_execution_control' is required and cannot be None")
         self._obj.rpt_execution_control = value
         return self
 
@@ -231,7 +231,7 @@ class RptExecutableEntityPropertiesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_service_point_enum' is required and cannot be None")
         self._obj.rpt_service_point_enum = value
         return self
 

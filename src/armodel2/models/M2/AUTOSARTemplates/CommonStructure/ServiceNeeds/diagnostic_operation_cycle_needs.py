@@ -116,7 +116,7 @@ class DiagnosticOperationCycleNeedsBuilder(DiagnosticCapabilityElementBuilder):
         self._obj: DiagnosticOperationCycleNeeds = DiagnosticOperationCycleNeeds()
 
 
-    def with_operation_cycle(self, value: Optional[any (OperationCycleType)]) -> "DiagnosticOperationCycleNeedsBuilder":
+    def with_operation_cycle(self, value: Optional[Any]) -> "DiagnosticOperationCycleNeedsBuilder":
         """Set operation_cycle attribute.
 
         Args:
@@ -126,7 +126,7 @@ class DiagnosticOperationCycleNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'operation_cycle' is required and cannot be None")
         self._obj.operation_cycle = value
         return self
 

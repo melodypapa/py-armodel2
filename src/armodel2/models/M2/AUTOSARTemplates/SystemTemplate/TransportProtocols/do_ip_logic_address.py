@@ -157,7 +157,7 @@ class DoIpLogicAddressBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'address' is required and cannot be None")
         self._obj.address = value
         return self
 
@@ -171,7 +171,7 @@ class DoIpLogicAddressBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'do_ip_logic' is required and cannot be None")
         self._obj.do_ip_logic = value
         return self
 

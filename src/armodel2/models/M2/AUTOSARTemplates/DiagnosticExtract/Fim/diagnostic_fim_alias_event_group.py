@@ -122,7 +122,7 @@ class DiagnosticFimAliasEventGroupBuilder(DiagnosticAbstractAliasEventBuilder):
         self._obj: DiagnosticFimAliasEventGroup = DiagnosticFimAliasEventGroup()
 
 
-    def with_grouped_aliases(self, items: list[any (DiagnosticFimAlias)]) -> "DiagnosticFimAliasEventGroupBuilder":
+    def with_grouped_aliases(self, items: list[Any]) -> "DiagnosticFimAliasEventGroupBuilder":
         """Set grouped_aliases list attribute.
 
         Args:
@@ -135,7 +135,7 @@ class DiagnosticFimAliasEventGroupBuilder(DiagnosticAbstractAliasEventBuilder):
         return self
 
 
-    def add_grouped_alias(self, item: any (DiagnosticFimAlias)) -> "DiagnosticFimAliasEventGroupBuilder":
+    def add_grouped_alias(self, item: Any) -> "DiagnosticFimAliasEventGroupBuilder":
         """Add a single item to grouped_aliases list.
 
         Args:

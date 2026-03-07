@@ -302,7 +302,7 @@ class PortPrototypeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'delegated_port' is required and cannot be None")
         self._obj.delegated_port = value
         return self
 
@@ -354,7 +354,7 @@ class PortPrototypeBuilder(IdentifiableBuilder):
         self._obj.parameter_ports = list(items) if items else []
         return self
 
-    def with_sender_receivers(self, items: list[any (SenderReceiver)]) -> "PortPrototypeBuilder":
+    def with_sender_receivers(self, items: list[Any]) -> "PortPrototypeBuilder":
         """Set sender_receivers list attribute.
 
         Args:
@@ -484,7 +484,7 @@ class PortPrototypeBuilder(IdentifiableBuilder):
         self._obj.parameter_ports = []
         return self
 
-    def add_sender_receiver(self, item: any (SenderReceiver)) -> "PortPrototypeBuilder":
+    def add_sender_receiver(self, item: Any) -> "PortPrototypeBuilder":
         """Add a single item to sender_receivers list.
 
         Args:

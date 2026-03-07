@@ -146,7 +146,7 @@ class AtpBlueprintMappingBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'atp_blueprint' is required and cannot be None")
         self._obj.atp_blueprint = value
         return self
 
@@ -160,7 +160,7 @@ class AtpBlueprintMappingBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'atp_blueprinted' is required and cannot be None")
         self._obj.atp_blueprinted = value
         return self
 

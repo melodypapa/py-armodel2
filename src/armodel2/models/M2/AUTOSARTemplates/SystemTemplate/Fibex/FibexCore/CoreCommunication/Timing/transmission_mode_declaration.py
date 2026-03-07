@@ -237,7 +237,7 @@ class TransmissionModeDeclarationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transmission_mode_false_timing' is required and cannot be None")
         self._obj.transmission_mode_false_timing = value
         return self
 
@@ -251,7 +251,7 @@ class TransmissionModeDeclarationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transmission_mode_true_timing' is required and cannot be None")
         self._obj.transmission_mode_true_timing = value
         return self
 

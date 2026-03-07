@@ -190,7 +190,7 @@ class DiagnosticSessionBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'id' is required and cannot be None")
         self._obj.id = value
         return self
 
@@ -204,7 +204,7 @@ class DiagnosticSessionBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'jump_to_boot' is required and cannot be None")
         self._obj.jump_to_boot = value
         return self
 
@@ -218,7 +218,7 @@ class DiagnosticSessionBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'p2_server_max' is required and cannot be None")
         self._obj.p2_server_max = value
         return self
 
@@ -232,7 +232,7 @@ class DiagnosticSessionBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'p2_star_server' is required and cannot be None")
         self._obj.p2_star_server = value
         return self
 

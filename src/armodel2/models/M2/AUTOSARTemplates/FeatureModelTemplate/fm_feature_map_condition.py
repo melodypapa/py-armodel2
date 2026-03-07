@@ -116,7 +116,7 @@ class FMFeatureMapConditionBuilder(IdentifiableBuilder):
         self._obj: FMFeatureMapCondition = FMFeatureMapCondition()
 
 
-    def with_fm_cond_and_attributes(self, value: Optional[any (FMConditionByFeatures)]) -> "FMFeatureMapConditionBuilder":
+    def with_fm_cond_and_attributes(self, value: Optional[Any]) -> "FMFeatureMapConditionBuilder":
         """Set fm_cond_and_attributes attribute.
 
         Args:
@@ -126,7 +126,7 @@ class FMFeatureMapConditionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'fm_cond_and_attributes' is required and cannot be None")
         self._obj.fm_cond_and_attributes = value
         return self
 

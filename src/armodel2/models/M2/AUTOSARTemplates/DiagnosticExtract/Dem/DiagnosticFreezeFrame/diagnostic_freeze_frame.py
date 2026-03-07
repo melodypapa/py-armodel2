@@ -191,7 +191,7 @@ class DiagnosticFreezeFrameBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'custom_trigger' is required and cannot be None")
         self._obj.custom_trigger = value
         return self
 
@@ -205,7 +205,7 @@ class DiagnosticFreezeFrameBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'record_number' is required and cannot be None")
         self._obj.record_number = value
         return self
 
@@ -219,7 +219,7 @@ class DiagnosticFreezeFrameBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'trigger' is required and cannot be None")
         self._obj.trigger = value
         return self
 
@@ -233,7 +233,7 @@ class DiagnosticFreezeFrameBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'update' is required and cannot be None")
         self._obj.update = value
         return self
 

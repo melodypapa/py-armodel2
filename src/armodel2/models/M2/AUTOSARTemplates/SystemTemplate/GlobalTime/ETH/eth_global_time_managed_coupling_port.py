@@ -247,7 +247,7 @@ class EthGlobalTimeManagedCouplingPortBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'coupling_port' is required and cannot be None")
         self._obj.coupling_port = value
         return self
 
@@ -261,7 +261,7 @@ class EthGlobalTimeManagedCouplingPortBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'global_time_port_role' is required and cannot be None")
         self._obj.global_time_port_role = value
         return self
 
@@ -275,7 +275,7 @@ class EthGlobalTimeManagedCouplingPortBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'global_time_tx_period' is required and cannot be None")
         self._obj.global_time_tx_period = value
         return self
 
@@ -289,7 +289,7 @@ class EthGlobalTimeManagedCouplingPortBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdelay_latency' is required and cannot be None")
         self._obj.pdelay_latency = value
         return self
 
@@ -303,7 +303,7 @@ class EthGlobalTimeManagedCouplingPortBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdelay_request' is required and cannot be None")
         self._obj.pdelay_request = value
         return self
 
@@ -317,7 +317,7 @@ class EthGlobalTimeManagedCouplingPortBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdelay_resp_and' is required and cannot be None")
         self._obj.pdelay_resp_and = value
         return self
 
@@ -331,7 +331,7 @@ class EthGlobalTimeManagedCouplingPortBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdelay' is required and cannot be None")
         self._obj.pdelay = value
         return self
 

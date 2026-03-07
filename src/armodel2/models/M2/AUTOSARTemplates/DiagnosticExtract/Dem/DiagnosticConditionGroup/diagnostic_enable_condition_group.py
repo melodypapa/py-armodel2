@@ -122,7 +122,7 @@ class DiagnosticEnableConditionGroupBuilder(DiagnosticConditionGroupBuilder):
         self._obj: DiagnosticEnableConditionGroup = DiagnosticEnableConditionGroup()
 
 
-    def with_enable_conditions(self, items: list[any (DiagnosticEnable)]) -> "DiagnosticEnableConditionGroupBuilder":
+    def with_enable_conditions(self, items: list[Any]) -> "DiagnosticEnableConditionGroupBuilder":
         """Set enable_conditions list attribute.
 
         Args:
@@ -135,7 +135,7 @@ class DiagnosticEnableConditionGroupBuilder(DiagnosticConditionGroupBuilder):
         return self
 
 
-    def add_enable_condition(self, item: any (DiagnosticEnable)) -> "DiagnosticEnableConditionGroupBuilder":
+    def add_enable_condition(self, item: Any) -> "DiagnosticEnableConditionGroupBuilder":
         """Add a single item to enable_conditions list.
 
         Args:

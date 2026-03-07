@@ -398,7 +398,7 @@ class IPSecRuleBuilder(IdentifiableBuilder):
         self._obj: IPSecRule = IPSecRule()
 
 
-    def with_direction(self, value: Optional[any (Communication)]) -> "IPSecRuleBuilder":
+    def with_direction(self, value: Optional[Any]) -> "IPSecRuleBuilder":
         """Set direction attribute.
 
         Args:
@@ -408,7 +408,7 @@ class IPSecRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'direction' is required and cannot be None")
         self._obj.direction = value
         return self
 
@@ -422,7 +422,7 @@ class IPSecRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'header_type' is required and cannot be None")
         self._obj.header_type = value
         return self
 
@@ -436,11 +436,11 @@ class IPSecRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ip_protocol' is required and cannot be None")
         self._obj.ip_protocol = value
         return self
 
-    def with_local_certificates(self, items: list[any (CryptoService)]) -> "IPSecRuleBuilder":
+    def with_local_certificates(self, items: list[Any]) -> "IPSecRuleBuilder":
         """Set local_certificates list attribute.
 
         Args:
@@ -462,7 +462,7 @@ class IPSecRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'local_id' is required and cannot be None")
         self._obj.local_id = value
         return self
 
@@ -476,7 +476,7 @@ class IPSecRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'local_port_range' is required and cannot be None")
         self._obj.local_port_range = value
         return self
 
@@ -490,7 +490,7 @@ class IPSecRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode' is required and cannot be None")
         self._obj.mode = value
         return self
 
@@ -504,7 +504,7 @@ class IPSecRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'policy' is required and cannot be None")
         self._obj.policy = value
         return self
 
@@ -518,7 +518,7 @@ class IPSecRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pre_shared_key' is required and cannot be None")
         self._obj.pre_shared_key = value
         return self
 
@@ -532,11 +532,11 @@ class IPSecRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
-    def with_remotes(self, items: list[any (CryptoService)]) -> "IPSecRuleBuilder":
+    def with_remotes(self, items: list[Any]) -> "IPSecRuleBuilder":
         """Set remotes list attribute.
 
         Args:
@@ -558,7 +558,7 @@ class IPSecRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'remote_id' is required and cannot be None")
         self._obj.remote_id = value
         return self
 
@@ -584,12 +584,12 @@ class IPSecRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'remote_port' is required and cannot be None")
         self._obj.remote_port = value
         return self
 
 
-    def add_local_certificate(self, item: any (CryptoService)) -> "IPSecRuleBuilder":
+    def add_local_certificate(self, item: Any) -> "IPSecRuleBuilder":
         """Add a single item to local_certificates list.
 
         Args:
@@ -610,7 +610,7 @@ class IPSecRuleBuilder(IdentifiableBuilder):
         self._obj.local_certificates = []
         return self
 
-    def add_remote(self, item: any (CryptoService)) -> "IPSecRuleBuilder":
+    def add_remote(self, item: Any) -> "IPSecRuleBuilder":
         """Add a single item to remotes list.
 
         Args:

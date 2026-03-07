@@ -164,7 +164,7 @@ class MsrQueryPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'comment' is required and cannot be None")
         self._obj.comment = value
         return self
 
@@ -190,7 +190,7 @@ class MsrQueryPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'msr_query_name' is required and cannot be None")
         self._obj.msr_query_name = value
         return self
 

@@ -289,7 +289,7 @@ class CanControllerFdConfigurationRequirementsBuilder(BuilderBase):
         self._obj: CanControllerFdConfigurationRequirements = CanControllerFdConfigurationRequirements()
 
 
-    def with_max_number_of_time_quanta_per(self, value: Optional[any (IntegerBit)]) -> "CanControllerFdConfigurationRequirementsBuilder":
+    def with_max_number_of_time_quanta_per(self, value: Optional[Any]) -> "CanControllerFdConfigurationRequirementsBuilder":
         """Set max_number_of_time_quanta_per attribute.
 
         Args:
@@ -299,7 +299,7 @@ class CanControllerFdConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of_time_quanta_per' is required and cannot be None")
         self._obj.max_number_of_time_quanta_per = value
         return self
 
@@ -313,7 +313,7 @@ class CanControllerFdConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_sample' is required and cannot be None")
         self._obj.max_sample = value
         return self
 
@@ -327,7 +327,7 @@ class CanControllerFdConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_sync_jump' is required and cannot be None")
         self._obj.max_sync_jump = value
         return self
 
@@ -341,11 +341,11 @@ class CanControllerFdConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_trcv_delay' is required and cannot be None")
         self._obj.max_trcv_delay = value
         return self
 
-    def with_min_number_of_time_quanta_per(self, value: Optional[any (IntegerBit)]) -> "CanControllerFdConfigurationRequirementsBuilder":
+    def with_min_number_of_time_quanta_per(self, value: Optional[Any]) -> "CanControllerFdConfigurationRequirementsBuilder":
         """Set min_number_of_time_quanta_per attribute.
 
         Args:
@@ -355,7 +355,7 @@ class CanControllerFdConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_number_of_time_quanta_per' is required and cannot be None")
         self._obj.min_number_of_time_quanta_per = value
         return self
 
@@ -369,7 +369,7 @@ class CanControllerFdConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_sample_point' is required and cannot be None")
         self._obj.min_sample_point = value
         return self
 
@@ -383,7 +383,7 @@ class CanControllerFdConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_sync_jump' is required and cannot be None")
         self._obj.min_sync_jump = value
         return self
 
@@ -397,7 +397,7 @@ class CanControllerFdConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_trcv_delay' is required and cannot be None")
         self._obj.min_trcv_delay = value
         return self
 
@@ -411,7 +411,7 @@ class CanControllerFdConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'padding_value' is required and cannot be None")
         self._obj.padding_value = value
         return self
 
@@ -425,7 +425,7 @@ class CanControllerFdConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tx_bit_rate_switch' is required and cannot be None")
         self._obj.tx_bit_rate_switch = value
         return self
 

@@ -147,7 +147,7 @@ class DhcpServerConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ipv4_dhcp_server' is required and cannot be None")
         self._obj.ipv4_dhcp_server = value
         return self
 
@@ -161,7 +161,7 @@ class DhcpServerConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ipv6_dhcp_server' is required and cannot be None")
         self._obj.ipv6_dhcp_server = value
         return self
 

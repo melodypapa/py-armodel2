@@ -120,7 +120,7 @@ class EOCExecutableEntityRefAbstractBuilder(IdentifiableBuilder):
         self._obj: EOCExecutableEntityRefAbstract = EOCExecutableEntityRefAbstract()
 
 
-    def with_direct_successors(self, items: list[any (EOCExecutableEntity)]) -> "EOCExecutableEntityRefAbstractBuilder":
+    def with_direct_successors(self, items: list[Any]) -> "EOCExecutableEntityRefAbstractBuilder":
         """Set direct_successors list attribute.
 
         Args:
@@ -133,7 +133,7 @@ class EOCExecutableEntityRefAbstractBuilder(IdentifiableBuilder):
         return self
 
 
-    def add_direct_successor(self, item: any (EOCExecutableEntity)) -> "EOCExecutableEntityRefAbstractBuilder":
+    def add_direct_successor(self, item: Any) -> "EOCExecutableEntityRefAbstractBuilder":
         """Add a single item to direct_successors list.
 
         Args:

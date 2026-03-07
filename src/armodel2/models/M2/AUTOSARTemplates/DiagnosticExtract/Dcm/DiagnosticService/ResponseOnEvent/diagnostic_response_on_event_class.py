@@ -207,7 +207,7 @@ class DiagnosticResponseOnEventClassBuilder(DiagnosticServiceClassBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of' is required and cannot be None")
         self._obj.max_number_of = value
         return self
 
@@ -221,7 +221,7 @@ class DiagnosticResponseOnEventClassBuilder(DiagnosticServiceClassBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_num' is required and cannot be None")
         self._obj.max_num = value
         return self
 
@@ -235,7 +235,7 @@ class DiagnosticResponseOnEventClassBuilder(DiagnosticServiceClassBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_supported' is required and cannot be None")
         self._obj.max_supported = value
         return self
 
@@ -249,7 +249,7 @@ class DiagnosticResponseOnEventClassBuilder(DiagnosticServiceClassBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'response_on' is required and cannot be None")
         self._obj.response_on = value
         return self
 
@@ -263,7 +263,7 @@ class DiagnosticResponseOnEventClassBuilder(DiagnosticServiceClassBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'store_event' is required and cannot be None")
         self._obj.store_event = value
         return self
 

@@ -180,7 +180,7 @@ class DiagnosticConnectedIndicatorBuilder(IdentifiableBuilder):
         self._obj: DiagnosticConnectedIndicator = DiagnosticConnectedIndicator()
 
 
-    def with_behavior_indicator_behavior_enum(self, value: Optional[any (DiagnosticConnected)]) -> "DiagnosticConnectedIndicatorBuilder":
+    def with_behavior_indicator_behavior_enum(self, value: Optional[Any]) -> "DiagnosticConnectedIndicatorBuilder":
         """Set behavior_indicator_behavior_enum attribute.
 
         Args:
@@ -190,7 +190,7 @@ class DiagnosticConnectedIndicatorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'behavior_indicator_behavior_enum' is required and cannot be None")
         self._obj.behavior_indicator_behavior_enum = value
         return self
 
@@ -204,7 +204,7 @@ class DiagnosticConnectedIndicatorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'healing_cycle' is required and cannot be None")
         self._obj.healing_cycle = value
         return self
 
@@ -218,7 +218,7 @@ class DiagnosticConnectedIndicatorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'indicator' is required and cannot be None")
         self._obj.indicator = value
         return self
 
@@ -232,7 +232,7 @@ class DiagnosticConnectedIndicatorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'indicator_failure' is required and cannot be None")
         self._obj.indicator_failure = value
         return self
 

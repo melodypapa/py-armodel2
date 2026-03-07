@@ -174,7 +174,7 @@ class ObdRatioServiceNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'connection_type' is required and cannot be None")
         self._obj.connection_type = value
         return self
 
@@ -188,7 +188,7 @@ class ObdRatioServiceNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rate_based_monitored_event' is required and cannot be None")
         self._obj.rate_based_monitored_event = value
         return self
 
@@ -202,7 +202,7 @@ class ObdRatioServiceNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'used_fid' is required and cannot be None")
         self._obj.used_fid = value
         return self
 

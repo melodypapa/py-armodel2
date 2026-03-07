@@ -286,7 +286,7 @@ class CollectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'auto_collect' is required and cannot be None")
         self._obj.auto_collect = value
         return self
 
@@ -312,7 +312,7 @@ class CollectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'collection_semantics' is required and cannot be None")
         self._obj.collection_semantics = value
         return self
 
@@ -326,7 +326,7 @@ class CollectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'element_role' is required and cannot be None")
         self._obj.element_role = value
         return self
 

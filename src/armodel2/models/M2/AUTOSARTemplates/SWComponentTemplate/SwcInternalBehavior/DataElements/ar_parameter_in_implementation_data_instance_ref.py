@@ -181,7 +181,7 @@ class ArParameterInImplementationDataInstanceRefBuilder(BuilderBase):
         self._obj: ArParameterInImplementationDataInstanceRef = ArParameterInImplementationDataInstanceRef()
 
 
-    def with_context_datas(self, items: list[any (AbstractImplementation)]) -> "ArParameterInImplementationDataInstanceRefBuilder":
+    def with_context_datas(self, items: list[Any]) -> "ArParameterInImplementationDataInstanceRefBuilder":
         """Set context_datas list attribute.
 
         Args:
@@ -203,7 +203,7 @@ class ArParameterInImplementationDataInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'port_prototype' is required and cannot be None")
         self._obj.port_prototype = value
         return self
 
@@ -217,11 +217,11 @@ class ArParameterInImplementationDataInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'root_parameter' is required and cannot be None")
         self._obj.root_parameter = value
         return self
 
-    def with_target_data(self, value: Optional[any (AbstractImplementation)]) -> "ArParameterInImplementationDataInstanceRefBuilder":
+    def with_target_data(self, value: Optional[Any]) -> "ArParameterInImplementationDataInstanceRefBuilder":
         """Set target_data attribute.
 
         Args:
@@ -231,12 +231,12 @@ class ArParameterInImplementationDataInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_data' is required and cannot be None")
         self._obj.target_data = value
         return self
 
 
-    def add_context_data(self, item: any (AbstractImplementation)) -> "ArParameterInImplementationDataInstanceRefBuilder":
+    def add_context_data(self, item: Any) -> "ArParameterInImplementationDataInstanceRefBuilder":
         """Add a single item to context_datas list.
 
         Args:

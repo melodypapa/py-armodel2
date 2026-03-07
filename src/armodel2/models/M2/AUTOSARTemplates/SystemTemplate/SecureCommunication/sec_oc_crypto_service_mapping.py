@@ -174,7 +174,7 @@ class SecOcCryptoServiceMappingBuilder(CryptoServiceMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'authentication' is required and cannot be None")
         self._obj.authentication = value
         return self
 
@@ -188,7 +188,7 @@ class SecOcCryptoServiceMappingBuilder(CryptoServiceMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crypto_service_key' is required and cannot be None")
         self._obj.crypto_service_key = value
         return self
 
@@ -202,7 +202,7 @@ class SecOcCryptoServiceMappingBuilder(CryptoServiceMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crypto_service_queue' is required and cannot be None")
         self._obj.crypto_service_queue = value
         return self
 

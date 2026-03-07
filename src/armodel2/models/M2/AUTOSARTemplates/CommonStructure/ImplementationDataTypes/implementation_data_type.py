@@ -221,7 +221,7 @@ class ImplementationDataTypeBuilder(AbstractImplementationDataTypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dynamic_array_size_profile' is required and cannot be None")
         self._obj.dynamic_array_size_profile = value
         return self
 
@@ -235,7 +235,7 @@ class ImplementationDataTypeBuilder(AbstractImplementationDataTypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_struct_with_optional_element' is required and cannot be None")
         self._obj.is_struct_with_optional_element = value
         return self
 
@@ -261,7 +261,7 @@ class ImplementationDataTypeBuilder(AbstractImplementationDataTypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'symbol_props' is required and cannot be None")
         self._obj.symbol_props = value
         return self
 
@@ -275,7 +275,7 @@ class ImplementationDataTypeBuilder(AbstractImplementationDataTypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'type_emitter' is required and cannot be None")
         self._obj.type_emitter = value
         return self
 

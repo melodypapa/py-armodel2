@@ -271,7 +271,7 @@ class DiagnosticTroubleCodeUdsBuilder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'consider_pto' is required and cannot be None")
         self._obj.consider_pto = value
         return self
 
@@ -285,7 +285,7 @@ class DiagnosticTroubleCodeUdsBuilder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dtc_props_props' is required and cannot be None")
         self._obj.dtc_props_props = value
         return self
 
@@ -299,7 +299,7 @@ class DiagnosticTroubleCodeUdsBuilder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_readiness' is required and cannot be None")
         self._obj.event_readiness = value
         return self
 
@@ -313,7 +313,7 @@ class DiagnosticTroubleCodeUdsBuilder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'functional_unit' is required and cannot be None")
         self._obj.functional_unit = value
         return self
 
@@ -327,7 +327,7 @@ class DiagnosticTroubleCodeUdsBuilder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'obd_dtc' is required and cannot be None")
         self._obj.obd_dtc = value
         return self
 
@@ -341,7 +341,7 @@ class DiagnosticTroubleCodeUdsBuilder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'severity' is required and cannot be None")
         self._obj.severity = value
         return self
 
@@ -355,7 +355,7 @@ class DiagnosticTroubleCodeUdsBuilder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'uds_dtc_value' is required and cannot be None")
         self._obj.uds_dtc_value = value
         return self
 
@@ -369,7 +369,7 @@ class DiagnosticTroubleCodeUdsBuilder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wwh_obd_dtc' is required and cannot be None")
         self._obj.wwh_obd_dtc = value
         return self
 

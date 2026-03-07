@@ -367,7 +367,7 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'debounce_time' is required and cannot be None")
         self._obj.debounce_time = value
         return self
 
@@ -381,7 +381,7 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'domain_id' is required and cannot be None")
         self._obj.domain_id = value
         return self
 
@@ -407,7 +407,7 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'global_time' is required and cannot be None")
         self._obj.global_time = value
         return self
 
@@ -421,7 +421,7 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'global_time_master' is required and cannot be None")
         self._obj.global_time_master = value
         return self
 
@@ -447,7 +447,7 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network' is required and cannot be None")
         self._obj.network = value
         return self
 
@@ -461,7 +461,7 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'offset_time' is required and cannot be None")
         self._obj.offset_time = value
         return self
 
@@ -475,7 +475,7 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdu_triggering' is required and cannot be None")
         self._obj.pdu_triggering = value
         return self
 
@@ -501,7 +501,7 @@ class GlobalTimeDomainBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sync_loss' is required and cannot be None")
         self._obj.sync_loss = value
         return self
 

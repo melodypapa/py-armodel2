@@ -420,7 +420,7 @@ class RptContainerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_executable_entity' is required and cannot be None")
         self._obj.rpt_executable_entity = value
         return self
 
@@ -434,7 +434,7 @@ class RptContainerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_hook' is required and cannot be None")
         self._obj.rpt_hook = value
         return self
 
@@ -448,7 +448,7 @@ class RptContainerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_impl_policy' is required and cannot be None")
         self._obj.rpt_impl_policy = value
         return self
 
@@ -462,7 +462,7 @@ class RptContainerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_sw' is required and cannot be None")
         self._obj.rpt_sw = value
         return self
 

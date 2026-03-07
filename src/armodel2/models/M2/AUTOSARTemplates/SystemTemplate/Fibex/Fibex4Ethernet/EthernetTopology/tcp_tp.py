@@ -248,7 +248,7 @@ class TcpTpBuilder(TcpUdpConfigBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'keep_alive' is required and cannot be None")
         self._obj.keep_alive = value
         return self
 
@@ -262,7 +262,7 @@ class TcpTpBuilder(TcpUdpConfigBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'keep_alives' is required and cannot be None")
         self._obj.keep_alives = value
         return self
 
@@ -276,7 +276,7 @@ class TcpTpBuilder(TcpUdpConfigBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'keep_alive_time' is required and cannot be None")
         self._obj.keep_alive_time = value
         return self
 
@@ -290,7 +290,7 @@ class TcpTpBuilder(TcpUdpConfigBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nagles_algorithm' is required and cannot be None")
         self._obj.nagles_algorithm = value
         return self
 
@@ -304,7 +304,7 @@ class TcpTpBuilder(TcpUdpConfigBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'receive_window_min' is required and cannot be None")
         self._obj.receive_window_min = value
         return self
 
@@ -318,7 +318,7 @@ class TcpTpBuilder(TcpUdpConfigBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp' is required and cannot be None")
         self._obj.tcp = value
         return self
 
@@ -332,7 +332,7 @@ class TcpTpBuilder(TcpUdpConfigBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_tp_port' is required and cannot be None")
         self._obj.tcp_tp_port = value
         return self
 

@@ -167,7 +167,7 @@ class AbstractCanClusterBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bus_off_recovery' is required and cannot be None")
         self._obj.bus_off_recovery = value
         return self
 
@@ -181,7 +181,7 @@ class AbstractCanClusterBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_fd_baudrate' is required and cannot be None")
         self._obj.can_fd_baudrate = value
         return self
 
@@ -195,7 +195,7 @@ class AbstractCanClusterBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_xl_baudrate' is required and cannot be None")
         self._obj.can_xl_baudrate = value
         return self
 

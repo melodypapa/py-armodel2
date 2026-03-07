@@ -216,7 +216,7 @@ class StaticSocketConnectionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'remote_address' is required and cannot be None")
         self._obj.remote_address = value
         return self
 
@@ -230,7 +230,7 @@ class StaticSocketConnectionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_connect' is required and cannot be None")
         self._obj.tcp_connect = value
         return self
 
@@ -244,7 +244,7 @@ class StaticSocketConnectionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_role' is required and cannot be None")
         self._obj.tcp_role = value
         return self
 

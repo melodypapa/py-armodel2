@@ -116,7 +116,7 @@ class NumericalRuleBasedValueSpecificationBuilder(AbstractRuleBasedValueSpecific
         self._obj: NumericalRuleBasedValueSpecification = NumericalRuleBasedValueSpecification()
 
 
-    def with_rule_based(self, value: Optional[any (RuleBasedValue)]) -> "NumericalRuleBasedValueSpecificationBuilder":
+    def with_rule_based(self, value: Optional[Any]) -> "NumericalRuleBasedValueSpecificationBuilder":
         """Set rule_based attribute.
 
         Args:
@@ -126,7 +126,7 @@ class NumericalRuleBasedValueSpecificationBuilder(AbstractRuleBasedValueSpecific
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rule_based' is required and cannot be None")
         self._obj.rule_based = value
         return self
 

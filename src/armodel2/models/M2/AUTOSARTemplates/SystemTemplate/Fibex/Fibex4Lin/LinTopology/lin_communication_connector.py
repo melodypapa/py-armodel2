@@ -189,7 +189,7 @@ class LinCommunicationConnectorBuilder(CommunicationConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initial_nad' is required and cannot be None")
         self._obj.initial_nad = value
         return self
 
@@ -227,7 +227,7 @@ class LinCommunicationConnectorBuilder(CommunicationConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'schedule' is required and cannot be None")
         self._obj.schedule = value
         return self
 

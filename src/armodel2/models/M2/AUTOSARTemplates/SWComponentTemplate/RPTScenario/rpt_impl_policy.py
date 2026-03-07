@@ -146,7 +146,7 @@ class RptImplPolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_enabler_impl' is required and cannot be None")
         self._obj.rpt_enabler_impl = value
         return self
 
@@ -160,7 +160,7 @@ class RptImplPolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_preparation_enum' is required and cannot be None")
         self._obj.rpt_preparation_enum = value
         return self
 

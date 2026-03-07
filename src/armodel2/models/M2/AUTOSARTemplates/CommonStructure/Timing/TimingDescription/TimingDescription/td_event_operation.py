@@ -152,7 +152,7 @@ class TDEventOperationBuilder(TDEventVfbPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'operation' is required and cannot be None")
         self._obj.operation = value
         return self
 
@@ -166,7 +166,7 @@ class TDEventOperationBuilder(TDEventVfbPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'td_event' is required and cannot be None")
         self._obj.td_event = value
         return self
 

@@ -148,7 +148,7 @@ class FrGlobalTimeDomainPropsBuilder(AbstractGlobalTimeDomainPropsBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ofs_data_id_list' is required and cannot be None")
         self._obj.ofs_data_id_list = value
         return self
 
@@ -162,7 +162,7 @@ class FrGlobalTimeDomainPropsBuilder(AbstractGlobalTimeDomainPropsBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sync_data_id_list' is required and cannot be None")
         self._obj.sync_data_id_list = value
         return self
 

@@ -223,7 +223,7 @@ class SwcToEcuMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'controlled_hw_element' is required and cannot be None")
         self._obj.controlled_hw_element = value
         return self
 
@@ -237,7 +237,7 @@ class SwcToEcuMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_instance' is required and cannot be None")
         self._obj.ecu_instance = value
         return self
 
@@ -251,7 +251,7 @@ class SwcToEcuMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'processing_unit' is required and cannot be None")
         self._obj.processing_unit = value
         return self
 

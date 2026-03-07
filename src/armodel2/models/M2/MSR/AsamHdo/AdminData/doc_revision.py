@@ -244,7 +244,7 @@ class DocRevisionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'date' is required and cannot be None")
         self._obj.date = value
         return self
 
@@ -258,7 +258,7 @@ class DocRevisionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'issued_by' is required and cannot be None")
         self._obj.issued_by = value
         return self
 
@@ -284,7 +284,7 @@ class DocRevisionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'revision_label_string' is required and cannot be None")
         self._obj.revision_label_string = value
         return self
 
@@ -298,7 +298,7 @@ class DocRevisionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'revision_label_p1' is required and cannot be None")
         self._obj.revision_label_p1 = value
         return self
 
@@ -312,7 +312,7 @@ class DocRevisionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'revision_label_p2' is required and cannot be None")
         self._obj.revision_label_p2 = value
         return self
 
@@ -326,7 +326,7 @@ class DocRevisionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'state' is required and cannot be None")
         self._obj.state = value
         return self
 

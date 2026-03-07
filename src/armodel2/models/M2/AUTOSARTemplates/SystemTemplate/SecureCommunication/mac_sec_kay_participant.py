@@ -171,7 +171,7 @@ class MacSecKayParticipantBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ckn' is required and cannot be None")
         self._obj.ckn = value
         return self
 
@@ -185,7 +185,7 @@ class MacSecKayParticipantBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crypto_algo' is required and cannot be None")
         self._obj.crypto_algo = value
         return self
 
@@ -199,7 +199,7 @@ class MacSecKayParticipantBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sak' is required and cannot be None")
         self._obj.sak = value
         return self
 

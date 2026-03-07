@@ -149,7 +149,7 @@ class DiagnosticEcuResetBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'custom_sub' is required and cannot be None")
         self._obj.custom_sub = value
         return self
 
@@ -163,7 +163,7 @@ class DiagnosticEcuResetBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_reset_class' is required and cannot be None")
         self._obj.ecu_reset_class = value
         return self
 

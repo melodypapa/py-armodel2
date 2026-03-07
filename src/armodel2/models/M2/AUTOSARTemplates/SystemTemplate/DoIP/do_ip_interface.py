@@ -380,7 +380,7 @@ class DoIpInterfaceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'alive_check' is required and cannot be None")
         self._obj.alive_check = value
         return self
 
@@ -394,7 +394,7 @@ class DoIpInterfaceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'doip_channel' is required and cannot be None")
         self._obj.doip_channel = value
         return self
 
@@ -432,7 +432,7 @@ class DoIpInterfaceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'general_inactivity' is required and cannot be None")
         self._obj.general_inactivity = value
         return self
 
@@ -446,7 +446,7 @@ class DoIpInterfaceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initial_inactivity' is required and cannot be None")
         self._obj.initial_inactivity = value
         return self
 
@@ -460,7 +460,7 @@ class DoIpInterfaceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initial_vehicle' is required and cannot be None")
         self._obj.initial_vehicle = value
         return self
 
@@ -474,7 +474,7 @@ class DoIpInterfaceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_activation_line' is required and cannot be None")
         self._obj.is_activation_line = value
         return self
 
@@ -488,7 +488,7 @@ class DoIpInterfaceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_tester' is required and cannot be None")
         self._obj.max_tester = value
         return self
 
@@ -514,7 +514,7 @@ class DoIpInterfaceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'use_mac_address' is required and cannot be None")
         self._obj.use_mac_address = value
         return self
 
@@ -528,7 +528,7 @@ class DoIpInterfaceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'use_vehicle' is required and cannot be None")
         self._obj.use_vehicle = value
         return self
 
@@ -542,7 +542,7 @@ class DoIpInterfaceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vehicle' is required and cannot be None")
         self._obj.vehicle = value
         return self
 

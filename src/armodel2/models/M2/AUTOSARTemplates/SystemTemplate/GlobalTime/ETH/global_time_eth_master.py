@@ -173,7 +173,7 @@ class GlobalTimeEthMasterBuilder(GlobalTimeMasterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_secured' is required and cannot be None")
         self._obj.crc_secured = value
         return self
 
@@ -187,7 +187,7 @@ class GlobalTimeEthMasterBuilder(GlobalTimeMasterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'hold_over_time' is required and cannot be None")
         self._obj.hold_over_time = value
         return self
 
@@ -201,7 +201,7 @@ class GlobalTimeEthMasterBuilder(GlobalTimeMasterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sub_tlv_config' is required and cannot be None")
         self._obj.sub_tlv_config = value
         return self
 

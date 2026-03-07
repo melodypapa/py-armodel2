@@ -193,7 +193,7 @@ class UnitBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'display_name' is required and cannot be None")
         self._obj.display_name = value
         return self
 
@@ -207,7 +207,7 @@ class UnitBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'factor_si_to_unit' is required and cannot be None")
         self._obj.factor_si_to_unit = value
         return self
 
@@ -221,7 +221,7 @@ class UnitBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'offset_si_to_unit' is required and cannot be None")
         self._obj.offset_si_to_unit = value
         return self
 
@@ -235,7 +235,7 @@ class UnitBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'physical_dimension' is required and cannot be None")
         self._obj.physical_dimension = value
         return self
 

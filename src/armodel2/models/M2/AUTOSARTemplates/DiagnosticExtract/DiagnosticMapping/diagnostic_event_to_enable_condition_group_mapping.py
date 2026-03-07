@@ -149,11 +149,11 @@ class DiagnosticEventToEnableConditionGroupMappingBuilder(DiagnosticMappingBuild
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_event' is required and cannot be None")
         self._obj.diagnostic_event = value
         return self
 
-    def with_enable_condition(self, value: Optional[any (DiagnosticEnable)]) -> "DiagnosticEventToEnableConditionGroupMappingBuilder":
+    def with_enable_condition(self, value: Optional[Any]) -> "DiagnosticEventToEnableConditionGroupMappingBuilder":
         """Set enable_condition attribute.
 
         Args:
@@ -163,7 +163,7 @@ class DiagnosticEventToEnableConditionGroupMappingBuilder(DiagnosticMappingBuild
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'enable_condition' is required and cannot be None")
         self._obj.enable_condition = value
         return self
 

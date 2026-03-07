@@ -258,7 +258,7 @@ class ReferenceBaseBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 
@@ -272,7 +272,7 @@ class ReferenceBaseBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_default' is required and cannot be None")
         self._obj.is_default = value
         return self
 
@@ -286,7 +286,7 @@ class ReferenceBaseBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_global' is required and cannot be None")
         self._obj.is_global = value
         return self
 
@@ -300,7 +300,7 @@ class ReferenceBaseBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base_is_this_package' is required and cannot be None")
         self._obj.base_is_this_package = value
         return self
 
@@ -314,7 +314,7 @@ class ReferenceBaseBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'package' is required and cannot be None")
         self._obj.package = value
         return self
 

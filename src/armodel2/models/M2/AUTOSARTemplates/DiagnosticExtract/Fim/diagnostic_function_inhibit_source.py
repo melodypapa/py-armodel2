@@ -136,7 +136,7 @@ class DiagnosticFunctionInhibitSourceBuilder(IdentifiableBuilder):
         self._obj: DiagnosticFunctionInhibitSource = DiagnosticFunctionInhibitSource()
 
 
-    def with_event(self, value: Optional[any (DiagnosticFimAlias)]) -> "DiagnosticFunctionInhibitSourceBuilder":
+    def with_event(self, value: Optional[Any]) -> "DiagnosticFunctionInhibitSourceBuilder":
         """Set event attribute.
 
         Args:
@@ -146,11 +146,11 @@ class DiagnosticFunctionInhibitSourceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event' is required and cannot be None")
         self._obj.event = value
         return self
 
-    def with_event_group(self, value: Optional[any (DiagnosticFimAlias)]) -> "DiagnosticFunctionInhibitSourceBuilder":
+    def with_event_group(self, value: Optional[Any]) -> "DiagnosticFunctionInhibitSourceBuilder":
         """Set event_group attribute.
 
         Args:
@@ -160,7 +160,7 @@ class DiagnosticFunctionInhibitSourceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_group' is required and cannot be None")
         self._obj.event_group = value
         return self
 

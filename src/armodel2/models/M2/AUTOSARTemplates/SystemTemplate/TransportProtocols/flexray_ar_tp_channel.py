@@ -484,7 +484,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ack_type' is required and cannot be None")
         self._obj.ack_type = value
         return self
 
@@ -498,7 +498,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cancellation' is required and cannot be None")
         self._obj.cancellation = value
         return self
 
@@ -512,7 +512,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'extended' is required and cannot be None")
         self._obj.extended = value
         return self
 
@@ -526,7 +526,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_ar' is required and cannot be None")
         self._obj.max_ar = value
         return self
 
@@ -540,7 +540,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_as' is required and cannot be None")
         self._obj.max_as = value
         return self
 
@@ -554,7 +554,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_bs' is required and cannot be None")
         self._obj.max_bs = value
         return self
 
@@ -568,7 +568,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_fc_wait' is required and cannot be None")
         self._obj.max_fc_wait = value
         return self
 
@@ -582,7 +582,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'maximum_message' is required and cannot be None")
         self._obj.maximum_message = value
         return self
 
@@ -596,7 +596,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_retries' is required and cannot be None")
         self._obj.max_retries = value
         return self
 
@@ -610,7 +610,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum' is required and cannot be None")
         self._obj.minimum = value
         return self
 
@@ -624,7 +624,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'multicast' is required and cannot be None")
         self._obj.multicast = value
         return self
 
@@ -650,7 +650,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_br' is required and cannot be None")
         self._obj.time_br = value
         return self
 
@@ -664,7 +664,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_cs' is required and cannot be None")
         self._obj.time_cs = value
         return self
 
@@ -678,7 +678,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_ar' is required and cannot be None")
         self._obj.timeout_ar = value
         return self
 
@@ -692,7 +692,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_as' is required and cannot be None")
         self._obj.timeout_as = value
         return self
 
@@ -706,7 +706,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_bs' is required and cannot be None")
         self._obj.timeout_bs = value
         return self
 
@@ -720,7 +720,7 @@ class FlexrayArTpChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_cr' is required and cannot be None")
         self._obj.timeout_cr = value
         return self
 

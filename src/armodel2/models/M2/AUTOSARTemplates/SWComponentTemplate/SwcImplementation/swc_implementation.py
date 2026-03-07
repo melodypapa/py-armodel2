@@ -174,7 +174,7 @@ class SwcImplementationBuilder(ImplementationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'behavior' is required and cannot be None")
         self._obj.behavior = value
         return self
 
@@ -200,7 +200,7 @@ class SwcImplementationBuilder(ImplementationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'required_rte_vendor' is required and cannot be None")
         self._obj.required_rte_vendor = value
         return self
 

@@ -130,7 +130,7 @@ class MacMulticastConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mac_multicast_group_group' is required and cannot be None")
         self._obj.mac_multicast_group_group = value
         return self
 

@@ -190,7 +190,7 @@ class IPduPortBuilder(CommConnectorPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_pdu_signal' is required and cannot be None")
         self._obj.i_pdu_signal = value
         return self
 
@@ -204,7 +204,7 @@ class IPduPortBuilder(CommConnectorPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rx_security' is required and cannot be None")
         self._obj.rx_security = value
         return self
 
@@ -218,7 +218,7 @@ class IPduPortBuilder(CommConnectorPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timestamp_rx' is required and cannot be None")
         self._obj.timestamp_rx = value
         return self
 
@@ -232,7 +232,7 @@ class IPduPortBuilder(CommConnectorPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'use_auth_data' is required and cannot be None")
         self._obj.use_auth_data = value
         return self
 

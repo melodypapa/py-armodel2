@@ -149,7 +149,7 @@ class DiagnosticResponseOnEventBuilder(DiagnosticServiceInstanceBuilder):
         self._obj.event_windows = list(items) if items else []
         return self
 
-    def with_response_on(self, value: Optional[any (DiagnosticResponseOn)]) -> "DiagnosticResponseOnEventBuilder":
+    def with_response_on(self, value: Optional[Any]) -> "DiagnosticResponseOnEventBuilder":
         """Set response_on attribute.
 
         Args:
@@ -159,7 +159,7 @@ class DiagnosticResponseOnEventBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'response_on' is required and cannot be None")
         self._obj.response_on = value
         return self
 

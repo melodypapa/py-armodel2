@@ -171,7 +171,7 @@ class OsTaskProxyBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'period' is required and cannot be None")
         self._obj.period = value
         return self
 
@@ -185,7 +185,7 @@ class OsTaskProxyBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'preemptability' is required and cannot be None")
         self._obj.preemptability = value
         return self
 
@@ -199,7 +199,7 @@ class OsTaskProxyBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 

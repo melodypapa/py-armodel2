@@ -184,7 +184,7 @@ class EthernetPhysicalChannelBuilder(PhysicalChannelBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'so_ad_config' is required and cannot be None")
         self._obj.so_ad_config = value
         return self
 
@@ -198,7 +198,7 @@ class EthernetPhysicalChannelBuilder(PhysicalChannelBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vlan' is required and cannot be None")
         self._obj.vlan = value
         return self
 

@@ -192,7 +192,7 @@ class TlvDataIdDefinitionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'id' is required and cannot be None")
         self._obj.id = value
         return self
 
@@ -206,7 +206,7 @@ class TlvDataIdDefinitionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tlv_argument' is required and cannot be None")
         self._obj.tlv_argument = value
         return self
 
@@ -220,11 +220,11 @@ class TlvDataIdDefinitionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tlv' is required and cannot be None")
         self._obj.tlv = value
         return self
 
-    def with_tlv_record(self, value: Optional[any (ApplicationRecord)]) -> "TlvDataIdDefinitionBuilder":
+    def with_tlv_record(self, value: Optional[Any]) -> "TlvDataIdDefinitionBuilder":
         """Set tlv_record attribute.
 
         Args:
@@ -234,7 +234,7 @@ class TlvDataIdDefinitionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tlv_record' is required and cannot be None")
         self._obj.tlv_record = value
         return self
 

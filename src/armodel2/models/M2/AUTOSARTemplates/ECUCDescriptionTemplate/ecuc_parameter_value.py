@@ -184,7 +184,7 @@ class EcucParameterValueBuilder(EcucIndexableValueBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'definition' is required and cannot be None")
         self._obj.definition = value
         return self
 
@@ -198,7 +198,7 @@ class EcucParameterValueBuilder(EcucIndexableValueBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_auto_value' is required and cannot be None")
         self._obj.is_auto_value = value
         return self
 

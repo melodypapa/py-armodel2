@@ -167,7 +167,7 @@ class ISignalMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'introduction' is required and cannot be None")
         self._obj.introduction = value
         return self
 
@@ -181,7 +181,7 @@ class ISignalMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'source_signal' is required and cannot be None")
         self._obj.source_signal = value
         return self
 
@@ -195,7 +195,7 @@ class ISignalMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_signal' is required and cannot be None")
         self._obj.target_signal = value
         return self
 

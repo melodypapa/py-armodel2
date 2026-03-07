@@ -201,7 +201,7 @@ class CryptoServiceCertificateBuilder(ARElementBuilder):
         self._obj: CryptoServiceCertificate = CryptoServiceCertificate()
 
 
-    def with_algorithm_family(self, value: Optional[any (CryptoCertificate)]) -> "CryptoServiceCertificateBuilder":
+    def with_algorithm_family(self, value: Optional[Any]) -> "CryptoServiceCertificateBuilder":
         """Set algorithm_family attribute.
 
         Args:
@@ -211,7 +211,7 @@ class CryptoServiceCertificateBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'algorithm_family' is required and cannot be None")
         self._obj.algorithm_family = value
         return self
 
@@ -225,7 +225,7 @@ class CryptoServiceCertificateBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'format' is required and cannot be None")
         self._obj.format = value
         return self
 
@@ -239,11 +239,11 @@ class CryptoServiceCertificateBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'maximum' is required and cannot be None")
         self._obj.maximum = value
         return self
 
-    def with_next_higher(self, value: Optional[any (CryptoService)]) -> "CryptoServiceCertificateBuilder":
+    def with_next_higher(self, value: Optional[Any]) -> "CryptoServiceCertificateBuilder":
         """Set next_higher attribute.
 
         Args:
@@ -253,7 +253,7 @@ class CryptoServiceCertificateBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'next_higher' is required and cannot be None")
         self._obj.next_higher = value
         return self
 
@@ -267,7 +267,7 @@ class CryptoServiceCertificateBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'server_name' is required and cannot be None")
         self._obj.server_name = value
         return self
 

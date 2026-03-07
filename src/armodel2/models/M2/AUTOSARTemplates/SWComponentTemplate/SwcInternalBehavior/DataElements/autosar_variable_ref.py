@@ -171,7 +171,7 @@ class AutosarVariableRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'autosar_variable' is required and cannot be None")
         self._obj.autosar_variable = value
         return self
 
@@ -185,7 +185,7 @@ class AutosarVariableRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'autosar_variable_in_impl_datatype' is required and cannot be None")
         self._obj.autosar_variable_in_impl_datatype = value
         return self
 
@@ -199,7 +199,7 @@ class AutosarVariableRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'local_variable' is required and cannot be None")
         self._obj.local_variable = value
         return self
 

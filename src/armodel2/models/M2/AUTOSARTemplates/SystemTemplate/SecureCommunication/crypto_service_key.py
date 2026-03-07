@@ -239,7 +239,7 @@ class CryptoServiceKeyBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'algorithm_family' is required and cannot be None")
         self._obj.algorithm_family = value
         return self
 
@@ -253,7 +253,7 @@ class CryptoServiceKeyBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'development' is required and cannot be None")
         self._obj.development = value
         return self
 
@@ -267,7 +267,7 @@ class CryptoServiceKeyBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'key_generation' is required and cannot be None")
         self._obj.key_generation = value
         return self
 
@@ -281,7 +281,7 @@ class CryptoServiceKeyBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'key_storage_type' is required and cannot be None")
         self._obj.key_storage_type = value
         return self
 
@@ -295,7 +295,7 @@ class CryptoServiceKeyBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'length' is required and cannot be None")
         self._obj.length = value
         return self
 

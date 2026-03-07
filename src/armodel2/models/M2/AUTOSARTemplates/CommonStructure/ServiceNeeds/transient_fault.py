@@ -114,7 +114,7 @@ class TransientFaultBuilder(TracedFailureBuilder):
         self._obj: TransientFault = TransientFault()
 
 
-    def with_possible_error_reactions(self, items: list[any (PossibleErrorReaction)]) -> "TransientFaultBuilder":
+    def with_possible_error_reactions(self, items: list[Any]) -> "TransientFaultBuilder":
         """Set possible_error_reactions list attribute.
 
         Args:
@@ -127,7 +127,7 @@ class TransientFaultBuilder(TracedFailureBuilder):
         return self
 
 
-    def add_possible_error_reaction(self, item: any (PossibleErrorReaction)) -> "TransientFaultBuilder":
+    def add_possible_error_reaction(self, item: Any) -> "TransientFaultBuilder":
         """Add a single item to possible_error_reactions list.
 
         Args:

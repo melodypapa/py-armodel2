@@ -198,7 +198,7 @@ class CpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         self._obj.resource_toes = list(items) if items else []
         return self
 
-    def with_software_clusters(self, items: list[any (CpSoftwareClusterTo)]) -> "CpSoftwareClusterMappingSetBuilder":
+    def with_software_clusters(self, items: list[Any]) -> "CpSoftwareClusterMappingSetBuilder":
         """Set software_clusters list attribute.
 
         Args:
@@ -265,7 +265,7 @@ class CpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         self._obj.resource_toes = []
         return self
 
-    def add_software_cluster(self, item: any (CpSoftwareClusterTo)) -> "CpSoftwareClusterMappingSetBuilder":
+    def add_software_cluster(self, item: Any) -> "CpSoftwareClusterMappingSetBuilder":
         """Add a single item to software_clusters list.
 
         Args:

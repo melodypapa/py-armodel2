@@ -145,7 +145,7 @@ class SwCalprmAxisTypePropsBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_gradient' is required and cannot be None")
         self._obj.max_gradient = value
         return self
 
@@ -159,7 +159,7 @@ class SwCalprmAxisTypePropsBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'monotony' is required and cannot be None")
         self._obj.monotony = value
         return self
 

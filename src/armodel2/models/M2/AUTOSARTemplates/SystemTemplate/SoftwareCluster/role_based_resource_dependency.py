@@ -149,7 +149,7 @@ class RoleBasedResourceDependencyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'resource' is required and cannot be None")
         self._obj.resource = value
         return self
 
@@ -163,7 +163,7 @@ class RoleBasedResourceDependencyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'role' is required and cannot be None")
         self._obj.role = value
         return self
 

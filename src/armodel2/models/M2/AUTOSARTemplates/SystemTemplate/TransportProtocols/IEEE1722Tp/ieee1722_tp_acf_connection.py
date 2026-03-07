@@ -185,7 +185,7 @@ class IEEE1722TpAcfConnectionBuilder(IEEE1722TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'collection' is required and cannot be None")
         self._obj.collection = value
         return self
 
@@ -199,7 +199,7 @@ class IEEE1722TpAcfConnectionBuilder(IEEE1722TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mixed_bus_type' is required and cannot be None")
         self._obj.mixed_bus_type = value
         return self
 

@@ -157,7 +157,7 @@ class LinEventTriggeredFrameBuilder(LinFrameBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'collision_schedule' is required and cannot be None")
         self._obj.collision_schedule = value
         return self
 

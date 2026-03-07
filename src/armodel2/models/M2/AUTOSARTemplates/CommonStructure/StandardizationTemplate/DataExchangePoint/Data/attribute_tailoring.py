@@ -136,7 +136,7 @@ class AttributeTailoringBuilder(DataFormatElementScopeBuilder):
         self._obj: AttributeTailoring = AttributeTailoring()
 
 
-    def with_multiplicity(self, value: Optional[any (MultiplicityRestriction)]) -> "AttributeTailoringBuilder":
+    def with_multiplicity(self, value: Optional[Any]) -> "AttributeTailoringBuilder":
         """Set multiplicity attribute.
 
         Args:
@@ -146,7 +146,7 @@ class AttributeTailoringBuilder(DataFormatElementScopeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'multiplicity' is required and cannot be None")
         self._obj.multiplicity = value
         return self
 
@@ -160,7 +160,7 @@ class AttributeTailoringBuilder(DataFormatElementScopeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'variation' is required and cannot be None")
         self._obj.variation = value
         return self
 

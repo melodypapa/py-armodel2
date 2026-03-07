@@ -191,7 +191,7 @@ class LinScheduleTableBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'resume_position' is required and cannot be None")
         self._obj.resume_position = value
         return self
 
@@ -205,7 +205,7 @@ class LinScheduleTableBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'run_mode' is required and cannot be None")
         self._obj.run_mode = value
         return self
 

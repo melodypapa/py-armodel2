@@ -149,7 +149,7 @@ class BinaryManifestItemPointerValueBuilder(BinaryManifestItemValueBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'address' is required and cannot be None")
         self._obj.address = value
         return self
 
@@ -163,7 +163,7 @@ class BinaryManifestItemPointerValueBuilder(BinaryManifestItemValueBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'symbol' is required and cannot be None")
         self._obj.symbol = value
         return self
 

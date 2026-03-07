@@ -130,7 +130,7 @@ class AclRoleBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ldap_url' is required and cannot be None")
         self._obj.ldap_url = value
         return self
 

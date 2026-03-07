@@ -149,11 +149,11 @@ class TDEventVariableDataPrototypeBuilder(TDEventVfbPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_element' is required and cannot be None")
         self._obj.data_element = value
         return self
 
-    def with_td_event_variable_type(self, value: Optional[any (TDEventVariableData)]) -> "TDEventVariableDataPrototypeBuilder":
+    def with_td_event_variable_type(self, value: Optional[Any]) -> "TDEventVariableDataPrototypeBuilder":
         """Set td_event_variable_type attribute.
 
         Args:
@@ -163,7 +163,7 @@ class TDEventVariableDataPrototypeBuilder(TDEventVfbPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'td_event_variable_type' is required and cannot be None")
         self._obj.td_event_variable_type = value
         return self
 

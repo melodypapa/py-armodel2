@@ -210,7 +210,7 @@ class IEEE1722TpCrfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base_frequency' is required and cannot be None")
         self._obj.base_frequency = value
         return self
 
@@ -224,7 +224,7 @@ class IEEE1722TpCrfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crf_pull_enum' is required and cannot be None")
         self._obj.crf_pull_enum = value
         return self
 
@@ -238,7 +238,7 @@ class IEEE1722TpCrfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crf_type_enum' is required and cannot be None")
         self._obj.crf_type_enum = value
         return self
 
@@ -252,7 +252,7 @@ class IEEE1722TpCrfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'frame_sync' is required and cannot be None")
         self._obj.frame_sync = value
         return self
 
@@ -266,7 +266,7 @@ class IEEE1722TpCrfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timestamp' is required and cannot be None")
         self._obj.timestamp = value
         return self
 

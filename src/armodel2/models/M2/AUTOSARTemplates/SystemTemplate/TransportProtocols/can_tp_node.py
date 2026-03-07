@@ -219,7 +219,7 @@ class CanTpNodeBuilder(IdentifiableBuilder):
         self._obj: CanTpNode = CanTpNode()
 
 
-    def with_connector(self, value: Optional[any (Communication)]) -> "CanTpNodeBuilder":
+    def with_connector(self, value: Optional[Any]) -> "CanTpNodeBuilder":
         """Set connector attribute.
 
         Args:
@@ -229,7 +229,7 @@ class CanTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'connector' is required and cannot be None")
         self._obj.connector = value
         return self
 
@@ -243,7 +243,7 @@ class CanTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_fc_wait' is required and cannot be None")
         self._obj.max_fc_wait = value
         return self
 
@@ -257,7 +257,7 @@ class CanTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'st_min' is required and cannot be None")
         self._obj.st_min = value
         return self
 
@@ -271,7 +271,7 @@ class CanTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_ar' is required and cannot be None")
         self._obj.timeout_ar = value
         return self
 
@@ -285,7 +285,7 @@ class CanTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_as' is required and cannot be None")
         self._obj.timeout_as = value
         return self
 
@@ -299,7 +299,7 @@ class CanTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tp_address' is required and cannot be None")
         self._obj.tp_address = value
         return self
 

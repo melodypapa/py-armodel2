@@ -144,7 +144,7 @@ class DiagnosticSupportInfoByteBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'position' is required and cannot be None")
         self._obj.position = value
         return self
 
@@ -158,7 +158,7 @@ class DiagnosticSupportInfoByteBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'size' is required and cannot be None")
         self._obj.size = value
         return self
 

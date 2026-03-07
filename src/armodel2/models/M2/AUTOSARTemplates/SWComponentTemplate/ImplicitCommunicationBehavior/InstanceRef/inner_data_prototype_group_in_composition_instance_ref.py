@@ -172,11 +172,11 @@ class InnerDataPrototypeGroupInCompositionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
-    def with_context_sws(self, items: list[any (SwComponent)]) -> "InnerDataPrototypeGroupInCompositionInstanceRefBuilder":
+    def with_context_sws(self, items: list[Any]) -> "InnerDataPrototypeGroupInCompositionInstanceRefBuilder":
         """Set context_sws list attribute.
 
         Args:
@@ -198,12 +198,12 @@ class InnerDataPrototypeGroupInCompositionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_data' is required and cannot be None")
         self._obj.target_data = value
         return self
 
 
-    def add_context_sw(self, item: any (SwComponent)) -> "InnerDataPrototypeGroupInCompositionInstanceRefBuilder":
+    def add_context_sw(self, item: Any) -> "InnerDataPrototypeGroupInCompositionInstanceRefBuilder":
         """Add a single item to context_sws list.
 
         Args:

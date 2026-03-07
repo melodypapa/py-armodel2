@@ -244,7 +244,7 @@ class DataFilterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_filter_type' is required and cannot be None")
         self._obj.data_filter_type = value
         return self
 
@@ -258,7 +258,7 @@ class DataFilterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mask' is required and cannot be None")
         self._obj.mask = value
         return self
 
@@ -272,7 +272,7 @@ class DataFilterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max' is required and cannot be None")
         self._obj.max = value
         return self
 
@@ -286,7 +286,7 @@ class DataFilterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min' is required and cannot be None")
         self._obj.min = value
         return self
 
@@ -300,7 +300,7 @@ class DataFilterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'offset' is required and cannot be None")
         self._obj.offset = value
         return self
 
@@ -314,7 +314,7 @@ class DataFilterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'period' is required and cannot be None")
         self._obj.period = value
         return self
 
@@ -328,7 +328,7 @@ class DataFilterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'x' is required and cannot be None")
         self._obj.x = value
         return self
 

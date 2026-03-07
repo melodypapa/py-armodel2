@@ -152,7 +152,7 @@ class DiagnosticJ1939SwMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'node' is required and cannot be None")
         self._obj.node = value
         return self
 
@@ -166,7 +166,7 @@ class DiagnosticJ1939SwMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_component_prototype_composition_instance_ref' is required and cannot be None")
         self._obj.sw_component_prototype_composition_instance_ref = value
         return self
 

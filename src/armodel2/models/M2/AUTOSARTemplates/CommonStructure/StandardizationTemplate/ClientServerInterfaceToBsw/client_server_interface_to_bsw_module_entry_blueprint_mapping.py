@@ -172,7 +172,7 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder(ARElementBuil
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'client_server' is required and cannot be None")
         self._obj.client_server = value
         return self
 
@@ -186,7 +186,7 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMappingBuilder(ARElementBuil
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'operation' is required and cannot be None")
         self._obj.operation = value
         return self
 

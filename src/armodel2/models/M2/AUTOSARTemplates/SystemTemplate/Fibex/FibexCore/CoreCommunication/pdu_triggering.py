@@ -247,7 +247,7 @@ class PduTriggeringBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_pdu' is required and cannot be None")
         self._obj.i_pdu = value
         return self
 
@@ -273,7 +273,7 @@ class PduTriggeringBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sec_oc_crypto_service' is required and cannot be None")
         self._obj.sec_oc_crypto_service = value
         return self
 

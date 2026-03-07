@@ -196,7 +196,7 @@ class BusMirrorChannelMappingBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mirroring' is required and cannot be None")
         self._obj.mirroring = value
         return self
 
@@ -210,7 +210,7 @@ class BusMirrorChannelMappingBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'source_channel' is required and cannot be None")
         self._obj.source_channel = value
         return self
 
@@ -224,7 +224,7 @@ class BusMirrorChannelMappingBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_channel' is required and cannot be None")
         self._obj.target_channel = value
         return self
 

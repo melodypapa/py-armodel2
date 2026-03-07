@@ -262,11 +262,11 @@ class DataPrototypeInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
-    def with_contexts(self, items: list[any (SwComponent)]) -> "DataPrototypeInSystemInstanceRefBuilder":
+    def with_contexts(self, items: list[Any]) -> "DataPrototypeInSystemInstanceRefBuilder":
         """Set contexts list attribute.
 
         Args:
@@ -278,7 +278,7 @@ class DataPrototypeInSystemInstanceRefBuilder(BuilderBase):
         self._obj.contexts = list(items) if items else []
         return self
 
-    def with_context_datas(self, items: list[any (ApplicationComposite)]) -> "DataPrototypeInSystemInstanceRefBuilder":
+    def with_context_datas(self, items: list[Any]) -> "DataPrototypeInSystemInstanceRefBuilder":
         """Set context_datas list attribute.
 
         Args:
@@ -300,7 +300,7 @@ class DataPrototypeInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_port' is required and cannot be None")
         self._obj.context_port = value
         return self
 
@@ -314,7 +314,7 @@ class DataPrototypeInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_root' is required and cannot be None")
         self._obj.context_root = value
         return self
 
@@ -328,7 +328,7 @@ class DataPrototypeInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'root_data_prototype' is required and cannot be None")
         self._obj.root_data_prototype = value
         return self
 
@@ -342,12 +342,12 @@ class DataPrototypeInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_data' is required and cannot be None")
         self._obj.target_data = value
         return self
 
 
-    def add_context(self, item: any (SwComponent)) -> "DataPrototypeInSystemInstanceRefBuilder":
+    def add_context(self, item: Any) -> "DataPrototypeInSystemInstanceRefBuilder":
         """Add a single item to contexts list.
 
         Args:
@@ -368,7 +368,7 @@ class DataPrototypeInSystemInstanceRefBuilder(BuilderBase):
         self._obj.contexts = []
         return self
 
-    def add_context_data(self, item: any (ApplicationComposite)) -> "DataPrototypeInSystemInstanceRefBuilder":
+    def add_context_data(self, item: Any) -> "DataPrototypeInSystemInstanceRefBuilder":
         """Add a single item to context_datas list.
 
         Args:

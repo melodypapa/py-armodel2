@@ -151,7 +151,7 @@ class CycleRepetitionBuilder(CommunicationCycleBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base_cycle' is required and cannot be None")
         self._obj.base_cycle = value
         return self
 
@@ -165,7 +165,7 @@ class CycleRepetitionBuilder(CommunicationCycleBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cycle_repetition' is required and cannot be None")
         self._obj.cycle_repetition = value
         return self
 

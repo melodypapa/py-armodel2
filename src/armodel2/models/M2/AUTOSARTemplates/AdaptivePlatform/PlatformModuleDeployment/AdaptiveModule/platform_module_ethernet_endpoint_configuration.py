@@ -172,7 +172,7 @@ class PlatformModuleEthernetEndpointConfigurationBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'communication_connector' is required and cannot be None")
         self._obj.communication_connector = value
         return self
 
@@ -186,7 +186,7 @@ class PlatformModuleEthernetEndpointConfigurationBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ipv4_multicast_ip_address' is required and cannot be None")
         self._obj.ipv4_multicast_ip_address = value
         return self
 
@@ -200,7 +200,7 @@ class PlatformModuleEthernetEndpointConfigurationBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ipv6_multicast_ip_address' is required and cannot be None")
         self._obj.ipv6_multicast_ip_address = value
         return self
 

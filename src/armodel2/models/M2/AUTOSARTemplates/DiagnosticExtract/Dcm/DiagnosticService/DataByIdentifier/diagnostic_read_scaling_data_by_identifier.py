@@ -117,7 +117,7 @@ class DiagnosticReadScalingDataByIdentifierBuilder(DiagnosticDataByIdentifierBui
         self._obj: DiagnosticReadScalingDataByIdentifier = DiagnosticReadScalingDataByIdentifier()
 
 
-    def with_read_scaling(self, value: Optional[any (DiagnosticReadScaling)]) -> "DiagnosticReadScalingDataByIdentifierBuilder":
+    def with_read_scaling(self, value: Optional[Any]) -> "DiagnosticReadScalingDataByIdentifierBuilder":
         """Set read_scaling attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticReadScalingDataByIdentifierBuilder(DiagnosticDataByIdentifierBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'read_scaling' is required and cannot be None")
         self._obj.read_scaling = value
         return self
 

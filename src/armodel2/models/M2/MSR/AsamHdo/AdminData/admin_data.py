@@ -203,7 +203,7 @@ class AdminDataBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'language' is required and cannot be None")
         self._obj.language = value
         return self
 
@@ -229,7 +229,7 @@ class AdminDataBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'used_languages' is required and cannot be None")
         self._obj.used_languages = value
         return self
 

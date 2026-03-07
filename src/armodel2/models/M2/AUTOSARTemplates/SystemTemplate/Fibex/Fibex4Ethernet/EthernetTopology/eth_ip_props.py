@@ -151,7 +151,7 @@ class EthIpPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ipv4_props' is required and cannot be None")
         self._obj.ipv4_props = value
         return self
 
@@ -165,7 +165,7 @@ class EthIpPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ipv6_props' is required and cannot be None")
         self._obj.ipv6_props = value
         return self
 

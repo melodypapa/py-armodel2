@@ -171,7 +171,7 @@ class CouplingPortAsynchronousTrafficShaperBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'committed_burst' is required and cannot be None")
         self._obj.committed_burst = value
         return self
 
@@ -185,7 +185,7 @@ class CouplingPortAsynchronousTrafficShaperBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'committed' is required and cannot be None")
         self._obj.committed = value
         return self
 
@@ -199,7 +199,7 @@ class CouplingPortAsynchronousTrafficShaperBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'traffic_shaper' is required and cannot be None")
         self._obj.traffic_shaper = value
         return self
 

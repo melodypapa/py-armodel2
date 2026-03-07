@@ -130,7 +130,7 @@ class TDEventSLLETPortBuilder(TDEventSLLETBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'port' is required and cannot be None")
         self._obj.port = value
         return self
 

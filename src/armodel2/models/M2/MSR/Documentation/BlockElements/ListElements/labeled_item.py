@@ -176,7 +176,7 @@ class LabeledItemBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'help_entry' is required and cannot be None")
         self._obj.help_entry = value
         return self
 
@@ -190,7 +190,7 @@ class LabeledItemBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'item_contents' is required and cannot be None")
         self._obj.item_contents = value
         return self
 
@@ -204,7 +204,7 @@ class LabeledItemBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'item_label' is required and cannot be None")
         self._obj.item_label = value
         return self
 

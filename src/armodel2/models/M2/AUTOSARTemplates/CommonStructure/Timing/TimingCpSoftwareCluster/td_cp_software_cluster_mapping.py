@@ -176,7 +176,7 @@ class TDCpSoftwareClusterMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'provider' is required and cannot be None")
         self._obj.provider = value
         return self
 
@@ -202,7 +202,7 @@ class TDCpSoftwareClusterMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timing' is required and cannot be None")
         self._obj.timing = value
         return self
 

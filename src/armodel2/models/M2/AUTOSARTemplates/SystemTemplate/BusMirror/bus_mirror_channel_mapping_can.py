@@ -244,7 +244,7 @@ class BusMirrorChannelMappingCanBuilder(BusMirrorChannelMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mirror_source_lin' is required and cannot be None")
         self._obj.mirror_source_lin = value
         return self
 
@@ -258,7 +258,7 @@ class BusMirrorChannelMappingCanBuilder(BusMirrorChannelMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mirror_status' is required and cannot be None")
         self._obj.mirror_status = value
         return self
 

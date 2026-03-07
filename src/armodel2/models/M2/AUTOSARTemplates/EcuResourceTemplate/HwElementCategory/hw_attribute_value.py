@@ -190,7 +190,7 @@ class HwAttributeValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'annotation' is required and cannot be None")
         self._obj.annotation = value
         return self
 
@@ -204,7 +204,7 @@ class HwAttributeValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'hw_attribute_def' is required and cannot be None")
         self._obj.hw_attribute_def = value
         return self
 
@@ -218,7 +218,7 @@ class HwAttributeValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'v' is required and cannot be None")
         self._obj.v = value
         return self
 
@@ -232,7 +232,7 @@ class HwAttributeValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vt' is required and cannot be None")
         self._obj.vt = value
         return self
 

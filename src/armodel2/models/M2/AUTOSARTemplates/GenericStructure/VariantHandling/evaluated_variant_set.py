@@ -157,7 +157,7 @@ class EvaluatedVariantSetBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'approval_status' is required and cannot be None")
         self._obj.approval_status = value
         return self
 

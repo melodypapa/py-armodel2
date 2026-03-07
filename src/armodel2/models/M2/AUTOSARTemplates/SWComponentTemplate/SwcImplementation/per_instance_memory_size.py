@@ -167,7 +167,7 @@ class PerInstanceMemorySizeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'alignment' is required and cannot be None")
         self._obj.alignment = value
         return self
 
@@ -181,7 +181,7 @@ class PerInstanceMemorySizeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'per_instance_memory_memory' is required and cannot be None")
         self._obj.per_instance_memory_memory = value
         return self
 
@@ -195,7 +195,7 @@ class PerInstanceMemorySizeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'size' is required and cannot be None")
         self._obj.size = value
         return self
 

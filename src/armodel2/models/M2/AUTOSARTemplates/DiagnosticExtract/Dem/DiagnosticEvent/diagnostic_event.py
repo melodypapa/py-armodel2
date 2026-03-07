@@ -285,7 +285,7 @@ class DiagnosticEventBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'associated' is required and cannot be None")
         self._obj.associated = value
         return self
 
@@ -299,7 +299,7 @@ class DiagnosticEventBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'clear_event' is required and cannot be None")
         self._obj.clear_event = value
         return self
 
@@ -313,11 +313,11 @@ class DiagnosticEventBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'confirmation' is required and cannot be None")
         self._obj.confirmation = value
         return self
 
-    def with_connecteds(self, items: list[any (DiagnosticConnected)]) -> "DiagnosticEventBuilder":
+    def with_connecteds(self, items: list[Any]) -> "DiagnosticEventBuilder":
         """Set connecteds list attribute.
 
         Args:
@@ -339,7 +339,7 @@ class DiagnosticEventBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_clear' is required and cannot be None")
         self._obj.event_clear = value
         return self
 
@@ -353,7 +353,7 @@ class DiagnosticEventBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_kind' is required and cannot be None")
         self._obj.event_kind = value
         return self
 
@@ -367,7 +367,7 @@ class DiagnosticEventBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'prestorage' is required and cannot be None")
         self._obj.prestorage = value
         return self
 
@@ -381,7 +381,7 @@ class DiagnosticEventBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'prestored' is required and cannot be None")
         self._obj.prestored = value
         return self
 
@@ -395,12 +395,12 @@ class DiagnosticEventBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'recoverable_in' is required and cannot be None")
         self._obj.recoverable_in = value
         return self
 
 
-    def add_connected(self, item: any (DiagnosticConnected)) -> "DiagnosticEventBuilder":
+    def add_connected(self, item: Any) -> "DiagnosticEventBuilder":
         """Add a single item to connecteds list.
 
         Args:

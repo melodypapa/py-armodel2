@@ -166,7 +166,7 @@ class SegmentPositionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'segment_byte' is required and cannot be None")
         self._obj.segment_byte = value
         return self
 
@@ -180,7 +180,7 @@ class SegmentPositionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'segment_length' is required and cannot be None")
         self._obj.segment_length = value
         return self
 
@@ -194,7 +194,7 @@ class SegmentPositionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'segment' is required and cannot be None")
         self._obj.segment = value
         return self
 

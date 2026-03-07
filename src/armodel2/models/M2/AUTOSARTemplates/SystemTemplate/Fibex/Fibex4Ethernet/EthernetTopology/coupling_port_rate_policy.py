@@ -208,7 +208,7 @@ class CouplingPortRatePolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_length' is required and cannot be None")
         self._obj.data_length = value
         return self
 
@@ -222,7 +222,7 @@ class CouplingPortRatePolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'policy_action' is required and cannot be None")
         self._obj.policy_action = value
         return self
 
@@ -236,7 +236,7 @@ class CouplingPortRatePolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
@@ -250,11 +250,11 @@ class CouplingPortRatePolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_interval' is required and cannot be None")
         self._obj.time_interval = value
         return self
 
-    def with_v_lans(self, items: list[any (EthernetPhysical)]) -> "CouplingPortRatePolicyBuilder":
+    def with_v_lans(self, items: list[Any]) -> "CouplingPortRatePolicyBuilder":
         """Set v_lans list attribute.
 
         Args:
@@ -267,7 +267,7 @@ class CouplingPortRatePolicyBuilder(BuilderBase):
         return self
 
 
-    def add_v_lan(self, item: any (EthernetPhysical)) -> "CouplingPortRatePolicyBuilder":
+    def add_v_lan(self, item: Any) -> "CouplingPortRatePolicyBuilder":
         """Add a single item to v_lans list.
 
         Args:

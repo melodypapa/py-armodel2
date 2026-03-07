@@ -200,7 +200,7 @@ class EcucContainerValueBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'definition' is required and cannot be None")
         self._obj.definition = value
         return self
 
@@ -216,7 +216,7 @@ class EcucContainerValueBuilder(IdentifiableBuilder):
         self._obj.parameter_values = list(items) if items else []
         return self
 
-    def with_reference_values(self, items: list[any (EcucAbstractReference)]) -> "EcucContainerValueBuilder":
+    def with_reference_values(self, items: list[Any]) -> "EcucContainerValueBuilder":
         """Set reference_values list attribute.
 
         Args:
@@ -262,7 +262,7 @@ class EcucContainerValueBuilder(IdentifiableBuilder):
         self._obj.parameter_values = []
         return self
 
-    def add_reference_value(self, item: any (EcucAbstractReference)) -> "EcucContainerValueBuilder":
+    def add_reference_value(self, item: Any) -> "EcucContainerValueBuilder":
         """Add a single item to reference_values list.
 
         Args:

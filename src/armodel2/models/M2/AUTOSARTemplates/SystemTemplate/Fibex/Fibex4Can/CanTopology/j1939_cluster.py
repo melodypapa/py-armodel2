@@ -205,7 +205,7 @@ class J1939ClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network_id' is required and cannot be None")
         self._obj.network_id = value
         return self
 
@@ -219,7 +219,7 @@ class J1939ClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request2_support' is required and cannot be None")
         self._obj.request2_support = value
         return self
 
@@ -233,7 +233,7 @@ class J1939ClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'uses_address' is required and cannot be None")
         self._obj.uses_address = value
         return self
 

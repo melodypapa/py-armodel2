@@ -205,7 +205,7 @@ class SOMEIPTransformationPropsBuilder(TransformationPropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'alignment' is required and cannot be None")
         self._obj.alignment = value
         return self
 
@@ -219,7 +219,7 @@ class SOMEIPTransformationPropsBuilder(TransformationPropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'size_of_array' is required and cannot be None")
         self._obj.size_of_array = value
         return self
 
@@ -233,7 +233,7 @@ class SOMEIPTransformationPropsBuilder(TransformationPropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'size_of_string' is required and cannot be None")
         self._obj.size_of_string = value
         return self
 
@@ -247,7 +247,7 @@ class SOMEIPTransformationPropsBuilder(TransformationPropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'size_of_struct' is required and cannot be None")
         self._obj.size_of_struct = value
         return self
 
@@ -261,7 +261,7 @@ class SOMEIPTransformationPropsBuilder(TransformationPropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'size_of_union' is required and cannot be None")
         self._obj.size_of_union = value
         return self
 

@@ -117,7 +117,7 @@ class DiagnosticRequestUploadBuilder(DiagnosticMemoryAddressableRangeAccessBuild
         self._obj: DiagnosticRequestUpload = DiagnosticRequestUpload()
 
 
-    def with_request_upload(self, value: Optional[any (DiagnosticRequest)]) -> "DiagnosticRequestUploadBuilder":
+    def with_request_upload(self, value: Optional[Any]) -> "DiagnosticRequestUploadBuilder":
         """Set request_upload attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticRequestUploadBuilder(DiagnosticMemoryAddressableRangeAccessBuild
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request_upload' is required and cannot be None")
         self._obj.request_upload = value
         return self
 

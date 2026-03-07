@@ -151,7 +151,7 @@ class EthTcpIpPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_props' is required and cannot be None")
         self._obj.tcp_props = value
         return self
 
@@ -165,7 +165,7 @@ class EthTcpIpPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'udp_props' is required and cannot be None")
         self._obj.udp_props = value
         return self
 

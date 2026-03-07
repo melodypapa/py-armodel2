@@ -319,7 +319,7 @@ class LinSlaveBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'assign_nad' is required and cannot be None")
         self._obj.assign_nad = value
         return self
 
@@ -333,7 +333,7 @@ class LinSlaveBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'configured_nad' is required and cannot be None")
         self._obj.configured_nad = value
         return self
 
@@ -347,7 +347,7 @@ class LinSlaveBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'function_id' is required and cannot be None")
         self._obj.function_id = value
         return self
 
@@ -361,7 +361,7 @@ class LinSlaveBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initial_nad' is required and cannot be None")
         self._obj.initial_nad = value
         return self
 
@@ -375,7 +375,7 @@ class LinSlaveBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lin_error_response' is required and cannot be None")
         self._obj.lin_error_response = value
         return self
 
@@ -389,7 +389,7 @@ class LinSlaveBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nas_timeout' is required and cannot be None")
         self._obj.nas_timeout = value
         return self
 
@@ -403,7 +403,7 @@ class LinSlaveBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'supplier_id' is required and cannot be None")
         self._obj.supplier_id = value
         return self
 
@@ -417,7 +417,7 @@ class LinSlaveBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'variant_id' is required and cannot be None")
         self._obj.variant_id = value
         return self
 

@@ -189,7 +189,7 @@ class MacSecCryptoAlgoConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'capability' is required and cannot be None")
         self._obj.capability = value
         return self
 
@@ -203,7 +203,7 @@ class MacSecCryptoAlgoConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cipher_suite' is required and cannot be None")
         self._obj.cipher_suite = value
         return self
 
@@ -217,7 +217,7 @@ class MacSecCryptoAlgoConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'confidentiality' is required and cannot be None")
         self._obj.confidentiality = value
         return self
 
@@ -231,7 +231,7 @@ class MacSecCryptoAlgoConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'replay_protection' is required and cannot be None")
         self._obj.replay_protection = value
         return self
 

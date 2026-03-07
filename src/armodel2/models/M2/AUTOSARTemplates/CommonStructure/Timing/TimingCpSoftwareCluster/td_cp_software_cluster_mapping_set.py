@@ -114,7 +114,7 @@ class TDCpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         self._obj: TDCpSoftwareClusterMappingSet = TDCpSoftwareClusterMappingSet()
 
 
-    def with_td_cp_softwares(self, items: list[any (TDCpSoftwareCluster)]) -> "TDCpSoftwareClusterMappingSetBuilder":
+    def with_td_cp_softwares(self, items: list[Any]) -> "TDCpSoftwareClusterMappingSetBuilder":
         """Set td_cp_softwares list attribute.
 
         Args:
@@ -127,7 +127,7 @@ class TDCpSoftwareClusterMappingSetBuilder(ARElementBuilder):
         return self
 
 
-    def add_td_cp_software(self, item: any (TDCpSoftwareCluster)) -> "TDCpSoftwareClusterMappingSetBuilder":
+    def add_td_cp_software(self, item: Any) -> "TDCpSoftwareClusterMappingSetBuilder":
         """Add a single item to td_cp_softwares list.
 
         Args:

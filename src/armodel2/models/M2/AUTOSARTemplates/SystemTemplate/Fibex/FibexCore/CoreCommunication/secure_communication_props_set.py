@@ -131,7 +131,7 @@ class SecureCommunicationPropsSetBuilder(FibexElementBuilder):
         self._obj: SecureCommunicationPropsSet = SecureCommunicationPropsSet()
 
 
-    def with_authentications(self, items: list[any (SecureCommunication)]) -> "SecureCommunicationPropsSetBuilder":
+    def with_authentications(self, items: list[Any]) -> "SecureCommunicationPropsSetBuilder":
         """Set authentications list attribute.
 
         Args:
@@ -143,7 +143,7 @@ class SecureCommunicationPropsSetBuilder(FibexElementBuilder):
         self._obj.authentications = list(items) if items else []
         return self
 
-    def with_freshness_propses(self, items: list[any (SecureCommunication)]) -> "SecureCommunicationPropsSetBuilder":
+    def with_freshness_propses(self, items: list[Any]) -> "SecureCommunicationPropsSetBuilder":
         """Set freshness_propses list attribute.
 
         Args:
@@ -156,7 +156,7 @@ class SecureCommunicationPropsSetBuilder(FibexElementBuilder):
         return self
 
 
-    def add_authentication(self, item: any (SecureCommunication)) -> "SecureCommunicationPropsSetBuilder":
+    def add_authentication(self, item: Any) -> "SecureCommunicationPropsSetBuilder":
         """Add a single item to authentications list.
 
         Args:
@@ -177,7 +177,7 @@ class SecureCommunicationPropsSetBuilder(FibexElementBuilder):
         self._obj.authentications = []
         return self
 
-    def add_freshness_props(self, item: any (SecureCommunication)) -> "SecureCommunicationPropsSetBuilder":
+    def add_freshness_props(self, item: Any) -> "SecureCommunicationPropsSetBuilder":
         """Add a single item to freshness_propses list.
 
         Args:

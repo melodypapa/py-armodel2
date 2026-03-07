@@ -149,7 +149,7 @@ class RptServicePointBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_id' is required and cannot be None")
         self._obj.service_id = value
         return self
 
@@ -163,7 +163,7 @@ class RptServicePointBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'symbol' is required and cannot be None")
         self._obj.symbol = value
         return self
 

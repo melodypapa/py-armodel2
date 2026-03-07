@@ -225,7 +225,7 @@ class XdocBuilder(SingleLanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'date' is required and cannot be None")
         self._obj.date = value
         return self
 
@@ -239,7 +239,7 @@ class XdocBuilder(SingleLanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'number' is required and cannot be None")
         self._obj.number = value
         return self
 
@@ -253,7 +253,7 @@ class XdocBuilder(SingleLanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'position' is required and cannot be None")
         self._obj.position = value
         return self
 
@@ -267,7 +267,7 @@ class XdocBuilder(SingleLanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'publisher' is required and cannot be None")
         self._obj.publisher = value
         return self
 
@@ -281,11 +281,11 @@ class XdocBuilder(SingleLanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'state' is required and cannot be None")
         self._obj.state = value
         return self
 
-    def with_url(self, value: Optional[any (Url)]) -> "XdocBuilder":
+    def with_url(self, value: Optional[Any]) -> "XdocBuilder":
         """Set url attribute.
 
         Args:
@@ -295,7 +295,7 @@ class XdocBuilder(SingleLanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'url' is required and cannot be None")
         self._obj.url = value
         return self
 

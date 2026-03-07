@@ -530,7 +530,7 @@ class SwcInternalBehaviorBuilder(InternalBehaviorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'handle_termination_and_restart' is required and cannot be None")
         self._obj.handle_termination_and_restart = value
         return self
 
@@ -664,7 +664,7 @@ class SwcInternalBehaviorBuilder(InternalBehaviorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'supports_multiple_instantiation' is required and cannot be None")
         self._obj.supports_multiple_instantiation = value
         return self
 

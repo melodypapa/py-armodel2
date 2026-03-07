@@ -151,7 +151,7 @@ class GlobalTimeCanMasterBuilder(GlobalTimeMasterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_secured' is required and cannot be None")
         self._obj.crc_secured = value
         return self
 
@@ -165,7 +165,7 @@ class GlobalTimeCanMasterBuilder(GlobalTimeMasterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sync' is required and cannot be None")
         self._obj.sync = value
         return self
 

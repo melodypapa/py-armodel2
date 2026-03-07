@@ -170,7 +170,7 @@ class MultiplexedIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dynamic_part' is required and cannot be None")
         self._obj.dynamic_part = value
         return self
 
@@ -184,7 +184,7 @@ class MultiplexedIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'selector_field' is required and cannot be None")
         self._obj.selector_field = value
         return self
 
@@ -198,7 +198,7 @@ class MultiplexedIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'unused_bit' is required and cannot be None")
         self._obj.unused_bit = value
         return self
 

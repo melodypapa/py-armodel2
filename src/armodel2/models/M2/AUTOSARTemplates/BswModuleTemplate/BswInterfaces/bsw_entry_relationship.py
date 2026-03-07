@@ -165,7 +165,7 @@ class BswEntryRelationshipBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_entry' is required and cannot be None")
         self._obj.bsw_entry = value
         return self
 
@@ -179,7 +179,7 @@ class BswEntryRelationshipBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'from' is required and cannot be None")
         setattr(self._obj, 'from', value)
         return self
 
@@ -193,7 +193,7 @@ class BswEntryRelationshipBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'to' is required and cannot be None")
         self._obj.to = value
         return self
 

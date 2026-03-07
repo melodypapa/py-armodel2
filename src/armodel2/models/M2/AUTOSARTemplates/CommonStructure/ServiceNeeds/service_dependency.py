@@ -176,7 +176,7 @@ class ServiceDependencyBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'assigned_data' is required and cannot be None")
         self._obj.assigned_data = value
         return self
 
@@ -190,7 +190,7 @@ class ServiceDependencyBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic' is required and cannot be None")
         self._obj.diagnostic = value
         return self
 
@@ -204,7 +204,7 @@ class ServiceDependencyBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'symbolic_name_props' is required and cannot be None")
         self._obj.symbolic_name_props = value
         return self
 

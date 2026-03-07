@@ -250,7 +250,7 @@ class EcucModuleConfigurationValuesBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'definition' is required and cannot be None")
         self._obj.definition = value
         return self
 
@@ -264,11 +264,11 @@ class EcucModuleConfigurationValuesBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecuc_def_edition' is required and cannot be None")
         self._obj.ecuc_def_edition = value
         return self
 
-    def with_implementation(self, value: Optional[any (EcucConfiguration)]) -> "EcucModuleConfigurationValuesBuilder":
+    def with_implementation(self, value: Optional[Any]) -> "EcucModuleConfigurationValuesBuilder":
         """Set implementation attribute.
 
         Args:
@@ -278,7 +278,7 @@ class EcucModuleConfigurationValuesBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'implementation' is required and cannot be None")
         self._obj.implementation = value
         return self
 
@@ -292,7 +292,7 @@ class EcucModuleConfigurationValuesBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'module' is required and cannot be None")
         self._obj.module = value
         return self
 
@@ -306,7 +306,7 @@ class EcucModuleConfigurationValuesBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'post_build_variant' is required and cannot be None")
         self._obj.post_build_variant = value
         return self
 

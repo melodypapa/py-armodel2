@@ -167,7 +167,7 @@ class DiagnosticTestRoutineIdentifierBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'id' is required and cannot be None")
         self._obj.id = value
         return self
 
@@ -181,7 +181,7 @@ class DiagnosticTestRoutineIdentifierBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request_data' is required and cannot be None")
         self._obj.request_data = value
         return self
 
@@ -195,7 +195,7 @@ class DiagnosticTestRoutineIdentifierBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'response_data' is required and cannot be None")
         self._obj.response_data = value
         return self
 

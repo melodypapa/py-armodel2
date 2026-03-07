@@ -130,7 +130,7 @@ class ModeInterfaceMappingBuilder(PortInterfaceMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode_mapping' is required and cannot be None")
         self._obj.mode_mapping = value
         return self
 

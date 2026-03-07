@@ -209,7 +209,7 @@ class AbstractServiceInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'major_version' is required and cannot be None")
         self._obj.major_version = value
         return self
 
@@ -223,7 +223,7 @@ class AbstractServiceInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'method' is required and cannot be None")
         self._obj.method = value
         return self
 

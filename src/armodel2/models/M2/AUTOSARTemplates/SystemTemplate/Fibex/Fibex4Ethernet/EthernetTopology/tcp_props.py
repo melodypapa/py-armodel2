@@ -393,7 +393,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_congestion' is required and cannot be None")
         self._obj.tcp_congestion = value
         return self
 
@@ -407,11 +407,11 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_delayed_ack' is required and cannot be None")
         self._obj.tcp_delayed_ack = value
         return self
 
-    def with_tcp_fast_recovery(self, value: Optional[any (BooleanRecovery)]) -> "TcpPropsBuilder":
+    def with_tcp_fast_recovery(self, value: Optional[Any]) -> "TcpPropsBuilder":
         """Set tcp_fast_recovery attribute.
 
         Args:
@@ -421,7 +421,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_fast_recovery' is required and cannot be None")
         self._obj.tcp_fast_recovery = value
         return self
 
@@ -435,7 +435,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_fast' is required and cannot be None")
         self._obj.tcp_fast = value
         return self
 
@@ -449,7 +449,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_fin' is required and cannot be None")
         self._obj.tcp_fin = value
         return self
 
@@ -463,7 +463,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_keep_alive' is required and cannot be None")
         self._obj.tcp_keep_alive = value
         return self
 
@@ -477,7 +477,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_max_rtx' is required and cannot be None")
         self._obj.tcp_max_rtx = value
         return self
 
@@ -491,7 +491,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_msl' is required and cannot be None")
         self._obj.tcp_msl = value
         return self
 
@@ -505,7 +505,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_nagle' is required and cannot be None")
         self._obj.tcp_nagle = value
         return self
 
@@ -519,7 +519,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_receive_window_max' is required and cannot be None")
         self._obj.tcp_receive_window_max = value
         return self
 
@@ -533,7 +533,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp' is required and cannot be None")
         self._obj.tcp = value
         return self
 
@@ -547,7 +547,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_slow_start' is required and cannot be None")
         self._obj.tcp_slow_start = value
         return self
 
@@ -561,7 +561,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_syn_max_rtx' is required and cannot be None")
         self._obj.tcp_syn_max_rtx = value
         return self
 
@@ -575,7 +575,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_syn_received' is required and cannot be None")
         self._obj.tcp_syn_received = value
         return self
 
@@ -589,7 +589,7 @@ class TcpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ttl' is required and cannot be None")
         self._obj.tcp_ttl = value
         return self
 

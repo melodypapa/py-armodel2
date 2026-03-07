@@ -155,7 +155,7 @@ class DiagnosticOperationCyclePortMappingBuilder(DiagnosticSwMappingBuilder):
         self._obj: DiagnosticOperationCyclePortMapping = DiagnosticOperationCyclePortMapping()
 
 
-    def with_operation_cycle(self, value: Optional[any (DiagnosticOperation)]) -> "DiagnosticOperationCyclePortMappingBuilder":
+    def with_operation_cycle(self, value: Optional[Any]) -> "DiagnosticOperationCyclePortMappingBuilder":
         """Set operation_cycle attribute.
 
         Args:
@@ -165,11 +165,11 @@ class DiagnosticOperationCyclePortMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'operation_cycle' is required and cannot be None")
         self._obj.operation_cycle = value
         return self
 
-    def with_swc_flat_service(self, value: Optional[any (SwcService)]) -> "DiagnosticOperationCyclePortMappingBuilder":
+    def with_swc_flat_service(self, value: Optional[Any]) -> "DiagnosticOperationCyclePortMappingBuilder":
         """Set swc_flat_service attribute.
 
         Args:
@@ -179,11 +179,11 @@ class DiagnosticOperationCyclePortMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'swc_flat_service' is required and cannot be None")
         self._obj.swc_flat_service = value
         return self
 
-    def with_swc_service(self, value: Optional[any (SwcService)]) -> "DiagnosticOperationCyclePortMappingBuilder":
+    def with_swc_service(self, value: Optional[Any]) -> "DiagnosticOperationCyclePortMappingBuilder":
         """Set swc_service attribute.
 
         Args:
@@ -193,7 +193,7 @@ class DiagnosticOperationCyclePortMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'swc_service' is required and cannot be None")
         self._obj.swc_service = value
         return self
 

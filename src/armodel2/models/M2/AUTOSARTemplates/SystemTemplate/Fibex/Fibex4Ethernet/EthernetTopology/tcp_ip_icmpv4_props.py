@@ -145,7 +145,7 @@ class TcpIpIcmpv4PropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_icmp' is required and cannot be None")
         self._obj.tcp_ip_icmp = value
         return self
 
@@ -159,7 +159,7 @@ class TcpIpIcmpv4PropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_icmp_v4_ttl' is required and cannot be None")
         self._obj.tcp_ip_icmp_v4_ttl = value
         return self
 

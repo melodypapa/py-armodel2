@@ -158,7 +158,7 @@ class RuleBasedValueContBuilder(BuilderBase):
         self._obj: RuleBasedValueCont = RuleBasedValueCont()
 
 
-    def with_rule_based(self, value: Optional[any (RuleBasedValue)]) -> "RuleBasedValueContBuilder":
+    def with_rule_based(self, value: Optional[Any]) -> "RuleBasedValueContBuilder":
         """Set rule_based attribute.
 
         Args:
@@ -168,7 +168,7 @@ class RuleBasedValueContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rule_based' is required and cannot be None")
         self._obj.rule_based = value
         return self
 
@@ -182,7 +182,7 @@ class RuleBasedValueContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'v' is required and cannot be None")
         self._obj.v = value
         return self
 
@@ -196,7 +196,7 @@ class RuleBasedValueContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'unit' is required and cannot be None")
         self._obj.unit = value
         return self
 

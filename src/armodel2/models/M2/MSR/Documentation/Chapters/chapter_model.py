@@ -238,7 +238,7 @@ class ChapterModelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'chapter' is required and cannot be None")
         self._obj.chapter = value
         return self
 
@@ -252,7 +252,7 @@ class ChapterModelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'msr_query_chapter' is required and cannot be None")
         self._obj.msr_query_chapter = value
         return self
 
@@ -266,7 +266,7 @@ class ChapterModelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'prms' is required and cannot be None")
         self._obj.prms = value
         return self
 
@@ -280,7 +280,7 @@ class ChapterModelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'topic_content_or_msr' is required and cannot be None")
         self._obj.topic_content_or_msr = value
         return self
 
@@ -294,7 +294,7 @@ class ChapterModelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'msr_query' is required and cannot be None")
         self._obj.msr_query = value
         return self
 
@@ -308,7 +308,7 @@ class ChapterModelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'topic1' is required and cannot be None")
         self._obj.topic1 = value
         return self
 

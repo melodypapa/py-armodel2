@@ -164,7 +164,7 @@ class TransmissionComSpecPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_update' is required and cannot be None")
         self._obj.data_update = value
         return self
 
@@ -178,11 +178,11 @@ class TransmissionComSpecPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum_send' is required and cannot be None")
         self._obj.minimum_send = value
         return self
 
-    def with_transmission(self, value: Optional[any (TransmissionMode)]) -> "TransmissionComSpecPropsBuilder":
+    def with_transmission(self, value: Optional[Any]) -> "TransmissionComSpecPropsBuilder":
         """Set transmission attribute.
 
         Args:
@@ -192,7 +192,7 @@ class TransmissionComSpecPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transmission' is required and cannot be None")
         self._obj.transmission = value
         return self
 

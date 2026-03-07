@@ -220,7 +220,7 @@ class TlsCryptoServiceMappingBuilder(CryptoServiceMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'use_client' is required and cannot be None")
         self._obj.use_client = value
         return self
 
@@ -234,7 +234,7 @@ class TlsCryptoServiceMappingBuilder(CryptoServiceMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'use_security' is required and cannot be None")
         self._obj.use_security = value
         return self
 

@@ -168,7 +168,7 @@ class SomeipTpChannelBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'burst_size' is required and cannot be None")
         self._obj.burst_size = value
         return self
 
@@ -182,7 +182,7 @@ class SomeipTpChannelBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rx_timeout_time' is required and cannot be None")
         self._obj.rx_timeout_time = value
         return self
 
@@ -196,7 +196,7 @@ class SomeipTpChannelBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'separation_time' is required and cannot be None")
         self._obj.separation_time = value
         return self
 

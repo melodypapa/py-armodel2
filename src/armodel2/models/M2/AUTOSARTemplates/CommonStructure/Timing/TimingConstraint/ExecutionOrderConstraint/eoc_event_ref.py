@@ -195,11 +195,11 @@ class EOCEventRefBuilder(EOCExecutableEntityRefAbstractBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_module' is required and cannot be None")
         self._obj.bsw_module = value
         return self
 
-    def with_component(self, value: Optional[any (SwComponent)]) -> "EOCEventRefBuilder":
+    def with_component(self, value: Optional[Any]) -> "EOCEventRefBuilder":
         """Set component attribute.
 
         Args:
@@ -209,7 +209,7 @@ class EOCEventRefBuilder(EOCExecutableEntityRefAbstractBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'component' is required and cannot be None")
         self._obj.component = value
         return self
 
@@ -223,11 +223,11 @@ class EOCEventRefBuilder(EOCExecutableEntityRefAbstractBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event' is required and cannot be None")
         self._obj.event = value
         return self
 
-    def with_successors(self, items: list[any (EOCExecutableEntity)]) -> "EOCEventRefBuilder":
+    def with_successors(self, items: list[Any]) -> "EOCEventRefBuilder":
         """Set successors list attribute.
 
         Args:
@@ -240,7 +240,7 @@ class EOCEventRefBuilder(EOCExecutableEntityRefAbstractBuilder):
         return self
 
 
-    def add_successor(self, item: any (EOCExecutableEntity)) -> "EOCEventRefBuilder":
+    def add_successor(self, item: Any) -> "EOCEventRefBuilder":
         """Add a single item to successors list.
 
         Args:

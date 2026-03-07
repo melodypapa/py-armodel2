@@ -187,7 +187,7 @@ class DltConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dlt_ecu' is required and cannot be None")
         self._obj.dlt_ecu = value
         return self
 
@@ -213,7 +213,7 @@ class DltConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'session_id' is required and cannot be None")
         self._obj.session_id = value
         return self
 
@@ -227,7 +227,7 @@ class DltConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timestamp' is required and cannot be None")
         self._obj.timestamp = value
         return self
 

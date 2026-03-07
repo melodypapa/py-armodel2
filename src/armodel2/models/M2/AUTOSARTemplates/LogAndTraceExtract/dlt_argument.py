@@ -242,7 +242,7 @@ class DltArgumentBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'length' is required and cannot be None")
         self._obj.length = value
         return self
 
@@ -256,7 +256,7 @@ class DltArgumentBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network' is required and cannot be None")
         self._obj.network = value
         return self
 
@@ -270,7 +270,7 @@ class DltArgumentBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'optional' is required and cannot be None")
         self._obj.optional = value
         return self
 
@@ -284,7 +284,7 @@ class DltArgumentBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'predefined_text' is required and cannot be None")
         self._obj.predefined_text = value
         return self
 
@@ -298,7 +298,7 @@ class DltArgumentBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'variable_length' is required and cannot be None")
         self._obj.variable_length = value
         return self
 

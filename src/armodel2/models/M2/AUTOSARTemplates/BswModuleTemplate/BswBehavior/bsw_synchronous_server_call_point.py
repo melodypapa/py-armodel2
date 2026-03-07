@@ -152,7 +152,7 @@ class BswSynchronousServerCallPointBuilder(BswModuleCallPointBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'called_entry' is required and cannot be None")
         self._obj.called_entry = value
         return self
 
@@ -166,7 +166,7 @@ class BswSynchronousServerCallPointBuilder(BswModuleCallPointBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'called_from_within_exclusive_area' is required and cannot be None")
         self._obj.called_from_within_exclusive_area = value
         return self
 

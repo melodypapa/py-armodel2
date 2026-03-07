@@ -243,7 +243,7 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'comm_controller' is required and cannot be None")
         self._obj.comm_controller = value
         return self
 
@@ -257,7 +257,7 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'create_ecu_wakeup_source' is required and cannot be None")
         self._obj.create_ecu_wakeup_source = value
         return self
 
@@ -271,7 +271,7 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dynamic_pnc_to_channel_mapping_enabled' is required and cannot be None")
         self._obj.dynamic_pnc_to_channel_mapping_enabled = value
         return self
 
@@ -309,7 +309,7 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pnc_gateway_type' is required and cannot be None")
         self._obj.pnc_gateway_type = value
         return self
 

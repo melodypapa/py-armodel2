@@ -167,7 +167,7 @@ class BswTriggerDirectImplementationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cat2_isr' is required and cannot be None")
         self._obj.cat2_isr = value
         return self
 
@@ -181,7 +181,7 @@ class BswTriggerDirectImplementationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mastered_trigger' is required and cannot be None")
         self._obj.mastered_trigger = value
         return self
 
@@ -195,7 +195,7 @@ class BswTriggerDirectImplementationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'task' is required and cannot be None")
         self._obj.task = value
         return self
 

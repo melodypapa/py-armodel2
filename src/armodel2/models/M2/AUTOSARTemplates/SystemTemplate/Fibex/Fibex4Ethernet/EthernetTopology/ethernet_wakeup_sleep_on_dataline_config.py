@@ -245,7 +245,7 @@ class EthernetWakeupSleepOnDatalineConfigBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sleep_mode' is required and cannot be None")
         self._obj.sleep_mode = value
         return self
 
@@ -259,7 +259,7 @@ class EthernetWakeupSleepOnDatalineConfigBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sleep_repetition' is required and cannot be None")
         self._obj.sleep_repetition = value
         return self
 
@@ -273,7 +273,7 @@ class EthernetWakeupSleepOnDatalineConfigBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sleep' is required and cannot be None")
         self._obj.sleep = value
         return self
 
@@ -287,7 +287,7 @@ class EthernetWakeupSleepOnDatalineConfigBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wakeup_forward' is required and cannot be None")
         self._obj.wakeup_forward = value
         return self
 
@@ -301,7 +301,7 @@ class EthernetWakeupSleepOnDatalineConfigBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wakeup_local' is required and cannot be None")
         self._obj.wakeup_local = value
         return self
 
@@ -315,7 +315,7 @@ class EthernetWakeupSleepOnDatalineConfigBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wakeup_remote' is required and cannot be None")
         self._obj.wakeup_remote = value
         return self
 
@@ -329,7 +329,7 @@ class EthernetWakeupSleepOnDatalineConfigBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wakeup' is required and cannot be None")
         self._obj.wakeup = value
         return self
 

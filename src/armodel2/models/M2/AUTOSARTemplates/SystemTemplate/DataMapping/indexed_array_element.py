@@ -154,7 +154,7 @@ class IndexedArrayElementBuilder(BuilderBase):
         self._obj: IndexedArrayElement = IndexedArrayElement()
 
 
-    def with_application_array(self, value: Optional[any (ApplicationArray)]) -> "IndexedArrayElementBuilder":
+    def with_application_array(self, value: Optional[Any]) -> "IndexedArrayElementBuilder":
         """Set application_array attribute.
 
         Args:
@@ -164,11 +164,11 @@ class IndexedArrayElementBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'application_array' is required and cannot be None")
         self._obj.application_array = value
         return self
 
-    def with_implementation(self, value: Optional[any (ImplementationData)]) -> "IndexedArrayElementBuilder":
+    def with_implementation(self, value: Optional[Any]) -> "IndexedArrayElementBuilder":
         """Set implementation attribute.
 
         Args:
@@ -178,7 +178,7 @@ class IndexedArrayElementBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'implementation' is required and cannot be None")
         self._obj.implementation = value
         return self
 
@@ -192,7 +192,7 @@ class IndexedArrayElementBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'index' is required and cannot be None")
         self._obj.index = value
         return self
 

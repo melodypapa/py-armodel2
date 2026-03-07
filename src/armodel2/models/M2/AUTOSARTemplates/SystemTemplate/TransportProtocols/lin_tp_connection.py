@@ -299,7 +299,7 @@ class LinTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_pdu' is required and cannot be None")
         self._obj.data_pdu = value
         return self
 
@@ -313,7 +313,7 @@ class LinTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'flow_control' is required and cannot be None")
         self._obj.flow_control = value
         return self
 
@@ -327,7 +327,7 @@ class LinTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lin_tp_n_sdu' is required and cannot be None")
         self._obj.lin_tp_n_sdu = value
         return self
 
@@ -341,7 +341,7 @@ class LinTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'multicast' is required and cannot be None")
         self._obj.multicast = value
         return self
 
@@ -367,7 +367,7 @@ class LinTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_as' is required and cannot be None")
         self._obj.timeout_as = value
         return self
 
@@ -381,7 +381,7 @@ class LinTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_cr' is required and cannot be None")
         self._obj.timeout_cr = value
         return self
 
@@ -395,7 +395,7 @@ class LinTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_cs' is required and cannot be None")
         self._obj.timeout_cs = value
         return self
 
@@ -409,7 +409,7 @@ class LinTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transmitter' is required and cannot be None")
         self._obj.transmitter = value
         return self
 

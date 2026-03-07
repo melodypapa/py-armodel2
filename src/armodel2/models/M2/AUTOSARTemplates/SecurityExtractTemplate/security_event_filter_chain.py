@@ -182,7 +182,7 @@ class SecurityEventFilterChainBuilder(IdsCommonElementBuilder):
         self._obj: SecurityEventFilterChain = SecurityEventFilterChain()
 
 
-    def with_aggregation(self, value: Optional[any (SecurityEvent)]) -> "SecurityEventFilterChainBuilder":
+    def with_aggregation(self, value: Optional[Any]) -> "SecurityEventFilterChainBuilder":
         """Set aggregation attribute.
 
         Args:
@@ -192,7 +192,7 @@ class SecurityEventFilterChainBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'aggregation' is required and cannot be None")
         self._obj.aggregation = value
         return self
 
@@ -206,7 +206,7 @@ class SecurityEventFilterChainBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'one_every_n' is required and cannot be None")
         self._obj.one_every_n = value
         return self
 
@@ -220,7 +220,7 @@ class SecurityEventFilterChainBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'state' is required and cannot be None")
         self._obj.state = value
         return self
 
@@ -234,7 +234,7 @@ class SecurityEventFilterChainBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'threshold' is required and cannot be None")
         self._obj.threshold = value
         return self
 

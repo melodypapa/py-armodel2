@@ -363,7 +363,7 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'array_size' is required and cannot be None")
         self._obj.array_size = value
         return self
 
@@ -377,7 +377,7 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'display_identifier' is required and cannot be None")
         self._obj.display_identifier = value
         return self
 
@@ -391,7 +391,7 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'flat_map_entry' is required and cannot be None")
         self._obj.flat_map_entry = value
         return self
 
@@ -405,7 +405,7 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'instance_in' is required and cannot be None")
         self._obj.instance_in = value
         return self
 
@@ -419,7 +419,7 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mc_data_access_details' is required and cannot be None")
         self._obj.mc_data_access_details = value
         return self
 
@@ -445,7 +445,7 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'resulting' is required and cannot be None")
         self._obj.resulting = value
         return self
 
@@ -459,7 +459,7 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'resulting_rpt_sw' is required and cannot be None")
         self._obj.resulting_rpt_sw = value
         return self
 
@@ -473,7 +473,7 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'role' is required and cannot be None")
         self._obj.role = value
         return self
 
@@ -487,7 +487,7 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_impl_policy' is required and cannot be None")
         self._obj.rpt_impl_policy = value
         return self
 
@@ -513,7 +513,7 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'symbol' is required and cannot be None")
         self._obj.symbol = value
         return self
 

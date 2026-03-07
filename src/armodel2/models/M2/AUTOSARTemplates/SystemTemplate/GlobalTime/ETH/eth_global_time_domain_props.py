@@ -229,7 +229,7 @@ class EthGlobalTimeDomainPropsBuilder(AbstractGlobalTimeDomainPropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_flags' is required and cannot be None")
         self._obj.crc_flags = value
         return self
 
@@ -243,7 +243,7 @@ class EthGlobalTimeDomainPropsBuilder(AbstractGlobalTimeDomainPropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'destination' is required and cannot be None")
         self._obj.destination = value
         return self
 
@@ -257,11 +257,11 @@ class EthGlobalTimeDomainPropsBuilder(AbstractGlobalTimeDomainPropsBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'fup_data_id_list' is required and cannot be None")
         self._obj.fup_data_id_list = value
         return self
 
-    def with_manageds(self, items: list[any (EthGlobalTime)]) -> "EthGlobalTimeDomainPropsBuilder":
+    def with_manageds(self, items: list[Any]) -> "EthGlobalTimeDomainPropsBuilder":
         """Set manageds list attribute.
 
         Args:
@@ -283,7 +283,7 @@ class EthGlobalTimeDomainPropsBuilder(AbstractGlobalTimeDomainPropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'message' is required and cannot be None")
         self._obj.message = value
         return self
 
@@ -297,12 +297,12 @@ class EthGlobalTimeDomainPropsBuilder(AbstractGlobalTimeDomainPropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vlan_priority' is required and cannot be None")
         self._obj.vlan_priority = value
         return self
 
 
-    def add_managed(self, item: any (EthGlobalTime)) -> "EthGlobalTimeDomainPropsBuilder":
+    def add_managed(self, item: Any) -> "EthGlobalTimeDomainPropsBuilder":
         """Add a single item to manageds list.
 
         Args:

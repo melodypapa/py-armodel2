@@ -115,7 +115,7 @@ class DiagnosticAuthenticationBuilder(DiagnosticServiceInstanceBuilder):
         self._obj: DiagnosticAuthentication = DiagnosticAuthentication()
 
 
-    def with_authentication(self, value: Optional[any (Diagnostic)]) -> "DiagnosticAuthenticationBuilder":
+    def with_authentication(self, value: Optional[Any]) -> "DiagnosticAuthenticationBuilder":
         """Set authentication attribute.
 
         Args:
@@ -125,7 +125,7 @@ class DiagnosticAuthenticationBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'authentication' is required and cannot be None")
         self._obj.authentication = value
         return self
 

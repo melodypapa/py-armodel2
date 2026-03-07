@@ -194,7 +194,7 @@ class TimingDescriptionEventChainBuilder(TimingDescriptionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_pipelining' is required and cannot be None")
         self._obj.is_pipelining = value
         return self
 
@@ -208,7 +208,7 @@ class TimingDescriptionEventChainBuilder(TimingDescriptionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'response' is required and cannot be None")
         self._obj.response = value
         return self
 
@@ -234,7 +234,7 @@ class TimingDescriptionEventChainBuilder(TimingDescriptionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'stimulus' is required and cannot be None")
         self._obj.stimulus = value
         return self
 

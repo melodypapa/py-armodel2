@@ -416,7 +416,7 @@ class ConsumedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'auto_require' is required and cannot be None")
         self._obj.auto_require = value
         return self
 
@@ -454,7 +454,7 @@ class ConsumedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_multicast' is required and cannot be None")
         self._obj.event_multicast = value
         return self
 
@@ -468,7 +468,7 @@ class ConsumedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'instance' is required and cannot be None")
         self._obj.instance = value
         return self
 
@@ -482,7 +482,7 @@ class ConsumedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'local_unicast' is required and cannot be None")
         self._obj.local_unicast = value
         return self
 
@@ -496,11 +496,11 @@ class ConsumedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minor_version' is required and cannot be None")
         self._obj.minor_version = value
         return self
 
-    def with_provided_service(self, value: Optional[any (ProvidedService)]) -> "ConsumedServiceInstanceBuilder":
+    def with_provided_service(self, value: Optional[Any]) -> "ConsumedServiceInstanceBuilder":
         """Set provided_service attribute.
 
         Args:
@@ -510,7 +510,7 @@ class ConsumedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'provided_service' is required and cannot be None")
         self._obj.provided_service = value
         return self
 
@@ -524,11 +524,11 @@ class ConsumedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'remote_unicast' is required and cannot be None")
         self._obj.remote_unicast = value
         return self
 
-    def with_sd_client_config(self, value: Optional[any (SdClientConfig)]) -> "ConsumedServiceInstanceBuilder":
+    def with_sd_client_config(self, value: Optional[Any]) -> "ConsumedServiceInstanceBuilder":
         """Set sd_client_config attribute.
 
         Args:
@@ -538,7 +538,7 @@ class ConsumedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sd_client_config' is required and cannot be None")
         self._obj.sd_client_config = value
         return self
 
@@ -552,7 +552,7 @@ class ConsumedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sd_client_timer' is required and cannot be None")
         self._obj.sd_client_timer = value
         return self
 
@@ -566,11 +566,11 @@ class ConsumedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_identifier' is required and cannot be None")
         self._obj.service_identifier = value
         return self
 
-    def with_version_driven(self, value: Optional[any (ServiceVersion)]) -> "ConsumedServiceInstanceBuilder":
+    def with_version_driven(self, value: Optional[Any]) -> "ConsumedServiceInstanceBuilder":
         """Set version_driven attribute.
 
         Args:
@@ -580,7 +580,7 @@ class ConsumedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'version_driven' is required and cannot be None")
         self._obj.version_driven = value
         return self
 

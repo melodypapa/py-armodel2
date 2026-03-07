@@ -168,7 +168,7 @@ class DiagnosticContributionSetBuilder(ARElementBuilder):
         self._obj: DiagnosticContributionSet = DiagnosticContributionSet()
 
 
-    def with_common(self, value: Optional[any (DiagnosticCommon)]) -> "DiagnosticContributionSetBuilder":
+    def with_common(self, value: Optional[Any]) -> "DiagnosticContributionSetBuilder":
         """Set common attribute.
 
         Args:
@@ -178,11 +178,11 @@ class DiagnosticContributionSetBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'common' is required and cannot be None")
         self._obj.common = value
         return self
 
-    def with_elements(self, items: list[any (DiagnosticCommon)]) -> "DiagnosticContributionSetBuilder":
+    def with_elements(self, items: list[Any]) -> "DiagnosticContributionSetBuilder":
         """Set elements list attribute.
 
         Args:
@@ -207,7 +207,7 @@ class DiagnosticContributionSetBuilder(ARElementBuilder):
         return self
 
 
-    def add_element(self, item: any (DiagnosticCommon)) -> "DiagnosticContributionSetBuilder":
+    def add_element(self, item: Any) -> "DiagnosticContributionSetBuilder":
         """Add a single item to elements list.
 
         Args:

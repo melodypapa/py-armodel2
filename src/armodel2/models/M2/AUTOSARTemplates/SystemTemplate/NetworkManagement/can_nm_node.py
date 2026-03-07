@@ -187,7 +187,7 @@ class CanNmNodeBuilder(NmNodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'all_nm_messages' is required and cannot be None")
         self._obj.all_nm_messages = value
         return self
 
@@ -201,7 +201,7 @@ class CanNmNodeBuilder(NmNodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_car_wake_up' is required and cannot be None")
         self._obj.nm_car_wake_up = value
         return self
 
@@ -215,7 +215,7 @@ class CanNmNodeBuilder(NmNodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_msg_cycle' is required and cannot be None")
         self._obj.nm_msg_cycle = value
         return self
 
@@ -229,7 +229,7 @@ class CanNmNodeBuilder(NmNodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_msg' is required and cannot be None")
         self._obj.nm_msg = value
         return self
 

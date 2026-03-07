@@ -147,7 +147,7 @@ class InfrastructureServicesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'do_ip_entity' is required and cannot be None")
         self._obj.do_ip_entity = value
         return self
 
@@ -161,7 +161,7 @@ class InfrastructureServicesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time' is required and cannot be None")
         self._obj.time = value
         return self
 

@@ -191,7 +191,7 @@ class TimeSyncServerConfigurationBuilder(ReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
@@ -205,7 +205,7 @@ class TimeSyncServerConfigurationBuilder(ReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sync_interval' is required and cannot be None")
         self._obj.sync_interval = value
         return self
 
@@ -219,7 +219,7 @@ class TimeSyncServerConfigurationBuilder(ReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_sync_server_identifier' is required and cannot be None")
         self._obj.time_sync_server_identifier = value
         return self
 
@@ -233,7 +233,7 @@ class TimeSyncServerConfigurationBuilder(ReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_sync' is required and cannot be None")
         self._obj.time_sync = value
         return self
 

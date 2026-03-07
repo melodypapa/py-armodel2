@@ -253,7 +253,7 @@ class SignalServiceTranslationPropsBuilder(IdentifiableBuilder):
         self._obj.control_provideds = list(items) if items else []
         return self
 
-    def with_service_control(self, value: Optional[any (SignalService)]) -> "SignalServiceTranslationPropsBuilder":
+    def with_service_control(self, value: Optional[Any]) -> "SignalServiceTranslationPropsBuilder":
         """Set service_control attribute.
 
         Args:
@@ -263,11 +263,11 @@ class SignalServiceTranslationPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_control' is required and cannot be None")
         self._obj.service_control = value
         return self
 
-    def with_signal_service_event_propses(self, items: list[any (SignalService)]) -> "SignalServiceTranslationPropsBuilder":
+    def with_signal_service_event_propses(self, items: list[Any]) -> "SignalServiceTranslationPropsBuilder":
         """Set signal_service_event_propses list attribute.
 
         Args:
@@ -343,7 +343,7 @@ class SignalServiceTranslationPropsBuilder(IdentifiableBuilder):
         self._obj.control_provideds = []
         return self
 
-    def add_signal_service_event_props(self, item: any (SignalService)) -> "SignalServiceTranslationPropsBuilder":
+    def add_signal_service_event_props(self, item: Any) -> "SignalServiceTranslationPropsBuilder":
         """Add a single item to signal_service_event_propses list.
 
         Args:

@@ -298,11 +298,11 @@ class FirewallRuleBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bucket_size' is required and cannot be None")
         self._obj.bucket_size = value
         return self
 
-    def with_data_link_layer_rule(self, value: Optional[any (DataLinkLayerRule)]) -> "FirewallRuleBuilder":
+    def with_data_link_layer_rule(self, value: Optional[Any]) -> "FirewallRuleBuilder":
         """Set data_link_layer_rule attribute.
 
         Args:
@@ -312,11 +312,11 @@ class FirewallRuleBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_link_layer_rule' is required and cannot be None")
         self._obj.data_link_layer_rule = value
         return self
 
-    def with_dds_rule(self, value: Optional[any (DdsRule)]) -> "FirewallRuleBuilder":
+    def with_dds_rule(self, value: Optional[Any]) -> "FirewallRuleBuilder":
         """Set dds_rule attribute.
 
         Args:
@@ -326,11 +326,11 @@ class FirewallRuleBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dds_rule' is required and cannot be None")
         self._obj.dds_rule = value
         return self
 
-    def with_do_ip_rule(self, value: Optional[any (DoIpRule)]) -> "FirewallRuleBuilder":
+    def with_do_ip_rule(self, value: Optional[Any]) -> "FirewallRuleBuilder":
         """Set do_ip_rule attribute.
 
         Args:
@@ -340,11 +340,11 @@ class FirewallRuleBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'do_ip_rule' is required and cannot be None")
         self._obj.do_ip_rule = value
         return self
 
-    def with_network_layer_rule(self, value: Optional[any (NetworkLayerRule)]) -> "FirewallRuleBuilder":
+    def with_network_layer_rule(self, value: Optional[Any]) -> "FirewallRuleBuilder":
         """Set network_layer_rule attribute.
 
         Args:
@@ -354,11 +354,11 @@ class FirewallRuleBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network_layer_rule' is required and cannot be None")
         self._obj.network_layer_rule = value
         return self
 
-    def with_payload_byte_patterns(self, items: list[any (PayloadBytePattern)]) -> "FirewallRuleBuilder":
+    def with_payload_byte_patterns(self, items: list[Any]) -> "FirewallRuleBuilder":
         """Set payload_byte_patterns list attribute.
 
         Args:
@@ -380,11 +380,11 @@ class FirewallRuleBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'refill_amount' is required and cannot be None")
         self._obj.refill_amount = value
         return self
 
-    def with_someip_rule(self, value: Optional[any (SomeipProtocolRule)]) -> "FirewallRuleBuilder":
+    def with_someip_rule(self, value: Optional[Any]) -> "FirewallRuleBuilder":
         """Set someip_rule attribute.
 
         Args:
@@ -394,11 +394,11 @@ class FirewallRuleBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'someip_rule' is required and cannot be None")
         self._obj.someip_rule = value
         return self
 
-    def with_someip_sd_rule(self, value: Optional[any (SomeipSdRule)]) -> "FirewallRuleBuilder":
+    def with_someip_sd_rule(self, value: Optional[Any]) -> "FirewallRuleBuilder":
         """Set someip_sd_rule attribute.
 
         Args:
@@ -408,11 +408,11 @@ class FirewallRuleBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'someip_sd_rule' is required and cannot be None")
         self._obj.someip_sd_rule = value
         return self
 
-    def with_transport_layer_rule(self, value: Optional[any (TransportLayerRule)]) -> "FirewallRuleBuilder":
+    def with_transport_layer_rule(self, value: Optional[Any]) -> "FirewallRuleBuilder":
         """Set transport_layer_rule attribute.
 
         Args:
@@ -422,12 +422,12 @@ class FirewallRuleBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transport_layer_rule' is required and cannot be None")
         self._obj.transport_layer_rule = value
         return self
 
 
-    def add_payload_byte_pattern(self, item: any (PayloadBytePattern)) -> "FirewallRuleBuilder":
+    def add_payload_byte_pattern(self, item: Any) -> "FirewallRuleBuilder":
         """Add a single item to payload_byte_patterns list.
 
         Args:

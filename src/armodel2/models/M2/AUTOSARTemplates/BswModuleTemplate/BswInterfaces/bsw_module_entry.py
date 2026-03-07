@@ -338,7 +338,7 @@ class BswModuleEntryBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_id' is required and cannot be None")
         self._obj.service_id = value
         return self
 
@@ -364,7 +364,7 @@ class BswModuleEntryBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_entry_kind' is required and cannot be None")
         self._obj.bsw_entry_kind = value
         return self
 
@@ -378,7 +378,7 @@ class BswModuleEntryBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_reentrant' is required and cannot be None")
         self._obj.is_reentrant = value
         return self
 
@@ -392,7 +392,7 @@ class BswModuleEntryBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_synchronous' is required and cannot be None")
         self._obj.is_synchronous = value
         return self
 
@@ -406,7 +406,7 @@ class BswModuleEntryBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'call_type' is required and cannot be None")
         self._obj.call_type = value
         return self
 
@@ -420,7 +420,7 @@ class BswModuleEntryBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'execution_context' is required and cannot be None")
         self._obj.execution_context = value
         return self
 
@@ -434,7 +434,7 @@ class BswModuleEntryBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'function_prototype_emitter' is required and cannot be None")
         self._obj.function_prototype_emitter = value
         return self
 
@@ -448,7 +448,7 @@ class BswModuleEntryBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'return_type' is required and cannot be None")
         self._obj.return_type = value
         return self
 
@@ -462,7 +462,7 @@ class BswModuleEntryBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'role' is required and cannot be None")
         self._obj.role = value
         return self
 
@@ -476,7 +476,7 @@ class BswModuleEntryBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_service_impl_policy' is required and cannot be None")
         self._obj.sw_service_impl_policy = value
         return self
 

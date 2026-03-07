@@ -150,7 +150,7 @@ class ModeTransitionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'entered_mode' is required and cannot be None")
         self._obj.entered_mode = value
         return self
 
@@ -164,7 +164,7 @@ class ModeTransitionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'exited_mode' is required and cannot be None")
         self._obj.exited_mode = value
         return self
 

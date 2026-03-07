@@ -213,7 +213,7 @@ class MlFormulaBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'formula_caption' is required and cannot be None")
         self._obj.formula_caption = value
         return self
 
@@ -227,7 +227,7 @@ class MlFormulaBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'generic_math' is required and cannot be None")
         self._obj.generic_math = value
         return self
 
@@ -253,7 +253,7 @@ class MlFormulaBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tex_math' is required and cannot be None")
         self._obj.tex_math = value
         return self
 
@@ -267,7 +267,7 @@ class MlFormulaBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'verbatim' is required and cannot be None")
         self._obj.verbatim = value
         return self
 

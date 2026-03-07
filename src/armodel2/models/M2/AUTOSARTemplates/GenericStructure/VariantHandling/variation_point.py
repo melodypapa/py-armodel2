@@ -152,7 +152,7 @@ class VariationPointBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'blueprint' is required and cannot be None")
         self._obj.blueprint = value
         return self
 
@@ -166,7 +166,7 @@ class VariationPointBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_syscond' is required and cannot be None")
         self._obj.sw_syscond = value
         return self
 

@@ -137,7 +137,7 @@ class SwSystemconstBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_data_def' is required and cannot be None")
         self._obj.sw_data_def = value
         return self
 

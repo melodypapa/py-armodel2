@@ -148,7 +148,7 @@ class TDLETZoneClockBuilder(TimingClockBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'accuracy_ext' is required and cannot be None")
         self._obj.accuracy_ext = value
         return self
 
@@ -162,7 +162,7 @@ class TDLETZoneClockBuilder(TimingClockBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'accuracy_int' is required and cannot be None")
         self._obj.accuracy_int = value
         return self
 

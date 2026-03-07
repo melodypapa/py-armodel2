@@ -151,7 +151,7 @@ class IPduTimingBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum_delay' is required and cannot be None")
         self._obj.minimum_delay = value
         return self
 
@@ -165,7 +165,7 @@ class IPduTimingBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transmission_mode_declaration' is required and cannot be None")
         self._obj.transmission_mode_declaration = value
         return self
 

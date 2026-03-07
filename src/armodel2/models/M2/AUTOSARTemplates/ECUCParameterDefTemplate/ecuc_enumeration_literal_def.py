@@ -138,7 +138,7 @@ class EcucEnumerationLiteralDefBuilder(IdentifiableBuilder):
         self._obj: EcucEnumerationLiteralDef = EcucEnumerationLiteralDef()
 
 
-    def with_ecuc_cond(self, value: Optional[any (EcucCondition)]) -> "EcucEnumerationLiteralDefBuilder":
+    def with_ecuc_cond(self, value: Optional[Any]) -> "EcucEnumerationLiteralDefBuilder":
         """Set ecuc_cond attribute.
 
         Args:
@@ -148,7 +148,7 @@ class EcucEnumerationLiteralDefBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecuc_cond' is required and cannot be None")
         self._obj.ecuc_cond = value
         return self
 
@@ -162,7 +162,7 @@ class EcucEnumerationLiteralDefBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'origin' is required and cannot be None")
         self._obj.origin = value
         return self
 

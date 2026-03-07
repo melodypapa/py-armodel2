@@ -205,7 +205,7 @@ class SwValuesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'v' is required and cannot be None")
         self._obj.v = value
         return self
 
@@ -219,7 +219,7 @@ class SwValuesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vf' is required and cannot be None")
         self._obj.vf = value
         return self
 
@@ -233,7 +233,7 @@ class SwValuesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vg' is required and cannot be None")
         self._obj.vg = value
         return self
 
@@ -247,7 +247,7 @@ class SwValuesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vt' is required and cannot be None")
         self._obj.vt = value
         return self
 
@@ -261,7 +261,7 @@ class SwValuesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vtf' is required and cannot be None")
         self._obj.vtf = value
         return self
 

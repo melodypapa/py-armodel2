@@ -174,7 +174,7 @@ class GlobalTimeGatewayBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'host' is required and cannot be None")
         self._obj.host = value
         return self
 
@@ -188,7 +188,7 @@ class GlobalTimeGatewayBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'master' is required and cannot be None")
         self._obj.master = value
         return self
 
@@ -202,7 +202,7 @@ class GlobalTimeGatewayBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'slave' is required and cannot be None")
         self._obj.slave = value
         return self
 

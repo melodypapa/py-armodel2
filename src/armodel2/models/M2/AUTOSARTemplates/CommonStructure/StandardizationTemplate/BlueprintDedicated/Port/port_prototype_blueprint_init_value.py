@@ -177,7 +177,7 @@ class PortPrototypeBlueprintInitValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_prototype' is required and cannot be None")
         self._obj.data_prototype = value
         return self
 
@@ -191,7 +191,7 @@ class PortPrototypeBlueprintInitValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'value' is required and cannot be None")
         self._obj.value = value
         return self
 

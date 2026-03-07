@@ -214,7 +214,7 @@ class SwcBswMappingBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_behavior' is required and cannot be None")
         self._obj.bsw_behavior = value
         return self
 
@@ -240,7 +240,7 @@ class SwcBswMappingBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'swc_behavior' is required and cannot be None")
         self._obj.swc_behavior = value
         return self
 

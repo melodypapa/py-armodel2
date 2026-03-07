@@ -189,7 +189,7 @@ class TextTableMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bitfield_text_table' is required and cannot be None")
         self._obj.bitfield_text_table = value
         return self
 
@@ -203,7 +203,7 @@ class TextTableMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'identical' is required and cannot be None")
         self._obj.identical = value
         return self
 
@@ -217,7 +217,7 @@ class TextTableMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mapping' is required and cannot be None")
         self._obj.mapping = value
         return self
 

@@ -390,11 +390,11 @@ class DiagnosticCommonPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'authentication' is required and cannot be None")
         self._obj.authentication = value
         return self
 
-    def with_debounces(self, items: list[any (DiagnosticDebounce)]) -> "DiagnosticCommonPropsBuilder":
+    def with_debounces(self, items: list[Any]) -> "DiagnosticCommonPropsBuilder":
         """Set debounces list attribute.
 
         Args:
@@ -416,7 +416,7 @@ class DiagnosticCommonPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default' is required and cannot be None")
         self._obj.default = value
         return self
 
@@ -430,7 +430,7 @@ class DiagnosticCommonPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event' is required and cannot be None")
         self._obj.event = value
         return self
 
@@ -444,7 +444,7 @@ class DiagnosticCommonPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of' is required and cannot be None")
         self._obj.max_number_of = value
         return self
 
@@ -458,7 +458,7 @@ class DiagnosticCommonPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'occurrence' is required and cannot be None")
         self._obj.occurrence = value
         return self
 
@@ -472,7 +472,7 @@ class DiagnosticCommonPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'reset_confirmed' is required and cannot be None")
         self._obj.reset_confirmed = value
         return self
 
@@ -486,7 +486,7 @@ class DiagnosticCommonPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'reset_pending_bit' is required and cannot be None")
         self._obj.reset_pending_bit = value
         return self
 
@@ -500,7 +500,7 @@ class DiagnosticCommonPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'response_on_all' is required and cannot be None")
         self._obj.response_on_all = value
         return self
 
@@ -514,7 +514,7 @@ class DiagnosticCommonPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'response_on' is required and cannot be None")
         self._obj.response_on = value
         return self
 
@@ -528,12 +528,12 @@ class DiagnosticCommonPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'type_of_event' is required and cannot be None")
         self._obj.type_of_event = value
         return self
 
 
-    def add_debounce(self, item: any (DiagnosticDebounce)) -> "DiagnosticCommonPropsBuilder":
+    def add_debounce(self, item: Any) -> "DiagnosticCommonPropsBuilder":
         """Add a single item to debounces list.
 
         Args:

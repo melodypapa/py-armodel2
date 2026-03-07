@@ -250,7 +250,7 @@ class CouplingPortDetailsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ethernet_priority' is required and cannot be None")
         self._obj.ethernet_priority = value
         return self
 
@@ -264,7 +264,7 @@ class CouplingPortDetailsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ethernet_traffic' is required and cannot be None")
         self._obj.ethernet_traffic = value
         return self
 
@@ -278,7 +278,7 @@ class CouplingPortDetailsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'global_time_coupling' is required and cannot be None")
         self._obj.global_time_coupling = value
         return self
 
@@ -292,7 +292,7 @@ class CouplingPortDetailsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'last_egress' is required and cannot be None")
         self._obj.last_egress = value
         return self
 

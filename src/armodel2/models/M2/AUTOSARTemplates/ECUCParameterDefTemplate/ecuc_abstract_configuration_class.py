@@ -142,11 +142,11 @@ class EcucAbstractConfigurationClassBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'config_class' is required and cannot be None")
         self._obj.config_class = value
         return self
 
-    def with_config_variant(self, value: Optional[any (EcucConfiguration)]) -> "EcucAbstractConfigurationClassBuilder":
+    def with_config_variant(self, value: Optional[Any]) -> "EcucAbstractConfigurationClassBuilder":
         """Set config_variant attribute.
 
         Args:
@@ -156,7 +156,7 @@ class EcucAbstractConfigurationClassBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'config_variant' is required and cannot be None")
         self._obj.config_variant = value
         return self
 

@@ -145,7 +145,7 @@ class DiagnosticParameterBuilder(DiagnosticAbstractParameterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ident' is required and cannot be None")
         self._obj.ident = value
         return self
 
@@ -159,7 +159,7 @@ class DiagnosticParameterBuilder(DiagnosticAbstractParameterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'support_info' is required and cannot be None")
         self._obj.support_info = value
         return self
 

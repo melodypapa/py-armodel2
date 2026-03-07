@@ -148,7 +148,7 @@ class TransmissionModeConditionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_filter' is required and cannot be None")
         self._obj.data_filter = value
         return self
 
@@ -162,7 +162,7 @@ class TransmissionModeConditionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_signal_in_i_pdu' is required and cannot be None")
         self._obj.i_signal_in_i_pdu = value
         return self
 

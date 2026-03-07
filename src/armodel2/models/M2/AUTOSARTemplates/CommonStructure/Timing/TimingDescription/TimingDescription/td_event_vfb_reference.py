@@ -127,7 +127,7 @@ class TDEventVfbReferenceBuilder(TDEventVfbBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'referenced_td_event_vfb' is required and cannot be None")
         self._obj.referenced_td_event_vfb = value
         return self
 

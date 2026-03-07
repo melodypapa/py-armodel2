@@ -287,7 +287,7 @@ class AclPermissionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'acl_scope' is required and cannot be None")
         self._obj.acl_scope = value
         return self
 

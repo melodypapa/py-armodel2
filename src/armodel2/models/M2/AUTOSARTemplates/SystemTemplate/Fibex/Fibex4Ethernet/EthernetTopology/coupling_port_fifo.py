@@ -167,7 +167,7 @@ class CouplingPortFifoBuilder(CouplingPortStructuralElementBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'assigned_traffic' is required and cannot be None")
         self._obj.assigned_traffic = value
         return self
 
@@ -181,11 +181,11 @@ class CouplingPortFifoBuilder(CouplingPortStructuralElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum_fifo' is required and cannot be None")
         self._obj.minimum_fifo = value
         return self
 
-    def with_shaper(self, value: Optional[any (CouplingPortAbstract)]) -> "CouplingPortFifoBuilder":
+    def with_shaper(self, value: Optional[Any]) -> "CouplingPortFifoBuilder":
         """Set shaper attribute.
 
         Args:
@@ -195,7 +195,7 @@ class CouplingPortFifoBuilder(CouplingPortStructuralElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'shaper' is required and cannot be None")
         self._obj.shaper = value
         return self
 

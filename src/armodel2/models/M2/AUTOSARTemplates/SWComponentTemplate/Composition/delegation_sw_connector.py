@@ -168,7 +168,7 @@ class DelegationSwConnectorBuilder(SwConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'inner_port' is required and cannot be None")
         self._obj.inner_port = value
         return self
 
@@ -182,7 +182,7 @@ class DelegationSwConnectorBuilder(SwConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'outer_port' is required and cannot be None")
         self._obj.outer_port = value
         return self
 

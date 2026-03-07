@@ -245,7 +245,7 @@ class FlexrayNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_car_wake_up' is required and cannot be None")
         self._obj.nm_car_wake_up = value
         return self
 
@@ -259,7 +259,7 @@ class FlexrayNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_data_cycle' is required and cannot be None")
         self._obj.nm_data_cycle = value
         return self
 
@@ -273,7 +273,7 @@ class FlexrayNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_main' is required and cannot be None")
         self._obj.nm_main = value
         return self
 
@@ -287,7 +287,7 @@ class FlexrayNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_remote' is required and cannot be None")
         self._obj.nm_remote = value
         return self
 
@@ -301,7 +301,7 @@ class FlexrayNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_repeat' is required and cannot be None")
         self._obj.nm_repeat = value
         return self
 
@@ -315,7 +315,7 @@ class FlexrayNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_repetition' is required and cannot be None")
         self._obj.nm_repetition = value
         return self
 
@@ -329,7 +329,7 @@ class FlexrayNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_voting_cycle' is required and cannot be None")
         self._obj.nm_voting_cycle = value
         return self
 

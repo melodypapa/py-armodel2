@@ -173,7 +173,7 @@ class ModeInBswModuleDescriptionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
@@ -187,7 +187,7 @@ class ModeInBswModuleDescriptionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_mode_declaration_group' is required and cannot be None")
         self._obj.context_mode_declaration_group = value
         return self
 
@@ -201,7 +201,7 @@ class ModeInBswModuleDescriptionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_mode' is required and cannot be None")
         self._obj.target_mode = value
         return self
 

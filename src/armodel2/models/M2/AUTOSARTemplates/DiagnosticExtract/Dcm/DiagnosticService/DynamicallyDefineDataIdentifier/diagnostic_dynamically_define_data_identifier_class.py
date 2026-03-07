@@ -168,7 +168,7 @@ class DiagnosticDynamicallyDefineDataIdentifierClassBuilder(DiagnosticServiceCla
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'check_per' is required and cannot be None")
         self._obj.check_per = value
         return self
 
@@ -182,11 +182,11 @@ class DiagnosticDynamicallyDefineDataIdentifierClassBuilder(DiagnosticServiceCla
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'configuration' is required and cannot be None")
         self._obj.configuration = value
         return self
 
-    def with_subfunctions(self, items: list[any (DiagnosticDynamically)]) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
+    def with_subfunctions(self, items: list[Any]) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
         """Set subfunctions list attribute.
 
         Args:
@@ -199,7 +199,7 @@ class DiagnosticDynamicallyDefineDataIdentifierClassBuilder(DiagnosticServiceCla
         return self
 
 
-    def add_subfunction(self, item: any (DiagnosticDynamically)) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
+    def add_subfunction(self, item: Any) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
         """Add a single item to subfunctions list.
 
         Args:

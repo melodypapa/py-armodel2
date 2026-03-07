@@ -149,7 +149,7 @@ class DiagnosticMasterToSlaveEventMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'master_event' is required and cannot be None")
         self._obj.master_event = value
         return self
 
@@ -163,7 +163,7 @@ class DiagnosticMasterToSlaveEventMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'slave_event' is required and cannot be None")
         self._obj.slave_event = value
         return self
 

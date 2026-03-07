@@ -169,11 +169,11 @@ class SwcServiceDependencyInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_root_sw' is required and cannot be None")
         self._obj.context_root_sw = value
         return self
 
-    def with_context_sw_prototypes(self, items: list[any (SwComponent)]) -> "SwcServiceDependencyInSystemInstanceRefBuilder":
+    def with_context_sw_prototypes(self, items: list[Any]) -> "SwcServiceDependencyInSystemInstanceRefBuilder":
         """Set context_sw_prototypes list attribute.
 
         Args:
@@ -185,7 +185,7 @@ class SwcServiceDependencyInSystemInstanceRefBuilder(BuilderBase):
         self._obj.context_sw_prototypes = list(items) if items else []
         return self
 
-    def with_target_swc(self, value: Optional[any (SwcService)]) -> "SwcServiceDependencyInSystemInstanceRefBuilder":
+    def with_target_swc(self, value: Optional[Any]) -> "SwcServiceDependencyInSystemInstanceRefBuilder":
         """Set target_swc attribute.
 
         Args:
@@ -195,12 +195,12 @@ class SwcServiceDependencyInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_swc' is required and cannot be None")
         self._obj.target_swc = value
         return self
 
 
-    def add_context_sw_prototype(self, item: any (SwComponent)) -> "SwcServiceDependencyInSystemInstanceRefBuilder":
+    def add_context_sw_prototype(self, item: Any) -> "SwcServiceDependencyInSystemInstanceRefBuilder":
         """Add a single item to context_sw_prototypes list.
 
         Args:

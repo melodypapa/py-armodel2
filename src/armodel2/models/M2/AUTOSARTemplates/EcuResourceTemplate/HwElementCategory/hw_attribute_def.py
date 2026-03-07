@@ -184,7 +184,7 @@ class HwAttributeDefBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_required' is required and cannot be None")
         self._obj.is_required = value
         return self
 
@@ -198,7 +198,7 @@ class HwAttributeDefBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'unit' is required and cannot be None")
         self._obj.unit = value
         return self
 

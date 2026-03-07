@@ -227,7 +227,7 @@ class GlobalTimeSlaveBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'communication_connector' is required and cannot be None")
         self._obj.communication_connector = value
         return self
 
@@ -241,11 +241,11 @@ class GlobalTimeSlaveBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'follow_up_timeout_value' is required and cannot be None")
         self._obj.follow_up_timeout_value = value
         return self
 
-    def with_icv_verification(self, value: Optional[any (GlobalTimeIcv)]) -> "GlobalTimeSlaveBuilder":
+    def with_icv_verification(self, value: Optional[Any]) -> "GlobalTimeSlaveBuilder":
         """Set icv_verification attribute.
 
         Args:
@@ -255,7 +255,7 @@ class GlobalTimeSlaveBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'icv_verification' is required and cannot be None")
         self._obj.icv_verification = value
         return self
 
@@ -269,7 +269,7 @@ class GlobalTimeSlaveBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_leap_future' is required and cannot be None")
         self._obj.time_leap_future = value
         return self
 
@@ -283,7 +283,7 @@ class GlobalTimeSlaveBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_leap' is required and cannot be None")
         self._obj.time_leap = value
         return self
 
@@ -297,7 +297,7 @@ class GlobalTimeSlaveBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_leap_past' is required and cannot be None")
         self._obj.time_leap_past = value
         return self
 

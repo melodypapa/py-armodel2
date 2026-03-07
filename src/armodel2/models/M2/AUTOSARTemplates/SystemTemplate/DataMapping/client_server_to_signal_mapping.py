@@ -171,7 +171,7 @@ class ClientServerToSignalMappingBuilder(DataMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'call_signal' is required and cannot be None")
         self._obj.call_signal = value
         return self
 
@@ -185,7 +185,7 @@ class ClientServerToSignalMappingBuilder(DataMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'client_server' is required and cannot be None")
         self._obj.client_server = value
         return self
 
@@ -199,7 +199,7 @@ class ClientServerToSignalMappingBuilder(DataMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'return_signal' is required and cannot be None")
         self._obj.return_signal = value
         return self
 

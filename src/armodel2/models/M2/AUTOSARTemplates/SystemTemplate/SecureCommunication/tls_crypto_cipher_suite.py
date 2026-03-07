@@ -389,11 +389,11 @@ class TlsCryptoCipherSuiteBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'authentication' is required and cannot be None")
         self._obj.authentication = value
         return self
 
-    def with_certificate(self, value: Optional[any (CryptoService)]) -> "TlsCryptoCipherSuiteBuilder":
+    def with_certificate(self, value: Optional[Any]) -> "TlsCryptoCipherSuiteBuilder":
         """Set certificate attribute.
 
         Args:
@@ -403,7 +403,7 @@ class TlsCryptoCipherSuiteBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'certificate' is required and cannot be None")
         self._obj.certificate = value
         return self
 
@@ -417,7 +417,7 @@ class TlsCryptoCipherSuiteBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cipher_suite_id' is required and cannot be None")
         self._obj.cipher_suite_id = value
         return self
 
@@ -431,7 +431,7 @@ class TlsCryptoCipherSuiteBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cipher_suite' is required and cannot be None")
         self._obj.cipher_suite = value
         return self
 
@@ -457,7 +457,7 @@ class TlsCryptoCipherSuiteBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'encryption' is required and cannot be None")
         self._obj.encryption = value
         return self
 
@@ -483,7 +483,7 @@ class TlsCryptoCipherSuiteBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
@@ -497,7 +497,7 @@ class TlsCryptoCipherSuiteBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'props' is required and cannot be None")
         self._obj.props = value
         return self
 
@@ -511,11 +511,11 @@ class TlsCryptoCipherSuiteBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'psk_identity' is required and cannot be None")
         self._obj.psk_identity = value
         return self
 
-    def with_remote(self, value: Optional[any (CryptoService)]) -> "TlsCryptoCipherSuiteBuilder":
+    def with_remote(self, value: Optional[Any]) -> "TlsCryptoCipherSuiteBuilder":
         """Set remote attribute.
 
         Args:
@@ -525,7 +525,7 @@ class TlsCryptoCipherSuiteBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'remote' is required and cannot be None")
         self._obj.remote = value
         return self
 
@@ -551,7 +551,7 @@ class TlsCryptoCipherSuiteBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'version' is required and cannot be None")
         self._obj.version = value
         return self
 

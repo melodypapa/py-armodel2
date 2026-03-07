@@ -159,7 +159,7 @@ class FMFeatureRelationBuilder(IdentifiableBuilder):
         self._obj.features = list(items) if items else []
         return self
 
-    def with_restriction(self, value: Optional[any (FMConditionByFeatures)]) -> "FMFeatureRelationBuilder":
+    def with_restriction(self, value: Optional[Any]) -> "FMFeatureRelationBuilder":
         """Set restriction attribute.
 
         Args:
@@ -169,7 +169,7 @@ class FMFeatureRelationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'restriction' is required and cannot be None")
         self._obj.restriction = value
         return self
 

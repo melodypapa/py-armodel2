@@ -177,7 +177,7 @@ class DataTransformationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data' is required and cannot be None")
         self._obj.data = value
         return self
 
@@ -191,11 +191,11 @@ class DataTransformationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'execute_despite' is required and cannot be None")
         self._obj.execute_despite = value
         return self
 
-    def with_transformers(self, items: list[any (Transformation)]) -> "DataTransformationBuilder":
+    def with_transformers(self, items: list[Any]) -> "DataTransformationBuilder":
         """Set transformers list attribute.
 
         Args:
@@ -208,7 +208,7 @@ class DataTransformationBuilder(IdentifiableBuilder):
         return self
 
 
-    def add_transformer(self, item: any (Transformation)) -> "DataTransformationBuilder":
+    def add_transformer(self, item: Any) -> "DataTransformationBuilder":
         """Add a single item to transformers list.
 
         Args:

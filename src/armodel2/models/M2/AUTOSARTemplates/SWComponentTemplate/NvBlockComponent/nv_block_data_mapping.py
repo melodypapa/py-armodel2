@@ -205,7 +205,7 @@ class NvBlockDataMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bitfield_text_table' is required and cannot be None")
         self._obj.bitfield_text_table = value
         return self
 
@@ -219,7 +219,7 @@ class NvBlockDataMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nv_ram_block' is required and cannot be None")
         self._obj.nv_ram_block = value
         return self
 
@@ -233,7 +233,7 @@ class NvBlockDataMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'read_nv_data' is required and cannot be None")
         self._obj.read_nv_data = value
         return self
 
@@ -247,7 +247,7 @@ class NvBlockDataMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'written_nv_data' is required and cannot be None")
         self._obj.written_nv_data = value
         return self
 
@@ -261,7 +261,7 @@ class NvBlockDataMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'written_read_nv' is required and cannot be None")
         self._obj.written_read_nv = value
         return self
 

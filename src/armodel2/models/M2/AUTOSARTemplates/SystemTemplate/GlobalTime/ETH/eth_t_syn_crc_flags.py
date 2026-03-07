@@ -220,7 +220,7 @@ class EthTSynCrcFlagsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_correction' is required and cannot be None")
         self._obj.crc_correction = value
         return self
 
@@ -234,7 +234,7 @@ class EthTSynCrcFlagsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_domain' is required and cannot be None")
         self._obj.crc_domain = value
         return self
 
@@ -248,7 +248,7 @@ class EthTSynCrcFlagsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_message' is required and cannot be None")
         self._obj.crc_message = value
         return self
 
@@ -262,7 +262,7 @@ class EthTSynCrcFlagsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_precise' is required and cannot be None")
         self._obj.crc_precise = value
         return self
 
@@ -276,7 +276,7 @@ class EthTSynCrcFlagsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_sequence_id' is required and cannot be None")
         self._obj.crc_sequence_id = value
         return self
 
@@ -290,7 +290,7 @@ class EthTSynCrcFlagsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_source_port' is required and cannot be None")
         self._obj.crc_source_port = value
         return self
 

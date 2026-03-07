@@ -242,7 +242,7 @@ class DiagnosticEventNeedsBuilder(DiagnosticCapabilityElementBuilder):
         self._obj.deferring_fids = list(items) if items else []
         return self
 
-    def with_diag_event_debounce(self, value: Optional[any (DiagEventDebounce)]) -> "DiagnosticEventNeedsBuilder":
+    def with_diag_event_debounce(self, value: Optional[Any]) -> "DiagnosticEventNeedsBuilder":
         """Set diag_event_debounce attribute.
 
         Args:
@@ -252,7 +252,7 @@ class DiagnosticEventNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diag_event_debounce' is required and cannot be None")
         self._obj.diag_event_debounce = value
         return self
 
@@ -266,7 +266,7 @@ class DiagnosticEventNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'inhibiting_fid' is required and cannot be None")
         self._obj.inhibiting_fid = value
         return self
 
@@ -292,7 +292,7 @@ class DiagnosticEventNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'prestored' is required and cannot be None")
         self._obj.prestored = value
         return self
 
@@ -306,7 +306,7 @@ class DiagnosticEventNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'uses_monitor' is required and cannot be None")
         self._obj.uses_monitor = value
         return self
 

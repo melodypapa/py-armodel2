@@ -156,7 +156,7 @@ class ArgumentDataPrototypeBuilder(AutosarDataPrototypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'direction' is required and cannot be None")
         self._obj.direction = value
         return self
 
@@ -170,7 +170,7 @@ class ArgumentDataPrototypeBuilder(AutosarDataPrototypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'server_argument_impl' is required and cannot be None")
         self._obj.server_argument_impl = value
         return self
 

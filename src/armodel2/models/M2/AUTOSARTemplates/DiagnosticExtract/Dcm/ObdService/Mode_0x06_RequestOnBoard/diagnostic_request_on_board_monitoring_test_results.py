@@ -156,7 +156,7 @@ class DiagnosticRequestOnBoardMonitoringTestResultsBuilder(DiagnosticServiceInst
         self._obj.diagnostic_test_results = list(items) if items else []
         return self
 
-    def with_request_on(self, value: Optional[any (DiagnosticRequestOn)]) -> "DiagnosticRequestOnBoardMonitoringTestResultsBuilder":
+    def with_request_on(self, value: Optional[Any]) -> "DiagnosticRequestOnBoardMonitoringTestResultsBuilder":
         """Set request_on attribute.
 
         Args:
@@ -166,7 +166,7 @@ class DiagnosticRequestOnBoardMonitoringTestResultsBuilder(DiagnosticServiceInst
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request_on' is required and cannot be None")
         self._obj.request_on = value
         return self
 

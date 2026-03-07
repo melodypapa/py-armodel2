@@ -155,7 +155,7 @@ class IEEE1722TpAvConnectionBuilder(IEEE1722TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_transit_time' is required and cannot be None")
         self._obj.max_transit_time = value
         return self
 

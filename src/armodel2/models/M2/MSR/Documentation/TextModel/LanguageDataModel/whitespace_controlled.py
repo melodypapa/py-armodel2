@@ -110,7 +110,7 @@ class WhitespaceControlledBuilder(BuilderBase, ABC):
         self._obj: WhitespaceControlled = WhitespaceControlled()
 
 
-    def with_xml_space(self, value: any (XmlSpaceEnum)) -> "WhitespaceControlledBuilder":
+    def with_xml_space(self, value: Any) -> "WhitespaceControlledBuilder":
         """Set xml_space attribute.
 
         Args:
@@ -120,7 +120,7 @@ class WhitespaceControlledBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'xml_space' is required and cannot be None")
         self._obj.xml_space = value
         return self
 

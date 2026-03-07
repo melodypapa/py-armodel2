@@ -114,7 +114,7 @@ class CalibrationParameterValueSetBuilder(ARElementBuilder):
         self._obj: CalibrationParameterValueSet = CalibrationParameterValueSet()
 
 
-    def with_calibrations(self, items: list[any (CalibrationParameter)]) -> "CalibrationParameterValueSetBuilder":
+    def with_calibrations(self, items: list[Any]) -> "CalibrationParameterValueSetBuilder":
         """Set calibrations list attribute.
 
         Args:
@@ -127,7 +127,7 @@ class CalibrationParameterValueSetBuilder(ARElementBuilder):
         return self
 
 
-    def add_calibration(self, item: any (CalibrationParameter)) -> "CalibrationParameterValueSetBuilder":
+    def add_calibration(self, item: Any) -> "CalibrationParameterValueSetBuilder":
         """Add a single item to calibrations list.
 
         Args:

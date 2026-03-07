@@ -117,7 +117,7 @@ class DiagnosticControlDTCSettingBuilder(DiagnosticServiceInstanceBuilder):
         self._obj: DiagnosticControlDTCSetting = DiagnosticControlDTCSetting()
 
 
-    def with_dtc_setting_class(self, value: Optional[any (DiagnosticControlDTC)]) -> "DiagnosticControlDTCSettingBuilder":
+    def with_dtc_setting_class(self, value: Optional[Any]) -> "DiagnosticControlDTCSettingBuilder":
         """Set dtc_setting_class attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticControlDTCSettingBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dtc_setting_class' is required and cannot be None")
         self._obj.dtc_setting_class = value
         return self
 

@@ -144,7 +144,7 @@ class FlexrayFifoRangeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'range_max' is required and cannot be None")
         self._obj.range_max = value
         return self
 
@@ -158,7 +158,7 @@ class FlexrayFifoRangeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'range_min' is required and cannot be None")
         self._obj.range_min = value
         return self
 

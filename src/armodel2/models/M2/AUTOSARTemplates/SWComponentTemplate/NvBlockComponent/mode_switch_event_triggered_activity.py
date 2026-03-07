@@ -148,7 +148,7 @@ class ModeSwitchEventTriggeredActivityBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'role' is required and cannot be None")
         self._obj.role = value
         return self
 
@@ -162,7 +162,7 @@ class ModeSwitchEventTriggeredActivityBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'swc_mode_switch_event' is required and cannot be None")
         self._obj.swc_mode_switch_event = value
         return self
 

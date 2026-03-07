@@ -167,7 +167,7 @@ class SomeipTpConnectionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tp_channel' is required and cannot be None")
         self._obj.tp_channel = value
         return self
 
@@ -181,7 +181,7 @@ class SomeipTpConnectionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tp_sdu' is required and cannot be None")
         self._obj.tp_sdu = value
         return self
 
@@ -195,7 +195,7 @@ class SomeipTpConnectionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transport_pdu' is required and cannot be None")
         self._obj.transport_pdu = value
         return self
 

@@ -151,7 +151,7 @@ class AssignFrameIdRangeBuilder(LinConfigurationEntryBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'frame_pid' is required and cannot be None")
         self._obj.frame_pid = value
         return self
 
@@ -165,7 +165,7 @@ class AssignFrameIdRangeBuilder(LinConfigurationEntryBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'start_index' is required and cannot be None")
         self._obj.start_index = value
         return self
 

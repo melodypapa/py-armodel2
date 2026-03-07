@@ -147,11 +147,11 @@ class TimingDescriptionEventBuilder(TimingDescriptionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'clock_reference' is required and cannot be None")
         self._obj.clock_reference = value
         return self
 
-    def with_occurrence(self, value: Optional[any (TDEventOccurrence)]) -> "TimingDescriptionEventBuilder":
+    def with_occurrence(self, value: Optional[Any]) -> "TimingDescriptionEventBuilder":
         """Set occurrence attribute.
 
         Args:
@@ -161,7 +161,7 @@ class TimingDescriptionEventBuilder(TimingDescriptionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'occurrence' is required and cannot be None")
         self._obj.occurrence = value
         return self
 

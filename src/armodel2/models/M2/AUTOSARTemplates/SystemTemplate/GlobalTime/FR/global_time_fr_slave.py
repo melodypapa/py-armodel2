@@ -138,7 +138,7 @@ class GlobalTimeFrSlaveBuilder(GlobalTimeSlaveBuilder):
         self._obj: GlobalTimeFrSlave = GlobalTimeFrSlave()
 
 
-    def with_crc_validated(self, value: Optional[any (GlobalTimeCrc)]) -> "GlobalTimeFrSlaveBuilder":
+    def with_crc_validated(self, value: Optional[Any]) -> "GlobalTimeFrSlaveBuilder":
         """Set crc_validated attribute.
 
         Args:
@@ -148,7 +148,7 @@ class GlobalTimeFrSlaveBuilder(GlobalTimeSlaveBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_validated' is required and cannot be None")
         self._obj.crc_validated = value
         return self
 
@@ -162,7 +162,7 @@ class GlobalTimeFrSlaveBuilder(GlobalTimeSlaveBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sequence' is required and cannot be None")
         self._obj.sequence = value
         return self
 

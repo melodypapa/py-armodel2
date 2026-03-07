@@ -292,7 +292,7 @@ class TableBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'colsep' is required and cannot be None")
         self._obj.colsep = value
         return self
 
@@ -306,7 +306,7 @@ class TableBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'float' is required and cannot be None")
         self._obj.float = value
         return self
 
@@ -320,7 +320,7 @@ class TableBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'frame' is required and cannot be None")
         self._obj.frame = value
         return self
 
@@ -334,11 +334,11 @@ class TableBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'help_entry' is required and cannot be None")
         self._obj.help_entry = value
         return self
 
-    def with_orient(self, value: Optional[any (OrientEnum)]) -> "TableBuilder":
+    def with_orient(self, value: Optional[Any]) -> "TableBuilder":
         """Set orient attribute.
 
         Args:
@@ -348,7 +348,7 @@ class TableBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'orient' is required and cannot be None")
         self._obj.orient = value
         return self
 
@@ -362,7 +362,7 @@ class TableBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pgwide' is required and cannot be None")
         self._obj.pgwide = value
         return self
 
@@ -376,7 +376,7 @@ class TableBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rowsep' is required and cannot be None")
         self._obj.rowsep = value
         return self
 
@@ -390,7 +390,7 @@ class TableBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'table_caption' is required and cannot be None")
         self._obj.table_caption = value
         return self
 
@@ -404,7 +404,7 @@ class TableBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tabstyle' is required and cannot be None")
         self._obj.tabstyle = value
         return self
 

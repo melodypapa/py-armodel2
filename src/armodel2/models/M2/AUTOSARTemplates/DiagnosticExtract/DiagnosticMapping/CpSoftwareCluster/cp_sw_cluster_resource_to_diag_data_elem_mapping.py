@@ -152,7 +152,7 @@ class CpSwClusterResourceToDiagDataElemMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cp_software_cluster' is required and cannot be None")
         self._obj.cp_software_cluster = value
         return self
 
@@ -166,7 +166,7 @@ class CpSwClusterResourceToDiagDataElemMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_data' is required and cannot be None")
         self._obj.diagnostic_data = value
         return self
 

@@ -199,7 +199,7 @@ class TopicContentOrMsrQueryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'msr_query_p1' is required and cannot be None")
         self._obj.msr_query_p1 = value
         return self
 
@@ -213,7 +213,7 @@ class TopicContentOrMsrQueryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'block_level' is required and cannot be None")
         self._obj.block_level = value
         return self
 
@@ -227,11 +227,11 @@ class TopicContentOrMsrQueryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'table' is required and cannot be None")
         self._obj.table = value
         return self
 
-    def with_traceable_table(self, value: any (TraceableTable)) -> "TopicContentOrMsrQueryBuilder":
+    def with_traceable_table(self, value: Any) -> "TopicContentOrMsrQueryBuilder":
         """Set traceable_table attribute.
 
         Args:
@@ -241,7 +241,7 @@ class TopicContentOrMsrQueryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'traceable_table' is required and cannot be None")
         self._obj.traceable_table = value
         return self
 

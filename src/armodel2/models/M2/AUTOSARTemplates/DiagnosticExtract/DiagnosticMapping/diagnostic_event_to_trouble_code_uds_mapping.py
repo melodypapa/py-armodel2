@@ -152,7 +152,7 @@ class DiagnosticEventToTroubleCodeUdsMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_event' is required and cannot be None")
         self._obj.diagnostic_event = value
         return self
 
@@ -166,7 +166,7 @@ class DiagnosticEventToTroubleCodeUdsMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'trouble_code_uds' is required and cannot be None")
         self._obj.trouble_code_uds = value
         return self
 

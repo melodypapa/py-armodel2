@@ -413,11 +413,11 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'error_signaling' is required and cannot be None")
         self._obj.error_signaling = value
         return self
 
-    def with_max_number_of_time_quanta_per(self, value: Optional[any (IntegerBit)]) -> "CanControllerXlConfigurationRequirementsBuilder":
+    def with_max_number_of_time_quanta_per(self, value: Optional[Any]) -> "CanControllerXlConfigurationRequirementsBuilder":
         """Set max_number_of_time_quanta_per attribute.
 
         Args:
@@ -427,7 +427,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of_time_quanta_per' is required and cannot be None")
         self._obj.max_number_of_time_quanta_per = value
         return self
 
@@ -441,7 +441,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_pwm_l' is required and cannot be None")
         self._obj.max_pwm_l = value
         return self
 
@@ -455,7 +455,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_pwm_o' is required and cannot be None")
         self._obj.max_pwm_o = value
         return self
 
@@ -469,7 +469,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_pwm_s' is required and cannot be None")
         self._obj.max_pwm_s = value
         return self
 
@@ -483,7 +483,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_sample' is required and cannot be None")
         self._obj.max_sample = value
         return self
 
@@ -497,7 +497,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_sync_jump' is required and cannot be None")
         self._obj.max_sync_jump = value
         return self
 
@@ -511,11 +511,11 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_trcv_delay' is required and cannot be None")
         self._obj.max_trcv_delay = value
         return self
 
-    def with_min_number_of_time_quanta_per(self, value: Optional[any (IntegerBit)]) -> "CanControllerXlConfigurationRequirementsBuilder":
+    def with_min_number_of_time_quanta_per(self, value: Optional[Any]) -> "CanControllerXlConfigurationRequirementsBuilder":
         """Set min_number_of_time_quanta_per attribute.
 
         Args:
@@ -525,7 +525,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_number_of_time_quanta_per' is required and cannot be None")
         self._obj.min_number_of_time_quanta_per = value
         return self
 
@@ -539,7 +539,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_pwm_l' is required and cannot be None")
         self._obj.min_pwm_l = value
         return self
 
@@ -553,7 +553,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_pwm_o' is required and cannot be None")
         self._obj.min_pwm_o = value
         return self
 
@@ -567,7 +567,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_pwm_s' is required and cannot be None")
         self._obj.min_pwm_s = value
         return self
 
@@ -581,7 +581,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_sample_point' is required and cannot be None")
         self._obj.min_sample_point = value
         return self
 
@@ -595,7 +595,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_sync_jump' is required and cannot be None")
         self._obj.min_sync_jump = value
         return self
 
@@ -609,7 +609,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_trcv_delay' is required and cannot be None")
         self._obj.min_trcv_delay = value
         return self
 
@@ -623,7 +623,7 @@ class CanControllerXlConfigurationRequirementsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'trcv_pwm_mode' is required and cannot be None")
         self._obj.trcv_pwm_mode = value
         return self
 

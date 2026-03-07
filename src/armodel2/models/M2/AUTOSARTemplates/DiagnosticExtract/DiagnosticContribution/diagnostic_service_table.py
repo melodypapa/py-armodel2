@@ -215,7 +215,7 @@ class DiagnosticServiceTableBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_instance' is required and cannot be None")
         self._obj.ecu_instance = value
         return self
 
@@ -229,11 +229,11 @@ class DiagnosticServiceTableBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'protocol_kind' is required and cannot be None")
         self._obj.protocol_kind = value
         return self
 
-    def with_service_instances(self, items: list[any (DiagnosticService)]) -> "DiagnosticServiceTableBuilder":
+    def with_service_instances(self, items: list[Any]) -> "DiagnosticServiceTableBuilder":
         """Set service_instances list attribute.
 
         Args:
@@ -267,7 +267,7 @@ class DiagnosticServiceTableBuilder(DiagnosticCommonElementBuilder):
         self._obj.diagnostics = []
         return self
 
-    def add_service_instance(self, item: any (DiagnosticService)) -> "DiagnosticServiceTableBuilder":
+    def add_service_instance(self, item: Any) -> "DiagnosticServiceTableBuilder":
         """Add a single item to service_instances list.
 
         Args:

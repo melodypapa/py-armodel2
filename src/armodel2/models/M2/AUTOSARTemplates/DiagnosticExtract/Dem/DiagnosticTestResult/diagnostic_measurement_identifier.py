@@ -129,7 +129,7 @@ class DiagnosticMeasurementIdentifierBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'obd_mid' is required and cannot be None")
         self._obj.obd_mid = value
         return self
 

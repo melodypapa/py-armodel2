@@ -117,7 +117,7 @@ class DiagnosticReadDataByIdentifierBuilder(DiagnosticDataByIdentifierBuilder):
         self._obj: DiagnosticReadDataByIdentifier = DiagnosticReadDataByIdentifier()
 
 
-    def with_read_class(self, value: Optional[any (DiagnosticReadDataBy)]) -> "DiagnosticReadDataByIdentifierBuilder":
+    def with_read_class(self, value: Optional[Any]) -> "DiagnosticReadDataByIdentifierBuilder":
         """Set read_class attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticReadDataByIdentifierBuilder(DiagnosticDataByIdentifierBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'read_class' is required and cannot be None")
         self._obj.read_class = value
         return self
 

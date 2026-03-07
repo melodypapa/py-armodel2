@@ -204,7 +204,7 @@ class DdsCpConsumedServiceInstanceBuilder(DdsCpServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'local_unicast' is required and cannot be None")
         self._obj.local_unicast = value
         return self
 
@@ -218,7 +218,7 @@ class DdsCpConsumedServiceInstanceBuilder(DdsCpServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minor_version' is required and cannot be None")
         self._obj.minor_version = value
         return self
 
@@ -232,7 +232,7 @@ class DdsCpConsumedServiceInstanceBuilder(DdsCpServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'static_remote' is required and cannot be None")
         self._obj.static_remote = value
         return self
 

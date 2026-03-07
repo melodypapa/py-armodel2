@@ -275,7 +275,7 @@ class ContainedIPduPropsBuilder(BuilderBase):
         self._obj: ContainedIPduProps = ContainedIPduProps()
 
 
-    def with_collection(self, value: Optional[any (ContainedIPdu)]) -> "ContainedIPduPropsBuilder":
+    def with_collection(self, value: Optional[Any]) -> "ContainedIPduPropsBuilder":
         """Set collection attribute.
 
         Args:
@@ -285,7 +285,7 @@ class ContainedIPduPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'collection' is required and cannot be None")
         self._obj.collection = value
         return self
 
@@ -299,7 +299,7 @@ class ContainedIPduPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'contained_pdu' is required and cannot be None")
         self._obj.contained_pdu = value
         return self
 
@@ -313,7 +313,7 @@ class ContainedIPduPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'header_id_long' is required and cannot be None")
         self._obj.header_id_long = value
         return self
 
@@ -327,7 +327,7 @@ class ContainedIPduPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'header_id_short' is required and cannot be None")
         self._obj.header_id_short = value
         return self
 
@@ -341,7 +341,7 @@ class ContainedIPduPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'offset' is required and cannot be None")
         self._obj.offset = value
         return self
 
@@ -355,7 +355,7 @@ class ContainedIPduPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
@@ -369,7 +369,7 @@ class ContainedIPduPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout' is required and cannot be None")
         self._obj.timeout = value
         return self
 
@@ -383,7 +383,7 @@ class ContainedIPduPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'trigger' is required and cannot be None")
         self._obj.trigger = value
         return self
 
@@ -397,7 +397,7 @@ class ContainedIPduPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'update' is required and cannot be None")
         self._obj.update = value
         return self
 

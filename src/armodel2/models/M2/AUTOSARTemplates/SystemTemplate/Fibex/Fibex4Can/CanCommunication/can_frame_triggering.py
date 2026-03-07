@@ -326,7 +326,7 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_addressing_mode' is required and cannot be None")
         self._obj.can_addressing_mode = value
         return self
 
@@ -340,7 +340,7 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_frame_rx_behavior' is required and cannot be None")
         self._obj.can_frame_rx_behavior = value
         return self
 
@@ -354,7 +354,7 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_frame_tx_behavior' is required and cannot be None")
         self._obj.can_frame_tx_behavior = value
         return self
 
@@ -368,7 +368,7 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_xl_frame_triggering_props' is required and cannot be None")
         self._obj.can_xl_frame_triggering_props = value
         return self
 
@@ -382,7 +382,7 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'identifier' is required and cannot be None")
         self._obj.identifier = value
         return self
 
@@ -396,7 +396,7 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'j1939requestable' is required and cannot be None")
         self._obj.j1939requestable = value
         return self
 
@@ -410,7 +410,7 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rx_identifier_range' is required and cannot be None")
         self._obj.rx_identifier_range = value
         return self
 
@@ -424,7 +424,7 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rx_mask' is required and cannot be None")
         self._obj.rx_mask = value
         return self
 
@@ -438,7 +438,7 @@ class CanFrameTriggeringBuilder(FrameTriggeringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tx_mask' is required and cannot be None")
         self._obj.tx_mask = value
         return self
 

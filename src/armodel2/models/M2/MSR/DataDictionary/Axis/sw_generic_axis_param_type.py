@@ -130,7 +130,7 @@ class SwGenericAxisParamTypeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_constr' is required and cannot be None")
         self._obj.data_constr = value
         return self
 

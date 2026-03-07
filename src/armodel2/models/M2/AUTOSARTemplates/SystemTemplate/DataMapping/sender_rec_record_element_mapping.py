@@ -223,7 +223,7 @@ class SenderRecRecordElementMappingBuilder(BuilderBase):
         self._obj: SenderRecRecordElementMapping = SenderRecRecordElementMapping()
 
 
-    def with_application_record(self, value: Optional[any (ApplicationRecord)]) -> "SenderRecRecordElementMappingBuilder":
+    def with_application_record(self, value: Optional[Any]) -> "SenderRecRecordElementMappingBuilder":
         """Set application_record attribute.
 
         Args:
@@ -233,7 +233,7 @@ class SenderRecRecordElementMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'application_record' is required and cannot be None")
         self._obj.application_record = value
         return self
 
@@ -247,11 +247,11 @@ class SenderRecRecordElementMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'complex_type' is required and cannot be None")
         self._obj.complex_type = value
         return self
 
-    def with_implementation(self, value: Optional[any (ImplementationData)]) -> "SenderRecRecordElementMappingBuilder":
+    def with_implementation(self, value: Optional[Any]) -> "SenderRecRecordElementMappingBuilder":
         """Set implementation attribute.
 
         Args:
@@ -261,7 +261,7 @@ class SenderRecRecordElementMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'implementation' is required and cannot be None")
         self._obj.implementation = value
         return self
 
@@ -275,7 +275,7 @@ class SenderRecRecordElementMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sender_to_signal' is required and cannot be None")
         self._obj.sender_to_signal = value
         return self
 
@@ -289,7 +289,7 @@ class SenderRecRecordElementMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'signal_to' is required and cannot be None")
         self._obj.signal_to = value
         return self
 
@@ -303,7 +303,7 @@ class SenderRecRecordElementMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'system_signal' is required and cannot be None")
         self._obj.system_signal = value
         return self
 

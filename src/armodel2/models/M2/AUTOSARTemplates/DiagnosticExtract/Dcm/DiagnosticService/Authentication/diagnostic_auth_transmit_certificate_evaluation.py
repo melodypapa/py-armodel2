@@ -149,7 +149,7 @@ class DiagnosticAuthTransmitCertificateEvaluationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'evaluation_id' is required and cannot be None")
         self._obj.evaluation_id = value
         return self
 
@@ -163,7 +163,7 @@ class DiagnosticAuthTransmitCertificateEvaluationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'function' is required and cannot be None")
         self._obj.function = value
         return self
 

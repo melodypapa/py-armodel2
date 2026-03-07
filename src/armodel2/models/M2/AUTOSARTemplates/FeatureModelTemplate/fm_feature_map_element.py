@@ -213,7 +213,7 @@ class FMFeatureMapElementBuilder(IdentifiableBuilder):
         self._obj.conditions = list(items) if items else []
         return self
 
-    def with_post_build_variants(self, items: list[any (PostBuildVariant)]) -> "FMFeatureMapElementBuilder":
+    def with_post_build_variants(self, items: list[Any]) -> "FMFeatureMapElementBuilder":
         """Set post_build_variants list attribute.
 
         Args:
@@ -280,7 +280,7 @@ class FMFeatureMapElementBuilder(IdentifiableBuilder):
         self._obj.conditions = []
         return self
 
-    def add_post_build_variant(self, item: any (PostBuildVariant)) -> "FMFeatureMapElementBuilder":
+    def add_post_build_variant(self, item: Any) -> "FMFeatureMapElementBuilder":
         """Add a single item to post_build_variants list.
 
         Args:

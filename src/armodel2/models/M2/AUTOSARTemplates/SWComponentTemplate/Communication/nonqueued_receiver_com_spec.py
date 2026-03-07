@@ -336,7 +336,7 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'alive_timeout' is required and cannot be None")
         self._obj.alive_timeout = value
         return self
 
@@ -350,7 +350,7 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'enable_update' is required and cannot be None")
         self._obj.enable_update = value
         return self
 
@@ -364,7 +364,7 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'filter' is required and cannot be None")
         self._obj.filter = value
         return self
 
@@ -378,7 +378,7 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'handle_data_status' is required and cannot be None")
         self._obj.handle_data_status = value
         return self
 
@@ -392,7 +392,7 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'handle_never_received' is required and cannot be None")
         self._obj.handle_never_received = value
         return self
 
@@ -406,7 +406,7 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'handle_timeout_type' is required and cannot be None")
         self._obj.handle_timeout_type = value
         return self
 
@@ -420,7 +420,7 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'init_value' is required and cannot be None")
         self._obj.init_value = value
         return self
 
@@ -434,7 +434,7 @@ class NonqueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_substitution_value' is required and cannot be None")
         self._obj.timeout_substitution_value = value
         return self
 

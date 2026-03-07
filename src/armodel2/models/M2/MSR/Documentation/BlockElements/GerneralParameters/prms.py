@@ -148,11 +148,11 @@ class PrmsBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'label' is required and cannot be None")
         self._obj.label = value
         return self
 
-    def with_prm(self, value: any (GeneralParameter)) -> "PrmsBuilder":
+    def with_prm(self, value: Any) -> "PrmsBuilder":
         """Set prm attribute.
 
         Args:
@@ -162,7 +162,7 @@ class PrmsBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'prm' is required and cannot be None")
         self._obj.prm = value
         return self
 

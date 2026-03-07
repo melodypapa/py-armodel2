@@ -471,7 +471,7 @@ class FlatInstanceDescriptorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_extract' is required and cannot be None")
         self._obj.ecu_extract = value
         return self
 
@@ -485,7 +485,7 @@ class FlatInstanceDescriptorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'role' is required and cannot be None")
         self._obj.role = value
         return self
 
@@ -499,7 +499,7 @@ class FlatInstanceDescriptorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rte_plugin_props' is required and cannot be None")
         self._obj.rte_plugin_props = value
         return self
 
@@ -513,7 +513,7 @@ class FlatInstanceDescriptorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_data_def' is required and cannot be None")
         self._obj.sw_data_def = value
         return self
 
@@ -527,7 +527,7 @@ class FlatInstanceDescriptorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'upstream' is required and cannot be None")
         self._obj.upstream = value
         return self
 

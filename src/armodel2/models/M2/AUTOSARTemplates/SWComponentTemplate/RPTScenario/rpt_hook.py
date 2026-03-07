@@ -313,7 +313,7 @@ class RptHookBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'code_label' is required and cannot be None")
         self._obj.code_label = value
         return self
 
@@ -327,7 +327,7 @@ class RptHookBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mcd_identifier' is required and cannot be None")
         self._obj.mcd_identifier = value
         return self
 
@@ -341,7 +341,7 @@ class RptHookBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_ar_hook' is required and cannot be None")
         self._obj.rpt_ar_hook = value
         return self
 

@@ -164,7 +164,7 @@ class ClassTailoringBuilder(BuilderBase, ABC):
         self._obj.class_contents = list(items) if items else []
         return self
 
-    def with_multiplicity(self, value: Optional[any (MultiplicityRestriction)]) -> "ClassTailoringBuilder":
+    def with_multiplicity(self, value: Optional[Any]) -> "ClassTailoringBuilder":
         """Set multiplicity attribute.
 
         Args:
@@ -174,7 +174,7 @@ class ClassTailoringBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'multiplicity' is required and cannot be None")
         self._obj.multiplicity = value
         return self
 
@@ -188,7 +188,7 @@ class ClassTailoringBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'variation' is required and cannot be None")
         self._obj.variation = value
         return self
 

@@ -137,7 +137,7 @@ class PostBuildVariantConditionBuilder(BuilderBase):
         self._obj: PostBuildVariantCondition = PostBuildVariantCondition()
 
 
-    def with_matching(self, value: any (PostBuildVariant)) -> "PostBuildVariantConditionBuilder":
+    def with_matching(self, value: Any) -> "PostBuildVariantConditionBuilder":
         """Set matching attribute.
 
         Args:
@@ -147,7 +147,7 @@ class PostBuildVariantConditionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'matching' is required and cannot be None")
         self._obj.matching = value
         return self
 
@@ -161,7 +161,7 @@ class PostBuildVariantConditionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'value' is required and cannot be None")
         self._obj.value = value
         return self
 

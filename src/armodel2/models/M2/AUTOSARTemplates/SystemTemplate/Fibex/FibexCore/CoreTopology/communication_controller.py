@@ -126,7 +126,7 @@ class CommunicationControllerBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wake_up_by_controller_supported' is required and cannot be None")
         self._obj.wake_up_by_controller_supported = value
         return self
 

@@ -161,7 +161,7 @@ class PermissibleSignalPathBuilder(SignalPathConstraintBuilder):
         self._obj: PermissibleSignalPath = PermissibleSignalPath()
 
 
-    def with_operations(self, items: list[any (SwcToSwcOperation)]) -> "PermissibleSignalPathBuilder":
+    def with_operations(self, items: list[Any]) -> "PermissibleSignalPathBuilder":
         """Set operations list attribute.
 
         Args:
@@ -198,7 +198,7 @@ class PermissibleSignalPathBuilder(SignalPathConstraintBuilder):
         return self
 
 
-    def add_operation(self, item: any (SwcToSwcOperation)) -> "PermissibleSignalPathBuilder":
+    def add_operation(self, item: Any) -> "PermissibleSignalPathBuilder":
         """Add a single item to operations list.
 
         Args:

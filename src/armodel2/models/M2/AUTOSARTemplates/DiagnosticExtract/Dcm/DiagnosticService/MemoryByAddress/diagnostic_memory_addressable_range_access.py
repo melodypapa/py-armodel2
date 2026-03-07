@@ -120,7 +120,7 @@ class DiagnosticMemoryAddressableRangeAccessBuilder(DiagnosticMemoryByAddressBui
         self._obj: DiagnosticMemoryAddressableRangeAccess = DiagnosticMemoryAddressableRangeAccess()
 
 
-    def with_memory_ranges(self, items: list[any (DiagnosticMemory)]) -> "DiagnosticMemoryAddressableRangeAccessBuilder":
+    def with_memory_ranges(self, items: list[Any]) -> "DiagnosticMemoryAddressableRangeAccessBuilder":
         """Set memory_ranges list attribute.
 
         Args:
@@ -133,7 +133,7 @@ class DiagnosticMemoryAddressableRangeAccessBuilder(DiagnosticMemoryByAddressBui
         return self
 
 
-    def add_memory_range(self, item: any (DiagnosticMemory)) -> "DiagnosticMemoryAddressableRangeAccessBuilder":
+    def add_memory_range(self, item: Any) -> "DiagnosticMemoryAddressableRangeAccessBuilder":
         """Add a single item to memory_ranges list.
 
         Args:

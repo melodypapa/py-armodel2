@@ -169,7 +169,7 @@ class DiagEventDebounceTimeBasedBuilder(DiagEventDebounceAlgorithmBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_based_fdc' is required and cannot be None")
         self._obj.time_based_fdc = value
         return self
 
@@ -183,7 +183,7 @@ class DiagEventDebounceTimeBasedBuilder(DiagEventDebounceAlgorithmBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_failed' is required and cannot be None")
         self._obj.time_failed = value
         return self
 
@@ -197,7 +197,7 @@ class DiagEventDebounceTimeBasedBuilder(DiagEventDebounceAlgorithmBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_passed' is required and cannot be None")
         self._obj.time_passed = value
         return self
 

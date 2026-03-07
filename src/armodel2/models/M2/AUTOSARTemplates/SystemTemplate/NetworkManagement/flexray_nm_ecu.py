@@ -148,7 +148,7 @@ class FlexrayNmEcuBuilder(BusspecificNmEcuBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_hw_vote' is required and cannot be None")
         self._obj.nm_hw_vote = value
         return self
 
@@ -162,7 +162,7 @@ class FlexrayNmEcuBuilder(BusspecificNmEcuBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_main' is required and cannot be None")
         self._obj.nm_main = value
         return self
 

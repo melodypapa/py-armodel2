@@ -285,7 +285,7 @@ class IoHwAbstractionServerAnnotationBuilder(GeneralAnnotationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'age' is required and cannot be None")
         self._obj.age = value
         return self
 
@@ -299,7 +299,7 @@ class IoHwAbstractionServerAnnotationBuilder(GeneralAnnotationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'argument' is required and cannot be None")
         self._obj.argument = value
         return self
 
@@ -313,7 +313,7 @@ class IoHwAbstractionServerAnnotationBuilder(GeneralAnnotationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_resolution' is required and cannot be None")
         self._obj.bsw_resolution = value
         return self
 
@@ -327,7 +327,7 @@ class IoHwAbstractionServerAnnotationBuilder(GeneralAnnotationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_element' is required and cannot be None")
         self._obj.data_element = value
         return self
 
@@ -341,7 +341,7 @@ class IoHwAbstractionServerAnnotationBuilder(GeneralAnnotationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'failure' is required and cannot be None")
         self._obj.failure = value
         return self
 
@@ -355,7 +355,7 @@ class IoHwAbstractionServerAnnotationBuilder(GeneralAnnotationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'filtering' is required and cannot be None")
         self._obj.filtering = value
         return self
 
@@ -369,7 +369,7 @@ class IoHwAbstractionServerAnnotationBuilder(GeneralAnnotationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pulse_test' is required and cannot be None")
         self._obj.pulse_test = value
         return self
 
@@ -383,7 +383,7 @@ class IoHwAbstractionServerAnnotationBuilder(GeneralAnnotationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'trigger' is required and cannot be None")
         self._obj.trigger = value
         return self
 

@@ -227,7 +227,7 @@ class RuleBasedValueSpecificationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'v' is required and cannot be None")
         self._obj.v = value
         return self
 
@@ -241,7 +241,7 @@ class RuleBasedValueSpecificationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vf' is required and cannot be None")
         self._obj.vf = value
         return self
 
@@ -255,7 +255,7 @@ class RuleBasedValueSpecificationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vt' is required and cannot be None")
         self._obj.vt = value
         return self
 
@@ -269,7 +269,7 @@ class RuleBasedValueSpecificationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vtf' is required and cannot be None")
         self._obj.vtf = value
         return self
 
@@ -283,7 +283,7 @@ class RuleBasedValueSpecificationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_size_to_fill' is required and cannot be None")
         self._obj.max_size_to_fill = value
         return self
 
@@ -297,7 +297,7 @@ class RuleBasedValueSpecificationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rule' is required and cannot be None")
         self._obj.rule = value
         return self
 

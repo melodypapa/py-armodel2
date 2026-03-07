@@ -195,7 +195,7 @@ class NmCoordinatorBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'index' is required and cannot be None")
         self._obj.index = value
         return self
 
@@ -209,7 +209,7 @@ class NmCoordinatorBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_coord_sync' is required and cannot be None")
         self._obj.nm_coord_sync = value
         return self
 
@@ -223,7 +223,7 @@ class NmCoordinatorBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_global' is required and cannot be None")
         self._obj.nm_global = value
         return self
 

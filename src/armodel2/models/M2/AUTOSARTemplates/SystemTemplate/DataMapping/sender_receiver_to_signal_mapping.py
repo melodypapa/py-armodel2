@@ -204,7 +204,7 @@ class SenderReceiverToSignalMappingBuilder(DataMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_element' is required and cannot be None")
         self._obj.data_element = value
         return self
 
@@ -218,7 +218,7 @@ class SenderReceiverToSignalMappingBuilder(DataMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sender_to_signal_text_table_mapping' is required and cannot be None")
         self._obj.sender_to_signal_text_table_mapping = value
         return self
 
@@ -232,7 +232,7 @@ class SenderReceiverToSignalMappingBuilder(DataMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'signal_to_receiver_text_table_mapping' is required and cannot be None")
         self._obj.signal_to_receiver_text_table_mapping = value
         return self
 
@@ -246,7 +246,7 @@ class SenderReceiverToSignalMappingBuilder(DataMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'system_signal' is required and cannot be None")
         self._obj.system_signal = value
         return self
 

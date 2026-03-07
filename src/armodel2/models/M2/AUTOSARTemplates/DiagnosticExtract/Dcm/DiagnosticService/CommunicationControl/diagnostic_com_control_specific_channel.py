@@ -167,11 +167,11 @@ class DiagnosticComControlSpecificChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'specific_channel' is required and cannot be None")
         self._obj.specific_channel = value
         return self
 
-    def with_specific_physical(self, value: Optional[any (EthernetPhysical)]) -> "DiagnosticComControlSpecificChannelBuilder":
+    def with_specific_physical(self, value: Optional[Any]) -> "DiagnosticComControlSpecificChannelBuilder":
         """Set specific_physical attribute.
 
         Args:
@@ -181,7 +181,7 @@ class DiagnosticComControlSpecificChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'specific_physical' is required and cannot be None")
         self._obj.specific_physical = value
         return self
 
@@ -195,7 +195,7 @@ class DiagnosticComControlSpecificChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'subnet_number' is required and cannot be None")
         self._obj.subnet_number = value
         return self
 

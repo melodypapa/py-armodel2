@@ -234,7 +234,7 @@ class ModeDeclarationGroupBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initial_mode' is required and cannot be None")
         self._obj.initial_mode = value
         return self
 
@@ -260,7 +260,7 @@ class ModeDeclarationGroupBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode_manager_error_behavior' is required and cannot be None")
         self._obj.mode_manager_error_behavior = value
         return self
 
@@ -286,7 +286,7 @@ class ModeDeclarationGroupBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode_user_error_behavior' is required and cannot be None")
         self._obj.mode_user_error_behavior = value
         return self
 
@@ -300,7 +300,7 @@ class ModeDeclarationGroupBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'on_transition_value' is required and cannot be None")
         self._obj.on_transition_value = value
         return self
 

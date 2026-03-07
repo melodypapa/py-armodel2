@@ -114,7 +114,7 @@ class SenderRecRecordTypeMappingBuilder(SenderRecCompositeTypeMappingBuilder):
         self._obj: SenderRecRecordTypeMapping = SenderRecRecordTypeMapping()
 
 
-    def with_record_elements(self, items: list[any (SenderRecRecord)]) -> "SenderRecRecordTypeMappingBuilder":
+    def with_record_elements(self, items: list[Any]) -> "SenderRecRecordTypeMappingBuilder":
         """Set record_elements list attribute.
 
         Args:
@@ -127,7 +127,7 @@ class SenderRecRecordTypeMappingBuilder(SenderRecCompositeTypeMappingBuilder):
         return self
 
 
-    def add_record_element(self, item: any (SenderRecRecord)) -> "SenderRecRecordTypeMappingBuilder":
+    def add_record_element(self, item: Any) -> "SenderRecRecordTypeMappingBuilder":
         """Add a single item to record_elements list.
 
         Args:

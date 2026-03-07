@@ -212,7 +212,7 @@ class SomeipSdServerServiceInstanceConfigBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initial_offer_behavior' is required and cannot be None")
         self._obj.initial_offer_behavior = value
         return self
 
@@ -226,7 +226,7 @@ class SomeipSdServerServiceInstanceConfigBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'offer_cyclic_delay' is required and cannot be None")
         self._obj.offer_cyclic_delay = value
         return self
 
@@ -240,7 +240,7 @@ class SomeipSdServerServiceInstanceConfigBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
@@ -254,7 +254,7 @@ class SomeipSdServerServiceInstanceConfigBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request' is required and cannot be None")
         self._obj.request = value
         return self
 
@@ -268,7 +268,7 @@ class SomeipSdServerServiceInstanceConfigBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_offer' is required and cannot be None")
         self._obj.service_offer = value
         return self
 

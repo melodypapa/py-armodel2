@@ -117,7 +117,7 @@ class DiagnosticCommunicationManagerNeedsBuilder(DiagnosticCapabilityElementBuil
         self._obj: DiagnosticCommunicationManagerNeeds = DiagnosticCommunicationManagerNeeds()
 
 
-    def with_service_request(self, value: Optional[any (DiagnosticService)]) -> "DiagnosticCommunicationManagerNeedsBuilder":
+    def with_service_request(self, value: Optional[Any]) -> "DiagnosticCommunicationManagerNeedsBuilder":
         """Set service_request attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticCommunicationManagerNeedsBuilder(DiagnosticCapabilityElementBuil
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_request' is required and cannot be None")
         self._obj.service_request = value
         return self
 

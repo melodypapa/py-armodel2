@@ -437,7 +437,7 @@ class SystemBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'container_i_pdu_header_byte_order' is required and cannot be None")
         self._obj.container_i_pdu_header_byte_order = value
         return self
 
@@ -451,7 +451,7 @@ class SystemBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_extract_version' is required and cannot be None")
         self._obj.ecu_extract_version = value
         return self
 
@@ -513,7 +513,7 @@ class SystemBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pnc_vector_length' is required and cannot be None")
         self._obj.pnc_vector_length = value
         return self
 
@@ -527,7 +527,7 @@ class SystemBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pnc_vector_offset' is required and cannot be None")
         self._obj.pnc_vector_offset = value
         return self
 
@@ -577,7 +577,7 @@ class SystemBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'system_version' is required and cannot be None")
         self._obj.system_version = value
         return self
 

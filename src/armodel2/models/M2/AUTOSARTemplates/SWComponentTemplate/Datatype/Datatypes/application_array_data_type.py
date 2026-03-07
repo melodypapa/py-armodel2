@@ -153,7 +153,7 @@ class ApplicationArrayDataTypeBuilder(ApplicationCompositeDataTypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dynamic_array_size_profile' is required and cannot be None")
         self._obj.dynamic_array_size_profile = value
         return self
 
@@ -167,7 +167,7 @@ class ApplicationArrayDataTypeBuilder(ApplicationCompositeDataTypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'element' is required and cannot be None")
         self._obj.element = value
         return self
 

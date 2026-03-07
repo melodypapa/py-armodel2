@@ -193,7 +193,7 @@ class DiagnosticValueNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_length' is required and cannot be None")
         self._obj.data_length = value
         return self
 
@@ -207,7 +207,7 @@ class DiagnosticValueNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_value_access' is required and cannot be None")
         self._obj.diagnostic_value_access = value
         return self
 
@@ -221,7 +221,7 @@ class DiagnosticValueNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'fixed_length' is required and cannot be None")
         self._obj.fixed_length = value
         return self
 
@@ -235,7 +235,7 @@ class DiagnosticValueNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'processing_style' is required and cannot be None")
         self._obj.processing_style = value
         return self
 

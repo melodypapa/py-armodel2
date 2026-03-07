@@ -149,7 +149,7 @@ class BinaryManifestProvideResourceBuilder(BinaryManifestResourceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'number_of' is required and cannot be None")
         self._obj.number_of = value
         return self
 
@@ -163,7 +163,7 @@ class BinaryManifestProvideResourceBuilder(BinaryManifestResourceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'supports' is required and cannot be None")
         self._obj.supports = value
         return self
 

@@ -171,7 +171,7 @@ class DoIpTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'do_ip_source' is required and cannot be None")
         self._obj.do_ip_source = value
         return self
 
@@ -185,7 +185,7 @@ class DoIpTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'do_ip_target' is required and cannot be None")
         self._obj.do_ip_target = value
         return self
 
@@ -199,7 +199,7 @@ class DoIpTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tp_sdu' is required and cannot be None")
         self._obj.tp_sdu = value
         return self
 

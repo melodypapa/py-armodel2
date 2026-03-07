@@ -117,7 +117,7 @@ class AsynchronousServerCallReturnsEventBuilder(RTEEventBuilder):
         self._obj: AsynchronousServerCallReturnsEvent = AsynchronousServerCallReturnsEvent()
 
 
-    def with_event_source(self, value: Optional[any (AsynchronousServer)]) -> "AsynchronousServerCallReturnsEventBuilder":
+    def with_event_source(self, value: Optional[Any]) -> "AsynchronousServerCallReturnsEventBuilder":
         """Set event_source attribute.
 
         Args:
@@ -127,7 +127,7 @@ class AsynchronousServerCallReturnsEventBuilder(RTEEventBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_source' is required and cannot be None")
         self._obj.event_source = value
         return self
 

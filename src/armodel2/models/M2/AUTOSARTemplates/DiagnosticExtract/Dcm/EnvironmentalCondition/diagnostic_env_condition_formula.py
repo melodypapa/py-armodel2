@@ -151,7 +151,7 @@ class DiagnosticEnvConditionFormulaBuilder(DiagnosticEnvConditionFormulaPartBuil
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nrc_value' is required and cannot be None")
         self._obj.nrc_value = value
         return self
 
@@ -165,7 +165,7 @@ class DiagnosticEnvConditionFormulaBuilder(DiagnosticEnvConditionFormulaPartBuil
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'op' is required and cannot be None")
         self._obj.op = value
         return self
 

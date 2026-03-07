@@ -236,7 +236,7 @@ class DataPrototypeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'first_data' is required and cannot be None")
         self._obj.first_data = value
         return self
 
@@ -250,7 +250,7 @@ class DataPrototypeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'first_to_second' is required and cannot be None")
         self._obj.first_to_second = value
         return self
 
@@ -264,7 +264,7 @@ class DataPrototypeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'second_data' is required and cannot be None")
         self._obj.second_data = value
         return self
 
@@ -278,7 +278,7 @@ class DataPrototypeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'second_to_first' is required and cannot be None")
         self._obj.second_to_first = value
         return self
 
@@ -304,7 +304,7 @@ class DataPrototypeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'text_table' is required and cannot be None")
         self._obj.text_table = value
         return self
 

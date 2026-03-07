@@ -149,11 +149,11 @@ class DiagnosticEventToOperationCycleMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_event' is required and cannot be None")
         self._obj.diagnostic_event = value
         return self
 
-    def with_operation_cycle(self, value: Optional[any (DiagnosticOperation)]) -> "DiagnosticEventToOperationCycleMappingBuilder":
+    def with_operation_cycle(self, value: Optional[Any]) -> "DiagnosticEventToOperationCycleMappingBuilder":
         """Set operation_cycle attribute.
 
         Args:
@@ -163,7 +163,7 @@ class DiagnosticEventToOperationCycleMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'operation_cycle' is required and cannot be None")
         self._obj.operation_cycle = value
         return self
 

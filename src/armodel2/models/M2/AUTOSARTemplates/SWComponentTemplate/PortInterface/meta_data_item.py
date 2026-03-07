@@ -148,7 +148,7 @@ class MetaDataItemBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'length' is required and cannot be None")
         self._obj.length = value
         return self
 
@@ -162,7 +162,7 @@ class MetaDataItemBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'meta_data_item' is required and cannot be None")
         self._obj.meta_data_item = value
         return self
 

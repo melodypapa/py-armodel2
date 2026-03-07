@@ -235,7 +235,7 @@ class SwitchStreamFilterEntryBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'asynchronous' is required and cannot be None")
         self._obj.asynchronous = value
         return self
 
@@ -249,7 +249,7 @@ class SwitchStreamFilterEntryBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'filter_priority' is required and cannot be None")
         self._obj.filter_priority = value
         return self
 
@@ -263,7 +263,7 @@ class SwitchStreamFilterEntryBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'flow_metering' is required and cannot be None")
         self._obj.flow_metering = value
         return self
 
@@ -277,7 +277,7 @@ class SwitchStreamFilterEntryBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_sdu_size' is required and cannot be None")
         self._obj.max_sdu_size = value
         return self
 
@@ -291,7 +291,7 @@ class SwitchStreamFilterEntryBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'stream_gate' is required and cannot be None")
         self._obj.stream_gate = value
         return self
 
@@ -305,7 +305,7 @@ class SwitchStreamFilterEntryBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'stream' is required and cannot be None")
         self._obj.stream = value
         return self
 

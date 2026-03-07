@@ -141,7 +141,7 @@ class DiagnosticAuthTransmitCertificateMappingBuilder(DiagnosticMappingBuilder):
         self._obj: DiagnosticAuthTransmitCertificateMapping = DiagnosticAuthTransmitCertificateMapping()
 
 
-    def with_crypto_services(self, items: list[any (CryptoService)]) -> "DiagnosticAuthTransmitCertificateMappingBuilder":
+    def with_crypto_services(self, items: list[Any]) -> "DiagnosticAuthTransmitCertificateMappingBuilder":
         """Set crypto_services list attribute.
 
         Args:
@@ -153,7 +153,7 @@ class DiagnosticAuthTransmitCertificateMappingBuilder(DiagnosticMappingBuilder):
         self._obj.crypto_services = list(items) if items else []
         return self
 
-    def with_service_instance(self, value: Optional[any (DiagnosticAuthTransmit)]) -> "DiagnosticAuthTransmitCertificateMappingBuilder":
+    def with_service_instance(self, value: Optional[Any]) -> "DiagnosticAuthTransmitCertificateMappingBuilder":
         """Set service_instance attribute.
 
         Args:
@@ -163,12 +163,12 @@ class DiagnosticAuthTransmitCertificateMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_instance' is required and cannot be None")
         self._obj.service_instance = value
         return self
 
 
-    def add_crypto_service(self, item: any (CryptoService)) -> "DiagnosticAuthTransmitCertificateMappingBuilder":
+    def add_crypto_service(self, item: Any) -> "DiagnosticAuthTransmitCertificateMappingBuilder":
         """Add a single item to crypto_services list.
 
         Args:

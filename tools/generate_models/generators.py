@@ -2326,7 +2326,10 @@ def _generate_with_method(
     # Convert attribute name to snake_case for method name
     snake_attr_name = to_snake_case(attr_name)
     method_name = f"with_{snake_attr_name}"
-    param_type = f"Optional[{attr_type}]" if is_optional else attr_type
+
+    # Convert "any (xxx)" types to "Any" for type hints
+    effective_type = "Any" if attr_type.startswith("any (") else attr_type
+    param_type = f"Optional[{effective_type}]" if is_optional else effective_type
 
     # Check if type coercion should be applied
     base_type = extract_base_type(attr_type)
@@ -2391,7 +2394,7 @@ def _generate_with_method(
             self for method chaining
         """
         if value is None and not {is_optional}:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute '{snake_attr_name}' is required and cannot be None")
         {assignment}
         return self
 '''
@@ -2419,6 +2422,9 @@ def _generate_with_items_method(
     # Convert attribute name to Python identifier (plural for list attributes)
     snake_attr_name = get_python_identifier_with_ref(attr_name, is_ref=False, multiplicity=multiplicity)
     method_name = f"with_{snake_attr_name}"
+
+    # Convert "any (xxx)" types to "Any" for type hints
+    effective_item_type = "Any" if item_type.startswith("any (") else item_type
 
     # Check if attribute name is a Python keyword
     python_keywords = {
@@ -2460,7 +2466,7 @@ def _generate_with_items_method(
         assignment = f"self._obj.{snake_attr_name} = list(items) if items else []"
 
     code = f'''
-    def {method_name}(self, items: list[{item_type}]) -> "{class_name}Builder":
+    def {method_name}(self, items: list[{effective_item_type}]) -> "{class_name}Builder":
         """Set {snake_attr_name} list attribute.
 
         Args:
@@ -2498,6 +2504,9 @@ def _generate_list_methods(
 
     # Generate singular name for add_* method (from the singular JSON attr_name)
     singular_snake_name = to_snake_case(attr_name)
+
+    # Convert "any (xxx)" types to "Any" for type hints
+    effective_item_type = "Any" if item_type.startswith("any (") else item_type
 
     # Check if attribute name is a Python keyword
     python_keywords = {
@@ -2543,7 +2552,7 @@ def _generate_list_methods(
     # Add method
     add_method = (
         f'''
-    def add_{singular_snake_name}(self, item: {item_type}) -> "{class_name}Builder":
+    def add_{singular_snake_name}(self, item: {effective_item_type}) -> "{class_name}Builder":
         """Add a single item to '''
         + snake_attr_name
         + ''' list.
@@ -2848,6 +2857,19 @@ def generate_builder_code(
 
     # Combine builder imports
     builder_imports = abc_import + builder_base_import + parent_builder_import
+
+    # Check if Any type is needed for "any (xxx)" type attributes
+    uses_any_type = False
+    if include_members and "attributes" in type_def:
+        for attr_name, attr_info in type_def["attributes"].items():
+            attr_type = attr_info.get("type", "")
+            if attr_type.startswith("any ("):
+                uses_any_type = True
+                break
+
+    if uses_any_type:
+        # Add Any import - note: this will be deduplicated in generate_class_code if already present
+        builder_imports += "from typing import Any\n"
 
     # Return tuple of (imports, builder_class_code)
     return (builder_imports, "\n".join(code_parts))

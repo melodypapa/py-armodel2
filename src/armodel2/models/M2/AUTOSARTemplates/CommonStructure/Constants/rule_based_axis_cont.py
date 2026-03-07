@@ -211,11 +211,11 @@ class RuleBasedAxisContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'category' is required and cannot be None")
         self._obj.category = value
         return self
 
-    def with_rule_based(self, value: Optional[any (RuleBasedValue)]) -> "RuleBasedAxisContBuilder":
+    def with_rule_based(self, value: Optional[Any]) -> "RuleBasedAxisContBuilder":
         """Set rule_based attribute.
 
         Args:
@@ -225,7 +225,7 @@ class RuleBasedAxisContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rule_based' is required and cannot be None")
         self._obj.rule_based = value
         return self
 
@@ -239,7 +239,7 @@ class RuleBasedAxisContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'v' is required and cannot be None")
         self._obj.v = value
         return self
 
@@ -253,7 +253,7 @@ class RuleBasedAxisContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_axis_index' is required and cannot be None")
         self._obj.sw_axis_index = value
         return self
 
@@ -267,7 +267,7 @@ class RuleBasedAxisContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'unit' is required and cannot be None")
         self._obj.unit = value
         return self
 

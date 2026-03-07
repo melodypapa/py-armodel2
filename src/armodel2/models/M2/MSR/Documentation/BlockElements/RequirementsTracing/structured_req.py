@@ -395,7 +395,7 @@ class StructuredReqBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'conflicts' is required and cannot be None")
         self._obj.conflicts = value
         return self
 
@@ -409,7 +409,7 @@ class StructuredReqBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'date' is required and cannot be None")
         self._obj.date = value
         return self
 
@@ -423,7 +423,7 @@ class StructuredReqBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dependencies' is required and cannot be None")
         self._obj.dependencies = value
         return self
 
@@ -437,7 +437,7 @@ class StructuredReqBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'description' is required and cannot be None")
         self._obj.description = value
         return self
 
@@ -451,7 +451,7 @@ class StructuredReqBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'importance' is required and cannot be None")
         self._obj.importance = value
         return self
 
@@ -465,7 +465,7 @@ class StructuredReqBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'issued_by' is required and cannot be None")
         self._obj.issued_by = value
         return self
 
@@ -479,7 +479,7 @@ class StructuredReqBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rationale' is required and cannot be None")
         self._obj.rationale = value
         return self
 
@@ -493,7 +493,7 @@ class StructuredReqBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'remark' is required and cannot be None")
         self._obj.remark = value
         return self
 
@@ -507,7 +507,7 @@ class StructuredReqBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'supporting' is required and cannot be None")
         self._obj.supporting = value
         return self
 
@@ -533,7 +533,7 @@ class StructuredReqBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'type' is required and cannot be None")
         self._obj.type = value
         return self
 
@@ -547,7 +547,7 @@ class StructuredReqBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'use_case' is required and cannot be None")
         self._obj.use_case = value
         return self
 

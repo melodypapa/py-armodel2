@@ -144,7 +144,7 @@ class IndexEntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sub' is required and cannot be None")
         self._obj.sub = value
         return self
 
@@ -158,7 +158,7 @@ class IndexEntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sup' is required and cannot be None")
         self._obj.sup = value
         return self
 

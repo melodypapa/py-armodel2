@@ -117,7 +117,7 @@ class DiagnosticEnvModeConditionBuilder(DiagnosticEnvCompareConditionBuilder):
         self._obj: DiagnosticEnvModeCondition = DiagnosticEnvModeCondition()
 
 
-    def with_mode_element(self, value: Optional[any (DiagnosticEnvMode)]) -> "DiagnosticEnvModeConditionBuilder":
+    def with_mode_element(self, value: Optional[Any]) -> "DiagnosticEnvModeConditionBuilder":
         """Set mode_element attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticEnvModeConditionBuilder(DiagnosticEnvCompareConditionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode_element' is required and cannot be None")
         self._obj.mode_element = value
         return self
 

@@ -165,7 +165,7 @@ class ScheduleTableEntryBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'delay' is required and cannot be None")
         self._obj.delay = value
         return self
 
@@ -179,7 +179,7 @@ class ScheduleTableEntryBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'introduction' is required and cannot be None")
         self._obj.introduction = value
         return self
 
@@ -193,7 +193,7 @@ class ScheduleTableEntryBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'position_in_table' is required and cannot be None")
         self._obj.position_in_table = value
         return self
 

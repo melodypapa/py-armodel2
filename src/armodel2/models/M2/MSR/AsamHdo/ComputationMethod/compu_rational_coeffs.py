@@ -144,7 +144,7 @@ class CompuRationalCoeffsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'compu_numerator' is required and cannot be None")
         self._obj.compu_numerator = value
         return self
 
@@ -158,7 +158,7 @@ class CompuRationalCoeffsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'compu_denominator' is required and cannot be None")
         self._obj.compu_denominator = value
         return self
 

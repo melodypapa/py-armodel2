@@ -167,7 +167,7 @@ class TlsPskIdentityBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pre_shared_key' is required and cannot be None")
         self._obj.pre_shared_key = value
         return self
 
@@ -181,7 +181,7 @@ class TlsPskIdentityBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'psk_identity' is required and cannot be None")
         self._obj.psk_identity = value
         return self
 
@@ -195,7 +195,7 @@ class TlsPskIdentityBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'psk_identity_hint' is required and cannot be None")
         self._obj.psk_identity_hint = value
         return self
 

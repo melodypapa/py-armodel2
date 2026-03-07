@@ -241,7 +241,7 @@ class EndToEndDescriptionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'category' is required and cannot be None")
         self._obj.category = value
         return self
 
@@ -255,7 +255,7 @@ class EndToEndDescriptionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'counter_offset' is required and cannot be None")
         self._obj.counter_offset = value
         return self
 
@@ -269,7 +269,7 @@ class EndToEndDescriptionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_offset' is required and cannot be None")
         self._obj.crc_offset = value
         return self
 
@@ -283,7 +283,7 @@ class EndToEndDescriptionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_id_mode' is required and cannot be None")
         self._obj.data_id_mode = value
         return self
 
@@ -297,7 +297,7 @@ class EndToEndDescriptionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_id_nibble' is required and cannot be None")
         self._obj.data_id_nibble = value
         return self
 
@@ -311,7 +311,7 @@ class EndToEndDescriptionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_length' is required and cannot be None")
         self._obj.data_length = value
         return self
 
@@ -325,7 +325,7 @@ class EndToEndDescriptionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_delta' is required and cannot be None")
         self._obj.max_delta = value
         return self
 

@@ -293,7 +293,7 @@ class BuildActionBuilder(BuildActionEntityBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'required' is required and cannot be None")
         self._obj.required = value
         return self
 

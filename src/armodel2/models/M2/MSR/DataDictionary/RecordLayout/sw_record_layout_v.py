@@ -274,7 +274,7 @@ class SwRecordLayoutVBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 
@@ -288,7 +288,7 @@ class SwRecordLayoutVBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base_type' is required and cannot be None")
         self._obj.base_type = value
         return self
 
@@ -302,7 +302,7 @@ class SwRecordLayoutVBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'desc' is required and cannot be None")
         self._obj.desc = value
         return self
 
@@ -316,7 +316,7 @@ class SwRecordLayoutVBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_generic_axis_param_type' is required and cannot be None")
         self._obj.sw_generic_axis_param_type = value
         return self
 
@@ -330,7 +330,7 @@ class SwRecordLayoutVBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout_v_axis' is required and cannot be None")
         self._obj.sw_record_layout_v_axis = value
         return self
 
@@ -344,7 +344,7 @@ class SwRecordLayoutVBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout_v_fix_value' is required and cannot be None")
         self._obj.sw_record_layout_v_fix_value = value
         return self
 
@@ -358,7 +358,7 @@ class SwRecordLayoutVBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout_v_index' is required and cannot be None")
         self._obj.sw_record_layout_v_index = value
         return self
 
@@ -372,7 +372,7 @@ class SwRecordLayoutVBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout_v_prop' is required and cannot be None")
         self._obj.sw_record_layout_v_prop = value
         return self
 

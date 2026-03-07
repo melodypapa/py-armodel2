@@ -212,7 +212,7 @@ class EcucModuleDefBuilder(EcucDefinitionElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'api_service_prefix' is required and cannot be None")
         self._obj.api_service_prefix = value
         return self
 
@@ -238,7 +238,7 @@ class EcucModuleDefBuilder(EcucDefinitionElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'post_build_variant' is required and cannot be None")
         self._obj.post_build_variant = value
         return self
 
@@ -252,11 +252,11 @@ class EcucModuleDefBuilder(EcucDefinitionElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'refined_module' is required and cannot be None")
         self._obj.refined_module = value
         return self
 
-    def with_supporteds(self, items: list[any (EcucConfiguration)]) -> "EcucModuleDefBuilder":
+    def with_supporteds(self, items: list[Any]) -> "EcucModuleDefBuilder":
         """Set supporteds list attribute.
 
         Args:
@@ -290,7 +290,7 @@ class EcucModuleDefBuilder(EcucDefinitionElementBuilder):
         self._obj.containers = []
         return self
 
-    def add_supported(self, item: any (EcucConfiguration)) -> "EcucModuleDefBuilder":
+    def add_supported(self, item: Any) -> "EcucModuleDefBuilder":
         """Add a single item to supporteds list.
 
         Args:

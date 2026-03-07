@@ -148,7 +148,7 @@ class LinConfigurableFrameBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'frame' is required and cannot be None")
         self._obj.frame = value
         return self
 
@@ -162,7 +162,7 @@ class LinConfigurableFrameBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'message_id' is required and cannot be None")
         self._obj.message_id = value
         return self
 

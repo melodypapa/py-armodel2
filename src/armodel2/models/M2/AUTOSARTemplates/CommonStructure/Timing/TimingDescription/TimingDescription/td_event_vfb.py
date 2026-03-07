@@ -114,7 +114,7 @@ class TDEventVfbBuilder(TimingDescriptionEventBuilder):
         self._obj: TDEventVfb = TDEventVfb()
 
 
-    def with_component(self, value: Optional[any (SwComponent)]) -> "TDEventVfbBuilder":
+    def with_component(self, value: Optional[Any]) -> "TDEventVfbBuilder":
         """Set component attribute.
 
         Args:
@@ -124,7 +124,7 @@ class TDEventVfbBuilder(TimingDescriptionEventBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'component' is required and cannot be None")
         self._obj.component = value
         return self
 

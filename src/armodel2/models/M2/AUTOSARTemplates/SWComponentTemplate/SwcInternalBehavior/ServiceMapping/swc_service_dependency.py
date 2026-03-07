@@ -343,7 +343,7 @@ class SwcServiceDependencyBuilder(ServiceDependencyBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'represented_port_group' is required and cannot be None")
         self._obj.represented_port_group = value
         return self
 
@@ -357,7 +357,7 @@ class SwcServiceDependencyBuilder(ServiceDependencyBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_needs' is required and cannot be None")
         self._obj.service_needs = value
         return self
 

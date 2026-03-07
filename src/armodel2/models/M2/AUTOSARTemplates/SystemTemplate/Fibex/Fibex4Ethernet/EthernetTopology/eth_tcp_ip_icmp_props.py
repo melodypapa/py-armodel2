@@ -151,7 +151,7 @@ class EthTcpIpIcmpPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'icmp_v4_props' is required and cannot be None")
         self._obj.icmp_v4_props = value
         return self
 
@@ -165,7 +165,7 @@ class EthTcpIpIcmpPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'icmp_v6_props' is required and cannot be None")
         self._obj.icmp_v6_props = value
         return self
 

@@ -190,7 +190,7 @@ class OffsetTimingConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'maximum' is required and cannot be None")
         self._obj.maximum = value
         return self
 
@@ -204,7 +204,7 @@ class OffsetTimingConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum' is required and cannot be None")
         self._obj.minimum = value
         return self
 
@@ -218,7 +218,7 @@ class OffsetTimingConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'source' is required and cannot be None")
         self._obj.source = value
         return self
 
@@ -232,7 +232,7 @@ class OffsetTimingConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target' is required and cannot be None")
         self._obj.target = value
         return self
 

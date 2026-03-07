@@ -204,7 +204,7 @@ class StreamFilterRuleDataLinkLayerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'destination_mac' is required and cannot be None")
         self._obj.destination_mac = value
         return self
 
@@ -218,7 +218,7 @@ class StreamFilterRuleDataLinkLayerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ether_type' is required and cannot be None")
         self._obj.ether_type = value
         return self
 
@@ -232,7 +232,7 @@ class StreamFilterRuleDataLinkLayerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'source_mac' is required and cannot be None")
         self._obj.source_mac = value
         return self
 
@@ -246,7 +246,7 @@ class StreamFilterRuleDataLinkLayerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vlan_id' is required and cannot be None")
         self._obj.vlan_id = value
         return self
 
@@ -260,7 +260,7 @@ class StreamFilterRuleDataLinkLayerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vlan_priority' is required and cannot be None")
         self._obj.vlan_priority = value
         return self
 

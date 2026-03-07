@@ -147,7 +147,7 @@ class DdsLivelinessBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'liveliness_lease' is required and cannot be None")
         self._obj.liveliness_lease = value
         return self
 
@@ -161,7 +161,7 @@ class DdsLivelinessBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'liveness_kind' is required and cannot be None")
         self._obj.liveness_kind = value
         return self
 

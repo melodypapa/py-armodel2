@@ -149,11 +149,11 @@ class DiagnosticEventToSecurityEventMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_event' is required and cannot be None")
         self._obj.diagnostic_event = value
         return self
 
-    def with_security_event_context(self, value: Optional[any (SecurityEventContext)]) -> "DiagnosticEventToSecurityEventMappingBuilder":
+    def with_security_event_context(self, value: Optional[Any]) -> "DiagnosticEventToSecurityEventMappingBuilder":
         """Set security_event_context attribute.
 
         Args:
@@ -163,7 +163,7 @@ class DiagnosticEventToSecurityEventMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'security_event_context' is required and cannot be None")
         self._obj.security_event_context = value
         return self
 

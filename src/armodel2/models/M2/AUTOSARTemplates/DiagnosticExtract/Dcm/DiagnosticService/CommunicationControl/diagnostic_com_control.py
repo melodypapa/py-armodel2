@@ -149,7 +149,7 @@ class DiagnosticComControlBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'com_control' is required and cannot be None")
         self._obj.com_control = value
         return self
 
@@ -163,7 +163,7 @@ class DiagnosticComControlBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'custom_sub' is required and cannot be None")
         self._obj.custom_sub = value
         return self
 

@@ -147,7 +147,7 @@ class PaginateableBuilder(DocumentViewSelectableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'break' is required and cannot be None")
         setattr(self._obj, 'break', value)
         return self
 
@@ -161,7 +161,7 @@ class PaginateableBuilder(DocumentViewSelectableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'keep_with' is required and cannot be None")
         self._obj.keep_with = value
         return self
 

@@ -211,7 +211,7 @@ class TimingConditionFormulaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timing_argument_argument_instance' is required and cannot be None")
         self._obj.timing_argument_argument_instance = value
         return self
 
@@ -225,7 +225,7 @@ class TimingConditionFormulaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timing_condition' is required and cannot be None")
         self._obj.timing_condition = value
         return self
 
@@ -239,7 +239,7 @@ class TimingConditionFormulaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timing_event' is required and cannot be None")
         self._obj.timing_event = value
         return self
 
@@ -253,11 +253,11 @@ class TimingConditionFormulaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timing_mode' is required and cannot be None")
         self._obj.timing_mode = value
         return self
 
-    def with_timing_variable_instance(self, value: Optional[any (AutosarVariable)]) -> "TimingConditionFormulaBuilder":
+    def with_timing_variable_instance(self, value: Optional[Any]) -> "TimingConditionFormulaBuilder":
         """Set timing_variable_instance attribute.
 
         Args:
@@ -267,7 +267,7 @@ class TimingConditionFormulaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timing_variable_instance' is required and cannot be None")
         self._obj.timing_variable_instance = value
         return self
 

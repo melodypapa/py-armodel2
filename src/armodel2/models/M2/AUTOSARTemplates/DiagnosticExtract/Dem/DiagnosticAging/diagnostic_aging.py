@@ -139,7 +139,7 @@ class DiagnosticAgingBuilder(DiagnosticCommonElementBuilder):
         self._obj: DiagnosticAging = DiagnosticAging()
 
 
-    def with_aging_cycle(self, value: Optional[any (DiagnosticOperation)]) -> "DiagnosticAgingBuilder":
+    def with_aging_cycle(self, value: Optional[Any]) -> "DiagnosticAgingBuilder":
         """Set aging_cycle attribute.
 
         Args:
@@ -149,7 +149,7 @@ class DiagnosticAgingBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'aging_cycle' is required and cannot be None")
         self._obj.aging_cycle = value
         return self
 
@@ -163,7 +163,7 @@ class DiagnosticAgingBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'threshold' is required and cannot be None")
         self._obj.threshold = value
         return self
 

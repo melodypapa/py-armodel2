@@ -229,7 +229,7 @@ class CpSoftwareClusterBinaryManifestDescriptorBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cp_software_cluster' is required and cannot be None")
         self._obj.cp_software_cluster = value
         return self
 
@@ -269,7 +269,7 @@ class CpSoftwareClusterBinaryManifestDescriptorBuilder(ARElementBuilder):
         self._obj.requires = list(items) if items else []
         return self
 
-    def with_resources(self, items: list[any (BinaryManifest)]) -> "CpSoftwareClusterBinaryManifestDescriptorBuilder":
+    def with_resources(self, items: list[Any]) -> "CpSoftwareClusterBinaryManifestDescriptorBuilder":
         """Set resources list attribute.
 
         Args:
@@ -291,7 +291,7 @@ class CpSoftwareClusterBinaryManifestDescriptorBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'software_cluster' is required and cannot be None")
         self._obj.software_cluster = value
         return self
 
@@ -359,7 +359,7 @@ class CpSoftwareClusterBinaryManifestDescriptorBuilder(ARElementBuilder):
         self._obj.requires = []
         return self
 
-    def add_resource(self, item: any (BinaryManifest)) -> "CpSoftwareClusterBinaryManifestDescriptorBuilder":
+    def add_resource(self, item: Any) -> "CpSoftwareClusterBinaryManifestDescriptorBuilder":
         """Add a single item to resources list.
 
         Args:

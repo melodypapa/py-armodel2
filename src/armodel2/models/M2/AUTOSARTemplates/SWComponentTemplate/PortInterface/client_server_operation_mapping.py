@@ -206,7 +206,7 @@ class ClientServerOperationMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'first_operation' is required and cannot be None")
         self._obj.first_operation = value
         return self
 
@@ -220,7 +220,7 @@ class ClientServerOperationMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'first_to_second' is required and cannot be None")
         self._obj.first_to_second = value
         return self
 
@@ -234,7 +234,7 @@ class ClientServerOperationMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'second' is required and cannot be None")
         self._obj.second = value
         return self
 

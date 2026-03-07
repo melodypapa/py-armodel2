@@ -116,7 +116,7 @@ class GlobalTimeEthSlaveBuilder(GlobalTimeSlaveBuilder):
         self._obj: GlobalTimeEthSlave = GlobalTimeEthSlave()
 
 
-    def with_crc_validated(self, value: Optional[any (GlobalTimeCrc)]) -> "GlobalTimeEthSlaveBuilder":
+    def with_crc_validated(self, value: Optional[Any]) -> "GlobalTimeEthSlaveBuilder":
         """Set crc_validated attribute.
 
         Args:
@@ -126,7 +126,7 @@ class GlobalTimeEthSlaveBuilder(GlobalTimeSlaveBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_validated' is required and cannot be None")
         self._obj.crc_validated = value
         return self
 

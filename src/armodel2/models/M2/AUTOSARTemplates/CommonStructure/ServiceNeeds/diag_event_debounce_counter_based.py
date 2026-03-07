@@ -226,7 +226,7 @@ class DiagEventDebounceCounterBasedBuilder(DiagEventDebounceAlgorithmBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'counter_based' is required and cannot be None")
         self._obj.counter_based = value
         return self
 
@@ -240,7 +240,7 @@ class DiagEventDebounceCounterBasedBuilder(DiagEventDebounceAlgorithmBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'counter' is required and cannot be None")
         self._obj.counter = value
         return self
 
@@ -254,7 +254,7 @@ class DiagEventDebounceCounterBasedBuilder(DiagEventDebounceAlgorithmBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'counter_failed' is required and cannot be None")
         self._obj.counter_failed = value
         return self
 
@@ -268,7 +268,7 @@ class DiagEventDebounceCounterBasedBuilder(DiagEventDebounceAlgorithmBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'counter_jump' is required and cannot be None")
         self._obj.counter_jump = value
         return self
 
@@ -282,7 +282,7 @@ class DiagEventDebounceCounterBasedBuilder(DiagEventDebounceAlgorithmBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'counter_jump_up' is required and cannot be None")
         self._obj.counter_jump_up = value
         return self
 
@@ -296,7 +296,7 @@ class DiagEventDebounceCounterBasedBuilder(DiagEventDebounceAlgorithmBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'counter_passed' is required and cannot be None")
         self._obj.counter_passed = value
         return self
 

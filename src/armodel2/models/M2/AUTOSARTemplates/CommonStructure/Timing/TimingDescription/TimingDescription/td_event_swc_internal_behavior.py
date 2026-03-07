@@ -171,11 +171,11 @@ class TDEventSwcInternalBehaviorBuilder(TDEventSwcBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'runnable' is required and cannot be None")
         self._obj.runnable = value
         return self
 
-    def with_td_event_swc_behavior_type(self, value: Optional[any (TDEventSwcInternal)]) -> "TDEventSwcInternalBehaviorBuilder":
+    def with_td_event_swc_behavior_type(self, value: Optional[Any]) -> "TDEventSwcInternalBehaviorBuilder":
         """Set td_event_swc_behavior_type attribute.
 
         Args:
@@ -185,7 +185,7 @@ class TDEventSwcInternalBehaviorBuilder(TDEventSwcBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'td_event_swc_behavior_type' is required and cannot be None")
         self._obj.td_event_swc_behavior_type = value
         return self
 
@@ -199,7 +199,7 @@ class TDEventSwcInternalBehaviorBuilder(TDEventSwcBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'variable_access' is required and cannot be None")
         self._obj.variable_access = value
         return self
 

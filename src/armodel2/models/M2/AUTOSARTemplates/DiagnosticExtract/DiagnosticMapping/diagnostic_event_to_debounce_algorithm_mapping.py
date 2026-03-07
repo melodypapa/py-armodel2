@@ -139,7 +139,7 @@ class DiagnosticEventToDebounceAlgorithmMappingBuilder(DiagnosticMappingBuilder)
         self._obj: DiagnosticEventToDebounceAlgorithmMapping = DiagnosticEventToDebounceAlgorithmMapping()
 
 
-    def with_debounce(self, value: Optional[any (DiagnosticDebounce)]) -> "DiagnosticEventToDebounceAlgorithmMappingBuilder":
+    def with_debounce(self, value: Optional[Any]) -> "DiagnosticEventToDebounceAlgorithmMappingBuilder":
         """Set debounce attribute.
 
         Args:
@@ -149,7 +149,7 @@ class DiagnosticEventToDebounceAlgorithmMappingBuilder(DiagnosticMappingBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'debounce' is required and cannot be None")
         self._obj.debounce = value
         return self
 
@@ -163,7 +163,7 @@ class DiagnosticEventToDebounceAlgorithmMappingBuilder(DiagnosticMappingBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_event' is required and cannot be None")
         self._obj.diagnostic_event = value
         return self
 

@@ -180,7 +180,7 @@ class SenderReceiverToSignalGroupMappingBuilder(DataMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_element' is required and cannot be None")
         self._obj.data_element = value
         return self
 
@@ -194,7 +194,7 @@ class SenderReceiverToSignalGroupMappingBuilder(DataMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'signal_group' is required and cannot be None")
         self._obj.signal_group = value
         return self
 
@@ -208,7 +208,7 @@ class SenderReceiverToSignalGroupMappingBuilder(DataMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'type_mapping' is required and cannot be None")
         self._obj.type_mapping = value
         return self
 

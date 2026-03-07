@@ -183,7 +183,7 @@ class Ipv6FragmentationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ip' is required and cannot be None")
         self._obj.tcp_ip_ip = value
         return self
 
@@ -197,7 +197,7 @@ class Ipv6FragmentationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ip_reassembly_buffer_size' is required and cannot be None")
         self._obj.tcp_ip_ip_reassembly_buffer_size = value
         return self
 
@@ -211,7 +211,7 @@ class Ipv6FragmentationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ip_tx' is required and cannot be None")
         self._obj.tcp_ip_ip_tx = value
         return self
 
@@ -225,7 +225,7 @@ class Ipv6FragmentationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ip_tx_fragment_buffer_size' is required and cannot be None")
         self._obj.tcp_ip_ip_tx_fragment_buffer_size = value
         return self
 

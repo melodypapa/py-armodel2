@@ -177,7 +177,7 @@ class SwAxisGroupedBuilder(SwCalprmAxisTypePropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'shared_axis_type' is required and cannot be None")
         self._obj.shared_axis_type = value
         return self
 
@@ -191,7 +191,7 @@ class SwAxisGroupedBuilder(SwCalprmAxisTypePropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_axis_index' is required and cannot be None")
         self._obj.sw_axis_index = value
         return self
 
@@ -205,7 +205,7 @@ class SwAxisGroupedBuilder(SwCalprmAxisTypePropsBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_calprm_ref_proxy' is required and cannot be None")
         self._obj.sw_calprm_ref_proxy = value
         return self
 

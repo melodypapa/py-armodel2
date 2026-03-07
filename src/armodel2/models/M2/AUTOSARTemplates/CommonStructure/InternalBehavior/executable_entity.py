@@ -321,7 +321,7 @@ class ExecutableEntityBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum_start_interval' is required and cannot be None")
         self._obj.minimum_start_interval = value
         return self
 
@@ -335,7 +335,7 @@ class ExecutableEntityBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'reentrancy_level' is required and cannot be None")
         self._obj.reentrancy_level = value
         return self
 
@@ -361,7 +361,7 @@ class ExecutableEntityBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_addr_method' is required and cannot be None")
         self._obj.sw_addr_method = value
         return self
 

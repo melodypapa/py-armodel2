@@ -191,7 +191,7 @@ class DiagnosticMemoryIdentifierBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'access' is required and cannot be None")
         self._obj.access = value
         return self
 
@@ -205,7 +205,7 @@ class DiagnosticMemoryIdentifierBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'id' is required and cannot be None")
         self._obj.id = value
         return self
 
@@ -219,7 +219,7 @@ class DiagnosticMemoryIdentifierBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'memory_high' is required and cannot be None")
         self._obj.memory_high = value
         return self
 
@@ -233,7 +233,7 @@ class DiagnosticMemoryIdentifierBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'memory_low' is required and cannot be None")
         self._obj.memory_low = value
         return self
 

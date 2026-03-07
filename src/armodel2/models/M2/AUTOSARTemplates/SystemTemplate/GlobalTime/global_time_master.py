@@ -211,7 +211,7 @@ class GlobalTimeMasterBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'communication_connector' is required and cannot be None")
         self._obj.communication_connector = value
         return self
 
@@ -225,7 +225,7 @@ class GlobalTimeMasterBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'icv_secured' is required and cannot be None")
         self._obj.icv_secured = value
         return self
 
@@ -239,7 +239,7 @@ class GlobalTimeMasterBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'immediate' is required and cannot be None")
         self._obj.immediate = value
         return self
 
@@ -253,7 +253,7 @@ class GlobalTimeMasterBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_system_wide' is required and cannot be None")
         self._obj.is_system_wide = value
         return self
 
@@ -267,7 +267,7 @@ class GlobalTimeMasterBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sync_period' is required and cannot be None")
         self._obj.sync_period = value
         return self
 

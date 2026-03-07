@@ -153,7 +153,7 @@ class PassThroughSwConnectorBuilder(SwConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'provided_outer' is required and cannot be None")
         self._obj.provided_outer = value
         return self
 
@@ -167,7 +167,7 @@ class PassThroughSwConnectorBuilder(SwConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'required_outer' is required and cannot be None")
         self._obj.required_outer = value
         return self
 

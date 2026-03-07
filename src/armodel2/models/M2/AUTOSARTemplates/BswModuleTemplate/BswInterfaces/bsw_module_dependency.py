@@ -155,7 +155,7 @@ class BswModuleDependencyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_module_id' is required and cannot be None")
         self._obj.target_module_id = value
         return self
 
@@ -169,7 +169,7 @@ class BswModuleDependencyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_module' is required and cannot be None")
         self._obj.target_module = value
         return self
 

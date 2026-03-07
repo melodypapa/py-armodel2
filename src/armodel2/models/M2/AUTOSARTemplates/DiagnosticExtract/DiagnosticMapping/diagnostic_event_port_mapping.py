@@ -177,7 +177,7 @@ class DiagnosticEventPortMappingBuilder(DiagnosticSwMappingBuilder):
         self._obj: DiagnosticEventPortMapping = DiagnosticEventPortMapping()
 
 
-    def with_bsw_service(self, value: Optional[any (BswService)]) -> "DiagnosticEventPortMappingBuilder":
+    def with_bsw_service(self, value: Optional[Any]) -> "DiagnosticEventPortMappingBuilder":
         """Set bsw_service attribute.
 
         Args:
@@ -187,7 +187,7 @@ class DiagnosticEventPortMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_service' is required and cannot be None")
         self._obj.bsw_service = value
         return self
 
@@ -201,11 +201,11 @@ class DiagnosticEventPortMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_event' is required and cannot be None")
         self._obj.diagnostic_event = value
         return self
 
-    def with_swc_flat_service(self, value: Optional[any (SwcService)]) -> "DiagnosticEventPortMappingBuilder":
+    def with_swc_flat_service(self, value: Optional[Any]) -> "DiagnosticEventPortMappingBuilder":
         """Set swc_flat_service attribute.
 
         Args:
@@ -215,11 +215,11 @@ class DiagnosticEventPortMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'swc_flat_service' is required and cannot be None")
         self._obj.swc_flat_service = value
         return self
 
-    def with_swc_service(self, value: Optional[any (SwcService)]) -> "DiagnosticEventPortMappingBuilder":
+    def with_swc_service(self, value: Optional[Any]) -> "DiagnosticEventPortMappingBuilder":
         """Set swc_service attribute.
 
         Args:
@@ -229,7 +229,7 @@ class DiagnosticEventPortMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'swc_service' is required and cannot be None")
         self._obj.swc_service = value
         return self
 

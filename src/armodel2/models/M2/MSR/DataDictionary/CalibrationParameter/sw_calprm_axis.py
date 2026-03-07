@@ -219,7 +219,7 @@ class SwCalprmAxisBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'category' is required and cannot be None")
         self._obj.category = value
         return self
 
@@ -233,7 +233,7 @@ class SwCalprmAxisBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'display_format_string' is required and cannot be None")
         self._obj.display_format_string = value
         return self
 
@@ -247,7 +247,7 @@ class SwCalprmAxisBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_axis_index' is required and cannot be None")
         self._obj.sw_axis_index = value
         return self
 
@@ -261,7 +261,7 @@ class SwCalprmAxisBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_calibration_access' is required and cannot be None")
         self._obj.sw_calibration_access = value
         return self
 
@@ -275,7 +275,7 @@ class SwCalprmAxisBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_calprm_axis' is required and cannot be None")
         self._obj.sw_calprm_axis = value
         return self
 

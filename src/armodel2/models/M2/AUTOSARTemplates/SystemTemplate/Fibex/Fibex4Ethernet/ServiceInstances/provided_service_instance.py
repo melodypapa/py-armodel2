@@ -394,7 +394,7 @@ class ProvidedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'auto_available' is required and cannot be None")
         self._obj.auto_available = value
         return self
 
@@ -420,7 +420,7 @@ class ProvidedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'instance' is required and cannot be None")
         self._obj.instance = value
         return self
 
@@ -434,7 +434,7 @@ class ProvidedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'load_balancing' is required and cannot be None")
         self._obj.load_balancing = value
         return self
 
@@ -448,7 +448,7 @@ class ProvidedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'local_unicast' is required and cannot be None")
         self._obj.local_unicast = value
         return self
 
@@ -462,7 +462,7 @@ class ProvidedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minor_version' is required and cannot be None")
         self._obj.minor_version = value
         return self
 
@@ -476,7 +476,7 @@ class ProvidedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
@@ -504,7 +504,7 @@ class ProvidedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
         self._obj.remote_unicasts = list(items) if items else []
         return self
 
-    def with_sd_server_config(self, value: Optional[any (SdServerConfig)]) -> "ProvidedServiceInstanceBuilder":
+    def with_sd_server_config(self, value: Optional[Any]) -> "ProvidedServiceInstanceBuilder":
         """Set sd_server_config attribute.
 
         Args:
@@ -514,11 +514,11 @@ class ProvidedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sd_server_config' is required and cannot be None")
         self._obj.sd_server_config = value
         return self
 
-    def with_sd_server_timer(self, value: Optional[any (SomeipSdServer)]) -> "ProvidedServiceInstanceBuilder":
+    def with_sd_server_timer(self, value: Optional[Any]) -> "ProvidedServiceInstanceBuilder":
         """Set sd_server_timer attribute.
 
         Args:
@@ -528,7 +528,7 @@ class ProvidedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sd_server_timer' is required and cannot be None")
         self._obj.sd_server_timer = value
         return self
 
@@ -542,7 +542,7 @@ class ProvidedServiceInstanceBuilder(AbstractServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_identifier' is required and cannot be None")
         self._obj.service_identifier = value
         return self
 

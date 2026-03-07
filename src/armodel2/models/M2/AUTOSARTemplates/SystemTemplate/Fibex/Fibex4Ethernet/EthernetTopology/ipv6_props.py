@@ -169,7 +169,7 @@ class Ipv6PropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dhcp_props' is required and cannot be None")
         self._obj.dhcp_props = value
         return self
 
@@ -183,7 +183,7 @@ class Ipv6PropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'fragmentation' is required and cannot be None")
         self._obj.fragmentation = value
         return self
 
@@ -197,7 +197,7 @@ class Ipv6PropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ndp_props' is required and cannot be None")
         self._obj.ndp_props = value
         return self
 

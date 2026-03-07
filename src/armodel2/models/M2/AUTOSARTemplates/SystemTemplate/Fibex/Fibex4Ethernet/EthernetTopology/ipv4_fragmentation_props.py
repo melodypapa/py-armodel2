@@ -165,7 +165,7 @@ class Ipv4FragmentationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ip' is required and cannot be None")
         self._obj.tcp_ip_ip = value
         return self
 
@@ -179,7 +179,7 @@ class Ipv4FragmentationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ip_num' is required and cannot be None")
         self._obj.tcp_ip_ip_num = value
         return self
 
@@ -193,7 +193,7 @@ class Ipv4FragmentationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ip_reass' is required and cannot be None")
         self._obj.tcp_ip_ip_reass = value
         return self
 

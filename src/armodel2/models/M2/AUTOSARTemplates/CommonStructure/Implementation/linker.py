@@ -187,7 +187,7 @@ class LinkerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'name' is required and cannot be None")
         self._obj.name = value
         return self
 
@@ -201,7 +201,7 @@ class LinkerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'options' is required and cannot be None")
         self._obj.options = value
         return self
 
@@ -215,7 +215,7 @@ class LinkerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vendor' is required and cannot be None")
         self._obj.vendor = value
         return self
 
@@ -229,7 +229,7 @@ class LinkerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'version' is required and cannot be None")
         self._obj.version = value
         return self
 

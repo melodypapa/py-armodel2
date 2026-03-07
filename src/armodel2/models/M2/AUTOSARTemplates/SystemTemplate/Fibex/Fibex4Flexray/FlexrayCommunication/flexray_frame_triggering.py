@@ -200,7 +200,7 @@ class FlexrayFrameTriggeringBuilder(FrameTriggeringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'allow_dynamic' is required and cannot be None")
         self._obj.allow_dynamic = value
         return self
 
@@ -214,11 +214,11 @@ class FlexrayFrameTriggeringBuilder(FrameTriggeringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'message_id' is required and cannot be None")
         self._obj.message_id = value
         return self
 
-    def with_payload_preamble(self, value: Optional[any (BooleanIndicator)]) -> "FlexrayFrameTriggeringBuilder":
+    def with_payload_preamble(self, value: Optional[Any]) -> "FlexrayFrameTriggeringBuilder":
         """Set payload_preamble attribute.
 
         Args:
@@ -228,7 +228,7 @@ class FlexrayFrameTriggeringBuilder(FrameTriggeringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'payload_preamble' is required and cannot be None")
         self._obj.payload_preamble = value
         return self
 

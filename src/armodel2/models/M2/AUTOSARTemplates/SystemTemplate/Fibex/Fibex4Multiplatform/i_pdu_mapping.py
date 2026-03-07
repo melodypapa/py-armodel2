@@ -211,7 +211,7 @@ class IPduMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'introduction' is required and cannot be None")
         self._obj.introduction = value
         return self
 
@@ -225,7 +225,7 @@ class IPduMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdu_max_length' is required and cannot be None")
         self._obj.pdu_max_length = value
         return self
 
@@ -239,7 +239,7 @@ class IPduMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdur_tp_chunk' is required and cannot be None")
         self._obj.pdur_tp_chunk = value
         return self
 
@@ -253,7 +253,7 @@ class IPduMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'source_i_pdu' is required and cannot be None")
         self._obj.source_i_pdu = value
         return self
 
@@ -267,7 +267,7 @@ class IPduMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_i_pdu' is required and cannot be None")
         self._obj.target_i_pdu = value
         return self
 

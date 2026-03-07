@@ -3505,7 +3505,7 @@ class SdgBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'gid' is required and cannot be None")
         self._obj.gid = value
         return self
 
@@ -3519,7 +3519,7 @@ class SdgBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sdg_caption' is required and cannot be None")
         self._obj.sdg_caption = value
         return self
 
@@ -3533,7 +3533,7 @@ class SdgBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sd' is required and cannot be None")
         self._obj.sd = value
         return self
 
@@ -3547,7 +3547,7 @@ class SdgBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sdf' is required and cannot be None")
         self._obj.sdf = value
         return self
 
@@ -3561,7 +3561,7 @@ class SdgBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sdg' is required and cannot be None")
         self._obj.sdg = value
         return self
 
@@ -3575,7 +3575,7 @@ class SdgBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sdx' is required and cannot be None")
         self._obj.sdx = value
         return self
 
@@ -3589,7 +3589,7 @@ class SdgBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sdxf' is required and cannot be None")
         self._obj.sdxf = value
         return self
 

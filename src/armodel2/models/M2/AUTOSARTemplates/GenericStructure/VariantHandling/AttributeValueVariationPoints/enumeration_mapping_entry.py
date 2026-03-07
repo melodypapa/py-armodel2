@@ -145,7 +145,7 @@ class EnumerationMappingEntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'enumerator' is required and cannot be None")
         self._obj.enumerator = value
         return self
 
@@ -159,7 +159,7 @@ class EnumerationMappingEntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'numerical_value' is required and cannot be None")
         self._obj.numerical_value = value
         return self
 

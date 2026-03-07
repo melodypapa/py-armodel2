@@ -344,7 +344,7 @@ class EntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'align' is required and cannot be None")
         self._obj.align = value
         return self
 
@@ -358,7 +358,7 @@ class EntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bgcolor' is required and cannot be None")
         self._obj.bgcolor = value
         return self
 
@@ -372,7 +372,7 @@ class EntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'colname' is required and cannot be None")
         self._obj.colname = value
         return self
 
@@ -386,7 +386,7 @@ class EntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'colsep' is required and cannot be None")
         self._obj.colsep = value
         return self
 
@@ -400,7 +400,7 @@ class EntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'entry_contents' is required and cannot be None")
         self._obj.entry_contents = value
         return self
 
@@ -414,7 +414,7 @@ class EntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'morerows' is required and cannot be None")
         self._obj.morerows = value
         return self
 
@@ -428,7 +428,7 @@ class EntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nameend' is required and cannot be None")
         self._obj.nameend = value
         return self
 
@@ -442,7 +442,7 @@ class EntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'namest' is required and cannot be None")
         self._obj.namest = value
         return self
 
@@ -456,7 +456,7 @@ class EntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rotate' is required and cannot be None")
         self._obj.rotate = value
         return self
 
@@ -470,7 +470,7 @@ class EntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rowsep' is required and cannot be None")
         self._obj.rowsep = value
         return self
 
@@ -484,7 +484,7 @@ class EntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'spanname' is required and cannot be None")
         self._obj.spanname = value
         return self
 
@@ -498,7 +498,7 @@ class EntryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'valign' is required and cannot be None")
         self._obj.valign = value
         return self
 

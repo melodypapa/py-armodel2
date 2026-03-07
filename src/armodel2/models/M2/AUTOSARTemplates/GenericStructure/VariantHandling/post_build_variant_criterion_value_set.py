@@ -116,7 +116,7 @@ class PostBuildVariantCriterionValueSetBuilder(ARElementBuilder):
         self._obj: PostBuildVariantCriterionValueSet = PostBuildVariantCriterionValueSet()
 
 
-    def with_post_build_variants(self, items: list[any (PostBuildVariant)]) -> "PostBuildVariantCriterionValueSetBuilder":
+    def with_post_build_variants(self, items: list[Any]) -> "PostBuildVariantCriterionValueSetBuilder":
         """Set post_build_variants list attribute.
 
         Args:
@@ -129,7 +129,7 @@ class PostBuildVariantCriterionValueSetBuilder(ARElementBuilder):
         return self
 
 
-    def add_post_build_variant(self, item: any (PostBuildVariant)) -> "PostBuildVariantCriterionValueSetBuilder":
+    def add_post_build_variant(self, item: Any) -> "PostBuildVariantCriterionValueSetBuilder":
         """Add a single item to post_build_variants list.
 
         Args:

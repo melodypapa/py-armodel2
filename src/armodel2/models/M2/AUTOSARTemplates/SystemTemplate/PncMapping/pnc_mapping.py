@@ -415,7 +415,7 @@ class PncMappingBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ident' is required and cannot be None")
         self._obj.ident = value
         return self
 
@@ -465,7 +465,7 @@ class PncMappingBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pnc_identifier' is required and cannot be None")
         self._obj.pnc_identifier = value
         return self
 
@@ -491,7 +491,7 @@ class PncMappingBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pnc_wakeup' is required and cannot be None")
         self._obj.pnc_wakeup = value
         return self
 
@@ -517,7 +517,7 @@ class PncMappingBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 

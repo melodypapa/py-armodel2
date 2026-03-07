@@ -177,7 +177,7 @@ class DltApplicationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'application' is required and cannot be None")
         self._obj.application = value
         return self
 
@@ -191,7 +191,7 @@ class DltApplicationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'application_id' is required and cannot be None")
         self._obj.application_id = value
         return self
 

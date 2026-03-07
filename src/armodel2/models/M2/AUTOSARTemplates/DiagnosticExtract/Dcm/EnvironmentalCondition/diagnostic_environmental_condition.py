@@ -133,7 +133,7 @@ class DiagnosticEnvironmentalConditionBuilder(DiagnosticCommonElementBuilder):
         self._obj: DiagnosticEnvironmentalCondition = DiagnosticEnvironmentalCondition()
 
 
-    def with_formula(self, value: Optional[any (DiagnosticEnvCondition)]) -> "DiagnosticEnvironmentalConditionBuilder":
+    def with_formula(self, value: Optional[Any]) -> "DiagnosticEnvironmentalConditionBuilder":
         """Set formula attribute.
 
         Args:
@@ -143,11 +143,11 @@ class DiagnosticEnvironmentalConditionBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'formula' is required and cannot be None")
         self._obj.formula = value
         return self
 
-    def with_mode_elements(self, items: list[any (DiagnosticEnvMode)]) -> "DiagnosticEnvironmentalConditionBuilder":
+    def with_mode_elements(self, items: list[Any]) -> "DiagnosticEnvironmentalConditionBuilder":
         """Set mode_elements list attribute.
 
         Args:
@@ -160,7 +160,7 @@ class DiagnosticEnvironmentalConditionBuilder(DiagnosticCommonElementBuilder):
         return self
 
 
-    def add_mode_element(self, item: any (DiagnosticEnvMode)) -> "DiagnosticEnvironmentalConditionBuilder":
+    def add_mode_element(self, item: Any) -> "DiagnosticEnvironmentalConditionBuilder":
         """Add a single item to mode_elements list.
 
         Args:

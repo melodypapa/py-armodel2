@@ -213,7 +213,7 @@ class NetworkEndpointBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'fully_qualified' is required and cannot be None")
         self._obj.fully_qualified = value
         return self
 
@@ -227,7 +227,7 @@ class NetworkEndpointBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'infrastructure_services' is required and cannot be None")
         self._obj.infrastructure_services = value
         return self
 
@@ -241,7 +241,7 @@ class NetworkEndpointBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ip_sec_config' is required and cannot be None")
         self._obj.ip_sec_config = value
         return self
 
@@ -267,7 +267,7 @@ class NetworkEndpointBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 

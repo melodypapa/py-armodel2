@@ -167,7 +167,7 @@ class CouplingPortCreditBasedShaperBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'idle_slope' is required and cannot be None")
         self._obj.idle_slope = value
         return self
 
@@ -181,7 +181,7 @@ class CouplingPortCreditBasedShaperBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lower_boundary' is required and cannot be None")
         self._obj.lower_boundary = value
         return self
 
@@ -195,7 +195,7 @@ class CouplingPortCreditBasedShaperBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'upper_boundary' is required and cannot be None")
         self._obj.upper_boundary = value
         return self
 

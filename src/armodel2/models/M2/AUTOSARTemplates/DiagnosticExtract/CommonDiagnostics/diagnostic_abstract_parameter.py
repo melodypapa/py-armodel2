@@ -164,7 +164,7 @@ class DiagnosticAbstractParameterBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bit_offset' is required and cannot be None")
         self._obj.bit_offset = value
         return self
 
@@ -178,7 +178,7 @@ class DiagnosticAbstractParameterBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_element' is required and cannot be None")
         self._obj.data_element = value
         return self
 
@@ -192,7 +192,7 @@ class DiagnosticAbstractParameterBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'parameter_size' is required and cannot be None")
         self._obj.parameter_size = value
         return self
 

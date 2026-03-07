@@ -215,7 +215,7 @@ class BaseTypeDirectDefinitionBuilder(BaseTypeDefinitionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base_type_encoding' is required and cannot be None")
         self._obj.base_type_encoding = value
         return self
 
@@ -229,7 +229,7 @@ class BaseTypeDirectDefinitionBuilder(BaseTypeDefinitionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base_type_size' is required and cannot be None")
         self._obj.base_type_size = value
         return self
 
@@ -243,7 +243,7 @@ class BaseTypeDirectDefinitionBuilder(BaseTypeDefinitionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'byte_order' is required and cannot be None")
         self._obj.byte_order = value
         return self
 
@@ -257,7 +257,7 @@ class BaseTypeDirectDefinitionBuilder(BaseTypeDefinitionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mem_alignment' is required and cannot be None")
         self._obj.mem_alignment = value
         return self
 
@@ -271,7 +271,7 @@ class BaseTypeDirectDefinitionBuilder(BaseTypeDefinitionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'native' is required and cannot be None")
         self._obj.native = value
         return self
 

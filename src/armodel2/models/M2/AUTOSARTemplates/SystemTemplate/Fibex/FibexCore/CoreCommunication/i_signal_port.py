@@ -215,7 +215,7 @@ class ISignalPortBuilder(CommConnectorPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_filter' is required and cannot be None")
         self._obj.data_filter = value
         return self
 
@@ -229,7 +229,7 @@ class ISignalPortBuilder(CommConnectorPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dds_qos_profile' is required and cannot be None")
         self._obj.dds_qos_profile = value
         return self
 
@@ -243,7 +243,7 @@ class ISignalPortBuilder(CommConnectorPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'first_timeout' is required and cannot be None")
         self._obj.first_timeout = value
         return self
 
@@ -257,7 +257,7 @@ class ISignalPortBuilder(CommConnectorPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'handle_invalid_enum' is required and cannot be None")
         self._obj.handle_invalid_enum = value
         return self
 
@@ -271,7 +271,7 @@ class ISignalPortBuilder(CommConnectorPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout' is required and cannot be None")
         self._obj.timeout = value
         return self
 

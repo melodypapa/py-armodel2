@@ -237,7 +237,7 @@ class ISignalToIPduMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_signal' is required and cannot be None")
         self._obj.i_signal = value
         return self
 
@@ -251,7 +251,7 @@ class ISignalToIPduMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_signal_group' is required and cannot be None")
         self._obj.i_signal_group = value
         return self
 
@@ -265,7 +265,7 @@ class ISignalToIPduMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'packing_byte_order' is required and cannot be None")
         self._obj.packing_byte_order = value
         return self
 
@@ -279,7 +279,7 @@ class ISignalToIPduMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'start_position' is required and cannot be None")
         self._obj.start_position = value
         return self
 
@@ -293,7 +293,7 @@ class ISignalToIPduMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transfer_property' is required and cannot be None")
         self._obj.transfer_property = value
         return self
 
@@ -307,7 +307,7 @@ class ISignalToIPduMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'update_indication_bit_position' is required and cannot be None")
         self._obj.update_indication_bit_position = value
         return self
 

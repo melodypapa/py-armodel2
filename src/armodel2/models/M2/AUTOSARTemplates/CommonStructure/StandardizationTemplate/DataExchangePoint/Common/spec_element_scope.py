@@ -127,7 +127,7 @@ class SpecElementScopeBuilder(SpecElementReferenceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'in_scope' is required and cannot be None")
         self._obj.in_scope = value
         return self
 

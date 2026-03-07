@@ -757,7 +757,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'accepted' is required and cannot be None")
         self._obj.accepted = value
         return self
 
@@ -771,7 +771,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'allow_halt_due_to' is required and cannot be None")
         self._obj.allow_halt_due_to = value
         return self
 
@@ -785,7 +785,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'allow_passive_to' is required and cannot be None")
         self._obj.allow_passive_to = value
         return self
 
@@ -799,7 +799,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cluster_drift' is required and cannot be None")
         self._obj.cluster_drift = value
         return self
 
@@ -813,7 +813,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'decoding' is required and cannot be None")
         self._obj.decoding = value
         return self
 
@@ -827,7 +827,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'delay' is required and cannot be None")
         self._obj.delay = value
         return self
 
@@ -841,7 +841,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'external_sync' is required and cannot be None")
         self._obj.external_sync = value
         return self
 
@@ -855,7 +855,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'extern_offset' is required and cannot be None")
         self._obj.extern_offset = value
         return self
 
@@ -869,7 +869,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'extern_rate' is required and cannot be None")
         self._obj.extern_rate = value
         return self
 
@@ -883,11 +883,11 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'fall_back_internal' is required and cannot be None")
         self._obj.fall_back_internal = value
         return self
 
-    def with_flexray_fifoes(self, items: list[any (FlexrayFifo)]) -> "FlexrayCommunicationControllerBuilder":
+    def with_flexray_fifoes(self, items: list[Any]) -> "FlexrayCommunicationControllerBuilder":
         """Set flexray_fifoes list attribute.
 
         Args:
@@ -909,7 +909,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'key_slot_id' is required and cannot be None")
         self._obj.key_slot_id = value
         return self
 
@@ -923,7 +923,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'key_slot_only' is required and cannot be None")
         self._obj.key_slot_only = value
         return self
 
@@ -937,7 +937,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'key_slot_used_for' is required and cannot be None")
         self._obj.key_slot_used_for = value
         return self
 
@@ -951,7 +951,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'latest_tx' is required and cannot be None")
         self._obj.latest_tx = value
         return self
 
@@ -965,7 +965,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'listen_timeout' is required and cannot be None")
         self._obj.listen_timeout = value
         return self
 
@@ -979,7 +979,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'macro_initial' is required and cannot be None")
         self._obj.macro_initial = value
         return self
 
@@ -993,7 +993,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'maximum' is required and cannot be None")
         self._obj.maximum = value
         return self
 
@@ -1007,7 +1007,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'micro_initial' is required and cannot be None")
         self._obj.micro_initial = value
         return self
 
@@ -1021,7 +1021,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'micro_per_cycle' is required and cannot be None")
         self._obj.micro_per_cycle = value
         return self
 
@@ -1035,7 +1035,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'microtick' is required and cannot be None")
         self._obj.microtick = value
         return self
 
@@ -1049,7 +1049,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_vector_early' is required and cannot be None")
         self._obj.nm_vector_early = value
         return self
 
@@ -1063,7 +1063,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'offset_correction' is required and cannot be None")
         self._obj.offset_correction = value
         return self
 
@@ -1077,7 +1077,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rate_correction' is required and cannot be None")
         self._obj.rate_correction = value
         return self
 
@@ -1091,7 +1091,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'samples_per_microtick' is required and cannot be None")
         self._obj.samples_per_microtick = value
         return self
 
@@ -1105,7 +1105,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'second_key_slot' is required and cannot be None")
         self._obj.second_key_slot = value
         return self
 
@@ -1119,7 +1119,7 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'two_key_slot' is required and cannot be None")
         self._obj.two_key_slot = value
         return self
 
@@ -1133,12 +1133,12 @@ class FlexrayCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wake_up_pattern' is required and cannot be None")
         self._obj.wake_up_pattern = value
         return self
 
 
-    def add_flexray_fifo(self, item: any (FlexrayFifo)) -> "FlexrayCommunicationControllerBuilder":
+    def add_flexray_fifo(self, item: Any) -> "FlexrayCommunicationControllerBuilder":
         """Add a single item to flexray_fifoes list.
 
         Args:

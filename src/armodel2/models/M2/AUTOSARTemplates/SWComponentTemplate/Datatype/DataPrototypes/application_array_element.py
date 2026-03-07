@@ -200,7 +200,7 @@ class ApplicationArrayElementBuilder(ApplicationCompositeElementDataPrototypeBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'array_size_handling' is required and cannot be None")
         self._obj.array_size_handling = value
         return self
 
@@ -214,7 +214,7 @@ class ApplicationArrayElementBuilder(ApplicationCompositeElementDataPrototypeBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'array_size_semantics' is required and cannot be None")
         self._obj.array_size_semantics = value
         return self
 
@@ -228,7 +228,7 @@ class ApplicationArrayElementBuilder(ApplicationCompositeElementDataPrototypeBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'index_data_type' is required and cannot be None")
         self._obj.index_data_type = value
         return self
 
@@ -242,7 +242,7 @@ class ApplicationArrayElementBuilder(ApplicationCompositeElementDataPrototypeBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of_elements' is required and cannot be None")
         self._obj.max_number_of_elements = value
         return self
 

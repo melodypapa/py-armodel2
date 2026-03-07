@@ -168,7 +168,7 @@ class DynamicPartAlternativeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initial_dynamic' is required and cannot be None")
         self._obj.initial_dynamic = value
         return self
 
@@ -182,7 +182,7 @@ class DynamicPartAlternativeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_pdu' is required and cannot be None")
         self._obj.i_pdu = value
         return self
 
@@ -196,7 +196,7 @@ class DynamicPartAlternativeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'selector_field' is required and cannot be None")
         self._obj.selector_field = value
         return self
 

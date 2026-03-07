@@ -147,7 +147,7 @@ class IndentSampleBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'item_label_pos_enum' is required and cannot be None")
         self._obj.item_label_pos_enum = value
         return self
 
@@ -161,7 +161,7 @@ class IndentSampleBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'l2' is required and cannot be None")
         self._obj.l2 = value
         return self
 

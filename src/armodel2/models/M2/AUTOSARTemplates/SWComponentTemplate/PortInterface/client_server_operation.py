@@ -199,7 +199,7 @@ class ClientServerOperationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diag_arg_integrity' is required and cannot be None")
         self._obj.diag_arg_integrity = value
         return self
 

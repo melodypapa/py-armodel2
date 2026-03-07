@@ -152,7 +152,7 @@ class RTriggerInAtomicSwcInstanceRefBuilder(TriggerInAtomicSwcInstanceRefBuilder
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_r_port' is required and cannot be None")
         self._obj.context_r_port = value
         return self
 
@@ -166,7 +166,7 @@ class RTriggerInAtomicSwcInstanceRefBuilder(TriggerInAtomicSwcInstanceRefBuilder
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_trigger' is required and cannot be None")
         self._obj.target_trigger = value
         return self
 

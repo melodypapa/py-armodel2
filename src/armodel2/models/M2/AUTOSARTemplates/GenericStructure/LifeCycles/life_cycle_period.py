@@ -164,7 +164,7 @@ class LifeCyclePeriodBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ar_release_version' is required and cannot be None")
         self._obj.ar_release_version = value
         return self
 
@@ -178,7 +178,7 @@ class LifeCyclePeriodBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'date' is required and cannot be None")
         self._obj.date = value
         return self
 
@@ -192,7 +192,7 @@ class LifeCyclePeriodBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'product_release' is required and cannot be None")
         self._obj.product_release = value
         return self
 

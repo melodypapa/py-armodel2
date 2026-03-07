@@ -154,7 +154,7 @@ class RoleBasedPortAssignmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'port_prototype' is required and cannot be None")
         self._obj.port_prototype = value
         return self
 
@@ -168,7 +168,7 @@ class RoleBasedPortAssignmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'role' is required and cannot be None")
         self._obj.role = value
         return self
 

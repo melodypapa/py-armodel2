@@ -148,7 +148,7 @@ class CyclicTimingBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_offset' is required and cannot be None")
         self._obj.time_offset = value
         return self
 
@@ -162,7 +162,7 @@ class CyclicTimingBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_period' is required and cannot be None")
         self._obj.time_period = value
         return self
 

@@ -176,7 +176,7 @@ class NoteBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'label' is required and cannot be None")
         self._obj.label = value
         return self
 
@@ -190,7 +190,7 @@ class NoteBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'note_text' is required and cannot be None")
         self._obj.note_text = value
         return self
 
@@ -204,7 +204,7 @@ class NoteBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'note_type' is required and cannot be None")
         self._obj.note_type = value
         return self
 

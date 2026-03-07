@@ -220,7 +220,7 @@ class LinTpNodeBuilder(IdentifiableBuilder):
         self._obj: LinTpNode = LinTpNode()
 
 
-    def with_connector(self, value: Optional[any (Communication)]) -> "LinTpNodeBuilder":
+    def with_connector(self, value: Optional[Any]) -> "LinTpNodeBuilder":
         """Set connector attribute.
 
         Args:
@@ -230,7 +230,7 @@ class LinTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'connector' is required and cannot be None")
         self._obj.connector = value
         return self
 
@@ -244,7 +244,7 @@ class LinTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'drop_not' is required and cannot be None")
         self._obj.drop_not = value
         return self
 
@@ -258,7 +258,7 @@ class LinTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of' is required and cannot be None")
         self._obj.max_number_of = value
         return self
 
@@ -272,7 +272,7 @@ class LinTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'p2_max' is required and cannot be None")
         self._obj.p2_max = value
         return self
 
@@ -286,7 +286,7 @@ class LinTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'p2_timing' is required and cannot be None")
         self._obj.p2_timing = value
         return self
 
@@ -300,7 +300,7 @@ class LinTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tp_address' is required and cannot be None")
         self._obj.tp_address = value
         return self
 

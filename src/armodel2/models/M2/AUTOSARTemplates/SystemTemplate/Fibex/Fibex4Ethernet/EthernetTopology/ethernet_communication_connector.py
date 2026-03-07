@@ -211,7 +211,7 @@ class EthernetCommunicationConnectorBuilder(CommunicationConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'eth_ip_props' is required and cannot be None")
         self._obj.eth_ip_props = value
         return self
 
@@ -225,7 +225,7 @@ class EthernetCommunicationConnectorBuilder(CommunicationConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'maximum' is required and cannot be None")
         self._obj.maximum = value
         return self
 
@@ -239,7 +239,7 @@ class EthernetCommunicationConnectorBuilder(CommunicationConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'neighbor_cache' is required and cannot be None")
         self._obj.neighbor_cache = value
         return self
 
@@ -253,7 +253,7 @@ class EthernetCommunicationConnectorBuilder(CommunicationConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'path_mtu' is required and cannot be None")
         self._obj.path_mtu = value
         return self
 
@@ -267,7 +267,7 @@ class EthernetCommunicationConnectorBuilder(CommunicationConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'path_mtu_timeout' is required and cannot be None")
         self._obj.path_mtu_timeout = value
         return self
 

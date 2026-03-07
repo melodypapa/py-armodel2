@@ -168,7 +168,7 @@ class GeneralAnnotationBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'annotation' is required and cannot be None")
         self._obj.annotation = value
         return self
 
@@ -182,7 +182,7 @@ class GeneralAnnotationBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'annotation_text' is required and cannot be None")
         self._obj.annotation_text = value
         return self
 
@@ -196,7 +196,7 @@ class GeneralAnnotationBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'label' is required and cannot be None")
         self._obj.label = value
         return self
 

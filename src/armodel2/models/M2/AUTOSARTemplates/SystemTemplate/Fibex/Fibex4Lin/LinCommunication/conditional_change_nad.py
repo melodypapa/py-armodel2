@@ -206,7 +206,7 @@ class ConditionalChangeNadBuilder(LinConfigurationEntryBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'byte' is required and cannot be None")
         self._obj.byte = value
         return self
 
@@ -220,7 +220,7 @@ class ConditionalChangeNadBuilder(LinConfigurationEntryBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'id' is required and cannot be None")
         self._obj.id = value
         return self
 
@@ -234,7 +234,7 @@ class ConditionalChangeNadBuilder(LinConfigurationEntryBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'invert' is required and cannot be None")
         self._obj.invert = value
         return self
 
@@ -248,7 +248,7 @@ class ConditionalChangeNadBuilder(LinConfigurationEntryBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mask' is required and cannot be None")
         self._obj.mask = value
         return self
 
@@ -262,7 +262,7 @@ class ConditionalChangeNadBuilder(LinConfigurationEntryBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'new_nad' is required and cannot be None")
         self._obj.new_nad = value
         return self
 

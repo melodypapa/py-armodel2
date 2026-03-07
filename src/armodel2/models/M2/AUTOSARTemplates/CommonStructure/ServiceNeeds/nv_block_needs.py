@@ -538,7 +538,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'calc_ram_block_crc' is required and cannot be None")
         self._obj.calc_ram_block_crc = value
         return self
 
@@ -552,7 +552,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'check_static_block_id' is required and cannot be None")
         self._obj.check_static_block_id = value
         return self
 
@@ -566,7 +566,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cyclic_writing_period' is required and cannot be None")
         self._obj.cyclic_writing_period = value
         return self
 
@@ -580,7 +580,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'n_data_sets' is required and cannot be None")
         self._obj.n_data_sets = value
         return self
 
@@ -594,7 +594,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'n_rom_blocks' is required and cannot be None")
         self._obj.n_rom_blocks = value
         return self
 
@@ -608,7 +608,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ram_block_status_control' is required and cannot be None")
         self._obj.ram_block_status_control = value
         return self
 
@@ -622,7 +622,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'readonly' is required and cannot be None")
         self._obj.readonly = value
         return self
 
@@ -636,7 +636,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'reliability' is required and cannot be None")
         self._obj.reliability = value
         return self
 
@@ -650,7 +650,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'resistant_to_changed_sw' is required and cannot be None")
         self._obj.resistant_to_changed_sw = value
         return self
 
@@ -664,7 +664,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'restore_at_start' is required and cannot be None")
         self._obj.restore_at_start = value
         return self
 
@@ -678,7 +678,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'select_block_for_first_init_all' is required and cannot be None")
         self._obj.select_block_for_first_init_all = value
         return self
 
@@ -692,7 +692,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'store_at_shutdown' is required and cannot be None")
         self._obj.store_at_shutdown = value
         return self
 
@@ -706,7 +706,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'store_cyclic' is required and cannot be None")
         self._obj.store_cyclic = value
         return self
 
@@ -720,7 +720,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'store_emergency' is required and cannot be None")
         self._obj.store_emergency = value
         return self
 
@@ -734,7 +734,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'store_immediate' is required and cannot be None")
         self._obj.store_immediate = value
         return self
 
@@ -748,7 +748,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'store_on_change' is required and cannot be None")
         self._obj.store_on_change = value
         return self
 
@@ -762,7 +762,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'use_auto_validation_at_shut_down' is required and cannot be None")
         self._obj.use_auto_validation_at_shut_down = value
         return self
 
@@ -776,7 +776,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'use_crc_comp_mechanism' is required and cannot be None")
         self._obj.use_crc_comp_mechanism = value
         return self
 
@@ -790,7 +790,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'write_only_once' is required and cannot be None")
         self._obj.write_only_once = value
         return self
 
@@ -804,7 +804,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'write_verification' is required and cannot be None")
         self._obj.write_verification = value
         return self
 
@@ -818,7 +818,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'writing_frequency' is required and cannot be None")
         self._obj.writing_frequency = value
         return self
 
@@ -832,7 +832,7 @@ class NvBlockNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'writing_priority' is required and cannot be None")
         self._obj.writing_priority = value
         return self
 

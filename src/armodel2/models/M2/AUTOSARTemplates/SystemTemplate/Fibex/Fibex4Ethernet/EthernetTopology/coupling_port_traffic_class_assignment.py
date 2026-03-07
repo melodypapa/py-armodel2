@@ -148,7 +148,7 @@ class CouplingPortTrafficClassAssignmentBuilder(ReferrableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
@@ -162,7 +162,7 @@ class CouplingPortTrafficClassAssignmentBuilder(ReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'traffic_class' is required and cannot be None")
         self._obj.traffic_class = value
         return self
 
