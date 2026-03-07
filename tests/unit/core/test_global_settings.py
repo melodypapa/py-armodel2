@@ -44,7 +44,7 @@ class TestGlobalSettingsManager:
     def test_reset(self):
         """Test reset restores default values."""
         self.settings.strict_validation = True
-        self.settings.warn_on_unrecognized = False
+        self.settings.warn_on_unrecognized = True
 
         self.settings.reset()
 
@@ -74,6 +74,9 @@ class TestGlobalSettingsValidation:
         from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
         from armodel2.serialization import SerializationHelper
 
+        # Enable warning for this test
+        self.settings.warn_on_unrecognized = True
+
         # Create a simple test class with custom deserialize
         class TestClass(ARObject):
             test_attr: str = None
@@ -92,7 +95,7 @@ class TestGlobalSettingsValidation:
                 if child is not None and child.text:
                     obj.test_attr = child.text
 
-                # Check for unrecognized elements (warn_on_unrecognized is enabled by default)
+                # Check for unrecognized elements (warn_on_unrecognized is enabled)
                 for child in element:
                     tag = SerializationHelper.strip_namespace(child.tag)
                     if tag not in ["TEST-ATTR"]:
