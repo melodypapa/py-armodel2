@@ -143,7 +143,6 @@ The project uses a reflection-based serialization framework that eliminates boil
   - `serialize_item()` - Serializes individual items (ARPrimitive, AREnum, ARRef, ARObject)
   - `deserialize_by_tag()` - Deserializes using class name (for TYPE_CHECKING compatibility)
   - `find_child_element()` - Finds child elements with namespace handling
-  - `validate_deserialization()` - Checks for unrecognized XML elements
   - `unwrap_primitive()` - Transparently unwraps ARPrimitive to native Python types
 - `ARObject.serialize()` - Uses `vars()` to discover all attributes automatically
 - `ARObject.deserialize()` - Uses `get_type_hints()` for type information

@@ -10,11 +10,9 @@ code organization and maintainability.
 from __future__ import annotations
 
 import re
-import warnings
 import xml.etree.ElementTree as ET
 from typing import TYPE_CHECKING, Any, Optional, Union, get_args, get_origin
 
-from armodel2.core.global_settings import GlobalSettingsManager
 from armodel2.serialization.name_converter import NameConverter
 
 if TYPE_CHECKING:
@@ -398,65 +396,6 @@ class SerializationHelper:
         for child in child_elem:
             wrapped.append(child)
         return wrapped
-
-    @staticmethod
-    def validate_deserialization(cls: type, element: ET.Element, type_hints: dict[str, Any]) -> None:  # type: ignore[type-arg]
-        """Validate deserialization by checking for unrecognized XML elements.
-
-        This method checks if any XML elements in the input were not
-        matched to Python attributes, based on global settings.
-
-        Args:
-            cls: The class being deserialized
-            element: XML element that was deserialized
-            type_hints: Type hints dictionary used for deserialization
-
-        Raises:
-            ValueError: If strict_validation is enabled and unrecognized elements found
-        """
-        settings = GlobalSettingsManager()
-
-        # Skip validation if both settings are disabled
-        if not (settings.warn_on_unrecognized or settings.strict_validation):
-            return
-
-        # Build set of expected XML tags from type hints
-        expected_tags = {NameConverter.to_xml_tag(name) for name in type_hints.keys()}
-
-        # For atp_variant classes, add wrapper tags to expected tags
-        # These are not attributes but structural elements
-        if hasattr(cls, '_atp_variant'):
-            wrapper_path = SerializationHelper.get_atp_variant_wrapper_path(cls.__name__)
-            for wrapper_tag in wrapper_path.split('/'):
-                expected_tags.add(wrapper_tag)
-
-        # For l_prefix attributes, add their l_prefix tags to expected tags
-        # These are language-specific wrapper elements (e.g., L-10, L-4, L-2)
-        for attr_name in type_hints.keys():
-            # Check both private (e.g., "_l10") and public (e.g., "l10") attribute names
-            # Type hints contain private attribute names, but properties are public
-            if SerializationHelper.has_l_prefix(cls, attr_name):
-                l_prefix_tag = SerializationHelper.get_l_prefix_tag(cls, attr_name)
-                if l_prefix_tag:
-                    expected_tags.add(l_prefix_tag)
-            # Also check the public version (remove leading underscore)
-            if attr_name.startswith('_'):
-                public_name = attr_name[1:]
-                if SerializationHelper.has_l_prefix(cls, public_name):
-                    l_prefix_tag = SerializationHelper.get_l_prefix_tag(cls, public_name)
-                    if l_prefix_tag:
-                        expected_tags.add(l_prefix_tag)
-
-        # Check each child element
-        for child in element:
-            child_tag = SerializationHelper.strip_namespace(child.tag)
-            if child_tag not in expected_tags:
-                msg = f"Unrecognized XML element <{child_tag}> in {cls.__name__}. " \
-                      f"Element will be ignored during deserialization."
-                if settings.strict_validation:
-                    raise ValueError(msg)
-                else:
-                    warnings.warn(msg, UserWarning, stacklevel=3)
 
     @staticmethod
     def import_class_by_name(class_name: str):  # type: ignore[no-untyped-def]

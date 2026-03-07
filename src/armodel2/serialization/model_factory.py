@@ -43,6 +43,7 @@ class ModelFactory:
             self._class_cache: Dict[str, Type[Any]] = {}
             self._polymorphic_cache: Dict[str, List[str]] = {}
             self._import_path_cache: Dict[str, str] = {}
+            self._polymorphic_dispatch: Dict[str, Dict[str, Type[Any]]] = {}  # base_class -> {xml_tag -> class}
             ModelFactory._initialized = True
 
     def load_mappings(self, yaml_path: Optional[Path] = None) -> None:
@@ -71,6 +72,9 @@ class ModelFactory:
             # Build import path cache
             self._import_path_cache = mappings.CLASS_IMPORT_PATHS
 
+            # Pre-compute polymorphic dispatch tables for O(1) lookup
+            self._build_polymorphic_dispatch()
+
         except ImportError:
             # Fallback to YAML parsing if compiled module doesn't exist
             # This can happen during development before first regeneration
@@ -88,6 +92,48 @@ class ModelFactory:
             # Build import path cache
             if "class_import_paths" in self._mappings:
                 self._import_path_cache = self._mappings["class_import_paths"]
+
+            # Pre-compute polymorphic dispatch tables
+            self._build_polymorphic_dispatch()
+
+    def _build_polymorphic_dispatch(self) -> None:
+        """Pre-compute polymorphic dispatch tables for O(1) type resolution.
+
+        Builds a nested dictionary: base_class_name -> {xml_tag -> concrete_class}
+        This eliminates the need for get_polymorphic_implementations() and list
+        membership checks during deserialization.
+        """
+        self._polymorphic_dispatch = {}
+
+        for base_class_name, implementation_list in self._polymorphic_cache.items():
+            # Skip special entries that are not real class names
+            if base_class_name.startswith('–') or base_class_name.startswith('-'):
+                continue
+
+            dispatch_table: Dict[str, Type[Any]] = {}
+            for impl_class_name in implementation_list:
+                # Skip special entries that are not real class names
+                if impl_class_name.startswith('–') or impl_class_name.startswith('-'):
+                    continue
+
+                # Get import path and import the class
+                import_path = self._import_path_cache.get(impl_class_name)
+                if import_path:
+                    try:
+                        module = importlib.import_module(import_path)
+                        cls = getattr(module, impl_class_name)
+                        if isinstance(cls, type):
+                            # Compute XML tag for this class
+                            xml_tag = NameConverter.to_xml_tag(impl_class_name)
+                            dispatch_table[xml_tag] = cls
+                            # Also cache by class name for reverse lookup
+                            self._class_cache[xml_tag] = cls
+                    except (ImportError, AttributeError):
+                        # Skip classes that can't be imported
+                        continue
+
+            if dispatch_table:  # Only add non-empty dispatch tables
+                self._polymorphic_dispatch[base_class_name] = dispatch_table
     
     def get_class(self, xml_tag: str, raise_on_failure: bool = True) -> Optional[Type[Any]]:
         """Get class by XML tag.
@@ -148,6 +194,9 @@ class ModelFactory:
     def resolve_polymorphic_type(self, xml_tag: str, base_class_name: str) -> Optional[Type[Any]]:
         """Resolve polymorphic type based on XML tag.
 
+        Uses pre-computed dispatch table for O(1) lookup instead of
+        iterating through polymorphic implementations list.
+
         Args:
             xml_tag: XML tag of concrete element (e.g., "SW-BASE-TYPE")
             base_class_name: Expected base class (e.g., "PackageableElement")
@@ -155,15 +204,23 @@ class ModelFactory:
         Returns:
             Concrete class type or None
         """
-        # Get class from XML tag
-        cls = self.get_class(xml_tag)
+        # Ensure mappings are loaded
+        if not self._polymorphic_dispatch:
+            self.load_mappings()
 
+        # O(1) lookup in pre-computed dispatch table
+        dispatch_table = self._polymorphic_dispatch.get(base_class_name)
+        if dispatch_table:
+            return dispatch_table.get(xml_tag)
+
+        # Fallback: legacy method for backward compatibility
+        # Get class from XML tag (don't raise on failure for fallback)
+        cls = self.get_class(xml_tag, raise_on_failure=False)
         if cls is None:
             return None
 
         # Verify it's a valid subclass
         implementations = self.get_polymorphic_implementations(base_class_name)
-
         if cls.__name__ in implementations:
             return cls
 
@@ -248,5 +305,27 @@ class ModelFactory:
         return bool(self._mappings)
     
     def clear_cache(self) -> None:
-        """Clear class import cache."""
+        """Clear class import cache and polymorphic dispatch tables."""
         self._class_cache.clear()
+        self._polymorphic_dispatch.clear()
+
+    def get_polymorphic_class(self, xml_tag: str, base_class_name: str) -> Optional[Type[Any]]:
+        """Get polymorphic class directly from dispatch table.
+
+        This is a convenience method that combines get_class() and resolve_polymorphic_type()
+        for cases where the XML tag might directly map to a class.
+
+        Args:
+            xml_tag: XML tag name
+            base_class_name: Base class name for polymorphic resolution
+
+        Returns:
+            Class type or None
+        """
+        # First try direct polymorphic resolution
+        cls = self.resolve_polymorphic_type(xml_tag, base_class_name)
+        if cls:
+            return cls
+
+        # Fallback to direct class lookup
+        return self.get_class(xml_tag, raise_on_failure=False)
