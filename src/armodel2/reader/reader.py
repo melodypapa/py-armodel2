@@ -71,13 +71,12 @@ class ARXMLReader:
         if autosar is None:
             autosar = AUTOSAR()
 
-        root, encoding, line_ending = self._load_file(filepath)
+        root, encoding = self._load_file(filepath)
         self._populate_autosar(autosar, root)
 
-        # Store detected encoding and line ending in AUTOSAR object
+        # Store detected encoding in AUTOSAR object
         if encoding is not None:
             autosar._encoding = encoding
-        autosar._line_ending = line_ending
 
         if validate:
             self._validate_against_schema(root, autosar)
@@ -114,14 +113,14 @@ class ARXMLReader:
         AUTOSAR().clear()
         return self.load_arxml(filepath, validate=validate)
 
-    def _load_file(self, filepath: Union[str, Path]) -> tuple[ET.Element, Optional[str], str]:
-        """Load ARXML file and return root element, detected encoding, and line ending.
+    def _load_file(self, filepath: Union[str, Path]) -> tuple[ET.Element, Optional[str]]:
+        """Load ARXML file and return root element and detected encoding.
 
         Args:
             filepath: Path to ARXML file
 
         Returns:
-            Tuple of (root XML element, detected encoding string or None, line ending string)
+            Tuple of (root XML element, detected encoding string or None)
 
         Raises:
             FileNotFoundError: If file doesn't exist
@@ -136,14 +135,11 @@ class ARXMLReader:
         # Detect encoding from XML declaration
         encoding = self._detect_encoding(filepath)
 
-        # Detect line ending style
-        line_ending = self._detect_line_ending(filepath)
-
         # Let Python's XML parser handle encoding detection automatically
         # Python's ET.parse() detects encoding from BOM and XML declaration
         tree = ET.parse(filepath)
 
-        return tree.getroot(), encoding, line_ending
+        return tree.getroot(), encoding
 
     def _detect_encoding(self, filepath: Path) -> Optional[str]:
         """Detect encoding from XML declaration.
@@ -176,30 +172,6 @@ class ARXMLReader:
         except Exception:
             # If detection fails, return None (will use default)
             return None
-
-    def _detect_line_ending(self, filepath: Path) -> str:
-        """Detect line ending style from file.
-
-        Reads the first 4KB of the file to determine if it uses
-        Windows CRLF (\\r\\n) or Unix LF (\\n) line endings.
-
-        Args:
-            filepath: Path to ARXML file
-
-        Returns:
-            '\\r\\n' for CRLF (Windows), '\\n' for LF (Unix)
-        """
-        try:
-            with open(filepath, 'rb') as f:
-                content = f.read(4096)  # Read first 4KB
-
-            # Check for CRLF
-            if b'\r\n' in content:
-                return '\r\n'
-            return '\n'  # Default to LF
-        except Exception:
-            # If detection fails, return default LF
-            return '\n'
 
     def _populate_autosar(self, autosar: AUTOSAR, root: ET.Element) -> AUTOSAR:
         """Populate AUTOSAR object from XML element.
@@ -278,5 +250,5 @@ class ARXMLReader:
         Returns:
             Schema version string or None if unknown
         """
-        root, _, _ = self._load_file(filepath)
+        root, _ = self._load_file(filepath)
         return self._version_manager.detect_schema_version(root)
