@@ -223,3 +223,39 @@ def load_polymorphic_types(
     except Exception:
         # If there's any error loading the file, return empty result
         return {}
+
+
+def load_model_mappings_yaml(
+    mappings_file: Path,
+) -> tuple[Dict[str, str], Dict[str, str], Dict[str, List[str]]]:
+    """Parse model_mappings.yaml to extract all mapping data.
+
+    This function loads the YAML file once and extracts:
+    - xml_tag_mappings: XML tag -> class name
+    - class_import_paths: class name -> import path
+    - polymorphic_types: base type -> list of implementations
+
+    Args:
+        mappings_file: Path to model_mappings.yaml file
+
+    Returns:
+        Tuple of (xml_tag_mappings, class_import_paths, polymorphic_types)
+        Each dict is empty if file doesn't exist, yaml not available, or key missing
+    """
+    empty_result: tuple[Dict[str, str], Dict[str, str], Dict[str, List[str]]] = ({}, {}, {})
+
+    if _yaml is None:
+        return empty_result
+
+    if not mappings_file.exists():
+        return empty_result
+
+    try:
+        with open(mappings_file, "r", encoding="utf-8") as f:
+            data = _yaml.safe_load(f) if _yaml else {}
+            xml_tag_mappings = data.get("xml_tag_mappings", {})
+            class_import_paths = data.get("class_import_paths", {})
+            polymorphic_types = data.get("polymorphic_types", {})
+            return xml_tag_mappings, class_import_paths, polymorphic_types
+    except Exception:
+        return empty_result

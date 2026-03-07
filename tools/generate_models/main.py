@@ -7,7 +7,7 @@ from typing import Optional
 from .parsers import (
     load_all_package_data,
     load_skip_list,
-    load_polymorphic_types,
+    load_model_mappings_yaml,
     parse_enum_json,
     parse_hierarchy_json,
     parse_mapping_json,
@@ -18,6 +18,7 @@ from .generators import (
     generate_class_code,
     generate_enum_code,
     generate_primitive_code,
+    generate_static_mappings,
 )
 from .utils import create_directory_structure, to_snake_case
 from .type_utils import build_complete_dependency_graph
@@ -53,9 +54,19 @@ def generate_all_models(
         skip_list_file = Path(__file__).parent.parent / "skip_classes.yaml"
     skip_list, force_type_checking_imports = load_skip_list(skip_list_file)
 
-    # Load polymorphic_types mapping from model_mappings.yaml
+    # Load model_mappings.yaml for polymorphic types and static mappings generation
     mappings_file = Path(__file__).parent.parent.parent / "src" / "armodel2" / "cfg" / "model_mappings.yaml"
-    polymorphic_types = load_polymorphic_types(mappings_file)
+    xml_tag_mappings, class_import_paths, polymorphic_types = load_model_mappings_yaml(mappings_file)
+
+    # Generate static mappings module (replaces YAML parsing at runtime)
+    static_mappings_code = generate_static_mappings(
+        xml_tag_mappings,
+        class_import_paths,
+        polymorphic_types,
+    )
+    static_mappings_output = Path(__file__).parent.parent.parent / "src" / "armodel2" / "cfg" / "model_mappings_compiled.py"
+    static_mappings_output.write_text(static_mappings_code, encoding="utf-8")
+    print(f"Generated static mappings: {static_mappings_output}")
 
     # Parse hierarchy.json for parent and abstract information
     hierarchy_info = parse_hierarchy_json(hierarchy_file)

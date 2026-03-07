@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Optional, Dict, List, Type, Any, TYPE_CHECKING
-import yaml
 import importlib
 import sys
 
@@ -23,6 +22,9 @@ class ModelFactory:
     - Cached class imports for performance
     - Polymorphic type resolution
     - Automatic XML tag to class name conversion
+
+    Performance: Uses pre-compiled Python mappings instead of YAML parsing
+    to eliminate ~0.588s one-time overhead on first deserialization.
     """
 
     _instance: Optional[ModelFactory] = None
@@ -42,28 +44,50 @@ class ModelFactory:
             self._polymorphic_cache: Dict[str, List[str]] = {}
             self._import_path_cache: Dict[str, str] = {}
             ModelFactory._initialized = True
-    
+
     def load_mappings(self, yaml_path: Optional[Path] = None) -> None:
-        """Load mappings from YAML file.
+        """Load mappings from pre-compiled Python module.
+
+        Uses pre-compiled model_mappings_compiled.py instead of parsing YAML
+        to eliminate ~0.588s one-time overhead on first deserialization.
 
         Args:
-            yaml_path: Path to model_mappings.yaml, defaults to package path
+            yaml_path: Deprecated, kept for API compatibility. Path to model_mappings.yaml
         """
-        if yaml_path is None:
-            yaml_path = Path(__file__).parent.parent / "cfg" / "model_mappings.yaml"
+        # Try to import pre-compiled mappings first
+        try:
+            from armodel2.cfg import model_mappings_compiled as mappings
 
-        # Explicitly use UTF-8 encoding to avoid system default encoding issues
-        # On Windows with non-UTF-8 locales, open() would use system default encoding
-        with open(yaml_path, "r", encoding="utf-8") as f:
-            self._mappings = yaml.safe_load(f)
+            # Load from compiled module (fast, no YAML parsing)
+            self._mappings = {
+                "xml_tag_mappings": mappings.XML_TAG_MAPPINGS,
+                "class_import_paths": mappings.CLASS_IMPORT_PATHS,
+                "polymorphic_types": mappings.POLYMORPHIC_TYPES,
+            }
 
-        # Build polymorphic cache
-        if "polymorphic_types" in self._mappings:
-            self._polymorphic_cache = self._mappings["polymorphic_types"]
+            # Build polymorphic cache
+            self._polymorphic_cache = mappings.POLYMORPHIC_TYPES
 
-        # Build import path cache
-        if "class_import_paths" in self._mappings:
-            self._import_path_cache = self._mappings["class_import_paths"]
+            # Build import path cache
+            self._import_path_cache = mappings.CLASS_IMPORT_PATHS
+
+        except ImportError:
+            # Fallback to YAML parsing if compiled module doesn't exist
+            # This can happen during development before first regeneration
+            if yaml_path is None:
+                yaml_path = Path(__file__).parent.parent / "cfg" / "model_mappings.yaml"
+
+            import yaml
+            with open(yaml_path, "r", encoding="utf-8") as f:
+                self._mappings = yaml.safe_load(f)
+
+            # Build polymorphic cache
+            if "polymorphic_types" in self._mappings:
+                self._polymorphic_cache = self._mappings["polymorphic_types"]
+
+            # Build import path cache
+            if "class_import_paths" in self._mappings:
+                self._import_path_cache = self._mappings["class_import_paths"]
     
     def get_class(self, xml_tag: str, raise_on_failure: bool = True) -> Optional[Type[Any]]:
         """Get class by XML tag.
