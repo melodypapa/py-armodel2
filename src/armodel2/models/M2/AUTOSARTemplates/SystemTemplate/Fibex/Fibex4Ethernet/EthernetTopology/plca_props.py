@@ -144,7 +144,7 @@ class PlcaPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'plca_local_node' is required and cannot be None")
         self._obj.plca_local_node = value
         return self
 
@@ -158,7 +158,7 @@ class PlcaPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'plca_max_burst' is required and cannot be None")
         self._obj.plca_max_burst = value
         return self
 

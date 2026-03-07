@@ -181,7 +181,7 @@ class ECUMappingBuilder(IdentifiableBuilder):
         self._obj: ECUMapping = ECUMapping()
 
 
-    def with_comm_controllers(self, items: list[any (Communication)]) -> "ECUMappingBuilder":
+    def with_comm_controllers(self, items: list[Any]) -> "ECUMappingBuilder":
         """Set comm_controllers list attribute.
 
         Args:
@@ -203,7 +203,7 @@ class ECUMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu' is required and cannot be None")
         self._obj.ecu = value
         return self
 
@@ -217,7 +217,7 @@ class ECUMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_instance' is required and cannot be None")
         self._obj.ecu_instance = value
         return self
 
@@ -231,12 +231,12 @@ class ECUMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'hw_port_mapping' is required and cannot be None")
         self._obj.hw_port_mapping = value
         return self
 
 
-    def add_comm_controller(self, item: any (Communication)) -> "ECUMappingBuilder":
+    def add_comm_controller(self, item: Any) -> "ECUMappingBuilder":
         """Add a single item to comm_controllers list.
 
         Args:

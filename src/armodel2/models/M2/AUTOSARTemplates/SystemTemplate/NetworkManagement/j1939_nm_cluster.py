@@ -148,7 +148,7 @@ class J1939NmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'address_claim' is required and cannot be None")
         self._obj.address_claim = value
         return self
 
@@ -162,7 +162,7 @@ class J1939NmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'uses_dynamic' is required and cannot be None")
         self._obj.uses_dynamic = value
         return self
 

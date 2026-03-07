@@ -148,7 +148,7 @@ class MemorySectionLocationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'provided_memory' is required and cannot be None")
         self._obj.provided_memory = value
         return self
 
@@ -162,7 +162,7 @@ class MemorySectionLocationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'software' is required and cannot be None")
         self._obj.software = value
         return self
 

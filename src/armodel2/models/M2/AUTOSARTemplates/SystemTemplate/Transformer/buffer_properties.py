@@ -146,7 +146,7 @@ class BufferPropertiesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'header_length' is required and cannot be None")
         self._obj.header_length = value
         return self
 
@@ -160,7 +160,7 @@ class BufferPropertiesBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'in_place' is required and cannot be None")
         self._obj.in_place = value
         return self
 

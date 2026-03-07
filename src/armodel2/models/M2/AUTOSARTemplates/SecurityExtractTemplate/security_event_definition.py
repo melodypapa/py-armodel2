@@ -139,7 +139,7 @@ class SecurityEventDefinitionBuilder(IdsCommonElementBuilder):
         self._obj: SecurityEventDefinition = SecurityEventDefinition()
 
 
-    def with_event_symbol_name(self, value: Optional[any (SymbolPropsName)]) -> "SecurityEventDefinitionBuilder":
+    def with_event_symbol_name(self, value: Optional[Any]) -> "SecurityEventDefinitionBuilder":
         """Set event_symbol_name attribute.
 
         Args:
@@ -149,7 +149,7 @@ class SecurityEventDefinitionBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_symbol_name' is required and cannot be None")
         self._obj.event_symbol_name = value
         return self
 
@@ -163,7 +163,7 @@ class SecurityEventDefinitionBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'id' is required and cannot be None")
         self._obj.id = value
         return self
 

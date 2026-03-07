@@ -225,7 +225,7 @@ class EndToEndTransformationISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_length' is required and cannot be None")
         self._obj.data_length = value
         return self
 
@@ -239,7 +239,7 @@ class EndToEndTransformationISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_data_length' is required and cannot be None")
         self._obj.max_data_length = value
         return self
 
@@ -253,7 +253,7 @@ class EndToEndTransformationISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_data_length' is required and cannot be None")
         self._obj.min_data_length = value
         return self
 
@@ -267,7 +267,7 @@ class EndToEndTransformationISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'source_id' is required and cannot be None")
         self._obj.source_id = value
         return self
 

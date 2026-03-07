@@ -196,7 +196,7 @@ class DiagnosticDataElementBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'array_size_semantics' is required and cannot be None")
         self._obj.array_size_semantics = value
         return self
 
@@ -210,7 +210,7 @@ class DiagnosticDataElementBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of_elements' is required and cannot be None")
         self._obj.max_number_of_elements = value
         return self
 
@@ -224,7 +224,7 @@ class DiagnosticDataElementBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'scaling_info_size' is required and cannot be None")
         self._obj.scaling_info_size = value
         return self
 
@@ -238,7 +238,7 @@ class DiagnosticDataElementBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_data_def_props' is required and cannot be None")
         self._obj.sw_data_def_props = value
         return self
 

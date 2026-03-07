@@ -187,7 +187,7 @@ class Ieee1722TpEthernetFrameBuilder(AbstractEthernetFrameBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'relative' is required and cannot be None")
         self._obj.relative = value
         return self
 
@@ -201,7 +201,7 @@ class Ieee1722TpEthernetFrameBuilder(AbstractEthernetFrameBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'stream_identifier' is required and cannot be None")
         self._obj.stream_identifier = value
         return self
 
@@ -215,7 +215,7 @@ class Ieee1722TpEthernetFrameBuilder(AbstractEthernetFrameBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sub_type' is required and cannot be None")
         self._obj.sub_type = value
         return self
 
@@ -229,7 +229,7 @@ class Ieee1722TpEthernetFrameBuilder(AbstractEthernetFrameBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'version' is required and cannot be None")
         self._obj.version = value
         return self
 

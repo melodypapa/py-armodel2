@@ -192,7 +192,7 @@ class CompositeRuleBasedValueSpecificationBuilder(AbstractRuleBasedValueSpecific
         self._obj.arguments = list(items) if items else []
         return self
 
-    def with_compounds(self, items: list[any (CompositeRuleBased)]) -> "CompositeRuleBasedValueSpecificationBuilder":
+    def with_compounds(self, items: list[Any]) -> "CompositeRuleBasedValueSpecificationBuilder":
         """Set compounds list attribute.
 
         Args:
@@ -214,7 +214,7 @@ class CompositeRuleBasedValueSpecificationBuilder(AbstractRuleBasedValueSpecific
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_size_to_fill' is required and cannot be None")
         self._obj.max_size_to_fill = value
         return self
 
@@ -228,7 +228,7 @@ class CompositeRuleBasedValueSpecificationBuilder(AbstractRuleBasedValueSpecific
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rule' is required and cannot be None")
         self._obj.rule = value
         return self
 
@@ -254,7 +254,7 @@ class CompositeRuleBasedValueSpecificationBuilder(AbstractRuleBasedValueSpecific
         self._obj.arguments = []
         return self
 
-    def add_compound(self, item: any (CompositeRuleBased)) -> "CompositeRuleBasedValueSpecificationBuilder":
+    def add_compound(self, item: Any) -> "CompositeRuleBasedValueSpecificationBuilder":
         """Add a single item to compounds list.
 
         Args:

@@ -365,7 +365,7 @@ class IPSecConfigPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dpd_action' is required and cannot be None")
         self._obj.dpd_action = value
         return self
 
@@ -379,7 +379,7 @@ class IPSecConfigPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dpd_delay' is required and cannot be None")
         self._obj.dpd_delay = value
         return self
 
@@ -405,7 +405,7 @@ class IPSecConfigPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ike_cipher_suite' is required and cannot be None")
         self._obj.ike_cipher_suite = value
         return self
 
@@ -419,7 +419,7 @@ class IPSecConfigPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ike_over_time' is required and cannot be None")
         self._obj.ike_over_time = value
         return self
 
@@ -433,7 +433,7 @@ class IPSecConfigPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ike_rand_time' is required and cannot be None")
         self._obj.ike_rand_time = value
         return self
 
@@ -447,7 +447,7 @@ class IPSecConfigPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ike_reauth_time' is required and cannot be None")
         self._obj.ike_reauth_time = value
         return self
 
@@ -461,7 +461,7 @@ class IPSecConfigPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ike_rekey_time' is required and cannot be None")
         self._obj.ike_rekey_time = value
         return self
 
@@ -475,7 +475,7 @@ class IPSecConfigPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sa_over_time' is required and cannot be None")
         self._obj.sa_over_time = value
         return self
 
@@ -489,7 +489,7 @@ class IPSecConfigPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sa_rand_time' is required and cannot be None")
         self._obj.sa_rand_time = value
         return self
 
@@ -503,7 +503,7 @@ class IPSecConfigPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sa_rekey_time' is required and cannot be None")
         self._obj.sa_rekey_time = value
         return self
 

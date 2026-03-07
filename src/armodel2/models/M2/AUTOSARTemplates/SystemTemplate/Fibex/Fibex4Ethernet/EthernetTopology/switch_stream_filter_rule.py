@@ -173,7 +173,7 @@ class SwitchStreamFilterRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_link_layer' is required and cannot be None")
         self._obj.data_link_layer = value
         return self
 
@@ -187,7 +187,7 @@ class SwitchStreamFilterRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ieee1722_tp' is required and cannot be None")
         self._obj.ieee1722_tp = value
         return self
 
@@ -201,7 +201,7 @@ class SwitchStreamFilterRuleBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ip_tp_rule' is required and cannot be None")
         self._obj.ip_tp_rule = value
         return self
 

@@ -139,7 +139,7 @@ class DiagnosticRequestControlOfOnBoardDeviceBuilder(DiagnosticServiceInstanceBu
         self._obj: DiagnosticRequestControlOfOnBoardDevice = DiagnosticRequestControlOfOnBoardDevice()
 
 
-    def with_request_control(self, value: Optional[any (DiagnosticRequest)]) -> "DiagnosticRequestControlOfOnBoardDeviceBuilder":
+    def with_request_control(self, value: Optional[Any]) -> "DiagnosticRequestControlOfOnBoardDeviceBuilder":
         """Set request_control attribute.
 
         Args:
@@ -149,7 +149,7 @@ class DiagnosticRequestControlOfOnBoardDeviceBuilder(DiagnosticServiceInstanceBu
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request_control' is required and cannot be None")
         self._obj.request_control = value
         return self
 
@@ -163,7 +163,7 @@ class DiagnosticRequestControlOfOnBoardDeviceBuilder(DiagnosticServiceInstanceBu
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'test_id_identifier' is required and cannot be None")
         self._obj.test_id_identifier = value
         return self
 

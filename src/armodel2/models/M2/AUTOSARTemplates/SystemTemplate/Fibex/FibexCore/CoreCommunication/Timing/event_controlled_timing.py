@@ -151,7 +151,7 @@ class EventControlledTimingBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'number_of_repetitions' is required and cannot be None")
         self._obj.number_of_repetitions = value
         return self
 
@@ -165,7 +165,7 @@ class EventControlledTimingBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'repetition_period' is required and cannot be None")
         self._obj.repetition_period = value
         return self
 

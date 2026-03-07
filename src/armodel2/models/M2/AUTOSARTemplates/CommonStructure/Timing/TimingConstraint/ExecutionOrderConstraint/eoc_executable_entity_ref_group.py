@@ -303,7 +303,7 @@ class EOCExecutableEntityRefGroupBuilder(EOCExecutableEntityRefAbstractBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'let_data_exchange' is required and cannot be None")
         self._obj.let_data_exchange = value
         return self
 
@@ -329,7 +329,7 @@ class EOCExecutableEntityRefGroupBuilder(EOCExecutableEntityRefAbstractBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_cycle' is required and cannot be None")
         self._obj.max_cycle = value
         return self
 
@@ -343,7 +343,7 @@ class EOCExecutableEntityRefGroupBuilder(EOCExecutableEntityRefAbstractBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_cycles' is required and cannot be None")
         self._obj.max_cycles = value
         return self
 
@@ -357,7 +357,7 @@ class EOCExecutableEntityRefGroupBuilder(EOCExecutableEntityRefAbstractBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_slots' is required and cannot be None")
         self._obj.max_slots = value
         return self
 
@@ -371,11 +371,11 @@ class EOCExecutableEntityRefGroupBuilder(EOCExecutableEntityRefAbstractBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_slots_per' is required and cannot be None")
         self._obj.max_slots_per = value
         return self
 
-    def with_nested_elements(self, items: list[any (EOCExecutableEntity)]) -> "EOCExecutableEntityRefGroupBuilder":
+    def with_nested_elements(self, items: list[Any]) -> "EOCExecutableEntityRefGroupBuilder":
         """Set nested_elements list attribute.
 
         Args:
@@ -387,7 +387,7 @@ class EOCExecutableEntityRefGroupBuilder(EOCExecutableEntityRefAbstractBuilder):
         self._obj.nested_elements = list(items) if items else []
         return self
 
-    def with_successors(self, items: list[any (EOCExecutableEntity)]) -> "EOCExecutableEntityRefGroupBuilder":
+    def with_successors(self, items: list[Any]) -> "EOCExecutableEntityRefGroupBuilder":
         """Set successors list attribute.
 
         Args:
@@ -409,7 +409,7 @@ class EOCExecutableEntityRefGroupBuilder(EOCExecutableEntityRefAbstractBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'triggering_event' is required and cannot be None")
         self._obj.triggering_event = value
         return self
 
@@ -435,7 +435,7 @@ class EOCExecutableEntityRefGroupBuilder(EOCExecutableEntityRefAbstractBuilder):
         self._obj.let_intervals = []
         return self
 
-    def add_nested_element(self, item: any (EOCExecutableEntity)) -> "EOCExecutableEntityRefGroupBuilder":
+    def add_nested_element(self, item: Any) -> "EOCExecutableEntityRefGroupBuilder":
         """Add a single item to nested_elements list.
 
         Args:
@@ -456,7 +456,7 @@ class EOCExecutableEntityRefGroupBuilder(EOCExecutableEntityRefAbstractBuilder):
         self._obj.nested_elements = []
         return self
 
-    def add_successor(self, item: any (EOCExecutableEntity)) -> "EOCExecutableEntityRefGroupBuilder":
+    def add_successor(self, item: Any) -> "EOCExecutableEntityRefGroupBuilder":
         """Add a single item to successors list.
 
         Args:

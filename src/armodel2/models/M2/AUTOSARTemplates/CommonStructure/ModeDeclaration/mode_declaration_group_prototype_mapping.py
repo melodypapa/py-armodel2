@@ -167,7 +167,7 @@ class ModeDeclarationGroupPrototypeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'first_mode_group_prototype' is required and cannot be None")
         self._obj.first_mode_group_prototype = value
         return self
 
@@ -181,7 +181,7 @@ class ModeDeclarationGroupPrototypeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode' is required and cannot be None")
         self._obj.mode = value
         return self
 
@@ -195,7 +195,7 @@ class ModeDeclarationGroupPrototypeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'second_mode' is required and cannot be None")
         self._obj.second_mode = value
         return self
 

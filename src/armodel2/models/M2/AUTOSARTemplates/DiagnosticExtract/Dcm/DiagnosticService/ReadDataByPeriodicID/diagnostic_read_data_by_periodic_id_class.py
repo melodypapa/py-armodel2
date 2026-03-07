@@ -168,7 +168,7 @@ class DiagnosticReadDataByPeriodicIDClassBuilder(DiagnosticServiceClassBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_periodic_did' is required and cannot be None")
         self._obj.max_periodic_did = value
         return self
 
@@ -194,7 +194,7 @@ class DiagnosticReadDataByPeriodicIDClassBuilder(DiagnosticServiceClassBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'scheduler_max' is required and cannot be None")
         self._obj.scheduler_max = value
         return self
 

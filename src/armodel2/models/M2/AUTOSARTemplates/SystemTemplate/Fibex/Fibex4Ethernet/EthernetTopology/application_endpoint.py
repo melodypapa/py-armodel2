@@ -255,7 +255,7 @@ class ApplicationEndpointBuilder(IdentifiableBuilder):
         self._obj: ApplicationEndpoint = ApplicationEndpoint()
 
 
-    def with_consumed_services(self, items: list[any (ConsumedService)]) -> "ApplicationEndpointBuilder":
+    def with_consumed_services(self, items: list[Any]) -> "ApplicationEndpointBuilder":
         """Set consumed_services list attribute.
 
         Args:
@@ -277,7 +277,7 @@ class ApplicationEndpointBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of' is required and cannot be None")
         self._obj.max_number_of = value
         return self
 
@@ -291,7 +291,7 @@ class ApplicationEndpointBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network_endpoint_endpoint' is required and cannot be None")
         self._obj.network_endpoint_endpoint = value
         return self
 
@@ -305,11 +305,11 @@ class ApplicationEndpointBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
-    def with_provided_services(self, items: list[any (ProvidedService)]) -> "ApplicationEndpointBuilder":
+    def with_provided_services(self, items: list[Any]) -> "ApplicationEndpointBuilder":
         """Set provided_services list attribute.
 
         Args:
@@ -331,7 +331,7 @@ class ApplicationEndpointBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tls_crypto_service' is required and cannot be None")
         self._obj.tls_crypto_service = value
         return self
 
@@ -345,12 +345,12 @@ class ApplicationEndpointBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tp_configuration_configuration' is required and cannot be None")
         self._obj.tp_configuration_configuration = value
         return self
 
 
-    def add_consumed_service(self, item: any (ConsumedService)) -> "ApplicationEndpointBuilder":
+    def add_consumed_service(self, item: Any) -> "ApplicationEndpointBuilder":
         """Add a single item to consumed_services list.
 
         Args:
@@ -371,7 +371,7 @@ class ApplicationEndpointBuilder(IdentifiableBuilder):
         self._obj.consumed_services = []
         return self
 
-    def add_provided_service(self, item: any (ProvidedService)) -> "ApplicationEndpointBuilder":
+    def add_provided_service(self, item: Any) -> "ApplicationEndpointBuilder":
         """Add a single item to provided_services list.
 
         Args:

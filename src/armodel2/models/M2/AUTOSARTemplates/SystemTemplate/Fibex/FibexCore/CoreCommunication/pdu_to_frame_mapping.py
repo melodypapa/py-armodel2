@@ -192,7 +192,7 @@ class PduToFrameMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'packing_byte_order' is required and cannot be None")
         self._obj.packing_byte_order = value
         return self
 
@@ -206,7 +206,7 @@ class PduToFrameMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdu' is required and cannot be None")
         self._obj.pdu = value
         return self
 
@@ -220,7 +220,7 @@ class PduToFrameMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'start_position' is required and cannot be None")
         self._obj.start_position = value
         return self
 
@@ -234,7 +234,7 @@ class PduToFrameMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'update_indication_bit_position' is required and cannot be None")
         self._obj.update_indication_bit_position = value
         return self
 

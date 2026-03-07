@@ -172,11 +172,11 @@ class InnerPortGroupInCompositionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
-    def with_contexts(self, items: list[any (SwComponent)]) -> "InnerPortGroupInCompositionInstanceRefBuilder":
+    def with_contexts(self, items: list[Any]) -> "InnerPortGroupInCompositionInstanceRefBuilder":
         """Set contexts list attribute.
 
         Args:
@@ -198,12 +198,12 @@ class InnerPortGroupInCompositionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target' is required and cannot be None")
         self._obj.target = value
         return self
 
 
-    def add_context(self, item: any (SwComponent)) -> "InnerPortGroupInCompositionInstanceRefBuilder":
+    def add_context(self, item: Any) -> "InnerPortGroupInCompositionInstanceRefBuilder":
         """Add a single item to contexts list.
 
         Args:

@@ -314,7 +314,7 @@ class TtcanCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'appl_watchdog' is required and cannot be None")
         self._obj.appl_watchdog = value
         return self
 
@@ -328,7 +328,7 @@ class TtcanCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'expected_tx' is required and cannot be None")
         self._obj.expected_tx = value
         return self
 
@@ -342,7 +342,7 @@ class TtcanCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'external_clock' is required and cannot be None")
         self._obj.external_clock = value
         return self
 
@@ -356,7 +356,7 @@ class TtcanCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initial_ref_offset' is required and cannot be None")
         self._obj.initial_ref_offset = value
         return self
 
@@ -370,7 +370,7 @@ class TtcanCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'master' is required and cannot be None")
         self._obj.master = value
         return self
 
@@ -384,7 +384,7 @@ class TtcanCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_master' is required and cannot be None")
         self._obj.time_master = value
         return self
 
@@ -398,7 +398,7 @@ class TtcanCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_triggered' is required and cannot be None")
         self._obj.time_triggered = value
         return self
 
@@ -412,7 +412,7 @@ class TtcanCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tx_enable' is required and cannot be None")
         self._obj.tx_enable = value
         return self
 

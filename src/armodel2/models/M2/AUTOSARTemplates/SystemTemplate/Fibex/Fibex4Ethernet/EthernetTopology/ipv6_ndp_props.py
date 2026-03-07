@@ -355,7 +355,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp_default' is required and cannot be None")
         self._obj.tcp_ip_ndp_default = value
         return self
 
@@ -369,7 +369,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp_default_router_list_size' is required and cannot be None")
         self._obj.tcp_ip_ndp_default_router_list_size = value
         return self
 
@@ -383,7 +383,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp' is required and cannot be None")
         self._obj.tcp_ip_ndp = value
         return self
 
@@ -397,7 +397,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp_delay_first_probe_time_value' is required and cannot be None")
         self._obj.tcp_ip_ndp_delay_first_probe_time_value = value
         return self
 
@@ -411,7 +411,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp_max_random_factor' is required and cannot be None")
         self._obj.tcp_ip_ndp_max_random_factor = value
         return self
 
@@ -425,7 +425,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp_max_rtr' is required and cannot be None")
         self._obj.tcp_ip_ndp_max_rtr = value
         return self
 
@@ -439,7 +439,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp_min_random_factor' is required and cannot be None")
         self._obj.tcp_ip_ndp_min_random_factor = value
         return self
 
@@ -453,7 +453,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp_num' is required and cannot be None")
         self._obj.tcp_ip_ndp_num = value
         return self
 
@@ -467,7 +467,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp_packet' is required and cannot be None")
         self._obj.tcp_ip_ndp_packet = value
         return self
 
@@ -481,7 +481,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp_prefix' is required and cannot be None")
         self._obj.tcp_ip_ndp_prefix = value
         return self
 
@@ -495,7 +495,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp_rnd_rtr' is required and cannot be None")
         self._obj.tcp_ip_ndp_rnd_rtr = value
         return self
 
@@ -509,7 +509,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp_rtr' is required and cannot be None")
         self._obj.tcp_ip_ndp_rtr = value
         return self
 
@@ -523,7 +523,7 @@ class Ipv6NdpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_ndp_slaac' is required and cannot be None")
         self._obj.tcp_ip_ndp_slaac = value
         return self
 

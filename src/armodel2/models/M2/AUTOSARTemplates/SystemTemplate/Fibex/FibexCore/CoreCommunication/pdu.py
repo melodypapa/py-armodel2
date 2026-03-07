@@ -148,7 +148,7 @@ class PduBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'has_dynamic_length' is required and cannot be None")
         self._obj.has_dynamic_length = value
         return self
 
@@ -162,7 +162,7 @@ class PduBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'length' is required and cannot be None")
         self._obj.length = value
         return self
 

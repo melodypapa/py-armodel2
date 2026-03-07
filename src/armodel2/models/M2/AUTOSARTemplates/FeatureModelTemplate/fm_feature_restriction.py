@@ -116,7 +116,7 @@ class FMFeatureRestrictionBuilder(IdentifiableBuilder):
         self._obj: FMFeatureRestriction = FMFeatureRestriction()
 
 
-    def with_restriction_and_attributes(self, value: Optional[any (FMConditionByFeatures)]) -> "FMFeatureRestrictionBuilder":
+    def with_restriction_and_attributes(self, value: Optional[Any]) -> "FMFeatureRestrictionBuilder":
         """Set restriction_and_attributes attribute.
 
         Args:
@@ -126,7 +126,7 @@ class FMFeatureRestrictionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'restriction_and_attributes' is required and cannot be None")
         self._obj.restriction_and_attributes = value
         return self
 

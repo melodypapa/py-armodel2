@@ -171,7 +171,7 @@ class AgeConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'maximum' is required and cannot be None")
         self._obj.maximum = value
         return self
 
@@ -185,7 +185,7 @@ class AgeConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum' is required and cannot be None")
         self._obj.minimum = value
         return self
 
@@ -199,7 +199,7 @@ class AgeConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'scope' is required and cannot be None")
         self._obj.scope = value
         return self
 

@@ -147,7 +147,7 @@ class DdsHistoryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'history_kind' is required and cannot be None")
         self._obj.history_kind = value
         return self
 
@@ -161,7 +161,7 @@ class DdsHistoryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'history_order' is required and cannot be None")
         self._obj.history_order = value
         return self
 

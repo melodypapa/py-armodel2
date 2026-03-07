@@ -240,7 +240,7 @@ class SecuredIPduBuilder(IPduBuilder):
         self._obj: SecuredIPdu = SecuredIPdu()
 
 
-    def with_authentication(self, value: Optional[any (SecureCommunication)]) -> "SecuredIPduBuilder":
+    def with_authentication(self, value: Optional[Any]) -> "SecuredIPduBuilder":
         """Set authentication attribute.
 
         Args:
@@ -250,7 +250,7 @@ class SecuredIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'authentication' is required and cannot be None")
         self._obj.authentication = value
         return self
 
@@ -264,11 +264,11 @@ class SecuredIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dynamic' is required and cannot be None")
         self._obj.dynamic = value
         return self
 
-    def with_freshness_props(self, value: Optional[any (SecureCommunication)]) -> "SecuredIPduBuilder":
+    def with_freshness_props(self, value: Optional[Any]) -> "SecuredIPduBuilder":
         """Set freshness_props attribute.
 
         Args:
@@ -278,7 +278,7 @@ class SecuredIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'freshness_props' is required and cannot be None")
         self._obj.freshness_props = value
         return self
 
@@ -292,11 +292,11 @@ class SecuredIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'payload' is required and cannot be None")
         self._obj.payload = value
         return self
 
-    def with_secure(self, value: Optional[any (SecureCommunication)]) -> "SecuredIPduBuilder":
+    def with_secure(self, value: Optional[Any]) -> "SecuredIPduBuilder":
         """Set secure attribute.
 
         Args:
@@ -306,7 +306,7 @@ class SecuredIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'secure' is required and cannot be None")
         self._obj.secure = value
         return self
 
@@ -320,7 +320,7 @@ class SecuredIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'use_as' is required and cannot be None")
         self._obj.use_as = value
         return self
 
@@ -334,7 +334,7 @@ class SecuredIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'use_secured_pdu' is required and cannot be None")
         self._obj.use_secured_pdu = value
         return self
 

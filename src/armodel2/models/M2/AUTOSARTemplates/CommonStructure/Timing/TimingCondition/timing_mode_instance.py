@@ -116,7 +116,7 @@ class TimingModeInstanceBuilder(IdentifiableBuilder):
         self._obj: TimingModeInstance = TimingModeInstance()
 
 
-    def with_mode_instance(self, value: Optional[any (ModeInSwcBsw)]) -> "TimingModeInstanceBuilder":
+    def with_mode_instance(self, value: Optional[Any]) -> "TimingModeInstanceBuilder":
         """Set mode_instance attribute.
 
         Args:
@@ -126,7 +126,7 @@ class TimingModeInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode_instance' is required and cannot be None")
         self._obj.mode_instance = value
         return self
 

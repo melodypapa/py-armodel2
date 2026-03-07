@@ -262,7 +262,7 @@ class TransformationTechnologyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'buffer_properties' is required and cannot be None")
         self._obj.buffer_properties = value
         return self
 
@@ -276,7 +276,7 @@ class TransformationTechnologyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'has_internal' is required and cannot be None")
         self._obj.has_internal = value
         return self
 
@@ -290,7 +290,7 @@ class TransformationTechnologyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'needs_original' is required and cannot be None")
         self._obj.needs_original = value
         return self
 
@@ -304,7 +304,7 @@ class TransformationTechnologyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'protocol' is required and cannot be None")
         self._obj.protocol = value
         return self
 
@@ -318,7 +318,7 @@ class TransformationTechnologyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transformation_description' is required and cannot be None")
         self._obj.transformation_description = value
         return self
 
@@ -332,7 +332,7 @@ class TransformationTechnologyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transformer' is required and cannot be None")
         self._obj.transformer = value
         return self
 
@@ -346,7 +346,7 @@ class TransformationTechnologyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'version' is required and cannot be None")
         self._obj.version = value
         return self
 

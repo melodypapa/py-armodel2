@@ -125,7 +125,7 @@ class TbodyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'valign' is required and cannot be None")
         self._obj.valign = value
         return self
 

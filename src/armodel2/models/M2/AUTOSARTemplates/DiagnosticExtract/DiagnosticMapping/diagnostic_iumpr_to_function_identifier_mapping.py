@@ -139,7 +139,7 @@ class DiagnosticIumprToFunctionIdentifierMappingBuilder(DiagnosticMappingBuilder
         self._obj: DiagnosticIumprToFunctionIdentifierMapping = DiagnosticIumprToFunctionIdentifierMapping()
 
 
-    def with_function(self, value: Optional[any (DiagnosticFunction)]) -> "DiagnosticIumprToFunctionIdentifierMappingBuilder":
+    def with_function(self, value: Optional[Any]) -> "DiagnosticIumprToFunctionIdentifierMappingBuilder":
         """Set function attribute.
 
         Args:
@@ -149,7 +149,7 @@ class DiagnosticIumprToFunctionIdentifierMappingBuilder(DiagnosticMappingBuilder
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'function' is required and cannot be None")
         self._obj.function = value
         return self
 
@@ -163,7 +163,7 @@ class DiagnosticIumprToFunctionIdentifierMappingBuilder(DiagnosticMappingBuilder
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'iumpr' is required and cannot be None")
         self._obj.iumpr = value
         return self
 

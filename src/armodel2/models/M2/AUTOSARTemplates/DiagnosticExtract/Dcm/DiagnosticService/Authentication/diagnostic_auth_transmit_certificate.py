@@ -114,7 +114,7 @@ class DiagnosticAuthTransmitCertificateBuilder(DiagnosticAuthenticationBuilder):
         self._obj: DiagnosticAuthTransmitCertificate = DiagnosticAuthTransmitCertificate()
 
 
-    def with_certificates(self, items: list[any (DiagnosticAuthTransmit)]) -> "DiagnosticAuthTransmitCertificateBuilder":
+    def with_certificates(self, items: list[Any]) -> "DiagnosticAuthTransmitCertificateBuilder":
         """Set certificates list attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticAuthTransmitCertificateBuilder(DiagnosticAuthenticationBuilder):
         return self
 
 
-    def add_certificate(self, item: any (DiagnosticAuthTransmit)) -> "DiagnosticAuthTransmitCertificateBuilder":
+    def add_certificate(self, item: Any) -> "DiagnosticAuthTransmitCertificateBuilder":
         """Add a single item to certificates list.
 
         Args:

@@ -116,7 +116,7 @@ class DiagnosticOperationCycleBuilder(DiagnosticCommonElementBuilder):
         self._obj: DiagnosticOperationCycle = DiagnosticOperationCycle()
 
 
-    def with_type_cycle_type_enum(self, value: Optional[any (DiagnosticOperation)]) -> "DiagnosticOperationCycleBuilder":
+    def with_type_cycle_type_enum(self, value: Optional[Any]) -> "DiagnosticOperationCycleBuilder":
         """Set type_cycle_type_enum attribute.
 
         Args:
@@ -126,7 +126,7 @@ class DiagnosticOperationCycleBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'type_cycle_type_enum' is required and cannot be None")
         self._obj.type_cycle_type_enum = value
         return self
 

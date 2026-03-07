@@ -152,7 +152,7 @@ class SwcToApplicationPartitionMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'application' is required and cannot be None")
         self._obj.application = value
         return self
 
@@ -166,7 +166,7 @@ class SwcToApplicationPartitionMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_component_prototype' is required and cannot be None")
         self._obj.sw_component_prototype = value
         return self
 

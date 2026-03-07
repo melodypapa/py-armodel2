@@ -385,7 +385,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'br' is required and cannot be None")
         self._obj.br = value
         return self
 
@@ -399,7 +399,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'e' is required and cannot be None")
         self._obj.e = value
         return self
 
@@ -413,7 +413,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ft' is required and cannot be None")
         self._obj.ft = value
         return self
 
@@ -427,7 +427,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ie' is required and cannot be None")
         self._obj.ie = value
         return self
 
@@ -441,7 +441,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'std' is required and cannot be None")
         self._obj.std = value
         return self
 
@@ -455,7 +455,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sub' is required and cannot be None")
         self._obj.sub = value
         return self
 
@@ -469,7 +469,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sup' is required and cannot be None")
         self._obj.sup = value
         return self
 
@@ -483,7 +483,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'trace' is required and cannot be None")
         self._obj.trace = value
         return self
 
@@ -497,7 +497,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tt' is required and cannot be None")
         self._obj.tt = value
         return self
 
@@ -511,7 +511,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'xdoc' is required and cannot be None")
         self._obj.xdoc = value
         return self
 
@@ -525,7 +525,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'xfile' is required and cannot be None")
         self._obj.xfile = value
         return self
 
@@ -539,7 +539,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'xref' is required and cannot be None")
         self._obj.xref = value
         return self
 
@@ -553,7 +553,7 @@ class MixedContentForParagraphBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'xref_target' is required and cannot be None")
         self._obj.xref_target = value
         return self
 

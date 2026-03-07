@@ -223,7 +223,7 @@ class CalibrationParameterValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'appl_init_value' is required and cannot be None")
         self._obj.appl_init_value = value
         return self
 
@@ -237,7 +237,7 @@ class CalibrationParameterValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'impl_init_value' is required and cannot be None")
         self._obj.impl_init_value = value
         return self
 
@@ -251,7 +251,7 @@ class CalibrationParameterValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initialized' is required and cannot be None")
         self._obj.initialized = value
         return self
 

@@ -133,7 +133,7 @@ class PostBuildVariantCriterionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'compu_method' is required and cannot be None")
         self._obj.compu_method = value
         return self
 

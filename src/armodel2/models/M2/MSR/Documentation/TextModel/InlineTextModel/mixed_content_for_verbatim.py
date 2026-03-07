@@ -189,7 +189,7 @@ class MixedContentForVerbatimBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'br' is required and cannot be None")
         self._obj.br = value
         return self
 
@@ -203,7 +203,7 @@ class MixedContentForVerbatimBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'e' is required and cannot be None")
         self._obj.e = value
         return self
 
@@ -217,7 +217,7 @@ class MixedContentForVerbatimBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tt' is required and cannot be None")
         self._obj.tt = value
         return self
 
@@ -231,7 +231,7 @@ class MixedContentForVerbatimBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'xref' is required and cannot be None")
         self._obj.xref = value
         return self
 

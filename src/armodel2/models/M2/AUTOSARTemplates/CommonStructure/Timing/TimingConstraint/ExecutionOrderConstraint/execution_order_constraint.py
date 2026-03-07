@@ -226,11 +226,11 @@ class ExecutionOrderConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
-    def with_execution_order(self, value: Optional[any (ExecutionOrder)]) -> "ExecutionOrderConstraintBuilder":
+    def with_execution_order(self, value: Optional[Any]) -> "ExecutionOrderConstraintBuilder":
         """Set execution_order attribute.
 
         Args:
@@ -240,7 +240,7 @@ class ExecutionOrderConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'execution_order' is required and cannot be None")
         self._obj.execution_order = value
         return self
 
@@ -254,7 +254,7 @@ class ExecutionOrderConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ignore_order' is required and cannot be None")
         self._obj.ignore_order = value
         return self
 
@@ -268,11 +268,11 @@ class ExecutionOrderConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_event' is required and cannot be None")
         self._obj.is_event = value
         return self
 
-    def with_ordered_elements(self, items: list[any (EOCExecutableEntity)]) -> "ExecutionOrderConstraintBuilder":
+    def with_ordered_elements(self, items: list[Any]) -> "ExecutionOrderConstraintBuilder":
         """Set ordered_elements list attribute.
 
         Args:
@@ -294,12 +294,12 @@ class ExecutionOrderConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'permit_multiple' is required and cannot be None")
         self._obj.permit_multiple = value
         return self
 
 
-    def add_ordered_element(self, item: any (EOCExecutableEntity)) -> "ExecutionOrderConstraintBuilder":
+    def add_ordered_element(self, item: Any) -> "ExecutionOrderConstraintBuilder":
         """Add a single item to ordered_elements list.
 
         Args:

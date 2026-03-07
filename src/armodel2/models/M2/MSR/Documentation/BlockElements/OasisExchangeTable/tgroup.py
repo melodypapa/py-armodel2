@@ -268,7 +268,7 @@ class TgroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'align' is required and cannot be None")
         self._obj.align = value
         return self
 
@@ -282,7 +282,7 @@ class TgroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cols' is required and cannot be None")
         self._obj.cols = value
         return self
 
@@ -296,7 +296,7 @@ class TgroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'colsep' is required and cannot be None")
         self._obj.colsep = value
         return self
 
@@ -322,7 +322,7 @@ class TgroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rowsep' is required and cannot be None")
         self._obj.rowsep = value
         return self
 
@@ -336,7 +336,7 @@ class TgroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tbody' is required and cannot be None")
         self._obj.tbody = value
         return self
 
@@ -350,7 +350,7 @@ class TgroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tfoot' is required and cannot be None")
         self._obj.tfoot = value
         return self
 
@@ -364,7 +364,7 @@ class TgroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'thead' is required and cannot be None")
         self._obj.thead = value
         return self
 

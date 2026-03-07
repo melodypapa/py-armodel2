@@ -191,7 +191,7 @@ class DiagnosticJ1939SpnMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'spn' is required and cannot be None")
         self._obj.spn = value
         return self
 
@@ -205,7 +205,7 @@ class DiagnosticJ1939SpnMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'system_signal' is required and cannot be None")
         self._obj.system_signal = value
         return self
 

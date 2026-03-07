@@ -273,11 +273,11 @@ class SwitchStreamIdentificationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'filter_action_block' is required and cannot be None")
         self._obj.filter_action_block = value
         return self
 
-    def with_filter_action_dest(self, value: Optional[any (SwitchStreamFilter)]) -> "SwitchStreamIdentificationBuilder":
+    def with_filter_action_dest(self, value: Optional[Any]) -> "SwitchStreamIdentificationBuilder":
         """Set filter_action_dest attribute.
 
         Args:
@@ -287,7 +287,7 @@ class SwitchStreamIdentificationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'filter_action_dest' is required and cannot be None")
         self._obj.filter_action_dest = value
         return self
 
@@ -301,7 +301,7 @@ class SwitchStreamIdentificationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'filter_action_drop' is required and cannot be None")
         self._obj.filter_action_drop = value
         return self
 
@@ -315,7 +315,7 @@ class SwitchStreamIdentificationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'filter_action_vlan' is required and cannot be None")
         self._obj.filter_action_vlan = value
         return self
 
@@ -341,7 +341,7 @@ class SwitchStreamIdentificationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'stream_filter' is required and cannot be None")
         self._obj.stream_filter = value
         return self
 

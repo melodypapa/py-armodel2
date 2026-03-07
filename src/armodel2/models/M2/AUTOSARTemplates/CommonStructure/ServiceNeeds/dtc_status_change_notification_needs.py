@@ -116,7 +116,7 @@ class DtcStatusChangeNotificationNeedsBuilder(DiagnosticCapabilityElementBuilder
         self._obj: DtcStatusChangeNotificationNeeds = DtcStatusChangeNotificationNeeds()
 
 
-    def with_notification_time(self, value: Optional[any (DiagnosticClearDtc)]) -> "DtcStatusChangeNotificationNeedsBuilder":
+    def with_notification_time(self, value: Optional[Any]) -> "DtcStatusChangeNotificationNeedsBuilder":
         """Set notification_time attribute.
 
         Args:
@@ -126,7 +126,7 @@ class DtcStatusChangeNotificationNeedsBuilder(DiagnosticCapabilityElementBuilder
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'notification_time' is required and cannot be None")
         self._obj.notification_time = value
         return self
 

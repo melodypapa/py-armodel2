@@ -164,7 +164,7 @@ class RptSwPrototypingAccessBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_hook_access' is required and cannot be None")
         self._obj.rpt_hook_access = value
         return self
 
@@ -178,7 +178,7 @@ class RptSwPrototypingAccessBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_read_access' is required and cannot be None")
         self._obj.rpt_read_access = value
         return self
 
@@ -192,7 +192,7 @@ class RptSwPrototypingAccessBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_write_access' is required and cannot be None")
         self._obj.rpt_write_access = value
         return self
 

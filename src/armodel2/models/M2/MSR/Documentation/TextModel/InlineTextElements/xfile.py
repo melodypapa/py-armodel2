@@ -167,7 +167,7 @@ class XfileBuilder(SingleLanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tool' is required and cannot be None")
         self._obj.tool = value
         return self
 
@@ -181,11 +181,11 @@ class XfileBuilder(SingleLanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tool_version' is required and cannot be None")
         self._obj.tool_version = value
         return self
 
-    def with_url(self, value: Optional[any (Url)]) -> "XfileBuilder":
+    def with_url(self, value: Optional[Any]) -> "XfileBuilder":
         """Set url attribute.
 
         Args:
@@ -195,7 +195,7 @@ class XfileBuilder(SingleLanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'url' is required and cannot be None")
         self._obj.url = value
         return self
 

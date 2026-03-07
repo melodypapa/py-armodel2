@@ -298,7 +298,7 @@ class EventHandlerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_group' is required and cannot be None")
         self._obj.event_group = value
         return self
 
@@ -312,7 +312,7 @@ class EventHandlerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_multicast' is required and cannot be None")
         self._obj.event_multicast = value
         return self
 
@@ -326,7 +326,7 @@ class EventHandlerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'multicast' is required and cannot be None")
         self._obj.multicast = value
         return self
 
@@ -354,7 +354,7 @@ class EventHandlerBuilder(IdentifiableBuilder):
         self._obj.routing_groups = list(items) if items else []
         return self
 
-    def with_sd_server_config(self, value: Optional[any (SdServerConfig)]) -> "EventHandlerBuilder":
+    def with_sd_server_config(self, value: Optional[Any]) -> "EventHandlerBuilder":
         """Set sd_server_config attribute.
 
         Args:
@@ -364,7 +364,7 @@ class EventHandlerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sd_server_config' is required and cannot be None")
         self._obj.sd_server_config = value
         return self
 
@@ -378,7 +378,7 @@ class EventHandlerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sd_server_eg' is required and cannot be None")
         self._obj.sd_server_eg = value
         return self
 

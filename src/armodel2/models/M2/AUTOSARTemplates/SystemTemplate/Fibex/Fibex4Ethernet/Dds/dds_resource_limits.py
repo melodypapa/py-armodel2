@@ -163,7 +163,7 @@ class DdsResourceLimitsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_instances' is required and cannot be None")
         self._obj.max_instances = value
         return self
 
@@ -177,7 +177,7 @@ class DdsResourceLimitsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_samples' is required and cannot be None")
         self._obj.max_samples = value
         return self
 
@@ -191,7 +191,7 @@ class DdsResourceLimitsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_samples_per_instance' is required and cannot be None")
         self._obj.max_samples_per_instance = value
         return self
 

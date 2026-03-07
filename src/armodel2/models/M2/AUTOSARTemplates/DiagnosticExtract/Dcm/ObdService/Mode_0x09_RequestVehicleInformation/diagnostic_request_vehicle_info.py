@@ -149,11 +149,11 @@ class DiagnosticRequestVehicleInfoBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'info_type' is required and cannot be None")
         self._obj.info_type = value
         return self
 
-    def with_request_vehicle(self, value: Optional[any (DiagnosticRequest)]) -> "DiagnosticRequestVehicleInfoBuilder":
+    def with_request_vehicle(self, value: Optional[Any]) -> "DiagnosticRequestVehicleInfoBuilder":
         """Set request_vehicle attribute.
 
         Args:
@@ -163,7 +163,7 @@ class DiagnosticRequestVehicleInfoBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request_vehicle' is required and cannot be None")
         self._obj.request_vehicle = value
         return self
 

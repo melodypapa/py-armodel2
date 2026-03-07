@@ -231,7 +231,7 @@ class DiagnosticProtocolBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
@@ -245,7 +245,7 @@ class DiagnosticProtocolBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'protocol_kind' is required and cannot be None")
         self._obj.protocol_kind = value
         return self
 
@@ -259,7 +259,7 @@ class DiagnosticProtocolBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'send_resp_pend' is required and cannot be None")
         self._obj.send_resp_pend = value
         return self
 
@@ -273,7 +273,7 @@ class DiagnosticProtocolBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_table' is required and cannot be None")
         self._obj.service_table = value
         return self
 

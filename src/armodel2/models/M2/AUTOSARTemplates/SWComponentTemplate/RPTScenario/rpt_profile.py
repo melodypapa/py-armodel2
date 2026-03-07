@@ -190,7 +190,7 @@ class RptProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_service' is required and cannot be None")
         self._obj.max_service = value
         return self
 
@@ -204,7 +204,7 @@ class RptProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_service_point' is required and cannot be None")
         self._obj.min_service_point = value
         return self
 
@@ -218,7 +218,7 @@ class RptProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_point' is required and cannot be None")
         self._obj.service_point = value
         return self
 
@@ -232,7 +232,7 @@ class RptProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'stim_enabler' is required and cannot be None")
         self._obj.stim_enabler = value
         return self
 

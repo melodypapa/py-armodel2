@@ -149,7 +149,7 @@ class DiagnosticSessionControlBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_session_session' is required and cannot be None")
         self._obj.diagnostic_session_session = value
         return self
 
@@ -163,7 +163,7 @@ class DiagnosticSessionControlBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'session_control' is required and cannot be None")
         self._obj.session_control = value
         return self
 

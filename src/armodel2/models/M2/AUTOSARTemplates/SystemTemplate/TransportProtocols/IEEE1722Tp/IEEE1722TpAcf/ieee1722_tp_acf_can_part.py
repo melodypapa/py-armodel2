@@ -216,7 +216,7 @@ class IEEE1722TpAcfCanPartBuilder(IEEE1722TpAcfBusPartBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_addressing' is required and cannot be None")
         self._obj.can_addressing = value
         return self
 
@@ -230,7 +230,7 @@ class IEEE1722TpAcfCanPartBuilder(IEEE1722TpAcfBusPartBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_bit_rate_switch' is required and cannot be None")
         self._obj.can_bit_rate_switch = value
         return self
 
@@ -244,7 +244,7 @@ class IEEE1722TpAcfCanPartBuilder(IEEE1722TpAcfBusPartBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_frame_tx_behavior' is required and cannot be None")
         self._obj.can_frame_tx_behavior = value
         return self
 
@@ -258,7 +258,7 @@ class IEEE1722TpAcfCanPartBuilder(IEEE1722TpAcfBusPartBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_identifier' is required and cannot be None")
         self._obj.can_identifier = value
         return self
 
@@ -272,7 +272,7 @@ class IEEE1722TpAcfCanPartBuilder(IEEE1722TpAcfBusPartBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sdu' is required and cannot be None")
         self._obj.sdu = value
         return self
 

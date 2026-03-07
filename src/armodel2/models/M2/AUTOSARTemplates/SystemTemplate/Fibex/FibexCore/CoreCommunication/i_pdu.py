@@ -128,7 +128,7 @@ class IPduBuilder(PduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'contained_i_pdu_props' is required and cannot be None")
         self._obj.contained_i_pdu_props = value
         return self
 

@@ -235,7 +235,7 @@ class LifeCycleInfoBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lc_object' is required and cannot be None")
         self._obj.lc_object = value
         return self
 
@@ -249,7 +249,7 @@ class LifeCycleInfoBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lc_state' is required and cannot be None")
         self._obj.lc_state = value
         return self
 
@@ -263,7 +263,7 @@ class LifeCycleInfoBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'period_begin' is required and cannot be None")
         self._obj.period_begin = value
         return self
 
@@ -277,7 +277,7 @@ class LifeCycleInfoBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'period_end' is required and cannot be None")
         self._obj.period_end = value
         return self
 
@@ -291,7 +291,7 @@ class LifeCycleInfoBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'remark' is required and cannot be None")
         self._obj.remark = value
         return self
 

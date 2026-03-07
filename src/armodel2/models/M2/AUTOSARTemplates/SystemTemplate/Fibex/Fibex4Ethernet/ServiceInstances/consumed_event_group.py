@@ -304,7 +304,7 @@ class ConsumedEventGroupBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'application_endpoint' is required and cannot be None")
         self._obj.application_endpoint = value
         return self
 
@@ -318,7 +318,7 @@ class ConsumedEventGroupBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'auto_require' is required and cannot be None")
         self._obj.auto_require = value
         return self
 
@@ -332,7 +332,7 @@ class ConsumedEventGroupBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_group' is required and cannot be None")
         self._obj.event_group = value
         return self
 
@@ -370,7 +370,7 @@ class ConsumedEventGroupBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
@@ -386,7 +386,7 @@ class ConsumedEventGroupBuilder(IdentifiableBuilder):
         self._obj.routing_groups = list(items) if items else []
         return self
 
-    def with_sd_client_config(self, value: Optional[any (SdClientConfig)]) -> "ConsumedEventGroupBuilder":
+    def with_sd_client_config(self, value: Optional[Any]) -> "ConsumedEventGroupBuilder":
         """Set sd_client_config attribute.
 
         Args:
@@ -396,7 +396,7 @@ class ConsumedEventGroupBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sd_client_config' is required and cannot be None")
         self._obj.sd_client_config = value
         return self
 
@@ -410,7 +410,7 @@ class ConsumedEventGroupBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sd_client_timer' is required and cannot be None")
         self._obj.sd_client_timer = value
         return self
 

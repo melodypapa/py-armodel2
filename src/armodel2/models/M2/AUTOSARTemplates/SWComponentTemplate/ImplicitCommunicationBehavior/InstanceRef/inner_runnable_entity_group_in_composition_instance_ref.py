@@ -172,11 +172,11 @@ class InnerRunnableEntityGroupInCompositionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
-    def with_context_sws(self, items: list[any (SwComponent)]) -> "InnerRunnableEntityGroupInCompositionInstanceRefBuilder":
+    def with_context_sws(self, items: list[Any]) -> "InnerRunnableEntityGroupInCompositionInstanceRefBuilder":
         """Set context_sws list attribute.
 
         Args:
@@ -198,12 +198,12 @@ class InnerRunnableEntityGroupInCompositionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_runnable' is required and cannot be None")
         self._obj.target_runnable = value
         return self
 
 
-    def add_context_sw(self, item: any (SwComponent)) -> "InnerRunnableEntityGroupInCompositionInstanceRefBuilder":
+    def add_context_sw(self, item: Any) -> "InnerRunnableEntityGroupInCompositionInstanceRefBuilder":
         """Add a single item to context_sws list.
 
         Args:

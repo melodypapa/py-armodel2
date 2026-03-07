@@ -422,7 +422,7 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'module_id' is required and cannot be None")
         self._obj.module_id = value
         return self
 
@@ -448,7 +448,7 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_module_documentation' is required and cannot be None")
         self._obj.bsw_module_documentation = value
         return self
 

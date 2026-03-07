@@ -227,7 +227,7 @@ class BurstPatternEventTriggeringBuilder(EventTriggeringConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of' is required and cannot be None")
         self._obj.max_number_of = value
         return self
 
@@ -241,7 +241,7 @@ class BurstPatternEventTriggeringBuilder(EventTriggeringConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum_inter' is required and cannot be None")
         self._obj.minimum_inter = value
         return self
 
@@ -255,7 +255,7 @@ class BurstPatternEventTriggeringBuilder(EventTriggeringConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_number_of' is required and cannot be None")
         self._obj.min_number_of = value
         return self
 
@@ -269,7 +269,7 @@ class BurstPatternEventTriggeringBuilder(EventTriggeringConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pattern_jitter' is required and cannot be None")
         self._obj.pattern_jitter = value
         return self
 
@@ -283,7 +283,7 @@ class BurstPatternEventTriggeringBuilder(EventTriggeringConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pattern_length' is required and cannot be None")
         self._obj.pattern_length = value
         return self
 
@@ -297,7 +297,7 @@ class BurstPatternEventTriggeringBuilder(EventTriggeringConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pattern_period' is required and cannot be None")
         self._obj.pattern_period = value
         return self
 

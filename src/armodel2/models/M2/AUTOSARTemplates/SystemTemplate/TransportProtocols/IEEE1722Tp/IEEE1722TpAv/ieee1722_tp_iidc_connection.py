@@ -263,7 +263,7 @@ class IEEE1722TpIidcConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'iidc_channel' is required and cannot be None")
         self._obj.iidc_channel = value
         return self
 
@@ -277,7 +277,7 @@ class IEEE1722TpIidcConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'iidc_data_block' is required and cannot be None")
         self._obj.iidc_data_block = value
         return self
 
@@ -291,7 +291,7 @@ class IEEE1722TpIidcConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'iidc_fraction' is required and cannot be None")
         self._obj.iidc_fraction = value
         return self
 
@@ -305,7 +305,7 @@ class IEEE1722TpIidcConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'iidc_source' is required and cannot be None")
         self._obj.iidc_source = value
         return self
 
@@ -319,7 +319,7 @@ class IEEE1722TpIidcConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'iidc_stream' is required and cannot be None")
         self._obj.iidc_stream = value
         return self
 
@@ -333,7 +333,7 @@ class IEEE1722TpIidcConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'iidc_sy' is required and cannot be None")
         self._obj.iidc_sy = value
         return self
 
@@ -347,7 +347,7 @@ class IEEE1722TpIidcConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'iidc_tag' is required and cannot be None")
         self._obj.iidc_tag = value
         return self
 
@@ -361,7 +361,7 @@ class IEEE1722TpIidcConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'iidc_t_code' is required and cannot be None")
         self._obj.iidc_t_code = value
         return self
 

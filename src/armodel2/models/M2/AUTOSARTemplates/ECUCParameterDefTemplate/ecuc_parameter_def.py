@@ -169,7 +169,7 @@ class EcucParameterDefBuilder(EcucCommonAttributesBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'derivation' is required and cannot be None")
         self._obj.derivation = value
         return self
 
@@ -183,7 +183,7 @@ class EcucParameterDefBuilder(EcucCommonAttributesBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'symbolic_name' is required and cannot be None")
         self._obj.symbolic_name = value
         return self
 
@@ -197,7 +197,7 @@ class EcucParameterDefBuilder(EcucCommonAttributesBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'with_auto' is required and cannot be None")
         self._obj.with_auto = value
         return self
 

@@ -169,7 +169,7 @@ class TransformationISignalPropsBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cs_error_reaction' is required and cannot be None")
         self._obj.cs_error_reaction = value
         return self
 
@@ -185,7 +185,7 @@ class TransformationISignalPropsBuilder(BuilderBase, ABC):
         self._obj.data_prototypes = list(items) if items else []
         return self
 
-    def with_transformer(self, value: Optional[any (Transformation)]) -> "TransformationISignalPropsBuilder":
+    def with_transformer(self, value: Optional[Any]) -> "TransformationISignalPropsBuilder":
         """Set transformer attribute.
 
         Args:
@@ -195,7 +195,7 @@ class TransformationISignalPropsBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transformer' is required and cannot be None")
         self._obj.transformer = value
         return self
 

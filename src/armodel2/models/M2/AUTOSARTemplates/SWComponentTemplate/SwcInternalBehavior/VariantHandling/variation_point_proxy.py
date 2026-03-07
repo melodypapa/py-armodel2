@@ -175,7 +175,7 @@ class VariationPointProxyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'condition_access' is required and cannot be None")
         self._obj.condition_access = value
         return self
 
@@ -189,11 +189,11 @@ class VariationPointProxyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'implementation' is required and cannot be None")
         self._obj.implementation = value
         return self
 
-    def with_post_build_value(self, value: Optional[any (PostBuildVariant)]) -> "VariationPointProxyBuilder":
+    def with_post_build_value(self, value: Optional[Any]) -> "VariationPointProxyBuilder":
         """Set post_build_value attribute.
 
         Args:
@@ -203,7 +203,7 @@ class VariationPointProxyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'post_build_value' is required and cannot be None")
         self._obj.post_build_value = value
         return self
 

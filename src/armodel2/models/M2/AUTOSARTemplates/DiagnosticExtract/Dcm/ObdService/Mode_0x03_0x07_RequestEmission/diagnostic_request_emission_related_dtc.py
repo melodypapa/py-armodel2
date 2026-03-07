@@ -117,7 +117,7 @@ class DiagnosticRequestEmissionRelatedDTCBuilder(DiagnosticServiceInstanceBuilde
         self._obj: DiagnosticRequestEmissionRelatedDTC = DiagnosticRequestEmissionRelatedDTC()
 
 
-    def with_request(self, value: Optional[any (DiagnosticRequest)]) -> "DiagnosticRequestEmissionRelatedDTCBuilder":
+    def with_request(self, value: Optional[Any]) -> "DiagnosticRequestEmissionRelatedDTCBuilder":
         """Set request attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticRequestEmissionRelatedDTCBuilder(DiagnosticServiceInstanceBuilde
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request' is required and cannot be None")
         self._obj.request = value
         return self
 

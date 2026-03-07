@@ -117,7 +117,7 @@ class DiagnosticReadMemoryByAddressBuilder(DiagnosticMemoryAddressableRangeAcces
         self._obj: DiagnosticReadMemoryByAddress = DiagnosticReadMemoryByAddress()
 
 
-    def with_read_class(self, value: Optional[any (DiagnosticReadMemory)]) -> "DiagnosticReadMemoryByAddressBuilder":
+    def with_read_class(self, value: Optional[Any]) -> "DiagnosticReadMemoryByAddressBuilder":
         """Set read_class attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticReadMemoryByAddressBuilder(DiagnosticMemoryAddressableRangeAcces
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'read_class' is required and cannot be None")
         self._obj.read_class = value
         return self
 

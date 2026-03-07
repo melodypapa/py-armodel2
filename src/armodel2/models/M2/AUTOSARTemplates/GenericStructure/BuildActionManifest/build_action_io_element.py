@@ -188,7 +188,7 @@ class BuildActionIoElementBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'category' is required and cannot be None")
         self._obj.category = value
         return self
 
@@ -202,7 +202,7 @@ class BuildActionIoElementBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecuc_definition' is required and cannot be None")
         self._obj.ecuc_definition = value
         return self
 
@@ -216,7 +216,7 @@ class BuildActionIoElementBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'role' is required and cannot be None")
         self._obj.role = value
         return self
 

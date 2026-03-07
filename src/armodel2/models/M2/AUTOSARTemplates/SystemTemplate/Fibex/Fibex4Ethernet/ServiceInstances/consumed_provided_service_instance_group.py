@@ -146,7 +146,7 @@ class ConsumedProvidedServiceInstanceGroupBuilder(FibexElementBuilder):
         self._obj: ConsumedProvidedServiceInstanceGroup = ConsumedProvidedServiceInstanceGroup()
 
 
-    def with_consumed_services(self, items: list[any (ConsumedService)]) -> "ConsumedProvidedServiceInstanceGroupBuilder":
+    def with_consumed_services(self, items: list[Any]) -> "ConsumedProvidedServiceInstanceGroupBuilder":
         """Set consumed_services list attribute.
 
         Args:
@@ -158,7 +158,7 @@ class ConsumedProvidedServiceInstanceGroupBuilder(FibexElementBuilder):
         self._obj.consumed_services = list(items) if items else []
         return self
 
-    def with_provided_services(self, items: list[any (ProvidedService)]) -> "ConsumedProvidedServiceInstanceGroupBuilder":
+    def with_provided_services(self, items: list[Any]) -> "ConsumedProvidedServiceInstanceGroupBuilder":
         """Set provided_services list attribute.
 
         Args:
@@ -171,7 +171,7 @@ class ConsumedProvidedServiceInstanceGroupBuilder(FibexElementBuilder):
         return self
 
 
-    def add_consumed_service(self, item: any (ConsumedService)) -> "ConsumedProvidedServiceInstanceGroupBuilder":
+    def add_consumed_service(self, item: Any) -> "ConsumedProvidedServiceInstanceGroupBuilder":
         """Add a single item to consumed_services list.
 
         Args:
@@ -192,7 +192,7 @@ class ConsumedProvidedServiceInstanceGroupBuilder(FibexElementBuilder):
         self._obj.consumed_services = []
         return self
 
-    def add_provided_service(self, item: any (ProvidedService)) -> "ConsumedProvidedServiceInstanceGroupBuilder":
+    def add_provided_service(self, item: Any) -> "ConsumedProvidedServiceInstanceGroupBuilder":
         """Add a single item to provided_services list.
 
         Args:

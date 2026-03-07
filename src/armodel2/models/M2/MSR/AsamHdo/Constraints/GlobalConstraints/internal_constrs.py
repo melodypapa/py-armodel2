@@ -225,7 +225,7 @@ class InternalConstrsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lower_limit' is required and cannot be None")
         self._obj.lower_limit = value
         return self
 
@@ -239,7 +239,7 @@ class InternalConstrsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_diff' is required and cannot be None")
         self._obj.max_diff = value
         return self
 
@@ -253,7 +253,7 @@ class InternalConstrsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_gradient' is required and cannot be None")
         self._obj.max_gradient = value
         return self
 
@@ -267,7 +267,7 @@ class InternalConstrsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'monotony' is required and cannot be None")
         self._obj.monotony = value
         return self
 
@@ -293,7 +293,7 @@ class InternalConstrsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'upper_limit' is required and cannot be None")
         self._obj.upper_limit = value
         return self
 

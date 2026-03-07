@@ -377,7 +377,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'category' is required and cannot be None")
         self._obj.category = value
         return self
 
@@ -391,7 +391,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'desc' is required and cannot be None")
         self._obj.desc = value
         return self
 
@@ -405,7 +405,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 
@@ -419,7 +419,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_generic_axis_param_type' is required and cannot be None")
         self._obj.sw_generic_axis_param_type = value
         return self
 
@@ -433,7 +433,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout_component' is required and cannot be None")
         self._obj.sw_record_layout_component = value
         return self
 
@@ -447,7 +447,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout_group_axis' is required and cannot be None")
         self._obj.sw_record_layout_group_axis = value
         return self
 
@@ -461,7 +461,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout_group_from' is required and cannot be None")
         self._obj.sw_record_layout_group_from = value
         return self
 
@@ -475,7 +475,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout_group_to' is required and cannot be None")
         self._obj.sw_record_layout_group_to = value
         return self
 
@@ -489,7 +489,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout' is required and cannot be None")
         self._obj.sw_record_layout = value
         return self
 
@@ -503,7 +503,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout_group' is required and cannot be None")
         self._obj.sw_record_layout_group = value
         return self
 
@@ -517,7 +517,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout_v' is required and cannot be None")
         self._obj.sw_record_layout_v = value
         return self
 
@@ -531,7 +531,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout_group_index' is required and cannot be None")
         self._obj.sw_record_layout_group_index = value
         return self
 
@@ -545,7 +545,7 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout_group_step' is required and cannot be None")
         self._obj.sw_record_layout_group_step = value
         return self
 

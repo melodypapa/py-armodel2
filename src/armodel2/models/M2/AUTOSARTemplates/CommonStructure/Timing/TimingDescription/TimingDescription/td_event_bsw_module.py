@@ -149,7 +149,7 @@ class TDEventBswModuleBuilder(TDEventBswBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_module_entry_entry' is required and cannot be None")
         self._obj.bsw_module_entry_entry = value
         return self
 
@@ -163,7 +163,7 @@ class TDEventBswModuleBuilder(TDEventBswBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'td_event_bsw' is required and cannot be None")
         self._obj.td_event_bsw = value
         return self
 

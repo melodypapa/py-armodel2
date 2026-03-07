@@ -169,7 +169,7 @@ class ServerComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'operation' is required and cannot be None")
         self._obj.operation = value
         return self
 
@@ -183,11 +183,11 @@ class ServerComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'queue_length' is required and cannot be None")
         self._obj.queue_length = value
         return self
 
-    def with_transformation_coms(self, items: list[any (TransformationCom)]) -> "ServerComSpecBuilder":
+    def with_transformation_coms(self, items: list[Any]) -> "ServerComSpecBuilder":
         """Set transformation_coms list attribute.
 
         Args:
@@ -200,7 +200,7 @@ class ServerComSpecBuilder(PPortComSpecBuilder):
         return self
 
 
-    def add_transformation_com(self, item: any (TransformationCom)) -> "ServerComSpecBuilder":
+    def add_transformation_com(self, item: Any) -> "ServerComSpecBuilder":
         """Add a single item to transformation_coms list.
 
         Args:

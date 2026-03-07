@@ -144,7 +144,7 @@ class AbstractMultiplicityRestrictionBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lower_multiplicity' is required and cannot be None")
         self._obj.lower_multiplicity = value
         return self
 
@@ -158,7 +158,7 @@ class AbstractMultiplicityRestrictionBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'upper_multiplicity' is required and cannot be None")
         self._obj.upper_multiplicity = value
         return self
 

@@ -264,7 +264,7 @@ class FlexrayFifoConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'admit_without' is required and cannot be None")
         self._obj.admit_without = value
         return self
 
@@ -278,7 +278,7 @@ class FlexrayFifoConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base_cycle' is required and cannot be None")
         self._obj.base_cycle = value
         return self
 
@@ -292,7 +292,7 @@ class FlexrayFifoConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'channel' is required and cannot be None")
         self._obj.channel = value
         return self
 
@@ -306,7 +306,7 @@ class FlexrayFifoConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cycle_repetition' is required and cannot be None")
         self._obj.cycle_repetition = value
         return self
 
@@ -320,7 +320,7 @@ class FlexrayFifoConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'fifo_depth' is required and cannot be None")
         self._obj.fifo_depth = value
         return self
 
@@ -346,7 +346,7 @@ class FlexrayFifoConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'msg_id_mask' is required and cannot be None")
         self._obj.msg_id_mask = value
         return self
 
@@ -360,7 +360,7 @@ class FlexrayFifoConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'msg_id_match' is required and cannot be None")
         self._obj.msg_id_match = value
         return self
 

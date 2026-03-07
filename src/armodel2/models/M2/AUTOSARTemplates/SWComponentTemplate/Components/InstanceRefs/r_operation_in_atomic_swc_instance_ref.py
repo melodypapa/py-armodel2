@@ -155,7 +155,7 @@ class ROperationInAtomicSwcInstanceRefBuilder(OperationInAtomicSwcInstanceRefBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_r_port' is required and cannot be None")
         self._obj.context_r_port = value
         return self
 
@@ -169,7 +169,7 @@ class ROperationInAtomicSwcInstanceRefBuilder(OperationInAtomicSwcInstanceRefBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_required_operation' is required and cannot be None")
         self._obj.target_required_operation = value
         return self
 

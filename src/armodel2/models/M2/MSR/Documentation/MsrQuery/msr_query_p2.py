@@ -150,7 +150,7 @@ class MsrQueryP2Builder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'msr_query_props' is required and cannot be None")
         self._obj.msr_query_props = value
         return self
 
@@ -164,7 +164,7 @@ class MsrQueryP2Builder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'msr_query_result' is required and cannot be None")
         self._obj.msr_query_result = value
         return self
 

@@ -187,7 +187,7 @@ class FlexrayTpEcuBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cancellation' is required and cannot be None")
         self._obj.cancellation = value
         return self
 
@@ -201,7 +201,7 @@ class FlexrayTpEcuBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cycle_time_main' is required and cannot be None")
         self._obj.cycle_time_main = value
         return self
 
@@ -215,7 +215,7 @@ class FlexrayTpEcuBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_instance' is required and cannot be None")
         self._obj.ecu_instance = value
         return self
 
@@ -229,7 +229,7 @@ class FlexrayTpEcuBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'full_duplex' is required and cannot be None")
         self._obj.full_duplex = value
         return self
 

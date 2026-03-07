@@ -125,7 +125,7 @@ class Ipv4AutoIpPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_auto_ip_init' is required and cannot be None")
         self._obj.tcp_ip_auto_ip_init = value
         return self
 

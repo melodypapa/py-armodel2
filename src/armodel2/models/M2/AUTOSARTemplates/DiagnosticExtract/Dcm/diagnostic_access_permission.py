@@ -203,7 +203,7 @@ class DiagnosticAccessPermissionBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'authentication' is required and cannot be None")
         self._obj.authentication = value
         return self
 
@@ -219,7 +219,7 @@ class DiagnosticAccessPermissionBuilder(DiagnosticCommonElementBuilder):
         self._obj.diagnostic_sessions = list(items) if items else []
         return self
 
-    def with_environmental(self, value: Optional[any (Diagnostic)]) -> "DiagnosticAccessPermissionBuilder":
+    def with_environmental(self, value: Optional[Any]) -> "DiagnosticAccessPermissionBuilder":
         """Set environmental attribute.
 
         Args:
@@ -229,7 +229,7 @@ class DiagnosticAccessPermissionBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'environmental' is required and cannot be None")
         self._obj.environmental = value
         return self
 

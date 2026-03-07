@@ -192,7 +192,7 @@ class DiagnosticIoControlNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'current_value' is required and cannot be None")
         self._obj.current_value = value
         return self
 
@@ -206,7 +206,7 @@ class DiagnosticIoControlNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'freeze_current' is required and cannot be None")
         self._obj.freeze_current = value
         return self
 
@@ -220,7 +220,7 @@ class DiagnosticIoControlNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'reset_to_default' is required and cannot be None")
         self._obj.reset_to_default = value
         return self
 
@@ -234,7 +234,7 @@ class DiagnosticIoControlNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_term' is required and cannot be None")
         self._obj.short_term = value
         return self
 

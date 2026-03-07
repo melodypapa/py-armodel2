@@ -417,7 +417,7 @@ class BswModuleEntityBuilder(ExecutableEntityBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'implemented_entry' is required and cannot be None")
         self._obj.implemented_entry = value
         return self
 
@@ -455,7 +455,7 @@ class BswModuleEntityBuilder(ExecutableEntityBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'scheduler_name_prefix' is required and cannot be None")
         self._obj.scheduler_name_prefix = value
         return self
 

@@ -213,7 +213,7 @@ class McGroupBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ref_calprm_set' is required and cannot be None")
         self._obj.ref_calprm_set = value
         return self
 
@@ -227,7 +227,7 @@ class McGroupBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ref' is required and cannot be None")
         self._obj.ref = value
         return self
 

@@ -144,7 +144,7 @@ class TimeRangeTypeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tolerance' is required and cannot be None")
         self._obj.tolerance = value
         return self
 
@@ -158,7 +158,7 @@ class TimeRangeTypeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'value' is required and cannot be None")
         self._obj.value = value
         return self
 

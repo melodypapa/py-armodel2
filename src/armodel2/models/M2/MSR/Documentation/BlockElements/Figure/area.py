@@ -528,7 +528,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'accesskey' is required and cannot be None")
         self._obj.accesskey = value
         return self
 
@@ -542,7 +542,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'alt' is required and cannot be None")
         self._obj.alt = value
         return self
 
@@ -556,7 +556,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'class' is required and cannot be None")
         setattr(self._obj, 'class', value)
         return self
 
@@ -570,7 +570,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'coords' is required and cannot be None")
         self._obj.coords = value
         return self
 
@@ -584,7 +584,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'href' is required and cannot be None")
         self._obj.href = value
         return self
 
@@ -598,7 +598,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nohref' is required and cannot be None")
         self._obj.nohref = value
         return self
 
@@ -612,7 +612,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onblur' is required and cannot be None")
         self._obj.onblur = value
         return self
 
@@ -626,7 +626,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onclick' is required and cannot be None")
         self._obj.onclick = value
         return self
 
@@ -640,7 +640,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ondblclick' is required and cannot be None")
         self._obj.ondblclick = value
         return self
 
@@ -654,7 +654,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onfocus' is required and cannot be None")
         self._obj.onfocus = value
         return self
 
@@ -668,7 +668,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onkeydown' is required and cannot be None")
         self._obj.onkeydown = value
         return self
 
@@ -682,7 +682,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onkeypress' is required and cannot be None")
         self._obj.onkeypress = value
         return self
 
@@ -696,7 +696,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onkeyup' is required and cannot be None")
         self._obj.onkeyup = value
         return self
 
@@ -710,7 +710,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onmousedown' is required and cannot be None")
         self._obj.onmousedown = value
         return self
 
@@ -724,7 +724,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onmousemove' is required and cannot be None")
         self._obj.onmousemove = value
         return self
 
@@ -738,7 +738,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onmouseout' is required and cannot be None")
         self._obj.onmouseout = value
         return self
 
@@ -752,7 +752,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onmouseover' is required and cannot be None")
         self._obj.onmouseover = value
         return self
 
@@ -766,7 +766,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'onmouseup' is required and cannot be None")
         self._obj.onmouseup = value
         return self
 
@@ -780,7 +780,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'shape' is required and cannot be None")
         self._obj.shape = value
         return self
 
@@ -794,7 +794,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'style' is required and cannot be None")
         self._obj.style = value
         return self
 
@@ -808,7 +808,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tabindex' is required and cannot be None")
         self._obj.tabindex = value
         return self
 
@@ -822,7 +822,7 @@ class AreaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'title' is required and cannot be None")
         self._obj.title = value
         return self
 

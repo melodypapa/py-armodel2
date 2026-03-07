@@ -170,7 +170,7 @@ class ClientServerOperationBlueprintMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'blueprint' is required and cannot be None")
         self._obj.blueprint = value
         return self
 
@@ -184,7 +184,7 @@ class ClientServerOperationBlueprintMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_module_entry' is required and cannot be None")
         self._obj.bsw_module_entry = value
         return self
 
@@ -198,7 +198,7 @@ class ClientServerOperationBlueprintMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'client_server' is required and cannot be None")
         self._obj.client_server = value
         return self
 

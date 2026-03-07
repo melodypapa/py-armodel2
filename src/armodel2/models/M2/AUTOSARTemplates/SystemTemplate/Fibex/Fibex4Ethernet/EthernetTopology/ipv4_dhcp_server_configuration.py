@@ -211,7 +211,7 @@ class Ipv4DhcpServerConfigurationBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'address_range' is required and cannot be None")
         self._obj.address_range = value
         return self
 
@@ -225,7 +225,7 @@ class Ipv4DhcpServerConfigurationBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_gateway' is required and cannot be None")
         self._obj.default_gateway = value
         return self
 
@@ -239,7 +239,7 @@ class Ipv4DhcpServerConfigurationBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_lease' is required and cannot be None")
         self._obj.default_lease = value
         return self
 
@@ -265,7 +265,7 @@ class Ipv4DhcpServerConfigurationBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network_mask' is required and cannot be None")
         self._obj.network_mask = value
         return self
 

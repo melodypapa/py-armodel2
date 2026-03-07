@@ -167,7 +167,7 @@ class BswModeReceiverPolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'enhanced_mode_api' is required and cannot be None")
         self._obj.enhanced_mode_api = value
         return self
 
@@ -181,7 +181,7 @@ class BswModeReceiverPolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'required_mode_group' is required and cannot be None")
         self._obj.required_mode_group = value
         return self
 
@@ -195,7 +195,7 @@ class BswModeReceiverPolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'supports_asynchronous_mode_switch' is required and cannot be None")
         self._obj.supports_asynchronous_mode_switch = value
         return self
 

@@ -186,7 +186,7 @@ class MacSecPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'auto_start' is required and cannot be None")
         self._obj.auto_start = value
         return self
 
@@ -200,7 +200,7 @@ class MacSecPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mac_sec_kay' is required and cannot be None")
         self._obj.mac_sec_kay = value
         return self
 
@@ -214,7 +214,7 @@ class MacSecPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'on_fail' is required and cannot be None")
         self._obj.on_fail = value
         return self
 
@@ -228,7 +228,7 @@ class MacSecPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sak_rekey_time' is required and cannot be None")
         self._obj.sak_rekey_time = value
         return self
 

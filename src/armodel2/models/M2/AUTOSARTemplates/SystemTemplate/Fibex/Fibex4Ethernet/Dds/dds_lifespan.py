@@ -125,7 +125,7 @@ class DdsLifespanBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lifespan_duration' is required and cannot be None")
         self._obj.lifespan_duration = value
         return self
 

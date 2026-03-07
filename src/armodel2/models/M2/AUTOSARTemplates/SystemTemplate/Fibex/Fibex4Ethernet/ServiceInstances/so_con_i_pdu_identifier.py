@@ -193,11 +193,11 @@ class SoConIPduIdentifierBuilder(ReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'header_id' is required and cannot be None")
         self._obj.header_id = value
         return self
 
-    def with_pdu_collection(self, value: Optional[any (PduCollection)]) -> "SoConIPduIdentifierBuilder":
+    def with_pdu_collection(self, value: Optional[Any]) -> "SoConIPduIdentifierBuilder":
         """Set pdu_collection attribute.
 
         Args:
@@ -207,7 +207,7 @@ class SoConIPduIdentifierBuilder(ReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdu_collection' is required and cannot be None")
         self._obj.pdu_collection = value
         return self
 
@@ -221,7 +221,7 @@ class SoConIPduIdentifierBuilder(ReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdu_collection_trigger' is required and cannot be None")
         self._obj.pdu_collection_trigger = value
         return self
 
@@ -235,7 +235,7 @@ class SoConIPduIdentifierBuilder(ReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdu_triggering' is required and cannot be None")
         self._obj.pdu_triggering = value
         return self
 

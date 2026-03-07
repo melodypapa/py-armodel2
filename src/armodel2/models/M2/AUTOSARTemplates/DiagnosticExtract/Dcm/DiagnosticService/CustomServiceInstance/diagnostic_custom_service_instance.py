@@ -117,7 +117,7 @@ class DiagnosticCustomServiceInstanceBuilder(DiagnosticServiceInstanceBuilder):
         self._obj: DiagnosticCustomServiceInstance = DiagnosticCustomServiceInstance()
 
 
-    def with_custom_service(self, value: Optional[any (DiagnosticCustom)]) -> "DiagnosticCustomServiceInstanceBuilder":
+    def with_custom_service(self, value: Optional[Any]) -> "DiagnosticCustomServiceInstanceBuilder":
         """Set custom_service attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticCustomServiceInstanceBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'custom_service' is required and cannot be None")
         self._obj.custom_service = value
         return self
 

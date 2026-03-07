@@ -144,7 +144,7 @@ class RxIdentifierRangeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lower_can_id' is required and cannot be None")
         self._obj.lower_can_id = value
         return self
 
@@ -158,7 +158,7 @@ class RxIdentifierRangeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'upper_can_id' is required and cannot be None")
         self._obj.upper_can_id = value
         return self
 

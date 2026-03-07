@@ -168,7 +168,7 @@ class FMAttributeDefBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_value' is required and cannot be None")
         self._obj.default_value = value
         return self
 
@@ -182,7 +182,7 @@ class FMAttributeDefBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max' is required and cannot be None")
         self._obj.max = value
         return self
 
@@ -196,7 +196,7 @@ class FMAttributeDefBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min' is required and cannot be None")
         self._obj.min = value
         return self
 

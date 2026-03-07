@@ -130,7 +130,7 @@ class AutosarVariableInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'variable_instance_instance_ref' is required and cannot be None")
         self._obj.variable_instance_instance_ref = value
         return self
 

@@ -113,7 +113,7 @@ class DiagnosticComControlSubNodeChannelBuilder(BuilderBase):
         self._obj: DiagnosticComControlSubNodeChannel = DiagnosticComControlSubNodeChannel()
 
 
-    def with_sub_node(self, value: Optional[any (EthernetPhysical)]) -> "DiagnosticComControlSubNodeChannelBuilder":
+    def with_sub_node(self, value: Optional[Any]) -> "DiagnosticComControlSubNodeChannelBuilder":
         """Set sub_node attribute.
 
         Args:
@@ -123,7 +123,7 @@ class DiagnosticComControlSubNodeChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sub_node' is required and cannot be None")
         self._obj.sub_node = value
         return self
 

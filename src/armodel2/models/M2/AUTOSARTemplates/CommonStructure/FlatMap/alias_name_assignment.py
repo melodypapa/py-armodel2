@@ -193,7 +193,7 @@ class AliasNameAssignmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'flat_instance' is required and cannot be None")
         self._obj.flat_instance = value
         return self
 
@@ -207,7 +207,7 @@ class AliasNameAssignmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'identifiable' is required and cannot be None")
         self._obj.identifiable = value
         return self
 
@@ -221,7 +221,7 @@ class AliasNameAssignmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'label' is required and cannot be None")
         self._obj.label = value
         return self
 
@@ -235,7 +235,7 @@ class AliasNameAssignmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 

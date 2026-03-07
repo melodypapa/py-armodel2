@@ -148,7 +148,7 @@ class HwPortMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'communication_connector' is required and cannot be None")
         self._obj.communication_connector = value
         return self
 
@@ -162,7 +162,7 @@ class HwPortMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'hw_pin_group' is required and cannot be None")
         self._obj.hw_pin_group = value
         return self
 

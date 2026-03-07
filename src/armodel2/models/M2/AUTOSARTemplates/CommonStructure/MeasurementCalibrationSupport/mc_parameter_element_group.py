@@ -170,7 +170,7 @@ class McParameterElementGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ram_location' is required and cannot be None")
         self._obj.ram_location = value
         return self
 
@@ -184,7 +184,7 @@ class McParameterElementGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rom_location' is required and cannot be None")
         self._obj.rom_location = value
         return self
 
@@ -198,7 +198,7 @@ class McParameterElementGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 

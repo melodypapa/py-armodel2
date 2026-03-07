@@ -216,11 +216,11 @@ class ModeInSwcInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
-    def with_contexts(self, items: list[any (SwComponent)]) -> "ModeInSwcInstanceRefBuilder":
+    def with_contexts(self, items: list[Any]) -> "ModeInSwcInstanceRefBuilder":
         """Set contexts list attribute.
 
         Args:
@@ -242,7 +242,7 @@ class ModeInSwcInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_mode' is required and cannot be None")
         self._obj.context_mode = value
         return self
 
@@ -256,7 +256,7 @@ class ModeInSwcInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_port' is required and cannot be None")
         self._obj.context_port = value
         return self
 
@@ -270,12 +270,12 @@ class ModeInSwcInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_mode' is required and cannot be None")
         self._obj.target_mode = value
         return self
 
 
-    def add_context(self, item: any (SwComponent)) -> "ModeInSwcInstanceRefBuilder":
+    def add_context(self, item: Any) -> "ModeInSwcInstanceRefBuilder":
         """Add a single item to contexts list.
 
         Args:

@@ -176,7 +176,7 @@ class TtcanAbsolutelyScheduledTimingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'communication_cycle_cycle' is required and cannot be None")
         self._obj.communication_cycle_cycle = value
         return self
 
@@ -190,7 +190,7 @@ class TtcanAbsolutelyScheduledTimingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_mark' is required and cannot be None")
         self._obj.time_mark = value
         return self
 
@@ -204,7 +204,7 @@ class TtcanAbsolutelyScheduledTimingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'trigger' is required and cannot be None")
         self._obj.trigger = value
         return self
 

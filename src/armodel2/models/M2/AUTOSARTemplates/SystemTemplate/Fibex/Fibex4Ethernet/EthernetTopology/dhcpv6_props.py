@@ -163,7 +163,7 @@ class Dhcpv6PropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_dhcp' is required and cannot be None")
         self._obj.tcp_ip_dhcp = value
         return self
 
@@ -177,7 +177,7 @@ class Dhcpv6PropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_dhcp_v6_inf' is required and cannot be None")
         self._obj.tcp_ip_dhcp_v6_inf = value
         return self
 
@@ -191,7 +191,7 @@ class Dhcpv6PropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_dhcp_v6_sol' is required and cannot be None")
         self._obj.tcp_ip_dhcp_v6_sol = value
         return self
 

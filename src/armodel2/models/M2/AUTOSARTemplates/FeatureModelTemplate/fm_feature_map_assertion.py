@@ -116,7 +116,7 @@ class FMFeatureMapAssertionBuilder(IdentifiableBuilder):
         self._obj: FMFeatureMapAssertion = FMFeatureMapAssertion()
 
 
-    def with_fm_syscond_and_sw_systemconsts(self, value: Optional[any (FMConditionByFeatures)]) -> "FMFeatureMapAssertionBuilder":
+    def with_fm_syscond_and_sw_systemconsts(self, value: Optional[Any]) -> "FMFeatureMapAssertionBuilder":
         """Set fm_syscond_and_sw_systemconsts attribute.
 
         Args:
@@ -126,7 +126,7 @@ class FMFeatureMapAssertionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'fm_syscond_and_sw_systemconsts' is required and cannot be None")
         self._obj.fm_syscond_and_sw_systemconsts = value
         return self
 

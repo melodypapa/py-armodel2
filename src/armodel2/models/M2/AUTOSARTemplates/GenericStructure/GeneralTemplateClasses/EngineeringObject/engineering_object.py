@@ -187,7 +187,7 @@ class EngineeringObjectBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 
@@ -201,7 +201,7 @@ class EngineeringObjectBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'category' is required and cannot be None")
         self._obj.category = value
         return self
 
@@ -215,7 +215,7 @@ class EngineeringObjectBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'domain' is required and cannot be None")
         self._obj.domain = value
         return self
 

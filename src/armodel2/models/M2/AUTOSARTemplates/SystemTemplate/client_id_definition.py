@@ -151,7 +151,7 @@ class ClientIdDefinitionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'client_id' is required and cannot be None")
         self._obj.client_id = value
         return self
 
@@ -165,7 +165,7 @@ class ClientIdDefinitionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'client_server_instance_ref' is required and cannot be None")
         self._obj.client_server_instance_ref = value
         return self
 

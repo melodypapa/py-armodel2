@@ -122,7 +122,7 @@ class EnumerationMappingTableBuilder(PackageableElementBuilder):
         self._obj: EnumerationMappingTable = EnumerationMappingTable()
 
 
-    def with_entries(self, items: list[any (EnumerationMapping)]) -> "EnumerationMappingTableBuilder":
+    def with_entries(self, items: list[Any]) -> "EnumerationMappingTableBuilder":
         """Set entries list attribute.
 
         Args:
@@ -135,7 +135,7 @@ class EnumerationMappingTableBuilder(PackageableElementBuilder):
         return self
 
 
-    def add_entry(self, item: any (EnumerationMapping)) -> "EnumerationMappingTableBuilder":
+    def add_entry(self, item: Any) -> "EnumerationMappingTableBuilder":
         """Add a single item to entries list.
 
         Args:

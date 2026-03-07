@@ -154,7 +154,7 @@ class TriggerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_impl_policy_enum' is required and cannot be None")
         self._obj.sw_impl_policy_enum = value
         return self
 
@@ -168,7 +168,7 @@ class TriggerBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'trigger_period' is required and cannot be None")
         self._obj.trigger_period = value
         return self
 

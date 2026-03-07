@@ -129,7 +129,7 @@ class AbstractCanCommunicationControllerAttributesBuilder(BuilderBase, ABC):
         self._obj: AbstractCanCommunicationControllerAttributes = AbstractCanCommunicationControllerAttributes()
 
 
-    def with_can_controller_fd(self, value: Optional[any (CanControllerFd)]) -> "AbstractCanCommunicationControllerAttributesBuilder":
+    def with_can_controller_fd(self, value: Optional[Any]) -> "AbstractCanCommunicationControllerAttributesBuilder":
         """Set can_controller_fd attribute.
 
         Args:
@@ -139,11 +139,11 @@ class AbstractCanCommunicationControllerAttributesBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_controller_fd' is required and cannot be None")
         self._obj.can_controller_fd = value
         return self
 
-    def with_can_controller_xl(self, value: Optional[any (CanControllerXl)]) -> "AbstractCanCommunicationControllerAttributesBuilder":
+    def with_can_controller_xl(self, value: Optional[Any]) -> "AbstractCanCommunicationControllerAttributesBuilder":
         """Set can_controller_xl attribute.
 
         Args:
@@ -153,7 +153,7 @@ class AbstractCanCommunicationControllerAttributesBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_controller_xl' is required and cannot be None")
         self._obj.can_controller_xl = value
         return self
 

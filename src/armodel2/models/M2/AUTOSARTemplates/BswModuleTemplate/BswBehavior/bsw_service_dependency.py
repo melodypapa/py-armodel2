@@ -333,7 +333,7 @@ class BswServiceDependencyBuilder(ServiceDependencyBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ident' is required and cannot be None")
         self._obj.ident = value
         return self
 
@@ -347,7 +347,7 @@ class BswServiceDependencyBuilder(ServiceDependencyBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_needs' is required and cannot be None")
         self._obj.service_needs = value
         return self
 

@@ -149,11 +149,11 @@ class DiagnosticRequestPowertrainFreezeFrameDataBuilder(DiagnosticServiceInstanc
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'freeze_frame_freeze_frame' is required and cannot be None")
         self._obj.freeze_frame_freeze_frame = value
         return self
 
-    def with_request(self, value: Optional[any (DiagnosticRequest)]) -> "DiagnosticRequestPowertrainFreezeFrameDataBuilder":
+    def with_request(self, value: Optional[Any]) -> "DiagnosticRequestPowertrainFreezeFrameDataBuilder":
         """Set request attribute.
 
         Args:
@@ -163,7 +163,7 @@ class DiagnosticRequestPowertrainFreezeFrameDataBuilder(DiagnosticServiceInstanc
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request' is required and cannot be None")
         self._obj.request = value
         return self
 

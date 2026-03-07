@@ -144,7 +144,7 @@ class TextTableValuePairBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'first_value' is required and cannot be None")
         self._obj.first_value = value
         return self
 
@@ -158,7 +158,7 @@ class TextTableValuePairBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'second_value' is required and cannot be None")
         self._obj.second_value = value
         return self
 

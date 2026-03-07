@@ -151,7 +151,7 @@ class RowBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rowsep' is required and cannot be None")
         self._obj.rowsep = value
         return self
 
@@ -165,7 +165,7 @@ class RowBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'valign' is required and cannot be None")
         self._obj.valign = value
         return self
 

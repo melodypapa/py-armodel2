@@ -169,7 +169,7 @@ class ImplementationDataTypeElementInPortInterfaceRefBuilder(DataPrototypeRefere
         self._obj: ImplementationDataTypeElementInPortInterfaceRef = ImplementationDataTypeElementInPortInterfaceRef()
 
 
-    def with_contexts(self, items: list[any (AbstractImplementation)]) -> "ImplementationDataTypeElementInPortInterfaceRefBuilder":
+    def with_contexts(self, items: list[Any]) -> "ImplementationDataTypeElementInPortInterfaceRefBuilder":
         """Set contexts list attribute.
 
         Args:
@@ -191,7 +191,7 @@ class ImplementationDataTypeElementInPortInterfaceRefBuilder(DataPrototypeRefere
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'root_data' is required and cannot be None")
         self._obj.root_data = value
         return self
 
@@ -205,12 +205,12 @@ class ImplementationDataTypeElementInPortInterfaceRefBuilder(DataPrototypeRefere
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target' is required and cannot be None")
         self._obj.target = value
         return self
 
 
-    def add_context(self, item: any (AbstractImplementation)) -> "ImplementationDataTypeElementInPortInterfaceRefBuilder":
+    def add_context(self, item: Any) -> "ImplementationDataTypeElementInPortInterfaceRefBuilder":
         """Add a single item to contexts list.
 
         Args:

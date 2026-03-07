@@ -206,7 +206,7 @@ class McSwEmulationMethodSupportBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base_reference' is required and cannot be None")
         self._obj.base_reference = value
         return self
 
@@ -220,7 +220,7 @@ class McSwEmulationMethodSupportBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'category' is required and cannot be None")
         self._obj.category = value
         return self
 
@@ -246,7 +246,7 @@ class McSwEmulationMethodSupportBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'reference_table' is required and cannot be None")
         self._obj.reference_table = value
         return self
 
@@ -260,7 +260,7 @@ class McSwEmulationMethodSupportBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 

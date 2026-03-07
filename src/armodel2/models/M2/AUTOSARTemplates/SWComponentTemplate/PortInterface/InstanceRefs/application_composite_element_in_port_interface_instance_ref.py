@@ -191,11 +191,11 @@ class ApplicationCompositeElementInPortInterfaceInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
-    def with_context_datas(self, items: list[any (ApplicationComposite)]) -> "ApplicationCompositeElementInPortInterfaceInstanceRefBuilder":
+    def with_context_datas(self, items: list[Any]) -> "ApplicationCompositeElementInPortInterfaceInstanceRefBuilder":
         """Set context_datas list attribute.
 
         Args:
@@ -217,11 +217,11 @@ class ApplicationCompositeElementInPortInterfaceInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'root_data' is required and cannot be None")
         self._obj.root_data = value
         return self
 
-    def with_target_data(self, value: Optional[any (ApplicationComposite)]) -> "ApplicationCompositeElementInPortInterfaceInstanceRefBuilder":
+    def with_target_data(self, value: Optional[Any]) -> "ApplicationCompositeElementInPortInterfaceInstanceRefBuilder":
         """Set target_data attribute.
 
         Args:
@@ -231,12 +231,12 @@ class ApplicationCompositeElementInPortInterfaceInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_data' is required and cannot be None")
         self._obj.target_data = value
         return self
 
 
-    def add_context_data(self, item: any (ApplicationComposite)) -> "ApplicationCompositeElementInPortInterfaceInstanceRefBuilder":
+    def add_context_data(self, item: Any) -> "ApplicationCompositeElementInPortInterfaceInstanceRefBuilder":
         """Add a single item to context_datas list.
 
         Args:

@@ -153,7 +153,7 @@ class FlexrayAbsolutelyScheduledTimingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'communication_cycle_cycle' is required and cannot be None")
         self._obj.communication_cycle_cycle = value
         return self
 
@@ -167,7 +167,7 @@ class FlexrayAbsolutelyScheduledTimingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'slot_id' is required and cannot be None")
         self._obj.slot_id = value
         return self
 

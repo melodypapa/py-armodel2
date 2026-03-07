@@ -182,7 +182,7 @@ class SwSystemconstValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_systemconst' is required and cannot be None")
         self._obj.sw_systemconst = value
         return self
 
@@ -196,7 +196,7 @@ class SwSystemconstValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'value' is required and cannot be None")
         self._obj.value = value
         return self
 

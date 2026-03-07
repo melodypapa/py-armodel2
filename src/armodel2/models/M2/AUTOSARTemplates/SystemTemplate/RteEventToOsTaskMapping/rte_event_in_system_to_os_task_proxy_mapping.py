@@ -208,7 +208,7 @@ class RteEventInSystemToOsTaskProxyMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'offset' is required and cannot be None")
         self._obj.offset = value
         return self
 
@@ -222,7 +222,7 @@ class RteEventInSystemToOsTaskProxyMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'os_task_proxy' is required and cannot be None")
         self._obj.os_task_proxy = value
         return self
 
@@ -236,7 +236,7 @@ class RteEventInSystemToOsTaskProxyMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rte_event_instance_ref' is required and cannot be None")
         self._obj.rte_event_instance_ref = value
         return self
 

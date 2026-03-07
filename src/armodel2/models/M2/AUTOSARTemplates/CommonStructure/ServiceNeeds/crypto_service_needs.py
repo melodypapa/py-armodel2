@@ -188,7 +188,7 @@ class CryptoServiceNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'algorithm_family' is required and cannot be None")
         self._obj.algorithm_family = value
         return self
 
@@ -202,7 +202,7 @@ class CryptoServiceNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'algorithm_mode' is required and cannot be None")
         self._obj.algorithm_mode = value
         return self
 
@@ -216,7 +216,7 @@ class CryptoServiceNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crypto_key' is required and cannot be None")
         self._obj.crypto_key = value
         return self
 
@@ -230,7 +230,7 @@ class CryptoServiceNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'maximum_key' is required and cannot be None")
         self._obj.maximum_key = value
         return self
 

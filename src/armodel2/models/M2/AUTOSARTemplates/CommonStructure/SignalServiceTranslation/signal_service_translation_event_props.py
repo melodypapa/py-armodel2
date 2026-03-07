@@ -178,7 +178,7 @@ class SignalServiceTranslationEventPropsBuilder(IdentifiableBuilder):
         self._obj: SignalServiceTranslationEventProps = SignalServiceTranslationEventProps()
 
 
-    def with_element_propses(self, items: list[any (SignalService)]) -> "SignalServiceTranslationEventPropsBuilder":
+    def with_element_propses(self, items: list[Any]) -> "SignalServiceTranslationEventPropsBuilder":
         """Set element_propses list attribute.
 
         Args:
@@ -200,7 +200,7 @@ class SignalServiceTranslationEventPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'safe_translation' is required and cannot be None")
         self._obj.safe_translation = value
         return self
 
@@ -214,7 +214,7 @@ class SignalServiceTranslationEventPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'secure' is required and cannot be None")
         self._obj.secure = value
         return self
 
@@ -228,12 +228,12 @@ class SignalServiceTranslationEventPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'translation' is required and cannot be None")
         self._obj.translation = value
         return self
 
 
-    def add_element_props(self, item: any (SignalService)) -> "SignalServiceTranslationEventPropsBuilder":
+    def add_element_props(self, item: Any) -> "SignalServiceTranslationEventPropsBuilder":
         """Add a single item to element_propses list.
 
         Args:

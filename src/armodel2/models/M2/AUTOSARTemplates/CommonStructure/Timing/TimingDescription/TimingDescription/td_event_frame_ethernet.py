@@ -196,7 +196,7 @@ class TDEventFrameEthernetBuilder(TDEventComBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'static_socket' is required and cannot be None")
         self._obj.static_socket = value
         return self
 
@@ -210,7 +210,7 @@ class TDEventFrameEthernetBuilder(TDEventComBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'td_event_type' is required and cannot be None")
         self._obj.td_event_type = value
         return self
 

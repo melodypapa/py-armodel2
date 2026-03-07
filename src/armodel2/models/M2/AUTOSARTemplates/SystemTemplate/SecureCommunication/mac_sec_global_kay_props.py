@@ -148,7 +148,7 @@ class MacSecGlobalKayPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bypass_ether' is required and cannot be None")
         self._obj.bypass_ether = value
         return self
 
@@ -162,7 +162,7 @@ class MacSecGlobalKayPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bypass_vlan' is required and cannot be None")
         self._obj.bypass_vlan = value
         return self
 

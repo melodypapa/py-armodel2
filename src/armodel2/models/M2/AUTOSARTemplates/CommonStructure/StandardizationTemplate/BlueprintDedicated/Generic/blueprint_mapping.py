@@ -148,7 +148,7 @@ class BlueprintMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'blueprint' is required and cannot be None")
         self._obj.blueprint = value
         return self
 
@@ -162,7 +162,7 @@ class BlueprintMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'derived_object' is required and cannot be None")
         self._obj.derived_object = value
         return self
 

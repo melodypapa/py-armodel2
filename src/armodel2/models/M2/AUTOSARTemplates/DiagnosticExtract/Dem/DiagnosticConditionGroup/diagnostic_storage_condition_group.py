@@ -122,7 +122,7 @@ class DiagnosticStorageConditionGroupBuilder(DiagnosticConditionGroupBuilder):
         self._obj: DiagnosticStorageConditionGroup = DiagnosticStorageConditionGroup()
 
 
-    def with_storages(self, items: list[any (DiagnosticStorage)]) -> "DiagnosticStorageConditionGroupBuilder":
+    def with_storages(self, items: list[Any]) -> "DiagnosticStorageConditionGroupBuilder":
         """Set storages list attribute.
 
         Args:
@@ -135,7 +135,7 @@ class DiagnosticStorageConditionGroupBuilder(DiagnosticConditionGroupBuilder):
         return self
 
 
-    def add_storage(self, item: any (DiagnosticStorage)) -> "DiagnosticStorageConditionGroupBuilder":
+    def add_storage(self, item: Any) -> "DiagnosticStorageConditionGroupBuilder":
         """Add a single item to storages list.
 
         Args:

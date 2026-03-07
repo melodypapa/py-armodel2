@@ -152,7 +152,7 @@ class J1939NmNodeBuilder(NmNodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'address' is required and cannot be None")
         self._obj.address = value
         return self
 
@@ -166,7 +166,7 @@ class J1939NmNodeBuilder(NmNodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'node_name' is required and cannot be None")
         self._obj.node_name = value
         return self
 

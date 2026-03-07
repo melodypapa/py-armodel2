@@ -178,7 +178,7 @@ class CanNmClusterCouplingBuilder(NmClusterCouplingBuilder):
         self._obj.coupled_clusters = list(items) if items else []
         return self
 
-    def with_nm_busload_reduction(self, value: Optional[any (BooleanEnabled)]) -> "CanNmClusterCouplingBuilder":
+    def with_nm_busload_reduction(self, value: Optional[Any]) -> "CanNmClusterCouplingBuilder":
         """Set nm_busload_reduction attribute.
 
         Args:
@@ -188,7 +188,7 @@ class CanNmClusterCouplingBuilder(NmClusterCouplingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_busload_reduction' is required and cannot be None")
         self._obj.nm_busload_reduction = value
         return self
 
@@ -202,7 +202,7 @@ class CanNmClusterCouplingBuilder(NmClusterCouplingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_immediate' is required and cannot be None")
         self._obj.nm_immediate = value
         return self
 

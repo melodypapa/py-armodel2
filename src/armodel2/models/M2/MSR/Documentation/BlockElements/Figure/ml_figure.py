@@ -252,7 +252,7 @@ class MlFigureBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'figure_caption' is required and cannot be None")
         self._obj.figure_caption = value
         return self
 
@@ -266,7 +266,7 @@ class MlFigureBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'frame' is required and cannot be None")
         self._obj.frame = value
         return self
 
@@ -280,7 +280,7 @@ class MlFigureBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'help_entry' is required and cannot be None")
         self._obj.help_entry = value
         return self
 
@@ -306,7 +306,7 @@ class MlFigureBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pgwide' is required and cannot be None")
         self._obj.pgwide = value
         return self
 
@@ -320,7 +320,7 @@ class MlFigureBuilder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'verbatim' is required and cannot be None")
         self._obj.verbatim = value
         return self
 

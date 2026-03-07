@@ -226,7 +226,7 @@ class ColspecBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'align' is required and cannot be None")
         self._obj.align = value
         return self
 
@@ -240,7 +240,7 @@ class ColspecBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'colname' is required and cannot be None")
         self._obj.colname = value
         return self
 
@@ -254,7 +254,7 @@ class ColspecBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'colnum' is required and cannot be None")
         self._obj.colnum = value
         return self
 
@@ -268,7 +268,7 @@ class ColspecBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'colsep' is required and cannot be None")
         self._obj.colsep = value
         return self
 
@@ -282,7 +282,7 @@ class ColspecBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'colwidth' is required and cannot be None")
         self._obj.colwidth = value
         return self
 
@@ -296,7 +296,7 @@ class ColspecBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rowsep' is required and cannot be None")
         self._obj.rowsep = value
         return self
 

@@ -134,7 +134,7 @@ class SeparateSignalPathBuilder(SignalPathConstraintBuilder):
         self._obj: SeparateSignalPath = SeparateSignalPath()
 
 
-    def with_operations(self, items: list[any (SwcToSwcOperation)]) -> "SeparateSignalPathBuilder":
+    def with_operations(self, items: list[Any]) -> "SeparateSignalPathBuilder":
         """Set operations list attribute.
 
         Args:
@@ -159,7 +159,7 @@ class SeparateSignalPathBuilder(SignalPathConstraintBuilder):
         return self
 
 
-    def add_operation(self, item: any (SwcToSwcOperation)) -> "SeparateSignalPathBuilder":
+    def add_operation(self, item: Any) -> "SeparateSignalPathBuilder":
         """Add a single item to operations list.
 
         Args:

@@ -168,7 +168,7 @@ class CryptoServicePrimitiveBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'algorithm_family' is required and cannot be None")
         self._obj.algorithm_family = value
         return self
 
@@ -182,7 +182,7 @@ class CryptoServicePrimitiveBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'algorithm_mode' is required and cannot be None")
         self._obj.algorithm_mode = value
         return self
 
@@ -196,7 +196,7 @@ class CryptoServicePrimitiveBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'algorithm' is required and cannot be None")
         self._obj.algorithm = value
         return self
 

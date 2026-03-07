@@ -289,7 +289,7 @@ class IdsmInstanceBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_instance' is required and cannot be None")
         self._obj.ecu_instance = value
         return self
 
@@ -303,7 +303,7 @@ class IdsmInstanceBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'idsm_instance_id' is required and cannot be None")
         self._obj.idsm_instance_id = value
         return self
 
@@ -317,7 +317,7 @@ class IdsmInstanceBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'idsm_module' is required and cannot be None")
         self._obj.idsm_module = value
         return self
 
@@ -331,11 +331,11 @@ class IdsmInstanceBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rate_limitation' is required and cannot be None")
         self._obj.rate_limitation = value
         return self
 
-    def with_signature(self, value: Optional[any (IdsmSignatureSupport)]) -> "IdsmInstanceBuilder":
+    def with_signature(self, value: Optional[Any]) -> "IdsmInstanceBuilder":
         """Set signature attribute.
 
         Args:
@@ -345,7 +345,7 @@ class IdsmInstanceBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'signature' is required and cannot be None")
         self._obj.signature = value
         return self
 
@@ -359,7 +359,7 @@ class IdsmInstanceBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timestamp' is required and cannot be None")
         self._obj.timestamp = value
         return self
 
@@ -373,7 +373,7 @@ class IdsmInstanceBuilder(IdsCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'traffic_limitation' is required and cannot be None")
         self._obj.traffic_limitation = value
         return self
 

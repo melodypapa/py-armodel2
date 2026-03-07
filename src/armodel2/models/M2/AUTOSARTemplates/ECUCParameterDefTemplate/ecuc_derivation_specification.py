@@ -154,7 +154,7 @@ class EcucDerivationSpecificationBuilder(BuilderBase):
         self._obj: EcucDerivationSpecification = EcucDerivationSpecification()
 
 
-    def with_calculation(self, value: Optional[any (EcucParameter)]) -> "EcucDerivationSpecificationBuilder":
+    def with_calculation(self, value: Optional[Any]) -> "EcucDerivationSpecificationBuilder":
         """Set calculation attribute.
 
         Args:
@@ -164,7 +164,7 @@ class EcucDerivationSpecificationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'calculation' is required and cannot be None")
         self._obj.calculation = value
         return self
 
@@ -190,7 +190,7 @@ class EcucDerivationSpecificationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'informal_formula' is required and cannot be None")
         self._obj.informal_formula = value
         return self
 

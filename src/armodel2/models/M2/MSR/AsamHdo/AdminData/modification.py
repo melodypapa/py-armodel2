@@ -144,7 +144,7 @@ class ModificationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'change' is required and cannot be None")
         self._obj.change = value
         return self
 
@@ -158,7 +158,7 @@ class ModificationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'reason' is required and cannot be None")
         self._obj.reason = value
         return self
 

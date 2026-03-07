@@ -192,7 +192,7 @@ class SwTextPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'array_size' is required and cannot be None")
         self._obj.array_size = value
         return self
 
@@ -206,7 +206,7 @@ class SwTextPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base_type' is required and cannot be None")
         self._obj.base_type = value
         return self
 
@@ -220,7 +220,7 @@ class SwTextPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_fill_character' is required and cannot be None")
         self._obj.sw_fill_character = value
         return self
 
@@ -234,7 +234,7 @@ class SwTextPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_max_text_size' is required and cannot be None")
         self._obj.sw_max_text_size = value
         return self
 

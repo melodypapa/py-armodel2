@@ -169,7 +169,7 @@ class FlexrayNmClusterCouplingBuilder(NmClusterCouplingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_schedule' is required and cannot be None")
         self._obj.nm_schedule = value
         return self
 

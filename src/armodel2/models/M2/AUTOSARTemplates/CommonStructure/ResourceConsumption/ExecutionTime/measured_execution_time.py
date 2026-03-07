@@ -167,7 +167,7 @@ class MeasuredExecutionTimeBuilder(ExecutionTimeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'maximum_execution_time' is required and cannot be None")
         self._obj.maximum_execution_time = value
         return self
 
@@ -181,7 +181,7 @@ class MeasuredExecutionTimeBuilder(ExecutionTimeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum_execution_time' is required and cannot be None")
         self._obj.minimum_execution_time = value
         return self
 
@@ -195,7 +195,7 @@ class MeasuredExecutionTimeBuilder(ExecutionTimeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nominal_execution_time' is required and cannot be None")
         self._obj.nominal_execution_time = value
         return self
 

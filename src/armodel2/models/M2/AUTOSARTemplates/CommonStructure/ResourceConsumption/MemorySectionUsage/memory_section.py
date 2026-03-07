@@ -266,7 +266,7 @@ class MemorySectionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'alignment' is required and cannot be None")
         self._obj.alignment = value
         return self
 
@@ -304,7 +304,7 @@ class MemorySectionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'prefix' is required and cannot be None")
         self._obj.prefix = value
         return self
 
@@ -318,7 +318,7 @@ class MemorySectionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'size' is required and cannot be None")
         self._obj.size = value
         return self
 
@@ -332,7 +332,7 @@ class MemorySectionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_addrmethod' is required and cannot be None")
         self._obj.sw_addrmethod = value
         return self
 
@@ -346,7 +346,7 @@ class MemorySectionBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'symbol' is required and cannot be None")
         self._obj.symbol = value
         return self
 

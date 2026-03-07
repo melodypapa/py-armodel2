@@ -202,7 +202,7 @@ class ExecutionTimeConstraintBuilder(TimingConstraintBuilder):
         self._obj: ExecutionTimeConstraint = ExecutionTimeConstraint()
 
 
-    def with_component(self, value: Optional[any (SwComponent)]) -> "ExecutionTimeConstraintBuilder":
+    def with_component(self, value: Optional[Any]) -> "ExecutionTimeConstraintBuilder":
         """Set component attribute.
 
         Args:
@@ -212,7 +212,7 @@ class ExecutionTimeConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'component' is required and cannot be None")
         self._obj.component = value
         return self
 
@@ -226,7 +226,7 @@ class ExecutionTimeConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'executable_entity' is required and cannot be None")
         self._obj.executable_entity = value
         return self
 
@@ -240,7 +240,7 @@ class ExecutionTimeConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'execution_time' is required and cannot be None")
         self._obj.execution_time = value
         return self
 
@@ -254,7 +254,7 @@ class ExecutionTimeConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'maximum' is required and cannot be None")
         self._obj.maximum = value
         return self
 
@@ -268,7 +268,7 @@ class ExecutionTimeConstraintBuilder(TimingConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum' is required and cannot be None")
         self._obj.minimum = value
         return self
 

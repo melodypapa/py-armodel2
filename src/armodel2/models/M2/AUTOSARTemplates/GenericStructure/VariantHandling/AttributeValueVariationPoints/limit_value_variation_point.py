@@ -125,7 +125,7 @@ class LimitValueVariationPointBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'interval_type_enum' is required and cannot be None")
         self._obj.interval_type_enum = value
         return self
 

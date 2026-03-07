@@ -169,7 +169,7 @@ class InterpolationRoutineBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'interpolation' is required and cannot be None")
         self._obj.interpolation = value
         return self
 
@@ -183,7 +183,7 @@ class InterpolationRoutineBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_default' is required and cannot be None")
         self._obj.is_default = value
         return self
 
@@ -197,7 +197,7 @@ class InterpolationRoutineBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 

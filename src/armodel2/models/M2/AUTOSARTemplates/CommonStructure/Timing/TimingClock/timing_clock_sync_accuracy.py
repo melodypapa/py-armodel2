@@ -171,7 +171,7 @@ class TimingClockSyncAccuracyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'accuracy' is required and cannot be None")
         self._obj.accuracy = value
         return self
 
@@ -185,7 +185,7 @@ class TimingClockSyncAccuracyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lower' is required and cannot be None")
         self._obj.lower = value
         return self
 
@@ -199,7 +199,7 @@ class TimingClockSyncAccuracyBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'upper' is required and cannot be None")
         self._obj.upper = value
         return self
 

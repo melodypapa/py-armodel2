@@ -170,7 +170,7 @@ class SomeipSdClientServiceInstanceConfigBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initial_find_behavior' is required and cannot be None")
         self._obj.initial_find_behavior = value
         return self
 
@@ -184,7 +184,7 @@ class SomeipSdClientServiceInstanceConfigBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
@@ -198,7 +198,7 @@ class SomeipSdClientServiceInstanceConfigBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'service_find' is required and cannot be None")
         self._obj.service_find = value
         return self
 

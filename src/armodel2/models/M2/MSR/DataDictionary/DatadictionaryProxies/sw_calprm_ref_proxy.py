@@ -148,7 +148,7 @@ class SwCalprmRefProxyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ar_parameter' is required and cannot be None")
         self._obj.ar_parameter = value
         return self
 
@@ -162,7 +162,7 @@ class SwCalprmRefProxyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mc_data_instance' is required and cannot be None")
         self._obj.mc_data_instance = value
         return self
 

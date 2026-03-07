@@ -226,7 +226,7 @@ class NvProvideComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ram_block_init_value' is required and cannot be None")
         self._obj.ram_block_init_value = value
         return self
 
@@ -240,7 +240,7 @@ class NvProvideComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rom_block_init_value' is required and cannot be None")
         self._obj.rom_block_init_value = value
         return self
 
@@ -254,7 +254,7 @@ class NvProvideComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'variable' is required and cannot be None")
         self._obj.variable = value
         return self
 

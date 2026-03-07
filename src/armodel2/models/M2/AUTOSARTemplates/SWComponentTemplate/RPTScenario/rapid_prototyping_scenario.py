@@ -190,7 +190,7 @@ class RapidPrototypingScenarioBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'host_system' is required and cannot be None")
         self._obj.host_system = value
         return self
 
@@ -228,7 +228,7 @@ class RapidPrototypingScenarioBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rpt_system' is required and cannot be None")
         self._obj.rpt_system = value
         return self
 

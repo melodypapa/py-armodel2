@@ -144,7 +144,7 @@ class AbstractEnumerationValueVariationPointBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
@@ -158,7 +158,7 @@ class AbstractEnumerationValueVariationPointBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'enum_table' is required and cannot be None")
         self._obj.enum_table = value
         return self
 

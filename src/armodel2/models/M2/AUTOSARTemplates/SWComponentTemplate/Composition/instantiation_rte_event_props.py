@@ -179,7 +179,7 @@ class InstantiationRTEEventPropsBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'refined_event' is required and cannot be None")
         self._obj.refined_event = value
         return self
 
@@ -193,7 +193,7 @@ class InstantiationRTEEventPropsBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 

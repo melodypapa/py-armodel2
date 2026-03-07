@@ -404,7 +404,7 @@ class CouplingPortBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'connection' is required and cannot be None")
         self._obj.connection = value
         return self
 
@@ -418,7 +418,7 @@ class CouplingPortBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'coupling_port_details' is required and cannot be None")
         self._obj.coupling_port_details = value
         return self
 
@@ -432,11 +432,11 @@ class CouplingPortBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'coupling_port_role_enum' is required and cannot be None")
         self._obj.coupling_port_role_enum = value
         return self
 
-    def with_default_vlan(self, value: Optional[any (EthernetPhysical)]) -> "CouplingPortBuilder":
+    def with_default_vlan(self, value: Optional[Any]) -> "CouplingPortBuilder":
         """Set default_vlan attribute.
 
         Args:
@@ -446,7 +446,7 @@ class CouplingPortBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_vlan' is required and cannot be None")
         self._obj.default_vlan = value
         return self
 
@@ -460,7 +460,7 @@ class CouplingPortBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mac_layer_type_enum' is required and cannot be None")
         self._obj.mac_layer_type_enum = value
         return self
 
@@ -498,7 +498,7 @@ class CouplingPortBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'physical_layer' is required and cannot be None")
         self._obj.physical_layer = value
         return self
 
@@ -512,7 +512,7 @@ class CouplingPortBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'plca_props' is required and cannot be None")
         self._obj.plca_props = value
         return self
 
@@ -528,7 +528,7 @@ class CouplingPortBuilder(IdentifiableBuilder):
         self._obj.pnc_mapping_idents = list(items) if items else []
         return self
 
-    def with_receive_activity(self, value: Optional[any (EthernetSwitchVlan)]) -> "CouplingPortBuilder":
+    def with_receive_activity(self, value: Optional[Any]) -> "CouplingPortBuilder":
         """Set receive_activity attribute.
 
         Args:
@@ -538,7 +538,7 @@ class CouplingPortBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'receive_activity' is required and cannot be None")
         self._obj.receive_activity = value
         return self
 
@@ -554,7 +554,7 @@ class CouplingPortBuilder(IdentifiableBuilder):
         self._obj.vlans = list(items) if items else []
         return self
 
-    def with_vlan_modifier(self, value: Optional[any (EthernetPhysical)]) -> "CouplingPortBuilder":
+    def with_vlan_modifier(self, value: Optional[Any]) -> "CouplingPortBuilder":
         """Set vlan_modifier attribute.
 
         Args:
@@ -564,11 +564,11 @@ class CouplingPortBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vlan_modifier' is required and cannot be None")
         self._obj.vlan_modifier = value
         return self
 
-    def with_wakeup_sleep(self, value: Optional[any (EthernetWakeupSleep)]) -> "CouplingPortBuilder":
+    def with_wakeup_sleep(self, value: Optional[Any]) -> "CouplingPortBuilder":
         """Set wakeup_sleep attribute.
 
         Args:
@@ -578,7 +578,7 @@ class CouplingPortBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wakeup_sleep' is required and cannot be None")
         self._obj.wakeup_sleep = value
         return self
 

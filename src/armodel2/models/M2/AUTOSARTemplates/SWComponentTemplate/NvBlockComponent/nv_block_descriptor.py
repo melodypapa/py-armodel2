@@ -444,7 +444,7 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nv_block_needs' is required and cannot be None")
         self._obj.nv_block_needs = value
         return self
 
@@ -458,7 +458,7 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ram_block' is required and cannot be None")
         self._obj.ram_block = value
         return self
 
@@ -472,7 +472,7 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rom_block' is required and cannot be None")
         self._obj.rom_block = value
         return self
 
@@ -486,7 +486,7 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'support_dirty_flag' is required and cannot be None")
         self._obj.support_dirty_flag = value
         return self
 
@@ -500,7 +500,7 @@ class NvBlockDescriptorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timing_event' is required and cannot be None")
         self._obj.timing_event = value
         return self
 

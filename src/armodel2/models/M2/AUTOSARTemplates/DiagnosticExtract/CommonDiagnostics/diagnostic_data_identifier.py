@@ -203,7 +203,7 @@ class DiagnosticDataIdentifierBuilder(DiagnosticAbstractDataIdentifierBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'did_size' is required and cannot be None")
         self._obj.did_size = value
         return self
 
@@ -217,7 +217,7 @@ class DiagnosticDataIdentifierBuilder(DiagnosticAbstractDataIdentifierBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'represents_vin' is required and cannot be None")
         self._obj.represents_vin = value
         return self
 
@@ -231,7 +231,7 @@ class DiagnosticDataIdentifierBuilder(DiagnosticAbstractDataIdentifierBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'support_info_byte' is required and cannot be None")
         self._obj.support_info_byte = value
         return self
 

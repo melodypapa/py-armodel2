@@ -187,7 +187,7 @@ class DiagnosticCapabilityElementBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diag' is required and cannot be None")
         self._obj.diag = value
         return self
 
@@ -201,7 +201,7 @@ class DiagnosticCapabilityElementBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'security_access' is required and cannot be None")
         self._obj.security_access = value
         return self
 

@@ -180,7 +180,7 @@ class CpSoftwareClusterResourceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'global_resource' is required and cannot be None")
         self._obj.global_resource = value
         return self
 
@@ -194,7 +194,7 @@ class CpSoftwareClusterResourceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_mandatory' is required and cannot be None")
         self._obj.is_mandatory = value
         return self
 

@@ -161,7 +161,7 @@ class ForbiddenSignalPathBuilder(SignalPathConstraintBuilder):
         self._obj: ForbiddenSignalPath = ForbiddenSignalPath()
 
 
-    def with_operations(self, items: list[any (SwcToSwcOperation)]) -> "ForbiddenSignalPathBuilder":
+    def with_operations(self, items: list[Any]) -> "ForbiddenSignalPathBuilder":
         """Set operations list attribute.
 
         Args:
@@ -198,7 +198,7 @@ class ForbiddenSignalPathBuilder(SignalPathConstraintBuilder):
         return self
 
 
-    def add_operation(self, item: any (SwcToSwcOperation)) -> "ForbiddenSignalPathBuilder":
+    def add_operation(self, item: Any) -> "ForbiddenSignalPathBuilder":
         """Add a single item to operations list.
 
         Args:

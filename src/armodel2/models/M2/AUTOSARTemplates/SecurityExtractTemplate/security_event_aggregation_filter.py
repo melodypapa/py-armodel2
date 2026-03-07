@@ -138,7 +138,7 @@ class SecurityEventAggregationFilterBuilder(AbstractSecurityEventFilterBuilder):
         self._obj: SecurityEventAggregationFilter = SecurityEventAggregationFilter()
 
 
-    def with_context_data(self, value: Optional[any (SecurityEventContext)]) -> "SecurityEventAggregationFilterBuilder":
+    def with_context_data(self, value: Optional[Any]) -> "SecurityEventAggregationFilterBuilder":
         """Set context_data attribute.
 
         Args:
@@ -148,7 +148,7 @@ class SecurityEventAggregationFilterBuilder(AbstractSecurityEventFilterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_data' is required and cannot be None")
         self._obj.context_data = value
         return self
 
@@ -162,7 +162,7 @@ class SecurityEventAggregationFilterBuilder(AbstractSecurityEventFilterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum' is required and cannot be None")
         self._obj.minimum = value
         return self
 

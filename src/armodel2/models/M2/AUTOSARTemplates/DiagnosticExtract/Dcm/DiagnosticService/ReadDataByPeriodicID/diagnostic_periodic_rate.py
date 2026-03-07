@@ -144,7 +144,7 @@ class DiagnosticPeriodicRateBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'period' is required and cannot be None")
         self._obj.period = value
         return self
 
@@ -158,7 +158,7 @@ class DiagnosticPeriodicRateBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'periodic_rate' is required and cannot be None")
         self._obj.periodic_rate = value
         return self
 

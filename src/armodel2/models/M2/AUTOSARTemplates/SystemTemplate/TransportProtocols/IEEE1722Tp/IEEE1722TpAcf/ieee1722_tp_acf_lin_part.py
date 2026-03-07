@@ -152,7 +152,7 @@ class IEEE1722TpAcfLinPartBuilder(IEEE1722TpAcfBusPartBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lin_identifier' is required and cannot be None")
         self._obj.lin_identifier = value
         return self
 
@@ -166,7 +166,7 @@ class IEEE1722TpAcfLinPartBuilder(IEEE1722TpAcfBusPartBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sdu' is required and cannot be None")
         self._obj.sdu = value
         return self
 

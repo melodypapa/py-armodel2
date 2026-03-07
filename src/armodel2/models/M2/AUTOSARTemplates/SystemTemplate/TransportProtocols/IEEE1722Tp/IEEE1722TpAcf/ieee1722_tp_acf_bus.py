@@ -163,7 +163,7 @@ class IEEE1722TpAcfBusBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bus_id' is required and cannot be None")
         self._obj.bus_id = value
         return self
 

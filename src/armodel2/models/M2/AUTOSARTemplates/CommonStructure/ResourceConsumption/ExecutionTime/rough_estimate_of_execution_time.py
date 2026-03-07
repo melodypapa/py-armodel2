@@ -151,7 +151,7 @@ class RoughEstimateOfExecutionTimeBuilder(ExecutionTimeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'additional' is required and cannot be None")
         self._obj.additional = value
         return self
 
@@ -165,7 +165,7 @@ class RoughEstimateOfExecutionTimeBuilder(ExecutionTimeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'estimated_execution_time' is required and cannot be None")
         self._obj.estimated_execution_time = value
         return self
 

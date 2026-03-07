@@ -292,7 +292,7 @@ class Ipv6ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'assignment' is required and cannot be None")
         self._obj.assignment = value
         return self
 
@@ -306,7 +306,7 @@ class Ipv6ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_router' is required and cannot be None")
         self._obj.default_router = value
         return self
 
@@ -332,7 +332,7 @@ class Ipv6ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'enable_anycast' is required and cannot be None")
         self._obj.enable_anycast = value
         return self
 
@@ -346,7 +346,7 @@ class Ipv6ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'hop_count' is required and cannot be None")
         self._obj.hop_count = value
         return self
 
@@ -360,7 +360,7 @@ class Ipv6ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ip_address_keep_enum' is required and cannot be None")
         self._obj.ip_address_keep_enum = value
         return self
 
@@ -374,7 +374,7 @@ class Ipv6ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ip_address_prefix' is required and cannot be None")
         self._obj.ip_address_prefix = value
         return self
 
@@ -388,7 +388,7 @@ class Ipv6ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ipv6_address' is required and cannot be None")
         self._obj.ipv6_address = value
         return self
 
@@ -402,7 +402,7 @@ class Ipv6ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ipv6_address_source' is required and cannot be None")
         self._obj.ipv6_address_source = value
         return self
 

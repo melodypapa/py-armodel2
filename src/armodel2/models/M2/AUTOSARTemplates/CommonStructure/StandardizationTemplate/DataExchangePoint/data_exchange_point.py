@@ -192,7 +192,7 @@ class DataExchangePointBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_format' is required and cannot be None")
         self._obj.data_format = value
         return self
 
@@ -206,7 +206,7 @@ class DataExchangePointBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'kind' is required and cannot be None")
         self._obj.kind = value
         return self
 
@@ -220,7 +220,7 @@ class DataExchangePointBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'referenced' is required and cannot be None")
         self._obj.referenced = value
         return self
 
@@ -234,7 +234,7 @@ class DataExchangePointBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'specification_scope' is required and cannot be None")
         self._obj.specification_scope = value
         return self
 

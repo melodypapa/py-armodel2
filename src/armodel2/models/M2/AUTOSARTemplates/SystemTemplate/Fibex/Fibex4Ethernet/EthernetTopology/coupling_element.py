@@ -240,7 +240,7 @@ class CouplingElementBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'communication' is required and cannot be None")
         self._obj.communication = value
         return self
 
@@ -254,7 +254,7 @@ class CouplingElementBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'coupling' is required and cannot be None")
         self._obj.coupling = value
         return self
 
@@ -280,7 +280,7 @@ class CouplingElementBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'coupling_type' is required and cannot be None")
         self._obj.coupling_type = value
         return self
 
@@ -294,7 +294,7 @@ class CouplingElementBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_instance' is required and cannot be None")
         self._obj.ecu_instance = value
         return self
 

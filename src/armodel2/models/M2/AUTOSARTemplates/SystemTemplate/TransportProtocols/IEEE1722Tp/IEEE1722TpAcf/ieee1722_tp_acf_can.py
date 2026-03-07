@@ -126,7 +126,7 @@ class IEEE1722TpAcfCanBuilder(IEEE1722TpAcfBusBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'message_type_message_type_enum' is required and cannot be None")
         self._obj.message_type_message_type_enum = value
         return self
 

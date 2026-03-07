@@ -181,7 +181,7 @@ class TDEventOccurrenceExpressionBuilder(BuilderBase):
         self._obj.arguments = list(items) if items else []
         return self
 
-    def with_formula(self, value: Optional[any (TDEventOccurrence)]) -> "TDEventOccurrenceExpressionBuilder":
+    def with_formula(self, value: Optional[Any]) -> "TDEventOccurrenceExpressionBuilder":
         """Set formula attribute.
 
         Args:
@@ -191,7 +191,7 @@ class TDEventOccurrenceExpressionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'formula' is required and cannot be None")
         self._obj.formula = value
         return self
 
@@ -207,7 +207,7 @@ class TDEventOccurrenceExpressionBuilder(BuilderBase):
         self._obj.modes = list(items) if items else []
         return self
 
-    def with_variables(self, items: list[any (AutosarVariable)]) -> "TDEventOccurrenceExpressionBuilder":
+    def with_variables(self, items: list[Any]) -> "TDEventOccurrenceExpressionBuilder":
         """Set variables list attribute.
 
         Args:
@@ -262,7 +262,7 @@ class TDEventOccurrenceExpressionBuilder(BuilderBase):
         self._obj.modes = []
         return self
 
-    def add_variable(self, item: any (AutosarVariable)) -> "TDEventOccurrenceExpressionBuilder":
+    def add_variable(self, item: Any) -> "TDEventOccurrenceExpressionBuilder":
         """Add a single item to variables list.
 
         Args:

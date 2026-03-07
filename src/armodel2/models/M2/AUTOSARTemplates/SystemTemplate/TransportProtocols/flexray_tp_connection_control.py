@@ -342,7 +342,7 @@ class FlexrayTpConnectionControlBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ack_type' is required and cannot be None")
         self._obj.ack_type = value
         return self
 
@@ -356,7 +356,7 @@ class FlexrayTpConnectionControlBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_fc_wait' is required and cannot be None")
         self._obj.max_fc_wait = value
         return self
 
@@ -370,7 +370,7 @@ class FlexrayTpConnectionControlBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of' is required and cannot be None")
         self._obj.max_number_of = value
         return self
 
@@ -384,7 +384,7 @@ class FlexrayTpConnectionControlBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_retries' is required and cannot be None")
         self._obj.max_retries = value
         return self
 
@@ -398,7 +398,7 @@ class FlexrayTpConnectionControlBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'separation_cycle' is required and cannot be None")
         self._obj.separation_cycle = value
         return self
 
@@ -412,7 +412,7 @@ class FlexrayTpConnectionControlBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_br' is required and cannot be None")
         self._obj.time_br = value
         return self
 
@@ -426,7 +426,7 @@ class FlexrayTpConnectionControlBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_buffer' is required and cannot be None")
         self._obj.time_buffer = value
         return self
 
@@ -440,7 +440,7 @@ class FlexrayTpConnectionControlBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_cs' is required and cannot be None")
         self._obj.time_cs = value
         return self
 
@@ -454,7 +454,7 @@ class FlexrayTpConnectionControlBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_ar' is required and cannot be None")
         self._obj.timeout_ar = value
         return self
 
@@ -468,7 +468,7 @@ class FlexrayTpConnectionControlBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_as' is required and cannot be None")
         self._obj.timeout_as = value
         return self
 
@@ -482,7 +482,7 @@ class FlexrayTpConnectionControlBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_bs' is required and cannot be None")
         self._obj.timeout_bs = value
         return self
 
@@ -496,7 +496,7 @@ class FlexrayTpConnectionControlBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_cr' is required and cannot be None")
         self._obj.timeout_cr = value
         return self
 

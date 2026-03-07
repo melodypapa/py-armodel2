@@ -130,7 +130,7 @@ class ComMgrUserNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_comm_mode_enum' is required and cannot be None")
         self._obj.max_comm_mode_enum = value
         return self
 

@@ -226,7 +226,7 @@ class LifeCycleInfoSetBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_lc_state' is required and cannot be None")
         self._obj.default_lc_state = value
         return self
 
@@ -240,7 +240,7 @@ class LifeCycleInfoSetBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_period_begin' is required and cannot be None")
         self._obj.default_period_begin = value
         return self
 
@@ -254,7 +254,7 @@ class LifeCycleInfoSetBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_period_end' is required and cannot be None")
         self._obj.default_period_end = value
         return self
 
@@ -280,7 +280,7 @@ class LifeCycleInfoSetBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'used_life_cycle_state_definition_group' is required and cannot be None")
         self._obj.used_life_cycle_state_definition_group = value
         return self
 

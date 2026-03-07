@@ -194,7 +194,7 @@ class J1939TpPgBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'direct_pdu' is required and cannot be None")
         self._obj.direct_pdu = value
         return self
 
@@ -208,7 +208,7 @@ class J1939TpPgBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pgn' is required and cannot be None")
         self._obj.pgn = value
         return self
 
@@ -222,7 +222,7 @@ class J1939TpPgBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'requestable' is required and cannot be None")
         self._obj.requestable = value
         return self
 

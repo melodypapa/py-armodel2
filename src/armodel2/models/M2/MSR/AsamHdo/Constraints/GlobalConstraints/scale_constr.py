@@ -205,7 +205,7 @@ class ScaleConstrBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'desc' is required and cannot be None")
         self._obj.desc = value
         return self
 
@@ -219,7 +219,7 @@ class ScaleConstrBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lower_limit' is required and cannot be None")
         self._obj.lower_limit = value
         return self
 
@@ -233,7 +233,7 @@ class ScaleConstrBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 
@@ -247,11 +247,11 @@ class ScaleConstrBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'upper_limit' is required and cannot be None")
         self._obj.upper_limit = value
         return self
 
-    def with_validity(self, value: Optional[any (ScaleConstrValidity)]) -> "ScaleConstrBuilder":
+    def with_validity(self, value: Optional[Any]) -> "ScaleConstrBuilder":
         """Set validity attribute.
 
         Args:
@@ -261,7 +261,7 @@ class ScaleConstrBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'validity' is required and cannot be None")
         self._obj.validity = value
         return self
 

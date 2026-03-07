@@ -152,7 +152,7 @@ class ModeRequestTypeMapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'implementation_data_type' is required and cannot be None")
         self._obj.implementation_data_type = value
         return self
 
@@ -166,7 +166,7 @@ class ModeRequestTypeMapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode_group' is required and cannot be None")
         self._obj.mode_group = value
         return self
 

@@ -168,7 +168,7 @@ class SecureCommunicationFreshnessPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'freshness' is required and cannot be None")
         self._obj.freshness = value
         return self
 
@@ -182,7 +182,7 @@ class SecureCommunicationFreshnessPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'freshness_value' is required and cannot be None")
         self._obj.freshness_value = value
         return self
 
@@ -196,7 +196,7 @@ class SecureCommunicationFreshnessPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'use_freshness' is required and cannot be None")
         self._obj.use_freshness = value
         return self
 

@@ -174,7 +174,7 @@ class TDEventFrameBuilder(TDEventComBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'frame' is required and cannot be None")
         self._obj.frame = value
         return self
 
@@ -188,7 +188,7 @@ class TDEventFrameBuilder(TDEventComBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'physical_channel' is required and cannot be None")
         self._obj.physical_channel = value
         return self
 
@@ -202,7 +202,7 @@ class TDEventFrameBuilder(TDEventComBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'td_event_type_enum' is required and cannot be None")
         self._obj.td_event_type_enum = value
         return self
 

@@ -145,7 +145,7 @@ class RtePluginPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'associated' is required and cannot be None")
         self._obj.associated = value
         return self
 
@@ -159,7 +159,7 @@ class RtePluginPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'associated_rte' is required and cannot be None")
         self._obj.associated_rte = value
         return self
 

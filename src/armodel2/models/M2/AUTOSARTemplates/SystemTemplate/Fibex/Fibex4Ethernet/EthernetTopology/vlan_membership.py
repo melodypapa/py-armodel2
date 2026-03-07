@@ -183,11 +183,11 @@ class VlanMembershipBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_priority' is required and cannot be None")
         self._obj.default_priority = value
         return self
 
-    def with_dhcp_address(self, value: Optional[any (DhcpServer)]) -> "VlanMembershipBuilder":
+    def with_dhcp_address(self, value: Optional[Any]) -> "VlanMembershipBuilder":
         """Set dhcp_address attribute.
 
         Args:
@@ -197,11 +197,11 @@ class VlanMembershipBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dhcp_address' is required and cannot be None")
         self._obj.dhcp_address = value
         return self
 
-    def with_send_activity(self, value: Optional[any (EthernetSwitchVlan)]) -> "VlanMembershipBuilder":
+    def with_send_activity(self, value: Optional[Any]) -> "VlanMembershipBuilder":
         """Set send_activity attribute.
 
         Args:
@@ -211,11 +211,11 @@ class VlanMembershipBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'send_activity' is required and cannot be None")
         self._obj.send_activity = value
         return self
 
-    def with_vlan(self, value: Optional[any (EthernetPhysical)]) -> "VlanMembershipBuilder":
+    def with_vlan(self, value: Optional[Any]) -> "VlanMembershipBuilder":
         """Set vlan attribute.
 
         Args:
@@ -225,7 +225,7 @@ class VlanMembershipBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vlan' is required and cannot be None")
         self._obj.vlan = value
         return self
 

@@ -403,7 +403,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'editfit' is required and cannot be None")
         self._obj.editfit = value
         return self
 
@@ -417,7 +417,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'edit_height' is required and cannot be None")
         self._obj.edit_height = value
         return self
 
@@ -431,7 +431,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'editscale' is required and cannot be None")
         self._obj.editscale = value
         return self
 
@@ -445,7 +445,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'edit_width' is required and cannot be None")
         self._obj.edit_width = value
         return self
 
@@ -459,7 +459,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'filename' is required and cannot be None")
         self._obj.filename = value
         return self
 
@@ -473,7 +473,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'fit' is required and cannot be None")
         self._obj.fit = value
         return self
 
@@ -487,7 +487,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'generator' is required and cannot be None")
         self._obj.generator = value
         return self
 
@@ -501,7 +501,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'height' is required and cannot be None")
         self._obj.height = value
         return self
 
@@ -515,7 +515,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'html_fit' is required and cannot be None")
         self._obj.html_fit = value
         return self
 
@@ -529,7 +529,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'html_height' is required and cannot be None")
         self._obj.html_height = value
         return self
 
@@ -543,7 +543,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'html_scale' is required and cannot be None")
         self._obj.html_scale = value
         return self
 
@@ -557,7 +557,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'html_width' is required and cannot be None")
         self._obj.html_width = value
         return self
 
@@ -571,7 +571,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'notation' is required and cannot be None")
         self._obj.notation = value
         return self
 
@@ -585,7 +585,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'scale' is required and cannot be None")
         self._obj.scale = value
         return self
 
@@ -599,7 +599,7 @@ class GraphicBuilder(EngineeringObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'width' is required and cannot be None")
         self._obj.width = value
         return self
 

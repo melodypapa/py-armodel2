@@ -129,7 +129,7 @@ class SecurityEventContextMappingBswModuleBuilder(SecurityEventContextMappingBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'affected_bsw' is required and cannot be None")
         self._obj.affected_bsw = value
         return self
 

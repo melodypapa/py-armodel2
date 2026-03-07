@@ -297,7 +297,7 @@ class CanControllerXlConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'error_signaling' is required and cannot be None")
         self._obj.error_signaling = value
         return self
 
@@ -311,7 +311,7 @@ class CanControllerXlConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'prop_seg' is required and cannot be None")
         self._obj.prop_seg = value
         return self
 
@@ -325,7 +325,7 @@ class CanControllerXlConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pwm_l' is required and cannot be None")
         self._obj.pwm_l = value
         return self
 
@@ -339,7 +339,7 @@ class CanControllerXlConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pwm_o' is required and cannot be None")
         self._obj.pwm_o = value
         return self
 
@@ -353,7 +353,7 @@ class CanControllerXlConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pwm_s' is required and cannot be None")
         self._obj.pwm_s = value
         return self
 
@@ -367,7 +367,7 @@ class CanControllerXlConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ssp_offset' is required and cannot be None")
         self._obj.ssp_offset = value
         return self
 
@@ -381,7 +381,7 @@ class CanControllerXlConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sync_jump_width' is required and cannot be None")
         self._obj.sync_jump_width = value
         return self
 
@@ -395,7 +395,7 @@ class CanControllerXlConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_seg1' is required and cannot be None")
         self._obj.time_seg1 = value
         return self
 
@@ -409,7 +409,7 @@ class CanControllerXlConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_seg2' is required and cannot be None")
         self._obj.time_seg2 = value
         return self
 
@@ -423,7 +423,7 @@ class CanControllerXlConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'trcv_pwm_mode' is required and cannot be None")
         self._obj.trcv_pwm_mode = value
         return self
 

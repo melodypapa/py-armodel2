@@ -332,11 +332,11 @@ class NmEcuBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_instance' is required and cannot be None")
         self._obj.ecu_instance = value
         return self
 
-    def with_nm_bus_synchronization(self, value: Optional[any (BooleanEnabled)]) -> "NmEcuBuilder":
+    def with_nm_bus_synchronization(self, value: Optional[Any]) -> "NmEcuBuilder":
         """Set nm_bus_synchronization attribute.
 
         Args:
@@ -346,7 +346,7 @@ class NmEcuBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_bus_synchronization' is required and cannot be None")
         self._obj.nm_bus_synchronization = value
         return self
 
@@ -360,7 +360,7 @@ class NmEcuBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_com_control_enabled' is required and cannot be None")
         self._obj.nm_com_control_enabled = value
         return self
 
@@ -374,7 +374,7 @@ class NmEcuBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_coordinator' is required and cannot be None")
         self._obj.nm_coordinator = value
         return self
 
@@ -388,11 +388,11 @@ class NmEcuBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_cycletime' is required and cannot be None")
         self._obj.nm_cycletime = value
         return self
 
-    def with_nm_pdu_rx_indication(self, value: Optional[any (BooleanEnabled)]) -> "NmEcuBuilder":
+    def with_nm_pdu_rx_indication(self, value: Optional[Any]) -> "NmEcuBuilder":
         """Set nm_pdu_rx_indication attribute.
 
         Args:
@@ -402,11 +402,11 @@ class NmEcuBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_pdu_rx_indication' is required and cannot be None")
         self._obj.nm_pdu_rx_indication = value
         return self
 
-    def with_nm_remote_sleep_ind(self, value: Optional[any (BooleanEnabled)]) -> "NmEcuBuilder":
+    def with_nm_remote_sleep_ind(self, value: Optional[Any]) -> "NmEcuBuilder":
         """Set nm_remote_sleep_ind attribute.
 
         Args:
@@ -416,7 +416,7 @@ class NmEcuBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_remote_sleep_ind' is required and cannot be None")
         self._obj.nm_remote_sleep_ind = value
         return self
 
@@ -430,7 +430,7 @@ class NmEcuBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_state_change' is required and cannot be None")
         self._obj.nm_state_change = value
         return self
 
@@ -444,7 +444,7 @@ class NmEcuBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_user_data_enabled' is required and cannot be None")
         self._obj.nm_user_data_enabled = value
         return self
 

@@ -148,7 +148,7 @@ class BlueprintFormulaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecuc' is required and cannot be None")
         self._obj.ecuc = value
         return self
 
@@ -162,7 +162,7 @@ class BlueprintFormulaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'verbatim' is required and cannot be None")
         self._obj.verbatim = value
         return self
 

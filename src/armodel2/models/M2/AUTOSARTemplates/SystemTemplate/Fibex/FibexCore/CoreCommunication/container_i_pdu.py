@@ -340,7 +340,7 @@ class ContainerIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'container' is required and cannot be None")
         self._obj.container = value
         return self
 
@@ -354,7 +354,7 @@ class ContainerIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'container_trigger' is required and cannot be None")
         self._obj.container_trigger = value
         return self
 
@@ -368,7 +368,7 @@ class ContainerIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'header_type' is required and cannot be None")
         self._obj.header_type = value
         return self
 
@@ -382,7 +382,7 @@ class ContainerIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum_rx' is required and cannot be None")
         self._obj.minimum_rx = value
         return self
 
@@ -396,7 +396,7 @@ class ContainerIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum_tx' is required and cannot be None")
         self._obj.minimum_tx = value
         return self
 
@@ -410,7 +410,7 @@ class ContainerIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rx_accept' is required and cannot be None")
         self._obj.rx_accept = value
         return self
 
@@ -424,7 +424,7 @@ class ContainerIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'threshold_size' is required and cannot be None")
         self._obj.threshold_size = value
         return self
 
@@ -438,7 +438,7 @@ class ContainerIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'unused_bit' is required and cannot be None")
         self._obj.unused_bit = value
         return self
 

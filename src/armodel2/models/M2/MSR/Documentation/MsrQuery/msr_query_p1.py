@@ -192,7 +192,7 @@ class MsrQueryP1Builder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'msr_query_props' is required and cannot be None")
         self._obj.msr_query_props = value
         return self
 
@@ -206,7 +206,7 @@ class MsrQueryP1Builder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'block_level' is required and cannot be None")
         self._obj.block_level = value
         return self
 
@@ -220,11 +220,11 @@ class MsrQueryP1Builder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'table' is required and cannot be None")
         self._obj.table = value
         return self
 
-    def with_traceable_table(self, value: any (TraceableTable)) -> "MsrQueryP1Builder":
+    def with_traceable_table(self, value: Any) -> "MsrQueryP1Builder":
         """Set traceable_table attribute.
 
         Args:
@@ -234,7 +234,7 @@ class MsrQueryP1Builder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'traceable_table' is required and cannot be None")
         self._obj.traceable_table = value
         return self
 

@@ -171,11 +171,11 @@ class DiagnosticDynamicallyDefineDataIdentifierBuilder(DiagnosticServiceInstance
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_identifier' is required and cannot be None")
         self._obj.data_identifier = value
         return self
 
-    def with_dynamically(self, value: Optional[any (DiagnosticDynamically)]) -> "DiagnosticDynamicallyDefineDataIdentifierBuilder":
+    def with_dynamically(self, value: Optional[Any]) -> "DiagnosticDynamicallyDefineDataIdentifierBuilder":
         """Set dynamically attribute.
 
         Args:
@@ -185,7 +185,7 @@ class DiagnosticDynamicallyDefineDataIdentifierBuilder(DiagnosticServiceInstance
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dynamically' is required and cannot be None")
         self._obj.dynamically = value
         return self
 
@@ -199,7 +199,7 @@ class DiagnosticDynamicallyDefineDataIdentifierBuilder(DiagnosticServiceInstance
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_source' is required and cannot be None")
         self._obj.max_source = value
         return self
 

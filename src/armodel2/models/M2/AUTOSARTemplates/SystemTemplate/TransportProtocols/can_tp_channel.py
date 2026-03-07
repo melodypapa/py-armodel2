@@ -129,7 +129,7 @@ class CanTpChannelBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'channel_id' is required and cannot be None")
         self._obj.channel_id = value
         return self
 

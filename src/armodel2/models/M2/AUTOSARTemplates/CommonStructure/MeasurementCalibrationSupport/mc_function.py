@@ -230,7 +230,7 @@ class McFunctionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'def_calprm_set' is required and cannot be None")
         self._obj.def_calprm_set = value
         return self
 
@@ -244,7 +244,7 @@ class McFunctionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'in_measurement' is required and cannot be None")
         self._obj.in_measurement = value
         return self
 
@@ -258,7 +258,7 @@ class McFunctionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'loc' is required and cannot be None")
         self._obj.loc = value
         return self
 
@@ -272,7 +272,7 @@ class McFunctionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'out' is required and cannot be None")
         self._obj.out = value
         return self
 
@@ -286,7 +286,7 @@ class McFunctionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ref_calprm_set' is required and cannot be None")
         self._obj.ref_calprm_set = value
         return self
 

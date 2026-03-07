@@ -214,7 +214,7 @@ class CanControllerConfigurationRequirementsBuilder(AbstractCanCommunicationCont
         self._obj: CanControllerConfigurationRequirements = CanControllerConfigurationRequirements()
 
 
-    def with_max_number_of_time_quanta_per(self, value: Optional[any (IntegerBit)]) -> "CanControllerConfigurationRequirementsBuilder":
+    def with_max_number_of_time_quanta_per(self, value: Optional[Any]) -> "CanControllerConfigurationRequirementsBuilder":
         """Set max_number_of_time_quanta_per attribute.
 
         Args:
@@ -224,7 +224,7 @@ class CanControllerConfigurationRequirementsBuilder(AbstractCanCommunicationCont
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of_time_quanta_per' is required and cannot be None")
         self._obj.max_number_of_time_quanta_per = value
         return self
 
@@ -238,7 +238,7 @@ class CanControllerConfigurationRequirementsBuilder(AbstractCanCommunicationCont
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_sample' is required and cannot be None")
         self._obj.max_sample = value
         return self
 
@@ -252,11 +252,11 @@ class CanControllerConfigurationRequirementsBuilder(AbstractCanCommunicationCont
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_sync_jump' is required and cannot be None")
         self._obj.max_sync_jump = value
         return self
 
-    def with_min_number_of_time_quanta_per(self, value: Optional[any (IntegerBit)]) -> "CanControllerConfigurationRequirementsBuilder":
+    def with_min_number_of_time_quanta_per(self, value: Optional[Any]) -> "CanControllerConfigurationRequirementsBuilder":
         """Set min_number_of_time_quanta_per attribute.
 
         Args:
@@ -266,7 +266,7 @@ class CanControllerConfigurationRequirementsBuilder(AbstractCanCommunicationCont
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_number_of_time_quanta_per' is required and cannot be None")
         self._obj.min_number_of_time_quanta_per = value
         return self
 
@@ -280,7 +280,7 @@ class CanControllerConfigurationRequirementsBuilder(AbstractCanCommunicationCont
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_sample_point' is required and cannot be None")
         self._obj.min_sample_point = value
         return self
 
@@ -294,7 +294,7 @@ class CanControllerConfigurationRequirementsBuilder(AbstractCanCommunicationCont
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_sync_jump' is required and cannot be None")
         self._obj.min_sync_jump = value
         return self
 

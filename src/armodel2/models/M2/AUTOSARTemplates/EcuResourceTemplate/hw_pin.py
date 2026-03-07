@@ -185,7 +185,7 @@ class HwPinBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'packaging_pin' is required and cannot be None")
         self._obj.packaging_pin = value
         return self
 
@@ -199,7 +199,7 @@ class HwPinBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pin_number' is required and cannot be None")
         self._obj.pin_number = value
         return self
 

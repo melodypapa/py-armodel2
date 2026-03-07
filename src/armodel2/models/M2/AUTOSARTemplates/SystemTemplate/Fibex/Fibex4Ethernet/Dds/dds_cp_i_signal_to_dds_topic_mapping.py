@@ -148,7 +148,7 @@ class DdsCpISignalToDdsTopicMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dds_topic' is required and cannot be None")
         self._obj.dds_topic = value
         return self
 
@@ -162,7 +162,7 @@ class DdsCpISignalToDdsTopicMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_signal' is required and cannot be None")
         self._obj.i_signal = value
         return self
 

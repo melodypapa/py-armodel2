@@ -125,7 +125,7 @@ class EventObdReadinessGroupBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_obd' is required and cannot be None")
         self._obj.event_obd = value
         return self
 

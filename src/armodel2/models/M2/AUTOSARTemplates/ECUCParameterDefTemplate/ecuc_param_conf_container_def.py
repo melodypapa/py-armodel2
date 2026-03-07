@@ -195,7 +195,7 @@ class EcucParamConfContainerDefBuilder(EcucContainerDefBuilder):
         self._obj.parameters = list(items) if items else []
         return self
 
-    def with_references(self, items: list[any (EcucAbstractReference)]) -> "EcucParamConfContainerDefBuilder":
+    def with_references(self, items: list[Any]) -> "EcucParamConfContainerDefBuilder":
         """Set references list attribute.
 
         Args:
@@ -241,7 +241,7 @@ class EcucParamConfContainerDefBuilder(EcucContainerDefBuilder):
         self._obj.parameters = []
         return self
 
-    def add_reference(self, item: any (EcucAbstractReference)) -> "EcucParamConfContainerDefBuilder":
+    def add_reference(self, item: Any) -> "EcucParamConfContainerDefBuilder":
         """Add a single item to references list.
 
         Args:

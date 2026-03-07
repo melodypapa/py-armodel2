@@ -289,7 +289,7 @@ class SwAxisIndividualBuilder(SwCalprmAxisTypePropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'compu_method' is required and cannot be None")
         self._obj.compu_method = value
         return self
 
@@ -303,7 +303,7 @@ class SwAxisIndividualBuilder(SwCalprmAxisTypePropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_constr' is required and cannot be None")
         self._obj.data_constr = value
         return self
 
@@ -317,7 +317,7 @@ class SwAxisIndividualBuilder(SwCalprmAxisTypePropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'input_variable' is required and cannot be None")
         self._obj.input_variable = value
         return self
 
@@ -331,7 +331,7 @@ class SwAxisIndividualBuilder(SwCalprmAxisTypePropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_axis_generic' is required and cannot be None")
         self._obj.sw_axis_generic = value
         return self
 
@@ -345,7 +345,7 @@ class SwAxisIndividualBuilder(SwCalprmAxisTypePropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_max_axis' is required and cannot be None")
         self._obj.sw_max_axis = value
         return self
 
@@ -359,7 +359,7 @@ class SwAxisIndividualBuilder(SwCalprmAxisTypePropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_min_axis' is required and cannot be None")
         self._obj.sw_min_axis = value
         return self
 
@@ -385,7 +385,7 @@ class SwAxisIndividualBuilder(SwCalprmAxisTypePropsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'unit' is required and cannot be None")
         self._obj.unit = value
         return self
 

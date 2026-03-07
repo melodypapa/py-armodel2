@@ -343,7 +343,7 @@ class SOMEIPTransformationISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'implements' is required and cannot be None")
         self._obj.implements = value
         return self
 
@@ -357,7 +357,7 @@ class SOMEIPTransformationISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'interface_version' is required and cannot be None")
         self._obj.interface_version = value
         return self
 
@@ -371,7 +371,7 @@ class SOMEIPTransformationISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_dynamic' is required and cannot be None")
         self._obj.is_dynamic = value
         return self
 
@@ -385,7 +385,7 @@ class SOMEIPTransformationISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'message_type' is required and cannot be None")
         self._obj.message_type = value
         return self
 
@@ -399,7 +399,7 @@ class SOMEIPTransformationISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'size_of_array' is required and cannot be None")
         self._obj.size_of_array = value
         return self
 
@@ -413,7 +413,7 @@ class SOMEIPTransformationISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'size_of_string' is required and cannot be None")
         self._obj.size_of_string = value
         return self
 
@@ -427,7 +427,7 @@ class SOMEIPTransformationISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'size_of_struct' is required and cannot be None")
         self._obj.size_of_struct = value
         return self
 
@@ -441,7 +441,7 @@ class SOMEIPTransformationISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'size_of_union' is required and cannot be None")
         self._obj.size_of_union = value
         return self
 

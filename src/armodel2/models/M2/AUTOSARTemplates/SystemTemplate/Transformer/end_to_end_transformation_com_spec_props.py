@@ -325,7 +325,7 @@ class EndToEndTransformationComSpecPropsBuilder(TransformationComSpecPropsBuilde
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'clear_from_valid' is required and cannot be None")
         self._obj.clear_from_valid = value
         return self
 
@@ -339,7 +339,7 @@ class EndToEndTransformationComSpecPropsBuilder(TransformationComSpecPropsBuilde
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'disable_end_to' is required and cannot be None")
         self._obj.disable_end_to = value
         return self
 
@@ -353,7 +353,7 @@ class EndToEndTransformationComSpecPropsBuilder(TransformationComSpecPropsBuilde
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'e2e_profile' is required and cannot be None")
         self._obj.e2e_profile = value
         return self
 
@@ -367,7 +367,7 @@ class EndToEndTransformationComSpecPropsBuilder(TransformationComSpecPropsBuilde
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_delta' is required and cannot be None")
         self._obj.max_delta = value
         return self
 
@@ -381,7 +381,7 @@ class EndToEndTransformationComSpecPropsBuilder(TransformationComSpecPropsBuilde
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_error_state' is required and cannot be None")
         self._obj.max_error_state = value
         return self
 
@@ -395,7 +395,7 @@ class EndToEndTransformationComSpecPropsBuilder(TransformationComSpecPropsBuilde
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_no_new_or' is required and cannot be None")
         self._obj.max_no_new_or = value
         return self
 
@@ -409,7 +409,7 @@ class EndToEndTransformationComSpecPropsBuilder(TransformationComSpecPropsBuilde
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_ok_state_init' is required and cannot be None")
         self._obj.min_ok_state_init = value
         return self
 
@@ -423,7 +423,7 @@ class EndToEndTransformationComSpecPropsBuilder(TransformationComSpecPropsBuilde
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_ok_state' is required and cannot be None")
         self._obj.min_ok_state = value
         return self
 
@@ -437,7 +437,7 @@ class EndToEndTransformationComSpecPropsBuilder(TransformationComSpecPropsBuilde
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sync_counter_init' is required and cannot be None")
         self._obj.sync_counter_init = value
         return self
 
@@ -451,7 +451,7 @@ class EndToEndTransformationComSpecPropsBuilder(TransformationComSpecPropsBuilde
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'window_size_init' is required and cannot be None")
         self._obj.window_size_init = value
         return self
 
@@ -465,7 +465,7 @@ class EndToEndTransformationComSpecPropsBuilder(TransformationComSpecPropsBuilde
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'window_size' is required and cannot be None")
         self._obj.window_size = value
         return self
 

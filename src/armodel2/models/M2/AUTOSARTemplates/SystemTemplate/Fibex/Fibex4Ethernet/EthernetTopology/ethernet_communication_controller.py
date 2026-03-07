@@ -291,7 +291,7 @@ class EthernetCommunicationControllerBuilder(BuilderBase):
         self._obj: EthernetCommunicationController = EthernetCommunicationController()
 
 
-    def with_can_xl_config(self, value: Optional[any (AbstractCan)]) -> "EthernetCommunicationControllerBuilder":
+    def with_can_xl_config(self, value: Optional[Any]) -> "EthernetCommunicationControllerBuilder":
         """Set can_xl_config attribute.
 
         Args:
@@ -301,7 +301,7 @@ class EthernetCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_xl_config' is required and cannot be None")
         self._obj.can_xl_config = value
         return self
 
@@ -327,7 +327,7 @@ class EthernetCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mac_layer_type' is required and cannot be None")
         self._obj.mac_layer_type = value
         return self
 
@@ -341,7 +341,7 @@ class EthernetCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mac_unicast' is required and cannot be None")
         self._obj.mac_unicast = value
         return self
 
@@ -355,7 +355,7 @@ class EthernetCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'maximum' is required and cannot be None")
         self._obj.maximum = value
         return self
 
@@ -369,7 +369,7 @@ class EthernetCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'slave_act_as' is required and cannot be None")
         self._obj.slave_act_as = value
         return self
 
@@ -383,7 +383,7 @@ class EthernetCommunicationControllerBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'slave_qualified' is required and cannot be None")
         self._obj.slave_qualified = value
         return self
 

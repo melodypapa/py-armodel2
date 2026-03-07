@@ -156,7 +156,7 @@ class SystemSignalBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dynamic_length' is required and cannot be None")
         self._obj.dynamic_length = value
         return self
 
@@ -170,7 +170,7 @@ class SystemSignalBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'physical_props' is required and cannot be None")
         self._obj.physical_props = value
         return self
 

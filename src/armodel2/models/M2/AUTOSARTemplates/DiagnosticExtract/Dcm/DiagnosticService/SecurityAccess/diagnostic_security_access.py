@@ -191,11 +191,11 @@ class DiagnosticSecurityAccessBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request_seed_id' is required and cannot be None")
         self._obj.request_seed_id = value
         return self
 
-    def with_security_access(self, value: Optional[any (DiagnosticSecurity)]) -> "DiagnosticSecurityAccessBuilder":
+    def with_security_access(self, value: Optional[Any]) -> "DiagnosticSecurityAccessBuilder":
         """Set security_access attribute.
 
         Args:
@@ -205,7 +205,7 @@ class DiagnosticSecurityAccessBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'security_access' is required and cannot be None")
         self._obj.security_access = value
         return self
 
@@ -219,7 +219,7 @@ class DiagnosticSecurityAccessBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'security_delay' is required and cannot be None")
         self._obj.security_delay = value
         return self
 
@@ -233,7 +233,7 @@ class DiagnosticSecurityAccessBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'security_level' is required and cannot be None")
         self._obj.security_level = value
         return self
 

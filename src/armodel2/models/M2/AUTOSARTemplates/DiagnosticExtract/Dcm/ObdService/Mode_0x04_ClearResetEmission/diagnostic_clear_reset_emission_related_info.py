@@ -117,7 +117,7 @@ class DiagnosticClearResetEmissionRelatedInfoBuilder(DiagnosticServiceInstanceBu
         self._obj: DiagnosticClearResetEmissionRelatedInfo = DiagnosticClearResetEmissionRelatedInfo()
 
 
-    def with_clear_reset(self, value: Optional[any (DiagnosticClearReset)]) -> "DiagnosticClearResetEmissionRelatedInfoBuilder":
+    def with_clear_reset(self, value: Optional[Any]) -> "DiagnosticClearResetEmissionRelatedInfoBuilder":
         """Set clear_reset attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticClearResetEmissionRelatedInfoBuilder(DiagnosticServiceInstanceBu
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'clear_reset' is required and cannot be None")
         self._obj.clear_reset = value
         return self
 

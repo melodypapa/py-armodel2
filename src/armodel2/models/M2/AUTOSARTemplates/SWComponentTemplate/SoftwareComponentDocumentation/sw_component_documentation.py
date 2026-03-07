@@ -270,7 +270,7 @@ class SwComponentDocumentationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_calibration' is required and cannot be None")
         self._obj.sw_calibration = value
         return self
 
@@ -284,7 +284,7 @@ class SwComponentDocumentationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_carb_doc' is required and cannot be None")
         self._obj.sw_carb_doc = value
         return self
 
@@ -298,7 +298,7 @@ class SwComponentDocumentationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_diagnostics' is required and cannot be None")
         self._obj.sw_diagnostics = value
         return self
 
@@ -312,7 +312,7 @@ class SwComponentDocumentationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_feature_def' is required and cannot be None")
         self._obj.sw_feature_def = value
         return self
 
@@ -326,7 +326,7 @@ class SwComponentDocumentationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_feature_desc' is required and cannot be None")
         self._obj.sw_feature_desc = value
         return self
 
@@ -340,7 +340,7 @@ class SwComponentDocumentationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_maintenance' is required and cannot be None")
         self._obj.sw_maintenance = value
         return self
 
@@ -354,7 +354,7 @@ class SwComponentDocumentationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_test_desc' is required and cannot be None")
         self._obj.sw_test_desc = value
         return self
 

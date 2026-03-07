@@ -148,7 +148,7 @@ class BusMirrorChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bus_mirror' is required and cannot be None")
         self._obj.bus_mirror = value
         return self
 
@@ -162,7 +162,7 @@ class BusMirrorChannelBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'channel' is required and cannot be None")
         self._obj.channel = value
         return self
 

@@ -176,7 +176,7 @@ class ClientComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'end_to_end_call_response_timeout' is required and cannot be None")
         self._obj.end_to_end_call_response_timeout = value
         return self
 
@@ -190,7 +190,7 @@ class ClientComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'operation' is required and cannot be None")
         self._obj.operation = value
         return self
 

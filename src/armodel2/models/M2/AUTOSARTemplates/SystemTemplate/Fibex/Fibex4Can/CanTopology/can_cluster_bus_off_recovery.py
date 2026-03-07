@@ -202,7 +202,7 @@ class CanClusterBusOffRecoveryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bor_counter_l1_to' is required and cannot be None")
         self._obj.bor_counter_l1_to = value
         return self
 
@@ -216,7 +216,7 @@ class CanClusterBusOffRecoveryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bor_time_l1' is required and cannot be None")
         self._obj.bor_time_l1 = value
         return self
 
@@ -230,7 +230,7 @@ class CanClusterBusOffRecoveryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bor_time_l2' is required and cannot be None")
         self._obj.bor_time_l2 = value
         return self
 
@@ -244,7 +244,7 @@ class CanClusterBusOffRecoveryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bor_time_tx' is required and cannot be None")
         self._obj.bor_time_tx = value
         return self
 
@@ -258,7 +258,7 @@ class CanClusterBusOffRecoveryBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'main_function' is required and cannot be None")
         self._obj.main_function = value
         return self
 

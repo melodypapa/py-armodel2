@@ -173,7 +173,7 @@ class TDEventVfbPortBuilder(TDEventVfbBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_external' is required and cannot be None")
         self._obj.is_external = value
         return self
 
@@ -187,7 +187,7 @@ class TDEventVfbPortBuilder(TDEventVfbBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'port' is required and cannot be None")
         self._obj.port = value
         return self
 
@@ -201,7 +201,7 @@ class TDEventVfbPortBuilder(TDEventVfbBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'port_prototype' is required and cannot be None")
         self._obj.port_prototype = value
         return self
 

@@ -198,7 +198,7 @@ class SwAddrMethodBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'memory_allocation_keyword_policy' is required and cannot be None")
         self._obj.memory_allocation_keyword_policy = value
         return self
 
@@ -224,7 +224,7 @@ class SwAddrMethodBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'section_initialization_policy' is required and cannot be None")
         self._obj.section_initialization_policy = value
         return self
 
@@ -238,7 +238,7 @@ class SwAddrMethodBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'section_type' is required and cannot be None")
         self._obj.section_type = value
         return self
 

@@ -165,7 +165,7 @@ class TagWithOptionalValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'key' is required and cannot be None")
         self._obj.key = value
         return self
 
@@ -179,7 +179,7 @@ class TagWithOptionalValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sequence_offset' is required and cannot be None")
         self._obj.sequence_offset = value
         return self
 
@@ -193,7 +193,7 @@ class TagWithOptionalValueBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'value' is required and cannot be None")
         self._obj.value = value
         return self
 

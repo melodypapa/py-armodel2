@@ -163,7 +163,7 @@ class HardwareConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'additional' is required and cannot be None")
         self._obj.additional = value
         return self
 
@@ -177,7 +177,7 @@ class HardwareConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'processor_mode' is required and cannot be None")
         self._obj.processor_mode = value
         return self
 
@@ -191,7 +191,7 @@ class HardwareConfigurationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'processor_speed' is required and cannot be None")
         self._obj.processor_speed = value
         return self
 

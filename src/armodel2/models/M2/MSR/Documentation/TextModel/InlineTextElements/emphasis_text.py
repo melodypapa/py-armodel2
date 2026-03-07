@@ -230,7 +230,7 @@ class EmphasisTextBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'color' is required and cannot be None")
         self._obj.color = value
         return self
 
@@ -244,7 +244,7 @@ class EmphasisTextBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'font' is required and cannot be None")
         self._obj.font = value
         return self
 
@@ -258,7 +258,7 @@ class EmphasisTextBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sub' is required and cannot be None")
         self._obj.sub = value
         return self
 
@@ -272,7 +272,7 @@ class EmphasisTextBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sup' is required and cannot be None")
         self._obj.sup = value
         return self
 
@@ -286,7 +286,7 @@ class EmphasisTextBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tt' is required and cannot be None")
         self._obj.tt = value
         return self
 
@@ -300,7 +300,7 @@ class EmphasisTextBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'type' is required and cannot be None")
         self._obj.type = value
         return self
 

@@ -149,7 +149,7 @@ class FlexrayCommunicationConnectorBuilder(CommunicationConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_ready_sleep' is required and cannot be None")
         self._obj.nm_ready_sleep = value
         return self
 
@@ -163,7 +163,7 @@ class FlexrayCommunicationConnectorBuilder(CommunicationConnectorBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wake_up' is required and cannot be None")
         self._obj.wake_up = value
         return self
 

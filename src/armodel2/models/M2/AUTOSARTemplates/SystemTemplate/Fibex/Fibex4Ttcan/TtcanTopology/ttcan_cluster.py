@@ -205,7 +205,7 @@ class TtcanClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'basic_cycle_length' is required and cannot be None")
         self._obj.basic_cycle_length = value
         return self
 
@@ -219,7 +219,7 @@ class TtcanClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ntu' is required and cannot be None")
         self._obj.ntu = value
         return self
 
@@ -233,7 +233,7 @@ class TtcanClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'operation_mode' is required and cannot be None")
         self._obj.operation_mode = value
         return self
 

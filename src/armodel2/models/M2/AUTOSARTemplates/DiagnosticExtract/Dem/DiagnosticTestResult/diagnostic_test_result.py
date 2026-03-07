@@ -191,11 +191,11 @@ class DiagnosticTestResultBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_event' is required and cannot be None")
         self._obj.diagnostic_event = value
         return self
 
-    def with_monitored(self, value: Optional[any (Diagnostic)]) -> "DiagnosticTestResultBuilder":
+    def with_monitored(self, value: Optional[Any]) -> "DiagnosticTestResultBuilder":
         """Set monitored attribute.
 
         Args:
@@ -205,7 +205,7 @@ class DiagnosticTestResultBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'monitored' is required and cannot be None")
         self._obj.monitored = value
         return self
 
@@ -219,7 +219,7 @@ class DiagnosticTestResultBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'test_identifier' is required and cannot be None")
         self._obj.test_identifier = value
         return self
 
@@ -233,7 +233,7 @@ class DiagnosticTestResultBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'update_kind' is required and cannot be None")
         self._obj.update_kind = value
         return self
 

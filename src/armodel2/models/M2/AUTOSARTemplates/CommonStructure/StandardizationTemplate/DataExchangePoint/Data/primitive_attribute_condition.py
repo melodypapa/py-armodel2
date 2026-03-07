@@ -117,7 +117,7 @@ class PrimitiveAttributeConditionBuilder(AttributeConditionBuilder):
         self._obj: PrimitiveAttributeCondition = PrimitiveAttributeCondition()
 
 
-    def with_attribute(self, value: any (PrimitiveAttribute)) -> "PrimitiveAttributeConditionBuilder":
+    def with_attribute(self, value: Any) -> "PrimitiveAttributeConditionBuilder":
         """Set attribute attribute.
 
         Args:
@@ -127,7 +127,7 @@ class PrimitiveAttributeConditionBuilder(AttributeConditionBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'attribute' is required and cannot be None")
         self._obj.attribute = value
         return self
 

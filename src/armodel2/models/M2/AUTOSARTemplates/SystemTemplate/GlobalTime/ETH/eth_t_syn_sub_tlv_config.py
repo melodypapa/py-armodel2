@@ -182,7 +182,7 @@ class EthTSynSubTlvConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ofs_sub_tlv' is required and cannot be None")
         self._obj.ofs_sub_tlv = value
         return self
 
@@ -196,7 +196,7 @@ class EthTSynSubTlvConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'status_sub_tlv' is required and cannot be None")
         self._obj.status_sub_tlv = value
         return self
 
@@ -210,7 +210,7 @@ class EthTSynSubTlvConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_sub_tlv' is required and cannot be None")
         self._obj.time_sub_tlv = value
         return self
 
@@ -224,7 +224,7 @@ class EthTSynSubTlvConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'user_data_sub_tlv' is required and cannot be None")
         self._obj.user_data_sub_tlv = value
         return self
 

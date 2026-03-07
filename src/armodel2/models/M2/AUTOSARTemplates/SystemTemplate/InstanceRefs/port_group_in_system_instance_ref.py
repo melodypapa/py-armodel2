@@ -170,7 +170,7 @@ class PortGroupInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
@@ -184,7 +184,7 @@ class PortGroupInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context' is required and cannot be None")
         self._obj.context = value
         return self
 
@@ -198,7 +198,7 @@ class PortGroupInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target' is required and cannot be None")
         self._obj.target = value
         return self
 

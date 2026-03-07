@@ -253,7 +253,7 @@ class SwValueContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'v' is required and cannot be None")
         self._obj.v = value
         return self
 
@@ -267,7 +267,7 @@ class SwValueContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vf' is required and cannot be None")
         self._obj.vf = value
         return self
 
@@ -281,7 +281,7 @@ class SwValueContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vg' is required and cannot be None")
         self._obj.vg = value
         return self
 
@@ -295,7 +295,7 @@ class SwValueContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vt' is required and cannot be None")
         self._obj.vt = value
         return self
 
@@ -309,7 +309,7 @@ class SwValueContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vtf' is required and cannot be None")
         self._obj.vtf = value
         return self
 
@@ -323,7 +323,7 @@ class SwValueContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'unit' is required and cannot be None")
         self._obj.unit = value
         return self
 
@@ -337,7 +337,7 @@ class SwValueContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'unit_display' is required and cannot be None")
         self._obj.unit_display = value
         return self
 

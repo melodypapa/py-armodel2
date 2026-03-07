@@ -187,7 +187,7 @@ class PredefinedVariantBuilder(ARElementBuilder):
         self._obj.included_variants = list(items) if items else []
         return self
 
-    def with_post_build_variants(self, items: list[any (PostBuildVariant)]) -> "PredefinedVariantBuilder":
+    def with_post_build_variants(self, items: list[Any]) -> "PredefinedVariantBuilder":
         """Set post_build_variants list attribute.
 
         Args:
@@ -233,7 +233,7 @@ class PredefinedVariantBuilder(ARElementBuilder):
         self._obj.included_variants = []
         return self
 
-    def add_post_build_variant(self, item: any (PostBuildVariant)) -> "PredefinedVariantBuilder":
+    def add_post_build_variant(self, item: Any) -> "PredefinedVariantBuilder":
         """Add a single item to post_build_variants list.
 
         Args:

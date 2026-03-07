@@ -152,7 +152,7 @@ class TDEventTriggerBuilder(TDEventVfbPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'td_event_trigger' is required and cannot be None")
         self._obj.td_event_trigger = value
         return self
 
@@ -166,7 +166,7 @@ class TDEventTriggerBuilder(TDEventVfbPortBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'trigger' is required and cannot be None")
         self._obj.trigger = value
         return self
 

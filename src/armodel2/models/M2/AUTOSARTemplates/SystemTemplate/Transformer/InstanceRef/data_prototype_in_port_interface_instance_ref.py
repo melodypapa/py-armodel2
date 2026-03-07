@@ -192,11 +192,11 @@ class DataPrototypeInPortInterfaceInstanceRefBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'abstract_base' is required and cannot be None")
         self._obj.abstract_base = value
         return self
 
-    def with_context_datas(self, items: list[any (ApplicationComposite)]) -> "DataPrototypeInPortInterfaceInstanceRefBuilder":
+    def with_context_datas(self, items: list[Any]) -> "DataPrototypeInPortInterfaceInstanceRefBuilder":
         """Set context_datas list attribute.
 
         Args:
@@ -218,7 +218,7 @@ class DataPrototypeInPortInterfaceInstanceRefBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'root_data' is required and cannot be None")
         self._obj.root_data = value
         return self
 
@@ -232,12 +232,12 @@ class DataPrototypeInPortInterfaceInstanceRefBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_data' is required and cannot be None")
         self._obj.target_data = value
         return self
 
 
-    def add_context_data(self, item: any (ApplicationComposite)) -> "DataPrototypeInPortInterfaceInstanceRefBuilder":
+    def add_context_data(self, item: Any) -> "DataPrototypeInPortInterfaceInstanceRefBuilder":
         """Add a single item to context_datas list.
 
         Args:

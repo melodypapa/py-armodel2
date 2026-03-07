@@ -441,7 +441,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'addressing' is required and cannot be None")
         self._obj.addressing = value
         return self
 
@@ -455,7 +455,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cancellation' is required and cannot be None")
         self._obj.cancellation = value
         return self
 
@@ -469,7 +469,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_tp_channel' is required and cannot be None")
         self._obj.can_tp_channel = value
         return self
 
@@ -483,7 +483,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_pdu' is required and cannot be None")
         self._obj.data_pdu = value
         return self
 
@@ -497,7 +497,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'flow_control_pdu' is required and cannot be None")
         self._obj.flow_control_pdu = value
         return self
 
@@ -511,7 +511,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_block_size' is required and cannot be None")
         self._obj.max_block_size = value
         return self
 
@@ -525,7 +525,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'multicast' is required and cannot be None")
         self._obj.multicast = value
         return self
 
@@ -539,7 +539,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'padding' is required and cannot be None")
         self._obj.padding = value
         return self
 
@@ -565,7 +565,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ta_type_type' is required and cannot be None")
         self._obj.ta_type_type = value
         return self
 
@@ -579,7 +579,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_br' is required and cannot be None")
         self._obj.timeout_br = value
         return self
 
@@ -593,7 +593,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_bs' is required and cannot be None")
         self._obj.timeout_bs = value
         return self
 
@@ -607,7 +607,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_cr' is required and cannot be None")
         self._obj.timeout_cr = value
         return self
 
@@ -621,7 +621,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_cs' is required and cannot be None")
         self._obj.timeout_cs = value
         return self
 
@@ -635,7 +635,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tp_sdu' is required and cannot be None")
         self._obj.tp_sdu = value
         return self
 
@@ -649,7 +649,7 @@ class CanTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transmitter' is required and cannot be None")
         self._obj.transmitter = value
         return self
 

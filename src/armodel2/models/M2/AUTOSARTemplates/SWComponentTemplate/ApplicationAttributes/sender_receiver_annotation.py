@@ -192,7 +192,7 @@ class SenderReceiverAnnotationBuilder(GeneralAnnotationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'computed' is required and cannot be None")
         self._obj.computed = value
         return self
 
@@ -206,7 +206,7 @@ class SenderReceiverAnnotationBuilder(GeneralAnnotationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_element' is required and cannot be None")
         self._obj.data_element = value
         return self
 
@@ -220,7 +220,7 @@ class SenderReceiverAnnotationBuilder(GeneralAnnotationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'limit_kind' is required and cannot be None")
         self._obj.limit_kind = value
         return self
 
@@ -234,7 +234,7 @@ class SenderReceiverAnnotationBuilder(GeneralAnnotationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'processing_kind_enum' is required and cannot be None")
         self._obj.processing_kind_enum = value
         return self
 

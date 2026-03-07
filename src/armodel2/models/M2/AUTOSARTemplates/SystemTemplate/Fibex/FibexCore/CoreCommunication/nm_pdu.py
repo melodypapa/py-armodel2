@@ -209,7 +209,7 @@ class NmPduBuilder(PduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_data' is required and cannot be None")
         self._obj.nm_data = value
         return self
 
@@ -223,7 +223,7 @@ class NmPduBuilder(PduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_vote_information' is required and cannot be None")
         self._obj.nm_vote_information = value
         return self
 
@@ -237,7 +237,7 @@ class NmPduBuilder(PduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'unused_bit' is required and cannot be None")
         self._obj.unused_bit = value
         return self
 

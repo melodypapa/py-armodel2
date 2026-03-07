@@ -172,11 +172,11 @@ class InstanceEventInCompositionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
-    def with_context_prototypes(self, items: list[any (SwComponent)]) -> "InstanceEventInCompositionInstanceRefBuilder":
+    def with_context_prototypes(self, items: list[Any]) -> "InstanceEventInCompositionInstanceRefBuilder":
         """Set context_prototypes list attribute.
 
         Args:
@@ -198,12 +198,12 @@ class InstanceEventInCompositionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_event' is required and cannot be None")
         self._obj.target_event = value
         return self
 
 
-    def add_context_prototype(self, item: any (SwComponent)) -> "InstanceEventInCompositionInstanceRefBuilder":
+    def add_context_prototype(self, item: Any) -> "InstanceEventInCompositionInstanceRefBuilder":
         """Add a single item to context_prototypes list.
 
         Args:

@@ -209,7 +209,7 @@ class HttpTpBuilder(TransportProtocolConfigurationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'content_type' is required and cannot be None")
         self._obj.content_type = value
         return self
 
@@ -223,11 +223,11 @@ class HttpTpBuilder(TransportProtocolConfigurationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'protocol_version' is required and cannot be None")
         self._obj.protocol_version = value
         return self
 
-    def with_request_method_enum(self, value: Optional[any (RequestMethodEnum)]) -> "HttpTpBuilder":
+    def with_request_method_enum(self, value: Optional[Any]) -> "HttpTpBuilder":
         """Set request_method_enum attribute.
 
         Args:
@@ -237,7 +237,7 @@ class HttpTpBuilder(TransportProtocolConfigurationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request_method_enum' is required and cannot be None")
         self._obj.request_method_enum = value
         return self
 
@@ -251,7 +251,7 @@ class HttpTpBuilder(TransportProtocolConfigurationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_tp_config' is required and cannot be None")
         self._obj.tcp_tp_config = value
         return self
 
@@ -265,7 +265,7 @@ class HttpTpBuilder(TransportProtocolConfigurationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'uri' is required and cannot be None")
         self._obj.uri = value
         return self
 

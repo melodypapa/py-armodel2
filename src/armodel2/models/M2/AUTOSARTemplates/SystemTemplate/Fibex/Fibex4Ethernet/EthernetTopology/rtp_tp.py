@@ -157,7 +157,7 @@ class RtpTpBuilder(TransportProtocolConfigurationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ssrc' is required and cannot be None")
         self._obj.ssrc = value
         return self
 
@@ -171,7 +171,7 @@ class RtpTpBuilder(TransportProtocolConfigurationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_udp_config' is required and cannot be None")
         self._obj.tcp_udp_config = value
         return self
 

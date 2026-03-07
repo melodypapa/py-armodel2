@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswInterfaces.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
@@ -20,6 +20,12 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 )
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
+)
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.identifier import (
+    Identifier,
+)
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.short_name_fragment import (
+    ShortNameFragment,
 )
 
 
@@ -122,7 +128,7 @@ class BswModuleClientServerEntryBuilder:
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_name' is required and cannot be None")
         self._obj.short_name = value
         return self
 
@@ -148,7 +154,7 @@ class BswModuleClientServerEntryBuilder:
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'encapsulated_entry' is required and cannot be None")
         self._obj.encapsulated_entry = value
         return self
 
@@ -162,7 +168,7 @@ class BswModuleClientServerEntryBuilder:
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_reentrant' is required and cannot be None")
         self._obj.is_reentrant = value
         return self
 
@@ -176,7 +182,7 @@ class BswModuleClientServerEntryBuilder:
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_synchronous' is required and cannot be None")
         self._obj.is_synchronous = value
         return self
 

@@ -167,7 +167,7 @@ class FieldBuilder(AutosarDataPrototypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'has_getter' is required and cannot be None")
         self._obj.has_getter = value
         return self
 
@@ -181,7 +181,7 @@ class FieldBuilder(AutosarDataPrototypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'has_notifier' is required and cannot be None")
         self._obj.has_notifier = value
         return self
 
@@ -195,7 +195,7 @@ class FieldBuilder(AutosarDataPrototypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'has_setter' is required and cannot be None")
         self._obj.has_setter = value
         return self
 

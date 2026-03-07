@@ -126,7 +126,7 @@ class DdsCpServiceInstanceOperationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dds_operation' is required and cannot be None")
         self._obj.dds_operation = value
         return self
 

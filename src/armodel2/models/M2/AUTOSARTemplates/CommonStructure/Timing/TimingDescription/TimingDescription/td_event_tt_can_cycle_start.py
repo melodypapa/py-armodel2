@@ -130,7 +130,7 @@ class TDEventTTCanCycleStartBuilder(TDEventCycleStartBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tt_can_cluster' is required and cannot be None")
         self._obj.tt_can_cluster = value
         return self
 

@@ -149,11 +149,11 @@ class DiagnosticFimAliasEventGroupMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'actual_event' is required and cannot be None")
         self._obj.actual_event = value
         return self
 
-    def with_alias_event(self, value: Optional[any (DiagnosticFimAlias)]) -> "DiagnosticFimAliasEventGroupMappingBuilder":
+    def with_alias_event(self, value: Optional[Any]) -> "DiagnosticFimAliasEventGroupMappingBuilder":
         """Set alias_event attribute.
 
         Args:
@@ -163,7 +163,7 @@ class DiagnosticFimAliasEventGroupMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'alias_event' is required and cannot be None")
         self._obj.alias_event = value
         return self
 

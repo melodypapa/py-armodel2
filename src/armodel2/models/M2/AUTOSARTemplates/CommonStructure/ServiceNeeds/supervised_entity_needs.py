@@ -252,11 +252,11 @@ class SupervisedEntityNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'activate_at_start' is required and cannot be None")
         self._obj.activate_at_start = value
         return self
 
-    def with_checkpointses(self, items: list[any (SupervisedEntity)]) -> "SupervisedEntityNeedsBuilder":
+    def with_checkpointses(self, items: list[Any]) -> "SupervisedEntityNeedsBuilder":
         """Set checkpointses list attribute.
 
         Args:
@@ -278,7 +278,7 @@ class SupervisedEntityNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'enable' is required and cannot be None")
         self._obj.enable = value
         return self
 
@@ -292,7 +292,7 @@ class SupervisedEntityNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'expected_alive' is required and cannot be None")
         self._obj.expected_alive = value
         return self
 
@@ -306,7 +306,7 @@ class SupervisedEntityNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_alive_cycle' is required and cannot be None")
         self._obj.max_alive_cycle = value
         return self
 
@@ -320,7 +320,7 @@ class SupervisedEntityNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_alive_cycle' is required and cannot be None")
         self._obj.min_alive_cycle = value
         return self
 
@@ -334,12 +334,12 @@ class SupervisedEntityNeedsBuilder(ServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tolerated_failed' is required and cannot be None")
         self._obj.tolerated_failed = value
         return self
 
 
-    def add_checkpoints(self, item: any (SupervisedEntity)) -> "SupervisedEntityNeedsBuilder":
+    def add_checkpoints(self, item: Any) -> "SupervisedEntityNeedsBuilder":
         """Add a single item to checkpointses list.
 
         Args:

@@ -190,7 +190,7 @@ class TDEventBswModeDeclarationBuilder(TDEventBswBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'entry_mode' is required and cannot be None")
         self._obj.entry_mode = value
         return self
 
@@ -204,7 +204,7 @@ class TDEventBswModeDeclarationBuilder(TDEventBswBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'exit_mode' is required and cannot be None")
         self._obj.exit_mode = value
         return self
 
@@ -218,11 +218,11 @@ class TDEventBswModeDeclarationBuilder(TDEventBswBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode' is required and cannot be None")
         self._obj.mode = value
         return self
 
-    def with_td_event_bsw_declaration_type(self, value: Optional[any (TDEventBswMode)]) -> "TDEventBswModeDeclarationBuilder":
+    def with_td_event_bsw_declaration_type(self, value: Optional[Any]) -> "TDEventBswModeDeclarationBuilder":
         """Set td_event_bsw_declaration_type attribute.
 
         Args:
@@ -232,7 +232,7 @@ class TDEventBswModeDeclarationBuilder(TDEventBswBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'td_event_bsw_declaration_type' is required and cannot be None")
         self._obj.td_event_bsw_declaration_type = value
         return self
 

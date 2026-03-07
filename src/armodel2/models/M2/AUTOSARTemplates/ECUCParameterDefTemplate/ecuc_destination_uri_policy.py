@@ -213,7 +213,7 @@ class EcucDestinationUriPolicyBuilder(BuilderBase):
         self._obj.containers = list(items) if items else []
         return self
 
-    def with_destination_uri(self, value: Optional[any (EcucDestinationUri)]) -> "EcucDestinationUriPolicyBuilder":
+    def with_destination_uri(self, value: Optional[Any]) -> "EcucDestinationUriPolicyBuilder":
         """Set destination_uri attribute.
 
         Args:
@@ -223,7 +223,7 @@ class EcucDestinationUriPolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'destination_uri' is required and cannot be None")
         self._obj.destination_uri = value
         return self
 
@@ -239,7 +239,7 @@ class EcucDestinationUriPolicyBuilder(BuilderBase):
         self._obj.parameters = list(items) if items else []
         return self
 
-    def with_references(self, items: list[any (EcucAbstractReference)]) -> "EcucDestinationUriPolicyBuilder":
+    def with_references(self, items: list[Any]) -> "EcucDestinationUriPolicyBuilder":
         """Set references list attribute.
 
         Args:
@@ -294,7 +294,7 @@ class EcucDestinationUriPolicyBuilder(BuilderBase):
         self._obj.parameters = []
         return self
 
-    def add_reference(self, item: any (EcucAbstractReference)) -> "EcucDestinationUriPolicyBuilder":
+    def add_reference(self, item: Any) -> "EcucDestinationUriPolicyBuilder":
         """Add a single item to references list.
 
         Args:

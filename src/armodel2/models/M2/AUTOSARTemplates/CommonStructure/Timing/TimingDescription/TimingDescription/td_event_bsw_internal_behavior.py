@@ -149,11 +149,11 @@ class TDEventBswInternalBehaviorBuilder(TimingDescriptionEventBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_module_entity_entity' is required and cannot be None")
         self._obj.bsw_module_entity_entity = value
         return self
 
-    def with_td_event_bsw_behavior_type(self, value: Optional[any (TDEventBswInternal)]) -> "TDEventBswInternalBehaviorBuilder":
+    def with_td_event_bsw_behavior_type(self, value: Optional[Any]) -> "TDEventBswInternalBehaviorBuilder":
         """Set td_event_bsw_behavior_type attribute.
 
         Args:
@@ -163,7 +163,7 @@ class TDEventBswInternalBehaviorBuilder(TimingDescriptionEventBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'td_event_bsw_behavior_type' is required and cannot be None")
         self._obj.td_event_bsw_behavior_type = value
         return self
 

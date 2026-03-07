@@ -117,7 +117,7 @@ class DiagnosticWriteDataByIdentifierBuilder(DiagnosticDataByIdentifierBuilder):
         self._obj: DiagnosticWriteDataByIdentifier = DiagnosticWriteDataByIdentifier()
 
 
-    def with_write_class(self, value: Optional[any (DiagnosticWriteDataBy)]) -> "DiagnosticWriteDataByIdentifierBuilder":
+    def with_write_class(self, value: Optional[Any]) -> "DiagnosticWriteDataByIdentifierBuilder":
         """Set write_class attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticWriteDataByIdentifierBuilder(DiagnosticDataByIdentifierBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'write_class' is required and cannot be None")
         self._obj.write_class = value
         return self
 

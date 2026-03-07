@@ -116,7 +116,7 @@ class ApplicationCompositeDataTypeSubElementRefBuilder(SubElementRefBuilder):
         self._obj: ApplicationCompositeDataTypeSubElementRef = ApplicationCompositeDataTypeSubElementRef()
 
 
-    def with_application(self, value: Optional[any (ApplicationComposite)]) -> "ApplicationCompositeDataTypeSubElementRefBuilder":
+    def with_application(self, value: Optional[Any]) -> "ApplicationCompositeDataTypeSubElementRefBuilder":
         """Set application attribute.
 
         Args:
@@ -126,7 +126,7 @@ class ApplicationCompositeDataTypeSubElementRefBuilder(SubElementRefBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'application' is required and cannot be None")
         self._obj.application = value
         return self
 

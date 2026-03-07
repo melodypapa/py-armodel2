@@ -227,7 +227,7 @@ class EcucDefinitionElementBuilder(IdentifiableBuilder):
         self._obj: EcucDefinitionElement = EcucDefinitionElement()
 
 
-    def with_ecuc_cond(self, value: Optional[any (EcucCondition)]) -> "EcucDefinitionElementBuilder":
+    def with_ecuc_cond(self, value: Optional[Any]) -> "EcucDefinitionElementBuilder":
         """Set ecuc_cond attribute.
 
         Args:
@@ -237,7 +237,7 @@ class EcucDefinitionElementBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecuc_cond' is required and cannot be None")
         self._obj.ecuc_cond = value
         return self
 
@@ -263,7 +263,7 @@ class EcucDefinitionElementBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lower_multiplicity' is required and cannot be None")
         self._obj.lower_multiplicity = value
         return self
 
@@ -277,7 +277,7 @@ class EcucDefinitionElementBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'related_trace' is required and cannot be None")
         self._obj.related_trace = value
         return self
 
@@ -291,7 +291,7 @@ class EcucDefinitionElementBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'scope' is required and cannot be None")
         self._obj.scope = value
         return self
 
@@ -305,7 +305,7 @@ class EcucDefinitionElementBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'upper_multiplicity' is required and cannot be None")
         self._obj.upper_multiplicity = value
         return self
 

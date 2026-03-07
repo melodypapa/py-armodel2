@@ -220,7 +220,7 @@ class DiagnosticTroubleCodeJ1939Builder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dtc_props_props' is required and cannot be None")
         self._obj.dtc_props_props = value
         return self
 
@@ -234,7 +234,7 @@ class DiagnosticTroubleCodeJ1939Builder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'fmi' is required and cannot be None")
         self._obj.fmi = value
         return self
 
@@ -248,7 +248,7 @@ class DiagnosticTroubleCodeJ1939Builder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'kind' is required and cannot be None")
         self._obj.kind = value
         return self
 
@@ -262,7 +262,7 @@ class DiagnosticTroubleCodeJ1939Builder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'node' is required and cannot be None")
         self._obj.node = value
         return self
 
@@ -276,7 +276,7 @@ class DiagnosticTroubleCodeJ1939Builder(DiagnosticTroubleCodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'spn' is required and cannot be None")
         self._obj.spn = value
         return self
 

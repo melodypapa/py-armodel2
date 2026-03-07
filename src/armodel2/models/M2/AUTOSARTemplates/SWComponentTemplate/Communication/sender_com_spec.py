@@ -276,7 +276,7 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_element' is required and cannot be None")
         self._obj.data_element = value
         return self
 
@@ -290,7 +290,7 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'handle_out_of_range' is required and cannot be None")
         self._obj.handle_out_of_range = value
         return self
 
@@ -304,7 +304,7 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network_representation' is required and cannot be None")
         self._obj.network_representation = value
         return self
 
@@ -318,7 +318,7 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transmission_acknowledge' is required and cannot be None")
         self._obj.transmission_acknowledge = value
         return self
 
@@ -332,7 +332,7 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transmission_props' is required and cannot be None")
         self._obj.transmission_props = value
         return self
 
@@ -346,7 +346,7 @@ class SenderComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'uses_end_to_end_protection' is required and cannot be None")
         self._obj.uses_end_to_end_protection = value
         return self
 

@@ -149,7 +149,7 @@ class ModeErrorBehaviorBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_mode' is required and cannot be None")
         self._obj.default_mode = value
         return self
 
@@ -163,7 +163,7 @@ class ModeErrorBehaviorBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'error_reaction' is required and cannot be None")
         self._obj.error_reaction = value
         return self
 

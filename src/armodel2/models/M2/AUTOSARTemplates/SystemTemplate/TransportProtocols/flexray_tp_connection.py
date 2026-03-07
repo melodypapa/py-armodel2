@@ -299,7 +299,7 @@ class FlexrayTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bandwidth' is required and cannot be None")
         self._obj.bandwidth = value
         return self
 
@@ -313,7 +313,7 @@ class FlexrayTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'direct_tp_sdu' is required and cannot be None")
         self._obj.direct_tp_sdu = value
         return self
 
@@ -327,7 +327,7 @@ class FlexrayTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'multicast' is required and cannot be None")
         self._obj.multicast = value
         return self
 
@@ -353,7 +353,7 @@ class FlexrayTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'reversed_tp_sdu' is required and cannot be None")
         self._obj.reversed_tp_sdu = value
         return self
 
@@ -367,7 +367,7 @@ class FlexrayTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rx_pdu_pool' is required and cannot be None")
         self._obj.rx_pdu_pool = value
         return self
 
@@ -381,7 +381,7 @@ class FlexrayTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tp_connection' is required and cannot be None")
         self._obj.tp_connection = value
         return self
 
@@ -395,7 +395,7 @@ class FlexrayTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transmitter' is required and cannot be None")
         self._obj.transmitter = value
         return self
 
@@ -409,7 +409,7 @@ class FlexrayTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tx_pdu_pool' is required and cannot be None")
         self._obj.tx_pdu_pool = value
         return self
 

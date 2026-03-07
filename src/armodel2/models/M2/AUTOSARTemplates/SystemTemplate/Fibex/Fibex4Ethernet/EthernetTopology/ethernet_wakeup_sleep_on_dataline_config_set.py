@@ -114,7 +114,7 @@ class EthernetWakeupSleepOnDatalineConfigSetBuilder(FibexElementBuilder):
         self._obj: EthernetWakeupSleepOnDatalineConfigSet = EthernetWakeupSleepOnDatalineConfigSet()
 
 
-    def with_ethernets(self, items: list[any (EthernetWakeupSleep)]) -> "EthernetWakeupSleepOnDatalineConfigSetBuilder":
+    def with_ethernets(self, items: list[Any]) -> "EthernetWakeupSleepOnDatalineConfigSetBuilder":
         """Set ethernets list attribute.
 
         Args:
@@ -127,7 +127,7 @@ class EthernetWakeupSleepOnDatalineConfigSetBuilder(FibexElementBuilder):
         return self
 
 
-    def add_ethernet(self, item: any (EthernetWakeupSleep)) -> "EthernetWakeupSleepOnDatalineConfigSetBuilder":
+    def add_ethernet(self, item: Any) -> "EthernetWakeupSleepOnDatalineConfigSetBuilder":
         """Add a single item to ethernets list.
 
         Args:

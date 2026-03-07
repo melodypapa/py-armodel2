@@ -239,7 +239,7 @@ class FlexrayArTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'connection_prio' is required and cannot be None")
         self._obj.connection_prio = value
         return self
 
@@ -253,7 +253,7 @@ class FlexrayArTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'direct_tp_sdu' is required and cannot be None")
         self._obj.direct_tp_sdu = value
         return self
 
@@ -267,7 +267,7 @@ class FlexrayArTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'multicast' is required and cannot be None")
         self._obj.multicast = value
         return self
 
@@ -281,7 +281,7 @@ class FlexrayArTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'reversed_tp_sdu' is required and cannot be None")
         self._obj.reversed_tp_sdu = value
         return self
 
@@ -295,7 +295,7 @@ class FlexrayArTpConnectionBuilder(TpConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'source' is required and cannot be None")
         self._obj.source = value
         return self
 

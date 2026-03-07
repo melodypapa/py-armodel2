@@ -145,7 +145,7 @@ class ConstantSpecificationMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'appl_constant' is required and cannot be None")
         self._obj.appl_constant = value
         return self
 
@@ -159,7 +159,7 @@ class ConstantSpecificationMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'impl_constant' is required and cannot be None")
         self._obj.impl_constant = value
         return self
 

@@ -125,7 +125,7 @@ class StreamFilterIpv4AddressBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ipv4_address' is required and cannot be None")
         self._obj.ipv4_address = value
         return self
 

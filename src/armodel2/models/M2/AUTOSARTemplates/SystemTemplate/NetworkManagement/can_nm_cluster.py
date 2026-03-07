@@ -341,7 +341,7 @@ class CanNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_busload' is required and cannot be None")
         self._obj.nm_busload = value
         return self
 
@@ -355,7 +355,7 @@ class CanNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_car_wake_up' is required and cannot be None")
         self._obj.nm_car_wake_up = value
         return self
 
@@ -369,7 +369,7 @@ class CanNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_car_wake_up_filter_node_id' is required and cannot be None")
         self._obj.nm_car_wake_up_filter_node_id = value
         return self
 
@@ -383,7 +383,7 @@ class CanNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_cbv_position' is required and cannot be None")
         self._obj.nm_cbv_position = value
         return self
 
@@ -397,7 +397,7 @@ class CanNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_immediate' is required and cannot be None")
         self._obj.nm_immediate = value
         return self
 
@@ -411,7 +411,7 @@ class CanNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_message' is required and cannot be None")
         self._obj.nm_message = value
         return self
 
@@ -425,7 +425,7 @@ class CanNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_msg_cycle' is required and cannot be None")
         self._obj.nm_msg_cycle = value
         return self
 
@@ -439,7 +439,7 @@ class CanNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_network' is required and cannot be None")
         self._obj.nm_network = value
         return self
 
@@ -453,7 +453,7 @@ class CanNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_nid_position' is required and cannot be None")
         self._obj.nm_nid_position = value
         return self
 
@@ -467,7 +467,7 @@ class CanNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_remote' is required and cannot be None")
         self._obj.nm_remote = value
         return self
 
@@ -481,7 +481,7 @@ class CanNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_repeat' is required and cannot be None")
         self._obj.nm_repeat = value
         return self
 
@@ -495,7 +495,7 @@ class CanNmClusterBuilder(NmClusterBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_wait_bus' is required and cannot be None")
         self._obj.nm_wait_bus = value
         return self
 

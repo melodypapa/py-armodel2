@@ -154,7 +154,7 @@ class IdsPlatformInstantiationBuilder(IdentifiableBuilder):
         self._obj.networks = list(items) if items else []
         return self
 
-    def with_time_base_resource(self, value: Optional[any (TimeBaseResource)]) -> "IdsPlatformInstantiationBuilder":
+    def with_time_base_resource(self, value: Optional[Any]) -> "IdsPlatformInstantiationBuilder":
         """Set time_base_resource attribute.
 
         Args:
@@ -164,7 +164,7 @@ class IdsPlatformInstantiationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_base_resource' is required and cannot be None")
         self._obj.time_base_resource = value
         return self
 

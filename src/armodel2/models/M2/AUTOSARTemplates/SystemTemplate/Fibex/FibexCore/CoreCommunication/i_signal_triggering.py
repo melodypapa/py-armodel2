@@ -180,7 +180,7 @@ class ISignalTriggeringBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_signal_group' is required and cannot be None")
         self._obj.i_signal_group = value
         return self
 
@@ -206,7 +206,7 @@ class ISignalTriggeringBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_signal' is required and cannot be None")
         self._obj.i_signal = value
         return self
 

@@ -127,7 +127,7 @@ class SingleLanguageReferrableBuilder(ReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'long_name1' is required and cannot be None")
         self._obj.long_name1 = value
         return self
 

@@ -176,7 +176,7 @@ class SwPointerTargetPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_category' is required and cannot be None")
         self._obj.target_category = value
         return self
 
@@ -190,7 +190,7 @@ class SwPointerTargetPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'function_pointer_signature' is required and cannot be None")
         self._obj.function_pointer_signature = value
         return self
 
@@ -204,7 +204,7 @@ class SwPointerTargetPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_data_def_props' is required and cannot be None")
         self._obj.sw_data_def_props = value
         return self
 

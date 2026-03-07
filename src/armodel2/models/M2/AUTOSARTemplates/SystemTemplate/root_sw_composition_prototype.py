@@ -194,7 +194,7 @@ class RootSwCompositionPrototypeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'flat_map' is required and cannot be None")
         self._obj.flat_map = value
         return self
 
@@ -208,7 +208,7 @@ class RootSwCompositionPrototypeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'software_composition' is required and cannot be None")
         self._obj.software_composition = value
         return self
 

@@ -186,7 +186,7 @@ class AttributeValueVariationPointBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'binding_time_enum' is required and cannot be None")
         self._obj.binding_time_enum = value
         return self
 
@@ -200,7 +200,7 @@ class AttributeValueVariationPointBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'blueprint_value' is required and cannot be None")
         self._obj.blueprint_value = value
         return self
 
@@ -214,7 +214,7 @@ class AttributeValueVariationPointBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sd' is required and cannot be None")
         self._obj.sd = value
         return self
 
@@ -228,7 +228,7 @@ class AttributeValueVariationPointBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 

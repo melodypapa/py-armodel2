@@ -269,7 +269,7 @@ class SocketConnectionBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'client_ip_addr' is required and cannot be None")
         self._obj.client_ip_addr = value
         return self
 
@@ -283,7 +283,7 @@ class SocketConnectionBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'client_port' is required and cannot be None")
         self._obj.client_port = value
         return self
 
@@ -297,7 +297,7 @@ class SocketConnectionBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'client_port_from' is required and cannot be None")
         self._obj.client_port_from = value
         return self
 
@@ -323,11 +323,11 @@ class SocketConnectionBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdu_collection' is required and cannot be None")
         self._obj.pdu_collection = value
         return self
 
-    def with_runtime_ip(self, value: Optional[any (RuntimeAddress)]) -> "SocketConnectionBuilder":
+    def with_runtime_ip(self, value: Optional[Any]) -> "SocketConnectionBuilder":
         """Set runtime_ip attribute.
 
         Args:
@@ -337,11 +337,11 @@ class SocketConnectionBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'runtime_ip' is required and cannot be None")
         self._obj.runtime_ip = value
         return self
 
-    def with_runtime_port(self, value: Optional[any (RuntimeAddress)]) -> "SocketConnectionBuilder":
+    def with_runtime_port(self, value: Optional[Any]) -> "SocketConnectionBuilder":
         """Set runtime_port attribute.
 
         Args:
@@ -351,7 +351,7 @@ class SocketConnectionBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'runtime_port' is required and cannot be None")
         self._obj.runtime_port = value
         return self
 
@@ -365,7 +365,7 @@ class SocketConnectionBuilder(DescribableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_label' is required and cannot be None")
         self._obj.short_label = value
         return self
 

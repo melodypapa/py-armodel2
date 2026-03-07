@@ -135,7 +135,7 @@ class J1939ControllerApplicationToJ1939NmNodeMappingBuilder(BuilderBase):
         self._obj: J1939ControllerApplicationToJ1939NmNodeMapping = J1939ControllerApplicationToJ1939NmNodeMapping()
 
 
-    def with_j1939_controller(self, value: Optional[any (J1939Controller)]) -> "J1939ControllerApplicationToJ1939NmNodeMappingBuilder":
+    def with_j1939_controller(self, value: Optional[Any]) -> "J1939ControllerApplicationToJ1939NmNodeMappingBuilder":
         """Set j1939_controller attribute.
 
         Args:
@@ -145,7 +145,7 @@ class J1939ControllerApplicationToJ1939NmNodeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'j1939_controller' is required and cannot be None")
         self._obj.j1939_controller = value
         return self
 
@@ -159,7 +159,7 @@ class J1939ControllerApplicationToJ1939NmNodeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'j1939_nm_node' is required and cannot be None")
         self._obj.j1939_nm_node = value
         return self
 

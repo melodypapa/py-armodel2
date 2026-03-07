@@ -154,7 +154,7 @@ class SecurityEventContextMappingBuilder(IdsMappingBuilder):
         self._obj: SecurityEventContextMapping = SecurityEventContextMapping()
 
 
-    def with_filter_chain(self, value: Optional[any (SecurityEventFilter)]) -> "SecurityEventContextMappingBuilder":
+    def with_filter_chain(self, value: Optional[Any]) -> "SecurityEventContextMappingBuilder":
         """Set filter_chain attribute.
 
         Args:
@@ -164,7 +164,7 @@ class SecurityEventContextMappingBuilder(IdsMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'filter_chain' is required and cannot be None")
         self._obj.filter_chain = value
         return self
 
@@ -178,11 +178,11 @@ class SecurityEventContextMappingBuilder(IdsMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'idsm_instance' is required and cannot be None")
         self._obj.idsm_instance = value
         return self
 
-    def with_mapped_securities(self, items: list[any (SecurityEventContext)]) -> "SecurityEventContextMappingBuilder":
+    def with_mapped_securities(self, items: list[Any]) -> "SecurityEventContextMappingBuilder":
         """Set mapped_securities list attribute.
 
         Args:
@@ -195,7 +195,7 @@ class SecurityEventContextMappingBuilder(IdsMappingBuilder):
         return self
 
 
-    def add_mapped_security(self, item: any (SecurityEventContext)) -> "SecurityEventContextMappingBuilder":
+    def add_mapped_security(self, item: Any) -> "SecurityEventContextMappingBuilder":
         """Add a single item to mapped_securities list.
 
         Args:

@@ -152,7 +152,7 @@ class RModeGroupInAtomicSWCInstanceRefBuilder(ModeGroupInAtomicSwcInstanceRefBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_r_port' is required and cannot be None")
         self._obj.context_r_port = value
         return self
 
@@ -166,7 +166,7 @@ class RModeGroupInAtomicSWCInstanceRefBuilder(ModeGroupInAtomicSwcInstanceRefBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_mode' is required and cannot be None")
         self._obj.target_mode = value
         return self
 

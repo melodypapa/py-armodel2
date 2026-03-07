@@ -195,7 +195,7 @@ class StackUsageBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'executable_entity' is required and cannot be None")
         self._obj.executable_entity = value
         return self
 
@@ -209,7 +209,7 @@ class StackUsageBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'hardware' is required and cannot be None")
         self._obj.hardware = value
         return self
 
@@ -223,7 +223,7 @@ class StackUsageBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'hw_element' is required and cannot be None")
         self._obj.hw_element = value
         return self
 
@@ -237,7 +237,7 @@ class StackUsageBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'software_context' is required and cannot be None")
         self._obj.software_context = value
         return self
 

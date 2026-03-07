@@ -240,7 +240,7 @@ class PortElementToCommunicationResourceMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'client_server_instance_ref' is required and cannot be None")
         self._obj.client_server_instance_ref = value
         return self
 
@@ -254,7 +254,7 @@ class PortElementToCommunicationResourceMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'communication' is required and cannot be None")
         self._obj.communication = value
         return self
 
@@ -268,7 +268,7 @@ class PortElementToCommunicationResourceMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode' is required and cannot be None")
         self._obj.mode = value
         return self
 
@@ -282,7 +282,7 @@ class PortElementToCommunicationResourceMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'parameter_data_in_system_instance_ref' is required and cannot be None")
         self._obj.parameter_data_in_system_instance_ref = value
         return self
 
@@ -296,7 +296,7 @@ class PortElementToCommunicationResourceMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'trigger' is required and cannot be None")
         self._obj.trigger = value
         return self
 
@@ -310,7 +310,7 @@ class PortElementToCommunicationResourceMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'variable_data_system_instance_ref' is required and cannot be None")
         self._obj.variable_data_system_instance_ref = value
         return self
 

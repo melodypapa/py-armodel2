@@ -197,7 +197,7 @@ class ObdMonitorServiceNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'application_data' is required and cannot be None")
         self._obj.application_data = value
         return self
 
@@ -211,7 +211,7 @@ class ObdMonitorServiceNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_needs' is required and cannot be None")
         self._obj.event_needs = value
         return self
 
@@ -225,7 +225,7 @@ class ObdMonitorServiceNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'unit_and_scaling_id' is required and cannot be None")
         self._obj.unit_and_scaling_id = value
         return self
 
@@ -239,7 +239,7 @@ class ObdMonitorServiceNeedsBuilder(DiagnosticCapabilityElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'update_kind' is required and cannot be None")
         self._obj.update_kind = value
         return self
 

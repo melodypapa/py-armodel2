@@ -196,7 +196,7 @@ class ConcretePatternEventTriggeringBuilder(EventTriggeringConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pattern_jitter' is required and cannot be None")
         self._obj.pattern_jitter = value
         return self
 
@@ -210,7 +210,7 @@ class ConcretePatternEventTriggeringBuilder(EventTriggeringConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pattern_length' is required and cannot be None")
         self._obj.pattern_length = value
         return self
 
@@ -224,7 +224,7 @@ class ConcretePatternEventTriggeringBuilder(EventTriggeringConstraintBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pattern_period' is required and cannot be None")
         self._obj.pattern_period = value
         return self
 

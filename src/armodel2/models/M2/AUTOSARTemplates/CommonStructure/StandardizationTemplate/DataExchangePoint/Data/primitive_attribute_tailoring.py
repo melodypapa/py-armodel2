@@ -168,11 +168,11 @@ class PrimitiveAttributeTailoringBuilder(AttributeTailoringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_value' is required and cannot be None")
         self._obj.default_value = value
         return self
 
-    def with_sub_attributes(self, items: list[any (PrimitiveAttribute)]) -> "PrimitiveAttributeTailoringBuilder":
+    def with_sub_attributes(self, items: list[Any]) -> "PrimitiveAttributeTailoringBuilder":
         """Set sub_attributes list attribute.
 
         Args:
@@ -194,12 +194,12 @@ class PrimitiveAttributeTailoringBuilder(AttributeTailoringBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'value_restriction_with_severity' is required and cannot be None")
         self._obj.value_restriction_with_severity = value
         return self
 
 
-    def add_sub_attribute(self, item: any (PrimitiveAttribute)) -> "PrimitiveAttributeTailoringBuilder":
+    def add_sub_attribute(self, item: Any) -> "PrimitiveAttributeTailoringBuilder":
         """Add a single item to sub_attributes list.
 
         Args:

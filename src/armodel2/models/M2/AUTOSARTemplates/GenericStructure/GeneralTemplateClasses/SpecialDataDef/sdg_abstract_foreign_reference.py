@@ -127,7 +127,7 @@ class SdgAbstractForeignReferenceBuilder(SdgElementWithGidBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dest_meta_class' is required and cannot be None")
         self._obj.dest_meta_class = value
         return self
 

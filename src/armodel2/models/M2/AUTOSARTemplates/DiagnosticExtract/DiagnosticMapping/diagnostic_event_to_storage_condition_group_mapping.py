@@ -149,11 +149,11 @@ class DiagnosticEventToStorageConditionGroupMappingBuilder(DiagnosticMappingBuil
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_event' is required and cannot be None")
         self._obj.diagnostic_event = value
         return self
 
-    def with_storage(self, value: Optional[any (DiagnosticStorage)]) -> "DiagnosticEventToStorageConditionGroupMappingBuilder":
+    def with_storage(self, value: Optional[Any]) -> "DiagnosticEventToStorageConditionGroupMappingBuilder":
         """Set storage attribute.
 
         Args:
@@ -163,7 +163,7 @@ class DiagnosticEventToStorageConditionGroupMappingBuilder(DiagnosticMappingBuil
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'storage' is required and cannot be None")
         self._obj.storage = value
         return self
 

@@ -156,7 +156,7 @@ class SwitchStreamFilterActionDestPortModificationBuilder(IdentifiableBuilder):
         self._obj.egress_ports = list(items) if items else []
         return self
 
-    def with_modification(self, value: Optional[any (SwitchStreamFilter)]) -> "SwitchStreamFilterActionDestPortModificationBuilder":
+    def with_modification(self, value: Optional[Any]) -> "SwitchStreamFilterActionDestPortModificationBuilder":
         """Set modification attribute.
 
         Args:
@@ -166,7 +166,7 @@ class SwitchStreamFilterActionDestPortModificationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'modification' is required and cannot be None")
         self._obj.modification = value
         return self
 

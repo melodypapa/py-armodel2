@@ -156,7 +156,7 @@ class SenderRecArrayTypeMappingBuilder(SenderRecCompositeTypeMappingBuilder):
         self._obj: SenderRecArrayTypeMapping = SenderRecArrayTypeMapping()
 
 
-    def with_array_elements(self, items: list[any (SenderRecArray)]) -> "SenderRecArrayTypeMappingBuilder":
+    def with_array_elements(self, items: list[Any]) -> "SenderRecArrayTypeMappingBuilder":
         """Set array_elements list attribute.
 
         Args:
@@ -178,7 +178,7 @@ class SenderRecArrayTypeMappingBuilder(SenderRecCompositeTypeMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sender_to_signal' is required and cannot be None")
         self._obj.sender_to_signal = value
         return self
 
@@ -192,12 +192,12 @@ class SenderRecArrayTypeMappingBuilder(SenderRecCompositeTypeMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'signal_to' is required and cannot be None")
         self._obj.signal_to = value
         return self
 
 
-    def add_array_element(self, item: any (SenderRecArray)) -> "SenderRecArrayTypeMappingBuilder":
+    def add_array_element(self, item: Any) -> "SenderRecArrayTypeMappingBuilder":
         """Add a single item to array_elements list.
 
         Args:

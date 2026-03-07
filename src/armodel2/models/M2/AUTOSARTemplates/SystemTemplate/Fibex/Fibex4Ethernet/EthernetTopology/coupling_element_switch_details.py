@@ -230,7 +230,7 @@ class CouplingElementSwitchDetailsBuilder(CouplingElementAbstractDetailsBuilder)
         self._obj.stream_gates = list(items) if items else []
         return self
 
-    def with_switch_streams(self, items: list[any (SwitchStream)]) -> "CouplingElementSwitchDetailsBuilder":
+    def with_switch_streams(self, items: list[Any]) -> "CouplingElementSwitchDetailsBuilder":
         """Set switch_streams list attribute.
 
         Args:
@@ -318,7 +318,7 @@ class CouplingElementSwitchDetailsBuilder(CouplingElementAbstractDetailsBuilder)
         self._obj.stream_gates = []
         return self
 
-    def add_switch_stream(self, item: any (SwitchStream)) -> "CouplingElementSwitchDetailsBuilder":
+    def add_switch_stream(self, item: Any) -> "CouplingElementSwitchDetailsBuilder":
         """Add a single item to switch_streams list.
 
         Args:

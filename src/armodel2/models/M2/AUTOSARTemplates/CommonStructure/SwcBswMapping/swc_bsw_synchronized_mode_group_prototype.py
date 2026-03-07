@@ -145,7 +145,7 @@ class SwcBswSynchronizedModeGroupPrototypeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_mode_group_prototype' is required and cannot be None")
         self._obj.bsw_mode_group_prototype = value
         return self
 
@@ -159,7 +159,7 @@ class SwcBswSynchronizedModeGroupPrototypeBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'swc_mode_group_swc_instance_ref' is required and cannot be None")
         self._obj.swc_mode_group_swc_instance_ref = value
         return self
 

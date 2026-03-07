@@ -151,7 +151,7 @@ class SwVariableRefProxyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'autosar_variable_ref' is required and cannot be None")
         self._obj.autosar_variable_ref = value
         return self
 
@@ -165,7 +165,7 @@ class SwVariableRefProxyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mc_data_instance' is required and cannot be None")
         self._obj.mc_data_instance = value
         return self
 

@@ -149,7 +149,7 @@ class AutosarParameterRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'autosar' is required and cannot be None")
         self._obj.autosar = value
         return self
 
@@ -163,7 +163,7 @@ class AutosarParameterRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'local_parameter' is required and cannot be None")
         self._obj.local_parameter = value
         return self
 

@@ -141,7 +141,7 @@ class DocumentElementScopeBuilder(SpecElementReferenceBuilder):
         self._obj: DocumentElementScope = DocumentElementScope()
 
 
-    def with_custom_document(self, value: Optional[any (TraceableElement)]) -> "DocumentElementScopeBuilder":
+    def with_custom_document(self, value: Optional[Any]) -> "DocumentElementScopeBuilder":
         """Set custom_document attribute.
 
         Args:
@@ -151,11 +151,11 @@ class DocumentElementScopeBuilder(SpecElementReferenceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'custom_document' is required and cannot be None")
         self._obj.custom_document = value
         return self
 
-    def with_tailorings(self, items: list[any (DataFormatElement)]) -> "DocumentElementScopeBuilder":
+    def with_tailorings(self, items: list[Any]) -> "DocumentElementScopeBuilder":
         """Set tailorings list attribute.
 
         Args:
@@ -168,7 +168,7 @@ class DocumentElementScopeBuilder(SpecElementReferenceBuilder):
         return self
 
 
-    def add_tailoring(self, item: any (DataFormatElement)) -> "DocumentElementScopeBuilder":
+    def add_tailoring(self, item: Any) -> "DocumentElementScopeBuilder":
         """Add a single item to tailorings list.
 
         Args:

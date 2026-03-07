@@ -144,7 +144,7 @@ class DiagnosticSecureCodingMappingBuilder(DiagnosticMappingBuilder):
         self._obj: DiagnosticSecureCodingMapping = DiagnosticSecureCodingMapping()
 
 
-    def with_data_identifiers(self, items: list[any (DiagnosticWriteDataBy)]) -> "DiagnosticSecureCodingMappingBuilder":
+    def with_data_identifiers(self, items: list[Any]) -> "DiagnosticSecureCodingMappingBuilder":
         """Set data_identifiers list attribute.
 
         Args:
@@ -166,12 +166,12 @@ class DiagnosticSecureCodingMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'validation' is required and cannot be None")
         self._obj.validation = value
         return self
 
 
-    def add_data_identifier(self, item: any (DiagnosticWriteDataBy)) -> "DiagnosticSecureCodingMappingBuilder":
+    def add_data_identifier(self, item: Any) -> "DiagnosticSecureCodingMappingBuilder":
         """Add a single item to data_identifiers list.
 
         Args:

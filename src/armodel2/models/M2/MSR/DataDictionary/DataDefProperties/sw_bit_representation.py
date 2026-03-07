@@ -144,7 +144,7 @@ class SwBitRepresentationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bit_position' is required and cannot be None")
         self._obj.bit_position = value
         return self
 
@@ -158,7 +158,7 @@ class SwBitRepresentationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'number_of_bits' is required and cannot be None")
         self._obj.number_of_bits = value
         return self
 

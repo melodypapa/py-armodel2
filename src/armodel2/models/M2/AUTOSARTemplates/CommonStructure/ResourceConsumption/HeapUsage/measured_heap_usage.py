@@ -187,7 +187,7 @@ class MeasuredHeapUsageBuilder(HeapUsageBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'average_memory_consumption' is required and cannot be None")
         self._obj.average_memory_consumption = value
         return self
 
@@ -201,7 +201,7 @@ class MeasuredHeapUsageBuilder(HeapUsageBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'maximum_memory_consumption' is required and cannot be None")
         self._obj.maximum_memory_consumption = value
         return self
 
@@ -215,7 +215,7 @@ class MeasuredHeapUsageBuilder(HeapUsageBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minimum_memory_consumption' is required and cannot be None")
         self._obj.minimum_memory_consumption = value
         return self
 
@@ -229,7 +229,7 @@ class MeasuredHeapUsageBuilder(HeapUsageBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'test_pattern' is required and cannot be None")
         self._obj.test_pattern = value
         return self
 

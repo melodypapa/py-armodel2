@@ -318,7 +318,7 @@ class DltLogChannelBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_trace' is required and cannot be None")
         self._obj.default_trace = value
         return self
 
@@ -344,7 +344,7 @@ class DltLogChannelBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'log_channel_id' is required and cannot be None")
         self._obj.log_channel_id = value
         return self
 
@@ -358,7 +358,7 @@ class DltLogChannelBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'log_trace_default_log' is required and cannot be None")
         self._obj.log_trace_default_log = value
         return self
 
@@ -372,7 +372,7 @@ class DltLogChannelBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'non_verbose' is required and cannot be None")
         self._obj.non_verbose = value
         return self
 
@@ -386,7 +386,7 @@ class DltLogChannelBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rx_pdu_triggering_channel' is required and cannot be None")
         self._obj.rx_pdu_triggering_channel = value
         return self
 
@@ -400,7 +400,7 @@ class DltLogChannelBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'segmentation' is required and cannot be None")
         self._obj.segmentation = value
         return self
 
@@ -414,7 +414,7 @@ class DltLogChannelBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tx_pdu_triggering' is required and cannot be None")
         self._obj.tx_pdu_triggering = value
         return self
 

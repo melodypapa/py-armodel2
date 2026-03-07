@@ -190,7 +190,7 @@ class BswModeSenderPolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ack_request_request' is required and cannot be None")
         self._obj.ack_request_request = value
         return self
 
@@ -204,7 +204,7 @@ class BswModeSenderPolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'enhanced_mode_api' is required and cannot be None")
         self._obj.enhanced_mode_api = value
         return self
 
@@ -218,7 +218,7 @@ class BswModeSenderPolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'provided_mode_group' is required and cannot be None")
         self._obj.provided_mode_group = value
         return self
 
@@ -232,7 +232,7 @@ class BswModeSenderPolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'queue_length' is required and cannot be None")
         self._obj.queue_length = value
         return self
 

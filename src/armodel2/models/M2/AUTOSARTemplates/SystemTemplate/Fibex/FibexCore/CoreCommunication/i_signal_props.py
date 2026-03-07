@@ -112,7 +112,7 @@ class ISignalPropsBuilder(BuilderBase):
         self._obj: ISignalProps = ISignalProps()
 
 
-    def with_handle_out_of_range(self, value: Optional[any (HandleOutOfRange)]) -> "ISignalPropsBuilder":
+    def with_handle_out_of_range(self, value: Optional[Any]) -> "ISignalPropsBuilder":
         """Set handle_out_of_range attribute.
 
         Args:
@@ -122,7 +122,7 @@ class ISignalPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'handle_out_of_range' is required and cannot be None")
         self._obj.handle_out_of_range = value
         return self
 

@@ -422,7 +422,7 @@ class ImplementationBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'build_action_manifest' is required and cannot be None")
         self._obj.build_action_manifest = value
         return self
 
@@ -496,7 +496,7 @@ class ImplementationBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mc_support' is required and cannot be None")
         self._obj.mc_support = value
         return self
 
@@ -510,7 +510,7 @@ class ImplementationBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'programming_language' is required and cannot be None")
         self._obj.programming_language = value
         return self
 
@@ -548,7 +548,7 @@ class ImplementationBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'resource_consumption' is required and cannot be None")
         self._obj.resource_consumption = value
         return self
 
@@ -562,7 +562,7 @@ class ImplementationBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_version' is required and cannot be None")
         self._obj.sw_version = value
         return self
 
@@ -576,7 +576,7 @@ class ImplementationBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'swc_bsw_mapping' is required and cannot be None")
         self._obj.swc_bsw_mapping = value
         return self
 
@@ -590,7 +590,7 @@ class ImplementationBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'used_code_generator' is required and cannot be None")
         self._obj.used_code_generator = value
         return self
 
@@ -604,7 +604,7 @@ class ImplementationBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vendor_id' is required and cannot be None")
         self._obj.vendor_id = value
         return self
 

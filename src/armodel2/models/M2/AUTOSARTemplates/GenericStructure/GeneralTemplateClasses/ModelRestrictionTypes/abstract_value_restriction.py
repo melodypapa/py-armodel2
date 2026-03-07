@@ -202,7 +202,7 @@ class AbstractValueRestrictionBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max' is required and cannot be None")
         self._obj.max = value
         return self
 
@@ -216,7 +216,7 @@ class AbstractValueRestrictionBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_length' is required and cannot be None")
         self._obj.max_length = value
         return self
 
@@ -230,7 +230,7 @@ class AbstractValueRestrictionBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min' is required and cannot be None")
         self._obj.min = value
         return self
 
@@ -244,7 +244,7 @@ class AbstractValueRestrictionBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_length' is required and cannot be None")
         self._obj.min_length = value
         return self
 
@@ -258,7 +258,7 @@ class AbstractValueRestrictionBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pattern' is required and cannot be None")
         self._obj.pattern = value
         return self
 

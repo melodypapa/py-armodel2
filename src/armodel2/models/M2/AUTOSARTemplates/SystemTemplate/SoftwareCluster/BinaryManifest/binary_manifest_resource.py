@@ -167,11 +167,11 @@ class BinaryManifestResourceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'global_resource' is required and cannot be None")
         self._obj.global_resource = value
         return self
 
-    def with_resource(self, value: Optional[any (BinaryManifest)]) -> "BinaryManifestResourceBuilder":
+    def with_resource(self, value: Optional[Any]) -> "BinaryManifestResourceBuilder":
         """Set resource attribute.
 
         Args:
@@ -181,7 +181,7 @@ class BinaryManifestResourceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'resource' is required and cannot be None")
         self._obj.resource = value
         return self
 
@@ -195,7 +195,7 @@ class BinaryManifestResourceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'resource_guard' is required and cannot be None")
         self._obj.resource_guard = value
         return self
 

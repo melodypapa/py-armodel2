@@ -152,7 +152,7 @@ class SystemSignalGroupToCommunicationResourceMappingBuilder(IdentifiableBuilder
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'software_cluster' is required and cannot be None")
         self._obj.software_cluster = value
         return self
 
@@ -166,7 +166,7 @@ class SystemSignalGroupToCommunicationResourceMappingBuilder(IdentifiableBuilder
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'system_signal_group' is required and cannot be None")
         self._obj.system_signal_group = value
         return self
 

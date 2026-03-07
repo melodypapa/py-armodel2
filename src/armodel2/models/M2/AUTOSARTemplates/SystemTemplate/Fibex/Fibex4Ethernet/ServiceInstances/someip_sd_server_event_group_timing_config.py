@@ -129,7 +129,7 @@ class SomeipSdServerEventGroupTimingConfigBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request' is required and cannot be None")
         self._obj.request = value
         return self
 

@@ -150,7 +150,7 @@ class LinConfigurationEntryBuilder(ScheduleTableEntryBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'assigned' is required and cannot be None")
         self._obj.assigned = value
         return self
 
@@ -164,7 +164,7 @@ class LinConfigurationEntryBuilder(ScheduleTableEntryBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'assigned_lin' is required and cannot be None")
         self._obj.assigned_lin = value
         return self
 

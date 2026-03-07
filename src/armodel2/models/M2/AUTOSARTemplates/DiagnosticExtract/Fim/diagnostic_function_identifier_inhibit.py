@@ -156,7 +156,7 @@ class DiagnosticFunctionIdentifierInhibitBuilder(DiagnosticCommonElementBuilder)
         self._obj: DiagnosticFunctionIdentifierInhibit = DiagnosticFunctionIdentifierInhibit()
 
 
-    def with_function(self, value: Optional[any (DiagnosticFunction)]) -> "DiagnosticFunctionIdentifierInhibitBuilder":
+    def with_function(self, value: Optional[Any]) -> "DiagnosticFunctionIdentifierInhibitBuilder":
         """Set function attribute.
 
         Args:
@@ -166,7 +166,7 @@ class DiagnosticFunctionIdentifierInhibitBuilder(DiagnosticCommonElementBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'function' is required and cannot be None")
         self._obj.function = value
         return self
 
@@ -180,11 +180,11 @@ class DiagnosticFunctionIdentifierInhibitBuilder(DiagnosticCommonElementBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'inhibition_mask' is required and cannot be None")
         self._obj.inhibition_mask = value
         return self
 
-    def with_inhibit_sources(self, items: list[any (DiagnosticFunction)]) -> "DiagnosticFunctionIdentifierInhibitBuilder":
+    def with_inhibit_sources(self, items: list[Any]) -> "DiagnosticFunctionIdentifierInhibitBuilder":
         """Set inhibit_sources list attribute.
 
         Args:
@@ -197,7 +197,7 @@ class DiagnosticFunctionIdentifierInhibitBuilder(DiagnosticCommonElementBuilder)
         return self
 
 
-    def add_inhibit_source(self, item: any (DiagnosticFunction)) -> "DiagnosticFunctionIdentifierInhibitBuilder":
+    def add_inhibit_source(self, item: Any) -> "DiagnosticFunctionIdentifierInhibitBuilder":
         """Add a single item to inhibit_sources list.
 
         Args:

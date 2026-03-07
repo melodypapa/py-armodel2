@@ -277,7 +277,7 @@ class NmNodeBuilder(IdentifiableBuilder):
         self._obj: NmNode = NmNode()
 
 
-    def with_controller(self, value: Optional[any (Communication)]) -> "NmNodeBuilder":
+    def with_controller(self, value: Optional[Any]) -> "NmNodeBuilder":
         """Set controller attribute.
 
         Args:
@@ -287,7 +287,7 @@ class NmNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'controller' is required and cannot be None")
         self._obj.controller = value
         return self
 
@@ -301,7 +301,7 @@ class NmNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_coord_cluster' is required and cannot be None")
         self._obj.nm_coord_cluster = value
         return self
 
@@ -315,7 +315,7 @@ class NmNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_coordinator_role' is required and cannot be None")
         self._obj.nm_coordinator_role = value
         return self
 
@@ -329,7 +329,7 @@ class NmNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_if_ecu' is required and cannot be None")
         self._obj.nm_if_ecu = value
         return self
 
@@ -343,7 +343,7 @@ class NmNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_node_id' is required and cannot be None")
         self._obj.nm_node_id = value
         return self
 
@@ -357,7 +357,7 @@ class NmNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_passive' is required and cannot be None")
         self._obj.nm_passive = value
         return self
 

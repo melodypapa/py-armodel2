@@ -735,7 +735,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'channel_synchronous_wakeup' is required and cannot be None")
         self._obj.channel_synchronous_wakeup = value
         return self
 
@@ -749,7 +749,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'client_id_range' is required and cannot be None")
         self._obj.client_id_range = value
         return self
 
@@ -763,7 +763,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'com_configuration_gw_time_base' is required and cannot be None")
         self._obj.com_configuration_gw_time_base = value
         return self
 
@@ -777,7 +777,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'com_configuration_rx_time_base' is required and cannot be None")
         self._obj.com_configuration_rx_time_base = value
         return self
 
@@ -791,7 +791,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'com_configuration_tx_time_base' is required and cannot be None")
         self._obj.com_configuration_tx_time_base = value
         return self
 
@@ -805,7 +805,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'com_enable_mdt_for_cyclic_transmission' is required and cannot be None")
         self._obj.com_enable_mdt_for_cyclic_transmission = value
         return self
 
@@ -843,7 +843,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dlt_config' is required and cannot be None")
         self._obj.dlt_config = value
         return self
 
@@ -857,7 +857,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'do_ip_config' is required and cannot be None")
         self._obj.do_ip_config = value
         return self
 
@@ -883,7 +883,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'eth_switch_port_group_derivation' is required and cannot be None")
         self._obj.eth_switch_port_group_derivation = value
         return self
 
@@ -921,7 +921,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pnc_nm_request' is required and cannot be None")
         self._obj.pnc_nm_request = value
         return self
 
@@ -935,7 +935,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pnc_prepare_sleep_timer' is required and cannot be None")
         self._obj.pnc_prepare_sleep_timer = value
         return self
 
@@ -949,7 +949,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pnc_synchronous_wakeup' is required and cannot be None")
         self._obj.pnc_synchronous_wakeup = value
         return self
 
@@ -963,7 +963,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pn_reset_time' is required and cannot be None")
         self._obj.pn_reset_time = value
         return self
 
@@ -977,7 +977,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sleep_mode_supported' is required and cannot be None")
         self._obj.sleep_mode_supported = value
         return self
 
@@ -991,7 +991,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_icmp_props' is required and cannot be None")
         self._obj.tcp_ip_icmp_props = value
         return self
 
@@ -1005,7 +1005,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_props' is required and cannot be None")
         self._obj.tcp_ip_props = value
         return self
 
@@ -1019,7 +1019,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'v2x_supported' is required and cannot be None")
         self._obj.v2x_supported = value
         return self
 
@@ -1033,7 +1033,7 @@ class EcuInstanceBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wake_up_over_bus_supported' is required and cannot be None")
         self._obj.wake_up_over_bus_supported = value
         return self
 

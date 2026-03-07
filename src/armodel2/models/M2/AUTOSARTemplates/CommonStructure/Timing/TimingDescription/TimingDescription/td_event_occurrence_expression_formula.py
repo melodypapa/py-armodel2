@@ -189,7 +189,7 @@ class TDEventOccurrenceExpressionFormulaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'argument' is required and cannot be None")
         self._obj.argument = value
         return self
 
@@ -203,7 +203,7 @@ class TDEventOccurrenceExpressionFormulaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event' is required and cannot be None")
         self._obj.event = value
         return self
 
@@ -217,11 +217,11 @@ class TDEventOccurrenceExpressionFormulaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode' is required and cannot be None")
         self._obj.mode = value
         return self
 
-    def with_variable(self, value: Optional[any (AutosarVariable)]) -> "TDEventOccurrenceExpressionFormulaBuilder":
+    def with_variable(self, value: Optional[Any]) -> "TDEventOccurrenceExpressionFormulaBuilder":
         """Set variable attribute.
 
         Args:
@@ -231,7 +231,7 @@ class TDEventOccurrenceExpressionFormulaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'variable' is required and cannot be None")
         self._obj.variable = value
         return self
 

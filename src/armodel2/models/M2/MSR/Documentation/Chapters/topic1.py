@@ -172,7 +172,7 @@ class Topic1Builder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'help_entry' is required and cannot be None")
         self._obj.help_entry = value
         return self
 
@@ -186,7 +186,7 @@ class Topic1Builder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'msr_query_p1' is required and cannot be None")
         self._obj.msr_query_p1 = value
         return self
 
@@ -200,7 +200,7 @@ class Topic1Builder(PaginateableBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'topic_content' is required and cannot be None")
         self._obj.topic_content = value
         return self
 

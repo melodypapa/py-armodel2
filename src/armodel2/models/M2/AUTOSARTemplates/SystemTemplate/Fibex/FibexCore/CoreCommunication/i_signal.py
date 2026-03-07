@@ -394,7 +394,7 @@ class ISignalBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_transformation' is required and cannot be None")
         self._obj.data_transformation = value
         return self
 
@@ -408,7 +408,7 @@ class ISignalBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_type_policy' is required and cannot be None")
         self._obj.data_type_policy = value
         return self
 
@@ -422,7 +422,7 @@ class ISignalBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'init_value' is required and cannot be None")
         self._obj.init_value = value
         return self
 
@@ -436,7 +436,7 @@ class ISignalBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_signal_props' is required and cannot be None")
         self._obj.i_signal_props = value
         return self
 
@@ -450,7 +450,7 @@ class ISignalBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'i_signal_type' is required and cannot be None")
         self._obj.i_signal_type = value
         return self
 
@@ -464,7 +464,7 @@ class ISignalBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'length' is required and cannot be None")
         self._obj.length = value
         return self
 
@@ -478,7 +478,7 @@ class ISignalBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network_representation_props' is required and cannot be None")
         self._obj.network_representation_props = value
         return self
 
@@ -492,7 +492,7 @@ class ISignalBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'system_signal' is required and cannot be None")
         self._obj.system_signal = value
         return self
 
@@ -506,7 +506,7 @@ class ISignalBuilder(FibexElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timeout_substitution_value' is required and cannot be None")
         self._obj.timeout_substitution_value = value
         return self
 

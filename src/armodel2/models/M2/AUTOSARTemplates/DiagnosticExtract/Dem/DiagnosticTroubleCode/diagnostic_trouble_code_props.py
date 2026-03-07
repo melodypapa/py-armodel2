@@ -327,11 +327,11 @@ class DiagnosticTroubleCodePropsBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'aging' is required and cannot be None")
         self._obj.aging = value
         return self
 
-    def with_diagnostic_memory(self, value: Optional[any (DiagnosticMemory)]) -> "DiagnosticTroubleCodePropsBuilder":
+    def with_diagnostic_memory(self, value: Optional[Any]) -> "DiagnosticTroubleCodePropsBuilder":
         """Set diagnostic_memory attribute.
 
         Args:
@@ -341,7 +341,7 @@ class DiagnosticTroubleCodePropsBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_memory' is required and cannot be None")
         self._obj.diagnostic_memory = value
         return self
 
@@ -379,7 +379,7 @@ class DiagnosticTroubleCodePropsBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'immediate_nv' is required and cannot be None")
         self._obj.immediate_nv = value
         return self
 
@@ -393,7 +393,7 @@ class DiagnosticTroubleCodePropsBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'legislated' is required and cannot be None")
         self._obj.legislated = value
         return self
 
@@ -407,7 +407,7 @@ class DiagnosticTroubleCodePropsBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number' is required and cannot be None")
         self._obj.max_number = value
         return self
 
@@ -421,7 +421,7 @@ class DiagnosticTroubleCodePropsBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'priority' is required and cannot be None")
         self._obj.priority = value
         return self
 
@@ -435,7 +435,7 @@ class DiagnosticTroubleCodePropsBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'significance' is required and cannot be None")
         self._obj.significance = value
         return self
 
@@ -449,7 +449,7 @@ class DiagnosticTroubleCodePropsBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'snapshot' is required and cannot be None")
         self._obj.snapshot = value
         return self
 

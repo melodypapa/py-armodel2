@@ -871,7 +871,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'additional_native_type_qualifier' is required and cannot be None")
         self._obj.additional_native_type_qualifier = value
         return self
 
@@ -897,7 +897,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base_type' is required and cannot be None")
         self._obj.base_type = value
         return self
 
@@ -911,7 +911,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'compu_method' is required and cannot be None")
         self._obj.compu_method = value
         return self
 
@@ -925,7 +925,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_constr' is required and cannot be None")
         self._obj.data_constr = value
         return self
 
@@ -939,7 +939,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'display_format' is required and cannot be None")
         self._obj.display_format = value
         return self
 
@@ -953,7 +953,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'display_presentation' is required and cannot be None")
         self._obj.display_presentation = value
         return self
 
@@ -967,7 +967,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'implementation_data_type' is required and cannot be None")
         self._obj.implementation_data_type = value
         return self
 
@@ -981,7 +981,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'invalid_value' is required and cannot be None")
         self._obj.invalid_value = value
         return self
 
@@ -995,7 +995,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'step_size' is required and cannot be None")
         self._obj.step_size = value
         return self
 
@@ -1009,7 +1009,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_addr_method' is required and cannot be None")
         self._obj.sw_addr_method = value
         return self
 
@@ -1023,7 +1023,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_alignment' is required and cannot be None")
         self._obj.sw_alignment = value
         return self
 
@@ -1037,7 +1037,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_bit_representation' is required and cannot be None")
         self._obj.sw_bit_representation = value
         return self
 
@@ -1051,7 +1051,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_calibration_access' is required and cannot be None")
         self._obj.sw_calibration_access = value
         return self
 
@@ -1065,7 +1065,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_calprm_axis_set' is required and cannot be None")
         self._obj.sw_calprm_axis_set = value
         return self
 
@@ -1091,7 +1091,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_data_dependency' is required and cannot be None")
         self._obj.sw_data_dependency = value
         return self
 
@@ -1105,7 +1105,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_host_variable' is required and cannot be None")
         self._obj.sw_host_variable = value
         return self
 
@@ -1119,7 +1119,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_impl_policy' is required and cannot be None")
         self._obj.sw_impl_policy = value
         return self
 
@@ -1133,7 +1133,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_intended_resolution' is required and cannot be None")
         self._obj.sw_intended_resolution = value
         return self
 
@@ -1147,7 +1147,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_interpolation_method' is required and cannot be None")
         self._obj.sw_interpolation_method = value
         return self
 
@@ -1161,7 +1161,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_is_virtual' is required and cannot be None")
         self._obj.sw_is_virtual = value
         return self
 
@@ -1175,7 +1175,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_pointer_target_props' is required and cannot be None")
         self._obj.sw_pointer_target_props = value
         return self
 
@@ -1189,7 +1189,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_record_layout' is required and cannot be None")
         self._obj.sw_record_layout = value
         return self
 
@@ -1203,7 +1203,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_refresh_timing' is required and cannot be None")
         self._obj.sw_refresh_timing = value
         return self
 
@@ -1217,7 +1217,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_text_props' is required and cannot be None")
         self._obj.sw_text_props = value
         return self
 
@@ -1231,7 +1231,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_value_block_size' is required and cannot be None")
         self._obj.sw_value_block_size = value
         return self
 
@@ -1257,7 +1257,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'unit' is required and cannot be None")
         self._obj.unit = value
         return self
 
@@ -1271,7 +1271,7 @@ class SwDataDefPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'value_axis_data_type' is required and cannot be None")
         self._obj.value_axis_data_type = value
         return self
 

@@ -170,7 +170,7 @@ class DataConstrRuleBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'constr_level' is required and cannot be None")
         self._obj.constr_level = value
         return self
 
@@ -184,7 +184,7 @@ class DataConstrRuleBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'internal_constrs' is required and cannot be None")
         self._obj.internal_constrs = value
         return self
 
@@ -198,7 +198,7 @@ class DataConstrRuleBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'phys_constrs' is required and cannot be None")
         self._obj.phys_constrs = value
         return self
 

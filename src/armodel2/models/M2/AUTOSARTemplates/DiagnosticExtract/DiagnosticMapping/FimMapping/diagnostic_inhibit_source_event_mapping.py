@@ -171,7 +171,7 @@ class DiagnosticInhibitSourceEventMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic_event' is required and cannot be None")
         self._obj.diagnostic_event = value
         return self
 
@@ -185,11 +185,11 @@ class DiagnosticInhibitSourceEventMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_group_group' is required and cannot be None")
         self._obj.event_group_group = value
         return self
 
-    def with_inhibition_source(self, value: Optional[any (DiagnosticFunction)]) -> "DiagnosticInhibitSourceEventMappingBuilder":
+    def with_inhibition_source(self, value: Optional[Any]) -> "DiagnosticInhibitSourceEventMappingBuilder":
         """Set inhibition_source attribute.
 
         Args:
@@ -199,7 +199,7 @@ class DiagnosticInhibitSourceEventMappingBuilder(DiagnosticMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'inhibition_source' is required and cannot be None")
         self._obj.inhibition_source = value
         return self
 

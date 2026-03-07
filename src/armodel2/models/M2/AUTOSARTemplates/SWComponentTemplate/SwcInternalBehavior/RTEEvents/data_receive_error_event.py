@@ -130,7 +130,7 @@ class DataReceiveErrorEventBuilder(RTEEventBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data' is required and cannot be None")
         self._obj.data = value
         return self
 

@@ -168,7 +168,7 @@ class CanCommunicationConnectorBuilder(AbstractCanCommunicationConnectorBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pnc_wakeup_can' is required and cannot be None")
         self._obj.pnc_wakeup_can = value
         return self
 
@@ -182,7 +182,7 @@ class CanCommunicationConnectorBuilder(AbstractCanCommunicationConnectorBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pnc_wakeup' is required and cannot be None")
         self._obj.pnc_wakeup = value
         return self
 
@@ -196,7 +196,7 @@ class CanCommunicationConnectorBuilder(AbstractCanCommunicationConnectorBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pnc_wakeup_dlc' is required and cannot be None")
         self._obj.pnc_wakeup_dlc = value
         return self
 

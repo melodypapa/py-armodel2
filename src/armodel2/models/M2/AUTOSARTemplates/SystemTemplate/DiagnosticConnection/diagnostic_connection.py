@@ -244,7 +244,7 @@ class DiagnosticConnectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'physical_request' is required and cannot be None")
         self._obj.physical_request = value
         return self
 
@@ -258,7 +258,7 @@ class DiagnosticConnectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'response' is required and cannot be None")
         self._obj.response = value
         return self
 
@@ -272,7 +272,7 @@ class DiagnosticConnectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'response_on' is required and cannot be None")
         self._obj.response_on = value
         return self
 

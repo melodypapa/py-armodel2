@@ -463,7 +463,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'clear_from_valid' is required and cannot be None")
         self._obj.clear_from_valid = value
         return self
 
@@ -477,7 +477,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'counter_offset' is required and cannot be None")
         self._obj.counter_offset = value
         return self
 
@@ -491,7 +491,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crc_offset' is required and cannot be None")
         self._obj.crc_offset = value
         return self
 
@@ -505,7 +505,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_id_mode' is required and cannot be None")
         self._obj.data_id_mode = value
         return self
 
@@ -519,7 +519,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_id_nibble' is required and cannot be None")
         self._obj.data_id_nibble = value
         return self
 
@@ -533,7 +533,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'e2e_profile' is required and cannot be None")
         self._obj.e2e_profile = value
         return self
 
@@ -547,7 +547,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_delta' is required and cannot be None")
         self._obj.max_delta = value
         return self
 
@@ -561,7 +561,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_error_state' is required and cannot be None")
         self._obj.max_error_state = value
         return self
 
@@ -575,7 +575,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_no_new_or' is required and cannot be None")
         self._obj.max_no_new_or = value
         return self
 
@@ -589,7 +589,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_ok_state_init' is required and cannot be None")
         self._obj.min_ok_state_init = value
         return self
 
@@ -603,7 +603,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_ok_state' is required and cannot be None")
         self._obj.min_ok_state = value
         return self
 
@@ -617,7 +617,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'offset' is required and cannot be None")
         self._obj.offset = value
         return self
 
@@ -631,7 +631,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'profile_behavior_behavior_enum' is required and cannot be None")
         self._obj.profile_behavior_behavior_enum = value
         return self
 
@@ -645,7 +645,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'profile_name' is required and cannot be None")
         self._obj.profile_name = value
         return self
 
@@ -659,7 +659,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sync_counter_init' is required and cannot be None")
         self._obj.sync_counter_init = value
         return self
 
@@ -673,7 +673,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'upper_header' is required and cannot be None")
         self._obj.upper_header = value
         return self
 
@@ -687,7 +687,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'window_size_init' is required and cannot be None")
         self._obj.window_size_init = value
         return self
 
@@ -701,7 +701,7 @@ class EndToEndTransformationDescriptionBuilder(TransformationDescriptionBuilder)
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'window_size' is required and cannot be None")
         self._obj.window_size = value
         return self
 

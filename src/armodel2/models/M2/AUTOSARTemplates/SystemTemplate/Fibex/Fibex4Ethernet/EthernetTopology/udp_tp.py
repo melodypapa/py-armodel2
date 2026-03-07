@@ -129,7 +129,7 @@ class UdpTpBuilder(TcpUdpConfigBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'udp_tp_port' is required and cannot be None")
         self._obj.udp_tp_port = value
         return self
 

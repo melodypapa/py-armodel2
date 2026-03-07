@@ -178,7 +178,7 @@ class TimingExtensionResourceBuilder(IdentifiableBuilder):
         self._obj.timing_modes = list(items) if items else []
         return self
 
-    def with_timing_variables(self, items: list[any (AutosarVariable)]) -> "TimingExtensionResourceBuilder":
+    def with_timing_variables(self, items: list[Any]) -> "TimingExtensionResourceBuilder":
         """Set timing_variables list attribute.
 
         Args:
@@ -233,7 +233,7 @@ class TimingExtensionResourceBuilder(IdentifiableBuilder):
         self._obj.timing_modes = []
         return self
 
-    def add_timing_variable(self, item: any (AutosarVariable)) -> "TimingExtensionResourceBuilder":
+    def add_timing_variable(self, item: Any) -> "TimingExtensionResourceBuilder":
         """Add a single item to timing_variables list.
 
         Args:

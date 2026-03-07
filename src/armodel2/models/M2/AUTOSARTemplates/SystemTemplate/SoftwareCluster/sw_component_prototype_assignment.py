@@ -112,7 +112,7 @@ class SwComponentPrototypeAssignmentBuilder(BuilderBase):
         self._obj: SwComponentPrototypeAssignment = SwComponentPrototypeAssignment()
 
 
-    def with_sw_component(self, value: Optional[any (SwComponent)]) -> "SwComponentPrototypeAssignmentBuilder":
+    def with_sw_component(self, value: Optional[Any]) -> "SwComponentPrototypeAssignmentBuilder":
         """Set sw_component attribute.
 
         Args:
@@ -122,7 +122,7 @@ class SwComponentPrototypeAssignmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_component' is required and cannot be None")
         self._obj.sw_component = value
         return self
 

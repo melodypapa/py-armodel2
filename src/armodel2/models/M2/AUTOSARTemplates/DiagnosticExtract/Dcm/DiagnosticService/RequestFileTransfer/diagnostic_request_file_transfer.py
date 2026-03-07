@@ -117,7 +117,7 @@ class DiagnosticRequestFileTransferBuilder(DiagnosticServiceInstanceBuilder):
         self._obj: DiagnosticRequestFileTransfer = DiagnosticRequestFileTransfer()
 
 
-    def with_request_file(self, value: Optional[any (DiagnosticRequestFile)]) -> "DiagnosticRequestFileTransferBuilder":
+    def with_request_file(self, value: Optional[Any]) -> "DiagnosticRequestFileTransferBuilder":
         """Set request_file attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticRequestFileTransferBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request_file' is required and cannot be None")
         self._obj.request_file = value
         return self
 

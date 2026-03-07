@@ -163,7 +163,7 @@ class BusMirrorCanIdRangeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'destination_base' is required and cannot be None")
         self._obj.destination_base = value
         return self
 
@@ -177,7 +177,7 @@ class BusMirrorCanIdRangeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'source_can_id_code' is required and cannot be None")
         self._obj.source_can_id_code = value
         return self
 
@@ -191,7 +191,7 @@ class BusMirrorCanIdRangeMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'source_can_id' is required and cannot be None")
         self._obj.source_can_id = value
         return self
 

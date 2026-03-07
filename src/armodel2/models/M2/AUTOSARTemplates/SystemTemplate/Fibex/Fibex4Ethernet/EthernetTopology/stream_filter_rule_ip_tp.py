@@ -181,7 +181,7 @@ class StreamFilterRuleIpTpBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'destination' is required and cannot be None")
         self._obj.destination = value
         return self
 
@@ -207,7 +207,7 @@ class StreamFilterRuleIpTpBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'source' is required and cannot be None")
         self._obj.source = value
         return self
 

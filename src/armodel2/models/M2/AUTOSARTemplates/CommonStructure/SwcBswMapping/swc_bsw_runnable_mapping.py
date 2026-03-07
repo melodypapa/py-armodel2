@@ -148,7 +148,7 @@ class SwcBswRunnableMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_entity' is required and cannot be None")
         self._obj.bsw_entity = value
         return self
 
@@ -162,7 +162,7 @@ class SwcBswRunnableMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'swc_runnable' is required and cannot be None")
         self._obj.swc_runnable = value
         return self
 

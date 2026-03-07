@@ -161,7 +161,7 @@ class DiagnosticInfoTypeBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'id' is required and cannot be None")
         self._obj.id = value
         return self
 

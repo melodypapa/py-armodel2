@@ -118,7 +118,7 @@ class AsynchronousServerCallResultPointBuilder(AbstractAccessPointBuilder):
         self._obj: AsynchronousServerCallResultPoint = AsynchronousServerCallResultPoint()
 
 
-    def with_asynchronous_server(self, value: Optional[any (AsynchronousServer)]) -> "AsynchronousServerCallResultPointBuilder":
+    def with_asynchronous_server(self, value: Optional[Any]) -> "AsynchronousServerCallResultPointBuilder":
         """Set asynchronous_server attribute.
 
         Args:
@@ -128,7 +128,7 @@ class AsynchronousServerCallResultPointBuilder(AbstractAccessPointBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'asynchronous_server' is required and cannot be None")
         self._obj.asynchronous_server = value
         return self
 

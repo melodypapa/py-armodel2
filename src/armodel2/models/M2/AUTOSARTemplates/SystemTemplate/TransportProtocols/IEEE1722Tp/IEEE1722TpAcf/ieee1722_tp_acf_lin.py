@@ -168,7 +168,7 @@ class IEEE1722TpAcfLinBuilder(IEEE1722TpAcfBusBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base_frequency' is required and cannot be None")
         self._obj.base_frequency = value
         return self
 
@@ -182,7 +182,7 @@ class IEEE1722TpAcfLinBuilder(IEEE1722TpAcfBusBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'frame_sync_enabled' is required and cannot be None")
         self._obj.frame_sync_enabled = value
         return self
 
@@ -196,7 +196,7 @@ class IEEE1722TpAcfLinBuilder(IEEE1722TpAcfBusBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'timestamp' is required and cannot be None")
         self._obj.timestamp = value
         return self
 

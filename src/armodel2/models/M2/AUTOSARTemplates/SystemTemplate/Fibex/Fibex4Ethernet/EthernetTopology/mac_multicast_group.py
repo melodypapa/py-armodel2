@@ -129,7 +129,7 @@ class MacMulticastGroupBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mac_multicast' is required and cannot be None")
         self._obj.mac_multicast = value
         return self
 

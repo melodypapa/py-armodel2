@@ -197,7 +197,7 @@ class DiagnosticComControlClassBuilder(DiagnosticServiceClassBuilder):
         self._obj.all_channelses = list(items) if items else []
         return self
 
-    def with_all_physicals(self, items: list[any (EthernetPhysical)]) -> "DiagnosticComControlClassBuilder":
+    def with_all_physicals(self, items: list[Any]) -> "DiagnosticComControlClassBuilder":
         """Set all_physicals list attribute.
 
         Args:
@@ -255,7 +255,7 @@ class DiagnosticComControlClassBuilder(DiagnosticServiceClassBuilder):
         self._obj.all_channelses = []
         return self
 
-    def add_all_physical(self, item: any (EthernetPhysical)) -> "DiagnosticComControlClassBuilder":
+    def add_all_physical(self, item: Any) -> "DiagnosticComControlClassBuilder":
         """Add a single item to all_physicals list.
 
         Args:

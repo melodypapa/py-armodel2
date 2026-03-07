@@ -149,11 +149,11 @@ class J1939DcmIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diagnostic' is required and cannot be None")
         self._obj.diagnostic = value
         return self
 
-    def with_message_type(self, value: any (e.g)) -> "J1939DcmIPduBuilder":
+    def with_message_type(self, value: Any) -> "J1939DcmIPduBuilder":
         """Set message_type attribute.
 
         Args:
@@ -163,7 +163,7 @@ class J1939DcmIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'message_type' is required and cannot be None")
         self._obj.message_type = value
         return self
 

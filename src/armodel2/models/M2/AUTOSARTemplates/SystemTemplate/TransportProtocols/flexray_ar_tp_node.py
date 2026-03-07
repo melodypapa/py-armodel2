@@ -144,7 +144,7 @@ class FlexrayArTpNodeBuilder(IdentifiableBuilder):
         self._obj: FlexrayArTpNode = FlexrayArTpNode()
 
 
-    def with_connectors(self, items: list[any (FlexrayCommunication)]) -> "FlexrayArTpNodeBuilder":
+    def with_connectors(self, items: list[Any]) -> "FlexrayArTpNodeBuilder":
         """Set connectors list attribute.
 
         Args:
@@ -166,12 +166,12 @@ class FlexrayArTpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tp_address' is required and cannot be None")
         self._obj.tp_address = value
         return self
 
 
-    def add_connector(self, item: any (FlexrayCommunication)) -> "FlexrayArTpNodeBuilder":
+    def add_connector(self, item: Any) -> "FlexrayArTpNodeBuilder":
         """Add a single item to connectors list.
 
         Args:

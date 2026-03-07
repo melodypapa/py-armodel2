@@ -164,7 +164,7 @@ class InitialSdDelayConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initial_delay_max' is required and cannot be None")
         self._obj.initial_delay_max = value
         return self
 
@@ -178,7 +178,7 @@ class InitialSdDelayConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initial_delay_min' is required and cannot be None")
         self._obj.initial_delay_min = value
         return self
 
@@ -192,7 +192,7 @@ class InitialSdDelayConfigBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'initial' is required and cannot be None")
         self._obj.initial = value
         return self
 

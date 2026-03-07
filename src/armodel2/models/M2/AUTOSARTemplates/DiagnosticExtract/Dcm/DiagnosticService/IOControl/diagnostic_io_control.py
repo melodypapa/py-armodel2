@@ -216,7 +216,7 @@ class DiagnosticIOControlBuilder(DiagnosticServiceInstanceBuilder):
         self._obj: DiagnosticIOControl = DiagnosticIOControl()
 
 
-    def with_control_enables(self, items: list[any (DiagnosticControl)]) -> "DiagnosticIOControlBuilder":
+    def with_control_enables(self, items: list[Any]) -> "DiagnosticIOControlBuilder":
         """Set control_enables list attribute.
 
         Args:
@@ -238,7 +238,7 @@ class DiagnosticIOControlBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_identifier_identifier' is required and cannot be None")
         self._obj.data_identifier_identifier = value
         return self
 
@@ -252,7 +252,7 @@ class DiagnosticIOControlBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'freeze_current' is required and cannot be None")
         self._obj.freeze_current = value
         return self
 
@@ -266,7 +266,7 @@ class DiagnosticIOControlBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'io_control_class' is required and cannot be None")
         self._obj.io_control_class = value
         return self
 
@@ -280,7 +280,7 @@ class DiagnosticIOControlBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'reset_to_default' is required and cannot be None")
         self._obj.reset_to_default = value
         return self
 
@@ -294,12 +294,12 @@ class DiagnosticIOControlBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'short_term' is required and cannot be None")
         self._obj.short_term = value
         return self
 
 
-    def add_control_enable(self, item: any (DiagnosticControl)) -> "DiagnosticIOControlBuilder":
+    def add_control_enable(self, item: Any) -> "DiagnosticIOControlBuilder":
         """Add a single item to control_enables list.
 
         Args:

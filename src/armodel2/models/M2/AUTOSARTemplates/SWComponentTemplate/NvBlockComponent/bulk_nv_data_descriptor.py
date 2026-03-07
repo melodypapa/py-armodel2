@@ -157,7 +157,7 @@ class BulkNvDataDescriptorBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bulk_nv_block' is required and cannot be None")
         self._obj.bulk_nv_block = value
         return self
 

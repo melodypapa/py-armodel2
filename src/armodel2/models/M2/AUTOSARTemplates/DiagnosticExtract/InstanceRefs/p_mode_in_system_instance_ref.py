@@ -214,7 +214,7 @@ class PModeInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
@@ -228,7 +228,7 @@ class PModeInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context' is required and cannot be None")
         self._obj.context = value
         return self
 
@@ -242,7 +242,7 @@ class PModeInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_mode_group' is required and cannot be None")
         self._obj.context_mode_group = value
         return self
 
@@ -256,7 +256,7 @@ class PModeInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'context_p_port_prototype' is required and cannot be None")
         self._obj.context_p_port_prototype = value
         return self
 
@@ -270,7 +270,7 @@ class PModeInSystemInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_mode' is required and cannot be None")
         self._obj.target_mode = value
         return self
 

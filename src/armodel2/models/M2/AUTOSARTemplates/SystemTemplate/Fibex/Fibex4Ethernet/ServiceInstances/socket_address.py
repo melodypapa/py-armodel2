@@ -343,7 +343,7 @@ class SocketAddressBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'allowed_i_pv6_ext' is required and cannot be None")
         self._obj.allowed_i_pv6_ext = value
         return self
 
@@ -357,7 +357,7 @@ class SocketAddressBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'allowed_tcp' is required and cannot be None")
         self._obj.allowed_tcp = value
         return self
 
@@ -371,11 +371,11 @@ class SocketAddressBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'application_endpoint_endpoint' is required and cannot be None")
         self._obj.application_endpoint_endpoint = value
         return self
 
-    def with_connector(self, value: Optional[any (EthernetCommunication)]) -> "SocketAddressBuilder":
+    def with_connector(self, value: Optional[Any]) -> "SocketAddressBuilder":
         """Set connector attribute.
 
         Args:
@@ -385,7 +385,7 @@ class SocketAddressBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'connector' is required and cannot be None")
         self._obj.connector = value
         return self
 
@@ -399,7 +399,7 @@ class SocketAddressBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'differentiated' is required and cannot be None")
         self._obj.differentiated = value
         return self
 
@@ -413,11 +413,11 @@ class SocketAddressBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'flow_label' is required and cannot be None")
         self._obj.flow_label = value
         return self
 
-    def with_multicasts(self, items: list[any (EthernetCommunication)]) -> "SocketAddressBuilder":
+    def with_multicasts(self, items: list[Any]) -> "SocketAddressBuilder":
         """Set multicasts list attribute.
 
         Args:
@@ -439,7 +439,7 @@ class SocketAddressBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'path_mtu' is required and cannot be None")
         self._obj.path_mtu = value
         return self
 
@@ -453,7 +453,7 @@ class SocketAddressBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdu_collection' is required and cannot be None")
         self._obj.pdu_collection = value
         return self
 
@@ -479,12 +479,12 @@ class SocketAddressBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'udp_checksum' is required and cannot be None")
         self._obj.udp_checksum = value
         return self
 
 
-    def add_multicast(self, item: any (EthernetCommunication)) -> "SocketAddressBuilder":
+    def add_multicast(self, item: Any) -> "SocketAddressBuilder":
         """Add a single item to multicasts list.
 
         Args:

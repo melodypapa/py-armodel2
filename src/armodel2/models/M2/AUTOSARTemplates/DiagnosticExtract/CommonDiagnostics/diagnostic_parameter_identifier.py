@@ -202,7 +202,7 @@ class DiagnosticParameterIdentifierBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'id' is required and cannot be None")
         self._obj.id = value
         return self
 
@@ -216,7 +216,7 @@ class DiagnosticParameterIdentifierBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pid_size' is required and cannot be None")
         self._obj.pid_size = value
         return self
 
@@ -230,7 +230,7 @@ class DiagnosticParameterIdentifierBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'support_info_byte' is required and cannot be None")
         self._obj.support_info_byte = value
         return self
 

@@ -218,7 +218,7 @@ class EcucCommonAttributesBuilder(EcucDefinitionElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'origin' is required and cannot be None")
         self._obj.origin = value
         return self
 
@@ -232,7 +232,7 @@ class EcucCommonAttributesBuilder(EcucDefinitionElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'post_build_variant' is required and cannot be None")
         self._obj.post_build_variant = value
         return self
 
@@ -246,7 +246,7 @@ class EcucCommonAttributesBuilder(EcucDefinitionElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'requires_index' is required and cannot be None")
         self._obj.requires_index = value
         return self
 

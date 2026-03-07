@@ -148,7 +148,7 @@ class SwcExclusiveAreaPolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'api_principle_enum' is required and cannot be None")
         self._obj.api_principle_enum = value
         return self
 
@@ -162,7 +162,7 @@ class SwcExclusiveAreaPolicyBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'exclusive_area' is required and cannot be None")
         self._obj.exclusive_area = value
         return self
 

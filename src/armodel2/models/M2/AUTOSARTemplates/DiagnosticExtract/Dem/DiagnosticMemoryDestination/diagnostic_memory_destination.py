@@ -267,11 +267,11 @@ class DiagnosticMemoryDestinationBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'aging_requires' is required and cannot be None")
         self._obj.aging_requires = value
         return self
 
-    def with_clear_dtc(self, value: Optional[any (DiagnosticClearDtc)]) -> "DiagnosticMemoryDestinationBuilder":
+    def with_clear_dtc(self, value: Optional[Any]) -> "DiagnosticMemoryDestinationBuilder":
         """Set clear_dtc attribute.
 
         Args:
@@ -281,7 +281,7 @@ class DiagnosticMemoryDestinationBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'clear_dtc' is required and cannot be None")
         self._obj.clear_dtc = value
         return self
 
@@ -295,7 +295,7 @@ class DiagnosticMemoryDestinationBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dtc_status' is required and cannot be None")
         self._obj.dtc_status = value
         return self
 
@@ -309,7 +309,7 @@ class DiagnosticMemoryDestinationBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event' is required and cannot be None")
         self._obj.event = value
         return self
 
@@ -323,7 +323,7 @@ class DiagnosticMemoryDestinationBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of' is required and cannot be None")
         self._obj.max_number_of = value
         return self
 
@@ -337,7 +337,7 @@ class DiagnosticMemoryDestinationBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'memory_entry' is required and cannot be None")
         self._obj.memory_entry = value
         return self
 
@@ -351,11 +351,11 @@ class DiagnosticMemoryDestinationBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'status_bit' is required and cannot be None")
         self._obj.status_bit = value
         return self
 
-    def with_type_of_freeze(self, value: Optional[any (DiagnosticTypeOf)]) -> "DiagnosticMemoryDestinationBuilder":
+    def with_type_of_freeze(self, value: Optional[Any]) -> "DiagnosticMemoryDestinationBuilder":
         """Set type_of_freeze attribute.
 
         Args:
@@ -365,7 +365,7 @@ class DiagnosticMemoryDestinationBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'type_of_freeze' is required and cannot be None")
         self._obj.type_of_freeze = value
         return self
 

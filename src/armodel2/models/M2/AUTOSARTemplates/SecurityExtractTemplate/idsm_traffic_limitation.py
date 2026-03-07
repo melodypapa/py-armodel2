@@ -149,7 +149,7 @@ class IdsmTrafficLimitationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_bytes_in' is required and cannot be None")
         self._obj.max_bytes_in = value
         return self
 
@@ -163,7 +163,7 @@ class IdsmTrafficLimitationBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'time_interval' is required and cannot be None")
         self._obj.time_interval = value
         return self
 

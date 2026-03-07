@@ -544,7 +544,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'can_be_invoked_concurrently' is required and cannot be None")
         self._obj.can_be_invoked_concurrently = value
         return self
 
@@ -702,7 +702,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'symbol' is required and cannot be None")
         self._obj.symbol = value
         return self
 

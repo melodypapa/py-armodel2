@@ -149,7 +149,7 @@ class DoIpRoutingActivationAuthenticationNeedsBuilder(DoIpServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_length' is required and cannot be None")
         self._obj.data_length = value
         return self
 
@@ -163,7 +163,7 @@ class DoIpRoutingActivationAuthenticationNeedsBuilder(DoIpServiceNeedsBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'routing' is required and cannot be None")
         self._obj.routing = value
         return self
 

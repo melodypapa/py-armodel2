@@ -243,7 +243,7 @@ class CryptoKeySlotBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'allocate_shadow_copy' is required and cannot be None")
         self._obj.allocate_shadow_copy = value
         return self
 
@@ -257,7 +257,7 @@ class CryptoKeySlotBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crypto_alg_id' is required and cannot be None")
         self._obj.crypto_alg_id = value
         return self
 
@@ -271,7 +271,7 @@ class CryptoKeySlotBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'crypto_object_type' is required and cannot be None")
         self._obj.crypto_object_type = value
         return self
 
@@ -285,7 +285,7 @@ class CryptoKeySlotBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'key_slot_allowed_modification' is required and cannot be None")
         self._obj.key_slot_allowed_modification = value
         return self
 
@@ -311,7 +311,7 @@ class CryptoKeySlotBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'slot_capacity' is required and cannot be None")
         self._obj.slot_capacity = value
         return self
 
@@ -325,7 +325,7 @@ class CryptoKeySlotBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'slot_type' is required and cannot be None")
         self._obj.slot_type = value
         return self
 

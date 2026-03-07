@@ -183,7 +183,7 @@ class EcucAbstractStringParamDefBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_value' is required and cannot be None")
         self._obj.default_value = value
         return self
 
@@ -197,7 +197,7 @@ class EcucAbstractStringParamDefBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_length' is required and cannot be None")
         self._obj.max_length = value
         return self
 
@@ -211,7 +211,7 @@ class EcucAbstractStringParamDefBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_length' is required and cannot be None")
         self._obj.min_length = value
         return self
 
@@ -225,7 +225,7 @@ class EcucAbstractStringParamDefBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'regular' is required and cannot be None")
         self._obj.regular = value
         return self
 

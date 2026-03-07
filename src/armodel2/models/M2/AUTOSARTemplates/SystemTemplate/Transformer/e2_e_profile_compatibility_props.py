@@ -130,7 +130,7 @@ class E2EProfileCompatibilityPropsBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transit_to_invalid' is required and cannot be None")
         self._obj.transit_to_invalid = value
         return self
 

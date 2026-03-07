@@ -132,7 +132,7 @@ class SwcToSwcOperationArgumentsBuilder(BuilderBase):
         self._obj: SwcToSwcOperationArguments = SwcToSwcOperationArguments()
 
 
-    def with_direction(self, value: Optional[any (SwcToSwcOperation)]) -> "SwcToSwcOperationArgumentsBuilder":
+    def with_direction(self, value: Optional[Any]) -> "SwcToSwcOperationArgumentsBuilder":
         """Set direction attribute.
 
         Args:
@@ -142,7 +142,7 @@ class SwcToSwcOperationArgumentsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'direction' is required and cannot be None")
         self._obj.direction = value
         return self
 

@@ -117,7 +117,7 @@ class DiagnosticReadDTCInformationBuilder(DiagnosticServiceInstanceBuilder):
         self._obj: DiagnosticReadDTCInformation = DiagnosticReadDTCInformation()
 
 
-    def with_read(self, value: Optional[any (DiagnosticReadDTC)]) -> "DiagnosticReadDTCInformationBuilder":
+    def with_read(self, value: Optional[Any]) -> "DiagnosticReadDTCInformationBuilder":
         """Set read attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticReadDTCInformationBuilder(DiagnosticServiceInstanceBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'read' is required and cannot be None")
         self._obj.read = value
         return self
 

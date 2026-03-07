@@ -139,7 +139,7 @@ class J1939TpNodeBuilder(IdentifiableBuilder):
         self._obj: J1939TpNode = J1939TpNode()
 
 
-    def with_connector(self, value: Optional[any (Communication)]) -> "J1939TpNodeBuilder":
+    def with_connector(self, value: Optional[Any]) -> "J1939TpNodeBuilder":
         """Set connector attribute.
 
         Args:
@@ -149,7 +149,7 @@ class J1939TpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'connector' is required and cannot be None")
         self._obj.connector = value
         return self
 
@@ -163,7 +163,7 @@ class J1939TpNodeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tp_address' is required and cannot be None")
         self._obj.tp_address = value
         return self
 

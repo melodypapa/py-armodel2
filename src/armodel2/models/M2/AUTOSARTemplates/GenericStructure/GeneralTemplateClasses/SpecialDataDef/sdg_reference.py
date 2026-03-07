@@ -130,7 +130,7 @@ class SdgReferenceBuilder(SdgAttributeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dest_sdg' is required and cannot be None")
         self._obj.dest_sdg = value
         return self
 

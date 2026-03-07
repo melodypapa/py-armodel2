@@ -221,7 +221,7 @@ class VariableInAtomicSWCTypeInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
@@ -247,7 +247,7 @@ class VariableInAtomicSWCTypeInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'port_prototype' is required and cannot be None")
         self._obj.port_prototype = value
         return self
 
@@ -261,7 +261,7 @@ class VariableInAtomicSWCTypeInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'root_variable_data_prototype' is required and cannot be None")
         self._obj.root_variable_data_prototype = value
         return self
 
@@ -275,7 +275,7 @@ class VariableInAtomicSWCTypeInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_data_prototype' is required and cannot be None")
         self._obj.target_data_prototype = value
         return self
 

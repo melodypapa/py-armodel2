@@ -129,7 +129,7 @@ class BswInternalTriggeringPointBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_impl_policy' is required and cannot be None")
         self._obj.sw_impl_policy = value
         return self
 

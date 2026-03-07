@@ -258,7 +258,7 @@ class ImplementationDataTypeElementBuilder(AbstractImplementationDataTypeElement
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'array_impl_policy' is required and cannot be None")
         self._obj.array_impl_policy = value
         return self
 
@@ -272,7 +272,7 @@ class ImplementationDataTypeElementBuilder(AbstractImplementationDataTypeElement
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'array_size' is required and cannot be None")
         self._obj.array_size = value
         return self
 
@@ -286,7 +286,7 @@ class ImplementationDataTypeElementBuilder(AbstractImplementationDataTypeElement
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'array_size_handling' is required and cannot be None")
         self._obj.array_size_handling = value
         return self
 
@@ -300,7 +300,7 @@ class ImplementationDataTypeElementBuilder(AbstractImplementationDataTypeElement
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'array_size_semantics' is required and cannot be None")
         self._obj.array_size_semantics = value
         return self
 
@@ -314,7 +314,7 @@ class ImplementationDataTypeElementBuilder(AbstractImplementationDataTypeElement
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_optional' is required and cannot be None")
         self._obj.is_optional = value
         return self
 
@@ -340,7 +340,7 @@ class ImplementationDataTypeElementBuilder(AbstractImplementationDataTypeElement
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sw_data_def_props' is required and cannot be None")
         self._obj.sw_data_def_props = value
         return self
 

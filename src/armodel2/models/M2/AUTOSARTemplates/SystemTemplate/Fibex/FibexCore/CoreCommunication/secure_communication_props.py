@@ -239,7 +239,7 @@ class SecureCommunicationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'auth_data' is required and cannot be None")
         self._obj.auth_data = value
         return self
 
@@ -253,7 +253,7 @@ class SecureCommunicationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'authentication' is required and cannot be None")
         self._obj.authentication = value
         return self
 
@@ -267,7 +267,7 @@ class SecureCommunicationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'data_id' is required and cannot be None")
         self._obj.data_id = value
         return self
 
@@ -281,7 +281,7 @@ class SecureCommunicationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'freshness_value' is required and cannot be None")
         self._obj.freshness_value = value
         return self
 
@@ -295,7 +295,7 @@ class SecureCommunicationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'message_link' is required and cannot be None")
         self._obj.message_link = value
         return self
 
@@ -309,7 +309,7 @@ class SecureCommunicationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'secondary' is required and cannot be None")
         self._obj.secondary = value
         return self
 
@@ -323,7 +323,7 @@ class SecureCommunicationPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'secured_area' is required and cannot be None")
         self._obj.secured_area = value
         return self
 

@@ -117,7 +117,7 @@ class DiagnosticRequestDownloadBuilder(DiagnosticMemoryAddressableRangeAccessBui
         self._obj: DiagnosticRequestDownload = DiagnosticRequestDownload()
 
 
-    def with_request(self, value: Optional[any (DiagnosticRequest)]) -> "DiagnosticRequestDownloadBuilder":
+    def with_request(self, value: Optional[Any]) -> "DiagnosticRequestDownloadBuilder":
         """Set request attribute.
 
         Args:
@@ -127,7 +127,7 @@ class DiagnosticRequestDownloadBuilder(DiagnosticMemoryAddressableRangeAccessBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request' is required and cannot be None")
         self._obj.request = value
         return self
 

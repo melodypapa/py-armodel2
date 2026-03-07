@@ -866,7 +866,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'action_point_offset' is required and cannot be None")
         self._obj.action_point_offset = value
         return self
 
@@ -880,7 +880,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bit' is required and cannot be None")
         self._obj.bit = value
         return self
 
@@ -894,7 +894,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cas_rx_low_max' is required and cannot be None")
         self._obj.cas_rx_low_max = value
         return self
 
@@ -908,7 +908,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cold_start' is required and cannot be None")
         self._obj.cold_start = value
         return self
 
@@ -922,7 +922,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cycle' is required and cannot be None")
         self._obj.cycle = value
         return self
 
@@ -936,7 +936,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cycle_count_max' is required and cannot be None")
         self._obj.cycle_count_max = value
         return self
 
@@ -950,7 +950,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'detect_nit_error' is required and cannot be None")
         self._obj.detect_nit_error = value
         return self
 
@@ -964,7 +964,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'dynamic_slot_idle_phase' is required and cannot be None")
         self._obj.dynamic_slot_idle_phase = value
         return self
 
@@ -978,7 +978,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ignore_after_tx' is required and cannot be None")
         self._obj.ignore_after_tx = value
         return self
 
@@ -992,7 +992,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'listen_noise' is required and cannot be None")
         self._obj.listen_noise = value
         return self
 
@@ -1006,7 +1006,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'macro_per_cycle' is required and cannot be None")
         self._obj.macro_per_cycle = value
         return self
 
@@ -1020,7 +1020,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'macrotick' is required and cannot be None")
         self._obj.macrotick = value
         return self
 
@@ -1034,7 +1034,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_without' is required and cannot be None")
         self._obj.max_without = value
         return self
 
@@ -1048,7 +1048,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minislot_action' is required and cannot be None")
         self._obj.minislot_action = value
         return self
 
@@ -1062,7 +1062,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'minislot_duration' is required and cannot be None")
         self._obj.minislot_duration = value
         return self
 
@@ -1076,7 +1076,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network_idle_time' is required and cannot be None")
         self._obj.network_idle_time = value
         return self
 
@@ -1090,7 +1090,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network' is required and cannot be None")
         self._obj.network = value
         return self
 
@@ -1104,7 +1104,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'number_of_minislots' is required and cannot be None")
         self._obj.number_of_minislots = value
         return self
 
@@ -1118,7 +1118,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'number_of_static_slots' is required and cannot be None")
         self._obj.number_of_static_slots = value
         return self
 
@@ -1132,7 +1132,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'offset_correction' is required and cannot be None")
         self._obj.offset_correction = value
         return self
 
@@ -1146,7 +1146,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'payload_length' is required and cannot be None")
         self._obj.payload_length = value
         return self
 
@@ -1160,7 +1160,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'safety_margin' is required and cannot be None")
         self._obj.safety_margin = value
         return self
 
@@ -1174,7 +1174,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sample_clock_period' is required and cannot be None")
         self._obj.sample_clock_period = value
         return self
 
@@ -1188,7 +1188,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'static_slot' is required and cannot be None")
         self._obj.static_slot = value
         return self
 
@@ -1202,7 +1202,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'symbol_window' is required and cannot be None")
         self._obj.symbol_window = value
         return self
 
@@ -1216,7 +1216,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sync_frame_id' is required and cannot be None")
         self._obj.sync_frame_id = value
         return self
 
@@ -1230,7 +1230,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tranceiver' is required and cannot be None")
         self._obj.tranceiver = value
         return self
 
@@ -1244,7 +1244,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transmission' is required and cannot be None")
         self._obj.transmission = value
         return self
 
@@ -1258,7 +1258,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wakeup_rx_idle' is required and cannot be None")
         self._obj.wakeup_rx_idle = value
         return self
 
@@ -1272,7 +1272,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wakeup_rx_low' is required and cannot be None")
         self._obj.wakeup_rx_low = value
         return self
 
@@ -1286,7 +1286,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wakeup_rx' is required and cannot be None")
         self._obj.wakeup_rx = value
         return self
 
@@ -1300,7 +1300,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wakeup_tx_active' is required and cannot be None")
         self._obj.wakeup_tx_active = value
         return self
 
@@ -1314,7 +1314,7 @@ class FlexrayClusterBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'wakeup_tx_idle' is required and cannot be None")
         self._obj.wakeup_tx_idle = value
         return self
 

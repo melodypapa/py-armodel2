@@ -206,7 +206,7 @@ class DiagnosticSecurityLevelBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'access_data' is required and cannot be None")
         self._obj.access_data = value
         return self
 
@@ -220,7 +220,7 @@ class DiagnosticSecurityLevelBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'key_size' is required and cannot be None")
         self._obj.key_size = value
         return self
 
@@ -234,7 +234,7 @@ class DiagnosticSecurityLevelBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'num_failed' is required and cannot be None")
         self._obj.num_failed = value
         return self
 
@@ -248,7 +248,7 @@ class DiagnosticSecurityLevelBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'security_delay' is required and cannot be None")
         self._obj.security_delay = value
         return self
 
@@ -262,7 +262,7 @@ class DiagnosticSecurityLevelBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'seed_size' is required and cannot be None")
         self._obj.seed_size = value
         return self
 

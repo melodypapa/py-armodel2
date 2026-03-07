@@ -248,7 +248,7 @@ class IdentifiableBuilder(MultilanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'category' is required and cannot be None")
         self._obj.category = value
         return self
 
@@ -262,7 +262,7 @@ class IdentifiableBuilder(MultilanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'admin_data' is required and cannot be None")
         self._obj.admin_data = value
         return self
 
@@ -288,7 +288,7 @@ class IdentifiableBuilder(MultilanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'desc' is required and cannot be None")
         self._obj.desc = value
         return self
 
@@ -302,7 +302,7 @@ class IdentifiableBuilder(MultilanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'introduction' is required and cannot be None")
         self._obj.introduction = value
         return self
 
@@ -316,7 +316,7 @@ class IdentifiableBuilder(MultilanguageReferrableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'uuid' is required and cannot be None")
         self._obj.uuid = value
         return self
 

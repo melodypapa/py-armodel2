@@ -149,7 +149,7 @@ class LinPhysicalChannelBuilder(PhysicalChannelBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bus_idle_timeout' is required and cannot be None")
         self._obj.bus_idle_timeout = value
         return self
 

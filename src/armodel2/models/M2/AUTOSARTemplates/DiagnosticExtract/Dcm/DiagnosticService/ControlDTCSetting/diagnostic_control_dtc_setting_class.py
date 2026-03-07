@@ -129,7 +129,7 @@ class DiagnosticControlDTCSettingClassBuilder(DiagnosticServiceClassBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'control_option' is required and cannot be None")
         self._obj.control_option = value
         return self
 

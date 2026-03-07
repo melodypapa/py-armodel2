@@ -170,11 +170,11 @@ class ComponentInCompositionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
-    def with_contexts(self, items: list[any (SwComponent)]) -> "ComponentInCompositionInstanceRefBuilder":
+    def with_contexts(self, items: list[Any]) -> "ComponentInCompositionInstanceRefBuilder":
         """Set contexts list attribute.
 
         Args:
@@ -186,7 +186,7 @@ class ComponentInCompositionInstanceRefBuilder(BuilderBase):
         self._obj.contexts = list(items) if items else []
         return self
 
-    def with_target(self, value: Optional[any (SwComponent)]) -> "ComponentInCompositionInstanceRefBuilder":
+    def with_target(self, value: Optional[Any]) -> "ComponentInCompositionInstanceRefBuilder":
         """Set target attribute.
 
         Args:
@@ -196,12 +196,12 @@ class ComponentInCompositionInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target' is required and cannot be None")
         self._obj.target = value
         return self
 
 
-    def add_context(self, item: any (SwComponent)) -> "ComponentInCompositionInstanceRefBuilder":
+    def add_context(self, item: Any) -> "ComponentInCompositionInstanceRefBuilder":
         """Add a single item to contexts list.
 
         Args:

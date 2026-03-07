@@ -267,7 +267,7 @@ class J1939NodeNameBuilder(BuilderBase):
         self._obj: J1939NodeName = J1939NodeName()
 
 
-    def with_arbitrary_address(self, value: Optional[any (BooleanCapable)]) -> "J1939NodeNameBuilder":
+    def with_arbitrary_address(self, value: Optional[Any]) -> "J1939NodeNameBuilder":
         """Set arbitrary_address attribute.
 
         Args:
@@ -277,7 +277,7 @@ class J1939NodeNameBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'arbitrary_address' is required and cannot be None")
         self._obj.arbitrary_address = value
         return self
 
@@ -291,7 +291,7 @@ class J1939NodeNameBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_instance' is required and cannot be None")
         self._obj.ecu_instance = value
         return self
 
@@ -305,7 +305,7 @@ class J1939NodeNameBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'function' is required and cannot be None")
         self._obj.function = value
         return self
 
@@ -319,7 +319,7 @@ class J1939NodeNameBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'function_instance' is required and cannot be None")
         self._obj.function_instance = value
         return self
 
@@ -333,7 +333,7 @@ class J1939NodeNameBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'identitiy_number' is required and cannot be None")
         self._obj.identitiy_number = value
         return self
 
@@ -347,7 +347,7 @@ class J1939NodeNameBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'industry_group' is required and cannot be None")
         self._obj.industry_group = value
         return self
 
@@ -361,7 +361,7 @@ class J1939NodeNameBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'manufacturer_code' is required and cannot be None")
         self._obj.manufacturer_code = value
         return self
 
@@ -375,7 +375,7 @@ class J1939NodeNameBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vehicle_system' is required and cannot be None")
         self._obj.vehicle_system = value
         return self
 
@@ -389,7 +389,7 @@ class J1939NodeNameBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vehicle_system_instance' is required and cannot be None")
         self._obj.vehicle_system_instance = value
         return self
 

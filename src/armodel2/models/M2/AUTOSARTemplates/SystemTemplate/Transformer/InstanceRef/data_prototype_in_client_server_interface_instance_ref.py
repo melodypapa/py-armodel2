@@ -198,11 +198,11 @@ class DataPrototypeInClientServerInterfaceInstanceRefBuilder(DataPrototypeInPort
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base' is required and cannot be None")
         self._obj.base = value
         return self
 
-    def with_context_datas(self, items: list[any (ApplicationComposite)]) -> "DataPrototypeInClientServerInterfaceInstanceRefBuilder":
+    def with_context_datas(self, items: list[Any]) -> "DataPrototypeInClientServerInterfaceInstanceRefBuilder":
         """Set context_datas list attribute.
 
         Args:
@@ -224,7 +224,7 @@ class DataPrototypeInClientServerInterfaceInstanceRefBuilder(DataPrototypeInPort
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'root_data_prototype_in_cs' is required and cannot be None")
         self._obj.root_data_prototype_in_cs = value
         return self
 
@@ -238,12 +238,12 @@ class DataPrototypeInClientServerInterfaceInstanceRefBuilder(DataPrototypeInPort
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_data_prototype_in_cs' is required and cannot be None")
         self._obj.target_data_prototype_in_cs = value
         return self
 
 
-    def add_context_data(self, item: any (ApplicationComposite)) -> "DataPrototypeInClientServerInterfaceInstanceRefBuilder":
+    def add_context_data(self, item: Any) -> "DataPrototypeInClientServerInterfaceInstanceRefBuilder":
         """Add a single item to context_datas list.
 
         Args:

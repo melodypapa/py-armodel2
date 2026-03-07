@@ -148,7 +148,7 @@ class BlueprintPolicyListBuilder(BlueprintPolicyBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'max_number_of' is required and cannot be None")
         self._obj.max_number_of = value
         return self
 
@@ -162,7 +162,7 @@ class BlueprintPolicyListBuilder(BlueprintPolicyBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'min_number_of' is required and cannot be None")
         self._obj.min_number_of = value
         return self
 

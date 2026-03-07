@@ -149,11 +149,11 @@ class CpSwClusterResourceToDiagFunctionIdMappingBuilder(DiagnosticMappingBuilder
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'cp_software_cluster' is required and cannot be None")
         self._obj.cp_software_cluster = value
         return self
 
-    def with_function(self, value: Optional[any (DiagnosticFunction)]) -> "CpSwClusterResourceToDiagFunctionIdMappingBuilder":
+    def with_function(self, value: Optional[Any]) -> "CpSwClusterResourceToDiagFunctionIdMappingBuilder":
         """Set function attribute.
 
         Args:
@@ -163,7 +163,7 @@ class CpSwClusterResourceToDiagFunctionIdMappingBuilder(DiagnosticMappingBuilder
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'function' is required and cannot be None")
         self._obj.function = value
         return self
 

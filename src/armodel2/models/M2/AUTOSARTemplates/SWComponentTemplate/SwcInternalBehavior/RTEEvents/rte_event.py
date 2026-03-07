@@ -185,7 +185,7 @@ class RTEEventBuilder(AbstractEventBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'start_on_event' is required and cannot be None")
         self._obj.start_on_event = value
         return self
 

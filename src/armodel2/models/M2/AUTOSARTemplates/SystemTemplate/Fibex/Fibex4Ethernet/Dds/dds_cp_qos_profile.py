@@ -371,7 +371,7 @@ class DdsCpQosProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'deadline' is required and cannot be None")
         self._obj.deadline = value
         return self
 
@@ -385,7 +385,7 @@ class DdsCpQosProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'destination_order' is required and cannot be None")
         self._obj.destination_order = value
         return self
 
@@ -399,7 +399,7 @@ class DdsCpQosProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'durability' is required and cannot be None")
         self._obj.durability = value
         return self
 
@@ -413,7 +413,7 @@ class DdsCpQosProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'history' is required and cannot be None")
         self._obj.history = value
         return self
 
@@ -427,7 +427,7 @@ class DdsCpQosProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'latency_budget' is required and cannot be None")
         self._obj.latency_budget = value
         return self
 
@@ -441,7 +441,7 @@ class DdsCpQosProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lifespan' is required and cannot be None")
         self._obj.lifespan = value
         return self
 
@@ -455,7 +455,7 @@ class DdsCpQosProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'liveliness' is required and cannot be None")
         self._obj.liveliness = value
         return self
 
@@ -469,7 +469,7 @@ class DdsCpQosProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ownership' is required and cannot be None")
         self._obj.ownership = value
         return self
 
@@ -483,7 +483,7 @@ class DdsCpQosProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'reliability' is required and cannot be None")
         self._obj.reliability = value
         return self
 
@@ -497,7 +497,7 @@ class DdsCpQosProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'resource_limits' is required and cannot be None")
         self._obj.resource_limits = value
         return self
 
@@ -511,7 +511,7 @@ class DdsCpQosProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'topic_data' is required and cannot be None")
         self._obj.topic_data = value
         return self
 
@@ -525,7 +525,7 @@ class DdsCpQosProfileBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transport_priority' is required and cannot be None")
         self._obj.transport_priority = value
         return self
 

@@ -169,7 +169,7 @@ class Ipv4PropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'arp_props' is required and cannot be None")
         self._obj.arp_props = value
         return self
 
@@ -183,7 +183,7 @@ class Ipv4PropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'auto_ip_props' is required and cannot be None")
         self._obj.auto_ip_props = value
         return self
 
@@ -197,7 +197,7 @@ class Ipv4PropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'fragmentation' is required and cannot be None")
         self._obj.fragmentation = value
         return self
 

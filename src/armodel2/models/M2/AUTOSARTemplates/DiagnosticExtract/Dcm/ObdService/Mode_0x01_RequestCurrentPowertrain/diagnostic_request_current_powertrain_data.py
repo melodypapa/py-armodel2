@@ -149,11 +149,11 @@ class DiagnosticRequestCurrentPowertrainDataBuilder(DiagnosticServiceInstanceBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pid' is required and cannot be None")
         self._obj.pid = value
         return self
 
-    def with_request_current(self, value: Optional[any (DiagnosticRequest)]) -> "DiagnosticRequestCurrentPowertrainDataBuilder":
+    def with_request_current(self, value: Optional[Any]) -> "DiagnosticRequestCurrentPowertrainDataBuilder":
         """Set request_current attribute.
 
         Args:
@@ -163,7 +163,7 @@ class DiagnosticRequestCurrentPowertrainDataBuilder(DiagnosticServiceInstanceBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request_current' is required and cannot be None")
         self._obj.request_current = value
         return self
 

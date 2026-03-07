@@ -174,7 +174,7 @@ class SignalServiceTranslationElementPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'element' is required and cannot be None")
         self._obj.element = value
         return self
 
@@ -188,7 +188,7 @@ class SignalServiceTranslationElementPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'filter' is required and cannot be None")
         self._obj.filter = value
         return self
 
@@ -202,7 +202,7 @@ class SignalServiceTranslationElementPropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transmission' is required and cannot be None")
         self._obj.transmission = value
         return self
 

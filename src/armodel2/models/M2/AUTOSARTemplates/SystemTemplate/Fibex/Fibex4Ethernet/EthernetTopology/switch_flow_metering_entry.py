@@ -228,7 +228,7 @@ class SwitchFlowMeteringEntryBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'color_mode' is required and cannot be None")
         self._obj.color_mode = value
         return self
 
@@ -242,7 +242,7 @@ class SwitchFlowMeteringEntryBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'committed_burst' is required and cannot be None")
         self._obj.committed_burst = value
         return self
 
@@ -256,7 +256,7 @@ class SwitchFlowMeteringEntryBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'committed' is required and cannot be None")
         self._obj.committed = value
         return self
 
@@ -270,7 +270,7 @@ class SwitchFlowMeteringEntryBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'coupling_flag' is required and cannot be None")
         self._obj.coupling_flag = value
         return self
 
@@ -284,7 +284,7 @@ class SwitchFlowMeteringEntryBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'excess_burst' is required and cannot be None")
         self._obj.excess_burst = value
         return self
 
@@ -298,7 +298,7 @@ class SwitchFlowMeteringEntryBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'excess' is required and cannot be None")
         self._obj.excess = value
         return self
 

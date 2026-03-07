@@ -196,7 +196,7 @@ class BinaryManifestItemBuilder(BinaryManifestAddressableObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_value' is required and cannot be None")
         self._obj.default_value = value
         return self
 
@@ -210,7 +210,7 @@ class BinaryManifestItemBuilder(BinaryManifestAddressableObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'is_unused' is required and cannot be None")
         self._obj.is_unused = value
         return self
 
@@ -224,7 +224,7 @@ class BinaryManifestItemBuilder(BinaryManifestAddressableObjectBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'value' is required and cannot be None")
         self._obj.value = value
         return self
 

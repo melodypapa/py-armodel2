@@ -267,7 +267,7 @@ class IEEE1722TpRvfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rvf_active_pixels' is required and cannot be None")
         self._obj.rvf_active_pixels = value
         return self
 
@@ -281,7 +281,7 @@ class IEEE1722TpRvfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rvf_color_space' is required and cannot be None")
         self._obj.rvf_color_space = value
         return self
 
@@ -295,7 +295,7 @@ class IEEE1722TpRvfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rvf_event_default' is required and cannot be None")
         self._obj.rvf_event_default = value
         return self
 
@@ -309,7 +309,7 @@ class IEEE1722TpRvfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rvf_frame_rate' is required and cannot be None")
         self._obj.rvf_frame_rate = value
         return self
 
@@ -323,11 +323,11 @@ class IEEE1722TpRvfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rvf_interlaced' is required and cannot be None")
         self._obj.rvf_interlaced = value
         return self
 
-    def with_rvf_pixel_depth(self, value: Optional[any (IEEE1722TpRvfPixel)]) -> "IEEE1722TpRvfConnectionBuilder":
+    def with_rvf_pixel_depth(self, value: Optional[Any]) -> "IEEE1722TpRvfConnectionBuilder":
         """Set rvf_pixel_depth attribute.
 
         Args:
@@ -337,11 +337,11 @@ class IEEE1722TpRvfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rvf_pixel_depth' is required and cannot be None")
         self._obj.rvf_pixel_depth = value
         return self
 
-    def with_rvf_pixel_format(self, value: Optional[any (IEEE1722TpRvfPixel)]) -> "IEEE1722TpRvfConnectionBuilder":
+    def with_rvf_pixel_format(self, value: Optional[Any]) -> "IEEE1722TpRvfConnectionBuilder":
         """Set rvf_pixel_format attribute.
 
         Args:
@@ -351,7 +351,7 @@ class IEEE1722TpRvfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rvf_pixel_format' is required and cannot be None")
         self._obj.rvf_pixel_format = value
         return self
 
@@ -365,7 +365,7 @@ class IEEE1722TpRvfConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rvf_total_lines' is required and cannot be None")
         self._obj.rvf_total_lines = value
         return self
 

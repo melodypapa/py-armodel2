@@ -174,7 +174,7 @@ class DiagnosticFimFunctionMappingBuilder(DiagnosticSwMappingBuilder):
         self._obj: DiagnosticFimFunctionMapping = DiagnosticFimFunctionMapping()
 
 
-    def with_mapped_bsw(self, value: Optional[any (BswService)]) -> "DiagnosticFimFunctionMappingBuilder":
+    def with_mapped_bsw(self, value: Optional[Any]) -> "DiagnosticFimFunctionMappingBuilder":
         """Set mapped_bsw attribute.
 
         Args:
@@ -184,11 +184,11 @@ class DiagnosticFimFunctionMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mapped_bsw' is required and cannot be None")
         self._obj.mapped_bsw = value
         return self
 
-    def with_mapped_flat_swc(self, value: Optional[any (SwcService)]) -> "DiagnosticFimFunctionMappingBuilder":
+    def with_mapped_flat_swc(self, value: Optional[Any]) -> "DiagnosticFimFunctionMappingBuilder":
         """Set mapped_flat_swc attribute.
 
         Args:
@@ -198,11 +198,11 @@ class DiagnosticFimFunctionMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mapped_flat_swc' is required and cannot be None")
         self._obj.mapped_flat_swc = value
         return self
 
-    def with_mapped(self, value: Optional[any (DiagnosticFunction)]) -> "DiagnosticFimFunctionMappingBuilder":
+    def with_mapped(self, value: Optional[Any]) -> "DiagnosticFimFunctionMappingBuilder":
         """Set mapped attribute.
 
         Args:
@@ -212,11 +212,11 @@ class DiagnosticFimFunctionMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mapped' is required and cannot be None")
         self._obj.mapped = value
         return self
 
-    def with_mapped_swc(self, value: Optional[any (SwcService)]) -> "DiagnosticFimFunctionMappingBuilder":
+    def with_mapped_swc(self, value: Optional[Any]) -> "DiagnosticFimFunctionMappingBuilder":
         """Set mapped_swc attribute.
 
         Args:
@@ -226,7 +226,7 @@ class DiagnosticFimFunctionMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mapped_swc' is required and cannot be None")
         self._obj.mapped_swc = value
         return self
 

@@ -227,7 +227,7 @@ class IEEE1722TpConnectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'destination_mac' is required and cannot be None")
         self._obj.destination_mac = value
         return self
 
@@ -241,7 +241,7 @@ class IEEE1722TpConnectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mac_address_string' is required and cannot be None")
         self._obj.mac_address_string = value
         return self
 
@@ -255,7 +255,7 @@ class IEEE1722TpConnectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pdu' is required and cannot be None")
         self._obj.pdu = value
         return self
 
@@ -269,7 +269,7 @@ class IEEE1722TpConnectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'unique_stream_id' is required and cannot be None")
         self._obj.unique_stream_id = value
         return self
 
@@ -283,7 +283,7 @@ class IEEE1722TpConnectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'version' is required and cannot be None")
         self._obj.version = value
         return self
 
@@ -297,7 +297,7 @@ class IEEE1722TpConnectionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'vlan_priority' is required and cannot be None")
         self._obj.vlan_priority = value
         return self
 

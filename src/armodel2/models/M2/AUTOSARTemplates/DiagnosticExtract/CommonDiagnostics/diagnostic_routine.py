@@ -211,11 +211,11 @@ class DiagnosticRoutineBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'id' is required and cannot be None")
         self._obj.id = value
         return self
 
-    def with_request_result(self, value: Optional[any (DiagnosticRequest)]) -> "DiagnosticRoutineBuilder":
+    def with_request_result(self, value: Optional[Any]) -> "DiagnosticRoutineBuilder":
         """Set request_result attribute.
 
         Args:
@@ -225,7 +225,7 @@ class DiagnosticRoutineBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'request_result' is required and cannot be None")
         self._obj.request_result = value
         return self
 
@@ -239,7 +239,7 @@ class DiagnosticRoutineBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'routine_info' is required and cannot be None")
         self._obj.routine_info = value
         return self
 
@@ -253,7 +253,7 @@ class DiagnosticRoutineBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'start' is required and cannot be None")
         self._obj.start = value
         return self
 
@@ -267,7 +267,7 @@ class DiagnosticRoutineBuilder(DiagnosticCommonElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'stop' is required and cannot be None")
         self._obj.stop = value
         return self
 

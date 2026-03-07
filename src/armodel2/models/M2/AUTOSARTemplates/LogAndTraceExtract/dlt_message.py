@@ -242,7 +242,7 @@ class DltMessageBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'message_id' is required and cannot be None")
         self._obj.message_id = value
         return self
 
@@ -256,7 +256,7 @@ class DltMessageBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'message_line' is required and cannot be None")
         self._obj.message_line = value
         return self
 
@@ -270,7 +270,7 @@ class DltMessageBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'message_source' is required and cannot be None")
         self._obj.message_source = value
         return self
 
@@ -284,7 +284,7 @@ class DltMessageBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'message_type_info' is required and cannot be None")
         self._obj.message_type_info = value
         return self
 
@@ -298,7 +298,7 @@ class DltMessageBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'privacy_level' is required and cannot be None")
         self._obj.privacy_level = value
         return self
 

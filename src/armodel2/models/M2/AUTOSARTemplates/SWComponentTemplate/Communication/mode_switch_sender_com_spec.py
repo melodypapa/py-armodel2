@@ -194,7 +194,7 @@ class ModeSwitchSenderComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'enhanced_mode_api' is required and cannot be None")
         self._obj.enhanced_mode_api = value
         return self
 
@@ -208,7 +208,7 @@ class ModeSwitchSenderComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode_group' is required and cannot be None")
         self._obj.mode_group = value
         return self
 
@@ -222,7 +222,7 @@ class ModeSwitchSenderComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'mode_switched_ack' is required and cannot be None")
         self._obj.mode_switched_ack = value
         return self
 
@@ -236,7 +236,7 @@ class ModeSwitchSenderComSpecBuilder(PPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'queue_length' is required and cannot be None")
         self._obj.queue_length = value
         return self
 

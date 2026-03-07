@@ -156,7 +156,7 @@ class RPortPrototypeBuilder(AbstractRequiredPortPrototypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'may_be_unconnected' is required and cannot be None")
         self._obj.may_be_unconnected = value
         return self
 
@@ -170,7 +170,7 @@ class RPortPrototypeBuilder(AbstractRequiredPortPrototypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'required_interface' is required and cannot be None")
         self._obj.required_interface = value
         return self
 

@@ -149,7 +149,7 @@ class UdpNmNodeBuilder(NmNodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'all_nm_messages' is required and cannot be None")
         self._obj.all_nm_messages = value
         return self
 
@@ -163,7 +163,7 @@ class UdpNmNodeBuilder(NmNodeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'nm_msg_cycle' is required and cannot be None")
         self._obj.nm_msg_cycle = value
         return self
 

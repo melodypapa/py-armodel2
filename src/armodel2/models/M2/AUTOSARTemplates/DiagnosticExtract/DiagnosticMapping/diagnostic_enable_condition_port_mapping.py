@@ -155,7 +155,7 @@ class DiagnosticEnableConditionPortMappingBuilder(DiagnosticSwMappingBuilder):
         self._obj: DiagnosticEnableConditionPortMapping = DiagnosticEnableConditionPortMapping()
 
 
-    def with_enable_condition(self, value: Optional[any (DiagnosticEnable)]) -> "DiagnosticEnableConditionPortMappingBuilder":
+    def with_enable_condition(self, value: Optional[Any]) -> "DiagnosticEnableConditionPortMappingBuilder":
         """Set enable_condition attribute.
 
         Args:
@@ -165,11 +165,11 @@ class DiagnosticEnableConditionPortMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'enable_condition' is required and cannot be None")
         self._obj.enable_condition = value
         return self
 
-    def with_swc_flat_service(self, value: Optional[any (SwcService)]) -> "DiagnosticEnableConditionPortMappingBuilder":
+    def with_swc_flat_service(self, value: Optional[Any]) -> "DiagnosticEnableConditionPortMappingBuilder":
         """Set swc_flat_service attribute.
 
         Args:
@@ -179,11 +179,11 @@ class DiagnosticEnableConditionPortMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'swc_flat_service' is required and cannot be None")
         self._obj.swc_flat_service = value
         return self
 
-    def with_swc_service(self, value: Optional[any (SwcService)]) -> "DiagnosticEnableConditionPortMappingBuilder":
+    def with_swc_service(self, value: Optional[Any]) -> "DiagnosticEnableConditionPortMappingBuilder":
         """Set swc_service attribute.
 
         Args:
@@ -193,7 +193,7 @@ class DiagnosticEnableConditionPortMappingBuilder(DiagnosticSwMappingBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'swc_service' is required and cannot be None")
         self._obj.swc_service = value
         return self
 

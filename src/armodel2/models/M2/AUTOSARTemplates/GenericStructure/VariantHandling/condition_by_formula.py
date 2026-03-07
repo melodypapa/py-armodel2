@@ -128,7 +128,7 @@ class ConditionByFormulaBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'binding_time_enum' is required and cannot be None")
         self._obj.binding_time_enum = value
         return self
 

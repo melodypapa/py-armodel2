@@ -138,7 +138,7 @@ class ImplementationDataTypeSubElementRefBuilder(SubElementRefBuilder):
         self._obj: ImplementationDataTypeSubElementRef = ImplementationDataTypeSubElementRef()
 
 
-    def with_implementation(self, value: Optional[any (ArVariableIn)]) -> "ImplementationDataTypeSubElementRefBuilder":
+    def with_implementation(self, value: Optional[Any]) -> "ImplementationDataTypeSubElementRefBuilder":
         """Set implementation attribute.
 
         Args:
@@ -148,7 +148,7 @@ class ImplementationDataTypeSubElementRefBuilder(SubElementRefBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'implementation' is required and cannot be None")
         self._obj.implementation = value
         return self
 
@@ -162,7 +162,7 @@ class ImplementationDataTypeSubElementRefBuilder(SubElementRefBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'parameter' is required and cannot be None")
         self._obj.parameter = value
         return self
 

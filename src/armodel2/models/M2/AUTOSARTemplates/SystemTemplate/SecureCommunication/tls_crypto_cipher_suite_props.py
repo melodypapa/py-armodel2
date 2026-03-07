@@ -129,7 +129,7 @@ class TlsCryptoCipherSuitePropsBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'tcp_ip_tls_use' is required and cannot be None")
         self._obj.tcp_ip_tls_use = value
         return self
 

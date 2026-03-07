@@ -129,7 +129,7 @@ class AssignNadBuilder(LinConfigurationEntryBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'new_nad' is required and cannot be None")
         self._obj.new_nad = value
         return self
 

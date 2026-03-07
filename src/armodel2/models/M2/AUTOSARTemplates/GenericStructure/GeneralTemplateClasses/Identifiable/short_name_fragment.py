@@ -145,7 +145,7 @@ class ShortNameFragmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'fragment' is required and cannot be None")
         self._obj.fragment = value
         return self
 
@@ -159,7 +159,7 @@ class ShortNameFragmentBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'role' is required and cannot be None")
         self._obj.role = value
         return self
 

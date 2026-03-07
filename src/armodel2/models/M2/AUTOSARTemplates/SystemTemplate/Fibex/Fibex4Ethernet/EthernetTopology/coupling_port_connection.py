@@ -210,7 +210,7 @@ class CouplingPortConnectionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'first_port' is required and cannot be None")
         self._obj.first_port = value
         return self
 
@@ -236,7 +236,7 @@ class CouplingPortConnectionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'plca_local_node' is required and cannot be None")
         self._obj.plca_local_node = value
         return self
 
@@ -250,7 +250,7 @@ class CouplingPortConnectionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'plca_transmit' is required and cannot be None")
         self._obj.plca_transmit = value
         return self
 
@@ -264,7 +264,7 @@ class CouplingPortConnectionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'second_port' is required and cannot be None")
         self._obj.second_port = value
         return self
 

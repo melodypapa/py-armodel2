@@ -131,7 +131,7 @@ class CompositeNetworkRepresentationBuilder(BuilderBase):
         self._obj: CompositeNetworkRepresentation = CompositeNetworkRepresentation()
 
 
-    def with_leaf_element_element_in_port_interface_instance_ref(self, value: Optional[any (ApplicationComposite)]) -> "CompositeNetworkRepresentationBuilder":
+    def with_leaf_element_element_in_port_interface_instance_ref(self, value: Optional[Any]) -> "CompositeNetworkRepresentationBuilder":
         """Set leaf_element_element_in_port_interface_instance_ref attribute.
 
         Args:
@@ -141,11 +141,11 @@ class CompositeNetworkRepresentationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'leaf_element_element_in_port_interface_instance_ref' is required and cannot be None")
         self._obj.leaf_element_element_in_port_interface_instance_ref = value
         return self
 
-    def with_network_representation(self, value: Optional[any (SwDataDefPropsRepresentation)]) -> "CompositeNetworkRepresentationBuilder":
+    def with_network_representation(self, value: Optional[Any]) -> "CompositeNetworkRepresentationBuilder":
         """Set network_representation attribute.
 
         Args:
@@ -155,7 +155,7 @@ class CompositeNetworkRepresentationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network_representation' is required and cannot be None")
         self._obj.network_representation = value
         return self
 

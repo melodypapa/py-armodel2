@@ -195,11 +195,11 @@ class EOCExecutableEntityRefBuilder(EOCExecutableEntityRefAbstractBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'bsw_module' is required and cannot be None")
         self._obj.bsw_module = value
         return self
 
-    def with_component(self, value: Optional[any (SwComponent)]) -> "EOCExecutableEntityRefBuilder":
+    def with_component(self, value: Optional[Any]) -> "EOCExecutableEntityRefBuilder":
         """Set component attribute.
 
         Args:
@@ -209,7 +209,7 @@ class EOCExecutableEntityRefBuilder(EOCExecutableEntityRefAbstractBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'component' is required and cannot be None")
         self._obj.component = value
         return self
 
@@ -223,11 +223,11 @@ class EOCExecutableEntityRefBuilder(EOCExecutableEntityRefAbstractBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'executable_entity' is required and cannot be None")
         self._obj.executable_entity = value
         return self
 
-    def with_successors(self, items: list[any (EOCExecutableEntity)]) -> "EOCExecutableEntityRefBuilder":
+    def with_successors(self, items: list[Any]) -> "EOCExecutableEntityRefBuilder":
         """Set successors list attribute.
 
         Args:
@@ -240,7 +240,7 @@ class EOCExecutableEntityRefBuilder(EOCExecutableEntityRefAbstractBuilder):
         return self
 
 
-    def add_successor(self, item: any (EOCExecutableEntity)) -> "EOCExecutableEntityRefBuilder":
+    def add_successor(self, item: Any) -> "EOCExecutableEntityRefBuilder":
         """Add a single item to successors list.
 
         Args:

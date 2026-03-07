@@ -170,7 +170,7 @@ class SOMEIPTransformationDescriptionBuilder(TransformationDescriptionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'alignment' is required and cannot be None")
         self._obj.alignment = value
         return self
 
@@ -184,7 +184,7 @@ class SOMEIPTransformationDescriptionBuilder(TransformationDescriptionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'byte_order' is required and cannot be None")
         self._obj.byte_order = value
         return self
 
@@ -198,7 +198,7 @@ class SOMEIPTransformationDescriptionBuilder(TransformationDescriptionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'interface_version' is required and cannot be None")
         self._obj.interface_version = value
         return self
 

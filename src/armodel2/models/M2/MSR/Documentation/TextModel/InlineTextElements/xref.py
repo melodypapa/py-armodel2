@@ -330,7 +330,7 @@ class XrefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'label1' is required and cannot be None")
         self._obj.label1 = value
         return self
 
@@ -344,7 +344,7 @@ class XrefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'referrable' is required and cannot be None")
         self._obj.referrable = value
         return self
 
@@ -358,7 +358,7 @@ class XrefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'resolution_policy_enum' is required and cannot be None")
         self._obj.resolution_policy_enum = value
         return self
 
@@ -372,7 +372,7 @@ class XrefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'show_content_enum' is required and cannot be None")
         self._obj.show_content_enum = value
         return self
 
@@ -386,7 +386,7 @@ class XrefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'show_resource_alias' is required and cannot be None")
         self._obj.show_resource_alias = value
         return self
 
@@ -400,7 +400,7 @@ class XrefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'show_resource' is required and cannot be None")
         self._obj.show_resource = value
         return self
 
@@ -414,7 +414,7 @@ class XrefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'show_resource_long' is required and cannot be None")
         self._obj.show_resource_long = value
         return self
 
@@ -428,7 +428,7 @@ class XrefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'show_resource_number' is required and cannot be None")
         self._obj.show_resource_number = value
         return self
 
@@ -442,7 +442,7 @@ class XrefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'show_resource_page' is required and cannot be None")
         self._obj.show_resource_page = value
         return self
 
@@ -456,7 +456,7 @@ class XrefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'show_resource_short' is required and cannot be None")
         self._obj.show_resource_short = value
         return self
 
@@ -470,7 +470,7 @@ class XrefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'show_see' is required and cannot be None")
         self._obj.show_see = value
         return self
 

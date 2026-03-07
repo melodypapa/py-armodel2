@@ -151,7 +151,7 @@ class LGraphicBuilder(LanguageSpecificBuilder):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'graphic' is required and cannot be None")
         self._obj.graphic = value
         return self
 
@@ -165,7 +165,7 @@ class LGraphicBuilder(LanguageSpecificBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'map' is required and cannot be None")
         self._obj.map = value
         return self
 

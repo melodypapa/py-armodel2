@@ -176,7 +176,7 @@ class AtpInstanceRefBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'atp_base' is required and cannot be None")
         self._obj.atp_base = value
         return self
 
@@ -202,7 +202,7 @@ class AtpInstanceRefBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'atp_target' is required and cannot be None")
         self._obj.atp_target = value
         return self
 

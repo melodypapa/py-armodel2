@@ -171,7 +171,7 @@ class AppOsTaskProxyToEcuTaskProxyMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'app_task_proxy' is required and cannot be None")
         self._obj.app_task_proxy = value
         return self
 
@@ -185,7 +185,7 @@ class AppOsTaskProxyToEcuTaskProxyMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ecu_task_proxy' is required and cannot be None")
         self._obj.ecu_task_proxy = value
         return self
 
@@ -199,7 +199,7 @@ class AppOsTaskProxyToEcuTaskProxyMappingBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'offset' is required and cannot be None")
         self._obj.offset = value
         return self
 

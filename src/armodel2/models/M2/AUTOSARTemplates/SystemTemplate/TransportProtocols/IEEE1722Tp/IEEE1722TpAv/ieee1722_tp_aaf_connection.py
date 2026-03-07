@@ -305,7 +305,7 @@ class IEEE1722TpAafConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'aaf_aes3_data' is required and cannot be None")
         self._obj.aaf_aes3_data = value
         return self
 
@@ -319,11 +319,11 @@ class IEEE1722TpAafConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'aaf_format_enum' is required and cannot be None")
         self._obj.aaf_format_enum = value
         return self
 
-    def with_aaf_nominal_rate(self, value: Optional[any (IEEE1722TpAaf)]) -> "IEEE1722TpAafConnectionBuilder":
+    def with_aaf_nominal_rate(self, value: Optional[Any]) -> "IEEE1722TpAafConnectionBuilder":
         """Set aaf_nominal_rate attribute.
 
         Args:
@@ -333,7 +333,7 @@ class IEEE1722TpAafConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'aaf_nominal_rate' is required and cannot be None")
         self._obj.aaf_nominal_rate = value
         return self
 
@@ -347,7 +347,7 @@ class IEEE1722TpAafConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'aes3_data_type_h' is required and cannot be None")
         self._obj.aes3_data_type_h = value
         return self
 
@@ -361,7 +361,7 @@ class IEEE1722TpAafConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'aes3_data_type_l' is required and cannot be None")
         self._obj.aes3_data_type_l = value
         return self
 
@@ -375,7 +375,7 @@ class IEEE1722TpAafConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'channels_per' is required and cannot be None")
         self._obj.channels_per = value
         return self
 
@@ -389,7 +389,7 @@ class IEEE1722TpAafConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'event_default' is required and cannot be None")
         self._obj.event_default = value
         return self
 
@@ -403,7 +403,7 @@ class IEEE1722TpAafConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'pcm_bit_depth' is required and cannot be None")
         self._obj.pcm_bit_depth = value
         return self
 
@@ -417,7 +417,7 @@ class IEEE1722TpAafConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'sparse' is required and cannot be None")
         self._obj.sparse = value
         return self
 
@@ -431,7 +431,7 @@ class IEEE1722TpAafConnectionBuilder(IEEE1722TpAvConnectionBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'streams_per' is required and cannot be None")
         self._obj.streams_per = value
         return self
 

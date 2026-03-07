@@ -166,7 +166,7 @@ class ConfidenceIntervalBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'lower_bound' is required and cannot be None")
         self._obj.lower_bound = value
         return self
 
@@ -180,7 +180,7 @@ class ConfidenceIntervalBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'propability' is required and cannot be None")
         self._obj.propability = value
         return self
 
@@ -194,7 +194,7 @@ class ConfidenceIntervalBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'upper_bound' is required and cannot be None")
         self._obj.upper_bound = value
         return self
 

@@ -145,7 +145,7 @@ class TriggerMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'first_trigger' is required and cannot be None")
         self._obj.first_trigger = value
         return self
 
@@ -159,7 +159,7 @@ class TriggerMappingBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'second_trigger' is required and cannot be None")
         self._obj.second_trigger = value
         return self
 

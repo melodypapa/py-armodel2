@@ -129,7 +129,7 @@ class DcmIPduBuilder(IPduBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'diag_pdu_type' is required and cannot be None")
         self._obj.diag_pdu_type = value
         return self
 

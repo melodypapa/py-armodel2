@@ -255,7 +255,7 @@ class PortAPIOptionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'enable_take_address' is required and cannot be None")
         self._obj.enable_take_address = value
         return self
 
@@ -269,7 +269,7 @@ class PortAPIOptionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'error_handling' is required and cannot be None")
         self._obj.error_handling = value
         return self
 
@@ -283,7 +283,7 @@ class PortAPIOptionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'indirect_api' is required and cannot be None")
         self._obj.indirect_api = value
         return self
 
@@ -309,7 +309,7 @@ class PortAPIOptionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'port' is required and cannot be None")
         self._obj.port = value
         return self
 
@@ -335,7 +335,7 @@ class PortAPIOptionBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'transformer_status_forwarding' is required and cannot be None")
         self._obj.transformer_status_forwarding = value
         return self
 

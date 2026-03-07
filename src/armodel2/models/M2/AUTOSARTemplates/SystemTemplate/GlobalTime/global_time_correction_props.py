@@ -164,7 +164,7 @@ class GlobalTimeCorrectionPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'offset_correction' is required and cannot be None")
         self._obj.offset_correction = value
         return self
 
@@ -178,7 +178,7 @@ class GlobalTimeCorrectionPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rate_correction' is required and cannot be None")
         self._obj.rate_correction = value
         return self
 
@@ -192,7 +192,7 @@ class GlobalTimeCorrectionPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'rate_corrections' is required and cannot be None")
         self._obj.rate_corrections = value
         return self
 

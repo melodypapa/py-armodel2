@@ -134,7 +134,7 @@ class CommonSignalPathBuilder(SignalPathConstraintBuilder):
         self._obj: CommonSignalPath = CommonSignalPath()
 
 
-    def with_operations(self, items: list[any (SwcToSwcOperation)]) -> "CommonSignalPathBuilder":
+    def with_operations(self, items: list[Any]) -> "CommonSignalPathBuilder":
         """Set operations list attribute.
 
         Args:
@@ -159,7 +159,7 @@ class CommonSignalPathBuilder(SignalPathConstraintBuilder):
         return self
 
 
-    def add_operation(self, item: any (SwcToSwcOperation)) -> "CommonSignalPathBuilder":
+    def add_operation(self, item: Any) -> "CommonSignalPathBuilder":
         """Add a single item to operations list.
 
         Args:

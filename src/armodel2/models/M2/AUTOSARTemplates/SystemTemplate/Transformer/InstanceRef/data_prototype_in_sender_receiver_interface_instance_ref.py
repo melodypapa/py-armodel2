@@ -185,7 +185,7 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder(DataPrototypeInPo
         self._obj: DataPrototypeInSenderReceiverInterfaceInstanceRef = DataPrototypeInSenderReceiverInterfaceInstanceRef()
 
 
-    def with_base_interface(self, value: Optional[any (SenderReceiver)]) -> "DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder":
+    def with_base_interface(self, value: Optional[Any]) -> "DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder":
         """Set base_interface attribute.
 
         Args:
@@ -195,11 +195,11 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder(DataPrototypeInPo
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'base_interface' is required and cannot be None")
         self._obj.base_interface = value
         return self
 
-    def with_context_datas(self, items: list[any (ApplicationComposite)]) -> "DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder":
+    def with_context_datas(self, items: list[Any]) -> "DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder":
         """Set context_datas list attribute.
 
         Args:
@@ -221,7 +221,7 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder(DataPrototypeInPo
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'root_data_prototype_in_sr' is required and cannot be None")
         self._obj.root_data_prototype_in_sr = value
         return self
 
@@ -235,12 +235,12 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder(DataPrototypeInPo
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'target_data_prototype_in_sr' is required and cannot be None")
         self._obj.target_data_prototype_in_sr = value
         return self
 
 
-    def add_context_data(self, item: any (ApplicationComposite)) -> "DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder":
+    def add_context_data(self, item: Any) -> "DataPrototypeInSenderReceiverInterfaceInstanceRefBuilder":
         """Add a single item to context_datas list.
 
         Args:

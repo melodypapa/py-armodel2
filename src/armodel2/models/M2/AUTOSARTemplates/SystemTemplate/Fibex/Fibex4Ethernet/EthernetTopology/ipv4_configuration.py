@@ -272,7 +272,7 @@ class Ipv4ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'assignment' is required and cannot be None")
         self._obj.assignment = value
         return self
 
@@ -286,7 +286,7 @@ class Ipv4ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'default_gateway' is required and cannot be None")
         self._obj.default_gateway = value
         return self
 
@@ -312,7 +312,7 @@ class Ipv4ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ip_address_keep_enum' is required and cannot be None")
         self._obj.ip_address_keep_enum = value
         return self
 
@@ -326,7 +326,7 @@ class Ipv4ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ipv4_address' is required and cannot be None")
         self._obj.ipv4_address = value
         return self
 
@@ -340,7 +340,7 @@ class Ipv4ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ipv4_address_source' is required and cannot be None")
         self._obj.ipv4_address_source = value
         return self
 
@@ -354,7 +354,7 @@ class Ipv4ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'network_mask' is required and cannot be None")
         self._obj.network_mask = value
         return self
 
@@ -368,7 +368,7 @@ class Ipv4ConfigurationBuilder(NetworkEndpointAddressBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+            raise ValueError("Attribute 'ttl' is required and cannot be None")
         self._obj.ttl = value
         return self
 
