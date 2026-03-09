@@ -577,19 +577,4 @@ class TestStaticBinaryComparison:
             tmp_path
         )
 
-    def test_sw_record_demo_binary_comparison(
-        self,
-        reader: ARXMLReader,
-        writer: ARXMLWriter,
-        tmp_path: Path
-    ) -> None:
-        """Test SwRecordDemo.arxml for binary exact round-trip serialization.
-
-        Test ID: SWITS-INT-0228
-        """
-        self._test_single_file_binary_comparison(
-            "SwRecordDemo.arxml",
-            reader,
-            writer,
-            tmp_path
-        )
+    

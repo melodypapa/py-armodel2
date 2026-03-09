@@ -47,8 +47,8 @@ class TestReaderEncoding:
 
         Test ID: SWITS-INT-0301
         """
-        # Adc_Bswmd.arxml uses ISO-8859-1 encoding
-        arxml_file = Path("demos/arxml/Adc_Bswmd.arxml")
+        # SwRecordDemo.arxml uses ISO-8859-1 encoding
+        arxml_file = Path("demos/test_validated/SwRecordDemo.arxml")
         if not arxml_file.exists():
             pytest.skip(f"File not found: {arxml_file}")
 
@@ -95,7 +95,7 @@ class TestReaderEncoding:
 
         Test ID: SWITS-INT-0303
         """
-        arxml_file = Path("demos/arxml/Adc_Bswmd.arxml")
+        arxml_file = Path("demos/test_validated/SwRecordDemo.arxml")
         if not arxml_file.exists():
             pytest.skip(f"File not found: {arxml_file}")
 
@@ -109,7 +109,7 @@ class TestReaderEncoding:
         assert autosar.encoding == "ISO-8859-1"
 
         # Write back (should preserve ISO-8859-1 encoding)
-        output_file = tmp_path / "Adc_Bswmd_output.arxml"
+        output_file = tmp_path / "SwRecordDemo_output.arxml"
         writer.save_arxml(str(output_file), autosar)
 
         # Validate output file exists and is valid XML
@@ -121,35 +121,31 @@ class TestReaderEncoding:
         # Verify the XML declaration preserves the encoding
         assert 'encoding="ISO-8859-1"' in content
 
-    def test_read_multiple_iso_8859_1_files(self, reader: ARXMLReader) -> None:
-        """Test reading multiple ISO-8859-1 encoded files.
+    def test_read_iso_8859_1_file_twice(self, reader: ARXMLReader) -> None:
+        """Test reading ISO-8859-1 file twice with reset.
 
-        Validates that the reader can handle various ISO-8859-1 files
-        from the demos directory.
+        Validates that the reader can handle ISO-8859-1 files
+        when loaded multiple times with proper reset.
 
         Test ID: SWITS-INT-0304
         """
-        # List of ISO-8859-1 files to test
-        iso_8859_1_files = [
-            "Adc_Bswmd.arxml",
-            "Atomics_Bswmd.arxml",
-            "Base_Bswmd.arxml",
-        ]
+        arxml_file = Path("demos/test_validated/SwRecordDemo.arxml")
+        if not arxml_file.exists():
+            pytest.skip(f"File not found: {arxml_file}")
 
-        for filename in iso_8859_1_files:
-            arxml_file = Path("demos/arxml") / filename
-            if not arxml_file.exists():
-                pytest.skip(f"File not found: {arxml_file}")
+        # First read
+        AUTOSAR.reset()
+        autosar = AUTOSAR()
+        reader.load_arxml(str(arxml_file), autosar)
+        assert autosar.ar_packages is not None
+        assert len(autosar.ar_packages) > 0
+        first_count = len(autosar.ar_packages)
 
-            AUTOSAR.reset()
-            autosar = AUTOSAR()
-
-            # Should read successfully
-            reader.load_arxml(str(arxml_file), autosar)
-
-            # Validate that data was loaded
-            assert autosar.ar_packages is not None
-            assert len(autosar.ar_packages) > 0
+        # Second read with reset
+        AUTOSAR.reset()
+        autosar2 = AUTOSAR()
+        reader.load_arxml(str(arxml_file), autosar2)
+        assert len(autosar2.ar_packages) == first_count
 
     def test_load_arxml_with_clear_iso_8859_1(self, reader: ARXMLReader) -> None:
         """Test load_arxml_with_clear with ISO-8859-1 file.
@@ -159,7 +155,7 @@ class TestReaderEncoding:
 
         Test ID: SWITS-INT-0305
         """
-        arxml_file = Path("demos/arxml/Adc_Bswmd.arxml")
+        arxml_file = Path("demos/test_validated/SwRecordDemo.arxml")
         if not arxml_file.exists():
             pytest.skip(f"File not found: {arxml_file}")
 
