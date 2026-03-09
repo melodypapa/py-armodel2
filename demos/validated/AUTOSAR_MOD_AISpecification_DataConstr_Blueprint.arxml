@@ -24,18 +24,18 @@
               <CATEGORY>BLUEPRINT</CATEGORY>
               <REFERENCE-BASES>
                 <REFERENCE-BASE>
-                  <SHORT-LABEL>Units_obsolete</SHORT-LABEL>
-                  <IS-DEFAULT>false</IS-DEFAULT>
-                  <IS-GLOBAL>false</IS-GLOBAL>
-                  <BASE-IS-THIS-PACKAGE>false</BASE-IS-THIS-PACKAGE>
-                  <PACKAGE-REF DEST="AR-PACKAGE">/AUTOSAR/AISpecification/Units_obsolete</PACKAGE-REF>
-                </REFERENCE-BASE>
-                <REFERENCE-BASE>
                   <SHORT-LABEL>Units</SHORT-LABEL>
                   <IS-DEFAULT>false</IS-DEFAULT>
                   <IS-GLOBAL>false</IS-GLOBAL>
                   <BASE-IS-THIS-PACKAGE>false</BASE-IS-THIS-PACKAGE>
                   <PACKAGE-REF DEST="AR-PACKAGE">/AUTOSAR/PhysicalUnits/Units_Blueprint</PACKAGE-REF>
+                </REFERENCE-BASE>
+                <REFERENCE-BASE>
+                  <SHORT-LABEL>Units_obsolete</SHORT-LABEL>
+                  <IS-DEFAULT>false</IS-DEFAULT>
+                  <IS-GLOBAL>false</IS-GLOBAL>
+                  <BASE-IS-THIS-PACKAGE>false</BASE-IS-THIS-PACKAGE>
+                  <PACKAGE-REF DEST="AR-PACKAGE">/AUTOSAR/AISpecification/Units_obsolete</PACKAGE-REF>
                 </REFERENCE-BASE>
               </REFERENCE-BASES>
               <ELEMENTS>
@@ -46,7 +46,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-18</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">18</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -58,7 +58,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-20.48</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">20.48</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -70,7 +70,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-99</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">99</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -82,7 +82,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-981</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">981</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -94,7 +94,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-1962</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1962</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -106,7 +106,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-7848</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">7848</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -118,7 +118,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-30</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">30</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -130,7 +130,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-8.5</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">8.5</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -142,7 +142,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-18</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">18</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -154,7 +154,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-200</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">200</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -166,7 +166,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">2.55</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -178,7 +178,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-1178</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1178</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -190,7 +190,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-4710</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">4710</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -224,7 +224,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-0.5</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0.5</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -236,7 +236,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-1.5</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1.5</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -248,7 +248,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-1.571</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1.571</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -260,7 +260,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-14.5</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">14.5</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -272,7 +272,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-870</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">870</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -284,7 +284,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-1.57079632679489</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1.57079632679489</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -296,7 +296,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-1000</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">RadPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">RadPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -308,7 +308,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-75</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">75</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">RadPerSecSqd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">RadPerSecSqd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -320,7 +320,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-50</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">50</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -332,7 +332,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-5</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">5</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -344,7 +344,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-5</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">5</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -356,7 +356,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-10</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">10</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -368,7 +368,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-628</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">628</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -380,7 +380,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">500</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -392,7 +392,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-1</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -404,7 +404,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-8</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">8</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -724,7 +724,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-0.1</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0.1</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">PerMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">PerMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -758,7 +758,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-10000</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">10000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtSecPerMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtSecPerMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -770,7 +770,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">31</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1126,7 +1126,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-2500</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">2500</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Nwt</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Nwt</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1138,7 +1138,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-20000</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">20000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Nwt</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Nwt</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1150,7 +1150,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-150000</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">150000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Nwt</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Nwt</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1162,7 +1162,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-32</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">31.9990234375</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1174,7 +1174,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0.7</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1.2</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1186,7 +1186,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1198,7 +1198,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">127.9921875</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1210,7 +1210,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1244,7 +1244,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">2</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1256,7 +1256,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">100</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Hz</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Hz</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1268,7 +1268,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0.5</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">20</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">KiloHz</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">KiloHz</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1324,7 +1324,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">23</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1479,7 +1479,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-30</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">30</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecCubd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecCubd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1557,7 +1557,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-0.2</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0.2</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1569,7 +1569,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-125</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">125</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1581,7 +1581,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">40.96</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1593,7 +1593,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">6</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1605,7 +1605,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-0.3</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0.3</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1617,7 +1617,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-0.3</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0.3</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1629,7 +1629,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">4</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1641,7 +1641,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1000000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">KiloMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">KiloMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1653,7 +1653,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-500</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">500</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1797,7 +1797,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">10000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">KiloGr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">KiloGr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1809,7 +1809,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">250</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">KiloGr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">KiloGr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1832,7 +1832,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">59</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1888,7 +1888,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">12</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1900,7 +1900,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">16383.5</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Rpm</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Rpm</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1912,7 +1912,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-16384</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">16383.5</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Rpm</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Rpm</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1924,7 +1924,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-30000</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">30000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">RpmPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">RpmPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1936,7 +1936,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-16</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">15</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1948,7 +1948,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">512</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1960,7 +1960,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">255</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1972,7 +1972,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">65535</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1984,7 +1984,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-128</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">127</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -1996,7 +1996,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">7</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2008,7 +2008,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">31</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2020,7 +2020,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">3</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2032,7 +2032,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">4294967295</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2044,7 +2044,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-8</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">7</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2232,7 +2232,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">10</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Bar</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Bar</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2244,7 +2244,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1275</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">HectoPa</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">HectoPa</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2256,7 +2256,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-536870912</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">536854528</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Pa</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Pa</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2268,7 +2268,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-1048576</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1048544</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Pa</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Pa</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2280,7 +2280,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-536870912</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">536854528</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Pa</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Pa</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2292,7 +2292,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">100</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2304,7 +2304,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-327.68</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">327.67</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2316,7 +2316,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-327.68</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">327.67</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2328,7 +2328,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">100</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2340,7 +2340,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-128</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">127</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2352,7 +2352,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1001</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2364,7 +2364,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-5</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">15</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2376,7 +2376,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">100.1</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2388,7 +2388,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-1000</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">PercPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">PercPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2470,7 +2470,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">3</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2617,7 +2617,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">59</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2629,7 +2629,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">125</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2641,7 +2641,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-50</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">50</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2653,7 +2653,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">125</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2665,7 +2665,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">125</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2677,7 +2677,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-128</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">128</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2689,7 +2689,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-30</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">30</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2701,7 +2701,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-150000</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">150000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtPerMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtPerMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2801,7 +2801,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-70</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">125</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">DegCgrd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2813,7 +2813,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-50</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">200</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">DegCgrd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2825,7 +2825,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-40</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">213</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">DegCgrd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2837,7 +2837,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-3276.8</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">3276.7</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">KelvinAbslt</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">KelvinAbslt</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2849,7 +2849,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-3276.8</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">3276.7</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">KelvinAbslt</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">KelvinAbslt</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2861,7 +2861,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-70</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">213</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">DegCgrd</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2906,7 +2906,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">3.1</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Sec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Sec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2918,7 +2918,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">65.535</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Sec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Sec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -2930,7 +2930,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0.01638375</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Sec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Sec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3008,7 +3008,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-30</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">30</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3020,7 +3020,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">20000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3032,7 +3032,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">60000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3044,7 +3044,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-10000</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">10000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3056,7 +3056,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">10000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3068,7 +3068,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-10</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">10</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3080,7 +3080,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-2048</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">2045</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3092,7 +3092,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-20000</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">20000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3104,7 +3104,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">20000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3116,7 +3116,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">80000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3128,7 +3128,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-2048</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">2047.9375</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3140,7 +3140,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-2048</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3152,7 +3152,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">-131072</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">131071.9375</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3164,7 +3164,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1000000</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NwtMtrPerSec</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NwtMtrPerSec</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3226,7 +3226,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3271,7 +3271,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">25.2</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">Volt</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">Volt</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>
@@ -3404,7 +3404,7 @@
                       <PHYS-CONSTRS>
                         <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
                         <UPPER-LIMIT INTERVAL-TYPE="CLOSED">99</UPPER-LIMIT>
-                        <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                        <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                       </PHYS-CONSTRS>
                     </DATA-CONSTR-RULE>
                   </DATA-CONSTR-RULES>

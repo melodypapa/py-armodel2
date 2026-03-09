@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "ARElement",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ARPackage",
       "is_abstract": true,
       "atp_type": null,
@@ -439,7 +439,7 @@
     },
     {
       "name": "PackageableElement",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ARPackage",
       "is_abstract": true,
       "atp_type": null,
@@ -491,7 +491,7 @@
     },
     {
       "name": "ReferenceBase",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ARPackage",
       "is_abstract": false,
       "atp_type": null,

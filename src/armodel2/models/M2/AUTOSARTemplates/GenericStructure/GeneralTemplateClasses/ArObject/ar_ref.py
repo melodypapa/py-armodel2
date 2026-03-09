@@ -138,14 +138,14 @@ class ARRef(ARObject):
         # Copy text from parent element
         if parent_elem.text:
             elem.text = parent_elem.text
+        
+        # Set DEST attribute if present
+        if self._dest is not None:
+            elem.set("DEST", self._dest)
 
         # Set BASE attribute if present
         if self._base is not None:
             elem.set("BASE", self._base)
-
-        # Set DEST attribute if present
-        if self._dest is not None:
-            elem.set("DEST", self._dest)
 
         # Set text content (reference path)
         if self._value is not None:

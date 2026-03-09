@@ -185,6 +185,13 @@
           "is_ref": true,
           "note": "Base type associated with the containing data object."
         },
+        "swCalibrationAccess": {
+          "type": "SwCalibrationAccessEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Specifies the read or write access by MCD tools for this data object."
+        },
         "compuMethod": {
           "type": "CompuMethod",
           "multiplicity": "0..1",
@@ -255,13 +262,7 @@
           "is_ref": false,
           "note": "Description of the binary representation in case of a bit"
         },
-        "swCalibrationAccess": {
-          "type": "SwCalibrationAccessEnum",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "Specifies the read or write access by MCD tools for this data object."
-        },
+        
         "swCalprmAxisSet": {
           "type": "SwCalprmAxisSet",
           "multiplicity": "0..1",

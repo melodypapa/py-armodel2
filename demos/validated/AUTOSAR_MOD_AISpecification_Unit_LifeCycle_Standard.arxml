@@ -43,1449 +43,1449 @@
                   <SHORT-NAME>UnitLifeCycles</SHORT-NAME>
                   <LIFE-CYCLE-INFOS>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Ampr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Ampr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">AmprPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">AmprPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">AmprSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">AmprSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Bar</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Bar</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">BarPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">BarPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Bel</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Bel</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Bit</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Bit</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">BitPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">BitPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Byte</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Byte</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">BytPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">BytPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Cd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Cd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">CentiMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">CentiMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">CentiMtrSqd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">CentiMtrSqd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Coulomb</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Coulomb</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Day</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Day</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">DeciBel</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">DeciBel</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Deg</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Deg</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">DegCgrd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">DegCgrd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">DegPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">DegPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Frd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Frd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Gr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Gr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">GrPerLtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">GrPerLtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">GrPerMol</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">GrPerMol</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">GrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">GrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">HectoPa</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">HectoPa</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">HectoPaPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">HectoPaPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">HectoPaPerVolt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">HectoPaPerVolt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">HectoPaSecPerMtrCubd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">HectoPaSecPerMtrCubd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Henry</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Henry</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">HenryPerMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">HenryPerMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Hr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Hr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Hz</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Hz</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Jou</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Jou</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">JouPerKelvin</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">JouPerKelvin</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">JouPerKiloGr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">JouPerKiloGr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">JouPerKiloGrPerKelvin</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">JouPerKiloGrPerKelvin</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">JouPerMol</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">JouPerMol</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">JouPerMolPerKelvin</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">JouPerMolPerKelvin</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Kat</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Kat</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KelvinAbslt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KelvinAbslt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KelvinPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KelvinPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KelvinRel</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KelvinRel</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloBitPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloBitPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloGr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloGr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloGrPerHr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloGrPerHr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloGrPerMtrCubd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloGrPerMtrCubd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloGrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloGrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloGrSqrMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloGrSqrMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloHz</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloHz</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloJou</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloJou</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloMtrPerHr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloMtrPerHr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloMtrPerHrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloMtrPerHrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloNwt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloNwt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloNwtMtrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloNwtMtrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloOhm</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloOhm</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloVolt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloVolt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloWatt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloWatt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloWattHr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloWattHr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">KiloWattHrPer100KiloMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">KiloWattHrPer100KiloMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Ltr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Ltr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">LtrPer100KiloMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">LtrPer100KiloMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">LtrPerHr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">LtrPerHr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">LtrPerKiloMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">LtrPerKiloMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MegaBitPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MegaBitPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MegaHz</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MegaHz</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MegaJou</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MegaJou</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MegaOhm</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MegaOhm</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MegaPa</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MegaPa</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MegaWatt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MegaWatt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MicroAmpr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MicroAmpr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MicroFrd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MicroFrd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MicroGr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MicroGr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MicroJou</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MicroJou</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MicroLtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MicroLtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MicroLtrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MicroLtrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MicroMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MicroMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MicroSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MicroSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MicroTesla</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MicroTesla</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliAmpr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliAmpr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliAmprPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliAmprPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliBar</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliBar</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliFrd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliFrd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliGr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliGr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliGrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliGrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliJou</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliJou</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliLtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliLtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliMtrCubd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliMtrCubd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliMtrCubdPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliMtrCubdPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliOhm</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliOhm</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliTesla</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliTesla</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliVolt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliVolt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliVoltPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliVoltPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MilliWatt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MilliWatt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Mins</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Mins</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Ml</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Ml</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MlPerHr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MlPerHr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Mol</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Mol</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MolPerLtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MolPerLtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MolPerLtrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MolPerLtrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MolPerMtrCubd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MolPerMtrCubd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MolPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MolPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Mtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Mtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MtrCubd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MtrCubd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MtrCubdPerHr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MtrCubdPerHr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MtrCubdPerHrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MtrCubdPerHrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MtrCubdPerKiloGr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MtrCubdPerKiloGr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MtrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MtrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MtrPerSecCubd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MtrPerSecCubd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MtrSqd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MtrSqd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">MtrSqdPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">MtrSqdPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">NanoFrd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">NanoFrd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">NanoSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">NanoSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">NoUnit</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">NoUnit</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Nwt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Nwt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">NwtMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">NwtMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">NwtMtrPerRpm</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">NwtMtrPerRpm</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">NwtMtrPerRpmPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">NwtMtrPerRpmPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">NwtMtrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">NwtMtrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">NwtMtrSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">NwtMtrSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">NwtMtrSqrSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">NwtMtrSqrSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">NwtPerMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">NwtPerMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">NwtSecPerMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">NwtSecPerMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Ohm</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Ohm</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Pa</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Pa</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">PaPerMtrCubdPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">PaPerMtrCubdPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">PaPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">PaPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">PaSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">PaSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Perc</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Perc</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">PercPerMilliSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">PercPerMilliSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">PercPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">PercPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">PerMille</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">PerMille</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">PerMin</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">PerMin</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">PerMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">PerMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">PerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">PerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">PerSecSqd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">PerSecSqd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">PicoFrd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">PicoFrd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">PicoSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">PicoSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Ppm</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Ppm</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Rad</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Rad</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">RadPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">RadPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">RadPerSecSqd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">RadPerSecSqd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Rpm</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Rpm</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">RpmPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">RpmPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">S</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">S</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Sec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Sec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">SPerMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">SPerMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">SPerMtrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">SPerMtrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Tesla</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Tesla</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Tonne</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Tonne</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Volt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Volt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">VoltPerMilliSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">VoltPerMilliSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">VoltPerMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">VoltPerMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">VoltPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">VoltPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Watt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Watt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">WattPerKelvinPerMtrSqd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">WattPerKelvinPerMtrSqd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">WattPerMtrPerKelvin</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">WattPerMtrPerKelvin</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">WattPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">WattPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">WattSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">WattSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Wb</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Wb</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">Yr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">Yr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">Bar</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">Bar</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">Bar</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">Bar</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">DegCgrd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">DegCgrd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">DegCgrd</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">DegCgrd</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">HectoPa</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">HectoPa</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">HectoPa</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">HectoPa</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">Hz</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">Hz</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">Hz</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">Hz</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">Kelvin</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">Kelvin</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">KelvinRel</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">KelvinRel</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">KelvinRel</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">KelvinRel</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">KiloGr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">KiloGr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">KiloGr</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">KiloGr</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">KiloHz</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">KiloHz</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">KiloHz</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">KiloHz</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">KiloMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">KiloMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">KiloMtr</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">KiloMtr</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">Mtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">Mtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">Mtr</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">Mtr</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">MtrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">MtrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">MtrPerSec</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">MtrPerSec</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">MtrPerSecCubd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">MtrPerSecCubd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">MtrPerSecCubd</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">MtrPerSecCubd</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">MtrPerSecSqd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">MtrPerSecSqd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">MtrRecpr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">MtrRecpr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">NoUnit</LC-OBJECT-REF>
-                      <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
-                      <PERIOD-BEGIN>
-                        <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
-                      </PERIOD-BEGIN>
-                      <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">NoUnit</USE-INSTEAD-REF>
-                      </USE-INSTEAD-REFS>
-                    </LIFE-CYCLE-INFO>
-                    <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">Nwt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">NoUnit</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">Nwt</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">NoUnit</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">NwtMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">Nwt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">NwtMtr</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">Nwt</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">NwtMtrPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">NwtMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">NwtMtrPerSec</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">NwtMtr</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">NwtPerMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">NwtMtrPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">NwtPerMtr</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">NwtMtrPerSec</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">NwtSecPerMtr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">NwtPerMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">NwtSecPerMtr</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">NwtPerMtr</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">Pa</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">NwtSecPerMtr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">Pa</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">NwtSecPerMtr</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">Perc</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">Pa</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">Perc</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">Pa</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">PercPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">Perc</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">PercPerSec</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">Perc</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">Rad</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">PercPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">Rad</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">PercPerSec</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">RadPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">Rad</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">RadPerSec</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">Rad</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">RadPerSecSqd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">RadPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">RadPerSecSqd</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">RadPerSec</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">Rpm</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">RadPerSecSqd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">Rpm</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">RadPerSecSqd</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">RpmPerSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">Rpm</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">RpmPerSec</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">Rpm</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">Sec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">RpmPerSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">Sec</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">RpmPerSec</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units_obsolete" DEST="UNIT">Volt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">Sec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="Units" DEST="UNIT">Volt</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">Sec</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="Units" DEST="UNIT">NwtMtrSec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units_obsolete">Volt</LC-OBJECT-REF>
+                      <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
+                      <PERIOD-BEGIN>
+                        <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>
+                      </PERIOD-BEGIN>
+                      <USE-INSTEAD-REFS>
+                        <USE-INSTEAD-REF DEST="UNIT" BASE="Units">Volt</USE-INSTEAD-REF>
+                      </USE-INSTEAD-REFS>
+                    </LIFE-CYCLE-INFO>
+                    <LIFE-CYCLE-INFO>
+                      <LC-OBJECT-REF DEST="UNIT" BASE="Units">NwtMtrSec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.5.0</AR-RELEASE-VERSION>

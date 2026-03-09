@@ -24,18 +24,18 @@
               <CATEGORY>BLUEPRINT</CATEGORY>
               <REFERENCE-BASES>
                 <REFERENCE-BASE>
-                  <SHORT-LABEL>Units_obsolete</SHORT-LABEL>
-                  <IS-DEFAULT>false</IS-DEFAULT>
-                  <IS-GLOBAL>false</IS-GLOBAL>
-                  <BASE-IS-THIS-PACKAGE>false</BASE-IS-THIS-PACKAGE>
-                  <PACKAGE-REF DEST="AR-PACKAGE">/AUTOSAR/AISpecification/Units_obsolete</PACKAGE-REF>
-                </REFERENCE-BASE>
-                <REFERENCE-BASE>
                   <SHORT-LABEL>Units</SHORT-LABEL>
                   <IS-DEFAULT>false</IS-DEFAULT>
                   <IS-GLOBAL>false</IS-GLOBAL>
                   <BASE-IS-THIS-PACKAGE>false</BASE-IS-THIS-PACKAGE>
                   <PACKAGE-REF DEST="AR-PACKAGE">/AUTOSAR/PhysicalUnits/Units_Blueprint</PACKAGE-REF>
+                </REFERENCE-BASE>
+                <REFERENCE-BASE>
+                  <SHORT-LABEL>Units_obsolete</SHORT-LABEL>
+                  <IS-DEFAULT>false</IS-DEFAULT>
+                  <IS-GLOBAL>false</IS-GLOBAL>
+                  <BASE-IS-THIS-PACKAGE>false</BASE-IS-THIS-PACKAGE>
+                  <PACKAGE-REF DEST="AR-PACKAGE">/AUTOSAR/AISpecification/Units_obsolete</PACKAGE-REF>
                 </REFERENCE-BASE>
               </REFERENCE-BASES>
               <ELEMENTS>
@@ -44,11 +44,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -72,11 +72,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 10</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -100,11 +100,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 11</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -128,11 +128,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 12</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -156,11 +156,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 13</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -184,11 +184,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 14</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -212,11 +212,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 2</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -240,11 +240,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 3</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -268,11 +268,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 4</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -296,11 +296,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 5</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -324,11 +324,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 7</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -352,11 +352,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 8</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -380,11 +380,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Acceleration 9</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -409,7 +409,7 @@
                     <L-4 L="EN">Acknowledge Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -441,7 +441,7 @@
                     <L-4 L="EN">Acknowledge Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -472,11 +472,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -500,11 +500,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle 2</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -528,11 +528,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle 3</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -556,11 +556,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle 4</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -584,11 +584,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle 5</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -612,11 +612,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle 6</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -640,11 +640,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Acceleration 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RadPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RadPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -668,11 +668,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Acceleration 2</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle acceleration</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RadPerSecSqd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RadPerSecSqd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -696,11 +696,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -724,11 +724,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 2</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -752,11 +752,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 3</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -780,11 +780,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 4</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -808,11 +808,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 5</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -836,11 +836,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 6</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -864,11 +864,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 7</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -892,11 +892,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Angle Speed 8</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for angle speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -921,7 +921,7 @@
                     <L-4 L="EN">Alarm Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -973,7 +973,7 @@
                     <L-4 L="EN">Alarm Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1025,7 +1025,7 @@
                     <L-4 L="EN">Arming Type</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1077,7 +1077,7 @@
                     <L-4 L="EN">Arming Type</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1109,7 +1109,7 @@
                     <L-4 L="EN">Available Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1161,7 +1161,7 @@
                     <L-4 L="EN">Available Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1213,7 +1213,7 @@
                     <L-4 L="EN">Axis Type</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1255,7 +1255,7 @@
                     <L-4 L="EN">Bar Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Bar</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Bar</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>BltLockSt1</SHORT-NAME>
@@ -1263,7 +1263,7 @@
                     <L-4 L="EN">Belt Lock State</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1295,7 +1295,7 @@
                     <L-4 L="EN">Belt Lock State</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1337,7 +1337,7 @@
                     <L-4 L="EN">Body Level Control</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1379,7 +1379,7 @@
                     <L-4 L="EN">Body Level Mode 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1421,7 +1421,7 @@
                     <L-4 L="EN">Brake Actuator Mode 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1483,7 +1483,7 @@
                     <L-4 L="EN">Brake Actuator Saturation 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1515,7 +1515,7 @@
                     <L-4 L="EN">Brake Mode</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1547,7 +1547,7 @@
                     <L-4 L="EN">Brake Request Type 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1589,7 +1589,7 @@
                     <L-4 L="EN">Brake Request Type 2</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1631,7 +1631,7 @@
                     <L-4 L="EN">Buckled State</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1683,7 +1683,7 @@
                     <L-4 L="EN">Calibration Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1735,7 +1735,7 @@
                     <L-4 L="EN">Calibration Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1787,7 +1787,7 @@
                     <L-4 L="EN">Child Protection Command</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1829,7 +1829,7 @@
                     <L-4 L="EN">Change</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1861,7 +1861,7 @@
                     <L-4 L="EN">Clutch State</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1913,7 +1913,7 @@
                     <L-4 L="EN">Corner Marker</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1955,7 +1955,7 @@
                     <L-4 L="EN">Component Information</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -1997,7 +1997,7 @@
                     <L-4 L="EN">Crash Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2029,7 +2029,7 @@
                     <L-4 L="EN">Crash Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2061,7 +2061,7 @@
                     <L-4 L="EN">Cruise Control and ACC Switch Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2103,7 +2103,7 @@
                     <L-4 L="EN">Cruise Control and ACC Switch Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2144,11 +2144,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Curvature 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for curvature</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">PerMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">PerMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2173,7 +2173,7 @@
                     <L-4 L="EN">Control Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2205,7 +2205,7 @@
                     <L-4 L="EN">Control Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2236,11 +2236,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Damper Coefficient 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for damper coefficient</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtSecPerMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtSecPerMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2264,11 +2264,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Day 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">It represents the value of a day in a month</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2293,18 +2293,18 @@
                     <L-4 L="EN">Degree Centigrade Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">DegCgrd</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>DegCgrdLnr1</SHORT-NAME>
                   <LONG-NAME>
                     <L-4 L="EN">Degree Centigrade Linear 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for temperature.</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">DegCgrd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2329,7 +2329,7 @@
                     <L-4 L="EN">Detection Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2361,7 +2361,7 @@
                     <L-4 L="EN">Detection Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2393,7 +2393,7 @@
                     <L-4 L="EN">Device Error Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2435,7 +2435,7 @@
                     <L-4 L="EN">Device Error Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2467,7 +2467,7 @@
                     <L-4 L="EN">Device Error Status 3</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2499,7 +2499,7 @@
                     <L-4 L="EN">Device Error Status 4</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2541,7 +2541,7 @@
                     <L-4 L="EN">Device Error Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2583,7 +2583,7 @@
                     <L-4 L="EN">Device Error Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2615,7 +2615,7 @@
                     <L-4 L="EN">Device Error Status 3</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2647,7 +2647,7 @@
                     <L-4 L="EN">Device Error Status 4</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2689,7 +2689,7 @@
                     <L-4 L="EN">Device Status 4</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2731,7 +2731,7 @@
                     <L-4 L="EN">Device Status 5</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2773,7 +2773,7 @@
                     <L-4 L="EN">Device Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2825,7 +2825,7 @@
                     <L-4 L="EN">Device Status 7</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2887,7 +2887,7 @@
                     <L-4 L="EN">Device Status 4</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2929,7 +2929,7 @@
                     <L-4 L="EN">Device Status 5</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -2971,7 +2971,7 @@
                     <L-4 L="EN">Device Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3023,7 +3023,7 @@
                     <L-4 L="EN">Device Status 7</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3085,7 +3085,7 @@
                     <L-4 L="EN">Door Handle Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3127,7 +3127,7 @@
                     <L-4 L="EN">Door Handle Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3169,7 +3169,7 @@
                     <L-4 L="EN">Door Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3231,7 +3231,7 @@
                     <L-4 L="EN">Door Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3293,7 +3293,7 @@
                     <L-4 L="EN">Dynamic Property 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3365,7 +3365,7 @@
                     <L-4 L="EN">Energy Management Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3487,7 +3487,7 @@
                     <L-4 L="EN">Energy Management Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3609,7 +3609,7 @@
                     <L-4 L="EN">Enabling Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3641,7 +3641,7 @@
                     <L-4 L="EN">Engine Running Direction</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3694,7 +3694,7 @@
                     <L-4 L="EN">Engine Start Remote Request</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3726,7 +3726,7 @@
                     <L-4 L="EN">Entry Easy</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3788,7 +3788,7 @@
                     <L-4 L="EN">Button Control Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3850,7 +3850,7 @@
                     <L-4 L="EN">Button Control Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3911,11 +3911,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Force 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for force</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Nwt</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Nwt</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3939,11 +3939,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Force 2</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for force</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Nwt</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Nwt</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3967,11 +3967,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Force 3</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for force</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Nwt</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Nwt</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -3995,11 +3995,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Factor 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for factor</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4023,11 +4023,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Factor 3</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for factor</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4051,11 +4051,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Factor 4</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for factor</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4079,11 +4079,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Factor 5</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for factor</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4107,11 +4107,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Factor 7</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for factor</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4136,7 +4136,7 @@
                     <L-4 L="EN">Fixation</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4168,7 +4168,7 @@
                     <L-4 L="EN">Flag</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4199,11 +4199,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Friction Coefficient 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for friction coefficient</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4227,11 +4227,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Frequency 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for frequency</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Hz</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Hz</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4255,11 +4255,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Frequency 2</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acoustic frequency</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">KiloHz</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">KiloHz</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4284,7 +4284,7 @@
                     <L-4 L="EN">Gear Shift Prevention 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4336,7 +4336,7 @@
                     <L-4 L="EN">Gear State 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4649,7 +4649,7 @@
                     <L-4 L="EN">Hecto Pascal Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">HectoPa</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">HectoPa</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>HldOnDmdSt1</SHORT-NAME>
@@ -4657,7 +4657,7 @@
                     <L-4 L="EN">Hold on Demand State 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4699,7 +4699,7 @@
                     <L-4 L="EN">Home Coming and Home Leaving Request</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4740,11 +4740,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Hour 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">It represents the value of an hour in a day (24h format)</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4769,7 +4769,7 @@
                     <L-4 L="EN">Hertz Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Hz</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Hz</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>ImobSt1</SHORT-NAME>
@@ -4777,7 +4777,7 @@
                     <L-4 L="EN">Immobilizer Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4859,7 +4859,7 @@
                     <L-4 L="EN">Immobilizer Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4941,7 +4941,7 @@
                     <L-4 L="EN">Wireless Immobilizer Request</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -4993,7 +4993,7 @@
                     <L-4 L="EN">Impact Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5025,7 +5025,7 @@
                     <L-4 L="EN">Impact Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5057,7 +5057,7 @@
                     <L-4 L="EN">In Out</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5089,7 +5089,7 @@
                     <L-4 L="EN">Indicator For Stop</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5131,7 +5131,7 @@
                     <L-4 L="EN">Indicator Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5183,7 +5183,7 @@
                     <L-4 L="EN">Indicator Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5235,7 +5235,7 @@
                     <L-4 L="EN">Indicator Type External</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5297,7 +5297,7 @@
                     <L-4 L="EN">Interior Light Request</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5359,7 +5359,7 @@
                     <L-4 L="EN">Invalid Valid</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5391,7 +5391,7 @@
                     <L-4 L="EN">Invalid Valid</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5422,11 +5422,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Jerk 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for acceleration change rate</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecCubd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecCubd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5450,9 +5450,9 @@
                   <LONG-NAME>
                     <L-4 L="EN">Kelvin Identical</L-4>
                   </LONG-NAME>
-                  <CATEGORY>IDENTICAL</CATEGORY>
                   <DESC></DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">KelvinAbslt</UNIT-REF>
+                  <CATEGORY>IDENTICAL</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">KelvinAbslt</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>KeyCmd1</SHORT-NAME>
@@ -5460,7 +5460,7 @@
                     <L-4 L="EN">Key Command</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5502,7 +5502,7 @@
                     <L-4 L="EN">Key Insert Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5534,7 +5534,7 @@
                     <L-4 L="EN">Key Insert Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5566,7 +5566,7 @@
                     <L-4 L="EN">Key Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5628,7 +5628,7 @@
                     <L-4 L="EN">Key Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5690,7 +5690,7 @@
                     <L-4 L="EN">Kilo Gram Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">KiloGr</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">KiloGr</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>KiloHzIdentcl</SHORT-NAME>
@@ -5698,7 +5698,7 @@
                     <L-4 L="EN">Kilo Hertz Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">KiloHz</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">KiloHz</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>KiloMtrIdentcl</SHORT-NAME>
@@ -5706,7 +5706,7 @@
                     <L-4 L="EN">Kilo Meter Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">KiloMtr</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">KiloMtr</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>LeRi1</SHORT-NAME>
@@ -5714,7 +5714,7 @@
                     <L-4 L="EN">Left Right 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5745,11 +5745,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5773,11 +5773,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 10</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5801,11 +5801,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 11</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5829,11 +5829,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 14</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5857,11 +5857,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 3</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5885,11 +5885,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 4</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5913,11 +5913,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 5</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5941,11 +5941,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 6</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">KiloMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">KiloMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5969,11 +5969,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Length 7</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for length</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -5998,7 +5998,7 @@
                     <L-4 L="EN">Light On Warning</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6040,7 +6040,7 @@
                     <L-4 L="EN">Lock Activation</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6092,7 +6092,7 @@
                     <L-4 L="EN">Lock Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6154,7 +6154,7 @@
                     <L-4 L="EN">Lock Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6216,7 +6216,7 @@
                     <L-4 L="EN">Steering Column Lock Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6268,7 +6268,7 @@
                     <L-4 L="EN">Lock Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6330,7 +6330,7 @@
                     <L-4 L="EN">Lock Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6392,7 +6392,7 @@
                     <L-4 L="EN">Steering Column Lock Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6444,7 +6444,7 @@
                     <L-4 L="EN">Lock Trigger Source</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6576,7 +6576,7 @@
                     <L-4 L="EN">Lock Unlock Request</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6618,7 +6618,7 @@
                     <L-4 L="EN">Locking Central Request</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6700,7 +6700,7 @@
                     <L-4 L="EN">Locking Central Request Source</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6821,11 +6821,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Mass 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for mass</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">KiloGr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">KiloGr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6849,11 +6849,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Mass 2</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for mass</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">KiloGr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">KiloGr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6878,7 +6878,7 @@
                     <L-4 L="EN">Memory Button</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6949,11 +6949,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Minute 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">It represents the value of a minute in one hour</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -6978,7 +6978,7 @@
                     <L-4 L="EN">Mirror Type</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7030,7 +7030,7 @@
                     <L-4 L="EN">Move Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7072,7 +7072,7 @@
                     <L-4 L="EN">Move Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7114,7 +7114,7 @@
                     <L-4 L="EN">Movement Type</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7155,11 +7155,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Month 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">It represents the value of a month in a calendar year</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7184,7 +7184,7 @@
                     <L-4 L="EN">Meter Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Mtr</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Mtr</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>MtrPerSecCubdIdentcl</SHORT-NAME>
@@ -7192,7 +7192,7 @@
                     <L-4 L="EN">Meter per Second Cubed Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecCubd</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecCubd</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>MtrPerSecIdentcl</SHORT-NAME>
@@ -7200,7 +7200,7 @@
                     <L-4 L="EN">Meter per Second Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>MtrPerSecSqdIdentcl</SHORT-NAME>
@@ -7208,7 +7208,7 @@
                     <L-4 L="EN">Meter per Second Squared Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSecSqd</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSecSqd</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>MtrRecprIdentcl</SHORT-NAME>
@@ -7216,18 +7216,18 @@
                     <L-4 L="EN">Meter Reciprocal Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">PerMtr</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">PerMtr</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>N1</SHORT-NAME>
                   <LONG-NAME>
                     <L-4 L="EN">Rotational Speed 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for rotational speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Rpm</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Rpm</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7251,11 +7251,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Engine Speed Gradient</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for rotational speed gradient</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RpmPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RpmPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7280,18 +7280,18 @@
                     <L-4 L="EN">No Unit Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>Nr1</SHORT-NAME>
                   <LONG-NAME>
                     <L-4 L="EN">Number 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7315,11 +7315,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 10</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7343,11 +7343,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 2</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7371,11 +7371,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 3</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7399,11 +7399,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 4</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7427,11 +7427,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 5</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7455,11 +7455,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 6</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7483,11 +7483,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 7</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7511,11 +7511,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 8</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7539,11 +7539,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Number 9</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for number</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7568,7 +7568,7 @@
                     <L-4 L="EN">Newton Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Nwt</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Nwt</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>NwtMtrIdentcl</SHORT-NAME>
@@ -7576,7 +7576,7 @@
                     <L-4 L="EN">Newton Meter Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>NwtMtrPerSecIdentcl</SHORT-NAME>
@@ -7584,7 +7584,7 @@
                     <L-4 L="EN">Newton Meter per Second Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtrPerSec</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtrPerSec</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>NwtPerMtrIdentcl</SHORT-NAME>
@@ -7592,7 +7592,7 @@
                     <L-4 L="EN">Newton per Meter Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtPerMtr</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtPerMtr</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>NwtSecPerMtrIdentcl</SHORT-NAME>
@@ -7600,7 +7600,7 @@
                     <L-4 L="EN">Newton Second per Meter Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtSecPerMtr</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtSecPerMtr</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>ObjClassn1</SHORT-NAME>
@@ -7608,7 +7608,7 @@
                     <L-4 L="EN">Object Classification 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7670,7 +7670,7 @@
                     <L-4 L="EN">Obstacle Distance Park Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7712,7 +7712,7 @@
                     <L-4 L="EN">Obstacle Distance Park Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7754,7 +7754,7 @@
                     <L-4 L="EN">Occupant Class</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7826,7 +7826,7 @@
                     <L-4 L="EN">Occupant out of Position</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7868,7 +7868,7 @@
                     <L-4 L="EN">Occupant Presence State</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7900,7 +7900,7 @@
                     <L-4 L="EN">On Off 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7932,7 +7932,7 @@
                     <L-4 L="EN">On Off 2</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7964,7 +7964,7 @@
                     <L-4 L="EN">Opened Closed</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -7996,7 +7996,7 @@
                     <L-4 L="EN">Operation</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8038,7 +8038,7 @@
                     <L-4 L="EN">Operation Mode Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8170,7 +8170,7 @@
                     <L-4 L="EN">Operation Mode Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8302,7 +8302,7 @@
                     <L-4 L="EN">Outside Brightness Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8394,7 +8394,7 @@
                     <L-4 L="EN">Outside Brightness Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8486,7 +8486,7 @@
                     <L-4 L="EN">Overridden Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8518,7 +8518,7 @@
                     <L-4 L="EN">Overridden Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8549,11 +8549,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Pressure 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for pressure</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Bar</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Bar</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8577,11 +8577,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Pressure 4</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for pressure</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">HectoPa</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">HectoPa</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8605,16 +8605,16 @@
                   <LONG-NAME>
                     <L-4 L="EN">Pressure 5</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for high pressure</L-2>
                   </DESC>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: fuel pressure</L-1>
                     </P>
                   </INTRODUCTION>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Pa</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Pa</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8638,16 +8638,16 @@
                   <LONG-NAME>
                     <L-4 L="EN">Pressure 6</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for low pressure</L-2>
                   </DESC>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: ambient air pressure, particulate filter differential pressure</L-1>
                     </P>
                   </INTRODUCTION>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Pa</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Pa</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8671,20 +8671,20 @@
                   <LONG-NAME>
                     <L-4 L="EN">Pascal Identical</L-4>
                   </LONG-NAME>
-                  <CATEGORY>IDENTICAL</CATEGORY>
                   <DESC></DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Pa</UNIT-REF>
+                  <CATEGORY>IDENTICAL</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Pa</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>Perc1</SHORT-NAME>
                   <LONG-NAME>
                     <L-4 L="EN">Percent 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8708,16 +8708,16 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 10</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: common solenoid actuator (EGR), Pedal</L-1>
                     </P>
                   </INTRODUCTION>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8741,11 +8741,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 2</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8769,11 +8769,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 6</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8797,11 +8797,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 7</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8825,11 +8825,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 8</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8853,11 +8853,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent 9</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8881,11 +8881,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent Gradient 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for percent gradient</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">PercPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">PercPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8909,9 +8909,9 @@
                   <LONG-NAME>
                     <L-4 L="EN">Percent Identical</L-4>
                   </LONG-NAME>
-                  <CATEGORY>IDENTICAL</CATEGORY>
                   <DESC></DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Perc</UNIT-REF>
+                  <CATEGORY>IDENTICAL</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Perc</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>PercPerSecIdentcl</SHORT-NAME>
@@ -8919,7 +8919,7 @@
                     <L-4 L="EN">Percent per Second Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">PercPerSec</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">PercPerSec</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>PitchovrMod1</SHORT-NAME>
@@ -8927,7 +8927,7 @@
                     <L-4 L="EN">Vehicle Pitchover Mode</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -8969,7 +8969,7 @@
                     <L-4 L="EN">Parking Light Indication</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9021,7 +9021,7 @@
                     <L-4 L="EN">Driver Profile</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9193,7 +9193,7 @@
                     <L-4 L="EN">Driver Profile</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9365,7 +9365,7 @@
                     <L-4 L="EN">Pressed Not Pressed</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9397,7 +9397,7 @@
                     <L-4 L="EN">Powertrain Torque Clutch Fast Intervention Mode Type 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9478,9 +9478,9 @@
                   <LONG-NAME>
                     <L-4 L="EN">Powertrain Torque Clutch Max Fast Intervention Mode Type 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>TEXTTABLE</CATEGORY>
                   <DESC></DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>TEXTTABLE</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9532,7 +9532,7 @@
                     <L-4 L="EN">Pull Aid Command</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9574,7 +9574,7 @@
                     <L-4 L="EN">Radian Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Rad</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Rad</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>RadPerSecIdentcl</SHORT-NAME>
@@ -9582,7 +9582,7 @@
                     <L-4 L="EN">Radian per Second Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RadPerSec</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RadPerSec</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>RadPerSecSqdIdentcl</SHORT-NAME>
@@ -9590,7 +9590,7 @@
                     <L-4 L="EN">Radian per Second Squared Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RadPerSecSqd</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RadPerSecSqd</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>RainSenSnvty1</SHORT-NAME>
@@ -9598,7 +9598,7 @@
                     <L-4 L="EN">Rain Sensing Sensitivity</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9690,7 +9690,7 @@
                     <L-4 L="EN">Ramp</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9782,7 +9782,7 @@
                     <L-4 L="EN">Request Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9814,7 +9814,7 @@
                     <L-4 L="EN">Request Status 2</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9846,7 +9846,7 @@
                     <L-4 L="EN">Request Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9878,7 +9878,7 @@
                     <L-4 L="EN">Request Status 2</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9910,7 +9910,7 @@
                     <L-4 L="EN">Road Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9942,7 +9942,7 @@
                     <L-4 L="EN">Road Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -9974,7 +9974,7 @@
                     <L-4 L="EN">Vehicle Rollover Mode</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10016,18 +10016,18 @@
                     <L-4 L="EN">Rpm Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Rpm</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Rpm</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>RpmLnr1</SHORT-NAME>
                   <LONG-NAME>
                     <L-4 L="EN">Rotational Speed Linear 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for rotational speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Rpm</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Rpm</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10052,7 +10052,7 @@
                     <L-4 L="EN">Revolutions per minute per Second Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">RpmPerSec</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">RpmPerSec</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>SeatBltRmnWarnSt1</SHORT-NAME>
@@ -10060,7 +10060,7 @@
                     <L-4 L="EN">Seat Belt Reminder Warning State</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10121,11 +10121,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Second 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">It represents the value of a second in one minute</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10150,18 +10150,18 @@
                     <L-4 L="EN">Second Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Sec</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Sec</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>Spd1</SHORT-NAME>
                   <LONG-NAME>
                     <L-4 L="EN">Speed 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10185,11 +10185,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Speed 2</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10213,11 +10213,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Speed 3</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10241,11 +10241,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Speed 4</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10269,11 +10269,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Speed 5</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10297,11 +10297,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Speed 6</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for speed</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">MtrPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">MtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10325,11 +10325,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Spring Coefficient 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for spring coefficient</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtPerMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtPerMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10354,7 +10354,7 @@
                     <L-4 L="EN">Status of Object Measured 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10406,7 +10406,7 @@
                     <L-4 L="EN">Stabilizer Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10468,7 +10468,7 @@
                     <L-4 L="EN">Stabilizer Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10530,7 +10530,7 @@
                     <L-4 L="EN">Steering Mode 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10592,7 +10592,7 @@
                     <L-4 L="EN">Steering Vehicle Stability Control Mode 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10624,7 +10624,7 @@
                     <L-4 L="EN">Seat Clima Stage</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10706,7 +10706,7 @@
                     <L-4 L="EN">Status of Object Measured 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10758,7 +10758,7 @@
                     <L-4 L="EN">Suspension Mode 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10809,11 +10809,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Temperature 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for temperature</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">DegCgrd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10837,11 +10837,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Temperature 3</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for temperature</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">DegCgrd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10865,11 +10865,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Temperature 4</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for temperature</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">DegCgrd</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">DegCgrd</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10893,16 +10893,16 @@
                   <LONG-NAME>
                     <L-4 L="EN">Temperature 5</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for temperature</L-2>
                   </DESC>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: glow plugs temperature, oil temperature, environment temperature, temperature differences</L-1>
                     </P>
                   </INTRODUCTION>
-                  <UNIT-REF BASE="Units" DEST="UNIT">KelvinAbslt</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">KelvinAbslt</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10927,7 +10927,7 @@
                     <L-4 L="EN">Temperature Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10959,7 +10959,7 @@
                     <L-4 L="EN">Temperature Status</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -10991,7 +10991,7 @@
                     <L-4 L="EN">Terminal Position Mode</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11042,11 +11042,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Time 2</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for time</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Sec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Sec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11070,11 +11070,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Time 3</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for time</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Sec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Sec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11098,11 +11098,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Time 4</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for time</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Sec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Sec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11127,7 +11127,7 @@
                     <L-4 L="EN">TPMS Warning Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11159,7 +11159,7 @@
                     <L-4 L="EN">TPMS Warning Status 2</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11231,7 +11231,7 @@
                     <L-4 L="EN">TPMS Warning Status 3</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11273,7 +11273,7 @@
                     <L-4 L="EN">TPMS Warning Status 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11305,7 +11305,7 @@
                     <L-4 L="EN">TPMS Warning Status 2</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11377,7 +11377,7 @@
                     <L-4 L="EN">TPMS Warning Status 3</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11418,11 +11418,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11446,11 +11446,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 10</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11474,11 +11474,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 12</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11502,16 +11502,16 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 13</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: Differential Torques</L-1>
                     </P>
                   </INTRODUCTION>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11535,11 +11535,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 14</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11563,11 +11563,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 15</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11591,11 +11591,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 16</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic torque compumethod</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11619,11 +11619,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 2</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11647,11 +11647,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 3</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11675,11 +11675,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 4</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11703,16 +11703,16 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 5</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: torque at clutch and torque at crankshaft signals</L-1>
                     </P>
                   </INTRODUCTION>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11736,11 +11736,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 6</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11764,16 +11764,16 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque 7</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque</L-2>
                   </DESC>
+                  <CATEGORY>LINEAR</CATEGORY>
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">Examples for usage: torque at wheels signals</L-1>
                     </P>
                   </INTRODUCTION>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtr</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtr</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11797,11 +11797,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Torque Gradient 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for torque gradient</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NwtMtrPerSec</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NwtMtrPerSec</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11826,7 +11826,7 @@
                     <L-4 L="EN">Transmission Torque Clutch Request for Fast Intervention Mode Type 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11908,7 +11908,7 @@
                     <L-4 L="EN">Transmission Position Gear Lever</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -11997,7 +11997,7 @@
                 <COMPU-METHOD>
                   <SHORT-NAME>TrsmPwrSt1</SHORT-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12079,7 +12079,7 @@
                     <L-4 L="EN">Control State of Power Transmission</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12181,7 +12181,7 @@
                     <L-4 L="EN">Transmission Torque Request Max Min Type 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12213,7 +12213,7 @@
                     <L-4 L="EN">Transmission Torque Requested Type 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12305,7 +12305,7 @@
                     <L-4 L="EN">Transmission Torque Requested Type 2</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12369,7 +12369,7 @@
                     <L-4 L="EN">Transmission Type</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12430,11 +12430,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Voltage 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">Generic data type for voltage</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Volt</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Volt</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12459,7 +12459,7 @@
                     <L-4 L="EN">User Request for Wiping</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12521,7 +12521,7 @@
                     <L-4 L="EN">Vehicle Hold State 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12563,7 +12563,7 @@
                     <L-4 L="EN">Vehicle Mode</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12605,7 +12605,7 @@
                     <L-4 L="EN">Vehicle Motion State 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12657,7 +12657,7 @@
                     <L-4 L="EN">Volt Identical</L-4>
                   </LONG-NAME>
                   <CATEGORY>IDENTICAL</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">Volt</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">Volt</UNIT-REF>
                 </COMPU-METHOD>
                 <COMPU-METHOD>
                   <SHORT-NAME>WhlRotlDirMeasd1</SHORT-NAME>
@@ -12665,7 +12665,7 @@
                     <L-4 L="EN">Wheel Rotational Direction Measured 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12717,7 +12717,7 @@
                     <L-4 L="EN">Wheel Rotational Direction Standard 1</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12769,7 +12769,7 @@
                     <L-4 L="EN">Wiping</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -12961,7 +12961,7 @@
                     <L-4 L="EN">Wiping Speed Interval</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -13053,7 +13053,7 @@
                     <L-4 L="EN">Wiper Position Measured</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -13125,7 +13125,7 @@
                     <L-4 L="EN">Wiper Position Requested</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -13187,7 +13187,7 @@
                     <L-4 L="EN">Washer Fluid Level Low</L-4>
                   </LONG-NAME>
                   <CATEGORY>TEXTTABLE</CATEGORY>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-INTERNAL-TO-PHYS>
                     <COMPU-SCALES>
                       <COMPU-SCALE>
@@ -13228,11 +13228,11 @@
                   <LONG-NAME>
                     <L-4 L="EN">Year 1</L-4>
                   </LONG-NAME>
-                  <CATEGORY>LINEAR</CATEGORY>
                   <DESC>
                     <L-2 L="EN">It represents the value of a year in a century</L-2>
                   </DESC>
-                  <UNIT-REF BASE="Units" DEST="UNIT">NoUnit</UNIT-REF>
+                  <CATEGORY>LINEAR</CATEGORY>
+                  <UNIT-REF DEST="UNIT" BASE="Units">NoUnit</UNIT-REF>
                   <COMPU-PHYS-TO-INTERNAL>
                     <COMPU-SCALES>
                       <COMPU-SCALE>

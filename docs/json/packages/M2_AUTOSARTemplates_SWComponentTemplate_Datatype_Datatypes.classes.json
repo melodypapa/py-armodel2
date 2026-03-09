@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "ApplicationDataType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": true,
       "atp_type": null,
@@ -80,7 +80,7 @@
     },
     {
       "name": "AutosarDataType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": true,
       "atp_type": null,
@@ -225,7 +225,7 @@
     },
     {
       "name": "ApplicationPrimitiveDataType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": false,
       "atp_type": null,

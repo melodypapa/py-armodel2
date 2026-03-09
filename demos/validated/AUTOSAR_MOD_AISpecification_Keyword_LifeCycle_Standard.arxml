@@ -37,7 +37,7 @@
                   <DEFAULT-LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</DEFAULT-LC-STATE-REF>
                   <LIFE-CYCLE-INFOS>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Ar</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Ar</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.1.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -47,11 +47,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Area</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Area</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Gen</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Gen</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.1.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -61,11 +61,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Generic</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Generic</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Us</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Us</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.1.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -76,7 +76,7 @@
                       </REMARK>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Wind</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Wind</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.1.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -86,179 +86,179 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Wind1</USE-INSTEAD-REF>
-                        <USE-INSTEAD-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Scrn</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Scrn</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Wind1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Sts</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Sts</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/St</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/St</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Sec</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Sec</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Idx2nd</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Idx2nd</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Consold</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Consold</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Pwr1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Pwr1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Used</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Used</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Exact</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Exact</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Ai</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Ai</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Us</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Us</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Acry</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Acry</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Acrt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Acrt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Inacrt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Inacrt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Agt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Agt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Red</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Red</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Approx</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Approx</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Approxn</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Approxn</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Lumi</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Lumi</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Deci</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Deci</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Micro1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Micro1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Hyddyn</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Hyddyn</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Detrm</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Detrm</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Cur</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Cur</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Ancllry</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Ancllry</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Inclg</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Inclg</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Avs</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Avs</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.6.0</AR-RELEASE-VERSION>
@@ -270,14 +270,14 @@
                       </REMARK>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Bcu</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Bcu</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.6.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Bif</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Bif</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.6.0</AR-RELEASE-VERSION>
@@ -289,7 +289,7 @@
                       </REMARK>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Bkt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Bkt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.6.0</AR-RELEASE-VERSION>
@@ -301,7 +301,7 @@
                       </REMARK>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Dthr</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Dthr</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.6.0</AR-RELEASE-VERSION>
@@ -313,7 +313,7 @@
                       </REMARK>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Drain</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Drain</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.6.0</AR-RELEASE-VERSION>
@@ -325,7 +325,7 @@
                       </REMARK>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Sail</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Sail</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.6.0</AR-RELEASE-VERSION>
@@ -337,7 +337,7 @@
                       </REMARK>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Surf</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Surf</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.6.0</AR-RELEASE-VERSION>
@@ -349,7 +349,7 @@
                       </REMARK>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Adas</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Adas</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.6.0</AR-RELEASE-VERSION>
@@ -361,49 +361,49 @@
                       </REMARK>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Accy</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Accy</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.6.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Pck</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Pck</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.6.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Exh</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Exh</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.7.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Refgnt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Refgnt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.7.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Lft</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Lft</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.7.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Stck</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Stck</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.7.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="KeywordSets" DEST="KEYWORD">KeywordList/Amnt</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="KEYWORD" BASE="KeywordSets">KeywordList/Amnt</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.4.0</AR-RELEASE-VERSION>

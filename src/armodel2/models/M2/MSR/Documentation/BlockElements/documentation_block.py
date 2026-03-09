@@ -71,12 +71,12 @@ class DocumentationBlock(ARObject):
         """Initialize DocumentationBlock."""
         super().__init__()
         self.def_list_ref: Optional[ARRef] = None
-        self.figure: list[MlFigure] = []
         self.formula: Optional[MlFormula] = None
         self.labeled_list_label_ref: Optional[ARRef] = None
         self.msr_query_p2: Optional[MsrQueryP2] = None
         self.note: Optional[Note] = None
         self.p: Optional[MultiLanguageParagraph] = None
+        self.figure: list[MlFigure] = []
         self.list: list[ARList] = []
         self.structured_req: Optional[StructuredReq] = None
         self.trace: Optional[TraceableText] = None
@@ -102,20 +102,6 @@ class DocumentationBlock(ARObject):
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEF-LIST-REF")
-                if hasattr(serialized, "attrib"):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize figure (list)
-        for figure_item in self.figure:
-            serialized = SerializationHelper.serialize_item(figure_item, "MlFigure")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIGURE")
                 if hasattr(serialized, "attrib"):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -207,6 +193,20 @@ class DocumentationBlock(ARObject):
                             l1_elem.append(child)
                         wrapped.append(l1_elem)
             elem.append(wrapped)
+
+        # Serialize figure (list)
+        for figure_item in self.figure:
+            serialized = SerializationHelper.serialize_item(figure_item, "MlFigure")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIGURE")
+                if hasattr(serialized, "attrib"):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize list
         if self.list:

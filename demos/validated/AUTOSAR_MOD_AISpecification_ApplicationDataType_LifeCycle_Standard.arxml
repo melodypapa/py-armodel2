@@ -37,7 +37,7 @@
                   <DEFAULT-LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</DEFAULT-LC-STATE-REF>
                   <LIFE-CYCLE-INFOS>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">ActrSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">ActrSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -47,11 +47,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">ActrSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">ActrSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">DiagcSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">DiagcSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -61,11 +61,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">DiagcSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">DiagcSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">LockgCenSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">LockgCenSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -75,11 +75,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">LockgCenSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">LockgCenSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">MirrActnSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">MirrActnSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -89,11 +89,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">MirrActnSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">MirrActnSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">SnsrAlrmSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">SnsrAlrmSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -103,11 +103,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">SnsrAlrmSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">SnsrAlrmSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">SnsrSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">SnsrSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -117,11 +117,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">SnsrSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">SnsrSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">SoundrBattBackedSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">SoundrBattBackedSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -131,11 +131,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-RECORD-DATA-TYPE">SoundrBattBackedSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-RECORD-DATA-TYPE" BASE="ApplicationDataTypes">SoundrBattBackedSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-ARRAY-DATA-TYPE">TirePMonCalStsPerWhl1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-ARRAY-DATA-TYPE" BASE="ApplicationDataTypes">TirePMonCalStsPerWhl1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -145,11 +145,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-ARRAY-DATA-TYPE">TirePMonCalStPerWhl1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-ARRAY-DATA-TYPE" BASE="ApplicationDataTypes">TirePMonCalStPerWhl1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-ARRAY-DATA-TYPE">TirePMonWarnIndcnStsPerWhl1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-ARRAY-DATA-TYPE" BASE="ApplicationDataTypes">TirePMonWarnIndcnStsPerWhl1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -159,11 +159,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-ARRAY-DATA-TYPE">TirePMonWarnIndcnStPerWhl1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-ARRAY-DATA-TYPE" BASE="ApplicationDataTypes">TirePMonWarnIndcnStPerWhl1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-ARRAY-DATA-TYPE">WhlBrkTqReqStsPerWhl1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-ARRAY-DATA-TYPE" BASE="ApplicationDataTypes">WhlBrkTqReqStsPerWhl1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -173,11 +173,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-ARRAY-DATA-TYPE">WhlBrkTqReqStPerWhl1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-ARRAY-DATA-TYPE" BASE="ApplicationDataTypes">WhlBrkTqReqStPerWhl1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">AckSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">AckSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -187,11 +187,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">AckSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">AckSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">AlrmSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">AlrmSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -201,11 +201,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">AlrmSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">AlrmSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">AvlSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">AvlSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -215,11 +215,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">AvlSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">AvlSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">CalSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">CalSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -229,11 +229,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">CalSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">CalSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">CrashSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">CrashSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -243,11 +243,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">CrashSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">CrashSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">CrsCtrlAndAccSwtSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">CrsCtrlAndAccSwtSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -257,11 +257,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">CrsCtrlAndAccSwtSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">CrsCtrlAndAccSwtSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">CtrlSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">CtrlSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -271,11 +271,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">CtrlSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">CtrlSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DetnSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DetnSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -285,11 +285,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DetnSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DetnSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevErrSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevErrSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -299,11 +299,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevErrSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevErrSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevErrSts2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevErrSts2</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -313,11 +313,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevErrSt2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevErrSt2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevErrSts3</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevErrSts3</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -327,11 +327,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevErrSt3</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevErrSt3</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevErrSts4</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevErrSts4</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -341,11 +341,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevErrSt4</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevErrSt4</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevSts4</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevSts4</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -355,11 +355,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevSt4</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevSt4</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevSts5</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevSts5</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -369,11 +369,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevSt5</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevSt5</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevSts6</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevSts6</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -383,11 +383,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevSt6</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevSt6</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevSts7</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevSts7</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -397,11 +397,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DevSt7</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DevSt7</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DoorHndlSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DoorHndlSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -411,11 +411,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DoorHndlSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DoorHndlSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DoorSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DoorSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -425,11 +425,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">DoorSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">DoorSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">EgyMngtSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">EgyMngtSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -439,11 +439,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">EgyMngtSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">EgyMngtSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">EpbBtnCtrlSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">EpbBtnCtrlSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -453,11 +453,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">EpbBtnCtrlSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">EpbBtnCtrlSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">ImobSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">ImobSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -467,11 +467,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">ImobSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">ImobSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">ImpctSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">ImpctSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -481,11 +481,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">ImpctSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">ImpctSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">IndcrSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">IndcrSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -495,11 +495,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">IndcrSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">IndcrSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">KeyInsertSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">KeyInsertSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -509,11 +509,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">KeyInsertSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">KeyInsertSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">KeySts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">KeySts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -523,11 +523,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">KeySt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">KeySt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">LockSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">LockSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -537,11 +537,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">LockSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">LockSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">LockSts2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">LockSts2</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -551,11 +551,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">LockSt2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">LockSt2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">LockStsOfSteerCol1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">LockStsOfSteerCol1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -565,11 +565,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">LockStOfSteerCol1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">LockStOfSteerCol1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">MoveSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">MoveSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -579,11 +579,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">MoveSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">MoveSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">ObstclDstInPrkgSegSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">ObstclDstInPrkgSegSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -593,11 +593,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">ObstclDstInPrkgSegSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">ObstclDstInPrkgSegSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">OperModSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">OperModSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -607,11 +607,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">OperModSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">OperModSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">OutdBriSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">OutdBriSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -621,11 +621,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">OutdBriSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">OutdBriSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">OvrdnSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">OvrdnSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -635,11 +635,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">OvrdnSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">OvrdnSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">ProfPenSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">ProfPenSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -649,11 +649,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">ProfPenSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">ProfPenSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">ReqSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">ReqSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -663,11 +663,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">ReqSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">ReqSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">ReqSts2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">ReqSts2</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -677,11 +677,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">ReqSt2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">ReqSt2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">RoadSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">RoadSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -691,11 +691,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">RoadSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">RoadSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">StabrSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">StabrSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -705,11 +705,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">StabrSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">StabrSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">StsOfObjMeasd1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">StsOfObjMeasd1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -719,11 +719,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">StOfObjMeasd1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">StOfObjMeasd1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -733,11 +733,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TirePMonWarnSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TirePMonWarnSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -747,11 +747,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TirePMonWarnSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TirePMonWarnSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TirePMonWarnSts2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TirePMonWarnSts2</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -761,11 +761,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TirePMonWarnSt2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TirePMonWarnSt2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TirePMonWarnSts3</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TirePMonWarnSts3</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -775,11 +775,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TirePMonWarnSt3</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TirePMonWarnSt3</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">A8</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">A8</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.1.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -789,11 +789,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">A13</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">A13</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">A9</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">A9</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.1.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -803,42 +803,42 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">A14</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">A14</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">WhlRotlDirStd1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">WhlRotlDirStd1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">WhlRotlDirMeasd1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">WhlRotlDirMeasd1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">PtTqCluMaxFastIntvModTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">PtTqCluMaxFastIntvModTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TrsmTqReqMaxMinTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TrsmTqReqMaxMinTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">PtIntvModTqCluFastReqTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">PtIntvModTqCluFastReqTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">PtTqCluMaxFastIntvModTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">PtTqCluMaxFastIntvModTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
@@ -849,24 +849,24 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">PtIntvModTqCluFastReqTyp1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">PtIntvModTqCluFastReqTyp1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TrsmTqReqTyp2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TrsmTqReqTyp2</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TrsmTqReqTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TrsmTqReqTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TrsmTqReqTyp2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TrsmTqReqTyp2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
@@ -884,17 +884,17 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">Tq16</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">Tq16</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">Tq5</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">Tq5</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">T7</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">T7</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
@@ -908,7 +908,7 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">N2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">N2</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
@@ -922,14 +922,14 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TrsmPwrSt1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TrsmPwrSt1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">EnagSt1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">EnagSt1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
@@ -950,7 +950,7 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">GearSt1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">GearSt1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
@@ -964,38 +964,38 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TrsmPwrStCtrl1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TrsmPwrStCtrl1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.5.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">Tq5</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">Tq5</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TrsmIntvModReqForTqCluReqForShiftIntvTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TrsmIntvModReqForTqCluReqForShiftIntvTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.5.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">PtIntvModTqCluFastReqTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">PtIntvModTqCluFastReqTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.5.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">TrsmIntvModReqForTqCluReqForShiftIntvTyp1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">TrsmIntvModReqForTqCluReqForShiftIntvTyp1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">EngRunngDir1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="APPLICATION-PRIMITIVE-DATA-TYPE" BASE="ApplicationDataTypes">EngRunngDir1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>

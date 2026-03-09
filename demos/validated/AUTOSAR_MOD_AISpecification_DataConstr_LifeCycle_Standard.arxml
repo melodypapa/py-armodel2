@@ -37,7 +37,7 @@
                   <DEFAULT-LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</DEFAULT-LC-STATE-REF>
                   <LIFE-CYCLE-INFOS>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">AckSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">AckSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -47,11 +47,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">AckSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">AckSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">AlrmSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">AlrmSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -61,11 +61,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">AlrmSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">AlrmSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">AvlSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">AvlSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -75,11 +75,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">AvlSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">AvlSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">CalSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">CalSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -89,11 +89,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">CalSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">CalSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">CrashSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">CrashSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -103,11 +103,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">CrashSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">CrashSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">CrsCtrlAndAccSwtSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">CrsCtrlAndAccSwtSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -117,11 +117,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">CrsCtrlAndAccSwtSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">CrsCtrlAndAccSwtSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">CtrlSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">CtrlSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -131,11 +131,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">CtrlSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">CtrlSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">DetnSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">DetnSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -145,11 +145,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">DetnSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">DetnSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevErrSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevErrSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -159,11 +159,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevErrSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevErrSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevErrSts2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevErrSts2</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -173,11 +173,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevErrSt2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevErrSt2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevErrSts3</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevErrSts3</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -187,11 +187,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevErrSt3</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevErrSt3</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevErrSts4</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevErrSts4</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -201,11 +201,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevErrSt4</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevErrSt4</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevSts4</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevSts4</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -215,11 +215,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevSt4</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevSt4</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevSts5</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevSts5</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -229,11 +229,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevSt5</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevSt5</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevSts6</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevSts6</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -243,11 +243,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevSt6</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevSt6</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevSts7</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevSts7</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -257,11 +257,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">DevSt7</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">DevSt7</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">DoorHndlSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">DoorHndlSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -271,11 +271,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">DoorHndlSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">DoorHndlSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">DoorSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">DoorSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -285,11 +285,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">DoorSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">DoorSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">EgyMngtSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">EgyMngtSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -299,11 +299,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">EgyMngtSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">EgyMngtSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">EpbBtnCtrlSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">EpbBtnCtrlSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -313,11 +313,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">EpbBtnCtrlSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">EpbBtnCtrlSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">ImobSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">ImobSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -327,11 +327,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">ImobSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">ImobSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">ImpctSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">ImpctSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -341,11 +341,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">ImpctSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">ImpctSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">IndcrSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">IndcrSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -355,11 +355,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">IndcrSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">IndcrSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">KeyInsertSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">KeyInsertSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -369,11 +369,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">KeyInsertSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">KeyInsertSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">KeySts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">KeySts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -383,11 +383,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">KeySt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">KeySt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">LockSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">LockSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -397,11 +397,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">LockSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">LockSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">LockSts2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">LockSts2</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -411,11 +411,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">LockSt2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">LockSt2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">LockStsOfSteerCol1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">LockStsOfSteerCol1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -425,11 +425,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">LockStOfSteerCol1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">LockStOfSteerCol1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">MoveSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">MoveSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -439,11 +439,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">MoveSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">MoveSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">ObstclDstInPrkgSegSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">ObstclDstInPrkgSegSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -453,11 +453,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">ObstclDstInPrkgSegSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">ObstclDstInPrkgSegSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">OperModSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">OperModSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -467,11 +467,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">OperModSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">OperModSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">OutdBriSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">OutdBriSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -481,11 +481,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">OutdBriSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">OutdBriSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">OvrdnSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">OvrdnSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -495,11 +495,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">OvrdnSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">OvrdnSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">ProfPenSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">ProfPenSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -509,11 +509,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">ProfPenSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">ProfPenSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">ReqSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">ReqSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -523,11 +523,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">ReqSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">ReqSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">ReqSts2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">ReqSts2</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -537,11 +537,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">ReqSt2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">ReqSt2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">RoadSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">RoadSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -551,11 +551,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">RoadSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">RoadSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">StabrSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">StabrSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -565,11 +565,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">StabrSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">StabrSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">StsOfObjMeasd1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">StsOfObjMeasd1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -579,11 +579,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">StOfObjMeasd1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">StOfObjMeasd1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">TSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">TSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -593,11 +593,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">TSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">TSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">TirePMonWarnSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">TirePMonWarnSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -607,11 +607,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">TirePMonWarnSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">TirePMonWarnSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">TirePMonWarnSts2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">TirePMonWarnSts2</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -621,11 +621,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">TirePMonWarnSt2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">TirePMonWarnSt2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">TirePMonWarnSts3</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">TirePMonWarnSts3</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -635,11 +635,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">TirePMonWarnSt3</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">TirePMonWarnSt3</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">A8</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">A8</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.1.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -649,11 +649,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">A13</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">A13</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">A9</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">A9</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.1.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -663,49 +663,49 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">A14</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">A14</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">WhlRotlDirStd1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">WhlRotlDirStd1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">WhlRotlDirMeasd1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">WhlRotlDirMeasd1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">RngUnlimd</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">RngUnlimd</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">PtTqCluMaxFastIntvModTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">PtTqCluMaxFastIntvModTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">TrsmTqReqMaxMinTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">TrsmTqReqMaxMinTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">PtIntvModTqCluFastReqTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">PtIntvModTqCluFastReqTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">PtTqCluMaxFastIntvModTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">PtTqCluMaxFastIntvModTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
@@ -716,11 +716,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">PtIntvModTqCluFastReqTyp1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">PtIntvModTqCluFastReqTyp1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">TrsmTqReqTyp2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">TrsmTqReqTyp2</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
@@ -734,13 +734,13 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">TrsmTqReqTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">TrsmTqReqTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">TrsmTqReqTyp2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">TrsmTqReqTyp2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
@@ -751,17 +751,17 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">Tq16</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">Tq16</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">Tq5</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">Tq5</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">T7</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">T7</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
@@ -775,7 +775,7 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">N2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">N2</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
@@ -789,7 +789,7 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">TrsmPwrSt1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">TrsmPwrSt1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
@@ -803,7 +803,7 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">EnagSt1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">EnagSt1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
@@ -817,7 +817,7 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">GearSt1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">GearSt1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
@@ -831,38 +831,38 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">TrsmPwrStCtrl1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">TrsmPwrStCtrl1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.5.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">Tq5</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">Tq5</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">TrsmIntvModReqForTqCluReqForShiftIntvTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">TrsmIntvModReqForTqCluReqForShiftIntvTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.5.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">PtIntvModTqCluFastReqTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">PtIntvModTqCluFastReqTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.5.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="DataConstrs" DEST="DATA-CONSTR">TrsmIntvModReqForTqCluReqForShiftIntvTyp1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="DATA-CONSTR" BASE="DataConstrs">TrsmIntvModReqForTqCluReqForShiftIntvTyp1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="DataConstrs" DEST="DATA-CONSTR">EngRunngDir1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="DATA-CONSTR" BASE="DataConstrs">EngRunngDir1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
