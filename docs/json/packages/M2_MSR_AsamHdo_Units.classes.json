@@ -163,13 +163,7 @@
         }
       ],
       "attributes": {
-        "currentExp": {
-          "type": "Numerical",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "This attribute represents the exponent of the physical"
-        },
+       
         "lengthExp": {
           "type": "Numerical",
           "multiplicity": "0..1",
@@ -211,6 +205,13 @@
           "kind": "attribute",
           "is_ref": false,
           "note": "The exponent of the physical dimension \"time\"."
+        },
+         "currentExp": {
+          "type": "Numerical",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute represents the exponent of the physical"
         }
       }
     },

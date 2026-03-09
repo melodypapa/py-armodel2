@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "CompuMethod",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::MSR::AsamHdo::ComputationMethod",
       "is_abstract": false,
       "atp_type": null,
@@ -73,6 +73,13 @@
         }
       ],
       "attributes": {
+        "displayFormat": {
+          "type": "DisplayFormatString",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This property specifies, how the physical value shall be in documents or measurement and"
+        },
         "unit": {
           "type": "Unit",
           "multiplicity": "0..1",
@@ -93,13 +100,6 @@
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the computation from physical values to"
-        },
-        "displayFormat": {
-          "type": "DisplayFormatString",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "This property specifies, how the physical value shall be in documents or measurement and"
         }
       }
     },

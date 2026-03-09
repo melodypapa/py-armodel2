@@ -36,34 +36,34 @@ class PhysicalDimension(ARElement):
     _XML_TAG = "PHYSICAL-DIMENSION"
 
 
-    current_exp: Optional[Numerical]
     length_exp: Optional[Numerical]
     luminous_intensity_exp: Optional[Numerical]
     mass_exp: Optional[Numerical]
     molar_amount_exp: Optional[Numerical]
     temperature_exp: Optional[Numerical]
     time_exp: Optional[Numerical]
+    current_exp: Optional[Numerical]
     _DESERIALIZE_DISPATCH = {
-        "CURRENT-EXP": lambda obj, elem: setattr(obj, "current_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "LENGTH-EXP": lambda obj, elem: setattr(obj, "length_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "LUMINOUS-INTENSITY-EXP": lambda obj, elem: setattr(obj, "luminous_intensity_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "MASS-EXP": lambda obj, elem: setattr(obj, "mass_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "MOLAR-AMOUNT-EXP": lambda obj, elem: setattr(obj, "molar_amount_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "TEMPERATURE-EXP": lambda obj, elem: setattr(obj, "temperature_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "TIME-EXP": lambda obj, elem: setattr(obj, "time_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "CURRENT-EXP": lambda obj, elem: setattr(obj, "current_exp", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
     }
 
 
     def __init__(self) -> None:
         """Initialize PhysicalDimension."""
         super().__init__()
-        self.current_exp: Optional[Numerical] = None
         self.length_exp: Optional[Numerical] = None
         self.luminous_intensity_exp: Optional[Numerical] = None
         self.mass_exp: Optional[Numerical] = None
         self.molar_amount_exp: Optional[Numerical] = None
         self.temperature_exp: Optional[Numerical] = None
         self.time_exp: Optional[Numerical] = None
+        self.current_exp: Optional[Numerical] = None
 
     def serialize(self) -> ET.Element:
         """Serialize PhysicalDimension to XML element.
@@ -87,20 +87,6 @@ class PhysicalDimension(ARElement):
         # Copy all children from parent element
         for child in parent_elem:
             elem.append(child)
-
-        # Serialize current_exp
-        if self.current_exp is not None:
-            serialized = SerializationHelper.serialize_item(self.current_exp, "Numerical")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CURRENT-EXP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
 
         # Serialize length_exp
         if self.length_exp is not None:
@@ -186,6 +172,20 @@ class PhysicalDimension(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
+        # Serialize current_exp
+        if self.current_exp is not None:
+            serialized = SerializationHelper.serialize_item(self.current_exp, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CURRENT-EXP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
         return elem
 
     @classmethod
@@ -205,9 +205,7 @@ class PhysicalDimension(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CURRENT-EXP":
-                setattr(obj, "current_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
-            elif tag == "LENGTH-EXP":
+            if tag == "LENGTH-EXP":
                 setattr(obj, "length_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
             elif tag == "LUMINOUS-INTENSITY-EXP":
                 setattr(obj, "luminous_intensity_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
@@ -219,6 +217,8 @@ class PhysicalDimension(ARElement):
                 setattr(obj, "temperature_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
             elif tag == "TIME-EXP":
                 setattr(obj, "time_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "CURRENT-EXP":
+                setattr(obj, "current_exp", SerializationHelper.deserialize_by_tag(child, "Numerical"))
 
         return obj
 
@@ -232,20 +232,6 @@ class PhysicalDimensionBuilder(ARElementBuilder):
         super().__init__()
         self._obj: PhysicalDimension = PhysicalDimension()
 
-
-    def with_current_exp(self, value: Optional[Numerical]) -> "PhysicalDimensionBuilder":
-        """Set current_exp attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute 'current_exp' is required and cannot be None")
-        self._obj.current_exp = value
-        return self
 
     def with_length_exp(self, value: Optional[Numerical]) -> "PhysicalDimensionBuilder":
         """Set length_exp attribute.
@@ -329,6 +315,20 @@ class PhysicalDimensionBuilder(ARElementBuilder):
         if value is None and not True:
             raise ValueError("Attribute 'time_exp' is required and cannot be None")
         self._obj.time_exp = value
+        return self
+
+    def with_current_exp(self, value: Optional[Numerical]) -> "PhysicalDimensionBuilder":
+        """Set current_exp attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute 'current_exp' is required and cannot be None")
+        self._obj.current_exp = value
         return self
 
 

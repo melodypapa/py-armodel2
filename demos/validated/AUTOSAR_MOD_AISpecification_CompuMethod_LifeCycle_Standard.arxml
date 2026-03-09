@@ -37,7 +37,7 @@
                   <DEFAULT-LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</DEFAULT-LC-STATE-REF>
                   <LIFE-CYCLE-INFOS>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">AckSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">AckSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -47,11 +47,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">AckSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">AckSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">AlrmSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">AlrmSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -61,11 +61,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">AlrmSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">AlrmSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">AvlSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">AvlSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -75,11 +75,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">AvlSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">AvlSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">CalSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">CalSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -89,11 +89,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">CalSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">CalSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">CrashSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">CrashSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -103,11 +103,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">CrashSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">CrashSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">CrsCtrlAndAccSwtSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">CrsCtrlAndAccSwtSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -117,11 +117,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">CrsCtrlAndAccSwtSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">CrsCtrlAndAccSwtSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">CtrlSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">CtrlSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -131,11 +131,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">CtrlSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">CtrlSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DetnSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DetnSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -145,11 +145,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">DetnSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">DetnSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevErrSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevErrSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -159,11 +159,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevErrSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevErrSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevErrSts2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevErrSts2</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -173,11 +173,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevErrSt2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevErrSt2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevErrSts3</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevErrSts3</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -187,11 +187,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevErrSt3</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevErrSt3</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevErrSts4</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevErrSts4</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -201,11 +201,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevErrSt4</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevErrSt4</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevSts4</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevSts4</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -215,11 +215,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevSt4</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevSt4</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevSts5</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevSts5</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -229,11 +229,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevSt5</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevSt5</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevSts6</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevSts6</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -243,11 +243,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevSt6</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevSt6</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevSts7</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevSts7</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -257,11 +257,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">DevSt7</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">DevSt7</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DoorHndlSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DoorHndlSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -271,11 +271,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">DoorHndlSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">DoorHndlSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DoorSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DoorSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -285,11 +285,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">DoorSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">DoorSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">EgyMngtSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">EgyMngtSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -299,11 +299,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">EgyMngtSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">EgyMngtSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">EpbBtnCtrlSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">EpbBtnCtrlSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -313,11 +313,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">EpbBtnCtrlSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">EpbBtnCtrlSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">ImobSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">ImobSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -327,11 +327,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">ImobSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">ImobSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">ImpctSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">ImpctSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -341,11 +341,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">ImpctSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">ImpctSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">IndcrSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">IndcrSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -355,11 +355,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">IndcrSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">IndcrSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">KeyInsertSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">KeyInsertSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -369,11 +369,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">KeyInsertSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">KeyInsertSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">KeySts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">KeySts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -383,11 +383,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">KeySt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">KeySt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">LockSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">LockSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -397,11 +397,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">LockSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">LockSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">LockSts2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">LockSts2</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -411,11 +411,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">LockSt2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">LockSt2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">LockStsOfSteerCol1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">LockStsOfSteerCol1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -425,11 +425,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">LockStOfSteerCol1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">LockStOfSteerCol1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">MoveSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">MoveSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -439,11 +439,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">MoveSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">MoveSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">ObstclDstInPrkgSegSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">ObstclDstInPrkgSegSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -453,11 +453,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">ObstclDstInPrkgSegSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">ObstclDstInPrkgSegSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">OperModSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">OperModSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -467,11 +467,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">OperModSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">OperModSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">OutdBriSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">OutdBriSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -481,11 +481,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">OutdBriSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">OutdBriSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">OvrdnSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">OvrdnSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -495,11 +495,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">OvrdnSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">OvrdnSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">ProfPenSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">ProfPenSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -509,11 +509,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">ProfPenSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">ProfPenSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">ReqSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">ReqSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -523,11 +523,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">ReqSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">ReqSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">ReqSts2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">ReqSts2</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -537,11 +537,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">ReqSt2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">ReqSt2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">RoadSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">RoadSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -551,11 +551,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">RoadSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">RoadSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">StabrSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">StabrSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -565,11 +565,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">StabrSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">StabrSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">StsOfObjMeasd1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">StsOfObjMeasd1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -579,11 +579,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">StOfObjMeasd1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">StOfObjMeasd1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">TSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">TSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -593,11 +593,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">TSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">TSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">TirePMonWarnSts1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">TirePMonWarnSts1</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -607,11 +607,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">TirePMonWarnSt1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">TirePMonWarnSt1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">TirePMonWarnSts2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">TirePMonWarnSts2</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -621,11 +621,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">TirePMonWarnSt2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">TirePMonWarnSt2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">TirePMonWarnSts3</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">TirePMonWarnSts3</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -635,11 +635,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">TirePMonWarnSt3</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">TirePMonWarnSt3</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">A8</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">A8</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.1.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -649,11 +649,11 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">A13</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">A13</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">A9</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">A9</LC-OBJECT-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.1.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
@@ -663,234 +663,234 @@
                         </P>
                       </REMARK>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">A14</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">A14</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">WhlRotlDirStd1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">WhlRotlDirStd1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">WhlRotlDirMeasd1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">WhlRotlDirMeasd1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">BarIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">BarIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DegCgrdIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DegCgrdIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">HectoPaIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">HectoPaIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">HzIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">HzIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">KiloGrIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">KiloGrIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">KiloHzIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">KiloHzIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">KiloMtrIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">KiloMtrIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">MtrIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">MtrIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">MtrPerSecIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">MtrPerSecIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">MtrPerSecCubdIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">MtrPerSecCubdIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">MtrPerSecSqdIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">MtrPerSecSqdIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">MtrRecprIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">MtrRecprIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">NoUnitIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">NoUnitIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">NwtIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">NwtIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">NwtMtrIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">NwtMtrIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">NwtMtrPerSecIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">NwtMtrPerSecIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">NwtPerMtrIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">NwtPerMtrIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">NwtSecPerMtrIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">NwtSecPerMtrIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">PercPerSecIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">PercPerSecIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">RadIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">RadIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">RadPerSecIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">RadPerSecIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">RadPerSecSqdIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">RadPerSecSqdIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">RpmIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">RpmIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">RpmPerSecIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">RpmPerSecIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">SecIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">SecIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">VoltIdentcl</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">VoltIdentcl</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">PtTqCluMaxFastIntvModTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">PtTqCluMaxFastIntvModTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">TrsmTqReqMaxMinTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">TrsmTqReqMaxMinTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.2.2</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">PtIntvModTqCluFastReqTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">PtIntvModTqCluFastReqTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">PtTqCluMaxFastIntvModTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">PtTqCluMaxFastIntvModTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">PtIntvModTqCluFastReqTyp1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">PtIntvModTqCluFastReqTyp1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">TrsmTqReqTyp2</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">TrsmTqReqTyp2</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
@@ -904,13 +904,13 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">TrsmTqReqTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">TrsmTqReqTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">TrsmTqReqTyp2</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">TrsmTqReqTyp2</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
@@ -921,17 +921,17 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">Tq16</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">Tq16</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">Tq5</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">Tq5</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">DegCgrdLnr1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">DegCgrdLnr1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
@@ -945,7 +945,7 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">RpmLnr1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">RpmLnr1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.0</AR-RELEASE-VERSION>
@@ -959,7 +959,7 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">TrsmPwrSt1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">TrsmPwrSt1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
@@ -973,7 +973,7 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">EnagSt1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">EnagSt1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
@@ -987,7 +987,7 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">GearSt1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">GearSt1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
@@ -1001,38 +1001,38 @@
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">TrsmPwrStCtrl1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">TrsmPwrStCtrl1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.5.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">Tq5</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">Tq5</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">TrsmIntvModReqForTqCluReqForShiftIntvTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">TrsmIntvModReqForTqCluReqForShiftIntvTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.5.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">PtIntvModTqCluFastReqTyp1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">PtIntvModTqCluFastReqTyp1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/obsolete</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.5.0</AR-RELEASE-VERSION>
                       </PERIOD-BEGIN>
                       <USE-INSTEAD-REFS>
-                        <USE-INSTEAD-REF BASE="CompuMethods" DEST="COMPU-METHOD">TrsmIntvModReqForTqCluReqForShiftIntvTyp1</USE-INSTEAD-REF>
+                        <USE-INSTEAD-REF DEST="COMPU-METHOD" BASE="CompuMethods">TrsmIntvModReqForTqCluReqForShiftIntvTyp1</USE-INSTEAD-REF>
                       </USE-INSTEAD-REFS>
                     </LIFE-CYCLE-INFO>
                     <LIFE-CYCLE-INFO>
-                      <LC-OBJECT-REF BASE="CompuMethods" DEST="COMPU-METHOD">EngRunngDir1</LC-OBJECT-REF>
+                      <LC-OBJECT-REF DEST="COMPU-METHOD" BASE="CompuMethods">EngRunngDir1</LC-OBJECT-REF>
                       <LC-STATE-REF DEST="LIFE-CYCLE-STATE">/AUTOSAR/GenDef/LifeCycleStateDefinitionGroups/AutosarLifeCycleStates/valid</LC-STATE-REF>
                       <PERIOD-BEGIN>
                         <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>

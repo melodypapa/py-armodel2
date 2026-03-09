@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "DocumentationBlock",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::MSR::Documentation::BlockElements",
       "is_abstract": false,
       "atp_type": null,
@@ -90,13 +90,6 @@
           "is_ref": true,
           "note": "This represents a definition list in the documentation atpVariation"
         },
-        "figure": {
-          "type": "MlFigure",
-          "multiplicity": "*",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "This represents a figure in the documentation block."
-        },
         "formula": {
           "type": "MlFormula",
           "multiplicity": "0..1",
@@ -131,6 +124,13 @@
           "kind": "attribute",
           "is_ref": false,
           "note": "This is one particular paragraph. Multiple paragraphs can appear in mixed content."
+        },
+        "figure": {
+          "type": "MlFigure",
+          "multiplicity": "*",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents a figure in the documentation block."
         },
         "list": {
           "type": "ARList",
