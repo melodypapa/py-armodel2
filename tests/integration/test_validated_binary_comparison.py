@@ -98,12 +98,17 @@ class TestTestValidated:
         # Read serialized
         serialized_bytes = output_file.read_bytes()
 
+        # Normalize line endings (CRLF -> LF) for comparison
+        # This allows tests to pass regardless of source file line endings
+        original_normalized = original_bytes.replace(b'\r\n', b'\n')
+        serialized_normalized = serialized_bytes.replace(b'\r\n', b'\n')
+
         # Binary comparison
-        assert original_bytes == serialized_bytes, (
+        assert original_normalized == serialized_normalized, (
             f"Binary comparison failed for {filename}\n"
-            f"Original:    {len(original_bytes):,} bytes\n"
-            f"Serialized:  {len(serialized_bytes):,} bytes\n"
-            f"Difference:  {abs(len(serialized_bytes) - len(original_bytes)):,} bytes\n\n"
+            f"Original:    {len(original_bytes):,} bytes ({len(original_normalized):,} normalized)\n"
+            f"Serialized:  {len(serialized_bytes):,} bytes ({len(serialized_normalized):,} normalized)\n"
+            f"Difference:  {abs(len(serialized_normalized) - len(original_normalized)):,} bytes\n\n"
             f"To reproduce the error, run:\n"
             f"  armodel format {shlex.quote(str(arxml_file))} -o data/output.arxml\n\n"
             f"To compare the differences:\n"
