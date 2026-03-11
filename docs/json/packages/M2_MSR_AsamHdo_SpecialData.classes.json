@@ -219,6 +219,7 @@
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,
+          "is_text_content": true,
           "note": "This is the value of the special data."
         },
         "xmlSpace": {

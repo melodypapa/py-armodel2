@@ -84,23 +84,17 @@ class Sd(ARObject):
         for child in parent_elem:
             elem.append(child)
 
+        # Serialize text content directly (simpleContent type)
+        if self.value is not None:
+            # Get the raw value from ARPrimitive if it's a primitive type
+            if hasattr(self.value, 'value'):
+                elem.text = str(self.value.value)
+            else:
+                elem.text = str(self.value)
+
         # Serialize gid as XML attribute
         if self.gid is not None:
             elem.attrib["GID"] = str(self.gid)
-
-        # Serialize value
-        if self.value is not None:
-            serialized = SerializationHelper.serialize_item(self.value, "VerbatimStringPlain")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
 
         # Serialize xml_space
         if self.xml_space is not None:
@@ -131,6 +125,10 @@ class Sd(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Sd, cls).deserialize(element)
 
+        # Deserialize text content from element.text (simpleContent type)
+        if element.text and element.text.strip():
+            obj.value = VerbatimStringPlain(value=element.text)
+
         # Parse gid from XML attribute
         if "GID" in element.attrib:
             obj.gid = element.attrib["GID"]
@@ -139,9 +137,7 @@ class Sd(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "VALUE":
-                setattr(obj, "value", SerializationHelper.deserialize_by_tag(child, "VerbatimStringPlain"))
-            elif tag == "XML-SPACE":
+            if tag == "XML-SPACE":
                 setattr(obj, "xml_space", SerializationHelper.deserialize_by_tag(child, "XmlSpaceEnum"))
 
         return obj
