@@ -204,6 +204,70 @@ def _is_basic_python_type(type_name: str) -> bool:
     return type_name in ("str", "int", "float", "bool")
 
 
+def _get_simple_content_info(
+    class_name: str,
+    package_path: str,
+    package_data: Dict[str, Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Detect if a class uses simpleContent (direct text content + attributes only).
+
+    simpleContent types have text content directly in the element, not wrapped in child elements.
+    This is defined in the XSD with <xsd:simpleContent> and means the element has:
+    - Text content (not wrapped in child elements)
+    - Attributes only (no child elements)
+
+    Auto-detection: If any attribute has 'is_text_content': true, this is a simpleContent type.
+
+    Args:
+        class_name: Name of the class to check
+        package_path: Path to the package containing the class
+        package_data: Package data dictionary
+
+    Returns:
+        Dictionary with:
+        - 'has_simple_content': bool - True if class uses simpleContent
+        - 'text_content_attr': Dict or None - The attribute that holds the text content
+    """
+    result = {
+        'has_simple_content': False,
+        'text_content_attr': None
+    }
+
+    if package_path not in package_data:
+        return result
+
+    class_info = package_data[package_path].get("classes", [])
+    cls = None
+    for c in class_info:
+        if c["name"] == class_name:
+            cls = c
+            break
+
+    if cls is None:
+        return result
+
+    # Auto-detect simpleContent: find the attribute marked as text content
+    for attr_name, attr_info in cls.get("attributes", {}).items():
+        if attr_info.get("is_text_content", False):
+            # Build the same metadata format as _collect_attribute_types_with_flattening
+            attr_type = attr_info["type"]
+            multiplicity = attr_info["multiplicity"]
+            is_ref = attr_info.get("is_ref", False)
+            kind = attr_info.get("kind", "attribute")
+
+            result['has_simple_content'] = True
+            result['text_content_attr'] = {
+                "name": attr_name,
+                "type": attr_type,
+                "multiplicity": multiplicity,
+                "is_ref": is_ref,
+                "kind": kind,
+            }
+            break
+
+    return result
+
+
 def _generate_xml_tag_constant(class_name: str) -> str:
     """Generate _XML_TAG constant for a class."""
     xml_tag = NameConverter.to_xml_tag(class_name)
@@ -457,8 +521,13 @@ def generate_class_code(
         # Collect attribute types for imports (with atpMixed flattening)
         attribute_types = {}
         has_xml_attribute = False
+        simple_content_info = {}
         if include_members and package_path in package_data:
             attribute_types = _collect_attribute_types_with_flattening(
+                class_name, package_path, package_data
+            )
+            # Check if this class uses simpleContent (direct text content)
+            simple_content_info = _get_simple_content_info(
                 class_name, package_path, package_data
             )
             # Check if any attribute uses xml_attribute
@@ -1262,20 +1331,20 @@ class {class_name}(ABC):
             # Parent is ARObject, still need to generate custom methods
             # because ARObject.serialize() only handles checksum and timestamp
             serialize_code = _generate_serialize_method(
-                class_name, attribute_types, parent_class, package_data
+                class_name, attribute_types, parent_class, package_data, None, simple_content_info
             )
             deserialize_code = _generate_deserialize_method(
-                class_name, attribute_types, parent_class, package_data, polymorphic_types
+                class_name, attribute_types, parent_class, package_data, polymorphic_types, simple_content_info
             )
             code += serialize_code + deserialize_code
     else:
         # For other classes, generate optimized serialize() and deserialize() methods
         # These methods parse/serialize XML directly for better performance
         serialize_code = _generate_serialize_method(
-            class_name, attribute_types, parent_class, package_data
+            class_name, attribute_types, parent_class, package_data, None, simple_content_info
         )
         deserialize_code = _generate_deserialize_method(
-            class_name, attribute_types, parent_class, package_data, polymorphic_types
+            class_name, attribute_types, parent_class, package_data, polymorphic_types, simple_content_info
         )
         code += serialize_code + deserialize_code
 
@@ -1288,6 +1357,7 @@ def _generate_deserialize_method(
     parent_class: Optional[str],
     package_data: Dict[str, Dict[str, Any]],
     polymorphic_types: Optional[Dict[str, List[str]]] = None,
+    simple_content_info: Optional[Dict[str, Any]] = None,
 ) -> str:
     """Generate optimized deserialize() method for a class.
 
@@ -1297,12 +1367,15 @@ def _generate_deserialize_method(
         parent_class: Name of parent class (if any)
         package_data: Package data dictionary
         polymorphic_types: Dict mapping base types to lists of concrete implementations
+        simple_content_info: Optional dict with 'has_simple_content' and 'text_content_attr'
 
     Returns:
         Generated deserialize() method code
     """
     if polymorphic_types is None:
         polymorphic_types = {}
+    if simple_content_info is None:
+        simple_content_info = {}
 
     code = f'''    @classmethod
     def deserialize(cls, element: ET.Element) -> "{class_name}":
@@ -1339,6 +1412,25 @@ def _generate_deserialize_method(
         obj.__init__()
 
 """
+
+    # Handle simpleContent - deserialize text content from element.text
+    has_simple_content = simple_content_info.get('has_simple_content', False)
+    text_content_attr = simple_content_info.get('text_content_attr')
+
+    if has_simple_content and text_content_attr:
+        attr_name = text_content_attr['name']
+        attr_type = text_content_attr['type']
+        python_name = get_python_identifier_with_ref(
+            attr_name,
+            text_content_attr.get('is_ref', False),
+            text_content_attr.get('multiplicity', '1'),
+            text_content_attr.get('kind', 'attribute')
+        )
+        code += f'''        # Deserialize text content from element.text (simpleContent type)
+        if element.text and element.text.strip():
+            obj.{python_name} = {attr_type}(value=element.text)
+
+'''
 
     # Handle xml_attribute and lang_abbr attributes (read from element.attrib)
     if attribute_types:
@@ -1379,6 +1471,9 @@ def _generate_deserialize_method(
             if decorator_name == "lang_abbr":
                 continue
             if decorator_name == "lang_prefix":
+                continue
+            # Skip text content attribute for simpleContent types (already handled above)
+            if has_simple_content and text_content_attr and attr_name == text_content_attr['name']:
                 continue
 
             multiplicity = attr_info.get("multiplicity", "1")
@@ -3310,6 +3405,7 @@ def _generate_serialize_method(
     parent_class: Optional[str],
     package_data: Dict[str, Dict[str, Any]],
     polymorphic_types: Optional[Dict[str, List[str]]] = None,
+    simple_content_info: Optional[Dict[str, Any]] = None,
 ) -> str:
     """Generate optimized serialize() method for a class.
 
@@ -3324,12 +3420,15 @@ def _generate_serialize_method(
         parent_class: Name of parent class (if any)
         package_data: Package data dictionary
         polymorphic_types: Dict mapping base types to lists of concrete implementations
+        simple_content_info: Optional dict with 'has_simple_content' and 'text_content_attr'
 
     Returns:
         Generated serialize() method code
     """
     if polymorphic_types is None:
         polymorphic_types = {}
+    if simple_content_info is None:
+        simple_content_info = {}
     code = f'''    def serialize(self) -> ET.Element:
         """Serialize {class_name} to XML element.
 
@@ -3360,9 +3459,34 @@ def _generate_serialize_method(
 
 """
 
+    # Handle simpleContent - serialize text content directly to elem.text
+    has_simple_content = simple_content_info.get('has_simple_content', False)
+    text_content_attr = simple_content_info.get('text_content_attr')
+
+    if has_simple_content and text_content_attr:
+        attr_name = text_content_attr['name']
+        python_name = get_python_identifier_with_ref(
+            attr_name,
+            text_content_attr.get('is_ref', False),
+            text_content_attr.get('multiplicity', '1'),
+            text_content_attr.get('kind', 'attribute')
+        )
+        code += f'''        # Serialize text content directly (simpleContent type)
+        if self.{python_name} is not None:
+            # Get the raw value from ARPrimitive if it's a primitive type
+            if hasattr(self.{python_name}, 'value'):
+                elem.text = str(self.{python_name}.value)
+            else:
+                elem.text = str(self.{python_name})
+
+'''
+
     # Generate code to serialize each attribute
     if attribute_types:
         for attr_name, attr_info in attribute_types.items():
+            # Skip text content attribute for simpleContent types (already handled above)
+            if has_simple_content and text_content_attr and attr_name == text_content_attr['name']:
+                continue
             attr_type = attr_info["type"]
             multiplicity = attr_info["multiplicity"]
             is_ref = attr_info.get("is_ref", False)

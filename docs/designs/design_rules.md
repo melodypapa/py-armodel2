@@ -29,54 +29,58 @@ Design rules are categorized by their type and scope:
 - **DESIGN_RULE_016**: Use `@xml_attribute` decorator for XML attributes (instead of elements) - see `docs/designs/decorators.md` for complete decorator documentation
 - **DESIGN_RULE_017**: XML tag names are automatically generated from class names
 - **DESIGN_RULE_018**: List attributes create wrapper elements (e.g., `ar_packages` → `<AR-PACKAGES>`)
+- **DESIGN_RULE_019**: simpleContent types (XSD pattern with direct text content) serialize text directly to `elem.text`, not wrapped in child elements
+  - Indicated by `"is_text_content": true` in the JSON mapping
+  - Example: `<SD GID="PROVIDING-HEADER-FILE">Can_GeneralTypes.h</SD>`
+  - Without `is_text_content`: `<SD GID="PROVIDING-HEADER-FILE"><VALUE>Can_GeneralTypes.h</VALUE></SD>`
 
 ### 4. Package Structure
-- **DESIGN_RULE_019**: Package hierarchy must match `mapping.json` package_path exactly
-- **DESIGN_RULE_020**: Each class gets its own file in the matching directory
-- **DESIGN_RULE_021**: `__init__.py` exports all classes in package
+- **DESIGN_RULE_020**: Package hierarchy must match `mapping.json` package_path exactly
+- **DESIGN_RULE_021**: Each class gets its own file in the matching directory
+- **DESIGN_RULE_022**: `__init__.py` exports all classes in package
 
 ### 5. Splitable Elements
-- **DESIGN_RULE_022**: Elements marked as `splitable: true` in mapping.json must include split metadata
-- **DESIGN_RULE_023**: Splitable elements must have `get_split_filename()` method
+- **DESIGN_RULE_023**: Elements marked as `splitable: true` in mapping.json must include split metadata
+- **DESIGN_RULE_024**: Splitable elements must have `get_split_filename()` method
 
 ### 6. Type Safety
-- **DESIGN_RULE_024**: Use type hints for all class attributes
-- **DESIGN_RULE_025**: Use Optional[T] for nullable attributes
-- **DESIGN_RULE_026**: Document complex types with docstrings
+- **DESIGN_RULE_025**: Use type hints for all class attributes
+- **DESIGN_RULE_026**: Use Optional[T] for nullable attributes
+- **DESIGN_RULE_027**: Document complex types with docstrings
 
 ### 7. Validation
-- **DESIGN_RULE_027**: All attributes must be validated in `builder.build()` method
-- **DESIGN_RULE_028**: Raise ValueError for invalid attribute values
-- **DESIGN_RULE_029**: Validate required attributes are present
+- **DESIGN_RULE_028**: All attributes must be validated in `builder.build()` method
+- **DESIGN_RULE_029**: Raise ValueError for invalid attribute values
+- **DESIGN_RULE_030**: Validate required attributes are present
 
 ### 8. Documentation
-- **DESIGN_RULE_030**: Each class must have a docstring
-- **DESIGN_RULE_031**: Each method must have a docstring
-- **DESIGN_RULE_032**: Document complex logic with inline comments
+- **DESIGN_RULE_031**: Each class must have a docstring
+- **DESIGN_RULE_032**: Each method must have a docstring
+- **DESIGN_RULE_033**: Document complex logic with inline comments
 
 ### 9. Testing
-- **DESIGN_RULE_033**: Each class must have unit tests
-- **DESIGN_RULE_034**: Tests must cover serialize/deserialize
-- **DESIGN_RULE_035**: Tests must verify builder functionality
+- **DESIGN_RULE_034**: Each class must have unit tests
+- **DESIGN_RULE_035**: Tests must cover serialize/deserialize
+- **DESIGN_RULE_036**: Tests must verify builder functionality
 
 ### 10. Architecture
-- **DESIGN_RULE_032**: Use class-based architecture instead of module-based
-- **DESIGN_RULE_033**: All infrastructure modules (core, reader, writer, cfg) must use class-based design
-- **DESIGN_RULE_034**: Infrastructure classes should use dependency injection for testability
-- **DESIGN_RULE_035**: Singleton pattern should be used for shared state managers
+- **DESIGN_RULE_037**: Use class-based architecture instead of module-based
+- **DESIGN_RULE_038**: All infrastructure modules (core, reader, writer, cfg) must use class-based design
+- **DESIGN_RULE_039**: Infrastructure classes should use dependency injection for testability
+- **DESIGN_RULE_040**: Singleton pattern should be used for shared state managers
 
 ### 11. Infrastructure Classes
-- **DESIGN_RULE_036**: SchemaVersionManager manages schema version detection and configuration
-- **DESIGN_RULE_037**: ConfigurationManager provides configuration loading with caching
-- **DESIGN_RULE_038**: ARXMLReader handles ARXML file loading and mapping to objects
-- **DESIGN_RULE_039**: ARXMLWriter handles object serialization and ARXML file saving
+- **DESIGN_RULE_041**: SchemaVersionManager manages schema version detection and configuration
+- **DESIGN_RULE_042**: ConfigurationManager provides configuration loading with caching
+- **DESIGN_RULE_043**: ARXMLReader handles ARXML file loading and mapping to objects
+- **DESIGN_RULE_044**: ARXMLWriter handles object serialization and ARXML file saving
 
 ### 12. Code Quality
-- **DESIGN_RULE_029**: No hardcoded values (use config where appropriate)
-- **DESIGN_RULE_030**: Follow PEP 8 style guide
-- **DESIGN_RULE_031**: Maximum line length 100 characters
-- **DESIGN_RULE_040**: All import statements must be defined at the beginning of the file
-- **DESIGN_RULE_041**: Use block import statements and define __all__ in __init__.py files
+- **DESIGN_RULE_045**: No hardcoded values (use config where appropriate)
+- **DESIGN_RULE_046**: Follow PEP 8 style guide
+- **DESIGN_RULE_047**: Maximum line length 100 characters
+- **DESIGN_RULE_048**: All import statements must be defined at the beginning of the file
+- **DESIGN_RULE_049**: Use block import statements and define __all__ in __init__.py files
   - Use full absolute imports with block format (multi-line with parentheses)
   - Block import format for single class: `from armodel2.models.M2.AUTOSARTemplates.Package.module import (\n    Class,\n)`
   - Block import format for multiple classes: `from armodel2.models.M2.AUTOSARTemplates.Package.module import (\n    Class1,\n    Class2,\n    Class3,\n)`

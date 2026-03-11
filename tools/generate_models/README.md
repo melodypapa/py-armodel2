@@ -126,6 +126,84 @@ Package-specific JSON files with detailed class definitions:
 - `*.enums.json` - Enumeration literals
 - `*.primitives.json` - Primitive type definitions
 
+#### JSON Schema Format
+
+The `*.classes.json` files define AUTOSAR model classes with the following schema:
+
+```json
+{
+  "package": "M2::MSR::AsamHdo::SpecialData",
+  "classes": [
+    {
+      "name": "Sd",
+      "maturity": "draft",
+      "package": "M2::MSR::AsamHdo::SpecialData",
+      "is_abstract": false,
+      "atp_type": null,
+      "parent": "ARObject",
+      "bases": ["ARObject"],
+      "attributes": {
+        "gid": {
+          "type": "NameToken",
+          "multiplicity": "1",
+          "kind": "aggr",
+          "is_ref": false,
+          "decorator": "xml_attribute",
+          "note": "This attributes specifies an identifier."
+        },
+        "value": {
+          "type": "VerbatimStringPlain",
+          "multiplicity": "1",
+          "kind": "attribute",
+          "is_ref": false,
+          "is_text_content": true,
+          "note": "This is the value of the special data."
+        }
+      }
+    }
+  ]
+}
+```
+
+#### Attribute Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `type` | string | The AUTOSAR type name (e.g., `"NameToken"`, `"VerbatimStringPlain"`) |
+| `multiplicity` | string | Cardinality: `"1"`, `"0..1"`, `"*"`, `"0..*"`, `"1..*"` |
+| `kind` | string | Attribute kind: `"attribute"`, `"aggr"`, `"ref"`, `"tref"`, `"iref"` |
+| `is_ref` | boolean | Whether this is a reference type |
+| `decorator` | string | Optional decorator: `"xml_attribute"`, `"atp_variant"`, etc. |
+| `is_text_content` | boolean | Marks simpleContent types (text directly in element, not wrapped) |
+| `note` | string | Human-readable description |
+
+#### Special Attribute Flags
+
+**`is_text_content`**: Indicates that this attribute's value should be serialized as direct text content of the XML element (XSD simpleContent pattern), rather than being wrapped in a child element.
+
+Example:
+```json
+{
+  "name": "Sd",
+  "attributes": {
+    "value": {
+      "type": "VerbatimStringPlain",
+      "is_text_content": true
+    }
+  }
+}
+```
+
+Generates XML:
+```xml
+<SD GID="PROVIDING-HEADER-FILE">Can_GeneralTypes.h</SD>
+```
+
+Without `is_text_content`, it would generate:
+```xml
+<SD GID="PROVIDING-HEADER-FILE"><VALUE>Can_GeneralTypes.h</VALUE></SD>
+```
+
 ### skip_classes.yaml
 
 YAML file specifying classes to skip during generation:
