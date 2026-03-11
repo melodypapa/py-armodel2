@@ -169,6 +169,7 @@ Temporary Items
 src/armodel/models/generated/
 output.arxml
 data
+formatted
 demos/arxml
 demos/test
 demos/test_validated
