@@ -23,6 +23,9 @@ from armodel2.models.M2.MSR.Documentation.MsrQuery.msr_query_props import (
 from armodel2.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.table import (
     Table,
 )
+from armodel2.models.M2.MSR.Documentation.Chapters.topic_content import (
+    TopicContent,
+)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
@@ -43,11 +46,13 @@ class MsrQueryP1(Paginateable):
 
 
     msr_query_props: MsrQueryProps
+    msr_query_result: Optional[TopicContent]
     block_level: DocumentationBlock
     table: Optional[Table]
     traceable_table: Any
     _DESERIALIZE_DISPATCH = {
         "MSR-QUERY-PROPS": lambda obj, elem: setattr(obj, "msr_query_props", SerializationHelper.deserialize_by_tag(elem, "MsrQueryProps")),
+        "MSR-QUERY-RESULT": lambda obj, elem: setattr(obj, "msr_query_result", SerializationHelper.deserialize_by_tag(elem, "TopicContent")),
         "BLOCK-LEVEL": lambda obj, elem: setattr(obj, "block_level", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
         "TABLE": lambda obj, elem: setattr(obj, "table", SerializationHelper.deserialize_by_tag(elem, "Table")),
         "TRACEABLE-TABLE": lambda obj, elem: setattr(obj, "traceable_table", SerializationHelper.deserialize_by_tag(elem, "any (TraceableTable)")),
@@ -58,6 +63,7 @@ class MsrQueryP1(Paginateable):
         """Initialize MsrQueryP1."""
         super().__init__()
         self.msr_query_props: MsrQueryProps = None
+        self.msr_query_result: Optional[TopicContent] = None
         self.block_level: DocumentationBlock = None
         self.table: Optional[Table] = None
         self.traceable_table: Any = None
@@ -98,6 +104,19 @@ class MsrQueryP1(Paginateable):
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
+
+        # Serialize msr_query_result (atp_mixed - append children directly)
+        if self.msr_query_result is not None:
+            serialized = SerializationHelper.serialize_item(self.msr_query_result, "TopicContent")
+            if serialized is not None:
+                # atpMixed type: append children directly without wrapper
+                if hasattr(serialized, 'attrib'):
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
+                for child in serialized:
+                    elem.append(child)
 
         # Serialize block_level
         if self.block_level is not None:
@@ -162,6 +181,8 @@ class MsrQueryP1(Paginateable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "MSR-QUERY-PROPS":
                 setattr(obj, "msr_query_props", SerializationHelper.deserialize_by_tag(child, "MsrQueryProps"))
+            elif tag == "MSR-QUERY-RESULT":
+                setattr(obj, "msr_query_result", SerializationHelper.deserialize_by_tag(child, "TopicContent"))
             elif tag == "BLOCK-LEVEL":
                 setattr(obj, "block_level", SerializationHelper.deserialize_by_tag(child, "DocumentationBlock"))
             elif tag == "TABLE":
@@ -194,6 +215,20 @@ class MsrQueryP1Builder(PaginateableBuilder):
         if value is None and not False:
             raise ValueError("Attribute 'msr_query_props' is required and cannot be None")
         self._obj.msr_query_props = value
+        return self
+
+    def with_msr_query_result(self, value: Optional[TopicContent]) -> "MsrQueryP1Builder":
+        """Set msr_query_result attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute 'msr_query_result' is required and cannot be None")
+        self._obj.msr_query_result = value
         return self
 
     def with_block_level(self, value: DocumentationBlock) -> "MsrQueryP1Builder":

@@ -15,13 +15,20 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin import (
     HwPin,
 )
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_group_content import (
+        HwPinGroupContent,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class HwPinGroup(Identifiable):
     """AUTOSAR HwPinGroup."""
 
@@ -37,9 +44,11 @@ class HwPinGroup(Identifiable):
     _XML_TAG = "HW-PIN-GROUP"
 
 
+    hw_pin_group_content_ref: Optional[ARRef]
     hw_pin: Optional[HwPin]
     hw_pin_group: Optional[HwPinGroup]
     _DESERIALIZE_DISPATCH = {
+        "HW-PIN-GROUP-CONTENT-REF": lambda obj, elem: setattr(obj, "hw_pin_group_content_ref", ARRef.deserialize(elem)),
         "HW-PIN": lambda obj, elem: setattr(obj, "hw_pin", SerializationHelper.deserialize_by_tag(elem, "HwPin")),
         "HW-PIN-GROUP": lambda obj, elem: setattr(obj, "hw_pin_group", SerializationHelper.deserialize_by_tag(elem, "HwPinGroup")),
     }
@@ -48,6 +57,7 @@ class HwPinGroup(Identifiable):
     def __init__(self) -> None:
         """Initialize HwPinGroup."""
         super().__init__()
+        self.hw_pin_group_content_ref: Optional[ARRef] = None
         self.hw_pin: Optional[HwPin] = None
         self.hw_pin_group: Optional[HwPinGroup] = None
 
@@ -73,6 +83,19 @@ class HwPinGroup(Identifiable):
         # Copy all children from parent element
         for child in parent_elem:
             elem.append(child)
+
+        # Serialize hw_pin_group_content_ref (atp_mixed - append children directly)
+        if self.hw_pin_group_content_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.hw_pin_group_content_ref, "HwPinGroupContent")
+            if serialized is not None:
+                # atpMixed type: append children directly without wrapper
+                if hasattr(serialized, 'attrib'):
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
+                for child in serialized:
+                    elem.append(child)
 
         # Serialize hw_pin
         if self.hw_pin is not None:
@@ -121,7 +144,9 @@ class HwPinGroup(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "HW-PIN":
+            if tag == "HW-PIN-GROUP-CONTENT-REF":
+                setattr(obj, "hw_pin_group_content_ref", ARRef.deserialize(child))
+            elif tag == "HW-PIN":
                 setattr(obj, "hw_pin", SerializationHelper.deserialize_by_tag(child, "HwPin"))
             elif tag == "HW-PIN-GROUP":
                 setattr(obj, "hw_pin_group", SerializationHelper.deserialize_by_tag(child, "HwPinGroup"))
@@ -138,6 +163,20 @@ class HwPinGroupBuilder(IdentifiableBuilder):
         super().__init__()
         self._obj: HwPinGroup = HwPinGroup()
 
+
+    def with_hw_pin_group_content(self, value: Optional[HwPinGroupContent]) -> "HwPinGroupBuilder":
+        """Set hw_pin_group_content attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute 'hw_pin_group_content' is required and cannot be None")
+        self._obj.hw_pin_group_content = value
+        return self
 
     def with_hw_pin(self, value: Optional[HwPin]) -> "HwPinGroupBuilder":
         """Set hw_pin attribute.

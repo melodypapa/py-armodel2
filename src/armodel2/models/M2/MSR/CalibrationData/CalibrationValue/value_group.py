@@ -20,10 +20,16 @@ from armodel2.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilangu
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.numerical_or_text import (
     NumericalOrText,
 )
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.MSR.CalibrationData.CalibrationValue.sw_values import (
+        SwValues,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class ValueGroup(ARObject):
     """AUTOSAR ValueGroup."""
 
@@ -40,6 +46,7 @@ class ValueGroup(ARObject):
 
 
     label: Optional[MultilanguageLongName]
+    vg_contents: Optional[SwValues]
     v: Optional[Numerical]
     vf: Optional[Numerical]
     vg: Optional[ValueGroup]
@@ -47,6 +54,7 @@ class ValueGroup(ARObject):
     vtf: Optional[NumericalOrText]
     _DESERIALIZE_DISPATCH = {
         "LABEL": lambda obj, elem: setattr(obj, "label", SerializationHelper.deserialize_by_tag(elem, "MultilanguageLongName")),
+        "VG-CONTENTS": lambda obj, elem: setattr(obj, "vg_contents", SerializationHelper.deserialize_by_tag(elem, "SwValues")),
         "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "VF": lambda obj, elem: setattr(obj, "vf", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "VG": lambda obj, elem: setattr(obj, "vg", SerializationHelper.deserialize_by_tag(elem, "ValueGroup")),
@@ -59,6 +67,7 @@ class ValueGroup(ARObject):
         """Initialize ValueGroup."""
         super().__init__()
         self.label: Optional[MultilanguageLongName] = None
+        self.vg_contents: Optional[SwValues] = None
         self.v: Optional[Numerical] = None
         self.vf: Optional[Numerical] = None
         self.vg: Optional[ValueGroup] = None
@@ -101,6 +110,19 @@ class ValueGroup(ARObject):
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
+
+        # Serialize vg_contents (atp_mixed - append children directly)
+        if self.vg_contents is not None:
+            serialized = SerializationHelper.serialize_item(self.vg_contents, "SwValues")
+            if serialized is not None:
+                # atpMixed type: append children directly without wrapper
+                if hasattr(serialized, 'attrib'):
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
+                for child in serialized:
+                    elem.append(child)
 
         # Serialize v
         if self.v is not None:
@@ -193,6 +215,8 @@ class ValueGroup(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "LABEL":
                 setattr(obj, "label", SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName"))
+            elif tag == "VG-CONTENTS":
+                setattr(obj, "vg_contents", SerializationHelper.deserialize_by_tag(child, "SwValues"))
             elif tag == "V":
                 setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
             elif tag == "VF":
@@ -229,6 +253,20 @@ class ValueGroupBuilder(BuilderBase):
         if value is None and not True:
             raise ValueError("Attribute 'label' is required and cannot be None")
         self._obj.label = value
+        return self
+
+    def with_vg_contents(self, value: Optional[SwValues]) -> "ValueGroupBuilder":
+        """Set vg_contents attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute 'vg_contents' is required and cannot be None")
+        self._obj.vg_contents = value
         return self
 
     def with_v(self, value: Optional[Numerical]) -> "ValueGroupBuilder":

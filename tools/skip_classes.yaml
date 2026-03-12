@@ -50,8 +50,11 @@ skip_classes:
   # DocumentationBlock requires custom serialization - handles L-1 through L-10 language-specific elements (P paragraphs)
   - "DocumentationBlock"
 
-  # BswModuleClientServerEntry requires custom serialization for REF-CONDITIONAL wrapper pattern
-  - "BswModuleClientServerEntry"
+  # Sdg and SdgContents require custom handling for atp_mixed pattern
+  # where multiple SD/SDF/SDG children serialize directly under parent SDG
+  # The sdgContentsType attribute stores SdgContents, whose children serialize directly
+  - "Sdg"
+  - "SdgContents"
 
 # Force TYPE_CHECKING Imports
 # These types will always be imported inside TYPE_CHECKING blocks to prevent circular imports.

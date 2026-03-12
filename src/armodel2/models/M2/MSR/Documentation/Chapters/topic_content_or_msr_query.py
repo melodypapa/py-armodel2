@@ -20,6 +20,9 @@ from armodel2.models.M2.MSR.Documentation.MsrQuery.msr_query_p1 import (
 from armodel2.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable.table import (
     Table,
 )
+from armodel2.models.M2.MSR.Documentation.Chapters.topic_content import (
+    TopicContent,
+)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
@@ -42,11 +45,13 @@ class TopicContentOrMsrQuery(ARObject):
 
 
     msr_query_p1: MsrQueryP1
+    topic_content: TopicContent
     block_level: DocumentationBlock
     table: Optional[Table]
     traceable_table: Any
     _DESERIALIZE_DISPATCH = {
         "MSR-QUERY-P1": lambda obj, elem: setattr(obj, "msr_query_p1", SerializationHelper.deserialize_by_tag(elem, "MsrQueryP1")),
+        "TOPIC-CONTENT": lambda obj, elem: setattr(obj, "topic_content", SerializationHelper.deserialize_by_tag(elem, "TopicContent")),
         "BLOCK-LEVEL": lambda obj, elem: setattr(obj, "block_level", SerializationHelper.deserialize_by_tag(elem, "DocumentationBlock")),
         "TABLE": lambda obj, elem: setattr(obj, "table", SerializationHelper.deserialize_by_tag(elem, "Table")),
         "TRACEABLE-TABLE": lambda obj, elem: setattr(obj, "traceable_table", SerializationHelper.deserialize_by_tag(elem, "any (TraceableTable)")),
@@ -57,6 +62,7 @@ class TopicContentOrMsrQuery(ARObject):
         """Initialize TopicContentOrMsrQuery."""
         super().__init__()
         self.msr_query_p1: MsrQueryP1 = None
+        self.topic_content: TopicContent = None
         self.block_level: DocumentationBlock = None
         self.table: Optional[Table] = None
         self.traceable_table: Any = None
@@ -90,6 +96,19 @@ class TopicContentOrMsrQuery(ARObject):
             serialized = SerializationHelper.serialize_item(self.msr_query_p1, "MsrQueryP1")
             if serialized is not None:
                 wrapped = ET.Element("MSR-QUERY-P1")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize topic_content (complex type)
+        if self.topic_content is not None:
+            serialized = SerializationHelper.serialize_item(self.topic_content, "TopicContent")
+            if serialized is not None:
+                wrapped = ET.Element("TOPIC-CONTENT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -158,6 +177,12 @@ class TopicContentOrMsrQuery(ARObject):
             msr_query_p1_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryP1")
             obj.msr_query_p1 = msr_query_p1_value
 
+        # Parse topic_content
+        child = SerializationHelper.find_child_element(element, "TOPIC-CONTENT")
+        if child is not None:
+            topic_content_value = SerializationHelper.deserialize_by_tag(child, "TopicContent")
+            obj.topic_content = topic_content_value
+
         # Parse block_level
         child = SerializationHelper.find_child_element(element, "BLOCK-LEVEL")
         if child is not None:
@@ -201,6 +226,20 @@ class TopicContentOrMsrQueryBuilder(BuilderBase):
         if value is None and not False:
             raise ValueError("Attribute 'msr_query_p1' is required and cannot be None")
         self._obj.msr_query_p1 = value
+        return self
+
+    def with_topic_content(self, value: TopicContent) -> "TopicContentOrMsrQueryBuilder":
+        """Set topic_content attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not False:
+            raise ValueError("Attribute 'topic_content' is required and cannot be None")
+        self._obj.topic_content = value
         return self
 
     def with_block_level(self, value: DocumentationBlock) -> "TopicContentOrMsrQueryBuilder":

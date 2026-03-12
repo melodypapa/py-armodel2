@@ -89,21 +89,6 @@
           "is_ref": false,
           "note": "Indicates an abstract partition context in which the enclosing BswModuleEntity can be executed. atpVariation"
         },
-        "entity": {
-          "type": "BswModuleEntity",
-          "multiplicity": "*",
-          "kind": "aggr",
-          "is_ref": false,
-          "decorator": "polymorphic:ENTITYS=BswModuleEntity",
-          "note": "A code entity for which the behavior is described atpVariation"
-        },
-        "event": {
-          "type": "BswEvent",
-          "multiplicity": "*",
-          "kind": "aggr",
-          "is_ref": false,
-          "note": "An event required by this module behavior. atpVariation"
-        },
         "exclusiveAreaPolicy": {
           "type": "BswExclusiveAreaPolicy",
           "multiplicity": "*",
@@ -138,6 +123,21 @@
           "kind": "aggr",
           "is_ref": false,
           "note": "Policy for an internalTriggeringPoint in this BswInternal Behavior.. The policy selects the options of the Schedule API generation. atpVariation"
+        },
+        "entity": {
+          "type": "BswModuleEntity",
+          "multiplicity": "*",
+          "kind": "aggr",
+          "is_ref": false,
+          "decorator": "polymorphic:ENTITYS=BswModuleEntity",
+          "note": "A code entity for which the behavior is described atpVariation"
+        },
+        "event": {
+          "type": "BswEvent",
+          "multiplicity": "*",
+          "kind": "aggr",
+          "is_ref": false,
+          "note": "An event required by this module behavior. atpVariation"
         },
         "modeSenderPolicy": {
           "type": "BswModeSenderPolicy",
@@ -282,6 +282,7 @@
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
+          "decorator": "ref_conditional:ACTIVATION-POINTS",
           "note": "Activation point used by the module entity to activate one more internal triggers. atpVariation"
         },
         "callPoint": {

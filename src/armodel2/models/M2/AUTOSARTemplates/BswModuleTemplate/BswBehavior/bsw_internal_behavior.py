@@ -93,13 +93,13 @@ class BswInternalBehavior(InternalBehavior):
     bsw_per_instance_memory_policies: list[BswPerInstanceMemoryPolicy]
     client_policies: list[BswClientPolicy]
     distinguished_partitions: list[BswDistinguishedPartition]
-    _entities: list[BswModuleEntity]
-    events: list[BswEvent]
     exclusive_area_policies: list[BswExclusiveAreaPolicy]
     included_data_type_sets: list[IncludedDataTypeSet]
     included_mode_declaration_group_sets: list[IncludedModeDeclarationGroupSet]
     internal_triggering_points: list[BswInternalTriggeringPoint]
     internal_triggering_point_policies: list[BswInternalTriggeringPointPolicy]
+    _entities: list[BswModuleEntity]
+    events: list[BswEvent]
     mode_sender_policies: list[BswModeSenderPolicy]
     mode_receiver_policies: list[BswModeReceiverPolicy]
     parameter_policies: list[BswParameterPolicy]
@@ -116,13 +116,13 @@ class BswInternalBehavior(InternalBehavior):
         "BSW-PER-INSTANCE-MEMORY-POLICYS": lambda obj, elem: obj.bsw_per_instance_memory_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswPerInstanceMemoryPolicy")),
         "CLIENT-POLICYS": lambda obj, elem: obj.client_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswClientPolicy")),
         "DISTINGUISHED-PARTITIONS": lambda obj, elem: obj.distinguished_partitions.append(SerializationHelper.deserialize_by_tag(elem, "BswDistinguishedPartition")),
-        "ENTITYS": ("_POLYMORPHIC_LIST", "_entities", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
-        "EVENTS": ("_POLYMORPHIC_LIST", "events", ["BswAsynchronousServerCallReturnsEvent", "BswBackgroundEvent", "BswDataReceivedEvent", "BswExternalTriggerOccurredEvent", "BswInternalTriggerOccurredEvent", "BswInterruptEvent", "BswModeManagerErrorEvent", "BswModeSwitchEvent", "BswModeSwitchedAckEvent", "BswOperationInvokedEvent", "BswOsTaskExecutionEvent", "BswScheduleEvent", "BswTimingEvent"]),
         "EXCLUSIVE-AREA-POLICYS": lambda obj, elem: obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswExclusiveAreaPolicy")),
         "INCLUDED-DATA-TYPE-SETS": lambda obj, elem: obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedDataTypeSet")),
         "INCLUDED-MODE-DECLARATION-GROUP-SETS": lambda obj, elem: obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(elem, "IncludedModeDeclarationGroupSet")),
         "INTERNAL-TRIGGERING-POINTS": lambda obj, elem: obj.internal_triggering_points.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalTriggeringPoint")),
         "INTERNAL-TRIGGERING-POINT-POLICYS": lambda obj, elem: obj.internal_triggering_point_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalTriggeringPointPolicy")),
+        "ENTITYS": ("_POLYMORPHIC_LIST", "_entities", ["BswCalledEntity", "BswInterruptEntity", "BswSchedulableEntity"]),
+        "EVENTS": ("_POLYMORPHIC_LIST", "events", ["BswAsynchronousServerCallReturnsEvent", "BswBackgroundEvent", "BswDataReceivedEvent", "BswExternalTriggerOccurredEvent", "BswInternalTriggerOccurredEvent", "BswInterruptEvent", "BswModeManagerErrorEvent", "BswModeSwitchEvent", "BswModeSwitchedAckEvent", "BswOperationInvokedEvent", "BswOsTaskExecutionEvent", "BswScheduleEvent", "BswTimingEvent"]),
         "MODE-SENDER-POLICYS": lambda obj, elem: obj.mode_sender_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswModeSenderPolicy")),
         "MODE-RECEIVER-POLICYS": lambda obj, elem: obj.mode_receiver_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswModeReceiverPolicy")),
         "PARAMETER-POLICYS": lambda obj, elem: obj.parameter_policies.append(SerializationHelper.deserialize_by_tag(elem, "BswParameterPolicy")),
@@ -144,13 +144,13 @@ class BswInternalBehavior(InternalBehavior):
         self.bsw_per_instance_memory_policies: list[BswPerInstanceMemoryPolicy] = []
         self.client_policies: list[BswClientPolicy] = []
         self.distinguished_partitions: list[BswDistinguishedPartition] = []
-        self._entities: list[BswModuleEntity] = []
-        self.events: list[BswEvent] = []
         self.exclusive_area_policies: list[BswExclusiveAreaPolicy] = []
         self.included_data_type_sets: list[IncludedDataTypeSet] = []
         self.included_mode_declaration_group_sets: list[IncludedModeDeclarationGroupSet] = []
         self.internal_triggering_points: list[BswInternalTriggeringPoint] = []
         self.internal_triggering_point_policies: list[BswInternalTriggeringPointPolicy] = []
+        self._entities: list[BswModuleEntity] = []
+        self.events: list[BswEvent] = []
         self.mode_sender_policies: list[BswModeSenderPolicy] = []
         self.mode_receiver_policies: list[BswModeReceiverPolicy] = []
         self.parameter_policies: list[BswParameterPolicy] = []
@@ -237,25 +237,6 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize entities (list with polymorphic wrapper "ENTITYS")
-        if self.entities:
-            container = ET.Element("ENTITYS")
-            for item in self.entities:
-                serialized = SerializationHelper.serialize_item(item, "BswModuleEntity")
-                if serialized is not None:
-                    container.append(serialized)
-            elem.append(container)
-
-        # Serialize events (list to container "EVENTS")
-        if self.events:
-            wrapper = ET.Element("EVENTS")
-            for item in self.events:
-                serialized = SerializationHelper.serialize_item(item, "BswEvent")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
-
         # Serialize exclusive_area_policies (list to container "EXCLUSIVE-AREA-POLICYS")
         if self.exclusive_area_policies:
             wrapper = ET.Element("EXCLUSIVE-AREA-POLICYS")
@@ -301,6 +282,25 @@ class BswInternalBehavior(InternalBehavior):
             wrapper = ET.Element("INTERNAL-TRIGGERING-POINT-POLICYS")
             for item in self.internal_triggering_point_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswInternalTriggeringPointPolicy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize entities (list with polymorphic wrapper "ENTITYS")
+        if self.entities:
+            container = ET.Element("ENTITYS")
+            for item in self.entities:
+                serialized = SerializationHelper.serialize_item(item, "BswModuleEntity")
+                if serialized is not None:
+                    container.append(serialized)
+            elem.append(container)
+
+        # Serialize events (list to container "EVENTS")
+        if self.events:
+            wrapper = ET.Element("EVENTS")
+            for item in self.events:
+                serialized = SerializationHelper.serialize_item(item, "BswEvent")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -451,6 +451,26 @@ class BswInternalBehavior(InternalBehavior):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.distinguished_partitions.append(SerializationHelper.deserialize_by_tag(item_elem, "BswDistinguishedPartition"))
+            elif tag == "EXCLUSIVE-AREA-POLICYS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswExclusiveAreaPolicy"))
+            elif tag == "INCLUDED-DATA-TYPE-SETS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(item_elem, "IncludedDataTypeSet"))
+            elif tag == "INCLUDED-MODE-DECLARATION-GROUP-SETS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(item_elem, "IncludedModeDeclarationGroupSet"))
+            elif tag == "INTERNAL-TRIGGERING-POINTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.internal_triggering_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggeringPoint"))
+            elif tag == "INTERNAL-TRIGGERING-POINT-POLICYS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.internal_triggering_point_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggeringPointPolicy"))
             elif tag == "ENTITYS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
@@ -491,26 +511,6 @@ class BswInternalBehavior(InternalBehavior):
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswScheduleEvent"))
                     elif concrete_tag == "BSW-TIMING-EVENT":
                         obj.events.append(SerializationHelper.deserialize_by_tag(item_elem, "BswTimingEvent"))
-            elif tag == "EXCLUSIVE-AREA-POLICYS":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj.exclusive_area_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswExclusiveAreaPolicy"))
-            elif tag == "INCLUDED-DATA-TYPE-SETS":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj.included_data_type_sets.append(SerializationHelper.deserialize_by_tag(item_elem, "IncludedDataTypeSet"))
-            elif tag == "INCLUDED-MODE-DECLARATION-GROUP-SETS":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj.included_mode_declaration_group_sets.append(SerializationHelper.deserialize_by_tag(item_elem, "IncludedModeDeclarationGroupSet"))
-            elif tag == "INTERNAL-TRIGGERING-POINTS":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj.internal_triggering_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggeringPoint"))
-            elif tag == "INTERNAL-TRIGGERING-POINT-POLICYS":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj.internal_triggering_point_policies.append(SerializationHelper.deserialize_by_tag(item_elem, "BswInternalTriggeringPointPolicy"))
             elif tag == "MODE-SENDER-POLICYS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -619,30 +619,6 @@ class BswInternalBehaviorBuilder(InternalBehaviorBuilder):
         self._obj.distinguished_partitions = list(items) if items else []
         return self
 
-    def with_entities(self, items: list[BswModuleEntity]) -> "BswInternalBehaviorBuilder":
-        """Set entities list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.entities = list(items) if items else []
-        return self
-
-    def with_events(self, items: list[BswEvent]) -> "BswInternalBehaviorBuilder":
-        """Set events list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.events = list(items) if items else []
-        return self
-
     def with_exclusive_area_policies(self, items: list[BswExclusiveAreaPolicy]) -> "BswInternalBehaviorBuilder":
         """Set exclusive_area_policies list attribute.
 
@@ -701,6 +677,30 @@ class BswInternalBehaviorBuilder(InternalBehaviorBuilder):
             self for method chaining
         """
         self._obj.internal_triggering_point_policies = list(items) if items else []
+        return self
+
+    def with_entities(self, items: list[BswModuleEntity]) -> "BswInternalBehaviorBuilder":
+        """Set entities list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.entities = list(items) if items else []
+        return self
+
+    def with_events(self, items: list[BswEvent]) -> "BswInternalBehaviorBuilder":
+        """Set events list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.events = list(items) if items else []
         return self
 
     def with_mode_sender_policies(self, items: list[BswModeSenderPolicy]) -> "BswInternalBehaviorBuilder":
@@ -920,48 +920,6 @@ class BswInternalBehaviorBuilder(InternalBehaviorBuilder):
         self._obj.distinguished_partitions = []
         return self
 
-    def add_entity(self, item: BswModuleEntity) -> "BswInternalBehaviorBuilder":
-        """Add a single item to entities list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.entities.append(item)
-        return self
-
-    def clear_entities(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from entities list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.entities = []
-        return self
-
-    def add_event(self, item: BswEvent) -> "BswInternalBehaviorBuilder":
-        """Add a single item to events list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.events.append(item)
-        return self
-
-    def clear_events(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from events list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.events = []
-        return self
-
     def add_exclusive_area_policy(self, item: BswExclusiveAreaPolicy) -> "BswInternalBehaviorBuilder":
         """Add a single item to exclusive_area_policies list.
 
@@ -1065,6 +1023,48 @@ class BswInternalBehaviorBuilder(InternalBehaviorBuilder):
             self for method chaining
         """
         self._obj.internal_triggering_point_policies = []
+        return self
+
+    def add_entity(self, item: BswModuleEntity) -> "BswInternalBehaviorBuilder":
+        """Add a single item to entities list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.entities.append(item)
+        return self
+
+    def clear_entities(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from entities list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.entities = []
+        return self
+
+    def add_event(self, item: BswEvent) -> "BswInternalBehaviorBuilder":
+        """Add a single item to events list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.events.append(item)
+        return self
+
+    def clear_events(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from events list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.events = []
         return self
 
     def add_mode_sender_policy(self, item: BswModeSenderPolicy) -> "BswInternalBehaviorBuilder":
