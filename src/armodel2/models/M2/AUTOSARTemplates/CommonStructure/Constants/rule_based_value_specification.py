@@ -20,6 +20,9 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.numerical_or_text import (
     NumericalOrText,
 )
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.rule_arguments import (
+    RuleArguments,
+)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
@@ -39,6 +42,7 @@ class RuleBasedValueSpecification(ARObject):
     _XML_TAG = "RULE-BASED-VALUE-SPECIFICATION"
 
 
+    arguments: Optional[RuleArguments]
     v: Optional[Numerical]
     vf: Optional[Numerical]
     vt: Optional[VerbatimString]
@@ -46,6 +50,7 @@ class RuleBasedValueSpecification(ARObject):
     max_size_to_fill: Optional[Integer]
     rule: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
+        "ARGUMENTS": lambda obj, elem: setattr(obj, "arguments", SerializationHelper.deserialize_by_tag(elem, "RuleArguments")),
         "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "VF": lambda obj, elem: setattr(obj, "vf", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "VT": lambda obj, elem: setattr(obj, "vt", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
@@ -58,6 +63,7 @@ class RuleBasedValueSpecification(ARObject):
     def __init__(self) -> None:
         """Initialize RuleBasedValueSpecification."""
         super().__init__()
+        self.arguments: Optional[RuleArguments] = None
         self.v: Optional[Numerical] = None
         self.vf: Optional[Numerical] = None
         self.vt: Optional[VerbatimString] = None
@@ -87,6 +93,19 @@ class RuleBasedValueSpecification(ARObject):
         # Copy all children from parent element
         for child in parent_elem:
             elem.append(child)
+
+        # Serialize arguments (atp_mixed - append children directly)
+        if self.arguments is not None:
+            serialized = SerializationHelper.serialize_item(self.arguments, "RuleArguments")
+            if serialized is not None:
+                # atpMixed type: append children directly without wrapper
+                if hasattr(serialized, 'attrib'):
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
+                for child in serialized:
+                    elem.append(child)
 
         # Serialize v
         if self.v is not None:
@@ -191,7 +210,9 @@ class RuleBasedValueSpecification(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "V":
+            if tag == "ARGUMENTS":
+                setattr(obj, "arguments", SerializationHelper.deserialize_by_tag(child, "RuleArguments"))
+            elif tag == "V":
                 setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
             elif tag == "VF":
                 setattr(obj, "vf", SerializationHelper.deserialize_by_tag(child, "Numerical"))
@@ -216,6 +237,20 @@ class RuleBasedValueSpecificationBuilder(BuilderBase):
         super().__init__()
         self._obj: RuleBasedValueSpecification = RuleBasedValueSpecification()
 
+
+    def with_arguments(self, value: Optional[RuleArguments]) -> "RuleBasedValueSpecificationBuilder":
+        """Set arguments attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute 'arguments' is required and cannot be None")
+        self._obj.arguments = value
+        return self
 
     def with_v(self, value: Optional[Numerical]) -> "RuleBasedValueSpecificationBuilder":
         """Set v attribute.

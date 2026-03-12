@@ -18,6 +18,9 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.MSR.AsamHdo.Units.unit import (
     Unit,
 )
+from armodel2.models.M2.MSR.DataDictionary.DataDefProperties.value_list import (
+    ValueList,
+)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
@@ -38,10 +41,12 @@ class RuleBasedValueCont(ARObject):
 
 
     rule_based: Optional[Any]
+    sw_arraysize_ref: Optional[ARRef]
     v: Optional[Numerical]
     unit_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(elem, "any (RuleBasedValue)")),
+        "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
         "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
     }
@@ -51,6 +56,7 @@ class RuleBasedValueCont(ARObject):
         """Initialize RuleBasedValueCont."""
         super().__init__()
         self.rule_based: Optional[Any] = None
+        self.sw_arraysize_ref: Optional[ARRef] = None
         self.v: Optional[Numerical] = None
         self.unit_ref: Optional[ARRef] = None
 
@@ -90,6 +96,19 @@ class RuleBasedValueCont(ARObject):
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
+
+        # Serialize sw_arraysize_ref (atp_mixed - append children directly)
+        if self.sw_arraysize_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_arraysize_ref, "ValueList")
+            if serialized is not None:
+                # atpMixed type: append children directly without wrapper
+                if hasattr(serialized, 'attrib'):
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
+                for child in serialized:
+                    elem.append(child)
 
         # Serialize v
         if self.v is not None:
@@ -140,6 +159,8 @@ class RuleBasedValueCont(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "RULE-BASED":
                 setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(child, "any (RuleBasedValue)"))
+            elif tag == "SW-ARRAYSIZE-REF":
+                setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
             elif tag == "V":
                 setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
             elif tag == "UNIT-REF":
@@ -170,6 +191,20 @@ class RuleBasedValueContBuilder(BuilderBase):
         if value is None and not True:
             raise ValueError("Attribute 'rule_based' is required and cannot be None")
         self._obj.rule_based = value
+        return self
+
+    def with_sw_arraysize(self, value: Optional[ValueList]) -> "RuleBasedValueContBuilder":
+        """Set sw_arraysize attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute 'sw_arraysize' is required and cannot be None")
+        self._obj.sw_arraysize = value
         return self
 
     def with_v(self, value: Optional[Numerical]) -> "RuleBasedValueContBuilder":

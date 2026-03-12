@@ -58,28 +58,28 @@ class BswModuleEntry(ARElement):
 
 
     service_id: Optional[PositiveInteger]
-    arguments: list[SwServiceArg]
     bsw_entry_kind: Optional[BswEntryKindEnum]
     is_reentrant: Optional[Boolean]
     is_synchronous: Optional[Boolean]
     call_type: Optional[BswCallType]
     execution_context: Optional[BswExecutionContext]
     function_prototype_emitter: Optional[NameToken]
-    return_type: Optional[SwServiceArg]
-    role: Optional[Identifier]
     sw_service_impl_policy: Optional[SwServiceImplPolicyEnum]
+    return_type: Optional[SwServiceArg]
+    arguments: list[SwServiceArg]
+    role: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
         "SERVICE-ID": lambda obj, elem: setattr(obj, "service_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "ARGUMENTS": lambda obj, elem: obj.arguments.append(SerializationHelper.deserialize_by_tag(elem, "SwServiceArg")),
         "BSW-ENTRY-KIND": lambda obj, elem: setattr(obj, "bsw_entry_kind", BswEntryKindEnum.deserialize(elem)),
         "IS-REENTRANT": lambda obj, elem: setattr(obj, "is_reentrant", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "IS-SYNCHRONOUS": lambda obj, elem: setattr(obj, "is_synchronous", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "CALL-TYPE": lambda obj, elem: setattr(obj, "call_type", BswCallType.deserialize(elem)),
         "EXECUTION-CONTEXT": lambda obj, elem: setattr(obj, "execution_context", BswExecutionContext.deserialize(elem)),
         "FUNCTION-PROTOTYPE-EMITTER": lambda obj, elem: setattr(obj, "function_prototype_emitter", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
-        "RETURN-TYPE": lambda obj, elem: setattr(obj, "return_type", SerializationHelper.deserialize_by_tag(elem, "SwServiceArg")),
-        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
         "SW-SERVICE-IMPL-POLICY": lambda obj, elem: setattr(obj, "sw_service_impl_policy", SwServiceImplPolicyEnum.deserialize(elem)),
+        "RETURN-TYPE": lambda obj, elem: setattr(obj, "return_type", SerializationHelper.deserialize_by_tag(elem, "SwServiceArg")),
+        "ARGUMENTS": lambda obj, elem: obj.arguments.append(SerializationHelper.deserialize_by_tag(elem, "SwServiceArg")),
+        "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
 
 
@@ -87,16 +87,16 @@ class BswModuleEntry(ARElement):
         """Initialize BswModuleEntry."""
         super().__init__()
         self.service_id: Optional[PositiveInteger] = None
-        self.arguments: list[SwServiceArg] = []
         self.bsw_entry_kind: Optional[BswEntryKindEnum] = None
         self.is_reentrant: Optional[Boolean] = None
         self.is_synchronous: Optional[Boolean] = None
         self.call_type: Optional[BswCallType] = None
         self.execution_context: Optional[BswExecutionContext] = None
         self.function_prototype_emitter: Optional[NameToken] = None
-        self.return_type: Optional[SwServiceArg] = None
-        self.role: Optional[Identifier] = None
         self.sw_service_impl_policy: Optional[SwServiceImplPolicyEnum] = None
+        self.return_type: Optional[SwServiceArg] = None
+        self.arguments: list[SwServiceArg] = []
+        self.role: Optional[Identifier] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswModuleEntry to XML element.
@@ -134,16 +134,6 @@ class BswModuleEntry(ARElement):
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
-
-        # Serialize arguments (list to container "ARGUMENTS")
-        if self.arguments:
-            wrapper = ET.Element("ARGUMENTS")
-            for item in self.arguments:
-                serialized = SerializationHelper.serialize_item(item, "SwServiceArg")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
 
         # Serialize bsw_entry_kind
         if self.bsw_entry_kind is not None:
@@ -229,6 +219,20 @@ class BswModuleEntry(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
+        # Serialize sw_service_impl_policy
+        if self.sw_service_impl_policy is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_service_impl_policy, "SwServiceImplPolicyEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-SERVICE-IMPL-POLICY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
         # Serialize return_type
         if self.return_type is not None:
             serialized = SerializationHelper.serialize_item(self.return_type, "SwServiceArg")
@@ -243,26 +247,22 @@ class BswModuleEntry(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
+        # Serialize arguments (list to container "ARGUMENTS")
+        if self.arguments:
+            wrapper = ET.Element("ARGUMENTS")
+            for item in self.arguments:
+                serialized = SerializationHelper.serialize_item(item, "SwServiceArg")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
         # Serialize role
         if self.role is not None:
             serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize sw_service_impl_policy
-        if self.sw_service_impl_policy is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_service_impl_policy, "SwServiceImplPolicyEnum")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-SERVICE-IMPL-POLICY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -292,10 +292,6 @@ class BswModuleEntry(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "SERVICE-ID":
                 setattr(obj, "service_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "ARGUMENTS":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "SwServiceArg"))
             elif tag == "BSW-ENTRY-KIND":
                 setattr(obj, "bsw_entry_kind", BswEntryKindEnum.deserialize(child))
             elif tag == "IS-REENTRANT":
@@ -308,12 +304,16 @@ class BswModuleEntry(ARElement):
                 setattr(obj, "execution_context", BswExecutionContext.deserialize(child))
             elif tag == "FUNCTION-PROTOTYPE-EMITTER":
                 setattr(obj, "function_prototype_emitter", SerializationHelper.deserialize_by_tag(child, "NameToken"))
-            elif tag == "RETURN-TYPE":
-                setattr(obj, "return_type", SerializationHelper.deserialize_by_tag(child, "SwServiceArg"))
-            elif tag == "ROLE":
-                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "SW-SERVICE-IMPL-POLICY":
                 setattr(obj, "sw_service_impl_policy", SwServiceImplPolicyEnum.deserialize(child))
+            elif tag == "RETURN-TYPE":
+                setattr(obj, "return_type", SerializationHelper.deserialize_by_tag(child, "SwServiceArg"))
+            elif tag == "ARGUMENTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "SwServiceArg"))
+            elif tag == "ROLE":
+                setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
 
         return obj
 
@@ -340,18 +340,6 @@ class BswModuleEntryBuilder(ARElementBuilder):
         if value is None and not True:
             raise ValueError("Attribute 'service_id' is required and cannot be None")
         self._obj.service_id = value
-        return self
-
-    def with_arguments(self, items: list[SwServiceArg]) -> "BswModuleEntryBuilder":
-        """Set arguments list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.arguments = list(items) if items else []
         return self
 
     def with_bsw_entry_kind(self, value: Optional[BswEntryKindEnum]) -> "BswModuleEntryBuilder":
@@ -438,6 +426,20 @@ class BswModuleEntryBuilder(ARElementBuilder):
         self._obj.function_prototype_emitter = value
         return self
 
+    def with_sw_service_impl_policy(self, value: Optional[SwServiceImplPolicyEnum]) -> "BswModuleEntryBuilder":
+        """Set sw_service_impl_policy attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute 'sw_service_impl_policy' is required and cannot be None")
+        self._obj.sw_service_impl_policy = value
+        return self
+
     def with_return_type(self, value: Optional[SwServiceArg]) -> "BswModuleEntryBuilder":
         """Set return_type attribute.
 
@@ -452,6 +454,18 @@ class BswModuleEntryBuilder(ARElementBuilder):
         self._obj.return_type = value
         return self
 
+    def with_arguments(self, items: list[SwServiceArg]) -> "BswModuleEntryBuilder":
+        """Set arguments list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.arguments = list(items) if items else []
+        return self
+
     def with_role(self, value: Optional[Identifier]) -> "BswModuleEntryBuilder":
         """Set role attribute.
 
@@ -464,20 +478,6 @@ class BswModuleEntryBuilder(ARElementBuilder):
         if value is None and not True:
             raise ValueError("Attribute 'role' is required and cannot be None")
         self._obj.role = value
-        return self
-
-    def with_sw_service_impl_policy(self, value: Optional[SwServiceImplPolicyEnum]) -> "BswModuleEntryBuilder":
-        """Set sw_service_impl_policy attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute 'sw_service_impl_policy' is required and cannot be None")
-        self._obj.sw_service_impl_policy = value
         return self
 
 

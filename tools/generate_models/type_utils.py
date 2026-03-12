@@ -620,8 +620,13 @@ def flatten_atp_mixed_attributes(
                 break
 
         if is_atp_mixed_type:
-            # Flatten: add the child attributes instead of the wrapper attribute
-            # But skip duplicates (prefer parent's own attributes)
+            # First, add the wrapper attribute (e.g., sdgContentsType)
+            # This is needed for proper serialization of atp_mixed content
+            if attr_name not in seen_attr_names:
+                result.append(attr)
+                seen_attr_names.add(attr_name)
+            # Then, optionally add child attributes for API convenience
+            # (e.g., sd, sdf, sdg from SdgContents)
             for child_attr in atp_mixed_children:
                 child_attr_name = child_attr.get("name", "")
                 if child_attr_name not in seen_attr_names:

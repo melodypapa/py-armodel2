@@ -57,7 +57,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
         return True
 
     _accessed_mode_group_refs: list[ARRef]
-    activation_point_refs: list[ARRef]
+    _activation_point_refs: list[ARRef]
     call_points: list[BswModuleCallPoint]
     data_receive_points: list[BswVariableAccess]
     data_send_points: list[BswVariableAccess]
@@ -67,7 +67,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
     scheduler_name_prefix_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "ACCESSED-MODE-GROUP-REFS": lambda obj, elem: [obj._accessed_mode_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "ACTIVATION-POINT-REFS": lambda obj, elem: [obj.activation_point_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "ACTIVATION-POINT-REFS": lambda obj, elem: [obj._activation_point_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "CALL-POINTS": ("_POLYMORPHIC_LIST", "call_points", ["Bsw", "BswAsynchronousServerCallPoint", "BswAsynchronousServerCallResultPoint", "BswDirectCallPoint"]),
         "DATA-RECEIVE-POINTS": lambda obj, elem: obj.data_receive_points.append(SerializationHelper.deserialize_by_tag(elem, "BswVariableAccess")),
         "DATA-SEND-POINTS": lambda obj, elem: obj.data_send_points.append(SerializationHelper.deserialize_by_tag(elem, "BswVariableAccess")),
@@ -82,7 +82,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
         """Initialize BswModuleEntity."""
         super().__init__()
         self._accessed_mode_group_refs: list[ARRef] = []
-        self.activation_point_refs: list[ARRef] = []
+        self._activation_point_refs: list[ARRef] = []
         self.call_points: list[BswModuleCallPoint] = []
         self.data_receive_points: list[BswVariableAccess] = []
         self.data_send_points: list[BswVariableAccess] = []
@@ -100,6 +100,17 @@ class BswModuleEntity(ExecutableEntity, ABC):
     def accessed_mode_group_refs(self, value: list[ARRef]) -> None:
         """Set accessed_mode_group_refs with ref_conditional wrapper."""
         self._accessed_mode_group_refs = value
+
+    @property
+    @ref_conditional("ACTIVATION-POINTS")
+    def activation_point_refs(self) -> list[ARRef]:
+        """Get activation_point_refs with ref_conditional wrapper."""
+        return self._activation_point_refs
+
+    @activation_point_refs.setter
+    def activation_point_refs(self, value: list[ARRef]) -> None:
+        """Set activation_point_refs with ref_conditional wrapper."""
+        self._activation_point_refs = value
 
     @property
     @ref_conditional("MANAGED-MODE-GROUPS")
@@ -156,20 +167,23 @@ class BswModuleEntity(ExecutableEntity, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize activation_point_refs (list to container "ACTIVATION-POINT-REFS")
+        # Serialize activation_point_refs (list to container "ACTIVATION-POINTS")
         if self.activation_point_refs:
-            wrapper = ET.Element("ACTIVATION-POINT-REFS")
+            wrapper = ET.Element("ACTIVATION-POINTS")
             for item in self.activation_point_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswInternalTriggeringPoint")
                 if serialized is not None:
-                    child_elem = ET.Element("ACTIVATION-POINT-REF")
+                    # Wrap in BSW-INTERNAL-TRIGGERING-POINT-REF-CONDITIONAL
+                    conditional = ET.Element("BSW-INTERNAL-TRIGGERING-POINT-REF-CONDITIONAL")
+                    ref_elem = ET.Element("BSW-INTERNAL-TRIGGERING-POINT-REF")
                     if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
+                        ref_elem.attrib.update(serialized.attrib)
                     if serialized.text:
-                        child_elem.text = serialized.text
+                        ref_elem.text = serialized.text
                     for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                        ref_elem.append(child)
+                    conditional.append(ref_elem)
+                    wrapper.append(conditional)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -294,10 +308,13 @@ class BswModuleEntity(ExecutableEntity, ABC):
                     if len(item_elem) > 0:
                         ref_elem = item_elem[0]
                         obj._accessed_mode_group_refs.append(ARRef.deserialize(ref_elem))
-            elif tag == "ACTIVATION-POINT-REFS":
-                # Iterate through wrapper children
+            elif tag == "ACTIVATION-POINTS":
+                # Unwrap ref_conditional pattern
                 for item_elem in child:
-                    obj.activation_point_refs.append(ARRef.deserialize(item_elem))
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj._activation_point_refs.append(ARRef.deserialize(ref_elem))
             elif tag == "CALL-POINTS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:

@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "SwServiceArg",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::MSR::DataDictionary::ServiceProcessTask",
       "is_abstract": false,
       "atp_type": null,
@@ -66,14 +66,14 @@
         "swArraysize": {
           "type": "ValueList",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "This turns the argument of the service to an array."
         },
-        "swDataDef": {
+        "swDataDefProps": {
           "type": "SwDataDefProps",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Data properties of this SwServiceArg."
         }

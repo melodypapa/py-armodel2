@@ -64,6 +64,7 @@ class SwRecordLayoutGroup(ARObject):
     sw_record_layout_group_axis: Optional[AxisIndexType]
     sw_record_layout_group_from: Optional[RecordLayoutIteratorPoint]
     sw_record_layout_group_to: Optional[RecordLayoutIteratorPoint]
+    sw_record_layout_group_content_type: Optional[swRecordLayoutGroupContent]
     sw_record_layout: Optional[SwRecordLayout]
     sw_record_layout_group: Optional[SwRecordLayoutGroup]
     sw_record_layout_v: Optional[SwRecordLayoutV]
@@ -78,6 +79,7 @@ class SwRecordLayoutGroup(ARObject):
         "SW-RECORD-LAYOUT-GROUP-AXIS": lambda obj, elem: setattr(obj, "sw_record_layout_group_axis", SerializationHelper.deserialize_by_tag(elem, "AxisIndexType")),
         "SW-RECORD-LAYOUT-GROUP-FROM": lambda obj, elem: setattr(obj, "sw_record_layout_group_from", SerializationHelper.deserialize_by_tag(elem, "RecordLayoutIteratorPoint")),
         "SW-RECORD-LAYOUT-GROUP-TO": lambda obj, elem: setattr(obj, "sw_record_layout_group_to", SerializationHelper.deserialize_by_tag(elem, "RecordLayoutIteratorPoint")),
+        "SW-RECORD-LAYOUT-GROUP-CONTENT-TYPE": lambda obj, elem: setattr(obj, "sw_record_layout_group_content_type", SerializationHelper.deserialize_by_tag(elem, "swRecordLayoutGroupContent")),
         "SW-RECORD-LAYOUT": lambda obj, elem: setattr(obj, "sw_record_layout", SerializationHelper.deserialize_by_tag(elem, "SwRecordLayout")),
         "SW-RECORD-LAYOUT-GROUP": lambda obj, elem: setattr(obj, "sw_record_layout_group", SerializationHelper.deserialize_by_tag(elem, "SwRecordLayoutGroup")),
         "SW-RECORD-LAYOUT-V": lambda obj, elem: setattr(obj, "sw_record_layout_v", SerializationHelper.deserialize_by_tag(elem, "SwRecordLayoutV")),
@@ -97,6 +99,7 @@ class SwRecordLayoutGroup(ARObject):
         self.sw_record_layout_group_axis: Optional[AxisIndexType] = None
         self.sw_record_layout_group_from: Optional[RecordLayoutIteratorPoint] = None
         self.sw_record_layout_group_to: Optional[RecordLayoutIteratorPoint] = None
+        self.sw_record_layout_group_content_type: Optional[swRecordLayoutGroupContent] = None
         self.sw_record_layout: Optional[SwRecordLayout] = None
         self.sw_record_layout_group: Optional[SwRecordLayoutGroup] = None
         self.sw_record_layout_v: Optional[SwRecordLayoutV] = None
@@ -238,6 +241,19 @@ class SwRecordLayoutGroup(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
+        # Serialize sw_record_layout_group_content_type (atp_mixed - append children directly)
+        if self.sw_record_layout_group_content_type is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_record_layout_group_content_type, "swRecordLayoutGroupContent")
+            if serialized is not None:
+                # atpMixed type: append children directly without wrapper
+                if hasattr(serialized, 'attrib'):
+                    elem.attrib.update(serialized.attrib)
+                # Only copy text if it's a non-empty string (not None or whitespace)
+                if serialized.text and serialized.text.strip():
+                    elem.text = serialized.text
+                for child in serialized:
+                    elem.append(child)
+
         # Serialize sw_record_layout
         if self.sw_record_layout is not None:
             serialized = SerializationHelper.serialize_item(self.sw_record_layout, "SwRecordLayout")
@@ -343,6 +359,8 @@ class SwRecordLayoutGroup(ARObject):
                 setattr(obj, "sw_record_layout_group_from", SerializationHelper.deserialize_by_tag(child, "RecordLayoutIteratorPoint"))
             elif tag == "SW-RECORD-LAYOUT-GROUP-TO":
                 setattr(obj, "sw_record_layout_group_to", SerializationHelper.deserialize_by_tag(child, "RecordLayoutIteratorPoint"))
+            elif tag == "SW-RECORD-LAYOUT-GROUP-CONTENT-TYPE":
+                setattr(obj, "sw_record_layout_group_content_type", SerializationHelper.deserialize_by_tag(child, "swRecordLayoutGroupContent"))
             elif tag == "SW-RECORD-LAYOUT":
                 setattr(obj, "sw_record_layout", SerializationHelper.deserialize_by_tag(child, "SwRecordLayout"))
             elif tag == "SW-RECORD-LAYOUT-GROUP":
@@ -477,6 +495,20 @@ class SwRecordLayoutGroupBuilder(BuilderBase):
         if value is None and not True:
             raise ValueError("Attribute 'sw_record_layout_group_to' is required and cannot be None")
         self._obj.sw_record_layout_group_to = value
+        return self
+
+    def with_sw_record_layout_group_content_type(self, value: Optional[swRecordLayoutGroupContent]) -> "SwRecordLayoutGroupBuilder":
+        """Set sw_record_layout_group_content_type attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute 'sw_record_layout_group_content_type' is required and cannot be None")
+        self._obj.sw_record_layout_group_content_type = value
         return self
 
     def with_sw_record_layout(self, value: Optional[SwRecordLayout]) -> "SwRecordLayoutGroupBuilder":

@@ -20,6 +20,9 @@ from armodel2.models.M2.MSR.Documentation.BlockElements.GerneralParameters.prms 
 from armodel2.models.M2.MSR.Documentation.Chapters.topic_content import (
     TopicContent,
 )
+from armodel2.models.M2.MSR.Documentation.Chapters.topic_content_or_msr_query import (
+    TopicContentOrMsrQuery,
+)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
@@ -42,10 +45,12 @@ class ChapterContent(ARObject):
 
 
     prms: Prms
+    topic_content_or_msr: Optional[TopicContentOrMsrQuery]
     msr_query_p1: MsrQueryP1
     topic_content: TopicContent
     _DESERIALIZE_DISPATCH = {
         "PRMS": lambda obj, elem: setattr(obj, "prms", SerializationHelper.deserialize_by_tag(elem, "Prms")),
+        "TOPIC-CONTENT-OR-MSR": lambda obj, elem: setattr(obj, "topic_content_or_msr", SerializationHelper.deserialize_by_tag(elem, "TopicContentOrMsrQuery")),
         "MSR-QUERY-P1": lambda obj, elem: setattr(obj, "msr_query_p1", SerializationHelper.deserialize_by_tag(elem, "MsrQueryP1")),
         "TOPIC-CONTENT": lambda obj, elem: setattr(obj, "topic_content", SerializationHelper.deserialize_by_tag(elem, "TopicContent")),
     }
@@ -55,6 +60,7 @@ class ChapterContent(ARObject):
         """Initialize ChapterContent."""
         super().__init__()
         self.prms: Prms = None
+        self.topic_content_or_msr: Optional[TopicContentOrMsrQuery] = None
         self.msr_query_p1: MsrQueryP1 = None
         self.topic_content: TopicContent = None
 
@@ -87,6 +93,19 @@ class ChapterContent(ARObject):
             serialized = SerializationHelper.serialize_item(self.prms, "Prms")
             if serialized is not None:
                 wrapped = ET.Element("PRMS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize topic_content_or_msr (complex type)
+        if self.topic_content_or_msr is not None:
+            serialized = SerializationHelper.serialize_item(self.topic_content_or_msr, "TopicContentOrMsrQuery")
+            if serialized is not None:
+                wrapped = ET.Element("TOPIC-CONTENT-OR-MSR")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -142,6 +161,12 @@ class ChapterContent(ARObject):
             prms_value = SerializationHelper.deserialize_by_tag(child, "Prms")
             obj.prms = prms_value
 
+        # Parse topic_content_or_msr
+        child = SerializationHelper.find_child_element(element, "TOPIC-CONTENT-OR-MSR")
+        if child is not None:
+            topic_content_or_msr_value = SerializationHelper.deserialize_by_tag(child, "TopicContentOrMsrQuery")
+            obj.topic_content_or_msr = topic_content_or_msr_value
+
         # Parse msr_query_p1
         child = SerializationHelper.find_child_element(element, "MSR-QUERY-P1")
         if child is not None:
@@ -179,6 +204,20 @@ class ChapterContentBuilder(BuilderBase):
         if value is None and not False:
             raise ValueError("Attribute 'prms' is required and cannot be None")
         self._obj.prms = value
+        return self
+
+    def with_topic_content_or_msr(self, value: Optional[TopicContentOrMsrQuery]) -> "ChapterContentBuilder":
+        """Set topic_content_or_msr attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute 'topic_content_or_msr' is required and cannot be None")
+        self._obj.topic_content_or_msr = value
         return self
 
     def with_msr_query_p1(self, value: MsrQueryP1) -> "ChapterContentBuilder":

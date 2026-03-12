@@ -106,12 +106,20 @@
           "is_ref": true,
           "note": "Specifies an entry provided by this module which can be by other modules. This includes \"main\" functions, and callbacks. Replacement of expectedCallback. atpVariation"
         },
+        "providedEntry": {
+          "type": "BswModuleEntry",
+          "multiplicity": "*",
+          "kind": "ref",
+          "is_ref": true,
+          "revision": "4.0.3",
+          "decorator": "ref_conditional:PROVIDED-ENTRYS",
+          "note": "Specifies an entry provided by this module which can be called by other modules. This includes \"main\" functions and interrupt routines, but not callbacks (because the signature of a callback is defined by the caller)."
+        },
         "providedClientServerEntry": {
           "type": "BswModuleClientServerEntry",
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
-          "decorator": "xml_element_name:PROVIDED-ENTRYS",
           "note": "Specifies that this module provides a client server entry which can be called from another partition or core.This declared locally to this context and will be the requiredClientServerEntry of another or module via the configuration of the BSW atpVariation"
         },
         "providedData": {
