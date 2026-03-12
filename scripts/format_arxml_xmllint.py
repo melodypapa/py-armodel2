@@ -8,19 +8,30 @@ Usage:
     python scripts/format_arxml_xmllint.py --verbose          # Show detailed output
     python scripts/format_arxml_xmllint.py --dry-run          # List files without formatting
     python scripts/format_arxml_xmllint.py --test             # Format from demos/test
+    python scripts/format_arxml_xmllint.py --keep-empty-elements  # Keep empty elements
 
 This script uses xmllint for fast, reliable XML formatting.
+Features:
+    - XML comments are removed during formatting
+    - Original file encoding is always preserved (auto-detected)
+    - Empty elements are removed by default (use --keep-empty-elements to preserve)
 """
 
 from __future__ import annotations
 
 import argparse
 import os
+import re
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 from typing import Optional
+
+try:
+    import chardet
+except ImportError:
+    chardet = None
 
 
 def check_xmllint() -> bool:
@@ -28,21 +39,185 @@ def check_xmllint() -> bool:
     return shutil.which("xmllint") is not None
 
 
+def detect_file_encoding(file_path: Path) -> str:
+    """
+    Detect the encoding of an XML file.
+
+    First checks the XML declaration for encoding attribute.
+    If not found or chardet is available, uses chardet for detection.
+    Defaults to UTF-8 if unable to detect.
+
+    Args:
+        file_path: Path to the file
+
+    Returns:
+        Detected encoding string (e.g., 'UTF-8', 'ISO-8859-1', 'UTF-16')
+    """
+    # First, try to read XML declaration
+    try:
+        with open(file_path, 'rb') as f:
+            # Read first line to check for XML declaration
+            first_line = f.readline()
+            first_line_str = first_line.decode('utf-8', errors='ignore')
+
+            # Check for encoding attribute in XML declaration
+            encoding_match = re.search(r'encoding=["\']([^"\']+)["\']', first_line_str)
+            if encoding_match:
+                return encoding_match.group(1)
+    except Exception:
+        pass
+
+    # If no encoding in XML declaration and chardet is available, use it
+    if chardet is not None:
+        try:
+            with open(file_path, 'rb') as f:
+                raw_data = f.read()
+                result = chardet.detect(raw_data)
+                if result and result.get('encoding'):
+                    return result['encoding']
+        except Exception:
+            pass
+
+    # Default to UTF-8
+    return 'UTF-8'
+
+
+def remove_xml_comments(content: str) -> str:
+    """
+    Remove XML comments from content.
+
+    Args:
+        content: XML content as string
+
+    Returns:
+        XML content with comments removed
+    """
+    # Remove XML comments <!-- ... -->
+    # This pattern handles multi-line comments and nested comment-like structures
+    content = re.sub(r'<!--.*?-->', '', content, flags=re.DOTALL)
+
+    # Remove empty lines (lines with only whitespace)
+    # This cleans up the blank lines left behind after removing comments
+    lines = content.split('\n')
+    non_empty_lines = [line for line in lines if line.strip()]
+
+    # Join with newlines and ensure trailing newline at the end
+    result = '\n'.join(non_empty_lines)
+    if result:  # Only add trailing newline if content is not empty
+        result += '\n'
+
+    return result
+
+
+def fix_empty_element_indentation(content: str) -> str:
+    """
+    Fix indentation of empty XML elements.
+
+    xmllint sometimes creates inconsistent indentation for empty elements where
+    the closing tag has 2 fewer spaces than the opening tag. This function
+    aligns them properly.
+
+    Args:
+        content: XML content as string
+
+    Returns:
+        XML content with fixed empty element indentation
+    """
+    lines = content.split('\n')
+    result = []
+
+    i = 0
+    while i < len(lines):
+        current_line = lines[i]
+
+        # Check if current line contains only an opening tag (no closing tag)
+        if re.match(r'^(\s*)<(\w+(?:-\w+)*)>\s*$', current_line):
+            indent_match = re.match(r'^(\s*)<(\w+(?:-\w+)*)>\s*$', current_line)
+            opening_indent = indent_match.group(1)
+            tag_name = indent_match.group(2)
+
+            # Check if the next line is the matching closing tag with different indentation
+            if i + 1 < len(lines):
+                next_line = lines[i + 1]
+                closing_pattern = rf'^(\s*)</{tag_name}>\s*$'
+                closing_match = re.match(closing_pattern, next_line)
+
+                if closing_match:
+                    closing_indent = closing_match.group(1)
+                    # If closing indent is less than opening indent (xmllint quirk)
+                    if len(closing_indent) < len(opening_indent):
+                        # Fix the closing tag indentation to match opening
+                        fixed_closing = opening_indent + f'</{tag_name}>'
+                        result.append(current_line)
+                        result.append(fixed_closing)
+                        i += 2
+                        continue
+
+        result.append(current_line)
+        i += 1
+
+    return '\n'.join(result)
+
+
+def remove_empty_elements(content: str) -> str:
+    """
+    Remove empty XML elements from content.
+
+    An empty element is defined as an opening tag followed only by whitespace
+    and then a closing tag on the next line, with no content between them.
+
+    Args:
+        content: XML content as string
+
+    Returns:
+        XML content with empty elements removed
+    """
+    lines = content.split('\n')
+    result = []
+    i = 0
+
+    while i < len(lines):
+        current_line = lines[i]
+
+        # Check if current line contains only an opening tag (no closing tag, no content)
+        if re.match(r'^(\s*)<(\w+(?:-\w+)*)>\s*$', current_line):
+            indent_match = re.match(r'^(\s*)<(\w+(?:-\w+)*)>\s*$', current_line)
+            tag_name = indent_match.group(2)
+
+            # Check if the next line is the matching closing tag
+            if i + 1 < len(lines):
+                next_line = lines[i + 1]
+                closing_pattern = rf'^\s*</{tag_name}>\s*$'
+
+                if re.match(closing_pattern, next_line):
+                    # Skip both lines (remove the empty element)
+                    i += 2
+                    continue
+
+        result.append(current_line)
+        i += 1
+
+    return '\n'.join(result)
+
+
 def format_arxml(
     input_file: Path,
     output_file: Path,
     indent: int = 2,
-    encoding: str = "UTF-8",
+    keep_empty_elements: bool = False,
     verbose: bool = False,
 ) -> tuple[bool, Optional[str]]:
     """
     Format a single ARXML file using xmllint.
 
+    Note: XML comments are removed during formatting.
+    Original file encoding is always preserved.
+
     Args:
         input_file: Path to input ARXML file
         output_file: Path to output formatted file
         indent: Number of spaces for indentation (default: 2)
-        encoding: Output encoding (default: UTF-8)
+        keep_empty_elements: If False, remove empty elements (default: False)
         verbose: Show detailed output
 
     Returns:
@@ -50,6 +225,11 @@ def format_arxml(
     """
     if not input_file.exists():
         return False, f"Input file not found: {input_file}"
+
+    # Detect encoding from input file (always preserve original encoding)
+    encoding = detect_file_encoding(input_file)
+    if verbose:
+        print(f"      Detected encoding: {encoding}")
 
     # Ensure output directory exists
     output_file.parent.mkdir(parents=True, exist_ok=True)
@@ -62,7 +242,6 @@ def format_arxml(
             "--format",
             "--encode", encoding,
             str(input_file),
-            "--output", str(output_file),
         ]
 
         # Set indent via environment variable
@@ -83,6 +262,19 @@ def format_arxml(
             error_msg = result.stderr.strip() if result.stderr else "Unknown error"
             return False, error_msg
 
+        # Remove XML comments from formatted output
+        content = remove_xml_comments(result.stdout)
+
+        # Fix empty element indentation if keeping empty elements
+        if keep_empty_elements:
+            content = fix_empty_element_indentation(content)
+        else:
+            # Remove empty elements entirely
+            content = remove_empty_elements(content)
+
+        # Write the formatted content to output file
+        output_file.write_text(content, encoding=encoding)
+
         return True, None
 
     except Exception as e:
@@ -92,13 +284,18 @@ def format_arxml(
 def format_arxml_to_stdout(
     input_file: Path,
     indent: int = 2,
+    keep_empty_elements: bool = False,
 ) -> tuple[bool, Optional[str]]:
     """
     Format ARXML file and output to stdout.
 
+    Note: XML comments are removed during formatting.
+    Original file encoding is preserved.
+
     Args:
         input_file: Path to input ARXML file
         indent: Number of spaces for indentation (default: 2)
+        keep_empty_elements: If False, remove empty elements (default: False)
 
     Returns:
         Tuple of (success, error_message)
@@ -106,10 +303,14 @@ def format_arxml_to_stdout(
     if not input_file.exists():
         return False, f"Input file not found: {input_file}"
 
+    # Detect encoding from input file
+    encoding = detect_file_encoding(input_file)
+
     try:
         cmd = [
             "xmllint",
             "--format",
+            "--encode", encoding,
             str(input_file),
         ]
 
@@ -118,13 +319,25 @@ def format_arxml_to_stdout(
 
         result = subprocess.run(
             cmd,
-            capture_output=False,
+            capture_output=True,
             text=True,
             env={**os.environ, **env},
         )
 
         if result.returncode != 0:
             return False, "xmllint failed"
+
+        # Remove XML comments
+        content = remove_xml_comments(result.stdout)
+
+        # Fix empty element indentation if keeping empty elements
+        if keep_empty_elements:
+            content = fix_empty_element_indentation(content)
+        else:
+            # Remove empty elements entirely
+            content = remove_empty_elements(content)
+
+        print(content, end='')
 
         return True, None
 
@@ -195,9 +408,9 @@ Examples:
         help="Indentation spaces (default: 2)",
     )
     parser.add_argument(
-        "--encoding",
-        default="UTF-8",
-        help="Output encoding (default: UTF-8)",
+        "--keep-empty-elements",
+        action="store_true",
+        help="Keep empty XML elements (default: remove them)",
     )
 
     # Output options
@@ -257,7 +470,11 @@ Examples:
         if len(files_to_format) > 1:
             print("Error: --stdout can only be used with a single file", file=sys.stderr)
             return 1
-        success, error = format_arxml_to_stdout(files_to_format[0], indent=args.indent)
+        success, error = format_arxml_to_stdout(
+            files_to_format[0],
+            indent=args.indent,
+            keep_empty_elements=args.keep_empty_elements,
+        )
         if not success:
             print(f"Error: {error}", file=sys.stderr)
             return 1
@@ -271,7 +488,8 @@ Examples:
     print(f"Output:   {args.output}")
     print(f"Files:    {len(files_to_format)}")
     print(f"Indent:   {args.indent} spaces")
-    print(f"Encoding: {args.encoding}")
+    empty_elements_action = "Keep" if args.keep_empty_elements else "Remove"
+    print(f"Empty elements: {empty_elements_action}")
     print()
 
     # Dry run: just list files
@@ -297,15 +515,15 @@ Examples:
             input_file,
             output_file,
             indent=args.indent,
-            encoding=args.encoding,
+            keep_empty_elements=args.keep_empty_elements,
             verbose=args.verbose,
         )
 
         if success:
-            print("      ✓ Success")
+            print("      [OK] Success")
             success_count += 1
         else:
-            print("      ✗ Failed")
+            print("      [FAIL] Failed")
             failed_count += 1
             if error:
                 failed_files.append((input_file, error))
@@ -323,7 +541,7 @@ Examples:
         print()
         print("Failed files:")
         for file, error in failed_files:
-            print(f"  ✗ {file.name}")
+            print(f"  [FAIL] {file.name}")
             if args.verbose:
                 print(f"    Error: {error}")
 
