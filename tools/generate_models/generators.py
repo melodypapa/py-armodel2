@@ -3549,6 +3549,72 @@ def _generate_serialize_method(
             elem.attrib["{xml_attr_name}"] = str(self.{python_name})
 
 '''
+            elif decorator_name == "polymorphic":
+                # Handle polymorphic with wrapper element BEFORE iref to prevent incorrect flattening
+                # Attributes with kind="iref" AND decorator_name="polymorphic" should use
+                # polymorphic serialization (preserving concrete element), not iref flattening
+                # Parse the polymorphic mapping from decorator_params
+                # Format: "WRAPPER-TAG=BaseClassName,WRAPPER2-TAG=BaseClassName2"
+                params = attr_info.get("decorator_params", "")
+                # Use the first mapping (wrapper tag) for serialization
+                wrapper_tag = None
+                if params:
+                    for pair in params.split(","):
+                        if "=" in pair:
+                            wrapper_tag, _ = pair.split("=", 1)
+                            wrapper_tag = wrapper_tag.strip()
+                            break  # Use first mapping
+                # If no wrapper_tag specified, use the auto-generated xml_tag
+                if not wrapper_tag:
+                    wrapper_tag = xml_tag
+
+                # Check if the effective_type is a primitive type (String, Integer, etc.)
+                # For primitive types, copy text content directly instead of wrapping
+                primitive_types = {"String", "Integer", "Float", "Boolean", "PositiveInteger"}
+                is_primitive = effective_type in primitive_types
+
+                if multiplicity in ("*", "1..*"):
+                    # List type with polymorphic wrapper
+                    # For lists, items are serialized directly into the container (no inner wrapping)
+                    code += f'''        # Serialize {python_name} (list with polymorphic wrapper "{wrapper_tag}")
+        if self.{python_name}:
+            container = ET.Element("{wrapper_tag}")
+            for item in self.{python_name}:
+                serialized = SerializationHelper.serialize_item(item, "{effective_type}")
+                if serialized is not None:
+                    container.append(serialized)
+            elem.append(container)
+
+'''
+                else:
+                    # Single value with polymorphic wrapper
+                    if is_primitive:
+                        code += f'''        # Serialize {python_name} (polymorphic wrapper "{wrapper_tag}")
+        if self.{python_name} is not None:
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                # For polymorphic types with primitive values, copy text content directly
+                wrapped = ET.Element("{wrapper_tag}")
+                if serialized.text and not list(serialized):
+                    # Simple primitive with just text content - copy text directly
+                    wrapped.text = serialized.text
+                else:
+                    # Complex type - append the serialized element
+                    wrapped.append(serialized)
+                elem.append(wrapped)
+
+'''
+                    else:
+                        code += f'''        # Serialize {python_name} (polymorphic wrapper "{wrapper_tag}")
+        if self.{python_name} is not None:
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                # For polymorphic types, wrap the serialized element (preserving concrete type)
+                wrapped = ET.Element("{wrapper_tag}")
+                wrapped.append(serialized)
+                elem.append(wrapped)
+
+'''
             elif kind == "iref":
                 # Handle iref kind - instance reference with special wrapper
                 # The outer wrapper is attribute name + -IREF

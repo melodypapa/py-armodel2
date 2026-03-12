@@ -100,22 +100,14 @@ class PortPrototypeBlueprint(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize init_value_refs (list to container "INIT-VALUE-REFS")
+        # Serialize init_value_refs (list with polymorphic wrapper "INIT-VALUE")
         if self.init_value_refs:
-            wrapper = ET.Element("INIT-VALUE-REFS")
+            container = ET.Element("INIT-VALUE")
             for item in self.init_value_refs:
                 serialized = SerializationHelper.serialize_item(item, "PortPrototypeBlueprint")
                 if serialized is not None:
-                    child_elem = ET.Element("INIT-VALUE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+                    container.append(serialized)
+            elem.append(container)
 
         # Serialize interface_ref
         if self.interface_ref is not None:

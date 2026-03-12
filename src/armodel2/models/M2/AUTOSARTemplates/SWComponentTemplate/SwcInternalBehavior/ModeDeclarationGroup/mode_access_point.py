@@ -9,19 +9,23 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInter
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import polymorphic
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.mode_access_point_ident import (
     ModeAccessPointIdent,
 )
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
-    ModeDeclarationGroup,
-)
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.mode_group_in_atomic_swc_instance_ref import (
+        ModeGroupInAtomicSwcInstanceRef,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class ModeAccessPoint(ARObject):
     """AUTOSAR ModeAccessPoint."""
 
@@ -38,10 +42,10 @@ class ModeAccessPoint(ARObject):
 
 
     ident: Optional[ModeAccessPointIdent]
-    mode_group_instance_ref: Optional[ARRef]
+    _mode_group_iref: Optional[ModeGroupInAtomicSwcInstanceRef]
     _DESERIALIZE_DISPATCH = {
         "IDENT": lambda obj, elem: setattr(obj, "ident", SerializationHelper.deserialize_by_tag(elem, "ModeAccessPointIdent")),
-        "MODE-GROUP-INSTANCE-REF-REF": lambda obj, elem: setattr(obj, "mode_group_instance_ref", ARRef.deserialize(elem)),
+        "MODE-GROUP-IREF": ("_POLYMORPHIC", "_mode_group_iref", ["PModeGroupInAtomicSwcInstanceRef", "RModeGroupInAtomicSWCInstanceRef"]),
     }
 
 
@@ -49,7 +53,18 @@ class ModeAccessPoint(ARObject):
         """Initialize ModeAccessPoint."""
         super().__init__()
         self.ident: Optional[ModeAccessPointIdent] = None
-        self.mode_group_instance_ref: Optional[ARRef] = None
+        self._mode_group_iref: Optional[ModeGroupInAtomicSwcInstanceRef] = None
+    @property
+    @polymorphic({"MODE-GROUP-IREF": "ModeGroupInAtomicSwcInstanceRef"})
+    def mode_group_iref(self) -> Optional[ModeGroupInAtomicSwcInstanceRef]:
+        """Get mode_group_iref with polymorphic wrapper handling."""
+        return self._mode_group_iref
+
+    @mode_group_iref.setter
+    def mode_group_iref(self, value: Optional[ModeGroupInAtomicSwcInstanceRef]) -> None:
+        """Set mode_group_iref with polymorphic wrapper handling."""
+        self._mode_group_iref = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize ModeAccessPoint to XML element.
@@ -88,18 +103,13 @@ class ModeAccessPoint(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mode_group_instance_ref
-        if self.mode_group_instance_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.mode_group_instance_ref, "ModeDeclarationGroup")
+        # Serialize mode_group_iref (polymorphic wrapper "MODE-GROUP-IREF")
+        if self.mode_group_iref is not None:
+            serialized = SerializationHelper.serialize_item(self.mode_group_iref, "ModeGroupInAtomicSwcInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-GROUP-INSTANCE-REF-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
+                # For polymorphic types, wrap the serialized element (preserving concrete type)
+                wrapped = ET.Element("MODE-GROUP-IREF")
+                wrapped.append(serialized)
                 elem.append(wrapped)
 
         return elem
@@ -123,8 +133,14 @@ class ModeAccessPoint(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "IDENT":
                 setattr(obj, "ident", SerializationHelper.deserialize_by_tag(child, "ModeAccessPointIdent"))
-            elif tag == "MODE-GROUP-INSTANCE-REF-REF":
-                setattr(obj, "mode_group_instance_ref", ARRef.deserialize(child))
+            elif tag == "MODE-GROUP-IREF":
+                # Check first child element for concrete type
+                if len(child) > 0:
+                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
+                    if concrete_tag == "P-MODE-GROUP-IN-ATOMIC-SWC-INSTANCE-REF":
+                        setattr(obj, "_mode_group_iref", SerializationHelper.deserialize_by_tag(child[0], "PModeGroupInAtomicSwcInstanceRef"))
+                    elif concrete_tag == "R-MODE-GROUP-IN-ATOMIC-SWC-INSTANCE-REF":
+                        setattr(obj, "_mode_group_iref", SerializationHelper.deserialize_by_tag(child[0], "RModeGroupInAtomicSWCInstanceRef"))
 
         return obj
 
@@ -153,8 +169,8 @@ class ModeAccessPointBuilder(BuilderBase):
         self._obj.ident = value
         return self
 
-    def with_mode_group_instance_ref(self, value: Optional[ModeDeclarationGroup]) -> "ModeAccessPointBuilder":
-        """Set mode_group_instance_ref attribute.
+    def with_mode_group(self, value: Optional[ModeGroupInAtomicSwcInstanceRef]) -> "ModeAccessPointBuilder":
+        """Set mode_group attribute.
 
         Args:
             value: Value to set
@@ -163,8 +179,8 @@ class ModeAccessPointBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'mode_group_instance_ref' is required and cannot be None")
-        self._obj.mode_group_instance_ref = value
+            raise ValueError("Attribute 'mode_group' is required and cannot be None")
+        self._obj.mode_group = value
         return self
 
 
@@ -172,7 +188,7 @@ class ModeAccessPointBuilder(BuilderBase):
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
         "ident",
-        "modeGroupInstanceRef",
+        "modeGroup",
     }
 
 

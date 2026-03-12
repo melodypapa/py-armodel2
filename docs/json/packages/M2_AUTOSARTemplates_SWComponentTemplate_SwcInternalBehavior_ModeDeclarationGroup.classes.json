@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "ModeAccessPoint",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ModeDeclarationGroup",
       "is_abstract": false,
       "atp_type": null,
@@ -41,11 +41,12 @@
           "is_ref": false,
           "note": "The aggregation in the role ident provides the ability to ModeAccessPoint identifiable. semantical point of view, the ModeAccessPoint a first-class Identifiable and therefore the the role ident shall always exist (until it possible to let ModeAccessPoint directly inherit"
         },
-        "modeGroupInstanceRef": {
-          "type": "ModeDeclarationGroup",
+        "modeGroup": {
+          "type": "ModeGroupInAtomicSwcInstanceRef",
           "multiplicity": "0..1",
-          "kind": "ref",
+          "kind": "iref",
           "is_ref": true,
+          "decorator": "polymorphic:MODE-GROUP-IREF=ModeGroupInAtomicSwcInstanceRef",
           "note": "by: ModeGroupInAtomicSwc"
         }
       }
@@ -97,7 +98,7 @@
           "multiplicity": "0..1",
           "kind": "iref",
           "is_ref": true,
-          "note": "The mode declaration group that is switched by thisrunnable."
+          "note": "The mode declaration group that is switched by this runnable."
         }
       }
     },

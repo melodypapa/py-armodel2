@@ -237,15 +237,14 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize entities (list to container "ENTITYS")
+        # Serialize entities (list with polymorphic wrapper "ENTITYS")
         if self.entities:
-            wrapper = ET.Element("ENTITYS")
+            container = ET.Element("ENTITYS")
             for item in self.entities:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntity")
                 if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+                    container.append(serialized)
+            elem.append(container)
 
         # Serialize events (list to container "EVENTS")
         if self.events:
