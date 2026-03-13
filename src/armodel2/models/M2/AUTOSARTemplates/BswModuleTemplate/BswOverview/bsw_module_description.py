@@ -13,7 +13,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswOvervie
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel2.serialization.decorators import xml_element_name
 from armodel2.serialization.decorators import ref_conditional
 
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
@@ -81,7 +80,7 @@ class BswModuleDescription(ARElement):
     provided_datas: list[VariableDataPrototype]
     provided_mode_groups: list[ModeDeclarationGroupPrototype]
     released_triggers: list[Trigger]
-    _required_client_server_entries: list[BswModuleClientServerEntry]
+    required_client_server_entries: list[BswModuleClientServerEntry]
     required_datas: list[VariableDataPrototype]
     required_mode_groups: list[ModeDeclarationGroupPrototype]
     required_triggers: list[Trigger]
@@ -97,7 +96,7 @@ class BswModuleDescription(ARElement):
         "PROVIDED-DATAS": lambda obj, elem: obj.provided_datas.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
         "PROVIDED-MODE-GROUPS": lambda obj, elem: obj.provided_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroupPrototype")),
         "RELEASED-TRIGGERS": lambda obj, elem: obj.released_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
-        "REQUIRED-ENTRYS": lambda obj, elem: obj._required_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
+        "REQUIRED-CLIENT-SERVER-ENTRYS": lambda obj, elem: obj.required_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
         "REQUIRED-DATAS": lambda obj, elem: obj.required_datas.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
         "REQUIRED-MODE-GROUPS": lambda obj, elem: obj.required_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroupPrototype")),
         "REQUIRED-TRIGGERS": lambda obj, elem: obj.required_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
@@ -118,7 +117,7 @@ class BswModuleDescription(ARElement):
         self.provided_datas: list[VariableDataPrototype] = []
         self.provided_mode_groups: list[ModeDeclarationGroupPrototype] = []
         self.released_triggers: list[Trigger] = []
-        self._required_client_server_entries: list[BswModuleClientServerEntry] = []
+        self.required_client_server_entries: list[BswModuleClientServerEntry] = []
         self.required_datas: list[VariableDataPrototype] = []
         self.required_mode_groups: list[ModeDeclarationGroupPrototype] = []
         self.required_triggers: list[Trigger] = []
@@ -133,17 +132,6 @@ class BswModuleDescription(ARElement):
     def provided_entry_refs(self, value: list[ARRef]) -> None:
         """Set provided_entry_refs with ref_conditional wrapper."""
         self._provided_entry_refs = value
-
-    @property
-    @xml_element_name("REQUIRED-ENTRYS")
-    def required_client_server_entries(self) -> list[BswModuleClientServerEntry]:
-        """Get required_client_server_entries with custom XML element name."""
-        return self._required_client_server_entries
-
-    @required_client_server_entries.setter
-    def required_client_server_entries(self, value: list[BswModuleClientServerEntry]) -> None:
-        """Set required_client_server_entries with custom XML element name."""
-        self._required_client_server_entries = value
 
 
     def serialize(self) -> ET.Element:
@@ -301,9 +289,9 @@ class BswModuleDescription(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize required_client_server_entries (list to container "REQUIRED-ENTRYS")
+        # Serialize required_client_server_entries (list to container "REQUIRED-CLIENT-SERVER-ENTRYS")
         if self.required_client_server_entries:
-            wrapper = ET.Element("REQUIRED-ENTRYS")
+            wrapper = ET.Element("REQUIRED-CLIENT-SERVER-ENTRYS")
             for item in self.required_client_server_entries:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleClientServerEntry")
                 if serialized is not None:
@@ -409,10 +397,10 @@ class BswModuleDescription(ARElement):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.released_triggers.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
-            elif tag == "REQUIRED-ENTRYS":
+            elif tag == "REQUIRED-CLIENT-SERVER-ENTRYS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj._required_client_server_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleClientServerEntry"))
+                    obj.required_client_server_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleClientServerEntry"))
             elif tag == "REQUIRED-DATAS":
                 # Iterate through wrapper children
                 for item_elem in child:

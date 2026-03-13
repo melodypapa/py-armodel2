@@ -68,13 +68,6 @@
           "is_ref": false,
           "note": "Refers to the service identifier of the Standardized AUTOSAR basic software. For it can optionally be used for"
         },
-        "bswEntryKind": {
-          "type": "BswEntryKindEnum",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "This describes whether the entry is concrete or abstract. attribute is missing the entry is considered as"
-        },
         "isReentrant": {
           "type": "Boolean",
           "multiplicity": "0..1",
@@ -117,6 +110,13 @@
           "is_ref": false,
           "note": "Denotes the implementation policy as a standard function call, inline function or macro. This has to be specified on because it determines the signature of the"
         },
+        "bswEntryKind": {
+          "type": "BswEntryKindEnum",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This describes whether the entry is concrete or abstract. attribute is missing the entry is considered as"
+        },
         "returnType": {
           "type": "SwServiceArg",
           "multiplicity": "0..1",
@@ -142,7 +142,7 @@
     },
     {
       "name": "BswModuleDependency",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "is_abstract": false,
       "atp_type": null,
@@ -188,7 +188,7 @@
     },
     {
       "name": "BswEntryRelationshipSet",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "is_abstract": false,
       "atp_type": null,
@@ -239,7 +239,7 @@
     },
     {
       "name": "BswEntryRelationship",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswInterfaces",
       "is_abstract": false,
       "atp_type": null,
@@ -270,8 +270,8 @@
         }
       ],
       "attributes": {
-        "bswEntry": {
-          "type": "BswEntryRelationship",
+        "bswEntryRelationshipType": {
+          "type": "BswEntryRelationshipEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -282,7 +282,7 @@
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
-          "note": "Type of relationship that refers to the abstract BswModule notice that in this case the bswEntry be set to drivedFrom."
+          "note": "Type of relationship that refers to the abstract BswModule notice that in this case the bswEntry be set to drived From."
         },
         "to": {
           "type": "BswModuleEntry",

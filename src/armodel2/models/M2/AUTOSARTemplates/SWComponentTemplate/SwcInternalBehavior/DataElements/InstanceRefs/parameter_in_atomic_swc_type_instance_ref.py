@@ -6,24 +6,30 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_DataElements_InstanceRefs.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
-    AtomicSwComponentType,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
-    DataPrototype,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
-    PortPrototype,
-)
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.application_composite_element_data_prototype import (
+        ApplicationCompositeElementDataPrototype,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw_component_type import (
+        AtomicSwComponentType,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
+        DataPrototype,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
+        PortPrototype,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class ParameterInAtomicSWCTypeInstanceRef(ARObject):
     """AUTOSAR ParameterInAtomicSWCTypeInstanceRef."""
 
@@ -40,16 +46,16 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
 
 
     base_ref: Optional[ARRef]
-    context_data_refs: list[Any]
+    context_data_prototype_refs: list[ARRef]
     port_prototype_ref: Optional[ARRef]
-    root_parameter_ref: Optional[ARRef]
-    target_data_ref: Optional[ARRef]
+    root_parameter_data_prototype_ref: Optional[ARRef]
+    target_data_prototype_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": ("_POLYMORPHIC", "base_ref", ["ApplicationSwComponentType", "ComplexDeviceDriverSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
-        "CONTEXT-DATA-REFS": lambda obj, elem: [obj.context_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "CONTEXT-DATA-PROTOTYPE-REFS": ("_POLYMORPHIC_LIST", "context_data_prototype_refs", ["ApplicationArrayElement", "ApplicationRecordElement"]),
         "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
-        "ROOT-PARAMETER-REF": ("_POLYMORPHIC", "root_parameter_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
-        "TARGET-DATA-REF": ("_POLYMORPHIC", "target_data_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
+        "ROOT-PARAMETER-DATA-PROTOTYPE-REF": ("_POLYMORPHIC", "root_parameter_data_prototype_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
+        "TARGET-DATA-PROTOTYPE-REF": ("_POLYMORPHIC", "target_data_prototype_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
     }
 
 
@@ -57,10 +63,10 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
         """Initialize ParameterInAtomicSWCTypeInstanceRef."""
         super().__init__()
         self.base_ref: Optional[ARRef] = None
-        self.context_data_refs: list[Any] = []
+        self.context_data_prototype_refs: list[ARRef] = []
         self.port_prototype_ref: Optional[ARRef] = None
-        self.root_parameter_ref: Optional[ARRef] = None
-        self.target_data_ref: Optional[ARRef] = None
+        self.root_parameter_data_prototype_ref: Optional[ARRef] = None
+        self.target_data_prototype_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ParameterInAtomicSWCTypeInstanceRef to XML element.
@@ -99,13 +105,13 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_data_refs (list to container "CONTEXT-DATA-REFS")
-        if self.context_data_refs:
-            wrapper = ET.Element("CONTEXT-DATA-REFS")
-            for item in self.context_data_refs:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize context_data_prototype_refs (list to container "CONTEXT-DATA-PROTOTYPE-REFS")
+        if self.context_data_prototype_refs:
+            wrapper = ET.Element("CONTEXT-DATA-PROTOTYPE-REFS")
+            for item in self.context_data_prototype_refs:
+                serialized = SerializationHelper.serialize_item(item, "ApplicationCompositeElementDataPrototype")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTEXT-DATA-REF")
+                    child_elem = ET.Element("CONTEXT-DATA-PROTOTYPE-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -130,12 +136,12 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize root_parameter_ref
-        if self.root_parameter_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.root_parameter_ref, "DataPrototype")
+        # Serialize root_parameter_data_prototype_ref
+        if self.root_parameter_data_prototype_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.root_parameter_data_prototype_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROOT-PARAMETER-REF")
+                wrapped = ET.Element("ROOT-PARAMETER-DATA-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -144,12 +150,12 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_data_ref
-        if self.target_data_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.target_data_ref, "DataPrototype")
+        # Serialize target_data_prototype_ref
+        if self.target_data_prototype_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.target_data_prototype_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-DATA-REF")
+                wrapped = ET.Element("TARGET-DATA-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -179,16 +185,15 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "BASE-REF":
                 setattr(obj, "base_ref", ARRef.deserialize(child))
-            elif tag == "CONTEXT-DATA-REFS":
-                # Iterate through wrapper children
+            elif tag == "CONTEXT-DATA-PROTOTYPE-REFS":
                 for item_elem in child:
-                    obj.context_data_refs.append(ARRef.deserialize(item_elem))
+                    obj.context_data_prototype_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PORT-PROTOTYPE-REF":
                 setattr(obj, "port_prototype_ref", ARRef.deserialize(child))
-            elif tag == "ROOT-PARAMETER-REF":
-                setattr(obj, "root_parameter_ref", ARRef.deserialize(child))
-            elif tag == "TARGET-DATA-REF":
-                setattr(obj, "target_data_ref", ARRef.deserialize(child))
+            elif tag == "ROOT-PARAMETER-DATA-PROTOTYPE-REF":
+                setattr(obj, "root_parameter_data_prototype_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-DATA-PROTOTYPE-REF":
+                setattr(obj, "target_data_prototype_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -217,8 +222,8 @@ class ParameterInAtomicSWCTypeInstanceRefBuilder(BuilderBase):
         self._obj.base = value
         return self
 
-    def with_context_datas(self, items: list[Any]) -> "ParameterInAtomicSWCTypeInstanceRefBuilder":
-        """Set context_datas list attribute.
+    def with_context_data_prototypes(self, items: list[ApplicationCompositeElementDataPrototype]) -> "ParameterInAtomicSWCTypeInstanceRefBuilder":
+        """Set context_data_prototypes list attribute.
 
         Args:
             items: List of items to set
@@ -226,7 +231,7 @@ class ParameterInAtomicSWCTypeInstanceRefBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.context_datas = list(items) if items else []
+        self._obj.context_data_prototypes = list(items) if items else []
         return self
 
     def with_port_prototype(self, value: Optional[PortPrototype]) -> "ParameterInAtomicSWCTypeInstanceRefBuilder":
@@ -243,8 +248,8 @@ class ParameterInAtomicSWCTypeInstanceRefBuilder(BuilderBase):
         self._obj.port_prototype = value
         return self
 
-    def with_root_parameter(self, value: Optional[DataPrototype]) -> "ParameterInAtomicSWCTypeInstanceRefBuilder":
-        """Set root_parameter attribute.
+    def with_root_parameter_data_prototype(self, value: Optional[DataPrototype]) -> "ParameterInAtomicSWCTypeInstanceRefBuilder":
+        """Set root_parameter_data_prototype attribute.
 
         Args:
             value: Value to set
@@ -253,12 +258,12 @@ class ParameterInAtomicSWCTypeInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'root_parameter' is required and cannot be None")
-        self._obj.root_parameter = value
+            raise ValueError("Attribute 'root_parameter_data_prototype' is required and cannot be None")
+        self._obj.root_parameter_data_prototype = value
         return self
 
-    def with_target_data(self, value: Optional[DataPrototype]) -> "ParameterInAtomicSWCTypeInstanceRefBuilder":
-        """Set target_data attribute.
+    def with_target_data_prototype(self, value: Optional[DataPrototype]) -> "ParameterInAtomicSWCTypeInstanceRefBuilder":
+        """Set target_data_prototype attribute.
 
         Args:
             value: Value to set
@@ -267,13 +272,13 @@ class ParameterInAtomicSWCTypeInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'target_data' is required and cannot be None")
-        self._obj.target_data = value
+            raise ValueError("Attribute 'target_data_prototype' is required and cannot be None")
+        self._obj.target_data_prototype = value
         return self
 
 
-    def add_context_data(self, item: Any) -> "ParameterInAtomicSWCTypeInstanceRefBuilder":
-        """Add a single item to context_datas list.
+    def add_context_data_prototype(self, item: ApplicationCompositeElementDataPrototype) -> "ParameterInAtomicSWCTypeInstanceRefBuilder":
+        """Add a single item to context_data_prototypes list.
 
         Args:
             item: Item to add
@@ -281,26 +286,26 @@ class ParameterInAtomicSWCTypeInstanceRefBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.context_datas.append(item)
+        self._obj.context_data_prototypes.append(item)
         return self
 
-    def clear_context_datas(self) -> "ParameterInAtomicSWCTypeInstanceRefBuilder":
-        """Clear all items from context_datas list.
+    def clear_context_data_prototypes(self) -> "ParameterInAtomicSWCTypeInstanceRefBuilder":
+        """Clear all items from context_data_prototypes list.
 
         Returns:
             self for method chaining
         """
-        self._obj.context_datas = []
+        self._obj.context_data_prototypes = []
         return self
 
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
         "base",
-        "contextData",
+        "contextDataPrototype",
         "portPrototype",
-        "rootParameter",
-        "targetData",
+        "rootParameterDataPrototype",
+        "targetDataPrototype",
     }
 
 

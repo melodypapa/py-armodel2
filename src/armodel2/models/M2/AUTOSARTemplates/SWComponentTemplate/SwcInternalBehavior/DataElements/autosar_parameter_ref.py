@@ -17,6 +17,9 @@ if TYPE_CHECKING:
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
         DataPrototype,
     )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.InstanceRefs.parameter_in_atomic_swc_type_instance_ref import (
+        ParameterInAtomicSWCTypeInstanceRef,
+    )
 
 
 
@@ -37,10 +40,10 @@ class AutosarParameterRef(ARObject):
     _XML_TAG = "AUTOSAR-PARAMETER-REF"
 
 
-    autosar_ref: Optional[ARRef]
+    autosar_parameter_iref: Optional[ParameterInAtomicSWCTypeInstanceRef]
     local_parameter_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "AUTOSAR-REF": ("_POLYMORPHIC", "autosar_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
+        "AUTOSAR-PARAMETER-IREF": lambda obj, elem: setattr(obj, "autosar_parameter_iref", SerializationHelper.deserialize_by_tag(elem, "ParameterInAtomicSWCTypeInstanceRef")),
         "LOCAL-PARAMETER-REF": ("_POLYMORPHIC", "local_parameter_ref", ["ApplicationArrayElement", "ApplicationCompositeElementDataPrototype", "ApplicationRecordElement", "ArgumentDataPrototype", "AutosarDataPrototype", "ParameterDataPrototype", "VariableDataPrototype"]),
     }
 
@@ -48,7 +51,7 @@ class AutosarParameterRef(ARObject):
     def __init__(self) -> None:
         """Initialize AutosarParameterRef."""
         super().__init__()
-        self.autosar_ref: Optional[ARRef] = None
+        self.autosar_parameter_iref: Optional[ParameterInAtomicSWCTypeInstanceRef] = None
         self.local_parameter_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -74,19 +77,16 @@ class AutosarParameterRef(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize autosar_ref
-        if self.autosar_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.autosar_ref, "DataPrototype")
+        # Serialize autosar_parameter_iref (instance reference with wrapper "AUTOSAR-PARAMETER-IREF")
+        if self.autosar_parameter_iref is not None:
+            serialized = SerializationHelper.serialize_item(self.autosar_parameter_iref, "ParameterInAtomicSWCTypeInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AUTOSAR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("AUTOSAR-PARAMETER-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         # Serialize local_parameter_ref
         if self.local_parameter_ref is not None:
@@ -121,8 +121,8 @@ class AutosarParameterRef(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "AUTOSAR-REF":
-                setattr(obj, "autosar_ref", ARRef.deserialize(child))
+            if tag == "AUTOSAR-PARAMETER-IREF":
+                setattr(obj, "autosar_parameter_iref", SerializationHelper.deserialize_by_tag(child, "ParameterInAtomicSWCTypeInstanceRef"))
             elif tag == "LOCAL-PARAMETER-REF":
                 setattr(obj, "local_parameter_ref", ARRef.deserialize(child))
 
@@ -139,8 +139,8 @@ class AutosarParameterRefBuilder(BuilderBase):
         self._obj: AutosarParameterRef = AutosarParameterRef()
 
 
-    def with_autosar(self, value: Optional[DataPrototype]) -> "AutosarParameterRefBuilder":
-        """Set autosar attribute.
+    def with_autosar_parameter(self, value: Optional[ParameterInAtomicSWCTypeInstanceRef]) -> "AutosarParameterRefBuilder":
+        """Set autosar_parameter attribute.
 
         Args:
             value: Value to set
@@ -149,8 +149,8 @@ class AutosarParameterRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'autosar' is required and cannot be None")
-        self._obj.autosar = value
+            raise ValueError("Attribute 'autosar_parameter' is required and cannot be None")
+        self._obj.autosar_parameter = value
         return self
 
     def with_local_parameter(self, value: Optional[DataPrototype]) -> "AutosarParameterRefBuilder":
@@ -171,7 +171,7 @@ class AutosarParameterRefBuilder(BuilderBase):
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "autosar",
+        "autosarParameter",
         "localParameter",
     }
 

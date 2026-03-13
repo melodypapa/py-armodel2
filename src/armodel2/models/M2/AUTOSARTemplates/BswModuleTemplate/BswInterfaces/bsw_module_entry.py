@@ -58,25 +58,25 @@ class BswModuleEntry(ARElement):
 
 
     service_id: Optional[PositiveInteger]
-    bsw_entry_kind: Optional[BswEntryKindEnum]
     is_reentrant: Optional[Boolean]
     is_synchronous: Optional[Boolean]
     call_type: Optional[BswCallType]
     execution_context: Optional[BswExecutionContext]
     function_prototype_emitter: Optional[NameToken]
     sw_service_impl_policy: Optional[SwServiceImplPolicyEnum]
+    bsw_entry_kind: Optional[BswEntryKindEnum]
     return_type: Optional[SwServiceArg]
     arguments: list[SwServiceArg]
     role: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
         "SERVICE-ID": lambda obj, elem: setattr(obj, "service_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "BSW-ENTRY-KIND": lambda obj, elem: setattr(obj, "bsw_entry_kind", BswEntryKindEnum.deserialize(elem)),
         "IS-REENTRANT": lambda obj, elem: setattr(obj, "is_reentrant", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "IS-SYNCHRONOUS": lambda obj, elem: setattr(obj, "is_synchronous", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "CALL-TYPE": lambda obj, elem: setattr(obj, "call_type", BswCallType.deserialize(elem)),
         "EXECUTION-CONTEXT": lambda obj, elem: setattr(obj, "execution_context", BswExecutionContext.deserialize(elem)),
         "FUNCTION-PROTOTYPE-EMITTER": lambda obj, elem: setattr(obj, "function_prototype_emitter", SerializationHelper.deserialize_by_tag(elem, "NameToken")),
         "SW-SERVICE-IMPL-POLICY": lambda obj, elem: setattr(obj, "sw_service_impl_policy", SwServiceImplPolicyEnum.deserialize(elem)),
+        "BSW-ENTRY-KIND": lambda obj, elem: setattr(obj, "bsw_entry_kind", BswEntryKindEnum.deserialize(elem)),
         "RETURN-TYPE": lambda obj, elem: setattr(obj, "return_type", SerializationHelper.deserialize_by_tag(elem, "SwServiceArg")),
         "ARGUMENTS": lambda obj, elem: obj.arguments.append(SerializationHelper.deserialize_by_tag(elem, "SwServiceArg")),
         "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
@@ -87,13 +87,13 @@ class BswModuleEntry(ARElement):
         """Initialize BswModuleEntry."""
         super().__init__()
         self.service_id: Optional[PositiveInteger] = None
-        self.bsw_entry_kind: Optional[BswEntryKindEnum] = None
         self.is_reentrant: Optional[Boolean] = None
         self.is_synchronous: Optional[Boolean] = None
         self.call_type: Optional[BswCallType] = None
         self.execution_context: Optional[BswExecutionContext] = None
         self.function_prototype_emitter: Optional[NameToken] = None
         self.sw_service_impl_policy: Optional[SwServiceImplPolicyEnum] = None
+        self.bsw_entry_kind: Optional[BswEntryKindEnum] = None
         self.return_type: Optional[SwServiceArg] = None
         self.arguments: list[SwServiceArg] = []
         self.role: Optional[Identifier] = None
@@ -127,20 +127,6 @@ class BswModuleEntry(ARElement):
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize bsw_entry_kind
-        if self.bsw_entry_kind is not None:
-            serialized = SerializationHelper.serialize_item(self.bsw_entry_kind, "BswEntryKindEnum")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BSW-ENTRY-KIND")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -233,6 +219,20 @@ class BswModuleEntry(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
+        # Serialize bsw_entry_kind
+        if self.bsw_entry_kind is not None:
+            serialized = SerializationHelper.serialize_item(self.bsw_entry_kind, "BswEntryKindEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BSW-ENTRY-KIND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
         # Serialize return_type
         if self.return_type is not None:
             serialized = SerializationHelper.serialize_item(self.return_type, "SwServiceArg")
@@ -292,8 +292,6 @@ class BswModuleEntry(ARElement):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "SERVICE-ID":
                 setattr(obj, "service_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "BSW-ENTRY-KIND":
-                setattr(obj, "bsw_entry_kind", BswEntryKindEnum.deserialize(child))
             elif tag == "IS-REENTRANT":
                 setattr(obj, "is_reentrant", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "IS-SYNCHRONOUS":
@@ -306,6 +304,8 @@ class BswModuleEntry(ARElement):
                 setattr(obj, "function_prototype_emitter", SerializationHelper.deserialize_by_tag(child, "NameToken"))
             elif tag == "SW-SERVICE-IMPL-POLICY":
                 setattr(obj, "sw_service_impl_policy", SwServiceImplPolicyEnum.deserialize(child))
+            elif tag == "BSW-ENTRY-KIND":
+                setattr(obj, "bsw_entry_kind", BswEntryKindEnum.deserialize(child))
             elif tag == "RETURN-TYPE":
                 setattr(obj, "return_type", SerializationHelper.deserialize_by_tag(child, "SwServiceArg"))
             elif tag == "ARGUMENTS":
@@ -340,20 +340,6 @@ class BswModuleEntryBuilder(ARElementBuilder):
         if value is None and not True:
             raise ValueError("Attribute 'service_id' is required and cannot be None")
         self._obj.service_id = value
-        return self
-
-    def with_bsw_entry_kind(self, value: Optional[BswEntryKindEnum]) -> "BswModuleEntryBuilder":
-        """Set bsw_entry_kind attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute 'bsw_entry_kind' is required and cannot be None")
-        self._obj.bsw_entry_kind = value
         return self
 
     def with_is_reentrant(self, value: Optional[Boolean]) -> "BswModuleEntryBuilder":
@@ -438,6 +424,20 @@ class BswModuleEntryBuilder(ARElementBuilder):
         if value is None and not True:
             raise ValueError("Attribute 'sw_service_impl_policy' is required and cannot be None")
         self._obj.sw_service_impl_policy = value
+        return self
+
+    def with_bsw_entry_kind(self, value: Optional[BswEntryKindEnum]) -> "BswModuleEntryBuilder":
+        """Set bsw_entry_kind attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute 'bsw_entry_kind' is required and cannot be None")
+        self._obj.bsw_entry_kind = value
         return self
 
     def with_return_type(self, value: Optional[SwServiceArg]) -> "BswModuleEntryBuilder":

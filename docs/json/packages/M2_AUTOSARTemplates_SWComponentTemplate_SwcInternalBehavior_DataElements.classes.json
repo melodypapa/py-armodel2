@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "AutosarParameterRef",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements",
       "is_abstract": false,
       "atp_type": null,
@@ -37,10 +37,10 @@
         }
       ],
       "attributes": {
-        "autosar": {
-          "type": "DataPrototype",
+        "autosarParameter": {
+          "type": "ParameterInAtomicSWCTypeInstanceRef",
           "multiplicity": "0..1",
-          "kind": "ref",
+          "kind": "iref",
           "is_ref": true,
           "note": "is either imported via a port or is part of a structure. by: ParameterInAtomicSWC 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
@@ -253,7 +253,7 @@
     },
     {
       "name": "ArVariableInImplementationDataInstanceRef",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements",
       "is_abstract": false,
       "atp_type": null,
@@ -279,8 +279,8 @@
         }
       ],
       "attributes": {
-        "contextData": {
-          "type": "any (AbstractImplementation)",
+        "contextDataPrototype": {
+          "type": "AbstractImplementationDataTypeElement",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
@@ -293,15 +293,15 @@
           "is_ref": true,
           "note": "This is the port providing/receiving the root of the variable"
         },
-        "rootVariable": {
+        "rootVariableDataPrototype": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
           "note": "This refers to the VariableDataPrototype typed by the in which the target can be found."
         },
-        "targetData": {
-          "type": "any (AbstractImplementation)",
+        "targetDataDataPrototype": {
+          "type": "AbstractImplementationDataTypeElement",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
@@ -311,7 +311,7 @@
     },
     {
       "name": "ArParameterInImplementationDataInstanceRef",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements",
       "is_abstract": false,
       "atp_type": null,
@@ -336,8 +336,8 @@
         }
       ],
       "attributes": {
-        "contextData": {
-          "type": "any (AbstractImplementation)",
+        "contextDataPrototype": {
+          "type": "AbstractImplementationDataTypeElement",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
@@ -350,15 +350,15 @@
           "is_ref": true,
           "note": "This reference points to the PortPrototype providing/ root of the parameter."
         },
-        "rootParameter": {
+        "rootParameterDataPrototype": {
           "type": "ParameterDataPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
           "note": "This refers to the ParameterDataPrototype typed by the implementationDataType in which the target can be"
         },
-        "targetData": {
-          "type": "any (AbstractImplementation)",
+        "targetDataPrototype": {
+          "type": "AbstractImplementationDataTypeElement",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,

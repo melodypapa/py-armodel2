@@ -6,11 +6,14 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_DataElements.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type_element import (
+    AbstractImplementationDataTypeElement,
+)
 
 if TYPE_CHECKING:
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
@@ -39,25 +42,25 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
     _XML_TAG = "AR-VARIABLE-IN-IMPLEMENTATION-DATA-INSTANCE-REF"
 
 
-    context_data_refs: list[Any]
+    context_data_prototype_refs: list[ARRef]
     port_prototype_ref: Optional[ARRef]
-    root_variable_ref: Optional[ARRef]
-    target_data_ref: Optional[Any]
+    root_variable_data_prototype_ref: Optional[ARRef]
+    target_data_data_prototype_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "CONTEXT-DATA-REFS": lambda obj, elem: [obj.context_data_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "CONTEXT-DATA-PROTOTYPE-REFS": ("_POLYMORPHIC_LIST", "context_data_prototype_refs", ["ImplementationDataTypeElement"]),
         "PORT-PROTOTYPE-REF": ("_POLYMORPHIC", "port_prototype_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
-        "ROOT-VARIABLE-REF": lambda obj, elem: setattr(obj, "root_variable_ref", ARRef.deserialize(elem)),
-        "TARGET-DATA-REF": lambda obj, elem: setattr(obj, "target_data_ref", ARRef.deserialize(elem)),
+        "ROOT-VARIABLE-DATA-PROTOTYPE-REF": lambda obj, elem: setattr(obj, "root_variable_data_prototype_ref", ARRef.deserialize(elem)),
+        "TARGET-DATA-DATA-PROTOTYPE-REF": ("_POLYMORPHIC", "target_data_data_prototype_ref", ["ImplementationDataTypeElement"]),
     }
 
 
     def __init__(self) -> None:
         """Initialize ArVariableInImplementationDataInstanceRef."""
         super().__init__()
-        self.context_data_refs: list[Any] = []
+        self.context_data_prototype_refs: list[ARRef] = []
         self.port_prototype_ref: Optional[ARRef] = None
-        self.root_variable_ref: Optional[ARRef] = None
-        self.target_data_ref: Optional[Any] = None
+        self.root_variable_data_prototype_ref: Optional[ARRef] = None
+        self.target_data_data_prototype_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ArVariableInImplementationDataInstanceRef to XML element.
@@ -82,13 +85,13 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize context_data_refs (list to container "CONTEXT-DATA-REFS")
-        if self.context_data_refs:
-            wrapper = ET.Element("CONTEXT-DATA-REFS")
-            for item in self.context_data_refs:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize context_data_prototype_refs (list to container "CONTEXT-DATA-PROTOTYPE-REFS")
+        if self.context_data_prototype_refs:
+            wrapper = ET.Element("CONTEXT-DATA-PROTOTYPE-REFS")
+            for item in self.context_data_prototype_refs:
+                serialized = SerializationHelper.serialize_item(item, "AbstractImplementationDataTypeElement")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTEXT-DATA-REF")
+                    child_elem = ET.Element("CONTEXT-DATA-PROTOTYPE-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -113,12 +116,12 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize root_variable_ref
-        if self.root_variable_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.root_variable_ref, "VariableDataPrototype")
+        # Serialize root_variable_data_prototype_ref
+        if self.root_variable_data_prototype_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.root_variable_data_prototype_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROOT-VARIABLE-REF")
+                wrapped = ET.Element("ROOT-VARIABLE-DATA-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -127,12 +130,12 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_data_ref
-        if self.target_data_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.target_data_ref, "Any")
+        # Serialize target_data_data_prototype_ref
+        if self.target_data_data_prototype_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.target_data_data_prototype_ref, "AbstractImplementationDataTypeElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-DATA-REF")
+                wrapped = ET.Element("TARGET-DATA-DATA-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -160,16 +163,15 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONTEXT-DATA-REFS":
-                # Iterate through wrapper children
+            if tag == "CONTEXT-DATA-PROTOTYPE-REFS":
                 for item_elem in child:
-                    obj.context_data_refs.append(ARRef.deserialize(item_elem))
+                    obj.context_data_prototype_refs.append(ARRef.deserialize(item_elem))
             elif tag == "PORT-PROTOTYPE-REF":
                 setattr(obj, "port_prototype_ref", ARRef.deserialize(child))
-            elif tag == "ROOT-VARIABLE-REF":
-                setattr(obj, "root_variable_ref", ARRef.deserialize(child))
-            elif tag == "TARGET-DATA-REF":
-                setattr(obj, "target_data_ref", ARRef.deserialize(child))
+            elif tag == "ROOT-VARIABLE-DATA-PROTOTYPE-REF":
+                setattr(obj, "root_variable_data_prototype_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-DATA-DATA-PROTOTYPE-REF":
+                setattr(obj, "target_data_data_prototype_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -184,8 +186,8 @@ class ArVariableInImplementationDataInstanceRefBuilder(BuilderBase):
         self._obj: ArVariableInImplementationDataInstanceRef = ArVariableInImplementationDataInstanceRef()
 
 
-    def with_context_datas(self, items: list[Any]) -> "ArVariableInImplementationDataInstanceRefBuilder":
-        """Set context_datas list attribute.
+    def with_context_data_prototypes(self, items: list[AbstractImplementationDataTypeElement]) -> "ArVariableInImplementationDataInstanceRefBuilder":
+        """Set context_data_prototypes list attribute.
 
         Args:
             items: List of items to set
@@ -193,7 +195,7 @@ class ArVariableInImplementationDataInstanceRefBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.context_datas = list(items) if items else []
+        self._obj.context_data_prototypes = list(items) if items else []
         return self
 
     def with_port_prototype(self, value: Optional[PortPrototype]) -> "ArVariableInImplementationDataInstanceRefBuilder":
@@ -210,8 +212,8 @@ class ArVariableInImplementationDataInstanceRefBuilder(BuilderBase):
         self._obj.port_prototype = value
         return self
 
-    def with_root_variable(self, value: Optional[VariableDataPrototype]) -> "ArVariableInImplementationDataInstanceRefBuilder":
-        """Set root_variable attribute.
+    def with_root_variable_data_prototype(self, value: Optional[VariableDataPrototype]) -> "ArVariableInImplementationDataInstanceRefBuilder":
+        """Set root_variable_data_prototype attribute.
 
         Args:
             value: Value to set
@@ -220,12 +222,12 @@ class ArVariableInImplementationDataInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'root_variable' is required and cannot be None")
-        self._obj.root_variable = value
+            raise ValueError("Attribute 'root_variable_data_prototype' is required and cannot be None")
+        self._obj.root_variable_data_prototype = value
         return self
 
-    def with_target_data(self, value: Optional[Any]) -> "ArVariableInImplementationDataInstanceRefBuilder":
-        """Set target_data attribute.
+    def with_target_data_data_prototype(self, value: Optional[AbstractImplementationDataTypeElement]) -> "ArVariableInImplementationDataInstanceRefBuilder":
+        """Set target_data_data_prototype attribute.
 
         Args:
             value: Value to set
@@ -234,13 +236,13 @@ class ArVariableInImplementationDataInstanceRefBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'target_data' is required and cannot be None")
-        self._obj.target_data = value
+            raise ValueError("Attribute 'target_data_data_prototype' is required and cannot be None")
+        self._obj.target_data_data_prototype = value
         return self
 
 
-    def add_context_data(self, item: Any) -> "ArVariableInImplementationDataInstanceRefBuilder":
-        """Add a single item to context_datas list.
+    def add_context_data_prototype(self, item: AbstractImplementationDataTypeElement) -> "ArVariableInImplementationDataInstanceRefBuilder":
+        """Add a single item to context_data_prototypes list.
 
         Args:
             item: Item to add
@@ -248,25 +250,25 @@ class ArVariableInImplementationDataInstanceRefBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.context_datas.append(item)
+        self._obj.context_data_prototypes.append(item)
         return self
 
-    def clear_context_datas(self) -> "ArVariableInImplementationDataInstanceRefBuilder":
-        """Clear all items from context_datas list.
+    def clear_context_data_prototypes(self) -> "ArVariableInImplementationDataInstanceRefBuilder":
+        """Clear all items from context_data_prototypes list.
 
         Returns:
             self for method chaining
         """
-        self._obj.context_datas = []
+        self._obj.context_data_prototypes = []
         return self
 
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "contextData",
+        "contextDataPrototype",
         "portPrototype",
-        "rootVariable",
-        "targetData",
+        "rootVariableDataPrototype",
+        "targetDataDataPrototype",
     }
 
 
