@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "PPortComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": true,
       "atp_type": null,
@@ -49,7 +49,7 @@
     },
     {
       "name": "RPortComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": true,
       "atp_type": null,
@@ -95,7 +95,7 @@
     },
     {
       "name": "ReceiverComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": true,
       "atp_type": null,
@@ -222,7 +222,7 @@
     },
     {
       "name": "NonqueuedReceiverComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -323,7 +323,7 @@
     },
     {
       "name": "QueuedReceiverComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -362,7 +362,7 @@
     },
     {
       "name": "ReceptionComSpecProps",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -387,7 +387,7 @@
         }
       ],
       "attributes": {
-        "dataUpdate": {
+        "dataUpdatePeriod": {
           "type": "TimeValue",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -405,7 +405,7 @@
     },
     {
       "name": "SenderComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": true,
       "atp_type": null,
@@ -497,7 +497,7 @@
     },
     {
       "name": "QueuedSenderComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -528,7 +528,7 @@
     },
     {
       "name": "NonqueuedSenderComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -565,14 +565,14 @@
         "dataFilter": {
           "type": "DataFilter",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "The applicable filter algorithm for filtering the value of the"
         },
         "initValue": {
           "type": "ValueSpecification",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "Initial value to be sent if sender component is not yet fully receiver needs data already."
@@ -581,7 +581,7 @@
     },
     {
       "name": "TransmissionComSpecProps",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -612,22 +612,22 @@
         }
       ],
       "attributes": {
-        "dataUpdate": {
+        "dataUpdatePeriod": {
           "type": "TimeValue",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute defines the period in which the application is to transmit the respective data. 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
-        "minimumSend": {
+        "minimumSendInterval": {
           "type": "TimeValue",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute defines the minimum interval between two transmissions of the respective data the assumed to ensure."
         },
-        "transmission": {
-          "type": "any (TransmissionMode)",
+        "transmissionMode": {
+          "type": "TransmissionModeDefinitionEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -637,7 +637,7 @@
     },
     {
       "name": "TransmissionAcknowledgementRequest",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -673,7 +673,7 @@
     },
     {
       "name": "CompositeNetworkRepresentation",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -699,17 +699,17 @@
         }
       ],
       "attributes": {
-        "leafElementElementInPortInterfaceInstanceRef": {
-          "type": "any (ApplicationComposite)",
+        "leafElementElement": {
+          "type": "ApplicationCompositeElementInPortInterfaceInstanceRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "data type. by: ApplicationComposite"
+          "kind": "iref",
+          "is_ref": true,
+          "note": "This represents that leaf element of an application composite data type."
         },
         "networkRepresentation": {
-          "type": "any (SwDataDefPropsRepresentation)",
+          "type": "SwDataDefProps",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "The SwDataDefProps owned by the CompositeNetwork the leaf element of an Application"
         }
@@ -717,7 +717,7 @@
     },
     {
       "name": "ClientComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -761,7 +761,7 @@
         "transformationComSpecProp": {
           "type": "TransformationComSpecProps",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This references the TransformationComSpecProps which define port-specific configuration for data transformation."
         }
@@ -810,10 +810,10 @@
           "is_ref": false,
           "note": "Length of call queue on the server side. The queue is the RTE. The value shall be greater or 1. Setting the value of queueLength to 1 implies requests are rejected while another request earlier is being processed."
         },
-        "transformationCom": {
-          "type": "any (TransformationCom)",
+        "transformationComSpecProps": {
+          "type": "TransformationComSpecProps",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This references the TransformationComSpecProps which define port-specific configuration for data transformation."
         }
@@ -821,7 +821,7 @@
     },
     {
       "name": "ModeSwitchSenderComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -856,7 +856,7 @@
           "note": "This controls the creation of the enhanced mode API that"
         },
         "modeGroup": {
-          "type": "ModeDeclarationGroup",
+          "type": "ModeDeclarationGroupPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
@@ -880,7 +880,7 @@
     },
     {
       "name": "ModeSwitchedAckRequest",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -916,7 +916,7 @@
     },
     {
       "name": "ModeSwitchReceiverComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -951,13 +951,13 @@
           "note": "This controls the creation of the enhanced mode API that"
         },
         "modeGroup": {
-          "type": "ModeDeclarationGroup",
+          "type": "ModeDeclarationGroupPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
           "note": "ModeDeclarationGroupPrototype (of the same Port to which these communication attributes apply."
         },
-        "supports": {
+        "supportsAsynchronousModeSwitch": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -968,7 +968,7 @@
     },
     {
       "name": "ParameterProvideComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -1014,7 +1014,7 @@
     },
     {
       "name": "ParameterRequireComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -1044,7 +1044,7 @@
         "initValue": {
           "type": "ValueSpecification",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "decorator": "polymorphic:INIT-VALUE=ValueSpecification",
           "note": "The initial value applicable for the corresponding"
@@ -1060,7 +1060,7 @@
     },
     {
       "name": "NvRequireComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -1106,7 +1106,7 @@
     },
     {
       "name": "NvProvideComSpec",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,
@@ -1158,7 +1158,7 @@
     },
     {
       "name": "TransformationComSpecProps",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": true,
       "atp_type": null,
@@ -1200,7 +1200,7 @@
     },
     {
       "name": "UserDefinedTransformationComSpecProps",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Communication",
       "is_abstract": false,
       "atp_type": null,

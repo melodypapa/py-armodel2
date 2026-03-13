@@ -19,7 +19,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
@@ -27,7 +27,6 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
-from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes.delegated_port_annotation import (
     DelegatedPortAnnotation,
 )
@@ -51,6 +50,9 @@ if TYPE_CHECKING:
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes.parameter_port_annotation import (
         ParameterPortAnnotation,
     )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes.sender_receiver_annotation import (
+        SenderReceiverAnnotation,
+    )
 
 
 
@@ -71,37 +73,37 @@ class PortPrototype(Identifiable, ABC):
         """
         return True
 
-    client_servers: list[ClientServerAnnotation]
-    delegated_port: Optional[DelegatedPortAnnotation]
+    client_server_annotations: list[ClientServerAnnotation]
+    delegated_port_annotation: Optional[DelegatedPortAnnotation]
     io_hw_abstraction_server_annotations: list[IoHwAbstractionServerAnnotation]
     mode_port_annotations: list[ModePortAnnotation]
     nv_data_port_annotations: list[NvDataPortAnnotation]
-    parameter_ports: list[ParameterPortAnnotation]
-    sender_receivers: list[Any]
-    trigger_port_annotation_refs: list[ARRef]
+    parameter_port_annotations: list[ParameterPortAnnotation]
+    sender_receiver_annotations: list[SenderReceiverAnnotation]
+    trigger_port_annotations: list[TriggerPortAnnotation]
     _DESERIALIZE_DISPATCH = {
-        "CLIENT-SERVERS": lambda obj, elem: obj.client_servers.append(SerializationHelper.deserialize_by_tag(elem, "ClientServerAnnotation")),
-        "DELEGATED-PORT": lambda obj, elem: setattr(obj, "delegated_port", SerializationHelper.deserialize_by_tag(elem, "DelegatedPortAnnotation")),
+        "CLIENT-SERVER-ANNOTATIONS": lambda obj, elem: obj.client_server_annotations.append(SerializationHelper.deserialize_by_tag(elem, "ClientServerAnnotation")),
+        "DELEGATED-PORT-ANNOTATION": lambda obj, elem: setattr(obj, "delegated_port_annotation", SerializationHelper.deserialize_by_tag(elem, "DelegatedPortAnnotation")),
         "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS": lambda obj, elem: obj.io_hw_abstraction_server_annotations.append(SerializationHelper.deserialize_by_tag(elem, "IoHwAbstractionServerAnnotation")),
         "MODE-PORT-ANNOTATIONS": lambda obj, elem: obj.mode_port_annotations.append(SerializationHelper.deserialize_by_tag(elem, "ModePortAnnotation")),
         "NV-DATA-PORT-ANNOTATIONS": lambda obj, elem: obj.nv_data_port_annotations.append(SerializationHelper.deserialize_by_tag(elem, "NvDataPortAnnotation")),
-        "PARAMETER-PORTS": lambda obj, elem: obj.parameter_ports.append(SerializationHelper.deserialize_by_tag(elem, "ParameterPortAnnotation")),
-        "SENDER-RECEIVERS": lambda obj, elem: obj.sender_receivers.append(SerializationHelper.deserialize_by_tag(elem, "any (SenderReceiver)")),
-        "TRIGGER-PORT-ANNOTATION-REFS": lambda obj, elem: [obj.trigger_port_annotation_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "PARAMETER-PORT-ANNOTATIONS": lambda obj, elem: obj.parameter_port_annotations.append(SerializationHelper.deserialize_by_tag(elem, "ParameterPortAnnotation")),
+        "SENDER-RECEIVER-ANNOTATIONS": ("_POLYMORPHIC_LIST", "sender_receiver_annotations", ["ReceiverAnnotation", "SenderAnnotation"]),
+        "TRIGGER-PORT-ANNOTATIONS": lambda obj, elem: obj.trigger_port_annotations.append(SerializationHelper.deserialize_by_tag(elem, "TriggerPortAnnotation")),
     }
 
 
     def __init__(self) -> None:
         """Initialize PortPrototype."""
         super().__init__()
-        self.client_servers: list[ClientServerAnnotation] = []
-        self.delegated_port: Optional[DelegatedPortAnnotation] = None
+        self.client_server_annotations: list[ClientServerAnnotation] = []
+        self.delegated_port_annotation: Optional[DelegatedPortAnnotation] = None
         self.io_hw_abstraction_server_annotations: list[IoHwAbstractionServerAnnotation] = []
         self.mode_port_annotations: list[ModePortAnnotation] = []
         self.nv_data_port_annotations: list[NvDataPortAnnotation] = []
-        self.parameter_ports: list[ParameterPortAnnotation] = []
-        self.sender_receivers: list[Any] = []
-        self.trigger_port_annotation_refs: list[ARRef] = []
+        self.parameter_port_annotations: list[ParameterPortAnnotation] = []
+        self.sender_receiver_annotations: list[SenderReceiverAnnotation] = []
+        self.trigger_port_annotations: list[TriggerPortAnnotation] = []
 
     def serialize(self) -> ET.Element:
         """Serialize PortPrototype to XML element.
@@ -126,22 +128,22 @@ class PortPrototype(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize client_servers (list to container "CLIENT-SERVERS")
-        if self.client_servers:
-            wrapper = ET.Element("CLIENT-SERVERS")
-            for item in self.client_servers:
+        # Serialize client_server_annotations (list to container "CLIENT-SERVER-ANNOTATIONS")
+        if self.client_server_annotations:
+            wrapper = ET.Element("CLIENT-SERVER-ANNOTATIONS")
+            for item in self.client_server_annotations:
                 serialized = SerializationHelper.serialize_item(item, "ClientServerAnnotation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize delegated_port
-        if self.delegated_port is not None:
-            serialized = SerializationHelper.serialize_item(self.delegated_port, "DelegatedPortAnnotation")
+        # Serialize delegated_port_annotation
+        if self.delegated_port_annotation is not None:
+            serialized = SerializationHelper.serialize_item(self.delegated_port_annotation, "DelegatedPortAnnotation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DELEGATED-PORT")
+                wrapped = ET.Element("DELEGATED-PORT-ANNOTATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -180,40 +182,33 @@ class PortPrototype(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize parameter_ports (list to container "PARAMETER-PORTS")
-        if self.parameter_ports:
-            wrapper = ET.Element("PARAMETER-PORTS")
-            for item in self.parameter_ports:
+        # Serialize parameter_port_annotations (list to container "PARAMETER-PORT-ANNOTATIONS")
+        if self.parameter_port_annotations:
+            wrapper = ET.Element("PARAMETER-PORT-ANNOTATIONS")
+            for item in self.parameter_port_annotations:
                 serialized = SerializationHelper.serialize_item(item, "ParameterPortAnnotation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sender_receivers (list to container "SENDER-RECEIVERS")
-        if self.sender_receivers:
-            wrapper = ET.Element("SENDER-RECEIVERS")
-            for item in self.sender_receivers:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize sender_receiver_annotations (list to container "SENDER-RECEIVER-ANNOTATIONS")
+        if self.sender_receiver_annotations:
+            wrapper = ET.Element("SENDER-RECEIVER-ANNOTATIONS")
+            for item in self.sender_receiver_annotations:
+                serialized = SerializationHelper.serialize_item(item, "SenderReceiverAnnotation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize trigger_port_annotation_refs (list to container "TRIGGER-PORT-ANNOTATION-REFS")
-        if self.trigger_port_annotation_refs:
-            wrapper = ET.Element("TRIGGER-PORT-ANNOTATION-REFS")
-            for item in self.trigger_port_annotation_refs:
+        # Serialize trigger_port_annotations (list to container "TRIGGER-PORT-ANNOTATIONS")
+        if self.trigger_port_annotations:
+            wrapper = ET.Element("TRIGGER-PORT-ANNOTATIONS")
+            for item in self.trigger_port_annotations:
                 serialized = SerializationHelper.serialize_item(item, "TriggerPortAnnotation")
                 if serialized is not None:
-                    child_elem = ET.Element("TRIGGER-PORT-ANNOTATION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -236,12 +231,12 @@ class PortPrototype(Identifiable, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CLIENT-SERVERS":
+            if tag == "CLIENT-SERVER-ANNOTATIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.client_servers.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientServerAnnotation"))
-            elif tag == "DELEGATED-PORT":
-                setattr(obj, "delegated_port", SerializationHelper.deserialize_by_tag(child, "DelegatedPortAnnotation"))
+                    obj.client_server_annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientServerAnnotation"))
+            elif tag == "DELEGATED-PORT-ANNOTATION":
+                setattr(obj, "delegated_port_annotation", SerializationHelper.deserialize_by_tag(child, "DelegatedPortAnnotation"))
             elif tag == "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -254,18 +249,22 @@ class PortPrototype(Identifiable, ABC):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.nv_data_port_annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "NvDataPortAnnotation"))
-            elif tag == "PARAMETER-PORTS":
+            elif tag == "PARAMETER-PORT-ANNOTATIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.parameter_ports.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterPortAnnotation"))
-            elif tag == "SENDER-RECEIVERS":
+                    obj.parameter_port_annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterPortAnnotation"))
+            elif tag == "SENDER-RECEIVER-ANNOTATIONS":
+                # Iterate through all child elements and deserialize each based on its concrete type
+                for item_elem in child:
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "RECEIVER-ANNOTATION":
+                        obj.sender_receiver_annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "ReceiverAnnotation"))
+                    elif concrete_tag == "SENDER-ANNOTATION":
+                        obj.sender_receiver_annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderAnnotation"))
+            elif tag == "TRIGGER-PORT-ANNOTATIONS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.sender_receivers.append(SerializationHelper.deserialize_by_tag(item_elem, "any (SenderReceiver)"))
-            elif tag == "TRIGGER-PORT-ANNOTATION-REFS":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj.trigger_port_annotation_refs.append(ARRef.deserialize(item_elem))
+                    obj.trigger_port_annotations.append(SerializationHelper.deserialize_by_tag(item_elem, "TriggerPortAnnotation"))
 
         return obj
 
@@ -280,8 +279,8 @@ class PortPrototypeBuilder(IdentifiableBuilder):
         self._obj: PortPrototype = PortPrototype()
 
 
-    def with_client_servers(self, items: list[ClientServerAnnotation]) -> "PortPrototypeBuilder":
-        """Set client_servers list attribute.
+    def with_client_server_annotations(self, items: list[ClientServerAnnotation]) -> "PortPrototypeBuilder":
+        """Set client_server_annotations list attribute.
 
         Args:
             items: List of items to set
@@ -289,11 +288,11 @@ class PortPrototypeBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.client_servers = list(items) if items else []
+        self._obj.client_server_annotations = list(items) if items else []
         return self
 
-    def with_delegated_port(self, value: Optional[DelegatedPortAnnotation]) -> "PortPrototypeBuilder":
-        """Set delegated_port attribute.
+    def with_delegated_port_annotation(self, value: Optional[DelegatedPortAnnotation]) -> "PortPrototypeBuilder":
+        """Set delegated_port_annotation attribute.
 
         Args:
             value: Value to set
@@ -302,8 +301,8 @@ class PortPrototypeBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'delegated_port' is required and cannot be None")
-        self._obj.delegated_port = value
+            raise ValueError("Attribute 'delegated_port_annotation' is required and cannot be None")
+        self._obj.delegated_port_annotation = value
         return self
 
     def with_io_hw_abstraction_server_annotations(self, items: list[IoHwAbstractionServerAnnotation]) -> "PortPrototypeBuilder":
@@ -342,8 +341,8 @@ class PortPrototypeBuilder(IdentifiableBuilder):
         self._obj.nv_data_port_annotations = list(items) if items else []
         return self
 
-    def with_parameter_ports(self, items: list[ParameterPortAnnotation]) -> "PortPrototypeBuilder":
-        """Set parameter_ports list attribute.
+    def with_parameter_port_annotations(self, items: list[ParameterPortAnnotation]) -> "PortPrototypeBuilder":
+        """Set parameter_port_annotations list attribute.
 
         Args:
             items: List of items to set
@@ -351,11 +350,11 @@ class PortPrototypeBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.parameter_ports = list(items) if items else []
+        self._obj.parameter_port_annotations = list(items) if items else []
         return self
 
-    def with_sender_receivers(self, items: list[Any]) -> "PortPrototypeBuilder":
-        """Set sender_receivers list attribute.
+    def with_sender_receiver_annotations(self, items: list[SenderReceiverAnnotation]) -> "PortPrototypeBuilder":
+        """Set sender_receiver_annotations list attribute.
 
         Args:
             items: List of items to set
@@ -363,7 +362,7 @@ class PortPrototypeBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.sender_receivers = list(items) if items else []
+        self._obj.sender_receiver_annotations = list(items) if items else []
         return self
 
     def with_trigger_port_annotations(self, items: list[TriggerPortAnnotation]) -> "PortPrototypeBuilder":
@@ -379,8 +378,8 @@ class PortPrototypeBuilder(IdentifiableBuilder):
         return self
 
 
-    def add_client_server(self, item: ClientServerAnnotation) -> "PortPrototypeBuilder":
-        """Add a single item to client_servers list.
+    def add_client_server_annotation(self, item: ClientServerAnnotation) -> "PortPrototypeBuilder":
+        """Add a single item to client_server_annotations list.
 
         Args:
             item: Item to add
@@ -388,16 +387,16 @@ class PortPrototypeBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.client_servers.append(item)
+        self._obj.client_server_annotations.append(item)
         return self
 
-    def clear_client_servers(self) -> "PortPrototypeBuilder":
-        """Clear all items from client_servers list.
+    def clear_client_server_annotations(self) -> "PortPrototypeBuilder":
+        """Clear all items from client_server_annotations list.
 
         Returns:
             self for method chaining
         """
-        self._obj.client_servers = []
+        self._obj.client_server_annotations = []
         return self
 
     def add_io_hw_abstraction_server_annotation(self, item: IoHwAbstractionServerAnnotation) -> "PortPrototypeBuilder":
@@ -463,8 +462,8 @@ class PortPrototypeBuilder(IdentifiableBuilder):
         self._obj.nv_data_port_annotations = []
         return self
 
-    def add_parameter_port(self, item: ParameterPortAnnotation) -> "PortPrototypeBuilder":
-        """Add a single item to parameter_ports list.
+    def add_parameter_port_annotation(self, item: ParameterPortAnnotation) -> "PortPrototypeBuilder":
+        """Add a single item to parameter_port_annotations list.
 
         Args:
             item: Item to add
@@ -472,20 +471,20 @@ class PortPrototypeBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.parameter_ports.append(item)
+        self._obj.parameter_port_annotations.append(item)
         return self
 
-    def clear_parameter_ports(self) -> "PortPrototypeBuilder":
-        """Clear all items from parameter_ports list.
+    def clear_parameter_port_annotations(self) -> "PortPrototypeBuilder":
+        """Clear all items from parameter_port_annotations list.
 
         Returns:
             self for method chaining
         """
-        self._obj.parameter_ports = []
+        self._obj.parameter_port_annotations = []
         return self
 
-    def add_sender_receiver(self, item: Any) -> "PortPrototypeBuilder":
-        """Add a single item to sender_receivers list.
+    def add_sender_receiver_annotation(self, item: SenderReceiverAnnotation) -> "PortPrototypeBuilder":
+        """Add a single item to sender_receiver_annotations list.
 
         Args:
             item: Item to add
@@ -493,16 +492,16 @@ class PortPrototypeBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.sender_receivers.append(item)
+        self._obj.sender_receiver_annotations.append(item)
         return self
 
-    def clear_sender_receivers(self) -> "PortPrototypeBuilder":
-        """Clear all items from sender_receivers list.
+    def clear_sender_receiver_annotations(self) -> "PortPrototypeBuilder":
+        """Clear all items from sender_receiver_annotations list.
 
         Returns:
             self for method chaining
         """
-        self._obj.sender_receivers = []
+        self._obj.sender_receiver_annotations = []
         return self
 
     def add_trigger_port_annotation(self, item: TriggerPortAnnotation) -> "PortPrototypeBuilder":
@@ -529,13 +528,13 @@ class PortPrototypeBuilder(IdentifiableBuilder):
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "clientServer",
-        "delegatedPort",
+        "clientServerAnnotation",
+        "delegatedPortAnnotation",
         "ioHwAbstractionServerAnnotation",
         "modePortAnnotation",
         "nvDataPortAnnotation",
-        "parameterPort",
-        "senderReceiver",
+        "parameterPortAnnotation",
+        "senderReceiverAnnotation",
         "triggerPortAnnotation",
     }
 

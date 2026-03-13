@@ -19,8 +19,8 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
     Boolean,
     PositiveInteger,
 )
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
-    ModeDeclarationGroup,
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group_prototype import (
+    ModeDeclarationGroupPrototype,
 )
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.mode_switched_ack_request import (
     ModeSwitchedAckRequest,
@@ -103,7 +103,7 @@ class ModeSwitchSenderComSpec(PPortComSpec):
 
         # Serialize mode_group_ref
         if self.mode_group_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroupPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-GROUP-REF")
@@ -198,7 +198,7 @@ class ModeSwitchSenderComSpecBuilder(PPortComSpecBuilder):
         self._obj.enhanced_mode_api = value
         return self
 
-    def with_mode_group(self, value: Optional[ModeDeclarationGroup]) -> "ModeSwitchSenderComSpecBuilder":
+    def with_mode_group(self, value: Optional[ModeDeclarationGroupPrototype]) -> "ModeSwitchSenderComSpecBuilder":
         """Set mode_group attribute.
 
         Args:

@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "ArgumentDataPrototype",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,
@@ -74,7 +74,7 @@
           "is_ref": false,
           "note": "This attribute specifies the direction of the argument"
         },
-        "serverArgumentImpl": {
+        "serverArgumentImplPolicy": {
           "type": "ServerArgumentImplPolicyEnum",
           "multiplicity": "0..1",
           "kind": "attribute",

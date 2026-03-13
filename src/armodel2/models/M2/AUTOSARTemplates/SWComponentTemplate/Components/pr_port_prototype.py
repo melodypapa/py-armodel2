@@ -17,6 +17,7 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import AbstractRequiredPortPrototypeBuilder
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
     PortInterface,
 )
@@ -39,16 +40,16 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
     _XML_TAG = "P-R-PORT-PROTOTYPE"
 
 
-    provided: Optional[PortInterface]
+    provided_required_interface_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "PROVIDED": ("_POLYMORPHIC", "provided", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "NvDataInterface", "ParameterInterface", "SenderReceiverInterface", "TriggerInterface"]),
+        "PROVIDED-REQUIRED-INTERFACE-TREF": ("_POLYMORPHIC", "provided_required_interface_ref", ["ClientServerInterface", "DataInterface", "ModeSwitchInterface", "NvDataInterface", "ParameterInterface", "SenderReceiverInterface", "TriggerInterface"]),
     }
 
 
     def __init__(self) -> None:
         """Initialize PRPortPrototype."""
         super().__init__()
-        self.provided: Optional[PortInterface] = None
+        self.provided_required_interface_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize PRPortPrototype to XML element.
@@ -73,12 +74,12 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize provided
-        if self.provided is not None:
-            serialized = SerializationHelper.serialize_item(self.provided, "PortInterface")
+        # Serialize provided_required_interface_ref
+        if self.provided_required_interface_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.provided_required_interface_ref, "PortInterface")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PROVIDED")
+                wrapped = ET.Element("PROVIDED-REQUIRED-INTERFACE-TREF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -106,24 +107,8 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "PROVIDED":
-                # Check first child element for concrete type
-                if len(child) > 0:
-                    concrete_tag = child[0].tag.split(ns_split, 1)[1] if child[0].tag.startswith("{") else child[0].tag
-                    if concrete_tag == "CLIENT-SERVER-INTERFACE":
-                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "ClientServerInterface"))
-                    elif concrete_tag == "DATA-INTERFACE":
-                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "DataInterface"))
-                    elif concrete_tag == "MODE-SWITCH-INTERFACE":
-                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "ModeSwitchInterface"))
-                    elif concrete_tag == "NV-DATA-INTERFACE":
-                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "NvDataInterface"))
-                    elif concrete_tag == "PARAMETER-INTERFACE":
-                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "ParameterInterface"))
-                    elif concrete_tag == "SENDER-RECEIVER-INTERFACE":
-                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "SenderReceiverInterface"))
-                    elif concrete_tag == "TRIGGER-INTERFACE":
-                        setattr(obj, "provided", SerializationHelper.deserialize_by_tag(child[0], "TriggerInterface"))
+            if tag == "PROVIDED-REQUIRED-INTERFACE-TREF":
+                setattr(obj, "provided_required_interface_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -138,8 +123,8 @@ class PRPortPrototypeBuilder(AbstractRequiredPortPrototypeBuilder):
         self._obj: PRPortPrototype = PRPortPrototype()
 
 
-    def with_provided(self, value: Optional[PortInterface]) -> "PRPortPrototypeBuilder":
-        """Set provided attribute.
+    def with_provided_required_interface(self, value: Optional[PortInterface]) -> "PRPortPrototypeBuilder":
+        """Set provided_required_interface attribute.
 
         Args:
             value: Value to set
@@ -148,15 +133,15 @@ class PRPortPrototypeBuilder(AbstractRequiredPortPrototypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'provided' is required and cannot be None")
-        self._obj.provided = value
+            raise ValueError("Attribute 'provided_required_interface' is required and cannot be None")
+        self._obj.provided_required_interface = value
         return self
 
 
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "provided",
+        "providedRequiredInterface",
     }
 
 

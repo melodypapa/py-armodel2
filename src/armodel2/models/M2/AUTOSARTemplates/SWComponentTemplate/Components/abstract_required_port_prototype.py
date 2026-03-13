@@ -10,6 +10,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Componen
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import polymorphic
 
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
@@ -36,16 +37,27 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
         """
         return True
 
-    required_com_specs: list[RPortComSpec]
+    _required_com_specs: list[RPortComSpec]
     _DESERIALIZE_DISPATCH = {
-        "REQUIRED-COM-SPECS": ("_POLYMORPHIC_LIST", "required_com_specs", ["ClientComSpec", "ModeSwitchReceiverComSpec", "NonqueuedReceiverComSpec", "NvRequireComSpec", "ParameterRequireComSpec", "QueuedReceiverComSpec"]),
+        "REQUIRED-COM-SPECS": ("_POLYMORPHIC_LIST", "_required_com_specs", ["ClientComSpec", "ModeSwitchReceiverComSpec", "NonqueuedReceiverComSpec", "NvRequireComSpec", "ParameterRequireComSpec", "QueuedReceiverComSpec"]),
     }
 
 
     def __init__(self) -> None:
         """Initialize AbstractRequiredPortPrototype."""
         super().__init__()
-        self.required_com_specs: list[RPortComSpec] = []
+        self._required_com_specs: list[RPortComSpec] = []
+    @property
+    @polymorphic({"REQUIRED-COM-SPECS": "RPortComSpec"})
+    def required_com_specs(self) -> list[RPortComSpec]:
+        """Get required_com_specs with polymorphic wrapper handling."""
+        return self._required_com_specs
+
+    @required_com_specs.setter
+    def required_com_specs(self, value: list[RPortComSpec]) -> None:
+        """Set required_com_specs with polymorphic wrapper handling."""
+        self._required_com_specs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize AbstractRequiredPortPrototype to XML element.
@@ -70,15 +82,14 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize required_com_specs (list to container "REQUIRED-COM-SPECS")
+        # Serialize required_com_specs (list with polymorphic wrapper "REQUIRED-COM-SPECS")
         if self.required_com_specs:
-            wrapper = ET.Element("REQUIRED-COM-SPECS")
+            container = ET.Element("REQUIRED-COM-SPECS")
             for item in self.required_com_specs:
                 serialized = SerializationHelper.serialize_item(item, "RPortComSpec")
                 if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+                    container.append(serialized)
+            elem.append(container)
 
         return elem
 
@@ -104,17 +115,17 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "CLIENT-COM-SPEC":
-                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientComSpec"))
+                        obj._required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ClientComSpec"))
                     elif concrete_tag == "MODE-SWITCH-RECEIVER-COM-SPEC":
-                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchReceiverComSpec"))
+                        obj._required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchReceiverComSpec"))
                     elif concrete_tag == "NONQUEUED-RECEIVER-COM-SPEC":
-                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NonqueuedReceiverComSpec"))
+                        obj._required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NonqueuedReceiverComSpec"))
                     elif concrete_tag == "NV-REQUIRE-COM-SPEC":
-                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvRequireComSpec"))
+                        obj._required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvRequireComSpec"))
                     elif concrete_tag == "PARAMETER-REQUIRE-COM-SPEC":
-                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterRequireComSpec"))
+                        obj._required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterRequireComSpec"))
                     elif concrete_tag == "QUEUED-RECEIVER-COM-SPEC":
-                        obj.required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "QueuedReceiverComSpec"))
+                        obj._required_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "QueuedReceiverComSpec"))
 
         return obj
 

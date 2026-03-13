@@ -40,16 +40,16 @@ class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):
     _XML_TAG = "COMPLEX-DEVICE-DRIVER-SW-COMPONENT-TYPE"
 
 
-    hardware_refs: list[ARRef]
+    hardware_element_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "HARDWARE-REFS": ("_POLYMORPHIC_LIST", "hardware_refs", ["HwElement", "HwPin", "HwPinGroup", "HwType"]),
+        "HARDWARE-ELEMENT-REFS": ("_POLYMORPHIC_LIST", "hardware_element_refs", ["HwElement", "HwPin", "HwPinGroup", "HwType"]),
     }
 
 
     def __init__(self) -> None:
         """Initialize ComplexDeviceDriverSwComponentType."""
         super().__init__()
-        self.hardware_refs: list[ARRef] = []
+        self.hardware_element_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ComplexDeviceDriverSwComponentType to XML element.
@@ -74,13 +74,13 @@ class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize hardware_refs (list to container "HARDWARE-REFS")
-        if self.hardware_refs:
-            wrapper = ET.Element("HARDWARE-REFS")
-            for item in self.hardware_refs:
+        # Serialize hardware_element_refs (list to container "HARDWARE-ELEMENT-REFS")
+        if self.hardware_element_refs:
+            wrapper = ET.Element("HARDWARE-ELEMENT-REFS")
+            for item in self.hardware_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "HwDescriptionEntity")
                 if serialized is not None:
-                    child_elem = ET.Element("HARDWARE-REF")
+                    child_elem = ET.Element("HARDWARE-ELEMENT-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -110,9 +110,9 @@ class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "HARDWARE-REFS":
+            if tag == "HARDWARE-ELEMENT-REFS":
                 for item_elem in child:
-                    obj.hardware_refs.append(ARRef.deserialize(item_elem))
+                    obj.hardware_element_refs.append(ARRef.deserialize(item_elem))
 
         return obj
 
@@ -127,8 +127,8 @@ class ComplexDeviceDriverSwComponentTypeBuilder(AtomicSwComponentTypeBuilder):
         self._obj: ComplexDeviceDriverSwComponentType = ComplexDeviceDriverSwComponentType()
 
 
-    def with_hardwares(self, items: list[HwDescriptionEntity]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
-        """Set hardwares list attribute.
+    def with_hardware_elements(self, items: list[HwDescriptionEntity]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set hardware_elements list attribute.
 
         Args:
             items: List of items to set
@@ -136,12 +136,12 @@ class ComplexDeviceDriverSwComponentTypeBuilder(AtomicSwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.hardwares = list(items) if items else []
+        self._obj.hardware_elements = list(items) if items else []
         return self
 
 
-    def add_hardware(self, item: HwDescriptionEntity) -> "ComplexDeviceDriverSwComponentTypeBuilder":
-        """Add a single item to hardwares list.
+    def add_hardware_element(self, item: HwDescriptionEntity) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Add a single item to hardware_elements list.
 
         Args:
             item: Item to add
@@ -149,22 +149,22 @@ class ComplexDeviceDriverSwComponentTypeBuilder(AtomicSwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.hardwares.append(item)
+        self._obj.hardware_elements.append(item)
         return self
 
-    def clear_hardwares(self) -> "ComplexDeviceDriverSwComponentTypeBuilder":
-        """Clear all items from hardwares list.
+    def clear_hardware_elements(self) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Clear all items from hardware_elements list.
 
         Returns:
             self for method chaining
         """
-        self._obj.hardwares = []
+        self._obj.hardware_elements = []
         return self
 
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "hardware",
+        "hardwareElement",
     }
 
 

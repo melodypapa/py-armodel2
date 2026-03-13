@@ -18,6 +18,9 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.inner_port_group_in_composition_instance_ref import (
+        InnerPortGroupInCompositionInstanceRef,
+    )
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
         PortPrototype,
     )
@@ -41,10 +44,10 @@ class PortGroup(Identifiable):
     _XML_TAG = "PORT-GROUP"
 
 
-    inner_group_refs: list[ARRef]
+    inner_group_irefs: list[InnerPortGroupInCompositionInstanceRef]
     outer_port_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "INNER-GROUP-REFS": lambda obj, elem: [obj.inner_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "INNER-GROUPS-IREF": lambda obj, elem: obj.inner_group_irefs.append(SerializationHelper.deserialize_by_tag(elem, "InnerPortGroupInCompositionInstanceRef")),
         "OUTER-PORT-REFS": ("_POLYMORPHIC_LIST", "outer_port_refs", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
     }
 
@@ -52,7 +55,7 @@ class PortGroup(Identifiable):
     def __init__(self) -> None:
         """Initialize PortGroup."""
         super().__init__()
-        self.inner_group_refs: list[ARRef] = []
+        self.inner_group_irefs: list[InnerPortGroupInCompositionInstanceRef] = []
         self.outer_port_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
@@ -78,22 +81,16 @@ class PortGroup(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize inner_group_refs (list to container "INNER-GROUP-REFS")
-        if self.inner_group_refs:
-            wrapper = ET.Element("INNER-GROUP-REFS")
-            for item in self.inner_group_refs:
-                serialized = SerializationHelper.serialize_item(item, "PortGroup")
-                if serialized is not None:
-                    child_elem = ET.Element("INNER-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+        # Serialize inner_group_irefs (list of instance references with wrapper "INNER-GROUPS-IREF")
+        if self.inner_group_irefs:
+            serialized = SerializationHelper.serialize_item(self.inner_group_irefs, "InnerPortGroupInCompositionInstanceRef")
+            if serialized is not None:
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("INNER-GROUPS-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
+                for child in serialized:
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         # Serialize outer_port_refs (list to container "OUTER-PORT-REFS")
         if self.outer_port_refs:
@@ -131,10 +128,10 @@ class PortGroup(Identifiable):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "INNER-GROUP-REFS":
+            if tag == "INNER-GROUP-IREFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.inner_group_refs.append(ARRef.deserialize(item_elem))
+                    obj.inner_group_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "InnerPortGroupInCompositionInstanceRef"))
             elif tag == "OUTER-PORT-REFS":
                 for item_elem in child:
                     obj.outer_port_refs.append(ARRef.deserialize(item_elem))
@@ -152,7 +149,7 @@ class PortGroupBuilder(IdentifiableBuilder):
         self._obj: PortGroup = PortGroup()
 
 
-    def with_inner_groups(self, items: list[PortGroup]) -> "PortGroupBuilder":
+    def with_inner_groups(self, items: list[InnerPortGroupInCompositionInstanceRef]) -> "PortGroupBuilder":
         """Set inner_groups list attribute.
 
         Args:
@@ -177,7 +174,7 @@ class PortGroupBuilder(IdentifiableBuilder):
         return self
 
 
-    def add_inner_group(self, item: PortGroup) -> "PortGroupBuilder":
+    def add_inner_group(self, item: InnerPortGroupInCompositionInstanceRef) -> "PortGroupBuilder":
         """Add a single item to inner_groups list.
 
         Args:

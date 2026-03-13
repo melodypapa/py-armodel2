@@ -32,10 +32,10 @@ class ReceptionComSpecProps(ARObject):
     _XML_TAG = "RECEPTION-COM-SPEC-PROPS"
 
 
-    data_update: Optional[TimeValue]
+    data_update_period: Optional[TimeValue]
     timeout: Optional[TimeValue]
     _DESERIALIZE_DISPATCH = {
-        "DATA-UPDATE": lambda obj, elem: setattr(obj, "data_update", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "DATA-UPDATE-PERIOD": lambda obj, elem: setattr(obj, "data_update_period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
         "TIMEOUT": lambda obj, elem: setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
     }
 
@@ -43,7 +43,7 @@ class ReceptionComSpecProps(ARObject):
     def __init__(self) -> None:
         """Initialize ReceptionComSpecProps."""
         super().__init__()
-        self.data_update: Optional[TimeValue] = None
+        self.data_update_period: Optional[TimeValue] = None
         self.timeout: Optional[TimeValue] = None
 
     def serialize(self) -> ET.Element:
@@ -69,12 +69,12 @@ class ReceptionComSpecProps(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_update
-        if self.data_update is not None:
-            serialized = SerializationHelper.serialize_item(self.data_update, "TimeValue")
+        # Serialize data_update_period
+        if self.data_update_period is not None:
+            serialized = SerializationHelper.serialize_item(self.data_update_period, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-UPDATE")
+                wrapped = ET.Element("DATA-UPDATE-PERIOD")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -116,8 +116,8 @@ class ReceptionComSpecProps(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DATA-UPDATE":
-                setattr(obj, "data_update", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            if tag == "DATA-UPDATE-PERIOD":
+                setattr(obj, "data_update_period", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
             elif tag == "TIMEOUT":
                 setattr(obj, "timeout", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
 
@@ -134,8 +134,8 @@ class ReceptionComSpecPropsBuilder(BuilderBase):
         self._obj: ReceptionComSpecProps = ReceptionComSpecProps()
 
 
-    def with_data_update(self, value: Optional[TimeValue]) -> "ReceptionComSpecPropsBuilder":
-        """Set data_update attribute.
+    def with_data_update_period(self, value: Optional[TimeValue]) -> "ReceptionComSpecPropsBuilder":
+        """Set data_update_period attribute.
 
         Args:
             value: Value to set
@@ -144,8 +144,8 @@ class ReceptionComSpecPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'data_update' is required and cannot be None")
-        self._obj.data_update = value
+            raise ValueError("Attribute 'data_update_period' is required and cannot be None")
+        self._obj.data_update_period = value
         return self
 
     def with_timeout(self, value: Optional[TimeValue]) -> "ReceptionComSpecPropsBuilder":
@@ -166,7 +166,7 @@ class ReceptionComSpecPropsBuilder(BuilderBase):
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "dataUpdate",
+        "dataUpdatePeriod",
         "timeout",
     }
 

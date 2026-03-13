@@ -7,10 +7,13 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication import (
+    TransmissionModeDefinitionEnum,
+)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -33,22 +36,22 @@ class TransmissionComSpecProps(ARObject):
     _XML_TAG = "TRANSMISSION-COM-SPEC-PROPS"
 
 
-    data_update: Optional[TimeValue]
-    minimum_send: Optional[TimeValue]
-    transmission: Optional[Any]
+    data_update_period: Optional[TimeValue]
+    minimum_send_interval: Optional[TimeValue]
+    transmission_mode: Optional[TransmissionModeDefinitionEnum]
     _DESERIALIZE_DISPATCH = {
-        "DATA-UPDATE": lambda obj, elem: setattr(obj, "data_update", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
-        "MINIMUM-SEND": lambda obj, elem: setattr(obj, "minimum_send", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
-        "TRANSMISSION": lambda obj, elem: setattr(obj, "transmission", SerializationHelper.deserialize_by_tag(elem, "any (TransmissionMode)")),
+        "DATA-UPDATE-PERIOD": lambda obj, elem: setattr(obj, "data_update_period", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "MINIMUM-SEND-INTERVAL": lambda obj, elem: setattr(obj, "minimum_send_interval", SerializationHelper.deserialize_by_tag(elem, "TimeValue")),
+        "TRANSMISSION-MODE": lambda obj, elem: setattr(obj, "transmission_mode", TransmissionModeDefinitionEnum.deserialize(elem)),
     }
 
 
     def __init__(self) -> None:
         """Initialize TransmissionComSpecProps."""
         super().__init__()
-        self.data_update: Optional[TimeValue] = None
-        self.minimum_send: Optional[TimeValue] = None
-        self.transmission: Optional[Any] = None
+        self.data_update_period: Optional[TimeValue] = None
+        self.minimum_send_interval: Optional[TimeValue] = None
+        self.transmission_mode: Optional[TransmissionModeDefinitionEnum] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TransmissionComSpecProps to XML element.
@@ -73,12 +76,12 @@ class TransmissionComSpecProps(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_update
-        if self.data_update is not None:
-            serialized = SerializationHelper.serialize_item(self.data_update, "TimeValue")
+        # Serialize data_update_period
+        if self.data_update_period is not None:
+            serialized = SerializationHelper.serialize_item(self.data_update_period, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-UPDATE")
+                wrapped = ET.Element("DATA-UPDATE-PERIOD")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -87,12 +90,12 @@ class TransmissionComSpecProps(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize minimum_send
-        if self.minimum_send is not None:
-            serialized = SerializationHelper.serialize_item(self.minimum_send, "TimeValue")
+        # Serialize minimum_send_interval
+        if self.minimum_send_interval is not None:
+            serialized = SerializationHelper.serialize_item(self.minimum_send_interval, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM-SEND")
+                wrapped = ET.Element("MINIMUM-SEND-INTERVAL")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -101,12 +104,12 @@ class TransmissionComSpecProps(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transmission
-        if self.transmission is not None:
-            serialized = SerializationHelper.serialize_item(self.transmission, "Any")
+        # Serialize transmission_mode
+        if self.transmission_mode is not None:
+            serialized = SerializationHelper.serialize_item(self.transmission_mode, "TransmissionModeDefinitionEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSMISSION")
+                wrapped = ET.Element("TRANSMISSION-MODE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -134,12 +137,12 @@ class TransmissionComSpecProps(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DATA-UPDATE":
-                setattr(obj, "data_update", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
-            elif tag == "MINIMUM-SEND":
-                setattr(obj, "minimum_send", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
-            elif tag == "TRANSMISSION":
-                setattr(obj, "transmission", SerializationHelper.deserialize_by_tag(child, "any (TransmissionMode)"))
+            if tag == "DATA-UPDATE-PERIOD":
+                setattr(obj, "data_update_period", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "MINIMUM-SEND-INTERVAL":
+                setattr(obj, "minimum_send_interval", SerializationHelper.deserialize_by_tag(child, "TimeValue"))
+            elif tag == "TRANSMISSION-MODE":
+                setattr(obj, "transmission_mode", TransmissionModeDefinitionEnum.deserialize(child))
 
         return obj
 
@@ -154,8 +157,8 @@ class TransmissionComSpecPropsBuilder(BuilderBase):
         self._obj: TransmissionComSpecProps = TransmissionComSpecProps()
 
 
-    def with_data_update(self, value: Optional[TimeValue]) -> "TransmissionComSpecPropsBuilder":
-        """Set data_update attribute.
+    def with_data_update_period(self, value: Optional[TimeValue]) -> "TransmissionComSpecPropsBuilder":
+        """Set data_update_period attribute.
 
         Args:
             value: Value to set
@@ -164,12 +167,12 @@ class TransmissionComSpecPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'data_update' is required and cannot be None")
-        self._obj.data_update = value
+            raise ValueError("Attribute 'data_update_period' is required and cannot be None")
+        self._obj.data_update_period = value
         return self
 
-    def with_minimum_send(self, value: Optional[TimeValue]) -> "TransmissionComSpecPropsBuilder":
-        """Set minimum_send attribute.
+    def with_minimum_send_interval(self, value: Optional[TimeValue]) -> "TransmissionComSpecPropsBuilder":
+        """Set minimum_send_interval attribute.
 
         Args:
             value: Value to set
@@ -178,12 +181,12 @@ class TransmissionComSpecPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'minimum_send' is required and cannot be None")
-        self._obj.minimum_send = value
+            raise ValueError("Attribute 'minimum_send_interval' is required and cannot be None")
+        self._obj.minimum_send_interval = value
         return self
 
-    def with_transmission(self, value: Optional[Any]) -> "TransmissionComSpecPropsBuilder":
-        """Set transmission attribute.
+    def with_transmission_mode(self, value: Optional[TransmissionModeDefinitionEnum]) -> "TransmissionComSpecPropsBuilder":
+        """Set transmission_mode attribute.
 
         Args:
             value: Value to set
@@ -192,17 +195,17 @@ class TransmissionComSpecPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'transmission' is required and cannot be None")
-        self._obj.transmission = value
+            raise ValueError("Attribute 'transmission_mode' is required and cannot be None")
+        self._obj.transmission_mode = value
         return self
 
 
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "dataUpdate",
-        "minimumSend",
-        "transmission",
+        "dataUpdatePeriod",
+        "minimumSendInterval",
+        "transmissionMode",
     }
 
 

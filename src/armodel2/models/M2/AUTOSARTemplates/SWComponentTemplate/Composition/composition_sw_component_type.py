@@ -24,25 +24,28 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification_mapping_set import (
     ConstantSpecificationMappingSet,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.data_type_mapping_set import (
-    DataTypeMappingSet,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.instantiation_rte_event_props import (
-    InstantiationRTEEventProps,
-)
 from armodel2.models.M2.MSR.AsamHdo.Units.physical_dimension_mapping_set import (
     PhysicalDimensionMappingSet,
-)
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_component_prototype import (
-    SwComponentPrototype,
 )
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_connector import (
     SwConnector,
 )
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.data_type_mapping_set import (
+        DataTypeMappingSet,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.instantiation_rte_event_props import (
+        InstantiationRTEEventProps,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_component_prototype import (
+        SwComponentPrototype,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class CompositionSwComponentType(SwComponentType):
     """AUTOSAR CompositionSwComponentType."""
 
