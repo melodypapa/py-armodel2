@@ -55,11 +55,13 @@ class SwServiceArg(Identifiable):
     direction: Optional[ArgumentDirectionEnum]
     sw_arraysize: Optional[ValueList]
     v: Optional[Numerical]
+    vts: list[Numerical]
     sw_data_def_props: Optional[SwDataDefProps]
     _DESERIALIZE_DISPATCH = {
         "DIRECTION": lambda obj, elem: setattr(obj, "direction", ArgumentDirectionEnum.deserialize(elem)),
         "SW-ARRAYSIZE": lambda obj, elem: setattr(obj, "sw_arraysize", SerializationHelper.deserialize_by_tag(elem, "ValueList")),
         "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VTS": lambda obj, elem: obj.vts.append(SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "SW-DATA-DEF-PROPS": lambda obj, elem: setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
     }
 
@@ -70,6 +72,7 @@ class SwServiceArg(Identifiable):
         self.direction: Optional[ArgumentDirectionEnum] = None
         self.sw_arraysize: Optional[ValueList] = None
         self.v: Optional[Numerical] = None
+        self.vts: list[Numerical] = []
         self.sw_data_def_props: Optional[SwDataDefProps] = None
 
     def serialize(self) -> ET.Element:
@@ -136,6 +139,23 @@ class SwServiceArg(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
+        # Serialize vts (list to container "VTS")
+        if self.vts:
+            wrapper = ET.Element("VTS")
+            for item in self.vts:
+                serialized = SerializationHelper.serialize_item(item, "Numerical")
+                if serialized is not None:
+                    child_elem = ET.Element("VT")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
         # Serialize sw_data_def_props
         if self.sw_data_def_props is not None:
             serialized = SerializationHelper.serialize_item(self.sw_data_def_props, "SwDataDefProps")
@@ -175,6 +195,10 @@ class SwServiceArg(Identifiable):
                 setattr(obj, "sw_arraysize", SerializationHelper.deserialize_by_tag(child, "ValueList"))
             elif tag == "V":
                 setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "VTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.vts.append(SerializationHelper.deserialize_by_tag(item_elem, "Numerical"))
             elif tag == "SW-DATA-DEF-PROPS":
                 setattr(obj, "sw_data_def_props", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
@@ -233,6 +257,18 @@ class SwServiceArgBuilder(IdentifiableBuilder):
         self._obj.v = value
         return self
 
+    def with_vts(self, items: list[Numerical]) -> "SwServiceArgBuilder":
+        """Set vts list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts = list(items) if items else []
+        return self
+
     def with_sw_data_def_props(self, value: Optional[SwDataDefProps]) -> "SwServiceArgBuilder":
         """Set sw_data_def_props attribute.
 
@@ -247,6 +283,27 @@ class SwServiceArgBuilder(IdentifiableBuilder):
         self._obj.sw_data_def_props = value
         return self
 
+
+    def add_vt(self, item: Numerical) -> "SwServiceArgBuilder":
+        """Add a single item to vts list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts.append(item)
+        return self
+
+    def clear_vts(self) -> "SwServiceArgBuilder":
+        """Clear all items from vts list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts = []
+        return self
 
 
     # Pre-computed validation constants (generated from JSON schema)

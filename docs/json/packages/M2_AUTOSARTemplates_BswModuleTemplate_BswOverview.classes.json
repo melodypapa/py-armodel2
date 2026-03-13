@@ -78,7 +78,16 @@
           "is_ref": false,
           "note": "Refers to the BSW Module Identifier defined by the For non-standardized modules, a can be optionally chosen."
         },
-        "bswModulesDependency": {
+        "providedEntry": {
+          "type": "BswModuleEntry",
+          "multiplicity": "*",
+          "kind": "ref",
+          "is_ref": true,
+          "revision": "4.0.3",
+          "decorator": "ref_conditional:PROVIDED-ENTRYS",
+          "note": "Specifies an entry provided by this module which can be called by other modules. This includes \"main\" functions and interrupt routines, but not callbacks (because the signature of a callback is defined by the caller)."
+        },
+        "bswModuleDependency": {
           "type": "BswModuleDependency",
           "multiplicity": "*",
           "kind": "aggr",
@@ -105,15 +114,6 @@
           "kind": "ref",
           "is_ref": true,
           "note": "Specifies an entry provided by this module which can be by other modules. This includes \"main\" functions, and callbacks. Replacement of expectedCallback. atpVariation"
-        },
-        "providedEntry": {
-          "type": "BswModuleEntry",
-          "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
-          "revision": "4.0.3",
-          "decorator": "ref_conditional:PROVIDED-ENTRYS",
-          "note": "Specifies an entry provided by this module which can be called by other modules. This includes \"main\" functions and interrupt routines, but not callbacks (because the signature of a callback is defined by the caller)."
         },
         "providedClientServerEntry": {
           "type": "BswModuleClientServerEntry",

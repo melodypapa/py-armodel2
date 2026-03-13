@@ -16,7 +16,6 @@ from armodel2.models.M2.MSR.DataDictionary.CalibrationParameter import (
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
-    VerbatimString,
 )
 from armodel2.models.M2.MSR.DataDictionary.RecordLayout import (
     AxisIndexType,
@@ -61,11 +60,11 @@ class SwAxisCont(ARObject):
     category: Optional[CalprmAxisCategoryEnum]
     sw_arraysize_ref: Optional[ARRef]
     v: Optional[Numerical]
+    vts: list[Numerical]
     sw_axis_index: Optional[AxisIndexType]
     sw_values_phys: Optional[SwValues]
     vf: Optional[Numerical]
     vg: Optional[ValueGroup]
-    vt: Optional[VerbatimString]
     vtf: Optional[NumericalOrText]
     unit_ref: Optional[ARRef]
     unit_display: Optional[SingleLanguageUnitNames]
@@ -73,11 +72,11 @@ class SwAxisCont(ARObject):
         "CATEGORY": lambda obj, elem: setattr(obj, "category", CalprmAxisCategoryEnum.deserialize(elem)),
         "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
         "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VTS": lambda obj, elem: obj.vts.append(SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "SW-AXIS-INDEX": lambda obj, elem: setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(elem, "AxisIndexType")),
         "SW-VALUES-PHYS": lambda obj, elem: setattr(obj, "sw_values_phys", SerializationHelper.deserialize_by_tag(elem, "SwValues")),
         "VF": lambda obj, elem: setattr(obj, "vf", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "VG": lambda obj, elem: setattr(obj, "vg", SerializationHelper.deserialize_by_tag(elem, "ValueGroup")),
-        "VT": lambda obj, elem: setattr(obj, "vt", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
         "VTF": lambda obj, elem: setattr(obj, "vtf", SerializationHelper.deserialize_by_tag(elem, "NumericalOrText")),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
         "UNIT-DISPLAY": lambda obj, elem: setattr(obj, "unit_display", SerializationHelper.deserialize_by_tag(elem, "SingleLanguageUnitNames")),
@@ -90,11 +89,11 @@ class SwAxisCont(ARObject):
         self.category: Optional[CalprmAxisCategoryEnum] = None
         self.sw_arraysize_ref: Optional[ARRef] = None
         self.v: Optional[Numerical] = None
+        self.vts: list[Numerical] = []
         self.sw_axis_index: Optional[AxisIndexType] = None
         self.sw_values_phys: Optional[SwValues] = None
         self.vf: Optional[Numerical] = None
         self.vg: Optional[ValueGroup] = None
-        self.vt: Optional[VerbatimString] = None
         self.vtf: Optional[NumericalOrText] = None
         self.unit_ref: Optional[ARRef] = None
         self.unit_display: Optional[SingleLanguageUnitNames] = None
@@ -163,6 +162,23 @@ class SwAxisCont(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
+        # Serialize vts (list to container "VTS")
+        if self.vts:
+            wrapper = ET.Element("VTS")
+            for item in self.vts:
+                serialized = SerializationHelper.serialize_item(item, "Numerical")
+                if serialized is not None:
+                    child_elem = ET.Element("VT")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
         # Serialize sw_axis_index
         if self.sw_axis_index is not None:
             serialized = SerializationHelper.serialize_item(self.sw_axis_index, "AxisIndexType")
@@ -210,20 +226,6 @@ class SwAxisCont(ARObject):
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize vt
-        if self.vt is not None:
-            serialized = SerializationHelper.serialize_item(self.vt, "VerbatimString")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -299,6 +301,10 @@ class SwAxisCont(ARObject):
                 setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
             elif tag == "V":
                 setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "VTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.vts.append(SerializationHelper.deserialize_by_tag(item_elem, "Numerical"))
             elif tag == "SW-AXIS-INDEX":
                 setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(child, "AxisIndexType"))
             elif tag == "SW-VALUES-PHYS":
@@ -307,8 +313,6 @@ class SwAxisCont(ARObject):
                 setattr(obj, "vf", SerializationHelper.deserialize_by_tag(child, "Numerical"))
             elif tag == "VG":
                 setattr(obj, "vg", SerializationHelper.deserialize_by_tag(child, "ValueGroup"))
-            elif tag == "VT":
-                setattr(obj, "vt", SerializationHelper.deserialize_by_tag(child, "VerbatimString"))
             elif tag == "VTF":
                 setattr(obj, "vtf", SerializationHelper.deserialize_by_tag(child, "NumericalOrText"))
             elif tag == "UNIT-REF":
@@ -371,6 +375,18 @@ class SwAxisContBuilder(BuilderBase):
         self._obj.v = value
         return self
 
+    def with_vts(self, items: list[Numerical]) -> "SwAxisContBuilder":
+        """Set vts list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts = list(items) if items else []
+        return self
+
     def with_sw_axis_index(self, value: Optional[AxisIndexType]) -> "SwAxisContBuilder":
         """Set sw_axis_index attribute.
 
@@ -427,20 +443,6 @@ class SwAxisContBuilder(BuilderBase):
         self._obj.vg = value
         return self
 
-    def with_vt(self, value: Optional[VerbatimString]) -> "SwAxisContBuilder":
-        """Set vt attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute 'vt' is required and cannot be None")
-        self._obj.vt = value
-        return self
-
     def with_vtf(self, value: Optional[NumericalOrText]) -> "SwAxisContBuilder":
         """Set vtf attribute.
 
@@ -483,6 +485,27 @@ class SwAxisContBuilder(BuilderBase):
         self._obj.unit_display = value
         return self
 
+
+    def add_vt(self, item: Numerical) -> "SwAxisContBuilder":
+        """Add a single item to vts list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts.append(item)
+        return self
+
+    def clear_vts(self) -> "SwAxisContBuilder":
+        """Clear all items from vts list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts = []
+        return self
 
 
     # Pre-computed validation constants (generated from JSON schema)

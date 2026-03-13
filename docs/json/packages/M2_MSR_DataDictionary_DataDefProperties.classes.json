@@ -380,7 +380,7 @@
     },
     {
       "name": "SwTextProps",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": null,
@@ -423,7 +423,7 @@
         }
       ],
       "attributes": {
-        "arraySize": {
+        "arraySizeSemantics": {
           "type": "ArraySizeSemanticsEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -455,7 +455,7 @@
     },
     {
       "name": "ValueList",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": "atpMixed",
@@ -508,12 +508,19 @@
           "kind": "attribute",
           "is_ref": false,
           "note": "This is a particular numerical value without variation."
+        },
+        "vt": {
+          "type": "Numerical",
+          "multiplicity": "*",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This is a particular numerical value without variation."
         }
       }
     },
     {
       "name": "SwBitRepresentation",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": null,
@@ -556,7 +563,7 @@
     },
     {
       "name": "SwDataDependency",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": null,
@@ -581,10 +588,17 @@
         }
       ],
       "attributes": {
-        "swData": {
+        "swDataDependencyArgs": {
+          "type": "SwDataDependencyArgs",
+          "multiplicity": "0..1",
+          "kind": "aggr",
+          "is_ref": false,
+          "note": "This element describes the formula with which the between the participating objects are"
+        },
+         "swDataDependencyFormula": {
           "type": "CompuGenericMath",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This element describes the formula with which the between the participating objects are"
         }
@@ -592,7 +606,7 @@
     },
     {
       "name": "SwDataDependencyArgs",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::MSR::DataDictionary::DataDefProperties",
       "is_abstract": false,
       "atp_type": "atpMixed",
@@ -617,18 +631,18 @@
         }
       ],
       "attributes": {
-        "swCalprmRefProxy": {
+        "swCalprmRef": {
           "type": "SwCalprmRefProxy",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Specifies a calibration parameter as an input argument to"
         },
-        "swVariableRefProxy": {
+        "swVariable": {
           "type": "SwVariableRefProxy",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Specifies a variable as an input argument to the"
         }
       }

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
@@ -38,19 +39,19 @@ class McDataAccessDetails(ARObject):
     _XML_TAG = "MC-DATA-ACCESS-DETAILS"
 
 
-    rte_event_refs: list[RTEEvent]
-    variable_accesses: list[VariableAccess]
+    rte_event_irefs: list[RTEEvent]
+    variable_acces_irefs: list[VariableAccess]
     _DESERIALIZE_DISPATCH = {
-        "RTE-EVENT-REFS": ("_POLYMORPHIC_LIST", "rte_event_refs", ["AsynchronousServerCallReturnsEvent", "BackgroundEvent", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "ExternalTriggerOccurredEvent", "InitEvent", "InternalTriggerOccurredEvent", "ModeSwitchedAckEvent", "OperationInvokedEvent", "OsTaskExecutionEvent", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "TimingEvent", "TransformerHardErrorEvent"]),
-        "VARIABLE-ACCESSS": lambda obj, elem: obj.variable_accesses.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
+        "RTE-EVENTS-IREF": ("_POLYMORPHIC_LIST", "rte_event_irefs", ["AsynchronousServerCallReturnsEvent", "BackgroundEvent", "DataReceiveErrorEvent", "DataReceivedEvent", "DataSendCompletedEvent", "DataWriteCompletedEvent", "ExternalTriggerOccurredEvent", "InitEvent", "InternalTriggerOccurredEvent", "ModeSwitchedAckEvent", "OperationInvokedEvent", "OsTaskExecutionEvent", "SwcModeManagerErrorEvent", "SwcModeSwitchEvent", "TimingEvent", "TransformerHardErrorEvent"]),
+        "VARIABLE-ACCESSS-IREF": lambda obj, elem: obj.variable_acces_irefs.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
     }
 
 
     def __init__(self) -> None:
         """Initialize McDataAccessDetails."""
         super().__init__()
-        self.rte_event_refs: list[RTEEvent] = []
-        self.variable_accesses: list[VariableAccess] = []
+        self.rte_event_irefs: list[RTEEvent] = []
+        self.variable_acces_irefs: list[VariableAccess] = []
 
     def serialize(self) -> ET.Element:
         """Serialize McDataAccessDetails to XML element.
@@ -75,25 +76,27 @@ class McDataAccessDetails(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize rte_event_refs (list to container "RTE-EVENT-REFS")
-        if self.rte_event_refs:
-            wrapper = ET.Element("RTE-EVENT-REFS")
-            for item in self.rte_event_refs:
-                serialized = SerializationHelper.serialize_item(item, "RTEEvent")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+        # Serialize rte_event_irefs (list of instance references with wrapper "RTE-EVENTS-IREF")
+        if self.rte_event_irefs:
+            serialized = SerializationHelper.serialize_item(self.rte_event_irefs, "RTEEvent")
+            if serialized is not None:
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("RTE-EVENTS-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
+                for child in serialized:
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
-        # Serialize variable_accesses (list to container "VARIABLE-ACCESSS")
-        if self.variable_accesses:
-            wrapper = ET.Element("VARIABLE-ACCESSS")
-            for item in self.variable_accesses:
-                serialized = SerializationHelper.serialize_item(item, "VariableAccess")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+        # Serialize variable_acces_irefs (list of instance references with wrapper "VARIABLE-ACCESSS-IREF")
+        if self.variable_acces_irefs:
+            serialized = SerializationHelper.serialize_item(self.variable_acces_irefs, "VariableAccess")
+            if serialized is not None:
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("VARIABLE-ACCESSS-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
+                for child in serialized:
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         return elem
 
@@ -114,46 +117,46 @@ class McDataAccessDetails(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "RTE-EVENT-REFS":
+            if tag == "RTE-EVENT-IREFS":
                 # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "ASYNCHRONOUS-SERVER-CALL-RETURNS-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "AsynchronousServerCallReturnsEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "AsynchronousServerCallReturnsEvent"))
                     elif concrete_tag == "BACKGROUND-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "BackgroundEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "BackgroundEvent"))
                     elif concrete_tag == "DATA-RECEIVE-ERROR-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataReceiveErrorEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataReceiveErrorEvent"))
                     elif concrete_tag == "DATA-RECEIVED-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataReceivedEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataReceivedEvent"))
                     elif concrete_tag == "DATA-SEND-COMPLETED-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataSendCompletedEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataSendCompletedEvent"))
                     elif concrete_tag == "DATA-WRITE-COMPLETED-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataWriteCompletedEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "DataWriteCompletedEvent"))
                     elif concrete_tag == "EXTERNAL-TRIGGER-OCCURRED-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExternalTriggerOccurredEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "ExternalTriggerOccurredEvent"))
                     elif concrete_tag == "INIT-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "InitEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "InitEvent"))
                     elif concrete_tag == "INTERNAL-TRIGGER-OCCURRED-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "InternalTriggerOccurredEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "InternalTriggerOccurredEvent"))
                     elif concrete_tag == "MODE-SWITCHED-ACK-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchedAckEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchedAckEvent"))
                     elif concrete_tag == "OPERATION-INVOKED-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "OperationInvokedEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "OperationInvokedEvent"))
                     elif concrete_tag == "OS-TASK-EXECUTION-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "OsTaskExecutionEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "OsTaskExecutionEvent"))
                     elif concrete_tag == "SWC-MODE-MANAGER-ERROR-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcModeManagerErrorEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcModeManagerErrorEvent"))
                     elif concrete_tag == "SWC-MODE-SWITCH-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcModeSwitchEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "SwcModeSwitchEvent"))
                     elif concrete_tag == "TIMING-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingEvent"))
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "TimingEvent"))
                     elif concrete_tag == "TRANSFORMER-HARD-ERROR-EVENT":
-                        obj.rte_event_refs.append(SerializationHelper.deserialize_by_tag(item_elem, "TransformerHardErrorEvent"))
-            elif tag == "VARIABLE-ACCESSS":
+                        obj.rte_event_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "TransformerHardErrorEvent"))
+            elif tag == "VARIABLE-ACCESS-IREFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.variable_accesses.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
+                    obj.variable_acces_irefs.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableAccess"))
 
         return obj
 
@@ -168,8 +171,8 @@ class McDataAccessDetailsBuilder(BuilderBase):
         self._obj: McDataAccessDetails = McDataAccessDetails()
 
 
-    def with_rte_event_refs(self, items: list[RTEEvent]) -> "McDataAccessDetailsBuilder":
-        """Set rte_event_refs list attribute.
+    def with_rte_events(self, items: list[RTEEvent]) -> "McDataAccessDetailsBuilder":
+        """Set rte_events list attribute.
 
         Args:
             items: List of items to set
@@ -177,7 +180,7 @@ class McDataAccessDetailsBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_refs = list(items) if items else []
+        self._obj.rte_events = list(items) if items else []
         return self
 
     def with_variable_accesses(self, items: list[VariableAccess]) -> "McDataAccessDetailsBuilder":
@@ -193,8 +196,8 @@ class McDataAccessDetailsBuilder(BuilderBase):
         return self
 
 
-    def add_rte_event_ref(self, item: RTEEvent) -> "McDataAccessDetailsBuilder":
-        """Add a single item to rte_event_refs list.
+    def add_rte_event(self, item: RTEEvent) -> "McDataAccessDetailsBuilder":
+        """Add a single item to rte_events list.
 
         Args:
             item: Item to add
@@ -202,16 +205,16 @@ class McDataAccessDetailsBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_refs.append(item)
+        self._obj.rte_events.append(item)
         return self
 
-    def clear_rte_event_refs(self) -> "McDataAccessDetailsBuilder":
-        """Clear all items from rte_event_refs list.
+    def clear_rte_events(self) -> "McDataAccessDetailsBuilder":
+        """Clear all items from rte_events list.
 
         Returns:
             self for method chaining
         """
-        self._obj.rte_event_refs = []
+        self._obj.rte_events = []
         return self
 
     def add_variable_access(self, item: VariableAccess) -> "McDataAccessDetailsBuilder":
@@ -238,7 +241,7 @@ class McDataAccessDetailsBuilder(BuilderBase):
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "rteEventRef",
+        "rteEvent",
         "variableAccess",
     }
 

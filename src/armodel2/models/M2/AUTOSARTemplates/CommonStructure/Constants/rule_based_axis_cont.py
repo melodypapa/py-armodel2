@@ -49,6 +49,7 @@ class RuleBasedAxisCont(ARObject):
     rule_based: Optional[Any]
     sw_arraysize_ref: Optional[ARRef]
     v: Optional[Numerical]
+    vts: list[Numerical]
     sw_axis_index: Optional[AxisIndexType]
     unit_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
@@ -56,6 +57,7 @@ class RuleBasedAxisCont(ARObject):
         "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(elem, "any (RuleBasedValue)")),
         "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
         "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VTS": lambda obj, elem: obj.vts.append(SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "SW-AXIS-INDEX": lambda obj, elem: setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(elem, "AxisIndexType")),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
     }
@@ -68,6 +70,7 @@ class RuleBasedAxisCont(ARObject):
         self.rule_based: Optional[Any] = None
         self.sw_arraysize_ref: Optional[ARRef] = None
         self.v: Optional[Numerical] = None
+        self.vts: list[Numerical] = []
         self.sw_axis_index: Optional[AxisIndexType] = None
         self.unit_ref: Optional[ARRef] = None
 
@@ -149,6 +152,23 @@ class RuleBasedAxisCont(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
+        # Serialize vts (list to container "VTS")
+        if self.vts:
+            wrapper = ET.Element("VTS")
+            for item in self.vts:
+                serialized = SerializationHelper.serialize_item(item, "Numerical")
+                if serialized is not None:
+                    child_elem = ET.Element("VT")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
         # Serialize sw_axis_index
         if self.sw_axis_index is not None:
             serialized = SerializationHelper.serialize_item(self.sw_axis_index, "AxisIndexType")
@@ -204,6 +224,10 @@ class RuleBasedAxisCont(ARObject):
                 setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
             elif tag == "V":
                 setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "VTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.vts.append(SerializationHelper.deserialize_by_tag(item_elem, "Numerical"))
             elif tag == "SW-AXIS-INDEX":
                 setattr(obj, "sw_axis_index", SerializationHelper.deserialize_by_tag(child, "AxisIndexType"))
             elif tag == "UNIT-REF":
@@ -278,6 +302,18 @@ class RuleBasedAxisContBuilder(BuilderBase):
         self._obj.v = value
         return self
 
+    def with_vts(self, items: list[Numerical]) -> "RuleBasedAxisContBuilder":
+        """Set vts list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts = list(items) if items else []
+        return self
+
     def with_sw_axis_index(self, value: Optional[AxisIndexType]) -> "RuleBasedAxisContBuilder":
         """Set sw_axis_index attribute.
 
@@ -306,6 +342,27 @@ class RuleBasedAxisContBuilder(BuilderBase):
         self._obj.unit = value
         return self
 
+
+    def add_vt(self, item: Numerical) -> "RuleBasedAxisContBuilder":
+        """Add a single item to vts list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts.append(item)
+        return self
+
+    def clear_vts(self) -> "RuleBasedAxisContBuilder":
+        """Clear all items from vts list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts = []
+        return self
 
 
     # Pre-computed validation constants (generated from JSON schema)

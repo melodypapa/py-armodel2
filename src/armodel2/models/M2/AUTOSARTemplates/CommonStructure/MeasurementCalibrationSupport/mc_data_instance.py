@@ -68,11 +68,11 @@ class McDataInstance(Identifiable):
     array_size: Optional[PositiveInteger]
     display_identifier: Optional[McdIdentifier]
     flat_map_entry_ref: Optional[ARRef]
-    instance_in: Optional[ImplementationElementInParameterInstanceRef]
+    instance_in_memory: Optional[ImplementationElementInParameterInstanceRef]
     mc_data_access_details: Optional[McDataAccessDetails]
-    mc_datas: list[RoleBasedMcDataAssignment]
-    resulting: Optional[SwDataDefProps]
-    resulting_rpt_sw: Optional[RptSwPrototypingAccess]
+    mc_data_assignments: list[RoleBasedMcDataAssignment]
+    resulting_properties: Optional[SwDataDefProps]
+    resulting_rpt_sw_prototyping_access: Optional[RptSwPrototypingAccess]
     role: Optional[Identifier]
     rpt_impl_policy: Optional[RptImplPolicy]
     sub_elements: list[McDataInstance]
@@ -81,11 +81,11 @@ class McDataInstance(Identifiable):
         "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "DISPLAY-IDENTIFIER": lambda obj, elem: setattr(obj, "display_identifier", SerializationHelper.deserialize_by_tag(elem, "McdIdentifier")),
         "FLAT-MAP-ENTRY-REF": lambda obj, elem: setattr(obj, "flat_map_entry_ref", ARRef.deserialize(elem)),
-        "INSTANCE-IN": lambda obj, elem: setattr(obj, "instance_in", SerializationHelper.deserialize_by_tag(elem, "ImplementationElementInParameterInstanceRef")),
+        "INSTANCE-IN-MEMORY": lambda obj, elem: setattr(obj, "instance_in_memory", SerializationHelper.deserialize_by_tag(elem, "ImplementationElementInParameterInstanceRef")),
         "MC-DATA-ACCESS-DETAILS": lambda obj, elem: setattr(obj, "mc_data_access_details", SerializationHelper.deserialize_by_tag(elem, "McDataAccessDetails")),
-        "MC-DATAS": lambda obj, elem: obj.mc_datas.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
-        "RESULTING": lambda obj, elem: setattr(obj, "resulting", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
-        "RESULTING-RPT-SW": lambda obj, elem: setattr(obj, "resulting_rpt_sw", SerializationHelper.deserialize_by_tag(elem, "RptSwPrototypingAccess")),
+        "MC-DATA-ASSIGNMENTS": lambda obj, elem: obj.mc_data_assignments.append(SerializationHelper.deserialize_by_tag(elem, "RoleBasedMcDataAssignment")),
+        "RESULTING-PROPERTIES": lambda obj, elem: setattr(obj, "resulting_properties", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
+        "RESULTING-RPT-SW-PROTOTYPING-ACCESS": lambda obj, elem: setattr(obj, "resulting_rpt_sw_prototyping_access", SerializationHelper.deserialize_by_tag(elem, "RptSwPrototypingAccess")),
         "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
         "RPT-IMPL-POLICY": lambda obj, elem: setattr(obj, "rpt_impl_policy", SerializationHelper.deserialize_by_tag(elem, "RptImplPolicy")),
         "SUB-ELEMENTS": lambda obj, elem: obj.sub_elements.append(SerializationHelper.deserialize_by_tag(elem, "McDataInstance")),
@@ -99,11 +99,11 @@ class McDataInstance(Identifiable):
         self.array_size: Optional[PositiveInteger] = None
         self.display_identifier: Optional[McdIdentifier] = None
         self.flat_map_entry_ref: Optional[ARRef] = None
-        self.instance_in: Optional[ImplementationElementInParameterInstanceRef] = None
+        self.instance_in_memory: Optional[ImplementationElementInParameterInstanceRef] = None
         self.mc_data_access_details: Optional[McDataAccessDetails] = None
-        self.mc_datas: list[RoleBasedMcDataAssignment] = []
-        self.resulting: Optional[SwDataDefProps] = None
-        self.resulting_rpt_sw: Optional[RptSwPrototypingAccess] = None
+        self.mc_data_assignments: list[RoleBasedMcDataAssignment] = []
+        self.resulting_properties: Optional[SwDataDefProps] = None
+        self.resulting_rpt_sw_prototyping_access: Optional[RptSwPrototypingAccess] = None
         self.role: Optional[Identifier] = None
         self.rpt_impl_policy: Optional[RptImplPolicy] = None
         self.sub_elements: list[McDataInstance] = []
@@ -174,12 +174,12 @@ class McDataInstance(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize instance_in
-        if self.instance_in is not None:
-            serialized = SerializationHelper.serialize_item(self.instance_in, "ImplementationElementInParameterInstanceRef")
+        # Serialize instance_in_memory
+        if self.instance_in_memory is not None:
+            serialized = SerializationHelper.serialize_item(self.instance_in_memory, "ImplementationElementInParameterInstanceRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("INSTANCE-IN")
+                wrapped = ET.Element("INSTANCE-IN-MEMORY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -202,22 +202,22 @@ class McDataInstance(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mc_datas (list to container "MC-DATAS")
-        if self.mc_datas:
-            wrapper = ET.Element("MC-DATAS")
-            for item in self.mc_datas:
+        # Serialize mc_data_assignments (list to container "MC-DATA-ASSIGNMENTS")
+        if self.mc_data_assignments:
+            wrapper = ET.Element("MC-DATA-ASSIGNMENTS")
+            for item in self.mc_data_assignments:
                 serialized = SerializationHelper.serialize_item(item, "RoleBasedMcDataAssignment")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize resulting
-        if self.resulting is not None:
-            serialized = SerializationHelper.serialize_item(self.resulting, "SwDataDefProps")
+        # Serialize resulting_properties
+        if self.resulting_properties is not None:
+            serialized = SerializationHelper.serialize_item(self.resulting_properties, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RESULTING")
+                wrapped = ET.Element("RESULTING-PROPERTIES")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -226,12 +226,12 @@ class McDataInstance(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize resulting_rpt_sw
-        if self.resulting_rpt_sw is not None:
-            serialized = SerializationHelper.serialize_item(self.resulting_rpt_sw, "RptSwPrototypingAccess")
+        # Serialize resulting_rpt_sw_prototyping_access
+        if self.resulting_rpt_sw_prototyping_access is not None:
+            serialized = SerializationHelper.serialize_item(self.resulting_rpt_sw_prototyping_access, "RptSwPrototypingAccess")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RESULTING-RPT-SW")
+                wrapped = ET.Element("RESULTING-RPT-SW-PROTOTYPING-ACCESS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -317,18 +317,18 @@ class McDataInstance(Identifiable):
                 setattr(obj, "display_identifier", SerializationHelper.deserialize_by_tag(child, "McdIdentifier"))
             elif tag == "FLAT-MAP-ENTRY-REF":
                 setattr(obj, "flat_map_entry_ref", ARRef.deserialize(child))
-            elif tag == "INSTANCE-IN":
-                setattr(obj, "instance_in", SerializationHelper.deserialize_by_tag(child, "ImplementationElementInParameterInstanceRef"))
+            elif tag == "INSTANCE-IN-MEMORY":
+                setattr(obj, "instance_in_memory", SerializationHelper.deserialize_by_tag(child, "ImplementationElementInParameterInstanceRef"))
             elif tag == "MC-DATA-ACCESS-DETAILS":
                 setattr(obj, "mc_data_access_details", SerializationHelper.deserialize_by_tag(child, "McDataAccessDetails"))
-            elif tag == "MC-DATAS":
+            elif tag == "MC-DATA-ASSIGNMENTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.mc_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedMcDataAssignment"))
-            elif tag == "RESULTING":
-                setattr(obj, "resulting", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
-            elif tag == "RESULTING-RPT-SW":
-                setattr(obj, "resulting_rpt_sw", SerializationHelper.deserialize_by_tag(child, "RptSwPrototypingAccess"))
+                    obj.mc_data_assignments.append(SerializationHelper.deserialize_by_tag(item_elem, "RoleBasedMcDataAssignment"))
+            elif tag == "RESULTING-PROPERTIES":
+                setattr(obj, "resulting_properties", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
+            elif tag == "RESULTING-RPT-SW-PROTOTYPING-ACCESS":
+                setattr(obj, "resulting_rpt_sw_prototyping_access", SerializationHelper.deserialize_by_tag(child, "RptSwPrototypingAccess"))
             elif tag == "ROLE":
                 setattr(obj, "role", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "RPT-IMPL-POLICY":
@@ -395,8 +395,8 @@ class McDataInstanceBuilder(IdentifiableBuilder):
         self._obj.flat_map_entry = value
         return self
 
-    def with_instance_in(self, value: Optional[ImplementationElementInParameterInstanceRef]) -> "McDataInstanceBuilder":
-        """Set instance_in attribute.
+    def with_instance_in_memory(self, value: Optional[ImplementationElementInParameterInstanceRef]) -> "McDataInstanceBuilder":
+        """Set instance_in_memory attribute.
 
         Args:
             value: Value to set
@@ -405,8 +405,8 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'instance_in' is required and cannot be None")
-        self._obj.instance_in = value
+            raise ValueError("Attribute 'instance_in_memory' is required and cannot be None")
+        self._obj.instance_in_memory = value
         return self
 
     def with_mc_data_access_details(self, value: Optional[McDataAccessDetails]) -> "McDataInstanceBuilder":
@@ -423,8 +423,8 @@ class McDataInstanceBuilder(IdentifiableBuilder):
         self._obj.mc_data_access_details = value
         return self
 
-    def with_mc_datas(self, items: list[RoleBasedMcDataAssignment]) -> "McDataInstanceBuilder":
-        """Set mc_datas list attribute.
+    def with_mc_data_assignments(self, items: list[RoleBasedMcDataAssignment]) -> "McDataInstanceBuilder":
+        """Set mc_data_assignments list attribute.
 
         Args:
             items: List of items to set
@@ -432,11 +432,11 @@ class McDataInstanceBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.mc_datas = list(items) if items else []
+        self._obj.mc_data_assignments = list(items) if items else []
         return self
 
-    def with_resulting(self, value: Optional[SwDataDefProps]) -> "McDataInstanceBuilder":
-        """Set resulting attribute.
+    def with_resulting_properties(self, value: Optional[SwDataDefProps]) -> "McDataInstanceBuilder":
+        """Set resulting_properties attribute.
 
         Args:
             value: Value to set
@@ -445,12 +445,12 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'resulting' is required and cannot be None")
-        self._obj.resulting = value
+            raise ValueError("Attribute 'resulting_properties' is required and cannot be None")
+        self._obj.resulting_properties = value
         return self
 
-    def with_resulting_rpt_sw(self, value: Optional[RptSwPrototypingAccess]) -> "McDataInstanceBuilder":
-        """Set resulting_rpt_sw attribute.
+    def with_resulting_rpt_sw_prototyping_access(self, value: Optional[RptSwPrototypingAccess]) -> "McDataInstanceBuilder":
+        """Set resulting_rpt_sw_prototyping_access attribute.
 
         Args:
             value: Value to set
@@ -459,8 +459,8 @@ class McDataInstanceBuilder(IdentifiableBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'resulting_rpt_sw' is required and cannot be None")
-        self._obj.resulting_rpt_sw = value
+            raise ValueError("Attribute 'resulting_rpt_sw_prototyping_access' is required and cannot be None")
+        self._obj.resulting_rpt_sw_prototyping_access = value
         return self
 
     def with_role(self, value: Optional[Identifier]) -> "McDataInstanceBuilder":
@@ -518,8 +518,8 @@ class McDataInstanceBuilder(IdentifiableBuilder):
         return self
 
 
-    def add_mc_data(self, item: RoleBasedMcDataAssignment) -> "McDataInstanceBuilder":
-        """Add a single item to mc_datas list.
+    def add_mc_data_assignment(self, item: RoleBasedMcDataAssignment) -> "McDataInstanceBuilder":
+        """Add a single item to mc_data_assignments list.
 
         Args:
             item: Item to add
@@ -527,16 +527,16 @@ class McDataInstanceBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.mc_datas.append(item)
+        self._obj.mc_data_assignments.append(item)
         return self
 
-    def clear_mc_datas(self) -> "McDataInstanceBuilder":
-        """Clear all items from mc_datas list.
+    def clear_mc_data_assignments(self) -> "McDataInstanceBuilder":
+        """Clear all items from mc_data_assignments list.
 
         Returns:
             self for method chaining
         """
-        self._obj.mc_datas = []
+        self._obj.mc_data_assignments = []
         return self
 
     def add_sub_element(self, item: McDataInstance) -> "McDataInstanceBuilder":
@@ -566,11 +566,11 @@ class McDataInstanceBuilder(IdentifiableBuilder):
         "arraySize",
         "displayIdentifier",
         "flatMapEntry",
-        "instanceIn",
-        "mcData",
+        "instanceInMemory",
         "mcDataAccessDetails",
-        "resulting",
-        "resultingRptSw",
+        "mcDataAssignment",
+        "resultingProperties",
+        "resultingRptSwPrototypingAccess",
         "role",
         "rptImplPolicy",
         "subElement",

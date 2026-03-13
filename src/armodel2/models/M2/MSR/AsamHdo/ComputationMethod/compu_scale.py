@@ -108,10 +108,10 @@ class CompuScale(ARObject):
     compu_inverse_value: Optional[CompuConst]
     compu_scale_contents: Optional[CompuScaleContents]
     desc: Optional[MultiLanguageOverviewParagraph]
-    lower_limit: Optional[Limit]
-    mask: Optional[PositiveUnlimitedInteger]
     short_label: Optional[Identifier]
     symbol: Optional[CIdentifier]
+    mask: Optional[PositiveUnlimitedInteger]
+    lower_limit: Optional[Limit]
     upper_limit: Optional[Limit]
     def __init__(self) -> None:
         """Initialize CompuScale."""
@@ -120,10 +120,10 @@ class CompuScale(ARObject):
         self.compu_inverse_value: Optional[CompuConst] = None
         self.compu_scale_contents: Optional[CompuScaleContents] = None
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
-        self.lower_limit: Optional[Limit] = None
-        self.mask: Optional[PositiveUnlimitedInteger] = None
         self.short_label: Optional[Identifier] = None
         self.symbol: Optional[CIdentifier] = None
+        self.mask: Optional[PositiveUnlimitedInteger] = None
+        self.lower_limit: Optional[Limit] = None
         self.upper_limit: Optional[Limit] = None
 
     def serialize(self) -> ET.Element:
@@ -273,24 +273,24 @@ class CompuScale(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Reorder elements to match AUTOSAR XML schema order
-        # The correct order is: DESC, LOWER-LIMIT, UPPER-LIMIT, COMPU-CONST/COMPU-RATIONAL-COEFFS, ...
+        # Reorder elements to match AUTOSAR XML schema order (matching JSON file order)
+        # The correct order is: DESC, SHORT-LABEL, SYMBOL, MASK, LOWER-LIMIT, UPPER-LIMIT, ...
         # Extract all children and reorder them
         children = list(elem)
         elem.clear()  # Remove all children
 
-        # Define the desired order of elements
+        # Define the desired order of elements (matching JSON file order)
         element_order = [
             "DESC",
+            "SHORT-LABEL",
+            "SYMBOL",
+            "MASK",
             "LOWER-LIMIT",
             "UPPER-LIMIT",
             "COMPU-CONST",
             "COMPU-RATIONAL-COEFFS",
             "COMPU-INVERSE-VALUE",
             "A2L-DISPLAY-TEXT",
-            "MASK",
-            "SHORT-LABEL",
-            "SYMBOL",
         ]
 
         # Add elements in the desired order

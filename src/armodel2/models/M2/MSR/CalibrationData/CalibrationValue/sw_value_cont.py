@@ -13,7 +13,6 @@ from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
-    VerbatimString,
 )
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.numerical_or_text import (
     NumericalOrText,
@@ -54,20 +53,20 @@ class SwValueCont(ARObject):
 
     sw_arraysize_ref: Optional[ARRef]
     v: Optional[Numerical]
+    vts: list[Numerical]
     sw_values_phys: Optional[SwValues]
     vf: Optional[Numerical]
     vg: Optional[ValueGroup]
-    vt: Optional[VerbatimString]
     vtf: Optional[NumericalOrText]
     unit_ref: Optional[ARRef]
     unit_display: Optional[SingleLanguageUnitNames]
     _DESERIALIZE_DISPATCH = {
         "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
         "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VTS": lambda obj, elem: obj.vts.append(SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "SW-VALUES-PHYS": lambda obj, elem: setattr(obj, "sw_values_phys", SerializationHelper.deserialize_by_tag(elem, "SwValues")),
         "VF": lambda obj, elem: setattr(obj, "vf", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "VG": lambda obj, elem: setattr(obj, "vg", SerializationHelper.deserialize_by_tag(elem, "ValueGroup")),
-        "VT": lambda obj, elem: setattr(obj, "vt", SerializationHelper.deserialize_by_tag(elem, "VerbatimString")),
         "VTF": lambda obj, elem: setattr(obj, "vtf", SerializationHelper.deserialize_by_tag(elem, "NumericalOrText")),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
         "UNIT-DISPLAY": lambda obj, elem: setattr(obj, "unit_display", SerializationHelper.deserialize_by_tag(elem, "SingleLanguageUnitNames")),
@@ -79,10 +78,10 @@ class SwValueCont(ARObject):
         super().__init__()
         self.sw_arraysize_ref: Optional[ARRef] = None
         self.v: Optional[Numerical] = None
+        self.vts: list[Numerical] = []
         self.sw_values_phys: Optional[SwValues] = None
         self.vf: Optional[Numerical] = None
         self.vg: Optional[ValueGroup] = None
-        self.vt: Optional[VerbatimString] = None
         self.vtf: Optional[NumericalOrText] = None
         self.unit_ref: Optional[ARRef] = None
         self.unit_display: Optional[SingleLanguageUnitNames] = None
@@ -137,6 +136,23 @@ class SwValueCont(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
+        # Serialize vts (list to container "VTS")
+        if self.vts:
+            wrapper = ET.Element("VTS")
+            for item in self.vts:
+                serialized = SerializationHelper.serialize_item(item, "Numerical")
+                if serialized is not None:
+                    child_elem = ET.Element("VT")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
         # Serialize sw_values_phys (atp_mixed - append children directly)
         if self.sw_values_phys is not None:
             serialized = SerializationHelper.serialize_item(self.sw_values_phys, "SwValues")
@@ -170,20 +186,6 @@ class SwValueCont(ARObject):
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize vt
-        if self.vt is not None:
-            serialized = SerializationHelper.serialize_item(self.vt, "VerbatimString")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -257,14 +259,16 @@ class SwValueCont(ARObject):
                 setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
             elif tag == "V":
                 setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "VTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.vts.append(SerializationHelper.deserialize_by_tag(item_elem, "Numerical"))
             elif tag == "SW-VALUES-PHYS":
                 setattr(obj, "sw_values_phys", SerializationHelper.deserialize_by_tag(child, "SwValues"))
             elif tag == "VF":
                 setattr(obj, "vf", SerializationHelper.deserialize_by_tag(child, "Numerical"))
             elif tag == "VG":
                 setattr(obj, "vg", SerializationHelper.deserialize_by_tag(child, "ValueGroup"))
-            elif tag == "VT":
-                setattr(obj, "vt", SerializationHelper.deserialize_by_tag(child, "VerbatimString"))
             elif tag == "VTF":
                 setattr(obj, "vtf", SerializationHelper.deserialize_by_tag(child, "NumericalOrText"))
             elif tag == "UNIT-REF":
@@ -313,6 +317,18 @@ class SwValueContBuilder(BuilderBase):
         self._obj.v = value
         return self
 
+    def with_vts(self, items: list[Numerical]) -> "SwValueContBuilder":
+        """Set vts list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts = list(items) if items else []
+        return self
+
     def with_sw_values_phys(self, value: Optional[SwValues]) -> "SwValueContBuilder":
         """Set sw_values_phys attribute.
 
@@ -353,20 +369,6 @@ class SwValueContBuilder(BuilderBase):
         if value is None and not True:
             raise ValueError("Attribute 'vg' is required and cannot be None")
         self._obj.vg = value
-        return self
-
-    def with_vt(self, value: Optional[VerbatimString]) -> "SwValueContBuilder":
-        """Set vt attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute 'vt' is required and cannot be None")
-        self._obj.vt = value
         return self
 
     def with_vtf(self, value: Optional[NumericalOrText]) -> "SwValueContBuilder":
@@ -411,6 +413,27 @@ class SwValueContBuilder(BuilderBase):
         self._obj.unit_display = value
         return self
 
+
+    def add_vt(self, item: Numerical) -> "SwValueContBuilder":
+        """Add a single item to vts list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts.append(item)
+        return self
+
+    def clear_vts(self) -> "SwValueContBuilder":
+        """Clear all items from vts list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts = []
+        return self
 
 
     # Pre-computed validation constants (generated from JSON schema)

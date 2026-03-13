@@ -6,11 +6,14 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementCalibrationSupport.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type_element import (
+    AbstractImplementationDataTypeElement,
+)
 
 if TYPE_CHECKING:
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
@@ -37,10 +40,10 @@ class ImplementationElementInParameterInstanceRef(ARObject):
 
 
     context_ref: Optional[ARRef]
-    target_ref: Optional[Any]
+    target_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CONTEXT-REF": lambda obj, elem: setattr(obj, "context_ref", ARRef.deserialize(elem)),
-        "TARGET-REF": lambda obj, elem: setattr(obj, "target_ref", ARRef.deserialize(elem)),
+        "TARGET-REF": ("_POLYMORPHIC", "target_ref", ["ImplementationDataTypeElement"]),
     }
 
 
@@ -48,7 +51,7 @@ class ImplementationElementInParameterInstanceRef(ARObject):
         """Initialize ImplementationElementInParameterInstanceRef."""
         super().__init__()
         self.context_ref: Optional[ARRef] = None
-        self.target_ref: Optional[Any] = None
+        self.target_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ImplementationElementInParameterInstanceRef to XML element.
@@ -89,7 +92,7 @@ class ImplementationElementInParameterInstanceRef(ARObject):
 
         # Serialize target_ref
         if self.target_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.target_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.target_ref, "AbstractImplementationDataTypeElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-REF")
@@ -152,7 +155,7 @@ class ImplementationElementInParameterInstanceRefBuilder(BuilderBase):
         self._obj.context = value
         return self
 
-    def with_target(self, value: Optional[Any]) -> "ImplementationElementInParameterInstanceRefBuilder":
+    def with_target(self, value: Optional[AbstractImplementationDataTypeElement]) -> "ImplementationElementInParameterInstanceRefBuilder":
         """Set target attribute.
 
         Args:
