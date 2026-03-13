@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "McSupportData",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -34,28 +34,28 @@
         }
       ],
       "attributes": {
-        "emulation": {
+        "emulationSupport": {
           "type": "McSwEmulationMethodSupport",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Describes the calibration method used by the RTE. This information is not needed for A2L generation, but to setup in the ECU. atpVariation"
         },
-        "mcParameter": {
+        "mcParameterInstance": {
           "type": "McDataInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "A data instance to be used for calibration. atpSplitable; atpVariation"
         },
-        "mcVariable": {
+        "mcVariableInstance": {
           "type": "McDataInstance",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "A data instance to be used for measurement. atpSplitable; atpVariation"
         },
-        "measurable": {
+        "measurableSystemConstantValues": {
           "type": "SwSystemconstantValueSet",
           "multiplicity": "*",
           "kind": "ref",
@@ -73,7 +73,7 @@
     },
     {
       "name": "McDataInstance",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -130,38 +130,38 @@
           "is_ref": true,
           "note": "Reference to the corresponding entry in the ECU Flat allows to trace back to the original specification generated data instance. This link shall be added RTE generator mainly for documentation purposes. is optional because McDataInstance may represent an array or struct only the subElements correspond to FlatMap McDataInstance may represent a task local buffer prototyping access which is different from the used for measurement access."
         },
-        "instanceIn": {
+        "instanceInMemory": {
           "type": "ImplementationElementInParameterInstanceRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Reference to the corresponding data instance in the description of calibration data structures published by the generator. This is used to support emulation the ECU, it is not required for A2L"
         },
         "mcDataAccessDetails": {
           "type": "McDataAccessDetails",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Refers to \"upstream\" information on how the RTE uses data instance. Use Case: Rapid Prototyping"
         },
-        "mcData": {
+        "mcDataAssignment": {
           "type": "RoleBasedMcDataAssignment",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "An assignment between McDataInstances. This supports the indication of related McDataElement implementing \"RP global buffer\", \"RP global measurement enabler flag\"."
         },
-        "resulting": {
+        "resultingProperties": {
           "type": "SwDataDefProps",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "These are the generated properties resulting from"
         },
-        "resultingRptSw": {
+        "resultingRptSwPrototypingAccess": {
           "type": "RptSwPrototypingAccess",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Describes the implemented accessibility of data and modes by the rapid prototyping tooling. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
@@ -197,7 +197,7 @@
     },
     {
       "name": "McSwEmulationMethodSupport",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -239,7 +239,7 @@
         "elementGroup": {
           "type": "McParameterElementGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Denotes the grouping of calibration parameters in the RTE code. Depending on the category, this required to set up the emulation code."
         },
@@ -261,7 +261,7 @@
     },
     {
       "name": "McParameterElementGroup",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -311,7 +311,7 @@
     },
     {
       "name": "ImplementationElementInParameterInstanceRef",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -344,7 +344,7 @@
           "note": "The context for the referred element."
         },
         "target": {
-          "type": "any (AbstractImplementation)",
+          "type": "AbstractImplementationDataTypeElement",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
@@ -354,7 +354,7 @@
     },
     {
       "name": "McFunction",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -388,36 +388,36 @@
         "defCalprmSet": {
           "type": "McFunctionDataRefSet",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Refers to the set of adjustable data (= calibration in this function."
         },
-        "inMeasurement": {
+        "inMeasurementSet": {
           "type": "McFunctionDataRefSet",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Refers to the set of measurable input data for this"
         },
-        "loc": {
+        "locMeasurementSet": {
           "type": "McFunctionDataRefSet",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Refers to the set of measurable local data in this function. atpSplitable Set Tags:"
         },
-        "out": {
+        "outMeasurementSet": {
           "type": "McFunctionDataRefSet",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Refers to the set of measurable output data from this atpSplitable"
         },
         "refCalprmSet": {
           "type": "McFunctionDataRefSet",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Refers to the set of adjustable data (= calibration by this function."
         },
         "subFunction": {
@@ -431,7 +431,7 @@
     },
     {
       "name": "McDataAccessDetails",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -456,25 +456,25 @@
         }
       ],
       "attributes": {
-        "rteEventRef": {
+        "rteEvent": {
           "type": "RTEEvent",
           "multiplicity": "*",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "iref",
+          "is_ref": true,
           "note": "by: RteEventInEcuInstance"
         },
         "variableAccess": {
           "type": "VariableAccess",
           "multiplicity": "*",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "iref",
+          "is_ref": true,
           "note": "The VariableAccess for which the data buffer is used."
         }
       }
     },
     {
       "name": "RoleBasedMcDataAssignment",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::MeasurementCalibrationSupport",
       "is_abstract": false,
       "atp_type": null,
@@ -503,7 +503,7 @@
         }
       ],
       "attributes": {
-        "execution": {
+        "executionContext": {
           "type": "RptExecutionContext",
           "multiplicity": "*",
           "kind": "ref",

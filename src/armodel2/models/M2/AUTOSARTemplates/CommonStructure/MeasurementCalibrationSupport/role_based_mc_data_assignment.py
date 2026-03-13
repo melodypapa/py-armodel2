@@ -42,11 +42,11 @@ class RoleBasedMcDataAssignment(ARObject):
     _XML_TAG = "ROLE-BASED-MC-DATA-ASSIGNMENT"
 
 
-    execution_refs: list[ARRef]
+    execution_context_refs: list[ARRef]
     mc_data_instance_refs: list[ARRef]
     role: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
-        "EXECUTION-REFS": lambda obj, elem: [obj.execution_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "EXECUTION-CONTEXT-REFS": lambda obj, elem: [obj.execution_context_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "MC-DATA-INSTANCE-REFS": lambda obj, elem: [obj.mc_data_instance_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "ROLE": lambda obj, elem: setattr(obj, "role", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
@@ -55,7 +55,7 @@ class RoleBasedMcDataAssignment(ARObject):
     def __init__(self) -> None:
         """Initialize RoleBasedMcDataAssignment."""
         super().__init__()
-        self.execution_refs: list[ARRef] = []
+        self.execution_context_refs: list[ARRef] = []
         self.mc_data_instance_refs: list[ARRef] = []
         self.role: Optional[Identifier] = None
 
@@ -82,13 +82,13 @@ class RoleBasedMcDataAssignment(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize execution_refs (list to container "EXECUTION-REFS")
-        if self.execution_refs:
-            wrapper = ET.Element("EXECUTION-REFS")
-            for item in self.execution_refs:
+        # Serialize execution_context_refs (list to container "EXECUTION-CONTEXT-REFS")
+        if self.execution_context_refs:
+            wrapper = ET.Element("EXECUTION-CONTEXT-REFS")
+            for item in self.execution_context_refs:
                 serialized = SerializationHelper.serialize_item(item, "RptExecutionContext")
                 if serialized is not None:
-                    child_elem = ET.Element("EXECUTION-REF")
+                    child_elem = ET.Element("EXECUTION-CONTEXT-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -149,10 +149,10 @@ class RoleBasedMcDataAssignment(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "EXECUTION-REFS":
+            if tag == "EXECUTION-CONTEXT-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.execution_refs.append(ARRef.deserialize(item_elem))
+                    obj.execution_context_refs.append(ARRef.deserialize(item_elem))
             elif tag == "MC-DATA-INSTANCE-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -173,8 +173,8 @@ class RoleBasedMcDataAssignmentBuilder(BuilderBase):
         self._obj: RoleBasedMcDataAssignment = RoleBasedMcDataAssignment()
 
 
-    def with_executions(self, items: list[RptExecutionContext]) -> "RoleBasedMcDataAssignmentBuilder":
-        """Set executions list attribute.
+    def with_execution_contexts(self, items: list[RptExecutionContext]) -> "RoleBasedMcDataAssignmentBuilder":
+        """Set execution_contexts list attribute.
 
         Args:
             items: List of items to set
@@ -182,7 +182,7 @@ class RoleBasedMcDataAssignmentBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.executions = list(items) if items else []
+        self._obj.execution_contexts = list(items) if items else []
         return self
 
     def with_mc_data_instances(self, items: list[McDataInstance]) -> "RoleBasedMcDataAssignmentBuilder":
@@ -212,8 +212,8 @@ class RoleBasedMcDataAssignmentBuilder(BuilderBase):
         return self
 
 
-    def add_execution(self, item: RptExecutionContext) -> "RoleBasedMcDataAssignmentBuilder":
-        """Add a single item to executions list.
+    def add_execution_context(self, item: RptExecutionContext) -> "RoleBasedMcDataAssignmentBuilder":
+        """Add a single item to execution_contexts list.
 
         Args:
             item: Item to add
@@ -221,16 +221,16 @@ class RoleBasedMcDataAssignmentBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.executions.append(item)
+        self._obj.execution_contexts.append(item)
         return self
 
-    def clear_executions(self) -> "RoleBasedMcDataAssignmentBuilder":
-        """Clear all items from executions list.
+    def clear_execution_contexts(self) -> "RoleBasedMcDataAssignmentBuilder":
+        """Clear all items from execution_contexts list.
 
         Returns:
             self for method chaining
         """
-        self._obj.executions = []
+        self._obj.execution_contexts = []
         return self
 
     def add_mc_data_instance(self, item: McDataInstance) -> "RoleBasedMcDataAssignmentBuilder":
@@ -257,7 +257,7 @@ class RoleBasedMcDataAssignmentBuilder(BuilderBase):
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "execution",
+        "executionContext",
         "mcDataInstance",
         "role",
     }

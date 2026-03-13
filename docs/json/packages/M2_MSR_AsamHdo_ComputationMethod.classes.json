@@ -283,20 +283,6 @@
           "is_ref": false,
           "note": "<desc> represents a general but brief description of the in question."
         },
-        "lowerLimit": {
-          "type": "Limit",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "This specifies the lower limit of the scale."
-        },
-        "mask": {
-          "type": "PositiveUnlimitedInteger",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "In difference to all the other computational methods every be applied including the bit MASK. is allowed for this type of COMPU-METHOD, overlap. the string reverse to a value, the string has to and the according value for each substring has to up. The sum is finally transmitted. has to be done in order of the"
-        },
         "shortLabel": {
           "type": "Identifier",
           "multiplicity": "0..1",
@@ -310,6 +296,20 @@
           "kind": "attribute",
           "is_ref": false,
           "note": "The symbol, if provided, is used by code generators to get"
+        },
+         "mask": {
+          "type": "PositiveUnlimitedInteger",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "In difference to all the other computational methods every be applied including the bit MASK. is allowed for this type of COMPU-METHOD, overlap. the string reverse to a value, the string has to and the according value for each substring has to up. The sum is finally transmitted. has to be done in order of the"
+        },
+        "lowerLimit": {
+          "type": "Limit",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This specifies the lower limit of the scale."
         },
         "upperLimit": {
           "type": "Limit",

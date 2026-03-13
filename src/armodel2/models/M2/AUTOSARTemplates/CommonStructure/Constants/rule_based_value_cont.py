@@ -43,11 +43,13 @@ class RuleBasedValueCont(ARObject):
     rule_based: Optional[Any]
     sw_arraysize_ref: Optional[ARRef]
     v: Optional[Numerical]
+    vts: list[Numerical]
     unit_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(elem, "any (RuleBasedValue)")),
         "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
         "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VTS": lambda obj, elem: obj.vts.append(SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
     }
 
@@ -58,6 +60,7 @@ class RuleBasedValueCont(ARObject):
         self.rule_based: Optional[Any] = None
         self.sw_arraysize_ref: Optional[ARRef] = None
         self.v: Optional[Numerical] = None
+        self.vts: list[Numerical] = []
         self.unit_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -124,6 +127,23 @@ class RuleBasedValueCont(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
+        # Serialize vts (list to container "VTS")
+        if self.vts:
+            wrapper = ET.Element("VTS")
+            for item in self.vts:
+                serialized = SerializationHelper.serialize_item(item, "Numerical")
+                if serialized is not None:
+                    child_elem = ET.Element("VT")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
         # Serialize unit_ref
         if self.unit_ref is not None:
             serialized = SerializationHelper.serialize_item(self.unit_ref, "Unit")
@@ -163,6 +183,10 @@ class RuleBasedValueCont(ARObject):
                 setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
             elif tag == "V":
                 setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
+            elif tag == "VTS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.vts.append(SerializationHelper.deserialize_by_tag(item_elem, "Numerical"))
             elif tag == "UNIT-REF":
                 setattr(obj, "unit_ref", ARRef.deserialize(child))
 
@@ -221,6 +245,18 @@ class RuleBasedValueContBuilder(BuilderBase):
         self._obj.v = value
         return self
 
+    def with_vts(self, items: list[Numerical]) -> "RuleBasedValueContBuilder":
+        """Set vts list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts = list(items) if items else []
+        return self
+
     def with_unit(self, value: Optional[Unit]) -> "RuleBasedValueContBuilder":
         """Set unit attribute.
 
@@ -235,6 +271,27 @@ class RuleBasedValueContBuilder(BuilderBase):
         self._obj.unit = value
         return self
 
+
+    def add_vt(self, item: Numerical) -> "RuleBasedValueContBuilder":
+        """Add a single item to vts list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts.append(item)
+        return self
+
+    def clear_vts(self) -> "RuleBasedValueContBuilder":
+        """Clear all items from vts list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts = []
+        return self
 
 
     # Pre-computed validation constants (generated from JSON schema)

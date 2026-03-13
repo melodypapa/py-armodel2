@@ -58,9 +58,6 @@ from armodel2.models.M2.MSR.DataDictionary.DataDefProperties.sw_bit_representati
 from armodel2.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_set import (
     SwCalprmAxisSet,
 )
-from armodel2.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_dependency import (
-    SwDataDependency,
-)
 from armodel2.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout import (
     SwRecordLayout,
 )
@@ -77,6 +74,9 @@ if TYPE_CHECKING:
     )
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_primitive_data_type import (
         ApplicationPrimitiveDataType,
+    )
+    from armodel2.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_dependency import (
+        SwDataDependency,
     )
     from armodel2.models.M2.MSR.DataDictionary.DataDefProperties.sw_pointer_target_props import (
         SwPointerTargetProps,

@@ -42,12 +42,12 @@ class SwTextProps(ARObject):
     _XML_TAG = "SW-TEXT-PROPS"
 
 
-    array_size: Optional[ArraySizeSemanticsEnum]
+    array_size_semantics: Optional[ArraySizeSemanticsEnum]
     base_type_ref: Optional[ARRef]
     sw_fill_character: Optional[Integer]
     sw_max_text_size: Optional[Integer]
     _DESERIALIZE_DISPATCH = {
-        "ARRAY-SIZE": lambda obj, elem: setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(elem)),
+        "ARRAY-SIZE-SEMANTICS": lambda obj, elem: setattr(obj, "array_size_semantics", ArraySizeSemanticsEnum.deserialize(elem)),
         "BASE-TYPE-REF": lambda obj, elem: setattr(obj, "base_type_ref", ARRef.deserialize(elem)),
         "SW-FILL-CHARACTER": lambda obj, elem: setattr(obj, "sw_fill_character", SerializationHelper.deserialize_by_tag(elem, "Integer")),
         "SW-MAX-TEXT-SIZE": lambda obj, elem: setattr(obj, "sw_max_text_size", SerializationHelper.deserialize_by_tag(elem, "Integer")),
@@ -57,7 +57,7 @@ class SwTextProps(ARObject):
     def __init__(self) -> None:
         """Initialize SwTextProps."""
         super().__init__()
-        self.array_size: Optional[ArraySizeSemanticsEnum] = None
+        self.array_size_semantics: Optional[ArraySizeSemanticsEnum] = None
         self.base_type_ref: Optional[ARRef] = None
         self.sw_fill_character: Optional[Integer] = None
         self.sw_max_text_size: Optional[Integer] = None
@@ -85,12 +85,12 @@ class SwTextProps(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize array_size
-        if self.array_size is not None:
-            serialized = SerializationHelper.serialize_item(self.array_size, "ArraySizeSemanticsEnum")
+        # Serialize array_size_semantics
+        if self.array_size_semantics is not None:
+            serialized = SerializationHelper.serialize_item(self.array_size_semantics, "ArraySizeSemanticsEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-SIZE")
+                wrapped = ET.Element("ARRAY-SIZE-SEMANTICS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -160,8 +160,8 @@ class SwTextProps(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ARRAY-SIZE":
-                setattr(obj, "array_size", ArraySizeSemanticsEnum.deserialize(child))
+            if tag == "ARRAY-SIZE-SEMANTICS":
+                setattr(obj, "array_size_semantics", ArraySizeSemanticsEnum.deserialize(child))
             elif tag == "BASE-TYPE-REF":
                 setattr(obj, "base_type_ref", ARRef.deserialize(child))
             elif tag == "SW-FILL-CHARACTER":
@@ -182,8 +182,8 @@ class SwTextPropsBuilder(BuilderBase):
         self._obj: SwTextProps = SwTextProps()
 
 
-    def with_array_size(self, value: Optional[ArraySizeSemanticsEnum]) -> "SwTextPropsBuilder":
-        """Set array_size attribute.
+    def with_array_size_semantics(self, value: Optional[ArraySizeSemanticsEnum]) -> "SwTextPropsBuilder":
+        """Set array_size_semantics attribute.
 
         Args:
             value: Value to set
@@ -192,8 +192,8 @@ class SwTextPropsBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'array_size' is required and cannot be None")
-        self._obj.array_size = value
+            raise ValueError("Attribute 'array_size_semantics' is required and cannot be None")
+        self._obj.array_size_semantics = value
         return self
 
     def with_base_type(self, value: Optional[SwBaseType]) -> "SwTextPropsBuilder":
@@ -242,7 +242,7 @@ class SwTextPropsBuilder(BuilderBase):
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "arraySize",
+        "arraySizeSemantics",
         "baseType",
         "swFillCharacter",
         "swMaxTextSize",

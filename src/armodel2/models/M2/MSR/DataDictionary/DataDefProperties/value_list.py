@@ -39,8 +39,10 @@ class ValueList(ARObject):
 
 
     v: Optional[Numerical]
+    vts: list[Numerical]
     _DESERIALIZE_DISPATCH = {
         "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
+        "VTS": lambda obj, elem: obj.vts.append(SerializationHelper.deserialize_by_tag(elem, "Numerical")),
     }
 
 
@@ -48,6 +50,7 @@ class ValueList(ARObject):
         """Initialize ValueList."""
         super().__init__()
         self.v: Optional[Numerical] = None
+        self.vts: list[Numerical] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ValueList to XML element (atp_mixed - no wrapping).
@@ -79,6 +82,27 @@ class ValueList(ARObject):
             child.text = str(self.v)
             elem.append(child)
 
+        # Serialize vts (list)
+        if self.vts:
+            for item in self.vts:
+                if is_ref:
+                    # For reference lists, serialize as reference
+                    if hasattr(item, "serialize"):
+                        elem.append(item.serialize())
+                elif is_primitive_type("Numerical", package_data):
+                    # Simple primitive type
+                    child = ET.Element("VT")
+                    child.text = str(item)
+                    elem.append(child)
+                elif is_enum_type("Numerical", package_data):
+                    # Enum type - use serialize method
+                    if hasattr(item, "serialize"):
+                        elem.append(item.serialize())
+                else:
+                    # Complex type - use serialize method
+                    if hasattr(item, "serialize"):
+                        elem.append(item.serialize())
+
         return elem
 
     @classmethod
@@ -99,6 +123,15 @@ class ValueList(ARObject):
         if child is not None:
             v_value = SerializationHelper.deserialize_by_tag(child, "Numerical")
             obj.v = v_value
+
+        # Parse vts (list)
+        obj.vts = []
+        for child in element:
+            tag = SerializationHelper.strip_namespace(child.tag)
+            if tag == "VT":
+                vts_value = SerializationHelper.deserialize_by_tag(child, "Numerical")
+                if vts_value is not None:
+                    obj.vts.append(vts_value)
 
         return obj
 
@@ -127,11 +160,45 @@ class ValueListBuilder(BuilderBase):
         self._obj.v = value
         return self
 
+    def with_vts(self, items: list[Numerical]) -> "ValueListBuilder":
+        """Set vts list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts = list(items) if items else []
+        return self
+
+
+    def add_vt(self, item: Numerical) -> "ValueListBuilder":
+        """Add a single item to vts list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts.append(item)
+        return self
+
+    def clear_vts(self) -> "ValueListBuilder":
+        """Clear all items from vts list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.vts = []
+        return self
 
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
         "v",
+        "vt",
     }
 
 

@@ -37,18 +37,18 @@ class McFunction(ARElement):
     _XML_TAG = "MC-FUNCTION"
 
 
-    def_calprm_set_ref: Optional[ARRef]
-    in_measurement_ref: Optional[ARRef]
-    loc_ref: Optional[ARRef]
-    out_ref: Optional[ARRef]
-    ref_calprm_set_ref: Optional[ARRef]
+    def_calprm_set: Optional[McFunctionDataRefSet]
+    in_measurement_set: Optional[McFunctionDataRefSet]
+    loc_measurement_set: Optional[McFunctionDataRefSet]
+    out_measurement_set: Optional[McFunctionDataRefSet]
+    ref_calprm_set: Optional[McFunctionDataRefSet]
     sub_function_refs: list[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "DEF-CALPRM-SET-REF": lambda obj, elem: setattr(obj, "def_calprm_set_ref", ARRef.deserialize(elem)),
-        "IN-MEASUREMENT-REF": lambda obj, elem: setattr(obj, "in_measurement_ref", ARRef.deserialize(elem)),
-        "LOC-REF": lambda obj, elem: setattr(obj, "loc_ref", ARRef.deserialize(elem)),
-        "OUT-REF": lambda obj, elem: setattr(obj, "out_ref", ARRef.deserialize(elem)),
-        "REF-CALPRM-SET-REF": lambda obj, elem: setattr(obj, "ref_calprm_set_ref", ARRef.deserialize(elem)),
+        "DEF-CALPRM-SET": lambda obj, elem: setattr(obj, "def_calprm_set", SerializationHelper.deserialize_by_tag(elem, "McFunctionDataRefSet")),
+        "IN-MEASUREMENT-SET": lambda obj, elem: setattr(obj, "in_measurement_set", SerializationHelper.deserialize_by_tag(elem, "McFunctionDataRefSet")),
+        "LOC-MEASUREMENT-SET": lambda obj, elem: setattr(obj, "loc_measurement_set", SerializationHelper.deserialize_by_tag(elem, "McFunctionDataRefSet")),
+        "OUT-MEASUREMENT-SET": lambda obj, elem: setattr(obj, "out_measurement_set", SerializationHelper.deserialize_by_tag(elem, "McFunctionDataRefSet")),
+        "REF-CALPRM-SET": lambda obj, elem: setattr(obj, "ref_calprm_set", SerializationHelper.deserialize_by_tag(elem, "McFunctionDataRefSet")),
         "SUB-FUNCTION-REFS": lambda obj, elem: [obj.sub_function_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
     }
 
@@ -56,11 +56,11 @@ class McFunction(ARElement):
     def __init__(self) -> None:
         """Initialize McFunction."""
         super().__init__()
-        self.def_calprm_set_ref: Optional[ARRef] = None
-        self.in_measurement_ref: Optional[ARRef] = None
-        self.loc_ref: Optional[ARRef] = None
-        self.out_ref: Optional[ARRef] = None
-        self.ref_calprm_set_ref: Optional[ARRef] = None
+        self.def_calprm_set: Optional[McFunctionDataRefSet] = None
+        self.in_measurement_set: Optional[McFunctionDataRefSet] = None
+        self.loc_measurement_set: Optional[McFunctionDataRefSet] = None
+        self.out_measurement_set: Optional[McFunctionDataRefSet] = None
+        self.ref_calprm_set: Optional[McFunctionDataRefSet] = None
         self.sub_function_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
@@ -86,12 +86,12 @@ class McFunction(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize def_calprm_set_ref
-        if self.def_calprm_set_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.def_calprm_set_ref, "McFunctionDataRefSet")
+        # Serialize def_calprm_set
+        if self.def_calprm_set is not None:
+            serialized = SerializationHelper.serialize_item(self.def_calprm_set, "McFunctionDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEF-CALPRM-SET-REF")
+                wrapped = ET.Element("DEF-CALPRM-SET")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -100,12 +100,12 @@ class McFunction(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize in_measurement_ref
-        if self.in_measurement_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.in_measurement_ref, "McFunctionDataRefSet")
+        # Serialize in_measurement_set
+        if self.in_measurement_set is not None:
+            serialized = SerializationHelper.serialize_item(self.in_measurement_set, "McFunctionDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IN-MEASUREMENT-REF")
+                wrapped = ET.Element("IN-MEASUREMENT-SET")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -114,12 +114,12 @@ class McFunction(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize loc_ref
-        if self.loc_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.loc_ref, "McFunctionDataRefSet")
+        # Serialize loc_measurement_set
+        if self.loc_measurement_set is not None:
+            serialized = SerializationHelper.serialize_item(self.loc_measurement_set, "McFunctionDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("LOC-REF")
+                wrapped = ET.Element("LOC-MEASUREMENT-SET")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -128,12 +128,12 @@ class McFunction(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize out_ref
-        if self.out_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.out_ref, "McFunctionDataRefSet")
+        # Serialize out_measurement_set
+        if self.out_measurement_set is not None:
+            serialized = SerializationHelper.serialize_item(self.out_measurement_set, "McFunctionDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("OUT-REF")
+                wrapped = ET.Element("OUT-MEASUREMENT-SET")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -142,12 +142,12 @@ class McFunction(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ref_calprm_set_ref
-        if self.ref_calprm_set_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.ref_calprm_set_ref, "McFunctionDataRefSet")
+        # Serialize ref_calprm_set
+        if self.ref_calprm_set is not None:
+            serialized = SerializationHelper.serialize_item(self.ref_calprm_set, "McFunctionDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REF-CALPRM-SET-REF")
+                wrapped = ET.Element("REF-CALPRM-SET")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -192,16 +192,16 @@ class McFunction(ARElement):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "DEF-CALPRM-SET-REF":
-                setattr(obj, "def_calprm_set_ref", ARRef.deserialize(child))
-            elif tag == "IN-MEASUREMENT-REF":
-                setattr(obj, "in_measurement_ref", ARRef.deserialize(child))
-            elif tag == "LOC-REF":
-                setattr(obj, "loc_ref", ARRef.deserialize(child))
-            elif tag == "OUT-REF":
-                setattr(obj, "out_ref", ARRef.deserialize(child))
-            elif tag == "REF-CALPRM-SET-REF":
-                setattr(obj, "ref_calprm_set_ref", ARRef.deserialize(child))
+            if tag == "DEF-CALPRM-SET":
+                setattr(obj, "def_calprm_set", SerializationHelper.deserialize_by_tag(child, "McFunctionDataRefSet"))
+            elif tag == "IN-MEASUREMENT-SET":
+                setattr(obj, "in_measurement_set", SerializationHelper.deserialize_by_tag(child, "McFunctionDataRefSet"))
+            elif tag == "LOC-MEASUREMENT-SET":
+                setattr(obj, "loc_measurement_set", SerializationHelper.deserialize_by_tag(child, "McFunctionDataRefSet"))
+            elif tag == "OUT-MEASUREMENT-SET":
+                setattr(obj, "out_measurement_set", SerializationHelper.deserialize_by_tag(child, "McFunctionDataRefSet"))
+            elif tag == "REF-CALPRM-SET":
+                setattr(obj, "ref_calprm_set", SerializationHelper.deserialize_by_tag(child, "McFunctionDataRefSet"))
             elif tag == "SUB-FUNCTION-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -234,8 +234,8 @@ class McFunctionBuilder(ARElementBuilder):
         self._obj.def_calprm_set = value
         return self
 
-    def with_in_measurement(self, value: Optional[McFunctionDataRefSet]) -> "McFunctionBuilder":
-        """Set in_measurement attribute.
+    def with_in_measurement_set(self, value: Optional[McFunctionDataRefSet]) -> "McFunctionBuilder":
+        """Set in_measurement_set attribute.
 
         Args:
             value: Value to set
@@ -244,12 +244,12 @@ class McFunctionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'in_measurement' is required and cannot be None")
-        self._obj.in_measurement = value
+            raise ValueError("Attribute 'in_measurement_set' is required and cannot be None")
+        self._obj.in_measurement_set = value
         return self
 
-    def with_loc(self, value: Optional[McFunctionDataRefSet]) -> "McFunctionBuilder":
-        """Set loc attribute.
+    def with_loc_measurement_set(self, value: Optional[McFunctionDataRefSet]) -> "McFunctionBuilder":
+        """Set loc_measurement_set attribute.
 
         Args:
             value: Value to set
@@ -258,12 +258,12 @@ class McFunctionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'loc' is required and cannot be None")
-        self._obj.loc = value
+            raise ValueError("Attribute 'loc_measurement_set' is required and cannot be None")
+        self._obj.loc_measurement_set = value
         return self
 
-    def with_out(self, value: Optional[McFunctionDataRefSet]) -> "McFunctionBuilder":
-        """Set out attribute.
+    def with_out_measurement_set(self, value: Optional[McFunctionDataRefSet]) -> "McFunctionBuilder":
+        """Set out_measurement_set attribute.
 
         Args:
             value: Value to set
@@ -272,8 +272,8 @@ class McFunctionBuilder(ARElementBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'out' is required and cannot be None")
-        self._obj.out = value
+            raise ValueError("Attribute 'out_measurement_set' is required and cannot be None")
+        self._obj.out_measurement_set = value
         return self
 
     def with_ref_calprm_set(self, value: Optional[McFunctionDataRefSet]) -> "McFunctionBuilder":
@@ -328,9 +328,9 @@ class McFunctionBuilder(ARElementBuilder):
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
         "defCalprmSet",
-        "inMeasurement",
-        "loc",
-        "out",
+        "inMeasurementSet",
+        "locMeasurementSet",
+        "outMeasurementSet",
         "refCalprmSet",
         "subFunction",
     }

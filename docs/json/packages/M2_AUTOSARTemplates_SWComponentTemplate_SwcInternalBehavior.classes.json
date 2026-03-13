@@ -68,7 +68,7 @@
       ],
       "attributes": {
         "argument": {
-          "type": "RunnableEntity",
+          "type": "RunnableEntityArgument",
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,

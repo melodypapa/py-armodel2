@@ -43,16 +43,16 @@ class McSupportData(ARObject):
     _XML_TAG = "MC-SUPPORT-DATA"
 
 
-    emulations: list[McSwEmulationMethodSupport]
-    mc_parameters: list[McDataInstance]
-    mc_variables: list[McDataInstance]
-    measurable_refs: list[ARRef]
+    emulation_supports: list[McSwEmulationMethodSupport]
+    mc_parameter_instances: list[McDataInstance]
+    mc_variable_instances: list[McDataInstance]
+    measurable_system_constant_value_refs: list[ARRef]
     rpt_support_data: Optional[RptSupportData]
     _DESERIALIZE_DISPATCH = {
-        "EMULATIONS": lambda obj, elem: obj.emulations.append(SerializationHelper.deserialize_by_tag(elem, "McSwEmulationMethodSupport")),
-        "MC-PARAMETERS": lambda obj, elem: obj.mc_parameters.append(SerializationHelper.deserialize_by_tag(elem, "McDataInstance")),
-        "MC-VARIABLES": lambda obj, elem: obj.mc_variables.append(SerializationHelper.deserialize_by_tag(elem, "McDataInstance")),
-        "MEASURABLE-REFS": lambda obj, elem: [obj.measurable_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "EMULATION-SUPPORTS": lambda obj, elem: obj.emulation_supports.append(SerializationHelper.deserialize_by_tag(elem, "McSwEmulationMethodSupport")),
+        "MC-PARAMETER-INSTANCES": lambda obj, elem: obj.mc_parameter_instances.append(SerializationHelper.deserialize_by_tag(elem, "McDataInstance")),
+        "MC-VARIABLE-INSTANCES": lambda obj, elem: obj.mc_variable_instances.append(SerializationHelper.deserialize_by_tag(elem, "McDataInstance")),
+        "MEASURABLE-SYSTEM-CONSTANT-VALUES-REFS": lambda obj, elem: [obj.measurable_system_constant_value_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "RPT-SUPPORT-DATA": lambda obj, elem: setattr(obj, "rpt_support_data", SerializationHelper.deserialize_by_tag(elem, "RptSupportData")),
     }
 
@@ -60,10 +60,10 @@ class McSupportData(ARObject):
     def __init__(self) -> None:
         """Initialize McSupportData."""
         super().__init__()
-        self.emulations: list[McSwEmulationMethodSupport] = []
-        self.mc_parameters: list[McDataInstance] = []
-        self.mc_variables: list[McDataInstance] = []
-        self.measurable_refs: list[ARRef] = []
+        self.emulation_supports: list[McSwEmulationMethodSupport] = []
+        self.mc_parameter_instances: list[McDataInstance] = []
+        self.mc_variable_instances: list[McDataInstance] = []
+        self.measurable_system_constant_value_refs: list[ARRef] = []
         self.rpt_support_data: Optional[RptSupportData] = None
 
     def serialize(self) -> ET.Element:
@@ -89,43 +89,43 @@ class McSupportData(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize emulations (list to container "EMULATIONS")
-        if self.emulations:
-            wrapper = ET.Element("EMULATIONS")
-            for item in self.emulations:
+        # Serialize emulation_supports (list to container "EMULATION-SUPPORTS")
+        if self.emulation_supports:
+            wrapper = ET.Element("EMULATION-SUPPORTS")
+            for item in self.emulation_supports:
                 serialized = SerializationHelper.serialize_item(item, "McSwEmulationMethodSupport")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mc_parameters (list to container "MC-PARAMETERS")
-        if self.mc_parameters:
-            wrapper = ET.Element("MC-PARAMETERS")
-            for item in self.mc_parameters:
+        # Serialize mc_parameter_instances (list to container "MC-PARAMETER-INSTANCES")
+        if self.mc_parameter_instances:
+            wrapper = ET.Element("MC-PARAMETER-INSTANCES")
+            for item in self.mc_parameter_instances:
                 serialized = SerializationHelper.serialize_item(item, "McDataInstance")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mc_variables (list to container "MC-VARIABLES")
-        if self.mc_variables:
-            wrapper = ET.Element("MC-VARIABLES")
-            for item in self.mc_variables:
+        # Serialize mc_variable_instances (list to container "MC-VARIABLE-INSTANCES")
+        if self.mc_variable_instances:
+            wrapper = ET.Element("MC-VARIABLE-INSTANCES")
+            for item in self.mc_variable_instances:
                 serialized = SerializationHelper.serialize_item(item, "McDataInstance")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize measurable_refs (list to container "MEASURABLE-REFS")
-        if self.measurable_refs:
-            wrapper = ET.Element("MEASURABLE-REFS")
-            for item in self.measurable_refs:
+        # Serialize measurable_system_constant_value_refs (list to container "MEASURABLE-SYSTEM-CONSTANT-VALUES-REFS")
+        if self.measurable_system_constant_value_refs:
+            wrapper = ET.Element("MEASURABLE-SYSTEM-CONSTANT-VALUES-REFS")
+            for item in self.measurable_system_constant_value_refs:
                 serialized = SerializationHelper.serialize_item(item, "SwSystemconstantValueSet")
                 if serialized is not None:
-                    child_elem = ET.Element("MEASURABLE-REF")
+                    child_elem = ET.Element("MEASURABLE-SYSTEM-CONSTANT-VALUE-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -169,22 +169,22 @@ class McSupportData(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "EMULATIONS":
+            if tag == "EMULATION-SUPPORTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.emulations.append(SerializationHelper.deserialize_by_tag(item_elem, "McSwEmulationMethodSupport"))
-            elif tag == "MC-PARAMETERS":
+                    obj.emulation_supports.append(SerializationHelper.deserialize_by_tag(item_elem, "McSwEmulationMethodSupport"))
+            elif tag == "MC-PARAMETER-INSTANCES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.mc_parameters.append(SerializationHelper.deserialize_by_tag(item_elem, "McDataInstance"))
-            elif tag == "MC-VARIABLES":
+                    obj.mc_parameter_instances.append(SerializationHelper.deserialize_by_tag(item_elem, "McDataInstance"))
+            elif tag == "MC-VARIABLE-INSTANCES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.mc_variables.append(SerializationHelper.deserialize_by_tag(item_elem, "McDataInstance"))
-            elif tag == "MEASURABLE-REFS":
+                    obj.mc_variable_instances.append(SerializationHelper.deserialize_by_tag(item_elem, "McDataInstance"))
+            elif tag == "MEASURABLE-SYSTEM-CONSTANT-VALUES-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.measurable_refs.append(ARRef.deserialize(item_elem))
+                    obj.measurable_system_constant_value_refs.append(ARRef.deserialize(item_elem))
             elif tag == "RPT-SUPPORT-DATA":
                 setattr(obj, "rpt_support_data", SerializationHelper.deserialize_by_tag(child, "RptSupportData"))
 
@@ -201,8 +201,8 @@ class McSupportDataBuilder(BuilderBase):
         self._obj: McSupportData = McSupportData()
 
 
-    def with_emulations(self, items: list[McSwEmulationMethodSupport]) -> "McSupportDataBuilder":
-        """Set emulations list attribute.
+    def with_emulation_supports(self, items: list[McSwEmulationMethodSupport]) -> "McSupportDataBuilder":
+        """Set emulation_supports list attribute.
 
         Args:
             items: List of items to set
@@ -210,11 +210,11 @@ class McSupportDataBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.emulations = list(items) if items else []
+        self._obj.emulation_supports = list(items) if items else []
         return self
 
-    def with_mc_parameters(self, items: list[McDataInstance]) -> "McSupportDataBuilder":
-        """Set mc_parameters list attribute.
+    def with_mc_parameter_instances(self, items: list[McDataInstance]) -> "McSupportDataBuilder":
+        """Set mc_parameter_instances list attribute.
 
         Args:
             items: List of items to set
@@ -222,11 +222,11 @@ class McSupportDataBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.mc_parameters = list(items) if items else []
+        self._obj.mc_parameter_instances = list(items) if items else []
         return self
 
-    def with_mc_variables(self, items: list[McDataInstance]) -> "McSupportDataBuilder":
-        """Set mc_variables list attribute.
+    def with_mc_variable_instances(self, items: list[McDataInstance]) -> "McSupportDataBuilder":
+        """Set mc_variable_instances list attribute.
 
         Args:
             items: List of items to set
@@ -234,11 +234,11 @@ class McSupportDataBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.mc_variables = list(items) if items else []
+        self._obj.mc_variable_instances = list(items) if items else []
         return self
 
-    def with_measurables(self, items: list[SwSystemconstantValueSet]) -> "McSupportDataBuilder":
-        """Set measurables list attribute.
+    def with_measurable_system_constant_valueses(self, items: list[SwSystemconstantValueSet]) -> "McSupportDataBuilder":
+        """Set measurable_system_constant_valueses list attribute.
 
         Args:
             items: List of items to set
@@ -246,7 +246,7 @@ class McSupportDataBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.measurables = list(items) if items else []
+        self._obj.measurable_system_constant_valueses = list(items) if items else []
         return self
 
     def with_rpt_support_data(self, value: Optional[RptSupportData]) -> "McSupportDataBuilder":
@@ -264,8 +264,8 @@ class McSupportDataBuilder(BuilderBase):
         return self
 
 
-    def add_emulation(self, item: McSwEmulationMethodSupport) -> "McSupportDataBuilder":
-        """Add a single item to emulations list.
+    def add_emulation_support(self, item: McSwEmulationMethodSupport) -> "McSupportDataBuilder":
+        """Add a single item to emulation_supports list.
 
         Args:
             item: Item to add
@@ -273,20 +273,20 @@ class McSupportDataBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.emulations.append(item)
+        self._obj.emulation_supports.append(item)
         return self
 
-    def clear_emulations(self) -> "McSupportDataBuilder":
-        """Clear all items from emulations list.
+    def clear_emulation_supports(self) -> "McSupportDataBuilder":
+        """Clear all items from emulation_supports list.
 
         Returns:
             self for method chaining
         """
-        self._obj.emulations = []
+        self._obj.emulation_supports = []
         return self
 
-    def add_mc_parameter(self, item: McDataInstance) -> "McSupportDataBuilder":
-        """Add a single item to mc_parameters list.
+    def add_mc_parameter_instance(self, item: McDataInstance) -> "McSupportDataBuilder":
+        """Add a single item to mc_parameter_instances list.
 
         Args:
             item: Item to add
@@ -294,20 +294,20 @@ class McSupportDataBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.mc_parameters.append(item)
+        self._obj.mc_parameter_instances.append(item)
         return self
 
-    def clear_mc_parameters(self) -> "McSupportDataBuilder":
-        """Clear all items from mc_parameters list.
+    def clear_mc_parameter_instances(self) -> "McSupportDataBuilder":
+        """Clear all items from mc_parameter_instances list.
 
         Returns:
             self for method chaining
         """
-        self._obj.mc_parameters = []
+        self._obj.mc_parameter_instances = []
         return self
 
-    def add_mc_variable(self, item: McDataInstance) -> "McSupportDataBuilder":
-        """Add a single item to mc_variables list.
+    def add_mc_variable_instance(self, item: McDataInstance) -> "McSupportDataBuilder":
+        """Add a single item to mc_variable_instances list.
 
         Args:
             item: Item to add
@@ -315,20 +315,20 @@ class McSupportDataBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.mc_variables.append(item)
+        self._obj.mc_variable_instances.append(item)
         return self
 
-    def clear_mc_variables(self) -> "McSupportDataBuilder":
-        """Clear all items from mc_variables list.
+    def clear_mc_variable_instances(self) -> "McSupportDataBuilder":
+        """Clear all items from mc_variable_instances list.
 
         Returns:
             self for method chaining
         """
-        self._obj.mc_variables = []
+        self._obj.mc_variable_instances = []
         return self
 
-    def add_measurable(self, item: SwSystemconstantValueSet) -> "McSupportDataBuilder":
-        """Add a single item to measurables list.
+    def add_measurable_system_constant_values(self, item: SwSystemconstantValueSet) -> "McSupportDataBuilder":
+        """Add a single item to measurable_system_constant_valueses list.
 
         Args:
             item: Item to add
@@ -336,25 +336,25 @@ class McSupportDataBuilder(BuilderBase):
         Returns:
             self for method chaining
         """
-        self._obj.measurables.append(item)
+        self._obj.measurable_system_constant_valueses.append(item)
         return self
 
-    def clear_measurables(self) -> "McSupportDataBuilder":
-        """Clear all items from measurables list.
+    def clear_measurable_system_constant_valueses(self) -> "McSupportDataBuilder":
+        """Clear all items from measurable_system_constant_valueses list.
 
         Returns:
             self for method chaining
         """
-        self._obj.measurables = []
+        self._obj.measurable_system_constant_valueses = []
         return self
 
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "emulation",
-        "mcParameter",
-        "mcVariable",
-        "measurable",
+        "emulationSupport",
+        "mcParameterInstance",
+        "mcVariableInstance",
+        "measurableSystemConstantValues",
         "rptSupportData",
     }
 

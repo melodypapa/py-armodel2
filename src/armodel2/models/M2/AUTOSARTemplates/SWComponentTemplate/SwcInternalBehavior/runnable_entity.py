@@ -34,6 +34,9 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.Trigger.internal_triggering_point import (
     InternalTriggeringPoint,
 )
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RunnableEntity.runnable_entity_argument import (
+    RunnableEntityArgument,
+)
 
 if TYPE_CHECKING:
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ModeDeclarationGroup.mode_access_point import (
@@ -74,7 +77,7 @@ class RunnableEntity(ExecutableEntity):
     _XML_TAG = "RUNNABLE-ENTITY"
 
 
-    arguments: list[RunnableEntity]
+    arguments: list[RunnableEntityArgument]
     asynchronous_server_call_result_points: list[AsynchronousServerCallResultPoint]
     can_be_invoked_concurrently: Optional[Boolean]
     data_read_accesses: list[VariableAccess]
@@ -93,7 +96,7 @@ class RunnableEntity(ExecutableEntity):
     wait_points: list[WaitPoint]
     _written_local_variables: list[VariableAccess]
     _DESERIALIZE_DISPATCH = {
-        "ARGUMENTS": lambda obj, elem: obj.arguments.append(SerializationHelper.deserialize_by_tag(elem, "RunnableEntity")),
+        "ARGUMENTS": lambda obj, elem: obj.arguments.append(SerializationHelper.deserialize_by_tag(elem, "RunnableEntityArgument")),
         "ASYNCHRONOUS-SERVER-CALL-RESULT-POINTS": lambda obj, elem: obj.asynchronous_server_call_result_points.append(SerializationHelper.deserialize_by_tag(elem, "AsynchronousServerCallResultPoint")),
         "CAN-BE-INVOKED-CONCURRENTLY": lambda obj, elem: setattr(obj, "can_be_invoked_concurrently", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "DATA-READ-ACCESSS": lambda obj, elem: obj.data_read_accesses.append(SerializationHelper.deserialize_by_tag(elem, "VariableAccess")),
@@ -117,7 +120,7 @@ class RunnableEntity(ExecutableEntity):
     def __init__(self) -> None:
         """Initialize RunnableEntity."""
         super().__init__()
-        self.arguments: list[RunnableEntity] = []
+        self.arguments: list[RunnableEntityArgument] = []
         self.asynchronous_server_call_result_points: list[AsynchronousServerCallResultPoint] = []
         self.can_be_invoked_concurrently: Optional[Boolean] = None
         self.data_read_accesses: list[VariableAccess] = []
@@ -207,7 +210,7 @@ class RunnableEntity(ExecutableEntity):
         if self.arguments:
             wrapper = ET.Element("ARGUMENTS")
             for item in self.arguments:
-                serialized = SerializationHelper.serialize_item(item, "RunnableEntity")
+                serialized = SerializationHelper.serialize_item(item, "RunnableEntityArgument")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -427,7 +430,7 @@ class RunnableEntity(ExecutableEntity):
             if tag == "ARGUMENTS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntity"))
+                    obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "RunnableEntityArgument"))
             elif tag == "ASYNCHRONOUS-SERVER-CALL-RESULT-POINTS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -510,7 +513,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         self._obj: RunnableEntity = RunnableEntity()
 
 
-    def with_arguments(self, items: list[RunnableEntity]) -> "RunnableEntityBuilder":
+    def with_arguments(self, items: list[RunnableEntityArgument]) -> "RunnableEntityBuilder":
         """Set arguments list attribute.
 
         Args:
@@ -731,7 +734,7 @@ class RunnableEntityBuilder(ExecutableEntityBuilder):
         return self
 
 
-    def add_argument(self, item: RunnableEntity) -> "RunnableEntityBuilder":
+    def add_argument(self, item: RunnableEntityArgument) -> "RunnableEntityBuilder":
         """Add a single item to arguments list.
 
         Args:
