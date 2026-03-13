@@ -155,7 +155,7 @@
     },
     {
       "name": "DataTypeMappingSet",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": false,
       "atp_type": null,
@@ -210,14 +210,14 @@
         "dataTypeMap": {
           "type": "DataTypeMap",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This is one particular association between an Application"
         },
         "modeRequestTypeMap": {
           "type": "ModeRequestTypeMap",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This is one particular association between an Mode and its AbstractImplementationData"
         }
@@ -284,7 +284,7 @@
     },
     {
       "name": "DataTypeMap",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": false,
       "atp_type": null,
@@ -322,7 +322,7 @@
           "is_ref": true,
           "note": "This is the corresponding ApplicationDataType"
         },
-        "implementation": {
+        "implementationDataType": {
           "type": "AbstractImplementationDataType",
           "multiplicity": "0..1",
           "kind": "ref",
@@ -333,7 +333,7 @@
     },
     {
       "name": "ApplicationCompositeDataType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": true,
       "atp_type": null,
@@ -392,7 +392,7 @@
     },
     {
       "name": "ApplicationArrayDataType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": false,
       "atp_type": null,
@@ -453,7 +453,7 @@
         "element": {
           "type": "ApplicationArrayElement",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This association implements the concept of an array That is, in some cases it is necessary to be able single array elements, e.g. as input values for routine."
         }
@@ -461,7 +461,7 @@
     },
     {
       "name": "ApplicationRecordDataType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Datatype::Datatypes",
       "is_abstract": false,
       "atp_type": null,
@@ -515,7 +515,7 @@
         "element": {
           "type": "ApplicationRecordElement",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Specifies an element of a record. The aggregation of ApplicationRecordElement is subject with the purpose to support the conditional elements inside a ApplicationrecordData atpVariation"
         }

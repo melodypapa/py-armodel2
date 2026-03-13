@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
@@ -20,6 +20,9 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 )
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
+)
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.transformation_com_spec_props import (
+    TransformationComSpecProps,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -42,11 +45,11 @@ class ServerComSpec(PPortComSpec):
 
     operation_ref: Optional[ARRef]
     queue_length: Optional[PositiveInteger]
-    transformation_coms: list[Any]
+    transformation_com_spec_propses: list[TransformationComSpecProps]
     _DESERIALIZE_DISPATCH = {
         "OPERATION-REF": lambda obj, elem: setattr(obj, "operation_ref", ARRef.deserialize(elem)),
         "QUEUE-LENGTH": lambda obj, elem: setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
-        "TRANSFORMATION-COMS": lambda obj, elem: obj.transformation_coms.append(SerializationHelper.deserialize_by_tag(elem, "any (TransformationCom)")),
+        "TRANSFORMATION-COM-SPEC-PROPSS": ("_POLYMORPHIC_LIST", "transformation_com_spec_propses", ["EndToEndTransformationComSpecProps", "UserDefinedTransformationComSpecProps"]),
     }
 
 
@@ -55,7 +58,7 @@ class ServerComSpec(PPortComSpec):
         super().__init__()
         self.operation_ref: Optional[ARRef] = None
         self.queue_length: Optional[PositiveInteger] = None
-        self.transformation_coms: list[Any] = []
+        self.transformation_com_spec_propses: list[TransformationComSpecProps] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ServerComSpec to XML element.
@@ -108,11 +111,11 @@ class ServerComSpec(PPortComSpec):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transformation_coms (list to container "TRANSFORMATION-COMS")
-        if self.transformation_coms:
-            wrapper = ET.Element("TRANSFORMATION-COMS")
-            for item in self.transformation_coms:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize transformation_com_spec_propses (list to container "TRANSFORMATION-COM-SPEC-PROPSS")
+        if self.transformation_com_spec_propses:
+            wrapper = ET.Element("TRANSFORMATION-COM-SPEC-PROPSS")
+            for item in self.transformation_com_spec_propses:
+                serialized = SerializationHelper.serialize_item(item, "TransformationComSpecProps")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -141,10 +144,14 @@ class ServerComSpec(PPortComSpec):
                 setattr(obj, "operation_ref", ARRef.deserialize(child))
             elif tag == "QUEUE-LENGTH":
                 setattr(obj, "queue_length", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
-            elif tag == "TRANSFORMATION-COMS":
-                # Iterate through wrapper children
+            elif tag == "TRANSFORMATION-COM-SPEC-PROPSS":
+                # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
-                    obj.transformation_coms.append(SerializationHelper.deserialize_by_tag(item_elem, "any (TransformationCom)"))
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "END-TO-END-TRANSFORMATION-COM-SPEC-PROPS":
+                        obj.transformation_com_spec_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "EndToEndTransformationComSpecProps"))
+                    elif concrete_tag == "USER-DEFINED-TRANSFORMATION-COM-SPEC-PROPS":
+                        obj.transformation_com_spec_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "UserDefinedTransformationComSpecProps"))
 
         return obj
 
@@ -187,8 +194,8 @@ class ServerComSpecBuilder(PPortComSpecBuilder):
         self._obj.queue_length = value
         return self
 
-    def with_transformation_coms(self, items: list[Any]) -> "ServerComSpecBuilder":
-        """Set transformation_coms list attribute.
+    def with_transformation_com_spec_propses(self, items: list[TransformationComSpecProps]) -> "ServerComSpecBuilder":
+        """Set transformation_com_spec_propses list attribute.
 
         Args:
             items: List of items to set
@@ -196,12 +203,12 @@ class ServerComSpecBuilder(PPortComSpecBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.transformation_coms = list(items) if items else []
+        self._obj.transformation_com_spec_propses = list(items) if items else []
         return self
 
 
-    def add_transformation_com(self, item: Any) -> "ServerComSpecBuilder":
-        """Add a single item to transformation_coms list.
+    def add_transformation_com_spec_props(self, item: TransformationComSpecProps) -> "ServerComSpecBuilder":
+        """Add a single item to transformation_com_spec_propses list.
 
         Args:
             item: Item to add
@@ -209,16 +216,16 @@ class ServerComSpecBuilder(PPortComSpecBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.transformation_coms.append(item)
+        self._obj.transformation_com_spec_propses.append(item)
         return self
 
-    def clear_transformation_coms(self) -> "ServerComSpecBuilder":
-        """Clear all items from transformation_coms list.
+    def clear_transformation_com_spec_propses(self) -> "ServerComSpecBuilder":
+        """Clear all items from transformation_com_spec_propses list.
 
         Returns:
             self for method chaining
         """
-        self._obj.transformation_coms = []
+        self._obj.transformation_com_spec_propses = []
         return self
 
 
@@ -226,7 +233,7 @@ class ServerComSpecBuilder(PPortComSpecBuilder):
     _OPTIONAL_ATTRIBUTES = {
         "operation",
         "queueLength",
-        "transformationCom",
+        "transformationComSpecProps",
     }
 
 

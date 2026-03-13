@@ -16,8 +16,8 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_compo
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import SwComponentTypeBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
-    ConstantSpecification,
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification_mapping_set import (
+    ConstantSpecificationMappingSet,
 )
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.data_type_mapping_set import (
     DataTypeMappingSet,
@@ -44,22 +44,22 @@ class ParameterSwComponentType(SwComponentType):
     _XML_TAG = "PARAMETER-SW-COMPONENT-TYPE"
 
 
-    constant_refs: list[ARRef]
-    data_type_refs: list[ARRef]
-    instantiation_data_defs: list[InstantiationDataDefProps]
+    constant_mapping_refs: list[ARRef]
+    data_type_mapping_refs: list[ARRef]
+    instantiation_data_def_propses: list[InstantiationDataDefProps]
     _DESERIALIZE_DISPATCH = {
-        "CONSTANT-REFS": lambda obj, elem: [obj.constant_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "DATA-TYPE-REFS": lambda obj, elem: [obj.data_type_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
-        "INSTANTIATION-DATA-DEFS": lambda obj, elem: obj.instantiation_data_defs.append(SerializationHelper.deserialize_by_tag(elem, "InstantiationDataDefProps")),
+        "CONSTANT-MAPPING-REFS": lambda obj, elem: [obj.constant_mapping_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "DATA-TYPE-MAPPING-REFS": lambda obj, elem: [obj.data_type_mapping_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "INSTANTIATION-DATA-DEF-PROPSS": lambda obj, elem: obj.instantiation_data_def_propses.append(SerializationHelper.deserialize_by_tag(elem, "InstantiationDataDefProps")),
     }
 
 
     def __init__(self) -> None:
         """Initialize ParameterSwComponentType."""
         super().__init__()
-        self.constant_refs: list[ARRef] = []
-        self.data_type_refs: list[ARRef] = []
-        self.instantiation_data_defs: list[InstantiationDataDefProps] = []
+        self.constant_mapping_refs: list[ARRef] = []
+        self.data_type_mapping_refs: list[ARRef] = []
+        self.instantiation_data_def_propses: list[InstantiationDataDefProps] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ParameterSwComponentType to XML element.
@@ -84,13 +84,13 @@ class ParameterSwComponentType(SwComponentType):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize constant_refs (list to container "CONSTANT-REFS")
-        if self.constant_refs:
-            wrapper = ET.Element("CONSTANT-REFS")
-            for item in self.constant_refs:
-                serialized = SerializationHelper.serialize_item(item, "ConstantSpecification")
+        # Serialize constant_mapping_refs (list to container "CONSTANT-MAPPING-REFS")
+        if self.constant_mapping_refs:
+            wrapper = ET.Element("CONSTANT-MAPPING-REFS")
+            for item in self.constant_mapping_refs:
+                serialized = SerializationHelper.serialize_item(item, "ConstantSpecificationMappingSet")
                 if serialized is not None:
-                    child_elem = ET.Element("CONSTANT-REF")
+                    child_elem = ET.Element("CONSTANT-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,13 +101,13 @@ class ParameterSwComponentType(SwComponentType):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_type_refs (list to container "DATA-TYPE-REFS")
-        if self.data_type_refs:
-            wrapper = ET.Element("DATA-TYPE-REFS")
-            for item in self.data_type_refs:
+        # Serialize data_type_mapping_refs (list to container "DATA-TYPE-MAPPING-REFS")
+        if self.data_type_mapping_refs:
+            wrapper = ET.Element("DATA-TYPE-MAPPING-REFS")
+            for item in self.data_type_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
-                    child_elem = ET.Element("DATA-TYPE-REF")
+                    child_elem = ET.Element("DATA-TYPE-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -118,10 +118,10 @@ class ParameterSwComponentType(SwComponentType):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize instantiation_data_defs (list to container "INSTANTIATION-DATA-DEFS")
-        if self.instantiation_data_defs:
-            wrapper = ET.Element("INSTANTIATION-DATA-DEFS")
-            for item in self.instantiation_data_defs:
+        # Serialize instantiation_data_def_propses (list to container "INSTANTIATION-DATA-DEF-PROPSS")
+        if self.instantiation_data_def_propses:
+            wrapper = ET.Element("INSTANTIATION-DATA-DEF-PROPSS")
+            for item in self.instantiation_data_def_propses:
                 serialized = SerializationHelper.serialize_item(item, "InstantiationDataDefProps")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -147,18 +147,18 @@ class ParameterSwComponentType(SwComponentType):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CONSTANT-REFS":
+            if tag == "CONSTANT-MAPPING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.constant_refs.append(ARRef.deserialize(item_elem))
-            elif tag == "DATA-TYPE-REFS":
+                    obj.constant_mapping_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "DATA-TYPE-MAPPING-REFS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.data_type_refs.append(ARRef.deserialize(item_elem))
-            elif tag == "INSTANTIATION-DATA-DEFS":
+                    obj.data_type_mapping_refs.append(ARRef.deserialize(item_elem))
+            elif tag == "INSTANTIATION-DATA-DEF-PROPSS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.instantiation_data_defs.append(SerializationHelper.deserialize_by_tag(item_elem, "InstantiationDataDefProps"))
+                    obj.instantiation_data_def_propses.append(SerializationHelper.deserialize_by_tag(item_elem, "InstantiationDataDefProps"))
 
         return obj
 
@@ -173,8 +173,8 @@ class ParameterSwComponentTypeBuilder(SwComponentTypeBuilder):
         self._obj: ParameterSwComponentType = ParameterSwComponentType()
 
 
-    def with_constants(self, items: list[ConstantSpecification]) -> "ParameterSwComponentTypeBuilder":
-        """Set constants list attribute.
+    def with_constant_mappings(self, items: list[ConstantSpecificationMappingSet]) -> "ParameterSwComponentTypeBuilder":
+        """Set constant_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -182,11 +182,11 @@ class ParameterSwComponentTypeBuilder(SwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.constants = list(items) if items else []
+        self._obj.constant_mappings = list(items) if items else []
         return self
 
-    def with_data_types(self, items: list[DataTypeMappingSet]) -> "ParameterSwComponentTypeBuilder":
-        """Set data_types list attribute.
+    def with_data_type_mappings(self, items: list[DataTypeMappingSet]) -> "ParameterSwComponentTypeBuilder":
+        """Set data_type_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -194,11 +194,11 @@ class ParameterSwComponentTypeBuilder(SwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.data_types = list(items) if items else []
+        self._obj.data_type_mappings = list(items) if items else []
         return self
 
-    def with_instantiation_data_defs(self, items: list[InstantiationDataDefProps]) -> "ParameterSwComponentTypeBuilder":
-        """Set instantiation_data_defs list attribute.
+    def with_instantiation_data_def_propses(self, items: list[InstantiationDataDefProps]) -> "ParameterSwComponentTypeBuilder":
+        """Set instantiation_data_def_propses list attribute.
 
         Args:
             items: List of items to set
@@ -206,12 +206,12 @@ class ParameterSwComponentTypeBuilder(SwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.instantiation_data_defs = list(items) if items else []
+        self._obj.instantiation_data_def_propses = list(items) if items else []
         return self
 
 
-    def add_constant(self, item: ConstantSpecification) -> "ParameterSwComponentTypeBuilder":
-        """Add a single item to constants list.
+    def add_constant_mapping(self, item: ConstantSpecificationMappingSet) -> "ParameterSwComponentTypeBuilder":
+        """Add a single item to constant_mappings list.
 
         Args:
             item: Item to add
@@ -219,20 +219,20 @@ class ParameterSwComponentTypeBuilder(SwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.constants.append(item)
+        self._obj.constant_mappings.append(item)
         return self
 
-    def clear_constants(self) -> "ParameterSwComponentTypeBuilder":
-        """Clear all items from constants list.
+    def clear_constant_mappings(self) -> "ParameterSwComponentTypeBuilder":
+        """Clear all items from constant_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.constants = []
+        self._obj.constant_mappings = []
         return self
 
-    def add_data_type(self, item: DataTypeMappingSet) -> "ParameterSwComponentTypeBuilder":
-        """Add a single item to data_types list.
+    def add_data_type_mapping(self, item: DataTypeMappingSet) -> "ParameterSwComponentTypeBuilder":
+        """Add a single item to data_type_mappings list.
 
         Args:
             item: Item to add
@@ -240,20 +240,20 @@ class ParameterSwComponentTypeBuilder(SwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.data_types.append(item)
+        self._obj.data_type_mappings.append(item)
         return self
 
-    def clear_data_types(self) -> "ParameterSwComponentTypeBuilder":
-        """Clear all items from data_types list.
+    def clear_data_type_mappings(self) -> "ParameterSwComponentTypeBuilder":
+        """Clear all items from data_type_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.data_types = []
+        self._obj.data_type_mappings = []
         return self
 
-    def add_instantiation_data_def(self, item: InstantiationDataDefProps) -> "ParameterSwComponentTypeBuilder":
-        """Add a single item to instantiation_data_defs list.
+    def add_instantiation_data_def_props(self, item: InstantiationDataDefProps) -> "ParameterSwComponentTypeBuilder":
+        """Add a single item to instantiation_data_def_propses list.
 
         Args:
             item: Item to add
@@ -261,24 +261,24 @@ class ParameterSwComponentTypeBuilder(SwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.instantiation_data_defs.append(item)
+        self._obj.instantiation_data_def_propses.append(item)
         return self
 
-    def clear_instantiation_data_defs(self) -> "ParameterSwComponentTypeBuilder":
-        """Clear all items from instantiation_data_defs list.
+    def clear_instantiation_data_def_propses(self) -> "ParameterSwComponentTypeBuilder":
+        """Clear all items from instantiation_data_def_propses list.
 
         Returns:
             self for method chaining
         """
-        self._obj.instantiation_data_defs = []
+        self._obj.instantiation_data_def_propses = []
         return self
 
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "constant",
-        "dataType",
-        "instantiationDataDef",
+        "constantMapping",
+        "dataTypeMapping",
+        "instantiationDataDefProps",
     }
 
 

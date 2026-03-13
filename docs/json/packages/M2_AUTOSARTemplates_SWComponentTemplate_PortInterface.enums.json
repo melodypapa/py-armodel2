@@ -3,7 +3,7 @@
   "enumerations": [
     {
       "name": "ServerArgumentImplPolicyEnum",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "note": "This defines how the argument type of the servers RunnableEntity is implemented. Aggregated by ArgumentDataPrototype.serverArgumentImplPolicy",
       "sources": [
@@ -15,6 +15,11 @@
         }
       ],
       "literals": [
+        {
+          "name": "useArgumentType",
+          "index": 0,
+          "description": "The argument type of the RunnableEntity is derived from the AutosarDataType of the ArgumentPrototype.<br>Tags: atp.EnumerationLiteralIndex=0"
+        },
         {
           "name": "useVoid",
           "index": 2,

@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Componen
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import polymorphic
 
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
@@ -34,16 +35,27 @@ class AbstractProvidedPortPrototype(PortPrototype, ABC):
         """
         return True
 
-    provided_com_specs: list[PPortComSpec]
+    _provided_com_specs: list[PPortComSpec]
     _DESERIALIZE_DISPATCH = {
-        "PROVIDED-COM-SPECS": ("_POLYMORPHIC_LIST", "provided_com_specs", ["ModeSwitchSenderComSpec", "NonqueuedSenderComSpec", "NvProvideComSpec", "ParameterProvideComSpec", "QueuedSenderComSpec", "SenderComSpec", "ServerComSpec"]),
+        "PROVIDED-COM-SPECS": ("_POLYMORPHIC_LIST", "_provided_com_specs", ["ModeSwitchSenderComSpec", "NonqueuedSenderComSpec", "NvProvideComSpec", "ParameterProvideComSpec", "QueuedSenderComSpec", "SenderComSpec", "ServerComSpec"]),
     }
 
 
     def __init__(self) -> None:
         """Initialize AbstractProvidedPortPrototype."""
         super().__init__()
-        self.provided_com_specs: list[PPortComSpec] = []
+        self._provided_com_specs: list[PPortComSpec] = []
+    @property
+    @polymorphic({"PROVIDED-COM-SPECS": "PPortComSpec"})
+    def provided_com_specs(self) -> list[PPortComSpec]:
+        """Get provided_com_specs with polymorphic wrapper handling."""
+        return self._provided_com_specs
+
+    @provided_com_specs.setter
+    def provided_com_specs(self, value: list[PPortComSpec]) -> None:
+        """Set provided_com_specs with polymorphic wrapper handling."""
+        self._provided_com_specs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize AbstractProvidedPortPrototype to XML element.
@@ -68,15 +80,14 @@ class AbstractProvidedPortPrototype(PortPrototype, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize provided_com_specs (list to container "PROVIDED-COM-SPECS")
+        # Serialize provided_com_specs (list with polymorphic wrapper "PROVIDED-COM-SPECS")
         if self.provided_com_specs:
-            wrapper = ET.Element("PROVIDED-COM-SPECS")
+            container = ET.Element("PROVIDED-COM-SPECS")
             for item in self.provided_com_specs:
                 serialized = SerializationHelper.serialize_item(item, "PPortComSpec")
                 if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+                    container.append(serialized)
+            elem.append(container)
 
         return elem
 
@@ -102,19 +113,19 @@ class AbstractProvidedPortPrototype(PortPrototype, ABC):
                 for item_elem in child:
                     concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
                     if concrete_tag == "MODE-SWITCH-SENDER-COM-SPEC":
-                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchSenderComSpec"))
+                        obj._provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeSwitchSenderComSpec"))
                     elif concrete_tag == "NONQUEUED-SENDER-COM-SPEC":
-                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NonqueuedSenderComSpec"))
+                        obj._provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NonqueuedSenderComSpec"))
                     elif concrete_tag == "NV-PROVIDE-COM-SPEC":
-                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvProvideComSpec"))
+                        obj._provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "NvProvideComSpec"))
                     elif concrete_tag == "PARAMETER-PROVIDE-COM-SPEC":
-                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterProvideComSpec"))
+                        obj._provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ParameterProvideComSpec"))
                     elif concrete_tag == "QUEUED-SENDER-COM-SPEC":
-                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "QueuedSenderComSpec"))
+                        obj._provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "QueuedSenderComSpec"))
                     elif concrete_tag == "SENDER-COM-SPEC":
-                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderComSpec"))
+                        obj._provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "SenderComSpec"))
                     elif concrete_tag == "SERVER-COM-SPEC":
-                        obj.provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ServerComSpec"))
+                        obj._provided_com_specs.append(SerializationHelper.deserialize_by_tag(item_elem, "ServerComSpec"))
 
         return obj
 

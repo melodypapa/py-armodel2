@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "AtomicSwComponentType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": true,
       "atp_type": null,
@@ -110,7 +110,7 @@
     },
     {
       "name": "ComplexDeviceDriverSwComponentType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -166,7 +166,7 @@
         }
       ],
       "attributes": {
-        "hardware": {
+        "hardwareElement": {
           "type": "HwDescriptionEntity",
           "multiplicity": "*",
           "kind": "ref",
@@ -177,7 +177,7 @@
     },
     {
       "name": "EcuAbstractionSwComponentType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -233,7 +233,7 @@
         }
       ],
       "attributes": {
-        "hardware": {
+        "hardwareElement": {
           "type": "HwDescriptionEntity",
           "multiplicity": "*",
           "kind": "ref",
@@ -244,7 +244,7 @@
     },
     {
       "name": "PRPortPrototype",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -298,18 +298,18 @@
         }
       ],
       "attributes": {
-        "provided": {
+        "providedRequiredInterface": {
           "type": "PortInterface",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "tref",
+          "is_ref": true,
           "note": "isOfType"
         }
       }
     },
     {
       "name": "PortPrototype",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": true,
       "atp_type": null,
@@ -426,67 +426,67 @@
         }
       ],
       "attributes": {
-        "clientServer": {
+        "clientServerAnnotation": {
           "type": "ClientServerAnnotation",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Annotation of this PortPrototype with respect to client/ communication."
         },
-        "delegatedPort": {
+        "delegatedPortAnnotation": {
           "type": "DelegatedPortAnnotation",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Annotations on this delegated port."
         },
         "ioHwAbstractionServerAnnotation": {
           "type": "IoHwAbstractionServerAnnotation",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Annotations on this IO Hardware Abstraction port."
         },
         "modePortAnnotation": {
           "type": "ModePortAnnotation",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Annotations on this mode port."
         },
         "nvDataPortAnnotation": {
           "type": "NvDataPortAnnotation",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Annotations on this non voilatile data port."
         },
-        "parameterPort": {
+        "parameterPortAnnotation": {
           "type": "ParameterPortAnnotation",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Annotations on this parameter port."
         },
-        "senderReceiver": {
-          "type": "any (SenderReceiver)",
+        "senderReceiverAnnotation": {
+          "type": "SenderReceiverAnnotation",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Collection of annotations of this ports sender/receiver communication."
         },
         "triggerPortAnnotation": {
           "type": "TriggerPortAnnotation",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Annotations on this trigger port."
         }
       }
     },
     {
       "name": "ServiceSwComponentType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -545,7 +545,7 @@
     },
     {
       "name": "ApplicationSwComponentType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -610,7 +610,7 @@
     },
     {
       "name": "PPortPrototype",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -680,7 +680,7 @@
     },
     {
       "name": "SwComponentType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": true,
       "atp_type": null,
@@ -763,7 +763,7 @@
         "consistencyNeeds": {
           "type": "ConsistencyNeeds",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents the collection of ConsistencyNeeds by the enclosing SwComponentType. atpVariation"
         },
@@ -806,7 +806,7 @@
     },
     {
       "name": "ParameterSwComponentType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -849,21 +849,21 @@
         }
       ],
       "attributes": {
-        "constant": {
-          "type": "ConstantSpecification",
+        "constantMapping": {
+          "type": "ConstantSpecificationMappingSet",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the ConstantSpecificationMapping to be applied for the particular ParameterSwComponentType"
         },
-        "dataType": {
+        "dataTypeMapping": {
           "type": "DataTypeMappingSet",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the DataTypeMapping to be applied for the ParameterSwComponentType"
         },
-        "instantiationDataDef": {
+        "instantiationDataDefProps": {
           "type": "InstantiationDataDefProps",
           "multiplicity": "*",
           "kind": "attribute",
@@ -874,7 +874,7 @@
     },
     {
       "name": "AbstractRequiredPortPrototype",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": true,
       "atp_type": null,
@@ -931,13 +931,14 @@
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
+          "decorator": "polymorphic:REQUIRED-COM-SPECS=RPortComSpec",
           "note": "Required communication attributes, one for each"
         }
       }
     },
     {
       "name": "AbstractProvidedPortPrototype",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": true,
       "atp_type": null,
@@ -981,13 +982,14 @@
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
+          "decorator": "polymorphic:PROVIDED-COM-SPECS=PPortComSpec",
           "note": "Provided communication attributes per interface element"
         }
       }
     },
     {
       "name": "RPortPrototype",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -1064,7 +1066,7 @@
     },
     {
       "name": "PortGroup",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -1104,9 +1106,9 @@
       ],
       "attributes": {
         "innerGroup": {
-          "type": "PortGroup",
+          "type": "InnerPortGroupInCompositionInstanceRef",
           "multiplicity": "*",
-          "kind": "ref",
+          "kind": "iref",
           "is_ref": true,
           "note": "defined in a component which is part of this by: InnerPortGroupIn"
         },
@@ -1121,7 +1123,7 @@
     },
     {
       "name": "SymbolProps",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -1169,7 +1171,7 @@
     },
     {
       "name": "SensorActuatorSwComponentType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -1230,7 +1232,7 @@
     },
     {
       "name": "ServiceProxySwComponentType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -1277,7 +1279,7 @@
     },
     {
       "name": "NvBlockSwComponentType",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::Components",
       "is_abstract": false,
       "atp_type": null,
@@ -1321,17 +1323,17 @@
         }
       ],
       "attributes": {
-        "bulkNvData": {
+        "bulkNvDataDescriptor": {
           "type": "BulkNvDataDescriptor",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This aggregation formally defines the bulk Nv Blocks that provided to the application software by the enclosing atpVariation"
         },
-        "nvBlock": {
+        "nvBlockDescriptor": {
           "type": "NvBlockDescriptor",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Specification of the properties of exactly one NVRAM atpVariation"
         }

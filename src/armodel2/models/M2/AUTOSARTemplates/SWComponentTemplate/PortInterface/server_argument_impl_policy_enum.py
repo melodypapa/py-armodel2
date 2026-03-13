@@ -26,4 +26,5 @@ class ServerArgumentImplPolicyEnum(AREnum):
         """
         self._value_ = value
 
+    USE_ARGUMENT_TYPE = "USE-ARGUMENT-TYPE"
     USE_VOID = "USE-VOID"

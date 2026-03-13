@@ -40,19 +40,19 @@ class NvBlockSwComponentType(AtomicSwComponentType):
     _XML_TAG = "NV-BLOCK-SW-COMPONENT-TYPE"
 
 
-    bulk_nv_datas: list[BulkNvDataDescriptor]
-    nv_blocks: list[NvBlockDescriptor]
+    bulk_nv_data_descriptors: list[BulkNvDataDescriptor]
+    nv_block_descriptors: list[NvBlockDescriptor]
     _DESERIALIZE_DISPATCH = {
-        "BULK-NV-DATAS": lambda obj, elem: obj.bulk_nv_datas.append(SerializationHelper.deserialize_by_tag(elem, "BulkNvDataDescriptor")),
-        "NV-BLOCKS": lambda obj, elem: obj.nv_blocks.append(SerializationHelper.deserialize_by_tag(elem, "NvBlockDescriptor")),
+        "BULK-NV-DATA-DESCRIPTORS": lambda obj, elem: obj.bulk_nv_data_descriptors.append(SerializationHelper.deserialize_by_tag(elem, "BulkNvDataDescriptor")),
+        "NV-BLOCK-DESCRIPTORS": lambda obj, elem: obj.nv_block_descriptors.append(SerializationHelper.deserialize_by_tag(elem, "NvBlockDescriptor")),
     }
 
 
     def __init__(self) -> None:
         """Initialize NvBlockSwComponentType."""
         super().__init__()
-        self.bulk_nv_datas: list[BulkNvDataDescriptor] = []
-        self.nv_blocks: list[NvBlockDescriptor] = []
+        self.bulk_nv_data_descriptors: list[BulkNvDataDescriptor] = []
+        self.nv_block_descriptors: list[NvBlockDescriptor] = []
 
     def serialize(self) -> ET.Element:
         """Serialize NvBlockSwComponentType to XML element.
@@ -77,20 +77,20 @@ class NvBlockSwComponentType(AtomicSwComponentType):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize bulk_nv_datas (list to container "BULK-NV-DATAS")
-        if self.bulk_nv_datas:
-            wrapper = ET.Element("BULK-NV-DATAS")
-            for item in self.bulk_nv_datas:
+        # Serialize bulk_nv_data_descriptors (list to container "BULK-NV-DATA-DESCRIPTORS")
+        if self.bulk_nv_data_descriptors:
+            wrapper = ET.Element("BULK-NV-DATA-DESCRIPTORS")
+            for item in self.bulk_nv_data_descriptors:
                 serialized = SerializationHelper.serialize_item(item, "BulkNvDataDescriptor")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize nv_blocks (list to container "NV-BLOCKS")
-        if self.nv_blocks:
-            wrapper = ET.Element("NV-BLOCKS")
-            for item in self.nv_blocks:
+        # Serialize nv_block_descriptors (list to container "NV-BLOCK-DESCRIPTORS")
+        if self.nv_block_descriptors:
+            wrapper = ET.Element("NV-BLOCK-DESCRIPTORS")
+            for item in self.nv_block_descriptors:
                 serialized = SerializationHelper.serialize_item(item, "NvBlockDescriptor")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -116,14 +116,14 @@ class NvBlockSwComponentType(AtomicSwComponentType):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "BULK-NV-DATAS":
+            if tag == "BULK-NV-DATA-DESCRIPTORS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.bulk_nv_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "BulkNvDataDescriptor"))
-            elif tag == "NV-BLOCKS":
+                    obj.bulk_nv_data_descriptors.append(SerializationHelper.deserialize_by_tag(item_elem, "BulkNvDataDescriptor"))
+            elif tag == "NV-BLOCK-DESCRIPTORS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.nv_blocks.append(SerializationHelper.deserialize_by_tag(item_elem, "NvBlockDescriptor"))
+                    obj.nv_block_descriptors.append(SerializationHelper.deserialize_by_tag(item_elem, "NvBlockDescriptor"))
 
         return obj
 
@@ -138,8 +138,8 @@ class NvBlockSwComponentTypeBuilder(AtomicSwComponentTypeBuilder):
         self._obj: NvBlockSwComponentType = NvBlockSwComponentType()
 
 
-    def with_bulk_nv_datas(self, items: list[BulkNvDataDescriptor]) -> "NvBlockSwComponentTypeBuilder":
-        """Set bulk_nv_datas list attribute.
+    def with_bulk_nv_data_descriptors(self, items: list[BulkNvDataDescriptor]) -> "NvBlockSwComponentTypeBuilder":
+        """Set bulk_nv_data_descriptors list attribute.
 
         Args:
             items: List of items to set
@@ -147,11 +147,11 @@ class NvBlockSwComponentTypeBuilder(AtomicSwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.bulk_nv_datas = list(items) if items else []
+        self._obj.bulk_nv_data_descriptors = list(items) if items else []
         return self
 
-    def with_nv_blocks(self, items: list[NvBlockDescriptor]) -> "NvBlockSwComponentTypeBuilder":
-        """Set nv_blocks list attribute.
+    def with_nv_block_descriptors(self, items: list[NvBlockDescriptor]) -> "NvBlockSwComponentTypeBuilder":
+        """Set nv_block_descriptors list attribute.
 
         Args:
             items: List of items to set
@@ -159,12 +159,12 @@ class NvBlockSwComponentTypeBuilder(AtomicSwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.nv_blocks = list(items) if items else []
+        self._obj.nv_block_descriptors = list(items) if items else []
         return self
 
 
-    def add_bulk_nv_data(self, item: BulkNvDataDescriptor) -> "NvBlockSwComponentTypeBuilder":
-        """Add a single item to bulk_nv_datas list.
+    def add_bulk_nv_data_descriptor(self, item: BulkNvDataDescriptor) -> "NvBlockSwComponentTypeBuilder":
+        """Add a single item to bulk_nv_data_descriptors list.
 
         Args:
             item: Item to add
@@ -172,20 +172,20 @@ class NvBlockSwComponentTypeBuilder(AtomicSwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.bulk_nv_datas.append(item)
+        self._obj.bulk_nv_data_descriptors.append(item)
         return self
 
-    def clear_bulk_nv_datas(self) -> "NvBlockSwComponentTypeBuilder":
-        """Clear all items from bulk_nv_datas list.
+    def clear_bulk_nv_data_descriptors(self) -> "NvBlockSwComponentTypeBuilder":
+        """Clear all items from bulk_nv_data_descriptors list.
 
         Returns:
             self for method chaining
         """
-        self._obj.bulk_nv_datas = []
+        self._obj.bulk_nv_data_descriptors = []
         return self
 
-    def add_nv_block(self, item: NvBlockDescriptor) -> "NvBlockSwComponentTypeBuilder":
-        """Add a single item to nv_blocks list.
+    def add_nv_block_descriptor(self, item: NvBlockDescriptor) -> "NvBlockSwComponentTypeBuilder":
+        """Add a single item to nv_block_descriptors list.
 
         Args:
             item: Item to add
@@ -193,23 +193,23 @@ class NvBlockSwComponentTypeBuilder(AtomicSwComponentTypeBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.nv_blocks.append(item)
+        self._obj.nv_block_descriptors.append(item)
         return self
 
-    def clear_nv_blocks(self) -> "NvBlockSwComponentTypeBuilder":
-        """Clear all items from nv_blocks list.
+    def clear_nv_block_descriptors(self) -> "NvBlockSwComponentTypeBuilder":
+        """Clear all items from nv_block_descriptors list.
 
         Returns:
             self for method chaining
         """
-        self._obj.nv_blocks = []
+        self._obj.nv_block_descriptors = []
         return self
 
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "bulkNvData",
-        "nvBlock",
+        "bulkNvDataDescriptor",
+        "nvBlockDescriptor",
     }
 
 

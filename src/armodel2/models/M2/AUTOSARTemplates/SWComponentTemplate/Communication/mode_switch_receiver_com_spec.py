@@ -18,8 +18,8 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
-    ModeDeclarationGroup,
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group_prototype import (
+    ModeDeclarationGroupPrototype,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -42,11 +42,11 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
 
     enhanced_mode: Optional[Boolean]
     mode_group_ref: Optional[ARRef]
-    supports: Optional[Boolean]
+    supports_asynchronous_mode_switch: Optional[Boolean]
     _DESERIALIZE_DISPATCH = {
         "ENHANCED-MODE": lambda obj, elem: setattr(obj, "enhanced_mode", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "MODE-GROUP-REF": lambda obj, elem: setattr(obj, "mode_group_ref", ARRef.deserialize(elem)),
-        "SUPPORTS": lambda obj, elem: setattr(obj, "supports", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
+        "SUPPORTS-ASYNCHRONOUS-MODE-SWITCH": lambda obj, elem: setattr(obj, "supports_asynchronous_mode_switch", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
     }
 
 
@@ -55,7 +55,7 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
         super().__init__()
         self.enhanced_mode: Optional[Boolean] = None
         self.mode_group_ref: Optional[ARRef] = None
-        self.supports: Optional[Boolean] = None
+        self.supports_asynchronous_mode_switch: Optional[Boolean] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ModeSwitchReceiverComSpec to XML element.
@@ -96,7 +96,7 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
 
         # Serialize mode_group_ref
         if self.mode_group_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroupPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-GROUP-REF")
@@ -108,12 +108,12 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize supports
-        if self.supports is not None:
-            serialized = SerializationHelper.serialize_item(self.supports, "Boolean")
+        # Serialize supports_asynchronous_mode_switch
+        if self.supports_asynchronous_mode_switch is not None:
+            serialized = SerializationHelper.serialize_item(self.supports_asynchronous_mode_switch, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SUPPORTS")
+                wrapped = ET.Element("SUPPORTS-ASYNCHRONOUS-MODE-SWITCH")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -145,8 +145,8 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
                 setattr(obj, "enhanced_mode", SerializationHelper.deserialize_by_tag(child, "Boolean"))
             elif tag == "MODE-GROUP-REF":
                 setattr(obj, "mode_group_ref", ARRef.deserialize(child))
-            elif tag == "SUPPORTS":
-                setattr(obj, "supports", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "SUPPORTS-ASYNCHRONOUS-MODE-SWITCH":
+                setattr(obj, "supports_asynchronous_mode_switch", SerializationHelper.deserialize_by_tag(child, "Boolean"))
 
         return obj
 
@@ -175,7 +175,7 @@ class ModeSwitchReceiverComSpecBuilder(RPortComSpecBuilder):
         self._obj.enhanced_mode = value
         return self
 
-    def with_mode_group(self, value: Optional[ModeDeclarationGroup]) -> "ModeSwitchReceiverComSpecBuilder":
+    def with_mode_group(self, value: Optional[ModeDeclarationGroupPrototype]) -> "ModeSwitchReceiverComSpecBuilder":
         """Set mode_group attribute.
 
         Args:
@@ -189,8 +189,8 @@ class ModeSwitchReceiverComSpecBuilder(RPortComSpecBuilder):
         self._obj.mode_group = value
         return self
 
-    def with_supports(self, value: Optional[Boolean]) -> "ModeSwitchReceiverComSpecBuilder":
-        """Set supports attribute.
+    def with_supports_asynchronous_mode_switch(self, value: Optional[Boolean]) -> "ModeSwitchReceiverComSpecBuilder":
+        """Set supports_asynchronous_mode_switch attribute.
 
         Args:
             value: Value to set
@@ -199,8 +199,8 @@ class ModeSwitchReceiverComSpecBuilder(RPortComSpecBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'supports' is required and cannot be None")
-        self._obj.supports = value
+            raise ValueError("Attribute 'supports_asynchronous_mode_switch' is required and cannot be None")
+        self._obj.supports_asynchronous_mode_switch = value
         return self
 
 
@@ -209,7 +209,7 @@ class ModeSwitchReceiverComSpecBuilder(RPortComSpecBuilder):
     _OPTIONAL_ATTRIBUTES = {
         "enhancedMode",
         "modeGroup",
-        "supports",
+        "supportsAsynchronousModeSwitch",
     }
 
 

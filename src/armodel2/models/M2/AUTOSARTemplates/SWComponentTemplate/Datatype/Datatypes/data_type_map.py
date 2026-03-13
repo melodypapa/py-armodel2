@@ -41,10 +41,10 @@ class DataTypeMap(ARObject):
 
 
     application_data_type_ref: Optional[ARRef]
-    implementation_ref: Optional[ARRef]
+    implementation_data_type_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "APPLICATION-DATA-TYPE-REF": ("_POLYMORPHIC", "application_data_type_ref", ["ApplicationArrayDataType", "ApplicationCompositeDataType", "ApplicationPrimitiveDataType", "ApplicationRecordDataType"]),
-        "IMPLEMENTATION-REF": ("_POLYMORPHIC", "implementation_ref", ["ImplementationDataType"]),
+        "IMPLEMENTATION-DATA-TYPE-REF": ("_POLYMORPHIC", "implementation_data_type_ref", ["ImplementationDataType"]),
     }
 
 
@@ -52,7 +52,7 @@ class DataTypeMap(ARObject):
         """Initialize DataTypeMap."""
         super().__init__()
         self.application_data_type_ref: Optional[ARRef] = None
-        self.implementation_ref: Optional[ARRef] = None
+        self.implementation_data_type_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DataTypeMap to XML element.
@@ -91,12 +91,12 @@ class DataTypeMap(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize implementation_ref
-        if self.implementation_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.implementation_ref, "AbstractImplementationDataType")
+        # Serialize implementation_data_type_ref
+        if self.implementation_data_type_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.implementation_data_type_ref, "AbstractImplementationDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTATION-REF")
+                wrapped = ET.Element("IMPLEMENTATION-DATA-TYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -126,8 +126,8 @@ class DataTypeMap(ARObject):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "APPLICATION-DATA-TYPE-REF":
                 setattr(obj, "application_data_type_ref", ARRef.deserialize(child))
-            elif tag == "IMPLEMENTATION-REF":
-                setattr(obj, "implementation_ref", ARRef.deserialize(child))
+            elif tag == "IMPLEMENTATION-DATA-TYPE-REF":
+                setattr(obj, "implementation_data_type_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -156,8 +156,8 @@ class DataTypeMapBuilder(BuilderBase):
         self._obj.application_data_type = value
         return self
 
-    def with_implementation(self, value: Optional[AbstractImplementationDataType]) -> "DataTypeMapBuilder":
-        """Set implementation attribute.
+    def with_implementation_data_type(self, value: Optional[AbstractImplementationDataType]) -> "DataTypeMapBuilder":
+        """Set implementation_data_type attribute.
 
         Args:
             value: Value to set
@@ -166,8 +166,8 @@ class DataTypeMapBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'implementation' is required and cannot be None")
-        self._obj.implementation = value
+            raise ValueError("Attribute 'implementation_data_type' is required and cannot be None")
+        self._obj.implementation_data_type = value
         return self
 
 
@@ -175,7 +175,7 @@ class DataTypeMapBuilder(BuilderBase):
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
         "applicationDataType",
-        "implementation",
+        "implementationDataType",
     }
 
 

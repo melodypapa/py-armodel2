@@ -6,14 +6,24 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Communication.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.InstanceRefs.application_composite_element_in_port_interface_instance_ref import (
+    ApplicationCompositeElementInPortInterfaceInstanceRef,
+)
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
+        SwDataDefProps,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class CompositeNetworkRepresentation(ARObject):
     """AUTOSAR CompositeNetworkRepresentation."""
 
@@ -29,19 +39,19 @@ class CompositeNetworkRepresentation(ARObject):
     _XML_TAG = "COMPOSITE-NETWORK-REPRESENTATION"
 
 
-    leaf_element_element_in_port_interface_instance_ref: Optional[Any]
-    network_representation: Optional[Any]
+    leaf_element_element_iref: Optional[ApplicationCompositeElementInPortInterfaceInstanceRef]
+    network_representation: Optional[SwDataDefProps]
     _DESERIALIZE_DISPATCH = {
-        "LEAF-ELEMENT-ELEMENT-IN-PORT-INTERFACE-INSTANCE-REF": lambda obj, elem: setattr(obj, "leaf_element_element_in_port_interface_instance_ref", SerializationHelper.deserialize_by_tag(elem, "any (ApplicationComposite)")),
-        "NETWORK-REPRESENTATION": lambda obj, elem: setattr(obj, "network_representation", SerializationHelper.deserialize_by_tag(elem, "any (SwDataDefPropsRepresentation)")),
+        "LEAF-ELEMENT-ELEMENT-IREF": lambda obj, elem: setattr(obj, "leaf_element_element_iref", SerializationHelper.deserialize_by_tag(elem, "ApplicationCompositeElementInPortInterfaceInstanceRef")),
+        "NETWORK-REPRESENTATION": lambda obj, elem: setattr(obj, "network_representation", SerializationHelper.deserialize_by_tag(elem, "SwDataDefProps")),
     }
 
 
     def __init__(self) -> None:
         """Initialize CompositeNetworkRepresentation."""
         super().__init__()
-        self.leaf_element_element_in_port_interface_instance_ref: Optional[Any] = None
-        self.network_representation: Optional[Any] = None
+        self.leaf_element_element_iref: Optional[ApplicationCompositeElementInPortInterfaceInstanceRef] = None
+        self.network_representation: Optional[SwDataDefProps] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CompositeNetworkRepresentation to XML element.
@@ -66,23 +76,20 @@ class CompositeNetworkRepresentation(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize leaf_element_element_in_port_interface_instance_ref
-        if self.leaf_element_element_in_port_interface_instance_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.leaf_element_element_in_port_interface_instance_ref, "Any")
+        # Serialize leaf_element_element_iref (instance reference with wrapper "LEAF-ELEMENT-ELEMENT-IREF")
+        if self.leaf_element_element_iref is not None:
+            serialized = SerializationHelper.serialize_item(self.leaf_element_element_iref, "ApplicationCompositeElementInPortInterfaceInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LEAF-ELEMENT-ELEMENT-IN-PORT-INTERFACE-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("LEAF-ELEMENT-ELEMENT-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         # Serialize network_representation
         if self.network_representation is not None:
-            serialized = SerializationHelper.serialize_item(self.network_representation, "Any")
+            serialized = SerializationHelper.serialize_item(self.network_representation, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NETWORK-REPRESENTATION")
@@ -113,10 +120,10 @@ class CompositeNetworkRepresentation(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "LEAF-ELEMENT-ELEMENT-IN-PORT-INTERFACE-INSTANCE-REF":
-                setattr(obj, "leaf_element_element_in_port_interface_instance_ref", SerializationHelper.deserialize_by_tag(child, "any (ApplicationComposite)"))
+            if tag == "LEAF-ELEMENT-ELEMENT-IREF":
+                setattr(obj, "leaf_element_element_iref", SerializationHelper.deserialize_by_tag(child, "ApplicationCompositeElementInPortInterfaceInstanceRef"))
             elif tag == "NETWORK-REPRESENTATION":
-                setattr(obj, "network_representation", SerializationHelper.deserialize_by_tag(child, "any (SwDataDefPropsRepresentation)"))
+                setattr(obj, "network_representation", SerializationHelper.deserialize_by_tag(child, "SwDataDefProps"))
 
         return obj
 
@@ -131,8 +138,8 @@ class CompositeNetworkRepresentationBuilder(BuilderBase):
         self._obj: CompositeNetworkRepresentation = CompositeNetworkRepresentation()
 
 
-    def with_leaf_element_element_in_port_interface_instance_ref(self, value: Optional[Any]) -> "CompositeNetworkRepresentationBuilder":
-        """Set leaf_element_element_in_port_interface_instance_ref attribute.
+    def with_leaf_element_element(self, value: Optional[ApplicationCompositeElementInPortInterfaceInstanceRef]) -> "CompositeNetworkRepresentationBuilder":
+        """Set leaf_element_element attribute.
 
         Args:
             value: Value to set
@@ -141,11 +148,11 @@ class CompositeNetworkRepresentationBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'leaf_element_element_in_port_interface_instance_ref' is required and cannot be None")
-        self._obj.leaf_element_element_in_port_interface_instance_ref = value
+            raise ValueError("Attribute 'leaf_element_element' is required and cannot be None")
+        self._obj.leaf_element_element = value
         return self
 
-    def with_network_representation(self, value: Optional[Any]) -> "CompositeNetworkRepresentationBuilder":
+    def with_network_representation(self, value: Optional[SwDataDefProps]) -> "CompositeNetworkRepresentationBuilder":
         """Set network_representation attribute.
 
         Args:
@@ -163,7 +170,7 @@ class CompositeNetworkRepresentationBuilder(BuilderBase):
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "leafElementElementInPortInterfaceInstanceRef",
+        "leafElementElement",
         "networkRepresentation",
     }
 

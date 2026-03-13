@@ -45,10 +45,10 @@ class ArgumentDataPrototype(AutosarDataPrototype):
 
 
     direction: Optional[ArgumentDirectionEnum]
-    server_argument_impl: Optional[ServerArgumentImplPolicyEnum]
+    server_argument_impl_policy: Optional[ServerArgumentImplPolicyEnum]
     _DESERIALIZE_DISPATCH = {
         "DIRECTION": lambda obj, elem: setattr(obj, "direction", ArgumentDirectionEnum.deserialize(elem)),
-        "SERVER-ARGUMENT-IMPL": lambda obj, elem: setattr(obj, "server_argument_impl", ServerArgumentImplPolicyEnum.deserialize(elem)),
+        "SERVER-ARGUMENT-IMPL-POLICY": lambda obj, elem: setattr(obj, "server_argument_impl_policy", ServerArgumentImplPolicyEnum.deserialize(elem)),
     }
 
 
@@ -56,7 +56,7 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         """Initialize ArgumentDataPrototype."""
         super().__init__()
         self.direction: Optional[ArgumentDirectionEnum] = None
-        self.server_argument_impl: Optional[ServerArgumentImplPolicyEnum] = None
+        self.server_argument_impl_policy: Optional[ServerArgumentImplPolicyEnum] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ArgumentDataPrototype to XML element.
@@ -95,12 +95,12 @@ class ArgumentDataPrototype(AutosarDataPrototype):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize server_argument_impl
-        if self.server_argument_impl is not None:
-            serialized = SerializationHelper.serialize_item(self.server_argument_impl, "ServerArgumentImplPolicyEnum")
+        # Serialize server_argument_impl_policy
+        if self.server_argument_impl_policy is not None:
+            serialized = SerializationHelper.serialize_item(self.server_argument_impl_policy, "ServerArgumentImplPolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SERVER-ARGUMENT-IMPL")
+                wrapped = ET.Element("SERVER-ARGUMENT-IMPL-POLICY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -130,8 +130,8 @@ class ArgumentDataPrototype(AutosarDataPrototype):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "DIRECTION":
                 setattr(obj, "direction", ArgumentDirectionEnum.deserialize(child))
-            elif tag == "SERVER-ARGUMENT-IMPL":
-                setattr(obj, "server_argument_impl", ServerArgumentImplPolicyEnum.deserialize(child))
+            elif tag == "SERVER-ARGUMENT-IMPL-POLICY":
+                setattr(obj, "server_argument_impl_policy", ServerArgumentImplPolicyEnum.deserialize(child))
 
         return obj
 
@@ -160,8 +160,8 @@ class ArgumentDataPrototypeBuilder(AutosarDataPrototypeBuilder):
         self._obj.direction = value
         return self
 
-    def with_server_argument_impl(self, value: Optional[ServerArgumentImplPolicyEnum]) -> "ArgumentDataPrototypeBuilder":
-        """Set server_argument_impl attribute.
+    def with_server_argument_impl_policy(self, value: Optional[ServerArgumentImplPolicyEnum]) -> "ArgumentDataPrototypeBuilder":
+        """Set server_argument_impl_policy attribute.
 
         Args:
             value: Value to set
@@ -170,8 +170,8 @@ class ArgumentDataPrototypeBuilder(AutosarDataPrototypeBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'server_argument_impl' is required and cannot be None")
-        self._obj.server_argument_impl = value
+            raise ValueError("Attribute 'server_argument_impl_policy' is required and cannot be None")
+        self._obj.server_argument_impl_policy = value
         return self
 
 
@@ -179,7 +179,7 @@ class ArgumentDataPrototypeBuilder(AutosarDataPrototypeBuilder):
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
         "direction",
-        "serverArgumentImpl",
+        "serverArgumentImplPolicy",
     }
 
 
