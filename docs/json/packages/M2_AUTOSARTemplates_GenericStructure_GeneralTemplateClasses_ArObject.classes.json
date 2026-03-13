@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "ARObject",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::GenericStructure::GeneralTemplateClasses::ArObject",
       "is_abstract": true,
       "atp_type": null,
@@ -413,16 +413,17 @@
           "type": "String",
           "multiplicity": "0..1",
           "kind": "attribute",
+          "decorator": "xml_attribute:S",
           "is_ref": false,
-          "note": "Checksum calculated by the user’s tool environment for"
+          "note": "Checksum calculated by the user’s tool environment for ArObject."
         },
         "timestamp": {
           "type": "DateTime",
           "multiplicity": "0..1",
-          "kind": "aggr",
+          "kind": "attribute",
           "decorator": "xml_attribute:T",
           "is_ref": false,
-          "note": "Timestamp calculated by the user’s tool environment for"
+          "note": "Timestamp calculated by the user’s tool environment for ArObject."
         }
       }
     }

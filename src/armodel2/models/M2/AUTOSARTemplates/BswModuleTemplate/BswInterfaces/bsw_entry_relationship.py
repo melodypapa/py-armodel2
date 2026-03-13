@@ -12,6 +12,9 @@ import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces import (
+    BswEntryRelationshipEnum,
+)
 from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
 )
@@ -34,11 +37,11 @@ class BswEntryRelationship(ARObject):
     _XML_TAG = "BSW-ENTRY-RELATIONSHIP"
 
 
-    bsw_entry: Optional[BswEntryRelationship]
+    bsw_entry_relationship_type: Optional[BswEntryRelationshipEnum]
     from_ref: Optional[ARRef]
     to_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "BSW-ENTRY": lambda obj, elem: setattr(obj, "bsw_entry", SerializationHelper.deserialize_by_tag(elem, "BswEntryRelationship")),
+        "BSW-ENTRY-RELATIONSHIP-TYPE": lambda obj, elem: setattr(obj, "bsw_entry_relationship_type", BswEntryRelationshipEnum.deserialize(elem)),
         "FROM-REF": lambda obj, elem: setattr(obj, "from_ref", ARRef.deserialize(elem)),
         "TO-REF": lambda obj, elem: setattr(obj, "to_ref", ARRef.deserialize(elem)),
     }
@@ -47,7 +50,7 @@ class BswEntryRelationship(ARObject):
     def __init__(self) -> None:
         """Initialize BswEntryRelationship."""
         super().__init__()
-        self.bsw_entry: Optional[BswEntryRelationship] = None
+        self.bsw_entry_relationship_type: Optional[BswEntryRelationshipEnum] = None
         self.from_ref: Optional[ARRef] = None
         self.to_ref: Optional[ARRef] = None
 
@@ -74,12 +77,12 @@ class BswEntryRelationship(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize bsw_entry
-        if self.bsw_entry is not None:
-            serialized = SerializationHelper.serialize_item(self.bsw_entry, "BswEntryRelationship")
+        # Serialize bsw_entry_relationship_type
+        if self.bsw_entry_relationship_type is not None:
+            serialized = SerializationHelper.serialize_item(self.bsw_entry_relationship_type, "BswEntryRelationshipEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BSW-ENTRY")
+                wrapped = ET.Element("BSW-ENTRY-RELATIONSHIP-TYPE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -135,8 +138,8 @@ class BswEntryRelationship(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "BSW-ENTRY":
-                setattr(obj, "bsw_entry", SerializationHelper.deserialize_by_tag(child, "BswEntryRelationship"))
+            if tag == "BSW-ENTRY-RELATIONSHIP-TYPE":
+                setattr(obj, "bsw_entry_relationship_type", BswEntryRelationshipEnum.deserialize(child))
             elif tag == "FROM-REF":
                 setattr(obj, "from_ref", ARRef.deserialize(child))
             elif tag == "TO-REF":
@@ -155,8 +158,8 @@ class BswEntryRelationshipBuilder(BuilderBase):
         self._obj: BswEntryRelationship = BswEntryRelationship()
 
 
-    def with_bsw_entry(self, value: Optional[BswEntryRelationship]) -> "BswEntryRelationshipBuilder":
-        """Set bsw_entry attribute.
+    def with_bsw_entry_relationship_type(self, value: Optional[BswEntryRelationshipEnum]) -> "BswEntryRelationshipBuilder":
+        """Set bsw_entry_relationship_type attribute.
 
         Args:
             value: Value to set
@@ -165,8 +168,8 @@ class BswEntryRelationshipBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'bsw_entry' is required and cannot be None")
-        self._obj.bsw_entry = value
+            raise ValueError("Attribute 'bsw_entry_relationship_type' is required and cannot be None")
+        self._obj.bsw_entry_relationship_type = value
         return self
 
     def with_from(self, value: Optional[BswModuleEntry]) -> "BswEntryRelationshipBuilder":
@@ -201,7 +204,7 @@ class BswEntryRelationshipBuilder(BuilderBase):
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "bswEntry",
+        "bswEntryRelationshipType",
         "from",
         "to",
     }

@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "ParameterInAtomicSWCTypeInstanceRef",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::DataElements::InstanceRefs",
       "is_abstract": false,
       "atp_type": null,
@@ -37,8 +37,8 @@
           "is_ref": true,
           "note": "Stereotypes: atpDerived xml.sequenceOffset=10"
         },
-        "contextData": {
-          "type": "any (ApplicationComposite)",
+        "contextDataPrototype": {
+          "type": "ApplicationCompositeElementDataPrototype",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
@@ -51,14 +51,14 @@
           "is_ref": true,
           "note": "This is the port providing the variable or the entry point to structure."
         },
-        "rootParameter": {
+        "rootParameterDataPrototype": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
           "note": "This represents the entry point for references into a"
         },
-        "targetData": {
+        "targetDataPrototype": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
           "kind": "ref",

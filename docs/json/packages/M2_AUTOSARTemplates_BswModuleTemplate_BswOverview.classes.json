@@ -149,7 +149,6 @@
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
-          "decorator": "xml_element_name:REQUIRED-ENTRYS",
           "note": "Specifies that this module requires a client server entry which can be implemented on another partition or is declared locally to this context and will to the providedClientServerEntry of another same module via the configuration of the BSW atpVariation"
         },
         "requiredData": {
