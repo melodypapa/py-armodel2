@@ -219,7 +219,11 @@ def load_polymorphic_types(
     try:
         with open(mappings_file, "r", encoding="utf-8") as f:
             data = _yaml.safe_load(f) if _yaml else {}
-            return data.get("polymorphic_types", {})
+            polymorphic_types = data.get("polymorphic_types", {})
+            # Ensure proper typing - yaml returns Any, we need dict[str, list[str]]
+            if isinstance(polymorphic_types, dict):
+                return cast(Dict[str, List[str]], polymorphic_types)
+            return {}
     except Exception:
         # If there's any error loading the file, return empty result
         return {}

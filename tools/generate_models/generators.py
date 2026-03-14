@@ -115,7 +115,7 @@ def _collect_attribute_types_with_flattening(
     Returns:
         Dictionary of attribute names to attribute info, with atpMixed children flattened
     """
-    attribute_types = {}
+    attribute_types: Dict[str, Dict[str, Any]] = {}
 
     if package_path not in package_data:
         return attribute_types
@@ -228,7 +228,7 @@ def _get_simple_content_info(
         - 'has_simple_content': bool - True if class uses simpleContent
         - 'text_content_attr': Dict or None - The attribute that holds the text content
     """
-    result = {
+    result: Dict[str, Any] = {
         'has_simple_content': False,
         'text_content_attr': None
     }
@@ -2836,9 +2836,10 @@ def generate_builder_code(
 
     if parent_inherits_builderbase:
         # Parent or ancestor already inherits from BuilderBase, so we just inherit from parent
-        inheritance_parts = [builder_parent]
+        inheritance_parts: List[str] = [builder_parent]  # type: ignore[list-item]
     elif builder_parent:
         # Parent doesn't inherit from BuilderBase, so we add it
+        # builder_parent is not None due to the elif check
         inheritance_parts = ["BuilderBase", builder_parent]
     else:
         # No parent, we inherit from BuilderBase (and ABC if abstract)

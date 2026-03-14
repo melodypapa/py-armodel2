@@ -1,6 +1,6 @@
 """Decorators for XML serialization edge cases."""
 
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 
 
 def xml_attribute(func_or_name: Any = None) -> Any:
@@ -27,28 +27,20 @@ def xml_attribute(func_or_name: Any = None) -> Any:
         The decorated function/property with _is_xml_attribute marker set,
         or a decorator function if called with a parameter
     """
+    def _mark(func: Any, custom_name: Optional[str] = None) -> Any:
+        """Helper to set markers on function or property."""
+        target = func.fget if isinstance(func, property) else func
+        target._is_xml_attribute = True  # type: ignore[union-attr]
+        if custom_name:
+            target._xml_attr_name = custom_name  # type: ignore[union-attr]
+        return func
+
     # If called with a parameter (custom attribute name), return a decorator
     if isinstance(func_or_name, str):
-        custom_attr_name = func_or_name
-        def decorator(func: Any) -> Any:
-            # If func is a property, mark its fget (the underlying function)
-            if isinstance(func, property):
-                func.fget._is_xml_attribute = True  # type: ignore[union-attr]
-                func.fget._xml_attr_name = custom_attr_name  # type: ignore[union-attr]
-            else:
-                func._is_xml_attribute = True  # type: ignore[union-attr]
-                func._xml_attr_name = custom_attr_name  # type: ignore[union-attr]
-            return func
-        return decorator
-    else:
-        # No parameter, mark the function directly
-        func = func_or_name
-        # If func is a property, mark its fget (the underlying function)
-        if isinstance(func, property):
-            func.fget._is_xml_attribute = True  # type: ignore[union-attr]
-        else:
-            func._is_xml_attribute = True  # type: ignore[union-attr]
-        return func
+        return lambda func: _mark(func, func_or_name)
+
+    # No parameter, mark the function directly
+    return _mark(func_or_name) if func_or_name else _mark
 
 
 def atp_variant() -> Callable[[Any], Any]:
