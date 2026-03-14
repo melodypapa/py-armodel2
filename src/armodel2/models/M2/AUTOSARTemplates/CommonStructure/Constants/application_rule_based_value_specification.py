@@ -43,11 +43,11 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
     _XML_TAG = "APPLICATION-RULE-BASED-VALUE-SPECIFICATION"
 
 
-    category_specification: Optional[Identifier]
+    category: Optional[Identifier]
     sw_axis_conts: list[RuleBasedAxisCont]
     sw_value_cont: Optional[RuleBasedValueCont]
     _DESERIALIZE_DISPATCH = {
-        "CATEGORY-SPECIFICATION": lambda obj, elem: setattr(obj, "category_specification", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
+        "CATEGORY": lambda obj, elem: setattr(obj, "category", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
         "SW-AXIS-CONTS": lambda obj, elem: obj.sw_axis_conts.append(SerializationHelper.deserialize_by_tag(elem, "RuleBasedAxisCont")),
         "SW-VALUE-CONT": lambda obj, elem: setattr(obj, "sw_value_cont", SerializationHelper.deserialize_by_tag(elem, "RuleBasedValueCont")),
     }
@@ -56,7 +56,7 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
     def __init__(self) -> None:
         """Initialize ApplicationRuleBasedValueSpecification."""
         super().__init__()
-        self.category_specification: Optional[Identifier] = None
+        self.category: Optional[Identifier] = None
         self.sw_axis_conts: list[RuleBasedAxisCont] = []
         self.sw_value_cont: Optional[RuleBasedValueCont] = None
 
@@ -83,12 +83,12 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize category_specification
-        if self.category_specification is not None:
-            serialized = SerializationHelper.serialize_item(self.category_specification, "Identifier")
+        # Serialize category
+        if self.category is not None:
+            serialized = SerializationHelper.serialize_item(self.category, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CATEGORY-SPECIFICATION")
+                wrapped = ET.Element("CATEGORY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -140,8 +140,8 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "CATEGORY-SPECIFICATION":
-                setattr(obj, "category_specification", SerializationHelper.deserialize_by_tag(child, "Identifier"))
+            if tag == "CATEGORY":
+                setattr(obj, "category", SerializationHelper.deserialize_by_tag(child, "Identifier"))
             elif tag == "SW-AXIS-CONTS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -162,8 +162,8 @@ class ApplicationRuleBasedValueSpecificationBuilder(CompositeRuleBasedValueArgum
         self._obj: ApplicationRuleBasedValueSpecification = ApplicationRuleBasedValueSpecification()
 
 
-    def with_category_specification(self, value: Optional[Identifier]) -> "ApplicationRuleBasedValueSpecificationBuilder":
-        """Set category_specification attribute.
+    def with_category(self, value: Optional[Identifier]) -> "ApplicationRuleBasedValueSpecificationBuilder":
+        """Set category attribute.
 
         Args:
             value: Value to set
@@ -172,8 +172,8 @@ class ApplicationRuleBasedValueSpecificationBuilder(CompositeRuleBasedValueArgum
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'category_specification' is required and cannot be None")
-        self._obj.category_specification = value
+            raise ValueError("Attribute 'category' is required and cannot be None")
+        self._obj.category = value
         return self
 
     def with_sw_axis_conts(self, items: list[RuleBasedAxisCont]) -> "ApplicationRuleBasedValueSpecificationBuilder":
@@ -227,7 +227,7 @@ class ApplicationRuleBasedValueSpecificationBuilder(CompositeRuleBasedValueArgum
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "categorySpecification",
+        "category",
         "swAxisCont",
         "swValueCont",
     }

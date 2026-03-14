@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "AUTOSAR",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::AutosarTopLevelStructure",
       "is_abstract": false,
       "atp_type": null,
@@ -136,7 +136,7 @@
     },
     {
       "name": "FileInfoComment",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::AutosarTopLevelStructure",
       "is_abstract": false,
       "atp_type": null,

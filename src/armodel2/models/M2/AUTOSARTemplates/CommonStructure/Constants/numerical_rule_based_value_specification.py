@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.abstract_rule_based_value_specification import (
@@ -14,6 +14,9 @@ from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.abstract_rule
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.abstract_rule_based_value_specification import AbstractRuleBasedValueSpecificationBuilder
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.rule_based_value_specification import (
+    RuleBasedValueSpecification,
+)
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
 
@@ -33,16 +36,16 @@ class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
     _XML_TAG = "NUMERICAL-RULE-BASED-VALUE-SPECIFICATION"
 
 
-    rule_based: Optional[Any]
+    rule_based_values: Optional[RuleBasedValueSpecification]
     _DESERIALIZE_DISPATCH = {
-        "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(elem, "any (RuleBasedValue)")),
+        "RULE-BASED-VALUES": lambda obj, elem: setattr(obj, "rule_based_values", SerializationHelper.deserialize_by_tag(elem, "RuleBasedValueSpecification")),
     }
 
 
     def __init__(self) -> None:
         """Initialize NumericalRuleBasedValueSpecification."""
         super().__init__()
-        self.rule_based: Optional[Any] = None
+        self.rule_based_values: Optional[RuleBasedValueSpecification] = None
 
     def serialize(self) -> ET.Element:
         """Serialize NumericalRuleBasedValueSpecification to XML element.
@@ -67,12 +70,12 @@ class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize rule_based
-        if self.rule_based is not None:
-            serialized = SerializationHelper.serialize_item(self.rule_based, "Any")
+        # Serialize rule_based_values
+        if self.rule_based_values is not None:
+            serialized = SerializationHelper.serialize_item(self.rule_based_values, "RuleBasedValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RULE-BASED")
+                wrapped = ET.Element("RULE-BASED-VALUES")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -100,8 +103,8 @@ class NumericalRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "RULE-BASED":
-                setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(child, "any (RuleBasedValue)"))
+            if tag == "RULE-BASED-VALUES":
+                setattr(obj, "rule_based_values", SerializationHelper.deserialize_by_tag(child, "RuleBasedValueSpecification"))
 
         return obj
 
@@ -116,8 +119,8 @@ class NumericalRuleBasedValueSpecificationBuilder(AbstractRuleBasedValueSpecific
         self._obj: NumericalRuleBasedValueSpecification = NumericalRuleBasedValueSpecification()
 
 
-    def with_rule_based(self, value: Optional[Any]) -> "NumericalRuleBasedValueSpecificationBuilder":
-        """Set rule_based attribute.
+    def with_rule_based_values(self, value: Optional[RuleBasedValueSpecification]) -> "NumericalRuleBasedValueSpecificationBuilder":
+        """Set rule_based_values attribute.
 
         Args:
             value: Value to set
@@ -126,15 +129,15 @@ class NumericalRuleBasedValueSpecificationBuilder(AbstractRuleBasedValueSpecific
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'rule_based' is required and cannot be None")
-        self._obj.rule_based = value
+            raise ValueError("Attribute 'rule_based_values' is required and cannot be None")
+        self._obj.rule_based_values = value
         return self
 
 
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "ruleBased",
+        "ruleBasedValues",
     }
 
 
