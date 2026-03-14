@@ -10,7 +10,6 @@ class NameConverter:
         'SWC', 'TP', 'CAN', 'LIN', 'FLEX', 'ETH', 'V2X', 'MSR',
         'ASN', 'XSD', 'URI', 'UUID', 'BSW', 'RTE', 'DCM'
     }
-    """Convert between Python snake_case and AUTOSAR UPPER-CASE-WITH-HYPHENS naming."""
 
     @staticmethod
     def to_xml_tag(name: str) -> str:

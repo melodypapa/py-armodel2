@@ -66,13 +66,11 @@ class SchemaVersionManager:
         Returns:
             Namespace URI string
         """
+        # Namespace is embedded in tag: {namespace}tagname
         if "}" in root.tag:
-            # Namespace is embedded in tag: {namespace}tagname
             return root.tag.split("}")[0].strip("{")
-        elif "xmlns" in root.attrib:
-            # Namespace in attribute (fallback)
-            return root.attrib.get("xmlns", "")
-        return ""
+        # Fallback: check xmlns attribute
+        return root.attrib.get("xmlns", "")
 
     def get_default_version(self) -> str:
         """Get default AUTOSAR schema version.
