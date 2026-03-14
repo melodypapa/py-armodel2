@@ -45,10 +45,10 @@ class ArrayValueSpecification(CompositeValueSpecification):
 
 
     elements: list[ValueSpecification]
-    intended_partial: Optional[PositiveInteger]
+    intended_partial_initialization_count: Optional[PositiveInteger]
     _DESERIALIZE_DISPATCH = {
         "ELEMENTS": ("_POLYMORPHIC_LIST", "elements", ["AbstractRuleBasedValueSpecification", "ApplicationRuleBasedValueSpecification", "ApplicationValueSpecification", "ArrayValueSpecification", "CompositeRuleBasedValueSpecification", "CompositeValueSpecification", "ConstantReference", "NotAvailableValueSpecification", "NumericalValueSpecification", "RecordValueSpecification", "ReferenceValueSpecification", "TextValueSpecification"]),
-        "INTENDED-PARTIAL": lambda obj, elem: setattr(obj, "intended_partial", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "INTENDED-PARTIAL-INITIALIZATION-COUNT": lambda obj, elem: setattr(obj, "intended_partial_initialization_count", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
     }
 
 
@@ -56,7 +56,7 @@ class ArrayValueSpecification(CompositeValueSpecification):
         """Initialize ArrayValueSpecification."""
         super().__init__()
         self.elements: list[ValueSpecification] = []
-        self.intended_partial: Optional[PositiveInteger] = None
+        self.intended_partial_initialization_count: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ArrayValueSpecification to XML element.
@@ -91,12 +91,12 @@ class ArrayValueSpecification(CompositeValueSpecification):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize intended_partial
-        if self.intended_partial is not None:
-            serialized = SerializationHelper.serialize_item(self.intended_partial, "PositiveInteger")
+        # Serialize intended_partial_initialization_count
+        if self.intended_partial_initialization_count is not None:
+            serialized = SerializationHelper.serialize_item(self.intended_partial_initialization_count, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("INTENDED-PARTIAL")
+                wrapped = ET.Element("INTENDED-PARTIAL-INITIALIZATION-COUNT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -152,8 +152,8 @@ class ArrayValueSpecification(CompositeValueSpecification):
                         obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "ReferenceValueSpecification"))
                     elif concrete_tag == "TEXT-VALUE-SPECIFICATION":
                         obj.elements.append(SerializationHelper.deserialize_by_tag(item_elem, "TextValueSpecification"))
-            elif tag == "INTENDED-PARTIAL":
-                setattr(obj, "intended_partial", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "INTENDED-PARTIAL-INITIALIZATION-COUNT":
+                setattr(obj, "intended_partial_initialization_count", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
 
         return obj
 
@@ -180,8 +180,8 @@ class ArrayValueSpecificationBuilder(CompositeValueSpecificationBuilder):
         self._obj.elements = list(items) if items else []
         return self
 
-    def with_intended_partial(self, value: Optional[PositiveInteger]) -> "ArrayValueSpecificationBuilder":
-        """Set intended_partial attribute.
+    def with_intended_partial_initialization_count(self, value: Optional[PositiveInteger]) -> "ArrayValueSpecificationBuilder":
+        """Set intended_partial_initialization_count attribute.
 
         Args:
             value: Value to set
@@ -190,8 +190,8 @@ class ArrayValueSpecificationBuilder(CompositeValueSpecificationBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'intended_partial' is required and cannot be None")
-        self._obj.intended_partial = value
+            raise ValueError("Attribute 'intended_partial_initialization_count' is required and cannot be None")
+        self._obj.intended_partial_initialization_count = value
         return self
 
 
@@ -220,7 +220,7 @@ class ArrayValueSpecificationBuilder(CompositeValueSpecificationBuilder):
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
         "element",
-        "intendedPartial",
+        "intendedPartialInitializationCount",
     }
 
 

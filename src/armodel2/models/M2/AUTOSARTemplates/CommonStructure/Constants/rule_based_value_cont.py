@@ -7,13 +7,16 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
+)
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.rule_based_value_specification import (
+    RuleBasedValueSpecification,
 )
 from armodel2.models.M2.MSR.AsamHdo.Units.unit import (
     Unit,
@@ -40,14 +43,14 @@ class RuleBasedValueCont(ARObject):
     _XML_TAG = "RULE-BASED-VALUE-CONT"
 
 
-    rule_based: Optional[Any]
-    sw_arraysize_ref: Optional[ARRef]
+    rule_based_values: Optional[RuleBasedValueSpecification]
+    sw_arraysize: Optional[ValueList]
     v: Optional[Numerical]
     vts: list[Numerical]
     unit_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "RULE-BASED": lambda obj, elem: setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(elem, "any (RuleBasedValue)")),
-        "SW-ARRAYSIZE-REF": lambda obj, elem: setattr(obj, "sw_arraysize_ref", ARRef.deserialize(elem)),
+        "RULE-BASED-VALUES": lambda obj, elem: setattr(obj, "rule_based_values", SerializationHelper.deserialize_by_tag(elem, "RuleBasedValueSpecification")),
+        "SW-ARRAYSIZE": lambda obj, elem: setattr(obj, "sw_arraysize", SerializationHelper.deserialize_by_tag(elem, "ValueList")),
         "V": lambda obj, elem: setattr(obj, "v", SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "VTS": lambda obj, elem: obj.vts.append(SerializationHelper.deserialize_by_tag(elem, "Numerical")),
         "UNIT-REF": lambda obj, elem: setattr(obj, "unit_ref", ARRef.deserialize(elem)),
@@ -57,8 +60,8 @@ class RuleBasedValueCont(ARObject):
     def __init__(self) -> None:
         """Initialize RuleBasedValueCont."""
         super().__init__()
-        self.rule_based: Optional[Any] = None
-        self.sw_arraysize_ref: Optional[ARRef] = None
+        self.rule_based_values: Optional[RuleBasedValueSpecification] = None
+        self.sw_arraysize: Optional[ValueList] = None
         self.v: Optional[Numerical] = None
         self.vts: list[Numerical] = []
         self.unit_ref: Optional[ARRef] = None
@@ -86,12 +89,12 @@ class RuleBasedValueCont(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize rule_based
-        if self.rule_based is not None:
-            serialized = SerializationHelper.serialize_item(self.rule_based, "Any")
+        # Serialize rule_based_values
+        if self.rule_based_values is not None:
+            serialized = SerializationHelper.serialize_item(self.rule_based_values, "RuleBasedValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RULE-BASED")
+                wrapped = ET.Element("RULE-BASED-VALUES")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -100,9 +103,9 @@ class RuleBasedValueCont(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_arraysize_ref (atp_mixed - append children directly)
-        if self.sw_arraysize_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_arraysize_ref, "ValueList")
+        # Serialize sw_arraysize (atp_mixed - append children directly)
+        if self.sw_arraysize is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_arraysize, "ValueList")
             if serialized is not None:
                 # atpMixed type: append children directly without wrapper
                 if hasattr(serialized, 'attrib'):
@@ -177,10 +180,10 @@ class RuleBasedValueCont(ARObject):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "RULE-BASED":
-                setattr(obj, "rule_based", SerializationHelper.deserialize_by_tag(child, "any (RuleBasedValue)"))
-            elif tag == "SW-ARRAYSIZE-REF":
-                setattr(obj, "sw_arraysize_ref", ARRef.deserialize(child))
+            if tag == "RULE-BASED-VALUES":
+                setattr(obj, "rule_based_values", SerializationHelper.deserialize_by_tag(child, "RuleBasedValueSpecification"))
+            elif tag == "SW-ARRAYSIZE":
+                setattr(obj, "sw_arraysize", SerializationHelper.deserialize_by_tag(child, "ValueList"))
             elif tag == "V":
                 setattr(obj, "v", SerializationHelper.deserialize_by_tag(child, "Numerical"))
             elif tag == "VTS":
@@ -203,8 +206,8 @@ class RuleBasedValueContBuilder(BuilderBase):
         self._obj: RuleBasedValueCont = RuleBasedValueCont()
 
 
-    def with_rule_based(self, value: Optional[Any]) -> "RuleBasedValueContBuilder":
-        """Set rule_based attribute.
+    def with_rule_based_values(self, value: Optional[RuleBasedValueSpecification]) -> "RuleBasedValueContBuilder":
+        """Set rule_based_values attribute.
 
         Args:
             value: Value to set
@@ -213,8 +216,8 @@ class RuleBasedValueContBuilder(BuilderBase):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'rule_based' is required and cannot be None")
-        self._obj.rule_based = value
+            raise ValueError("Attribute 'rule_based_values' is required and cannot be None")
+        self._obj.rule_based_values = value
         return self
 
     def with_sw_arraysize(self, value: Optional[ValueList]) -> "RuleBasedValueContBuilder":
@@ -296,7 +299,7 @@ class RuleBasedValueContBuilder(BuilderBase):
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "ruleBased",
+        "ruleBasedValues",
         "swArraysize",
         "unit",
     }
