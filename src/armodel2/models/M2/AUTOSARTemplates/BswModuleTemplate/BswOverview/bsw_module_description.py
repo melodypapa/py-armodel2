@@ -72,34 +72,34 @@ class BswModuleDescription(ARElement):
 
     module_id: Optional[PositiveInteger]
     _provided_entry_refs: list[ARRef]
+    released_triggers: list[Trigger]
+    required_triggers: list[Trigger]
     bsw_module_dependencies: list[BswModuleDependency]
     bsw_module_documentation: Optional[SwComponentDocumentation]
     expected_entry_refs: list[ARRef]
     implemented_entry_refs: list[ARRef]
     provided_client_server_entries: list[BswModuleClientServerEntry]
-    provided_datas: list[VariableDataPrototype]
     provided_mode_groups: list[ModeDeclarationGroupPrototype]
-    released_triggers: list[Trigger]
     required_client_server_entries: list[BswModuleClientServerEntry]
+    provided_datas: list[VariableDataPrototype]
     required_datas: list[VariableDataPrototype]
     required_mode_groups: list[ModeDeclarationGroupPrototype]
-    required_triggers: list[Trigger]
     internal_behaviors: list[BswInternalBehavior]
     _DESERIALIZE_DISPATCH = {
         "MODULE-ID": lambda obj, elem: setattr(obj, "module_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PROVIDED-ENTRY-REFS": lambda obj, elem: [obj._provided_entry_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "RELEASED-TRIGGERS": lambda obj, elem: obj.released_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
+        "REQUIRED-TRIGGERS": lambda obj, elem: obj.required_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
         "BSW-MODULE-DEPENDENCYS": lambda obj, elem: obj.bsw_module_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleDependency")),
         "BSW-MODULE-DOCUMENTATION": lambda obj, elem: setattr(obj, "bsw_module_documentation", SerializationHelper.deserialize_by_tag(elem, "SwComponentDocumentation")),
         "EXPECTED-ENTRY-REFS": lambda obj, elem: [obj.expected_entry_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "IMPLEMENTED-ENTRY-REFS": lambda obj, elem: [obj.implemented_entry_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "PROVIDED-CLIENT-SERVER-ENTRYS": lambda obj, elem: obj.provided_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
-        "PROVIDED-DATAS": lambda obj, elem: obj.provided_datas.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
         "PROVIDED-MODE-GROUPS": lambda obj, elem: obj.provided_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroupPrototype")),
-        "RELEASED-TRIGGERS": lambda obj, elem: obj.released_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
         "REQUIRED-CLIENT-SERVER-ENTRYS": lambda obj, elem: obj.required_client_server_entries.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleClientServerEntry")),
+        "PROVIDED-DATAS": lambda obj, elem: obj.provided_datas.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
         "REQUIRED-DATAS": lambda obj, elem: obj.required_datas.append(SerializationHelper.deserialize_by_tag(elem, "VariableDataPrototype")),
         "REQUIRED-MODE-GROUPS": lambda obj, elem: obj.required_mode_groups.append(SerializationHelper.deserialize_by_tag(elem, "ModeDeclarationGroupPrototype")),
-        "REQUIRED-TRIGGERS": lambda obj, elem: obj.required_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
         "INTERNAL-BEHAVIORS": lambda obj, elem: obj.internal_behaviors.append(SerializationHelper.deserialize_by_tag(elem, "BswInternalBehavior")),
     }
 
@@ -109,18 +109,18 @@ class BswModuleDescription(ARElement):
         super().__init__()
         self.module_id: Optional[PositiveInteger] = None
         self._provided_entry_refs: list[ARRef] = []
+        self.released_triggers: list[Trigger] = []
+        self.required_triggers: list[Trigger] = []
         self.bsw_module_dependencies: list[BswModuleDependency] = []
         self.bsw_module_documentation: Optional[SwComponentDocumentation] = None
         self.expected_entry_refs: list[ARRef] = []
         self.implemented_entry_refs: list[ARRef] = []
         self.provided_client_server_entries: list[BswModuleClientServerEntry] = []
-        self.provided_datas: list[VariableDataPrototype] = []
         self.provided_mode_groups: list[ModeDeclarationGroupPrototype] = []
-        self.released_triggers: list[Trigger] = []
         self.required_client_server_entries: list[BswModuleClientServerEntry] = []
+        self.provided_datas: list[VariableDataPrototype] = []
         self.required_datas: list[VariableDataPrototype] = []
         self.required_mode_groups: list[ModeDeclarationGroupPrototype] = []
-        self.required_triggers: list[Trigger] = []
         self.internal_behaviors: list[BswInternalBehavior] = []
     @property
     @ref_conditional("PROVIDED-ENTRYS")
@@ -188,6 +188,26 @@ class BswModuleDescription(ARElement):
                         ref_elem.append(child)
                     conditional.append(ref_elem)
                     wrapper.append(conditional)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize released_triggers (list to container "RELEASED-TRIGGERS")
+        if self.released_triggers:
+            wrapper = ET.Element("RELEASED-TRIGGERS")
+            for item in self.released_triggers:
+                serialized = SerializationHelper.serialize_item(item, "Trigger")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize required_triggers (list to container "REQUIRED-TRIGGERS")
+        if self.required_triggers:
+            wrapper = ET.Element("REQUIRED-TRIGGERS")
+            for item in self.required_triggers:
+                serialized = SerializationHelper.serialize_item(item, "Trigger")
+                if serialized is not None:
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -259,16 +279,6 @@ class BswModuleDescription(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize provided_datas (list to container "PROVIDED-DATAS")
-        if self.provided_datas:
-            wrapper = ET.Element("PROVIDED-DATAS")
-            for item in self.provided_datas:
-                serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
-
         # Serialize provided_mode_groups (list to container "PROVIDED-MODE-GROUPS")
         if self.provided_mode_groups:
             wrapper = ET.Element("PROVIDED-MODE-GROUPS")
@@ -279,21 +289,21 @@ class BswModuleDescription(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize released_triggers (list to container "RELEASED-TRIGGERS")
-        if self.released_triggers:
-            wrapper = ET.Element("RELEASED-TRIGGERS")
-            for item in self.released_triggers:
-                serialized = SerializationHelper.serialize_item(item, "Trigger")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
-
         # Serialize required_client_server_entries (list to container "REQUIRED-CLIENT-SERVER-ENTRYS")
         if self.required_client_server_entries:
             wrapper = ET.Element("REQUIRED-CLIENT-SERVER-ENTRYS")
             for item in self.required_client_server_entries:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleClientServerEntry")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize provided_datas (list to container "PROVIDED-DATAS")
+        if self.provided_datas:
+            wrapper = ET.Element("PROVIDED-DATAS")
+            for item in self.provided_datas:
+                serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -314,16 +324,6 @@ class BswModuleDescription(ARElement):
             wrapper = ET.Element("REQUIRED-MODE-GROUPS")
             for item in self.required_mode_groups:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroupPrototype")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
-
-        # Serialize required_triggers (list to container "REQUIRED-TRIGGERS")
-        if self.required_triggers:
-            wrapper = ET.Element("REQUIRED-TRIGGERS")
-            for item in self.required_triggers:
-                serialized = SerializationHelper.serialize_item(item, "Trigger")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -367,6 +367,14 @@ class BswModuleDescription(ARElement):
                     if len(item_elem) > 0:
                         ref_elem = item_elem[0]
                         obj._provided_entry_refs.append(ARRef.deserialize(ref_elem))
+            elif tag == "RELEASED-TRIGGERS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.released_triggers.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
+            elif tag == "REQUIRED-TRIGGERS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.required_triggers.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
             elif tag == "BSW-MODULE-DEPENDENCYS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -385,22 +393,18 @@ class BswModuleDescription(ARElement):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.provided_client_server_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleClientServerEntry"))
-            elif tag == "PROVIDED-DATAS":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj.provided_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "PROVIDED-MODE-GROUPS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.provided_mode_groups.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroupPrototype"))
-            elif tag == "RELEASED-TRIGGERS":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj.released_triggers.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
             elif tag == "REQUIRED-CLIENT-SERVER-ENTRYS":
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.required_client_server_entries.append(SerializationHelper.deserialize_by_tag(item_elem, "BswModuleClientServerEntry"))
+            elif tag == "PROVIDED-DATAS":
+                # Iterate through wrapper children
+                for item_elem in child:
+                    obj.provided_datas.append(SerializationHelper.deserialize_by_tag(item_elem, "VariableDataPrototype"))
             elif tag == "REQUIRED-DATAS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -409,10 +413,6 @@ class BswModuleDescription(ARElement):
                 # Iterate through wrapper children
                 for item_elem in child:
                     obj.required_mode_groups.append(SerializationHelper.deserialize_by_tag(item_elem, "ModeDeclarationGroupPrototype"))
-            elif tag == "REQUIRED-TRIGGERS":
-                # Iterate through wrapper children
-                for item_elem in child:
-                    obj.required_triggers.append(SerializationHelper.deserialize_by_tag(item_elem, "Trigger"))
             elif tag == "INTERNAL-BEHAVIORS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -455,6 +455,30 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
             self for method chaining
         """
         self._obj.provided_entries = list(items) if items else []
+        return self
+
+    def with_released_triggers(self, items: list[Trigger]) -> "BswModuleDescriptionBuilder":
+        """Set released_triggers list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.released_triggers = list(items) if items else []
+        return self
+
+    def with_required_triggers(self, items: list[Trigger]) -> "BswModuleDescriptionBuilder":
+        """Set required_triggers list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.required_triggers = list(items) if items else []
         return self
 
     def with_bsw_module_dependencies(self, items: list[BswModuleDependency]) -> "BswModuleDescriptionBuilder":
@@ -519,18 +543,6 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.provided_client_server_entries = list(items) if items else []
         return self
 
-    def with_provided_datas(self, items: list[VariableDataPrototype]) -> "BswModuleDescriptionBuilder":
-        """Set provided_datas list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.provided_datas = list(items) if items else []
-        return self
-
     def with_provided_mode_groups(self, items: list[ModeDeclarationGroupPrototype]) -> "BswModuleDescriptionBuilder":
         """Set provided_mode_groups list attribute.
 
@@ -543,18 +555,6 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.provided_mode_groups = list(items) if items else []
         return self
 
-    def with_released_triggers(self, items: list[Trigger]) -> "BswModuleDescriptionBuilder":
-        """Set released_triggers list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.released_triggers = list(items) if items else []
-        return self
-
     def with_required_client_server_entries(self, items: list[BswModuleClientServerEntry]) -> "BswModuleDescriptionBuilder":
         """Set required_client_server_entries list attribute.
 
@@ -565,6 +565,18 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
             self for method chaining
         """
         self._obj.required_client_server_entries = list(items) if items else []
+        return self
+
+    def with_provided_datas(self, items: list[VariableDataPrototype]) -> "BswModuleDescriptionBuilder":
+        """Set provided_datas list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.provided_datas = list(items) if items else []
         return self
 
     def with_required_datas(self, items: list[VariableDataPrototype]) -> "BswModuleDescriptionBuilder":
@@ -589,18 +601,6 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
             self for method chaining
         """
         self._obj.required_mode_groups = list(items) if items else []
-        return self
-
-    def with_required_triggers(self, items: list[Trigger]) -> "BswModuleDescriptionBuilder":
-        """Set required_triggers list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.required_triggers = list(items) if items else []
         return self
 
     def with_internal_behaviors(self, items: list[BswInternalBehavior]) -> "BswModuleDescriptionBuilder":
@@ -635,6 +635,48 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
             self for method chaining
         """
         self._obj.provided_entries = []
+        return self
+
+    def add_released_trigger(self, item: Trigger) -> "BswModuleDescriptionBuilder":
+        """Add a single item to released_triggers list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.released_triggers.append(item)
+        return self
+
+    def clear_released_triggers(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from released_triggers list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.released_triggers = []
+        return self
+
+    def add_required_trigger(self, item: Trigger) -> "BswModuleDescriptionBuilder":
+        """Add a single item to required_triggers list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.required_triggers.append(item)
+        return self
+
+    def clear_required_triggers(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from required_triggers list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.required_triggers = []
         return self
 
     def add_bsw_module_dependency(self, item: BswModuleDependency) -> "BswModuleDescriptionBuilder":
@@ -721,27 +763,6 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.provided_client_server_entries = []
         return self
 
-    def add_provided_data(self, item: VariableDataPrototype) -> "BswModuleDescriptionBuilder":
-        """Add a single item to provided_datas list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.provided_datas.append(item)
-        return self
-
-    def clear_provided_datas(self) -> "BswModuleDescriptionBuilder":
-        """Clear all items from provided_datas list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.provided_datas = []
-        return self
-
     def add_provided_mode_group(self, item: ModeDeclarationGroupPrototype) -> "BswModuleDescriptionBuilder":
         """Add a single item to provided_mode_groups list.
 
@@ -763,27 +784,6 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         self._obj.provided_mode_groups = []
         return self
 
-    def add_released_trigger(self, item: Trigger) -> "BswModuleDescriptionBuilder":
-        """Add a single item to released_triggers list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.released_triggers.append(item)
-        return self
-
-    def clear_released_triggers(self) -> "BswModuleDescriptionBuilder":
-        """Clear all items from released_triggers list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.released_triggers = []
-        return self
-
     def add_required_client_server_entry(self, item: BswModuleClientServerEntry) -> "BswModuleDescriptionBuilder":
         """Add a single item to required_client_server_entries list.
 
@@ -803,6 +803,27 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
             self for method chaining
         """
         self._obj.required_client_server_entries = []
+        return self
+
+    def add_provided_data(self, item: VariableDataPrototype) -> "BswModuleDescriptionBuilder":
+        """Add a single item to provided_datas list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.provided_datas.append(item)
+        return self
+
+    def clear_provided_datas(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from provided_datas list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.provided_datas = []
         return self
 
     def add_required_data(self, item: VariableDataPrototype) -> "BswModuleDescriptionBuilder":
@@ -845,27 +866,6 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
             self for method chaining
         """
         self._obj.required_mode_groups = []
-        return self
-
-    def add_required_trigger(self, item: Trigger) -> "BswModuleDescriptionBuilder":
-        """Add a single item to required_triggers list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.required_triggers.append(item)
-        return self
-
-    def clear_required_triggers(self) -> "BswModuleDescriptionBuilder":
-        """Clear all items from required_triggers list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.required_triggers = []
         return self
 
     def add_internal_behavior(self, item: BswInternalBehavior) -> "BswModuleDescriptionBuilder":

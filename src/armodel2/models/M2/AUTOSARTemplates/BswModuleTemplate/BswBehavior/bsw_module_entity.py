@@ -62,7 +62,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
     data_receive_points: list[BswVariableAccess]
     data_send_points: list[BswVariableAccess]
     implemented_entry_ref: Optional[ARRef]
-    issued_trigger_refs: list[ARRef]
+    _issued_trigger_refs: list[ARRef]
     _managed_mode_group_refs: list[ARRef]
     scheduler_name_prefix_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
@@ -72,7 +72,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
         "DATA-RECEIVE-POINTS": lambda obj, elem: obj.data_receive_points.append(SerializationHelper.deserialize_by_tag(elem, "BswVariableAccess")),
         "DATA-SEND-POINTS": lambda obj, elem: obj.data_send_points.append(SerializationHelper.deserialize_by_tag(elem, "BswVariableAccess")),
         "IMPLEMENTED-ENTRY-REF": lambda obj, elem: setattr(obj, "implemented_entry_ref", ARRef.deserialize(elem)),
-        "ISSUED-TRIGGER-REFS": lambda obj, elem: [obj.issued_trigger_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "ISSUED-TRIGGER-REFS": lambda obj, elem: [obj._issued_trigger_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "MANAGED-MODE-GROUP-REFS": lambda obj, elem: [obj._managed_mode_group_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "SCHEDULER-NAME-PREFIX-REF": lambda obj, elem: setattr(obj, "scheduler_name_prefix_ref", ARRef.deserialize(elem)),
     }
@@ -87,7 +87,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
         self.data_receive_points: list[BswVariableAccess] = []
         self.data_send_points: list[BswVariableAccess] = []
         self.implemented_entry_ref: Optional[ARRef] = None
-        self.issued_trigger_refs: list[ARRef] = []
+        self._issued_trigger_refs: list[ARRef] = []
         self._managed_mode_group_refs: list[ARRef] = []
         self.scheduler_name_prefix_ref: Optional[ARRef] = None
     @property
@@ -111,6 +111,17 @@ class BswModuleEntity(ExecutableEntity, ABC):
     def activation_point_refs(self, value: list[ARRef]) -> None:
         """Set activation_point_refs with ref_conditional wrapper."""
         self._activation_point_refs = value
+
+    @property
+    @ref_conditional("ISSUED-TRIGGERS")
+    def issued_trigger_refs(self) -> list[ARRef]:
+        """Get issued_trigger_refs with ref_conditional wrapper."""
+        return self._issued_trigger_refs
+
+    @issued_trigger_refs.setter
+    def issued_trigger_refs(self, value: list[ARRef]) -> None:
+        """Set issued_trigger_refs with ref_conditional wrapper."""
+        self._issued_trigger_refs = value
 
     @property
     @ref_conditional("MANAGED-MODE-GROUPS")
@@ -231,20 +242,23 @@ class BswModuleEntity(ExecutableEntity, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize issued_trigger_refs (list to container "ISSUED-TRIGGER-REFS")
+        # Serialize issued_trigger_refs (list to container "ISSUED-TRIGGERS")
         if self.issued_trigger_refs:
-            wrapper = ET.Element("ISSUED-TRIGGER-REFS")
+            wrapper = ET.Element("ISSUED-TRIGGERS")
             for item in self.issued_trigger_refs:
                 serialized = SerializationHelper.serialize_item(item, "Trigger")
                 if serialized is not None:
-                    child_elem = ET.Element("ISSUED-TRIGGER-REF")
+                    # Wrap in TRIGGER-REF-CONDITIONAL
+                    conditional = ET.Element("TRIGGER-REF-CONDITIONAL")
+                    ref_elem = ET.Element("TRIGGER-REF")
                     if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
+                        ref_elem.attrib.update(serialized.attrib)
                     if serialized.text:
-                        child_elem.text = serialized.text
+                        ref_elem.text = serialized.text
                     for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                        ref_elem.append(child)
+                    conditional.append(ref_elem)
+                    wrapper.append(conditional)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -337,10 +351,13 @@ class BswModuleEntity(ExecutableEntity, ABC):
                     obj.data_send_points.append(SerializationHelper.deserialize_by_tag(item_elem, "BswVariableAccess"))
             elif tag == "IMPLEMENTED-ENTRY-REF":
                 setattr(obj, "implemented_entry_ref", ARRef.deserialize(child))
-            elif tag == "ISSUED-TRIGGER-REFS":
-                # Iterate through wrapper children
+            elif tag == "ISSUED-TRIGGERS":
+                # Unwrap ref_conditional pattern
                 for item_elem in child:
-                    obj.issued_trigger_refs.append(ARRef.deserialize(item_elem))
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj._issued_trigger_refs.append(ARRef.deserialize(ref_elem))
             elif tag == "MANAGED-MODE-GROUPS":
                 # Unwrap ref_conditional pattern
                 for item_elem in child:

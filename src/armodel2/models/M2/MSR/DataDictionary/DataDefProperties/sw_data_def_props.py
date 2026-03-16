@@ -112,6 +112,7 @@ class SwDataDefProps(ARObject):
     additional_native_type_qualifier: Optional[NativeDeclarationString]
     annotations: list[Annotation]
     base_type_ref: Optional[ARRef]
+    sw_bit_representation: Optional[SwBitRepresentation]
     sw_calibration_access: Optional[SwCalibrationAccessEnum]
     compu_method_ref: Optional[ARRef]
     data_constr_ref: Optional[ARRef]
@@ -122,7 +123,6 @@ class SwDataDefProps(ARObject):
     step_size: Optional[Float]
     sw_addr_method_ref: Optional[ARRef]
     sw_alignment: Optional[AlignmentType]
-    sw_bit_representation: Optional[SwBitRepresentation]
     sw_calprm_axis_set: Optional[SwCalprmAxisSet]
     sw_comparison_variables: list[SwVariableRefProxy]
     sw_data_dependency: Optional[SwDataDependency]
@@ -143,6 +143,7 @@ class SwDataDefProps(ARObject):
         "ADDITIONAL-NATIVE-TYPE-QUALIFIER": lambda obj, elem: setattr(obj, "additional_native_type_qualifier", SerializationHelper.deserialize_by_tag(elem, "NativeDeclarationString")),
         "ANNOTATIONS": lambda obj, elem: obj.annotations.append(SerializationHelper.deserialize_by_tag(elem, "Annotation")),
         "BASE-TYPE-REF": lambda obj, elem: setattr(obj, "base_type_ref", ARRef.deserialize(elem)),
+        "SW-BIT-REPRESENTATION": lambda obj, elem: setattr(obj, "sw_bit_representation", SerializationHelper.deserialize_by_tag(elem, "SwBitRepresentation")),
         "SW-CALIBRATION-ACCESS": lambda obj, elem: setattr(obj, "sw_calibration_access", SwCalibrationAccessEnum.deserialize(elem)),
         "COMPU-METHOD-REF": lambda obj, elem: setattr(obj, "compu_method_ref", ARRef.deserialize(elem)),
         "DATA-CONSTR-REF": lambda obj, elem: setattr(obj, "data_constr_ref", ARRef.deserialize(elem)),
@@ -153,7 +154,6 @@ class SwDataDefProps(ARObject):
         "STEP-SIZE": lambda obj, elem: setattr(obj, "step_size", SerializationHelper.deserialize_by_tag(elem, "Float")),
         "SW-ADDR-METHOD-REF": lambda obj, elem: setattr(obj, "sw_addr_method_ref", ARRef.deserialize(elem)),
         "SW-ALIGNMENT": lambda obj, elem: setattr(obj, "sw_alignment", SerializationHelper.deserialize_by_tag(elem, "AlignmentType")),
-        "SW-BIT-REPRESENTATION": lambda obj, elem: setattr(obj, "sw_bit_representation", SerializationHelper.deserialize_by_tag(elem, "SwBitRepresentation")),
         "SW-CALPRM-AXIS-SET": lambda obj, elem: setattr(obj, "sw_calprm_axis_set", SerializationHelper.deserialize_by_tag(elem, "SwCalprmAxisSet")),
         "SW-COMPARISON-VARIABLES": lambda obj, elem: obj.sw_comparison_variables.append(SerializationHelper.deserialize_by_tag(elem, "SwVariableRefProxy")),
         "SW-DATA-DEPENDENCY": lambda obj, elem: setattr(obj, "sw_data_dependency", SerializationHelper.deserialize_by_tag(elem, "SwDataDependency")),
@@ -179,6 +179,7 @@ class SwDataDefProps(ARObject):
         self.additional_native_type_qualifier: Optional[NativeDeclarationString] = None
         self.annotations: list[Annotation] = []
         self.base_type_ref: Optional[ARRef] = None
+        self.sw_bit_representation: Optional[SwBitRepresentation] = None
         self.sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
         self.compu_method_ref: Optional[ARRef] = None
         self.data_constr_ref: Optional[ARRef] = None
@@ -189,7 +190,6 @@ class SwDataDefProps(ARObject):
         self.step_size: Optional[Float] = None
         self.sw_addr_method_ref: Optional[ARRef] = None
         self.sw_alignment: Optional[AlignmentType] = None
-        self.sw_bit_representation: Optional[SwBitRepresentation] = None
         self.sw_calprm_axis_set: Optional[SwCalprmAxisSet] = None
         self.sw_comparison_variables: list[SwVariableRefProxy] = []
         self.sw_data_dependency: Optional[SwDataDependency] = None
@@ -272,6 +272,19 @@ class SwDataDefProps(ARObject):
             serialized = SerializationHelper.serialize_item(self.base_type_ref, "SwBaseType")
             if serialized is not None:
                 wrapped = ET.Element("BASE-TYPE-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize sw_bit_representation
+        if self.sw_bit_representation is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_bit_representation, "SwBitRepresentation")
+            if serialized is not None:
+                wrapped = ET.Element("SW-BIT-REPRESENTATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -402,19 +415,6 @@ class SwDataDefProps(ARObject):
             serialized = SerializationHelper.serialize_item(self.sw_alignment, "AlignmentType")
             if serialized is not None:
                 wrapped = ET.Element("SW-ALIGNMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
-
-        # Serialize sw_bit_representation
-        if self.sw_bit_representation is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_bit_representation, "SwBitRepresentation")
-            if serialized is not None:
-                wrapped = ET.Element("SW-BIT-REPRESENTATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -686,6 +686,12 @@ class SwDataDefProps(ARObject):
             base_type_ref_value = ARRef.deserialize(child)
             obj.base_type_ref = base_type_ref_value
 
+        # Parse sw_bit_representation
+        child = SerializationHelper.find_child_element(inner_elem, "SW-BIT-REPRESENTATION")
+        if child is not None:
+            sw_bit_representation_value = SerializationHelper.deserialize_by_tag(child, "SwBitRepresentation")
+            obj.sw_bit_representation = sw_bit_representation_value
+
         # Parse sw_calibration_access
         child = SerializationHelper.find_child_element(inner_elem, "SW-CALIBRATION-ACCESS")
         if child is not None:
@@ -745,12 +751,6 @@ class SwDataDefProps(ARObject):
         if child is not None:
             sw_alignment_value = child.text
             obj.sw_alignment = sw_alignment_value
-
-        # Parse sw_bit_representation
-        child = SerializationHelper.find_child_element(inner_elem, "SW-BIT-REPRESENTATION")
-        if child is not None:
-            sw_bit_representation_value = SerializationHelper.deserialize_by_tag(child, "SwBitRepresentation")
-            obj.sw_bit_representation = sw_bit_representation_value
 
         # Parse sw_calprm_axis_set
         child = SerializationHelper.find_child_element(inner_elem, "SW-CALPRM-AXIS-SET")
@@ -901,6 +901,20 @@ class SwDataDefPropsBuilder(BuilderBase):
         self._obj.base_type = value
         return self
 
+    def with_sw_bit_representation(self, value: Optional[SwBitRepresentation]) -> "SwDataDefPropsBuilder":
+        """Set sw_bit_representation attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute 'sw_bit_representation' is required and cannot be None")
+        self._obj.sw_bit_representation = value
+        return self
+
     def with_sw_calibration_access(self, value: Optional[SwCalibrationAccessEnum]) -> "SwDataDefPropsBuilder":
         """Set sw_calibration_access attribute.
 
@@ -1039,20 +1053,6 @@ class SwDataDefPropsBuilder(BuilderBase):
         if value is None and not True:
             raise ValueError("Attribute 'sw_alignment' is required and cannot be None")
         self._obj.sw_alignment = value
-        return self
-
-    def with_sw_bit_representation(self, value: Optional[SwBitRepresentation]) -> "SwDataDefPropsBuilder":
-        """Set sw_bit_representation attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute 'sw_bit_representation' is required and cannot be None")
-        self._obj.sw_bit_representation = value
         return self
 
     def with_sw_calprm_axis_set(self, value: Optional[SwCalprmAxisSet]) -> "SwDataDefPropsBuilder":

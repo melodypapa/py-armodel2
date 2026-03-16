@@ -318,6 +318,7 @@
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
+          "decorator": "ref_conditional:ISSUED-TRIGGERS",
           "note": "A trigger issued by this entity via BSW Scheduler API call."
         },
         "managedModeGroup": {
@@ -1654,7 +1655,7 @@
       "package": "M2::AUTOSARTemplates::BswModuleTemplate::BswBehavior",
       "is_abstract": true,
       "atp_type": null,
-      "parent": null,
+      "parent": "ARObject",
       "bases": [
         "ARObject",
         "BswApiOptions"
@@ -1680,6 +1681,13 @@
         }
       ],
       "attributes": {
+        "enableTakeAddress": {
+          "type": "Boolean",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute shall be define in BswApiOptions. But BswApiOptions cannot be found in AUTOSAR standard."
+        },
         "receivedData": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
