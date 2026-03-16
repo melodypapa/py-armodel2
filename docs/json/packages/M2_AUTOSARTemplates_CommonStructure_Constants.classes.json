@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "ApplicationRuleBasedValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -69,7 +69,7 @@
         }
       ],
       "attributes": {
-        "categorySpecification": {
+        "category": {
           "type": "Identifier",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -79,14 +79,14 @@
         "swAxisCont": {
           "type": "RuleBasedAxisCont",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents the axis values of a Compound Primitive Type (curve or map). swAxisCont describes the x-axis, the second sw the y-axis, the third swAxisCont z-axis. In addition to this, the axis can be swAxisIndex."
         },
         "swValueCont": {
           "type": "RuleBasedValueCont",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents the values of an array or Compound"
         }
@@ -94,7 +94,7 @@
     },
     {
       "name": "ArrayValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -169,7 +169,7 @@
           "is_ref": false,
           "note": "The value for a single array element. All Value aggregated by ArrayValueSpecification the same structure. atpVariation"
         },
-        "intendedPartial": {
+        "intendedPartialInitializationCount": {
           "type": "PositiveInteger",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -180,7 +180,7 @@
     },
     {
       "name": "ConstantSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -220,7 +220,7 @@
         "valueSpec": {
           "type": "ValueSpecification",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "decorator": "polymorphic:VALUE-SPEC=ValueSpecification",
           "note": "Specification of an expression leading to a value for this"
@@ -229,7 +229,7 @@
     },
     {
       "name": "NumericalOrText",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -279,7 +279,7 @@
     },
     {
       "name": "NumericalValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -360,7 +360,7 @@
     },
     {
       "name": "RecordValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -421,11 +421,19 @@
           "standard_release": "R23-11"
         }
       ],
-      "attributes": {}
+      "attributes": {
+        "field": {
+          "type": "ValueSpecification ",
+          "multiplicity": "*",
+          "kind": "aggr",
+          "is_ref": false,
+          "note": "This is the value itself."
+        }
+      }
     },
     {
       "name": "RuleArguments",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": "atpMixed",
@@ -480,7 +488,7 @@
         "vtf": {
           "type": "NumericalOrText",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This aggregation represents the ability to provide a value either numerical or text which existence is subject atpVariation"
         }
@@ -488,7 +496,7 @@
     },
     {
       "name": "RuleBasedValueCont",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -519,18 +527,18 @@
         }
       ],
       "attributes": {
-        "ruleBased": {
-          "type": "any (RuleBasedValue)",
+        "ruleBasedValues": {
+          "type": "RuleBasedValueSpecification",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents the rule based value specification for the array or compound primitive (CURVE, MAP, CUBOID, VAL_BLK)."
         },
         "swArraysize": {
           "type": "ValueList",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "This attribute defines the size of each dimension for CURVE, MAP, CUBOID, CUBE_4, RES_AXIS, VAL_BLK. dimension one value has to be defined, e.g. one of COM_AXIS and two or more in case of MAP."
         },
         "unit": {
@@ -544,7 +552,7 @@
     },
     {
       "name": "RuleBasedValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -580,7 +588,7 @@
         "arguments": {
           "type": "RuleArguments",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents the arguments for the RuleBasedValue"
         },
@@ -602,7 +610,7 @@
     },
     {
       "name": "ApplicationValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -790,7 +798,7 @@
     },
     {
       "name": "CompositeValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": true,
       "atp_type": null,
@@ -854,7 +862,7 @@
     },
     {
       "name": "TextValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -927,7 +935,7 @@
     },
     {
       "name": "ReferenceValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -996,7 +1004,7 @@
     },
     {
       "name": "NotAvailableValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -1065,7 +1073,7 @@
     },
     {
       "name": "ConstantReference",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -1134,7 +1142,7 @@
     },
     {
       "name": "ConstantSpecificationMapping",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -1177,7 +1185,7 @@
     },
     {
       "name": "ConstantSpecificationMappingSet",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -1209,9 +1217,9 @@
       ],
       "attributes": {
         "mapping": {
-          "type": "ConstantSpecification",
+          "type": "ConstantSpecificationMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "ConstantSpecificationMappings owned by the Constant"
         }
@@ -1219,7 +1227,7 @@
     },
     {
       "name": "AbstractRuleBasedValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": true,
       "atp_type": null,
@@ -1287,7 +1295,7 @@
     },
     {
       "name": "RuleBasedAxisCont",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -1319,18 +1327,18 @@
           "is_ref": false,
           "note": "This category specifies the particular axis types: STD_AXIS (swArraysize necessary)"
         },
-        "ruleBased": {
-          "type": "any (RuleBasedValue)",
+        "ruleBasedValues": {
+          "type": "RuleBasedValueSpecification",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents the rule based value specification for the axis of a compound primitive (curve, map)."
         },
         "swArraysize": {
           "type": "ValueList",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "For multidimensional compound primitives (curve, map ...) necessary to know the dimensions.They are specified"
         },
         "swAxisIndex": {
@@ -1351,7 +1359,7 @@
     },
     {
       "name": "NumericalRuleBasedValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -1410,10 +1418,10 @@
         }
       ],
       "attributes": {
-        "ruleBased": {
-          "type": "any (RuleBasedValue)",
+        "ruleBasedValues": {
+          "type": "RuleBasedValueSpecification",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents the rule based value specification for the array."
         }
@@ -1421,7 +1429,7 @@
     },
     {
       "name": "CompositeRuleBasedValueSpecification",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": false,
       "atp_type": null,
@@ -1487,10 +1495,10 @@
           "is_ref": false,
           "note": "This represents the collection of aggregated Value Specifications. The last ValueSpecification in the be taken to execute the filling rule."
         },
-        "compound": {
-          "type": "any (CompositeRuleBased)",
+        "compoundPrimitiveArgument": {
+          "type": "CompositeRuleBasedValueArgument",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This represents the collection of aggregated Value in the collection shall be taken to the filling rule."
         },
@@ -1512,7 +1520,7 @@
     },
     {
       "name": "CompositeRuleBasedValueArgument",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Constants",
       "is_abstract": true,
       "atp_type": null,

@@ -71,7 +71,6 @@ while [[ $# -gt 0 ]]; do
             echo "Options:"
             echo "  --verbose, -v       Show detailed error messages"
             echo "  --dry-run           List files without formatting"
-            echo "  --encoding, -e      Set output encoding (default: UTF-8)"
             echo "  --input, -i DIR     Set input directory (default: demos/arxml)"
             echo "  --output, -o DIR    Set output directory (default: data/arxml)"
             echo "  --validated         Use demos/validated → data/validated"
@@ -88,7 +87,6 @@ while [[ $# -gt 0 ]]; do
             echo "  $0 --test                            # Format from demos/test"
             echo "  $0 --test_validated                  # Format from demos/test_validated"
             echo "  $0 --input demos/validated --output data/validated  # Custom directories"
-            echo "  $0 --encoding UTF-8                  # Use UTF-8 encoding"
             exit 0
             ;;
         *.arxml)
@@ -208,7 +206,7 @@ if [ $failed_count -gt 0 ]; then
     echo "To debug individual files:"
     for i in "${!failed_files[@]}"; do
         filename="${failed_files[$i]}"
-        echo "  armodel2 format $INPUT_DIR/$filename -o data/output.arxml --encoding $ENCODING -v"
+        echo "  armodel2 format $INPUT_DIR/$filename -o data/output.arxml -v"
     done
 fi
 

@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_Constants.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.abstract_rule_based_value_specification import (
@@ -17,6 +17,9 @@ from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.abstract_rule
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
     PositiveInteger,
+)
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.composite_rule_based_value_argument import (
+    CompositeRuleBasedValueArgument,
 )
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.composite_value_specification import (
     CompositeValueSpecification,
@@ -41,12 +44,12 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
 
 
     arguments: list[CompositeValueSpecification]
-    compounds: list[Any]
+    compound_primitive_arguments: list[CompositeRuleBasedValueArgument]
     max_size_to_fill: Optional[PositiveInteger]
     rule: Optional[Identifier]
     _DESERIALIZE_DISPATCH = {
         "ARGUMENTS": ("_POLYMORPHIC_LIST", "arguments", ["ArrayValueSpecification", "RecordValueSpecification"]),
-        "COMPOUNDS": lambda obj, elem: obj.compounds.append(SerializationHelper.deserialize_by_tag(elem, "any (CompositeRuleBased)")),
+        "COMPOUND-PRIMITIVE-ARGUMENTS": ("_POLYMORPHIC_LIST", "compound_primitive_arguments", ["ApplicationRuleBasedValueSpecification", "ApplicationValueSpecification"]),
         "MAX-SIZE-TO-FILL": lambda obj, elem: setattr(obj, "max_size_to_fill", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "RULE": lambda obj, elem: setattr(obj, "rule", SerializationHelper.deserialize_by_tag(elem, "Identifier")),
     }
@@ -56,7 +59,7 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         """Initialize CompositeRuleBasedValueSpecification."""
         super().__init__()
         self.arguments: list[CompositeValueSpecification] = []
-        self.compounds: list[Any] = []
+        self.compound_primitive_arguments: list[CompositeRuleBasedValueArgument] = []
         self.max_size_to_fill: Optional[PositiveInteger] = None
         self.rule: Optional[Identifier] = None
 
@@ -93,11 +96,11 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize compounds (list to container "COMPOUNDS")
-        if self.compounds:
-            wrapper = ET.Element("COMPOUNDS")
-            for item in self.compounds:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize compound_primitive_arguments (list to container "COMPOUND-PRIMITIVE-ARGUMENTS")
+        if self.compound_primitive_arguments:
+            wrapper = ET.Element("COMPOUND-PRIMITIVE-ARGUMENTS")
+            for item in self.compound_primitive_arguments:
+                serialized = SerializationHelper.serialize_item(item, "CompositeRuleBasedValueArgument")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -158,10 +161,14 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
                         obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "ArrayValueSpecification"))
                     elif concrete_tag == "RECORD-VALUE-SPECIFICATION":
                         obj.arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "RecordValueSpecification"))
-            elif tag == "COMPOUNDS":
-                # Iterate through wrapper children
+            elif tag == "COMPOUND-PRIMITIVE-ARGUMENTS":
+                # Iterate through all child elements and deserialize each based on its concrete type
                 for item_elem in child:
-                    obj.compounds.append(SerializationHelper.deserialize_by_tag(item_elem, "any (CompositeRuleBased)"))
+                    concrete_tag = item_elem.tag.split(ns_split, 1)[1] if item_elem.tag.startswith("{") else item_elem.tag
+                    if concrete_tag == "APPLICATION-RULE-BASED-VALUE-SPECIFICATION":
+                        obj.compound_primitive_arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationRuleBasedValueSpecification"))
+                    elif concrete_tag == "APPLICATION-VALUE-SPECIFICATION":
+                        obj.compound_primitive_arguments.append(SerializationHelper.deserialize_by_tag(item_elem, "ApplicationValueSpecification"))
             elif tag == "MAX-SIZE-TO-FILL":
                 setattr(obj, "max_size_to_fill", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
             elif tag == "RULE":
@@ -192,8 +199,8 @@ class CompositeRuleBasedValueSpecificationBuilder(AbstractRuleBasedValueSpecific
         self._obj.arguments = list(items) if items else []
         return self
 
-    def with_compounds(self, items: list[Any]) -> "CompositeRuleBasedValueSpecificationBuilder":
-        """Set compounds list attribute.
+    def with_compound_primitive_arguments(self, items: list[CompositeRuleBasedValueArgument]) -> "CompositeRuleBasedValueSpecificationBuilder":
+        """Set compound_primitive_arguments list attribute.
 
         Args:
             items: List of items to set
@@ -201,7 +208,7 @@ class CompositeRuleBasedValueSpecificationBuilder(AbstractRuleBasedValueSpecific
         Returns:
             self for method chaining
         """
-        self._obj.compounds = list(items) if items else []
+        self._obj.compound_primitive_arguments = list(items) if items else []
         return self
 
     def with_max_size_to_fill(self, value: Optional[PositiveInteger]) -> "CompositeRuleBasedValueSpecificationBuilder":
@@ -254,8 +261,8 @@ class CompositeRuleBasedValueSpecificationBuilder(AbstractRuleBasedValueSpecific
         self._obj.arguments = []
         return self
 
-    def add_compound(self, item: Any) -> "CompositeRuleBasedValueSpecificationBuilder":
-        """Add a single item to compounds list.
+    def add_compound_primitive_argument(self, item: CompositeRuleBasedValueArgument) -> "CompositeRuleBasedValueSpecificationBuilder":
+        """Add a single item to compound_primitive_arguments list.
 
         Args:
             item: Item to add
@@ -263,23 +270,23 @@ class CompositeRuleBasedValueSpecificationBuilder(AbstractRuleBasedValueSpecific
         Returns:
             self for method chaining
         """
-        self._obj.compounds.append(item)
+        self._obj.compound_primitive_arguments.append(item)
         return self
 
-    def clear_compounds(self) -> "CompositeRuleBasedValueSpecificationBuilder":
-        """Clear all items from compounds list.
+    def clear_compound_primitive_arguments(self) -> "CompositeRuleBasedValueSpecificationBuilder":
+        """Clear all items from compound_primitive_arguments list.
 
         Returns:
             self for method chaining
         """
-        self._obj.compounds = []
+        self._obj.compound_primitive_arguments = []
         return self
 
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
         "argument",
-        "compound",
+        "compoundPrimitiveArgument",
         "maxSizeToFill",
         "rule",
     }

@@ -14,8 +14,8 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import ARElementBuilder
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
-    ConstantSpecification,
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification_mapping import (
+    ConstantSpecificationMapping,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -36,16 +36,16 @@ class ConstantSpecificationMappingSet(ARElement):
     _XML_TAG = "CONSTANT-SPECIFICATION-MAPPING-SET"
 
 
-    mappings: list[ConstantSpecification]
+    mappings: list[ConstantSpecificationMapping]
     _DESERIALIZE_DISPATCH = {
-        "MAPPINGS": lambda obj, elem: obj.mappings.append(SerializationHelper.deserialize_by_tag(elem, "ConstantSpecification")),
+        "MAPPINGS": lambda obj, elem: obj.mappings.append(SerializationHelper.deserialize_by_tag(elem, "ConstantSpecificationMapping")),
     }
 
 
     def __init__(self) -> None:
         """Initialize ConstantSpecificationMappingSet."""
         super().__init__()
-        self.mappings: list[ConstantSpecification] = []
+        self.mappings: list[ConstantSpecificationMapping] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ConstantSpecificationMappingSet to XML element.
@@ -74,7 +74,7 @@ class ConstantSpecificationMappingSet(ARElement):
         if self.mappings:
             wrapper = ET.Element("MAPPINGS")
             for item in self.mappings:
-                serialized = SerializationHelper.serialize_item(item, "ConstantSpecification")
+                serialized = SerializationHelper.serialize_item(item, "ConstantSpecificationMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -102,7 +102,7 @@ class ConstantSpecificationMappingSet(ARElement):
             if tag == "MAPPINGS":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstantSpecification"))
+                    obj.mappings.append(SerializationHelper.deserialize_by_tag(item_elem, "ConstantSpecificationMapping"))
 
         return obj
 
@@ -117,7 +117,7 @@ class ConstantSpecificationMappingSetBuilder(ARElementBuilder):
         self._obj: ConstantSpecificationMappingSet = ConstantSpecificationMappingSet()
 
 
-    def with_mappings(self, items: list[ConstantSpecification]) -> "ConstantSpecificationMappingSetBuilder":
+    def with_mappings(self, items: list[ConstantSpecificationMapping]) -> "ConstantSpecificationMappingSetBuilder":
         """Set mappings list attribute.
 
         Args:
@@ -130,7 +130,7 @@ class ConstantSpecificationMappingSetBuilder(ARElementBuilder):
         return self
 
 
-    def add_mapping(self, item: ConstantSpecification) -> "ConstantSpecificationMappingSetBuilder":
+    def add_mapping(self, item: ConstantSpecificationMapping) -> "ConstantSpecificationMappingSetBuilder":
         """Add a single item to mappings list.
 
         Args:
