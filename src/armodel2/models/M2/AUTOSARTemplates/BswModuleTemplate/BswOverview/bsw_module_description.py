@@ -72,6 +72,7 @@ class BswModuleDescription(ARElement):
 
     module_id: Optional[PositiveInteger]
     _provided_entry_refs: list[ARRef]
+    _outgoing_callback_refs: list[ARRef]
     released_triggers: list[Trigger]
     required_triggers: list[Trigger]
     bsw_module_dependencies: list[BswModuleDependency]
@@ -88,6 +89,7 @@ class BswModuleDescription(ARElement):
     _DESERIALIZE_DISPATCH = {
         "MODULE-ID": lambda obj, elem: setattr(obj, "module_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
         "PROVIDED-ENTRY-REFS": lambda obj, elem: [obj._provided_entry_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "OUTGOING-CALLBACK-REFS": lambda obj, elem: [obj._outgoing_callback_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "RELEASED-TRIGGERS": lambda obj, elem: obj.released_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
         "REQUIRED-TRIGGERS": lambda obj, elem: obj.required_triggers.append(SerializationHelper.deserialize_by_tag(elem, "Trigger")),
         "BSW-MODULE-DEPENDENCYS": lambda obj, elem: obj.bsw_module_dependencies.append(SerializationHelper.deserialize_by_tag(elem, "BswModuleDependency")),
@@ -109,6 +111,7 @@ class BswModuleDescription(ARElement):
         super().__init__()
         self.module_id: Optional[PositiveInteger] = None
         self._provided_entry_refs: list[ARRef] = []
+        self._outgoing_callback_refs: list[ARRef] = []
         self.released_triggers: list[Trigger] = []
         self.required_triggers: list[Trigger] = []
         self.bsw_module_dependencies: list[BswModuleDependency] = []
@@ -132,6 +135,17 @@ class BswModuleDescription(ARElement):
     def provided_entry_refs(self, value: list[ARRef]) -> None:
         """Set provided_entry_refs with ref_conditional wrapper."""
         self._provided_entry_refs = value
+
+    @property
+    @ref_conditional("OUTGOING-CALLBACKS")
+    def outgoing_callback_refs(self) -> list[ARRef]:
+        """Get outgoing_callback_refs with ref_conditional wrapper."""
+        return self._outgoing_callback_refs
+
+    @outgoing_callback_refs.setter
+    def outgoing_callback_refs(self, value: list[ARRef]) -> None:
+        """Set outgoing_callback_refs with ref_conditional wrapper."""
+        self._outgoing_callback_refs = value
 
 
     def serialize(self) -> ET.Element:
@@ -175,6 +189,26 @@ class BswModuleDescription(ARElement):
         if self.provided_entry_refs:
             wrapper = ET.Element("PROVIDED-ENTRYS")
             for item in self.provided_entry_refs:
+                serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
+                if serialized is not None:
+                    # Wrap in BSW-MODULE-ENTRY-REF-CONDITIONAL
+                    conditional = ET.Element("BSW-MODULE-ENTRY-REF-CONDITIONAL")
+                    ref_elem = ET.Element("BSW-MODULE-ENTRY-REF")
+                    if hasattr(serialized, 'attrib'):
+                        ref_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        ref_elem.text = serialized.text
+                    for child in serialized:
+                        ref_elem.append(child)
+                    conditional.append(ref_elem)
+                    wrapper.append(conditional)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize outgoing_callback_refs (list to container "OUTGOING-CALLBACKS")
+        if self.outgoing_callback_refs:
+            wrapper = ET.Element("OUTGOING-CALLBACKS")
+            for item in self.outgoing_callback_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
                     # Wrap in BSW-MODULE-ENTRY-REF-CONDITIONAL
@@ -367,6 +401,13 @@ class BswModuleDescription(ARElement):
                     if len(item_elem) > 0:
                         ref_elem = item_elem[0]
                         obj._provided_entry_refs.append(ARRef.deserialize(ref_elem))
+            elif tag == "OUTGOING-CALLBACKS":
+                # Unwrap ref_conditional pattern
+                for item_elem in child:
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj._outgoing_callback_refs.append(ARRef.deserialize(ref_elem))
             elif tag == "RELEASED-TRIGGERS":
                 # Iterate through wrapper children
                 for item_elem in child:
@@ -455,6 +496,18 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
             self for method chaining
         """
         self._obj.provided_entries = list(items) if items else []
+        return self
+
+    def with_outgoing_callbacks(self, items: list[BswModuleEntry]) -> "BswModuleDescriptionBuilder":
+        """Set outgoing_callbacks list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.outgoing_callbacks = list(items) if items else []
         return self
 
     def with_released_triggers(self, items: list[Trigger]) -> "BswModuleDescriptionBuilder":
@@ -635,6 +688,27 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
             self for method chaining
         """
         self._obj.provided_entries = []
+        return self
+
+    def add_outgoing_callback(self, item: BswModuleEntry) -> "BswModuleDescriptionBuilder":
+        """Add a single item to outgoing_callbacks list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.outgoing_callbacks.append(item)
+        return self
+
+    def clear_outgoing_callbacks(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from outgoing_callbacks list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.outgoing_callbacks = []
         return self
 
     def add_released_trigger(self, item: Trigger) -> "BswModuleDescriptionBuilder":
@@ -898,6 +972,7 @@ class BswModuleDescriptionBuilder(ARElementBuilder):
         "implementedEntry",
         "internalBehavior",
         "moduleId",
+        "outgoingCallback",
         "providedClientServerEntry",
         "providedData",
         "providedEntry",

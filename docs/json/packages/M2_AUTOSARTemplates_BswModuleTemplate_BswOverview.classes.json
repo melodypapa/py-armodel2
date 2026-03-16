@@ -83,9 +83,18 @@
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
-          "revision": "4.0.3",
+          "revision": "4.2.1",
           "decorator": "ref_conditional:PROVIDED-ENTRYS",
           "note": "Specifies an entry provided by this module which can be called by other modules. This includes \"main\" functions and interrupt routines, but not callbacks (because the signature of a callback is defined by the caller)."
+        },
+        "outgoingCallback": {
+           "type": "BswModuleEntry",
+          "multiplicity": "*",
+          "kind": "ref",
+          "is_ref": true,
+          "revision": "4.2.1",
+          "decorator": "ref_conditional:OUTGOING-CALLBACKS",
+          "note": "Specifies a callback, which will be called from this module if required by another module."
         },
         "releasedTrigger": {
           "type": "Trigger",

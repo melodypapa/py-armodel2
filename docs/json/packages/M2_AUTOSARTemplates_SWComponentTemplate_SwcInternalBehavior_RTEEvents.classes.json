@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "OperationInvokedEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -161,7 +161,7 @@
     },
     {
       "name": "TimingEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -220,7 +220,7 @@
     },
     {
       "name": "AsynchronousServerCallReturnsEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -256,7 +256,7 @@
       ],
       "attributes": {
         "eventSource": {
-          "type": "any (AsynchronousServer)",
+          "type": "AsynchronousServerCallResultPoint",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
@@ -266,7 +266,7 @@
     },
     {
       "name": "DataSendCompletedEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -312,7 +312,7 @@
     },
     {
       "name": "DataWriteCompletedEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -404,7 +404,7 @@
     },
     {
       "name": "DataReceiveErrorEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -440,9 +440,9 @@
       ],
       "attributes": {
         "data": {
-          "type": "VariableDataPrototype",
+          "type": "RVariableInAtomicSwcInstanceRef",
           "multiplicity": "0..1",
-          "kind": "ref",
+          "kind": "iref",
           "is_ref": true,
           "note": "there was an error during the by: RVariableInAtomicSwc"
         }
@@ -450,7 +450,7 @@
     },
     {
       "name": "BackgroundEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -542,7 +542,7 @@
     },
     {
       "name": "ModeSwitchedAckEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -588,7 +588,7 @@
     },
     {
       "name": "ExternalTriggerOccurredEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -624,9 +624,9 @@
       ],
       "attributes": {
         "trigger": {
-          "type": "Trigger",
+          "type": "RTriggerInAtomicSwcInstanceRef",
           "multiplicity": "0..1",
-          "kind": "ref",
+          "kind": "iref",
           "is_ref": true,
           "note": "The referenced Trigger raises this ExternalTrigger"
         }
@@ -634,7 +634,7 @@
     },
     {
       "name": "InternalTriggerOccurredEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -680,7 +680,7 @@
     },
     {
       "name": "InitEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -718,7 +718,7 @@
     },
     {
       "name": "TransformerHardErrorEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -754,16 +754,16 @@
       ],
       "attributes": {
         "operation": {
-          "type": "ClientServerOperation",
+          "type": "POperationInAtomicSwcInstanceRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "iref",
+          "is_ref": true,
           "note": "raise this TransformerHardErrorEvent. by: POperationInAtomicSwc"
         },
         "requiredTrigger": {
-          "type": "Trigger",
+          "type": "RTriggerInAtomicSwcInstanceRef",
           "multiplicity": "0..1",
-          "kind": "ref",
+          "kind": "iref",
           "is_ref": true,
           "note": "This represents the Trigger for which the transformer can"
         }
@@ -771,7 +771,7 @@
     },
     {
       "name": "OsTaskExecutionEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -809,7 +809,7 @@
     },
     {
       "name": "WaitPoint",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -855,7 +855,7 @@
     },
     {
       "name": "SwcModeManagerErrorEvent",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::RTEEvents",
       "is_abstract": false,
       "atp_type": null,
@@ -891,7 +891,7 @@
       ],
       "attributes": {
         "modeGroup": {
-          "type": "ModeDeclarationGroup",
+          "type": "PModeGroupInAtomicSwcInstanceRef",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,

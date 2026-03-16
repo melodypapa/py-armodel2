@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswInterfa
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel2.serialization.decorators import ref_conditional
 
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -17,6 +18,9 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
+)
+from armodel2.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
+    BswModuleEntry,
 )
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_needs import (
     ServiceNeeds,
@@ -47,10 +51,14 @@ class BswModuleDependency(Identifiable):
 
 
     target_module_id: Optional[PositiveInteger]
+    _expected_callback_refs: list[ARRef]
+    _required_entry_refs: list[ARRef]
     target_module_ref: Optional[ARRef]
     service_items: list[ServiceNeeds]
     _DESERIALIZE_DISPATCH = {
         "TARGET-MODULE-ID": lambda obj, elem: setattr(obj, "target_module_id", SerializationHelper.deserialize_by_tag(elem, "PositiveInteger")),
+        "EXPECTED-CALLBACK-REFS": lambda obj, elem: [obj._expected_callback_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
+        "REQUIRED-ENTRY-REFS": lambda obj, elem: [obj._required_entry_refs.append(ARRef.deserialize(item_elem)) for item_elem in elem],
         "TARGET-MODULE-REF": lambda obj, elem: setattr(obj, "target_module_ref", ARRef.deserialize(elem)),
         "SERVICE-ITEMS": ("_POLYMORPHIC_LIST", "service_items", ["BswMgrNeeds", "ComMgrUserNeeds", "CryptoKeyManagementNeeds", "CryptoServiceJobNeeds", "CryptoServiceNeeds", "DiagnosticCapabilityElement", "DiagnosticCommunicationManagerNeeds", "DiagnosticComponentNeeds", "DiagnosticControlNeeds", "DiagnosticEnableConditionNeeds", "DiagnosticEventInfoNeeds", "DiagnosticEventManagerNeeds", "DiagnosticEventNeeds", "DiagnosticIoControlNeeds", "DiagnosticOperationCycleNeeds", "DiagnosticRequestFileTransferNeeds", "DiagnosticRoutineNeeds", "DiagnosticStorageConditionNeeds", "DiagnosticUploadDownloadNeeds", "DiagnosticValueNeeds", "DiagnosticsCommunicationSecurityNeeds", "DltUserNeeds", "DoIpActivationLineNeeds", "DoIpGidNeeds", "DoIpGidSynchronizationNeeds", "DoIpPowerModeStatusNeeds", "DoIpRoutingActivationAuthenticationNeeds", "DoIpRoutingActivationConfirmationNeeds", "DoIpServiceNeeds", "DtcStatusChangeNotificationNeeds", "EcuStateMgrUserNeeds", "ErrorTracerNeeds", "FunctionInhibitionAvailabilityNeeds", "FunctionInhibitionNeeds", "GlobalSupervisionNeeds", "HardwareTestNeeds", "IdsMgrCustomTimestampNeeds", "IdsMgrNeeds", "IndicatorStatusNeeds", "J1939DcmDm19Support", "J1939RmIncomingRequestServiceNeeds", "J1939RmOutgoingRequestServiceNeeds", "NvBlockNeeds", "ObdControlServiceNeeds", "ObdInfoServiceNeeds", "ObdMonitorServiceNeeds", "ObdPidServiceNeeds", "ObdRatioDenominatorNeeds", "ObdRatioServiceNeeds", "SecureOnBoardCommunicationNeeds", "SupervisedEntityCheckpointNeeds", "SupervisedEntityNeeds", "SyncTimeBaseMgrUserNeeds", "V2xDataManagerNeeds", "V2xFacUserNeeds", "V2xMUserNeeds", "VendorSpecificServiceNeeds"]),
     }
@@ -60,8 +68,32 @@ class BswModuleDependency(Identifiable):
         """Initialize BswModuleDependency."""
         super().__init__()
         self.target_module_id: Optional[PositiveInteger] = None
+        self._expected_callback_refs: list[ARRef] = []
+        self._required_entry_refs: list[ARRef] = []
         self.target_module_ref: Optional[ARRef] = None
         self.service_items: list[ServiceNeeds] = []
+    @property
+    @ref_conditional("EXPECTED-CALLBACKS")
+    def expected_callback_refs(self) -> list[ARRef]:
+        """Get expected_callback_refs with ref_conditional wrapper."""
+        return self._expected_callback_refs
+
+    @expected_callback_refs.setter
+    def expected_callback_refs(self, value: list[ARRef]) -> None:
+        """Set expected_callback_refs with ref_conditional wrapper."""
+        self._expected_callback_refs = value
+
+    @property
+    @ref_conditional("REQUIRED-ENTRYS")
+    def required_entry_refs(self) -> list[ARRef]:
+        """Get required_entry_refs with ref_conditional wrapper."""
+        return self._required_entry_refs
+
+    @required_entry_refs.setter
+    def required_entry_refs(self, value: list[ARRef]) -> None:
+        """Set required_entry_refs with ref_conditional wrapper."""
+        self._required_entry_refs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize BswModuleDependency to XML element.
@@ -99,6 +131,46 @@ class BswModuleDependency(Identifiable):
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
+
+        # Serialize expected_callback_refs (list to container "EXPECTED-CALLBACKS")
+        if self.expected_callback_refs:
+            wrapper = ET.Element("EXPECTED-CALLBACKS")
+            for item in self.expected_callback_refs:
+                serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
+                if serialized is not None:
+                    # Wrap in BSW-MODULE-ENTRY-REF-CONDITIONAL
+                    conditional = ET.Element("BSW-MODULE-ENTRY-REF-CONDITIONAL")
+                    ref_elem = ET.Element("BSW-MODULE-ENTRY-REF")
+                    if hasattr(serialized, 'attrib'):
+                        ref_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        ref_elem.text = serialized.text
+                    for child in serialized:
+                        ref_elem.append(child)
+                    conditional.append(ref_elem)
+                    wrapper.append(conditional)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize required_entry_refs (list to container "REQUIRED-ENTRYS")
+        if self.required_entry_refs:
+            wrapper = ET.Element("REQUIRED-ENTRYS")
+            for item in self.required_entry_refs:
+                serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
+                if serialized is not None:
+                    # Wrap in BSW-MODULE-ENTRY-REF-CONDITIONAL
+                    conditional = ET.Element("BSW-MODULE-ENTRY-REF-CONDITIONAL")
+                    ref_elem = ET.Element("BSW-MODULE-ENTRY-REF")
+                    if hasattr(serialized, 'attrib'):
+                        ref_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        ref_elem.text = serialized.text
+                    for child in serialized:
+                        ref_elem.append(child)
+                    conditional.append(ref_elem)
+                    wrapper.append(conditional)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
 
         # Serialize target_module_ref
         if self.target_module_ref is not None:
@@ -145,6 +217,20 @@ class BswModuleDependency(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "TARGET-MODULE-ID":
                 setattr(obj, "target_module_id", SerializationHelper.deserialize_by_tag(child, "PositiveInteger"))
+            elif tag == "EXPECTED-CALLBACKS":
+                # Unwrap ref_conditional pattern
+                for item_elem in child:
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj._expected_callback_refs.append(ARRef.deserialize(ref_elem))
+            elif tag == "REQUIRED-ENTRYS":
+                # Unwrap ref_conditional pattern
+                for item_elem in child:
+                    # item_elem is XXX-REF-CONDITIONAL, unwrap to get XXX-REF
+                    if len(item_elem) > 0:
+                        ref_elem = item_elem[0]
+                        obj._required_entry_refs.append(ARRef.deserialize(ref_elem))
             elif tag == "TARGET-MODULE-REF":
                 setattr(obj, "target_module_ref", ARRef.deserialize(child))
             elif tag == "SERVICE-ITEMS":
@@ -293,6 +379,30 @@ class BswModuleDependencyBuilder(IdentifiableBuilder):
         self._obj.target_module_id = value
         return self
 
+    def with_expected_callbacks(self, items: list[BswModuleEntry]) -> "BswModuleDependencyBuilder":
+        """Set expected_callbacks list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.expected_callbacks = list(items) if items else []
+        return self
+
+    def with_required_entries(self, items: list[BswModuleEntry]) -> "BswModuleDependencyBuilder":
+        """Set required_entries list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.required_entries = list(items) if items else []
+        return self
+
     def with_target_module(self, value: Optional[BswModuleDescription]) -> "BswModuleDependencyBuilder":
         """Set target_module attribute.
 
@@ -320,6 +430,48 @@ class BswModuleDependencyBuilder(IdentifiableBuilder):
         return self
 
 
+    def add_expected_callback(self, item: BswModuleEntry) -> "BswModuleDependencyBuilder":
+        """Add a single item to expected_callbacks list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.expected_callbacks.append(item)
+        return self
+
+    def clear_expected_callbacks(self) -> "BswModuleDependencyBuilder":
+        """Clear all items from expected_callbacks list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.expected_callbacks = []
+        return self
+
+    def add_required_entry(self, item: BswModuleEntry) -> "BswModuleDependencyBuilder":
+        """Add a single item to required_entries list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.required_entries.append(item)
+        return self
+
+    def clear_required_entries(self) -> "BswModuleDependencyBuilder":
+        """Clear all items from required_entries list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.required_entries = []
+        return self
+
     def add_service_item(self, item: ServiceNeeds) -> "BswModuleDependencyBuilder":
         """Add a single item to service_items list.
 
@@ -344,6 +496,8 @@ class BswModuleDependencyBuilder(IdentifiableBuilder):
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
+        "expectedCallback",
+        "requiredEntry",
         "serviceItem",
         "targetModule",
         "targetModuleId",

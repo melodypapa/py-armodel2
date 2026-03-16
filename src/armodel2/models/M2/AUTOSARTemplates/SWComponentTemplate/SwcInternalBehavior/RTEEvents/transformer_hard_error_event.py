@@ -15,11 +15,11 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import RTEEventBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
-    ClientServerOperation,
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.p_operation_in_atomic_swc_instance_ref import (
+    POperationInAtomicSwcInstanceRef,
 )
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
-    Trigger,
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.r_trigger_in_atomic_swc_instance_ref import (
+    RTriggerInAtomicSwcInstanceRef,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -40,19 +40,19 @@ class TransformerHardErrorEvent(RTEEvent):
     _XML_TAG = "TRANSFORMER-HARD-ERROR-EVENT"
 
 
-    operation: Optional[ClientServerOperation]
-    required_trigger_ref: Optional[ARRef]
+    operation_iref: Optional[POperationInAtomicSwcInstanceRef]
+    required_trigger_iref: Optional[RTriggerInAtomicSwcInstanceRef]
     _DESERIALIZE_DISPATCH = {
-        "OPERATION": lambda obj, elem: setattr(obj, "operation", SerializationHelper.deserialize_by_tag(elem, "ClientServerOperation")),
-        "REQUIRED-TRIGGER-REF": lambda obj, elem: setattr(obj, "required_trigger_ref", ARRef.deserialize(elem)),
+        "OPERATION-IREF": lambda obj, elem: setattr(obj, "operation_iref", SerializationHelper.deserialize_by_tag(elem, "POperationInAtomicSwcInstanceRef")),
+        "REQUIRED-TRIGGER-IREF": lambda obj, elem: setattr(obj, "required_trigger_iref", SerializationHelper.deserialize_by_tag(elem, "RTriggerInAtomicSwcInstanceRef")),
     }
 
 
     def __init__(self) -> None:
         """Initialize TransformerHardErrorEvent."""
         super().__init__()
-        self.operation: Optional[ClientServerOperation] = None
-        self.required_trigger_ref: Optional[ARRef] = None
+        self.operation_iref: Optional[POperationInAtomicSwcInstanceRef] = None
+        self.required_trigger_iref: Optional[RTriggerInAtomicSwcInstanceRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TransformerHardErrorEvent to XML element.
@@ -77,33 +77,27 @@ class TransformerHardErrorEvent(RTEEvent):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize operation
-        if self.operation is not None:
-            serialized = SerializationHelper.serialize_item(self.operation, "ClientServerOperation")
+        # Serialize operation_iref (instance reference with wrapper "OPERATION-IREF")
+        if self.operation_iref is not None:
+            serialized = SerializationHelper.serialize_item(self.operation_iref, "POperationInAtomicSwcInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OPERATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("OPERATION-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
-        # Serialize required_trigger_ref
-        if self.required_trigger_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.required_trigger_ref, "Trigger")
+        # Serialize required_trigger_iref (instance reference with wrapper "REQUIRED-TRIGGER-IREF")
+        if self.required_trigger_iref is not None:
+            serialized = SerializationHelper.serialize_item(self.required_trigger_iref, "RTriggerInAtomicSwcInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUIRED-TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("REQUIRED-TRIGGER-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         return elem
 
@@ -124,10 +118,10 @@ class TransformerHardErrorEvent(RTEEvent):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "OPERATION":
-                setattr(obj, "operation", SerializationHelper.deserialize_by_tag(child, "ClientServerOperation"))
-            elif tag == "REQUIRED-TRIGGER-REF":
-                setattr(obj, "required_trigger_ref", ARRef.deserialize(child))
+            if tag == "OPERATION-IREF":
+                setattr(obj, "operation_iref", SerializationHelper.deserialize_by_tag(child, "POperationInAtomicSwcInstanceRef"))
+            elif tag == "REQUIRED-TRIGGER-IREF":
+                setattr(obj, "required_trigger_iref", SerializationHelper.deserialize_by_tag(child, "RTriggerInAtomicSwcInstanceRef"))
 
         return obj
 
@@ -142,7 +136,7 @@ class TransformerHardErrorEventBuilder(RTEEventBuilder):
         self._obj: TransformerHardErrorEvent = TransformerHardErrorEvent()
 
 
-    def with_operation(self, value: Optional[ClientServerOperation]) -> "TransformerHardErrorEventBuilder":
+    def with_operation(self, value: Optional[POperationInAtomicSwcInstanceRef]) -> "TransformerHardErrorEventBuilder":
         """Set operation attribute.
 
         Args:
@@ -156,7 +150,7 @@ class TransformerHardErrorEventBuilder(RTEEventBuilder):
         self._obj.operation = value
         return self
 
-    def with_required_trigger(self, value: Optional[Trigger]) -> "TransformerHardErrorEventBuilder":
+    def with_required_trigger(self, value: Optional[RTriggerInAtomicSwcInstanceRef]) -> "TransformerHardErrorEventBuilder":
         """Set required_trigger attribute.
 
         Args:

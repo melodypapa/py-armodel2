@@ -14,8 +14,8 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
-    ModeDeclarationGroup,
+from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group_prototype import (
+    ModeDeclarationGroupPrototype,
 )
 
 if TYPE_CHECKING:
@@ -118,7 +118,7 @@ class RModeInAtomicSwcInstanceRef(ARObject):
 
         # Serialize context_mode_declaration_group_prototype_ref
         if self.context_mode_declaration_group_prototype_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.context_mode_declaration_group_prototype_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.context_mode_declaration_group_prototype_ref, "ModeDeclarationGroupPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF")
@@ -213,7 +213,7 @@ class RModeInAtomicSwcInstanceRefBuilder(BuilderBase):
         self._obj.context_port = value
         return self
 
-    def with_context_mode_declaration_group_prototype(self, value: Optional[ModeDeclarationGroup]) -> "RModeInAtomicSwcInstanceRefBuilder":
+    def with_context_mode_declaration_group_prototype(self, value: Optional[ModeDeclarationGroupPrototype]) -> "RModeInAtomicSwcInstanceRefBuilder":
         """Set context_mode_declaration_group_prototype attribute.
 
         Args:

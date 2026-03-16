@@ -25,9 +25,6 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
     Boolean,
     CIdentifier,
 )
-from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServerCall.asynchronous_server_call_result_point import (
-    AsynchronousServerCallResultPoint,
-)
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.Trigger.external_triggering_point import (
     ExternalTriggeringPoint,
 )
@@ -39,6 +36,9 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 )
 
 if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServerCall.asynchronous_server_call_result_point import (
+        AsynchronousServerCallResultPoint,
+    )
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ModeDeclarationGroup.mode_access_point import (
         ModeAccessPoint,
     )

@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "AsynchronousServerCallResultPoint",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::SwcInternalBehavior::ServerCall",
       "is_abstract": false,
       "atp_type": null,
@@ -43,8 +43,8 @@
         }
       ],
       "attributes": {
-        "asynchronousServer": {
-          "type": "any (AsynchronousServer)",
+        "asynchronousServerCallPoint": {
+          "type": "AsynchronousServerCallPoint",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,

@@ -15,8 +15,8 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import RTEEventBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
-    Trigger,
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.r_trigger_in_atomic_swc_instance_ref import (
+    RTriggerInAtomicSwcInstanceRef,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -37,16 +37,16 @@ class ExternalTriggerOccurredEvent(RTEEvent):
     _XML_TAG = "EXTERNAL-TRIGGER-OCCURRED-EVENT"
 
 
-    trigger_ref: Optional[ARRef]
+    trigger_iref: Optional[RTriggerInAtomicSwcInstanceRef]
     _DESERIALIZE_DISPATCH = {
-        "TRIGGER-REF": lambda obj, elem: setattr(obj, "trigger_ref", ARRef.deserialize(elem)),
+        "TRIGGER-IREF": lambda obj, elem: setattr(obj, "trigger_iref", SerializationHelper.deserialize_by_tag(elem, "RTriggerInAtomicSwcInstanceRef")),
     }
 
 
     def __init__(self) -> None:
         """Initialize ExternalTriggerOccurredEvent."""
         super().__init__()
-        self.trigger_ref: Optional[ARRef] = None
+        self.trigger_iref: Optional[RTriggerInAtomicSwcInstanceRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ExternalTriggerOccurredEvent to XML element.
@@ -71,19 +71,16 @@ class ExternalTriggerOccurredEvent(RTEEvent):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize trigger_ref
-        if self.trigger_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.trigger_ref, "Trigger")
+        # Serialize trigger_iref (instance reference with wrapper "TRIGGER-IREF")
+        if self.trigger_iref is not None:
+            serialized = SerializationHelper.serialize_item(self.trigger_iref, "RTriggerInAtomicSwcInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("TRIGGER-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         return elem
 
@@ -104,8 +101,8 @@ class ExternalTriggerOccurredEvent(RTEEvent):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "TRIGGER-REF":
-                setattr(obj, "trigger_ref", ARRef.deserialize(child))
+            if tag == "TRIGGER-IREF":
+                setattr(obj, "trigger_iref", SerializationHelper.deserialize_by_tag(child, "RTriggerInAtomicSwcInstanceRef"))
 
         return obj
 
@@ -120,7 +117,7 @@ class ExternalTriggerOccurredEventBuilder(RTEEventBuilder):
         self._obj: ExternalTriggerOccurredEvent = ExternalTriggerOccurredEvent()
 
 
-    def with_trigger(self, value: Optional[Trigger]) -> "ExternalTriggerOccurredEventBuilder":
+    def with_trigger(self, value: Optional[RTriggerInAtomicSwcInstanceRef]) -> "ExternalTriggerOccurredEventBuilder":
         """Set trigger attribute.
 
         Args:

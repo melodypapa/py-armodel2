@@ -37,11 +37,11 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
         """
         return True
 
-    abstract_target_ref: Optional[ARRef]
+    abstract_target_data_element_ref: Optional[ARRef]
     base_ref: Optional[ARRef]
     context_port_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ABSTRACT-TARGET-REF": lambda obj, elem: setattr(obj, "abstract_target_ref", ARRef.deserialize(elem)),
+        "ABSTRACT-TARGET-DATA-ELEMENT-REF": lambda obj, elem: setattr(obj, "abstract_target_data_element_ref", ARRef.deserialize(elem)),
         "BASE-REF": ("_POLYMORPHIC", "base_ref", ["ApplicationSwComponentType", "ComplexDeviceDriverSwComponentType", "EcuAbstractionSwComponentType", "NvBlockSwComponentType", "SensorActuatorSwComponentType", "ServiceProxySwComponentType", "ServiceSwComponentType"]),
         "CONTEXT-PORT-REF": ("_POLYMORPHIC", "context_port_ref", ["AbstractProvidedPortPrototype", "AbstractRequiredPortPrototype", "PPortPrototype", "PRPortPrototype", "RPortPrototype"]),
     }
@@ -50,7 +50,7 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize VariableInAtomicSwcInstanceRef."""
         super().__init__()
-        self.abstract_target_ref: Optional[ARRef] = None
+        self.abstract_target_data_element_ref: Optional[ARRef] = None
         self.base_ref: Optional[ARRef] = None
         self.context_port_ref: Optional[ARRef] = None
 
@@ -77,12 +77,12 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize abstract_target_ref
-        if self.abstract_target_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.abstract_target_ref, "VariableDataPrototype")
+        # Serialize abstract_target_data_element_ref
+        if self.abstract_target_data_element_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.abstract_target_data_element_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ABSTRACT-TARGET-REF")
+                wrapped = ET.Element("ABSTRACT-TARGET-DATA-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -138,8 +138,8 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ABSTRACT-TARGET-REF":
-                setattr(obj, "abstract_target_ref", ARRef.deserialize(child))
+            if tag == "ABSTRACT-TARGET-DATA-ELEMENT-REF":
+                setattr(obj, "abstract_target_data_element_ref", ARRef.deserialize(child))
             elif tag == "BASE-REF":
                 setattr(obj, "base_ref", ARRef.deserialize(child))
             elif tag == "CONTEXT-PORT-REF":
@@ -158,8 +158,8 @@ class VariableInAtomicSwcInstanceRefBuilder(BuilderBase, ABC):
         self._obj: VariableInAtomicSwcInstanceRef = VariableInAtomicSwcInstanceRef()
 
 
-    def with_abstract_target(self, value: Optional[VariableDataPrototype]) -> "VariableInAtomicSwcInstanceRefBuilder":
-        """Set abstract_target attribute.
+    def with_abstract_target_data_element(self, value: Optional[VariableDataPrototype]) -> "VariableInAtomicSwcInstanceRefBuilder":
+        """Set abstract_target_data_element attribute.
 
         Args:
             value: Value to set
@@ -168,8 +168,8 @@ class VariableInAtomicSwcInstanceRefBuilder(BuilderBase, ABC):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'abstract_target' is required and cannot be None")
-        self._obj.abstract_target = value
+            raise ValueError("Attribute 'abstract_target_data_element' is required and cannot be None")
+        self._obj.abstract_target_data_element = value
         return self
 
     def with_base(self, value: Optional[AtomicSwComponentType]) -> "VariableInAtomicSwcInstanceRefBuilder":
@@ -204,7 +204,7 @@ class VariableInAtomicSwcInstanceRefBuilder(BuilderBase, ABC):
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "abstractTarget",
+        "abstractTargetDataElement",
         "base",
         "contextPort",
     }
