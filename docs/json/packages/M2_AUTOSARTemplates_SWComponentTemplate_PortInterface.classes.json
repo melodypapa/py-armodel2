@@ -164,7 +164,7 @@
     },
     {
       "name": "ClientServerOperation",
-      "maturity": "Reviewed",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::SWComponentTemplate::PortInterface",
       "is_abstract": false,
       "atp_type": null,

@@ -97,6 +97,9 @@ mypy src/
 
 # Regenerate model classes
 python -m tools.generate_models docs/json/mapping.json docs/json/hierarchy.json src/armodel2/models/M2 --members --classes --enums --primitives
+
+# Analyze maturity status of model elements
+python tools/analyze_maturity.py > docs/reports/maturity-analysis.txt
 ```
 
 ## Architecture

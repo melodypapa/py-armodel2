@@ -122,7 +122,7 @@
     },
     {
       "name": "ImplementationDataTypeElement",
-      "maturity": "reviewer",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::ImplementationDataTypes",
       "is_abstract": false,
       "atp_type": null,
@@ -147,7 +147,7 @@
         "AtpStructureElement"
       ],
       "implemented_by": [],
-      "note": "Declares a data object which is locally aggregated. Such an element can only be used within the scope where it is aggregated. This element either consists of further subElements or it is further defined via its swDataDefProps. There are several use cases within the system of ImplementationDataTypes fur such a local declaration: • It can represent the elements of an array, defining the element type and array size • It can represent an element of a struct, defining its type • It can be the local declaration of a debug element.",
+      "note": "Declares a data object which is locally aggregated. Such an element can only be used within the scope where it is aggregated. This element either consists of further subElements or it is further defined via its swDataDefProps. There are several use cases within the system of ImplementationDataTypes fur such a local declaration: \u2022 It can represent the elements of an array, defining the element type and array size \u2022 It can represent an element of a struct, defining its type \u2022 It can be the local declaration of a debug element.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
