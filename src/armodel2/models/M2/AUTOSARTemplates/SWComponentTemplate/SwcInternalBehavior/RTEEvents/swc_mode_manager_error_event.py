@@ -15,8 +15,8 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import RTEEventBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel2.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
-    ModeDeclarationGroup,
+from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceRefs.p_mode_group_in_atomic_swc_instance_ref import (
+    PModeGroupInAtomicSwcInstanceRef,
 )
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
@@ -73,7 +73,7 @@ class SwcModeManagerErrorEvent(RTEEvent):
 
         # Serialize mode_group_ref
         if self.mode_group_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.mode_group_ref, "PModeGroupInAtomicSwcInstanceRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-GROUP-REF")
@@ -120,7 +120,7 @@ class SwcModeManagerErrorEventBuilder(RTEEventBuilder):
         self._obj: SwcModeManagerErrorEvent = SwcModeManagerErrorEvent()
 
 
-    def with_mode_group(self, value: Optional[ModeDeclarationGroup]) -> "SwcModeManagerErrorEventBuilder":
+    def with_mode_group(self, value: Optional[PModeGroupInAtomicSwcInstanceRef]) -> "SwcModeManagerErrorEventBuilder":
         """Set mode_group attribute.
 
         Args:

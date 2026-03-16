@@ -41,10 +41,10 @@ class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
 
 
     context_r_port_ref: Optional[ARRef]
-    target_mode_ref: Optional[ARRef]
+    target_mode_group_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "CONTEXT-R-PORT-REF": ("_POLYMORPHIC", "context_r_port_ref", ["PRPortPrototype", "RPortPrototype"]),
-        "TARGET-MODE-REF": lambda obj, elem: setattr(obj, "target_mode_ref", ARRef.deserialize(elem)),
+        "TARGET-MODE-GROUP-REF": lambda obj, elem: setattr(obj, "target_mode_group_ref", ARRef.deserialize(elem)),
     }
 
 
@@ -52,7 +52,7 @@ class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         """Initialize RModeGroupInAtomicSWCInstanceRef."""
         super().__init__()
         self.context_r_port_ref: Optional[ARRef] = None
-        self.target_mode_ref: Optional[ARRef] = None
+        self.target_mode_group_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize RModeGroupInAtomicSWCInstanceRef to XML element.
@@ -91,12 +91,12 @@ class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_mode_ref
-        if self.target_mode_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.target_mode_ref, "ModeDeclarationGroup")
+        # Serialize target_mode_group_ref
+        if self.target_mode_group_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.target_mode_group_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-MODE-REF")
+                wrapped = ET.Element("TARGET-MODE-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -126,8 +126,8 @@ class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "CONTEXT-R-PORT-REF":
                 setattr(obj, "context_r_port_ref", ARRef.deserialize(child))
-            elif tag == "TARGET-MODE-REF":
-                setattr(obj, "target_mode_ref", ARRef.deserialize(child))
+            elif tag == "TARGET-MODE-GROUP-REF":
+                setattr(obj, "target_mode_group_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -156,8 +156,8 @@ class RModeGroupInAtomicSWCInstanceRefBuilder(ModeGroupInAtomicSwcInstanceRefBui
         self._obj.context_r_port = value
         return self
 
-    def with_target_mode(self, value: Optional[ModeDeclarationGroup]) -> "RModeGroupInAtomicSWCInstanceRefBuilder":
-        """Set target_mode attribute.
+    def with_target_mode_group(self, value: Optional[ModeDeclarationGroup]) -> "RModeGroupInAtomicSWCInstanceRefBuilder":
+        """Set target_mode_group attribute.
 
         Args:
             value: Value to set
@@ -166,8 +166,8 @@ class RModeGroupInAtomicSWCInstanceRefBuilder(ModeGroupInAtomicSwcInstanceRefBui
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'target_mode' is required and cannot be None")
-        self._obj.target_mode = value
+            raise ValueError("Attribute 'target_mode_group' is required and cannot be None")
+        self._obj.target_mode_group = value
         return self
 
 
@@ -175,7 +175,7 @@ class RModeGroupInAtomicSWCInstanceRefBuilder(ModeGroupInAtomicSwcInstanceRefBui
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
         "contextRPort",
-        "targetMode",
+        "targetModeGroup",
     }
 
 

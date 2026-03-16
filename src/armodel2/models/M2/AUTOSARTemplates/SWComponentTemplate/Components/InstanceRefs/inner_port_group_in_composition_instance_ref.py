@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components_InstanceRefs.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
@@ -18,6 +18,9 @@ if TYPE_CHECKING:
     )
     from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
         PortGroup,
+    )
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_component_prototype import (
+        SwComponentPrototype,
     )
 
 
@@ -40,7 +43,7 @@ class InnerPortGroupInCompositionInstanceRef(ARObject):
 
 
     base_ref: Optional[ARRef]
-    context_refs: list[Any]
+    context_refs: list[ARRef]
     target_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
         "BASE-REF": lambda obj, elem: setattr(obj, "base_ref", ARRef.deserialize(elem)),
@@ -53,7 +56,7 @@ class InnerPortGroupInCompositionInstanceRef(ARObject):
         """Initialize InnerPortGroupInCompositionInstanceRef."""
         super().__init__()
         self.base_ref: Optional[ARRef] = None
-        self.context_refs: list[Any] = []
+        self.context_refs: list[ARRef] = []
         self.target_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -97,7 +100,7 @@ class InnerPortGroupInCompositionInstanceRef(ARObject):
         if self.context_refs:
             wrapper = ET.Element("CONTEXT-REFS")
             for item in self.context_refs:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "SwComponentPrototype")
                 if serialized is not None:
                     child_elem = ET.Element("CONTEXT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -179,7 +182,7 @@ class InnerPortGroupInCompositionInstanceRefBuilder(BuilderBase):
         self._obj.base = value
         return self
 
-    def with_contexts(self, items: list[Any]) -> "InnerPortGroupInCompositionInstanceRefBuilder":
+    def with_contexts(self, items: list[SwComponentPrototype]) -> "InnerPortGroupInCompositionInstanceRefBuilder":
         """Set contexts list attribute.
 
         Args:
@@ -206,7 +209,7 @@ class InnerPortGroupInCompositionInstanceRefBuilder(BuilderBase):
         return self
 
 
-    def add_context(self, item: Any) -> "InnerPortGroupInCompositionInstanceRefBuilder":
+    def add_context(self, item: SwComponentPrototype) -> "InnerPortGroupInCompositionInstanceRefBuilder":
         """Add a single item to contexts list.
 
         Args:

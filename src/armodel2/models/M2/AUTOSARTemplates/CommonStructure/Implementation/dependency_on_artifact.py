@@ -15,7 +15,6 @@ from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses
 )
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
-from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel2.models.M2.AUTOSARTemplates.CommonStructure.Implementation import (
     DependencyUsageEnum,
 )
@@ -42,10 +41,10 @@ class DependencyOnArtifact(Identifiable):
 
 
     artifact_descriptor: Optional[AutosarEngineeringObject]
-    usage_refs: list[DependencyUsageEnum]
+    usages: list[DependencyUsageEnum]
     _DESERIALIZE_DISPATCH = {
         "ARTIFACT-DESCRIPTOR": lambda obj, elem: setattr(obj, "artifact_descriptor", SerializationHelper.deserialize_by_tag(elem, "AutosarEngineeringObject")),
-        "USAGE-REFS": lambda obj, elem: obj.usage_refs.append(DependencyUsageEnum.deserialize(elem)),
+        "USAGES": lambda obj, elem: obj.usages.append(DependencyUsageEnum.deserialize(elem)),
     }
 
 
@@ -53,7 +52,7 @@ class DependencyOnArtifact(Identifiable):
         """Initialize DependencyOnArtifact."""
         super().__init__()
         self.artifact_descriptor: Optional[AutosarEngineeringObject] = None
-        self.usage_refs: list[DependencyUsageEnum] = []
+        self.usages: list[DependencyUsageEnum] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DependencyOnArtifact to XML element.
@@ -92,13 +91,13 @@ class DependencyOnArtifact(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize usage_refs (list to container "USAGE-REFS")
-        if self.usage_refs:
-            wrapper = ET.Element("USAGE-REFS")
-            for item in self.usage_refs:
+        # Serialize usages (list to container "USAGES")
+        if self.usages:
+            wrapper = ET.Element("USAGES")
+            for item in self.usages:
                 serialized = SerializationHelper.serialize_item(item, "DependencyUsageEnum")
                 if serialized is not None:
-                    child_elem = ET.Element("USAGE-REF")
+                    child_elem = ET.Element("USAGE")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -130,10 +129,10 @@ class DependencyOnArtifact(Identifiable):
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
             if tag == "ARTIFACT-DESCRIPTOR":
                 setattr(obj, "artifact_descriptor", SerializationHelper.deserialize_by_tag(child, "AutosarEngineeringObject"))
-            elif tag == "USAGE-REFS":
+            elif tag == "USAGES":
                 # Iterate through wrapper children
                 for item_elem in child:
-                    obj.usage_refs.append(ARRef.deserialize(item_elem))
+                    obj.usages.append(SerializationHelper.deserialize_by_tag(item_elem, "DependencyUsageEnum"))
 
         return obj
 

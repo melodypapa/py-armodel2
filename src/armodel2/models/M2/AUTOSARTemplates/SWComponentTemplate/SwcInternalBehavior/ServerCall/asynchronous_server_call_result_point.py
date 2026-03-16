@@ -7,7 +7,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior_ServerCall.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import (
@@ -16,10 +16,16 @@ from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.abstract_access_point import AbstractAccessPointBuilder
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+
+if TYPE_CHECKING:
+    from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ServerCall.asynchronous_server_call_point import (
+        AsynchronousServerCallPoint,
+    )
+
+
+
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel2.serialization import SerializationHelper
-
-
 class AsynchronousServerCallResultPoint(AbstractAccessPoint):
     """AUTOSAR AsynchronousServerCallResultPoint."""
 
@@ -35,16 +41,16 @@ class AsynchronousServerCallResultPoint(AbstractAccessPoint):
     _XML_TAG = "ASYNCHRONOUS-SERVER-CALL-RESULT-POINT"
 
 
-    asynchronous_server_ref: Optional[Any]
+    asynchronous_server_call_point_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
-        "ASYNCHRONOUS-SERVER-REF": lambda obj, elem: setattr(obj, "asynchronous_server_ref", ARRef.deserialize(elem)),
+        "ASYNCHRONOUS-SERVER-CALL-POINT-REF": lambda obj, elem: setattr(obj, "asynchronous_server_call_point_ref", ARRef.deserialize(elem)),
     }
 
 
     def __init__(self) -> None:
         """Initialize AsynchronousServerCallResultPoint."""
         super().__init__()
-        self.asynchronous_server_ref: Optional[Any] = None
+        self.asynchronous_server_call_point_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize AsynchronousServerCallResultPoint to XML element.
@@ -69,12 +75,12 @@ class AsynchronousServerCallResultPoint(AbstractAccessPoint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize asynchronous_server_ref
-        if self.asynchronous_server_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.asynchronous_server_ref, "Any")
+        # Serialize asynchronous_server_call_point_ref
+        if self.asynchronous_server_call_point_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.asynchronous_server_call_point_ref, "AsynchronousServerCallPoint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ASYNCHRONOUS-SERVER-REF")
+                wrapped = ET.Element("ASYNCHRONOUS-SERVER-CALL-POINT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                 if serialized.text:
@@ -102,8 +108,8 @@ class AsynchronousServerCallResultPoint(AbstractAccessPoint):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "ASYNCHRONOUS-SERVER-REF":
-                setattr(obj, "asynchronous_server_ref", ARRef.deserialize(child))
+            if tag == "ASYNCHRONOUS-SERVER-CALL-POINT-REF":
+                setattr(obj, "asynchronous_server_call_point_ref", ARRef.deserialize(child))
 
         return obj
 
@@ -118,8 +124,8 @@ class AsynchronousServerCallResultPointBuilder(AbstractAccessPointBuilder):
         self._obj: AsynchronousServerCallResultPoint = AsynchronousServerCallResultPoint()
 
 
-    def with_asynchronous_server(self, value: Optional[Any]) -> "AsynchronousServerCallResultPointBuilder":
-        """Set asynchronous_server attribute.
+    def with_asynchronous_server_call_point(self, value: Optional[AsynchronousServerCallPoint]) -> "AsynchronousServerCallResultPointBuilder":
+        """Set asynchronous_server_call_point attribute.
 
         Args:
             value: Value to set
@@ -128,15 +134,15 @@ class AsynchronousServerCallResultPointBuilder(AbstractAccessPointBuilder):
             self for method chaining
         """
         if value is None and not True:
-            raise ValueError("Attribute 'asynchronous_server' is required and cannot be None")
-        self._obj.asynchronous_server = value
+            raise ValueError("Attribute 'asynchronous_server_call_point' is required and cannot be None")
+        self._obj.asynchronous_server_call_point = value
         return self
 
 
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
-        "asynchronousServer",
+        "asynchronousServerCallPoint",
     }
 
 

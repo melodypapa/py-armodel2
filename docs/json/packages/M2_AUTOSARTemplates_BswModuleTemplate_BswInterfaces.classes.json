@@ -177,6 +177,22 @@
           "is_ref": false,
           "note": "AUTOSAR identifier of the target module of which the defined. is optional, because the target module be identified by targetModuleRef. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
+        "expectedCallback": {
+          "type": "BswModuleEntry",
+          "multiplicity": "*",
+          "kind": "ref",
+          "is_ref": true,
+          "decorator": "ref_conditional:EXPECTED-CALLBACKS",
+          "note": "Indicates a callback expected to be called from another module and implemented by this module. (AUTOSAR 4.0.3)"
+        },
+        "requiredEntry": {
+          "type": "BswModuleEntry",
+          "multiplicity": "*",
+          "kind": "ref",
+          "is_ref": true,
+          "decorator": "ref_conditional:REQUIRED-ENTRYS",
+          "note": "Indicates an entry into another modules which is required by this module. (AUTOSAR 4.0.3)"
+        },
         "targetModule": {
           "type": "BswModuleDescription",
           "multiplicity": "0..1",

@@ -3,7 +3,7 @@
   "classes": [
     {
       "name": "ImplementationProps",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Implementation",
       "is_abstract": true,
       "atp_type": null,
@@ -225,7 +225,7 @@
     },
     {
       "name": "Code",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Implementation",
       "is_abstract": false,
       "atp_type": null,
@@ -262,7 +262,7 @@
         "artifactDescriptor": {
           "type": "AutosarEngineeringObject",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "Refers to the artifact belonging to this code descriptor."
         },
@@ -277,7 +277,7 @@
     },
     {
       "name": "DependencyOnArtifact",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Implementation",
       "is_abstract": false,
       "atp_type": null,
@@ -316,22 +316,22 @@
         "artifactDescriptor": {
           "type": "AutosarEngineeringObject",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "The specified artifact needs to exist."
         },
         "usage": {
           "type": "DependencyUsageEnum",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "attribute",
+          "is_ref": false,
           "note": "Specification for which process step(s) this dependency is"
         }
       }
     },
     {
       "name": "Compiler",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Implementation",
       "is_abstract": false,
       "atp_type": null,
@@ -403,7 +403,7 @@
     },
     {
       "name": "Linker",
-      "maturity": "draft",
+      "maturity": "reviewed",
       "package": "M2::AUTOSARTemplates::CommonStructure::Implementation",
       "is_abstract": false,
       "atp_type": null,
