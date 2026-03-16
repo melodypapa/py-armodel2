@@ -11,6 +11,9 @@ import xml.etree.ElementTree as ET
 
 from armodel2.models.M2.builder_base import BuilderBase
 from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel2.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Boolean,
+)
 from armodel2.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
 )
@@ -31,8 +34,10 @@ class BswDataReceptionPolicy(ARObject, ABC):
         """
         return True
 
+    enable_take_address: Optional[Boolean]
     received_data_ref: Optional[ARRef]
     _DESERIALIZE_DISPATCH = {
+        "ENABLE-TAKE-ADDRESS": lambda obj, elem: setattr(obj, "enable_take_address", SerializationHelper.deserialize_by_tag(elem, "Boolean")),
         "RECEIVED-DATA-REF": lambda obj, elem: setattr(obj, "received_data_ref", ARRef.deserialize(elem)),
     }
 
@@ -40,6 +45,7 @@ class BswDataReceptionPolicy(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize BswDataReceptionPolicy."""
         super().__init__()
+        self.enable_take_address: Optional[Boolean] = None
         self.received_data_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -64,6 +70,20 @@ class BswDataReceptionPolicy(ARObject, ABC):
         # Copy all children from parent element
         for child in parent_elem:
             elem.append(child)
+
+        # Serialize enable_take_address
+        if self.enable_take_address is not None:
+            serialized = SerializationHelper.serialize_item(self.enable_take_address, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ENABLE-TAKE-ADDRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize received_data_ref
         if self.received_data_ref is not None:
@@ -98,7 +118,9 @@ class BswDataReceptionPolicy(ARObject, ABC):
         ns_split = '}'
         for child in element:
             tag = child.tag.split(ns_split, 1)[1] if child.tag.startswith('{') else child.tag
-            if tag == "RECEIVED-DATA-REF":
+            if tag == "ENABLE-TAKE-ADDRESS":
+                setattr(obj, "enable_take_address", SerializationHelper.deserialize_by_tag(child, "Boolean"))
+            elif tag == "RECEIVED-DATA-REF":
                 setattr(obj, "received_data_ref", ARRef.deserialize(child))
 
         return obj
@@ -113,6 +135,20 @@ class BswDataReceptionPolicyBuilder(BuilderBase, ABC):
         super().__init__()
         self._obj: BswDataReceptionPolicy = BswDataReceptionPolicy()
 
+
+    def with_enable_take_address(self, value: Optional[Boolean]) -> "BswDataReceptionPolicyBuilder":
+        """Set enable_take_address attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute 'enable_take_address' is required and cannot be None")
+        self._obj.enable_take_address = value
+        return self
 
     def with_received_data(self, value: Optional[VariableDataPrototype]) -> "BswDataReceptionPolicyBuilder":
         """Set received_data attribute.
@@ -132,6 +168,7 @@ class BswDataReceptionPolicyBuilder(BuilderBase, ABC):
 
     # Pre-computed validation constants (generated from JSON schema)
     _OPTIONAL_ATTRIBUTES = {
+        "enableTakeAddress",
         "receivedData",
     }
 

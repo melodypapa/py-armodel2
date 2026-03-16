@@ -185,6 +185,13 @@
           "is_ref": true,
           "note": "Base type associated with the containing data object."
         },
+        "swBitRepresentation": {
+          "type": "SwBitRepresentation",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Description of the binary representation in case of a bit"
+        },
         "swCalibrationAccess": {
           "type": "SwCalibrationAccessEnum",
           "multiplicity": "0..1",
@@ -255,14 +262,6 @@
           "is_ref": false,
           "note": "The attribute describes the intended typical alignment of If the attribute is not defined the determined by the swBaseType size and the the referenced Sw"
         },
-        "swBitRepresentation": {
-          "type": "SwBitRepresentation",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "Description of the binary representation in case of a bit"
-        },
-        
         "swCalprmAxisSet": {
           "type": "SwCalprmAxisSet",
           "multiplicity": "0..1",

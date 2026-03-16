@@ -183,6 +183,13 @@
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the target module. It is an <<atpUriDef>> the reference shall be used to identify the target actually needing the description of that atpUriDef; atpVariation"
+        },
+        "serviceItem": {
+          "type": "ServiceNeeds",
+          "multiplicity": "*",
+          "kind": "aggr",
+          "is_ref": false,
+          "note": "A single item (example: Nv block) for which the quality of a service is defined."
         }
       }
     },
