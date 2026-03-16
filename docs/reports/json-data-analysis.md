@@ -1,5 +1,5 @@
 # AUTOSAR Model Data Analysis Report
-**Generated:** 2026-03-02
+**Generated:** 2026-03-17
 **Source:** `docs/json/packages/`
 
 ---
@@ -16,6 +16,7 @@ This report provides a comprehensive analysis of all AUTOSAR model classes,enume
 | **Total Enumeration Literals** | 969 |
 | **Total Primitives** | 50 |
 | **Total JSON Files** | 349 |
+| **Overall Maturity** | 12.3% reviewed (239/1,938), 87.7% draft (1,699/1,938) |
 
 ## 1. Classes Analysis
 
@@ -31,8 +32,8 @@ This report provides a comprehensive analysis of all AUTOSAR model classes,enume
 
 | Maturity | Count | Percentage |
 |----------|-------|------------|
-| **Reviewed** | 30 | 1.8% |
-| **Draft** | 1,592 | 98.1% |
+| **Reviewed** | 222 | 13.7% |
+| **Draft** | 1,401 | 86.3% |
 
 ### 1.3 Special Patterns
 
@@ -134,8 +135,8 @@ This report provides a comprehensive analysis of all AUTOSAR model classes,enume
 
 | Maturity | Count | Percentage |
 |----------|-------|------------|
-| **Reviewed** | 0 | 0% |
-| **Draft** | 265 | 100% |
+| **Reviewed** | 15 | 5.7% |
+| **Draft** | 250 | 94.3% |
 
 ### 2.2 Largest Enumerations (Top 20)
 
@@ -223,8 +224,8 @@ This report provides a comprehensive analysis of all AUTOSAR model classes,enume
 
 | Maturity | Count | Percentage |
 |----------|-------|------------|
-| **Reviewed** | 0 | 0% |
-| **Draft** | 50 | 100% |
+| **Reviewed** | 2 | 4.0% |
+| **Draft** | 48 | 96.0% |
 
 ### 3.2 Primitives by Category
 
@@ -302,10 +303,10 @@ The following AUTOSAR templates are represented in the JSON data:
 
 | Metric | Value | Assessment |
 |--------|-------|------------|
-| **Classes Maturity** | 1.8% reviewed | ✗ Low |
-| **Enumerations Maturity** | 0% reviewed | ✗ Low |
-| **Primitives Maturity** | 0% reviewed | ✗ Low |
-| **Overall Maturity** | 1.5% reviewed | ✗ Low |
+| **Classes Maturity** | 13.7% reviewed | ✓ Improved |
+| **Enumerations Maturity** | 5.7% reviewed | ⚠ Low |
+| **Primitives Maturity** | 4.0% reviewed | ⚠ Low |
+| **Overall Maturity** | 12.3% reviewed | ⚠ Moderate |
 | **Abstract Classes** | 14.5% | ⚠ Review |
 | **Avg Attributes/Class** | 2.6 | ✓ Reasonable |
 | **Avg Literals/Enum** | 3.7 | ✓ Concise |
@@ -320,11 +321,11 @@ The following AUTOSAR templates are represented in the JSON data:
 
 ### 6.2 Maturity Status
 
-- **Classes:** Only 1.8% (30 out of 1,623) are marked as 'reviewed', 98.1% remain in 'draft' status
-- **Enumerations:** All 265 enumerations (100%) are in 'draft' status
-- **Primitives:** All 50 primitives (100%) are in 'draft' status
-- **Overall:** Only 1.5% (30 out of 1,938 total elements) are marked as 'reviewed'
-- This indicates ongoing development with significant room for improvement across all element types
+- **Classes:** 13.7% (222 out of 1,623) are marked as 'reviewed', 86.3% (1,401) remain in 'draft' status
+- **Enumerations:** 5.7% (15 out of 265) are marked as 'reviewed', 94.3% (250) remain in 'draft' status
+- **Primitives:** 4.0% (2 out of 50) are marked as 'reviewed', 96.0% (48) remain in 'draft' status
+- **Overall:** 12.3% (239 out of 1,938 total elements) are marked as 'reviewed'
+- Significant improvement from previous analysis with 192 additional classes marked as reviewed
 
 ### 6.3 Special Patterns
 
@@ -343,9 +344,9 @@ The most represented templates in the meta-model:
 ### 7.1 Improve Maturity Status
 
 - Prioritize review of the remaining draft elements to increase overall maturity:
-  - **Classes:** 1,593 classes remaining in draft status (98.1%)
-  - **Enumerations:** 265 enumerations remaining in draft status (100%)
-  - **Primitives:** 50 primitives remaining in draft status (100%)
+  - **Classes:** 1,401 classes remaining in draft status (86.3%)
+  - **Enumerations:** 250 enumerations remaining in draft status (94.3%)
+  - **Primitives:** 48 primitives remaining in draft status (96.0%)
 - Focus on elements in frequently used templates (SWComponentTemplate, SystemTemplate, etc.)
 - Establish a formal review process for new elements added to the meta-model
 - Create a maturity review schedule with milestones for high-priority elements
@@ -356,145 +357,29 @@ The most represented templates in the meta-model:
 - Document the usage patterns for atp_variant and atp_mixed classes.
 - Provide examples for complex enumeration values.
 
-## 8. Review Items Lists
+## 8. Maturity Summary
 
-### 8.1 Classes Review Items (30 classes)
+### 8.1 Reviewed Elements Summary
 
-The following 30 classes have been marked as "reviewed" and are considered production-ready:
+| Type | Count | Percentage |
+|------|-------|------------|
+| **Classes** | 222 | 13.7% |
+| **Enumerations** | 15 | 5.7% |
+| **Primitives** | 2 | 4.0% |
+| **Total** | 239 | 12.3% |
 
-| # | Class Name | Package | Note |
-|---|------------|---------|------|
-| 1 | `AbstractAccessPoint` | AccessCount | Access point abstraction |
-| 2 | `AsynchronousServerCallPoint` | ServerCall | Async server call handling |
-| 3 | `AutosarVariableRef` | DataElements | AUTOSAR variable reference |
-| 4 | `BswServiceDependency` | BswInterfaces | BSW service dependency |
-| 5 | `ClientServerOperation` | PortInterface | Client-server operation |
-| 6 | `DataPrototype` | DataPrototypes | Data prototype definition |
-| 7 | `DataReceivedEvent` | RTEEvents | Data received event |
-| 8 | `Identifiable` | Identifiable | Identifiable base class |
-| 9 | `MultilanguageReferrable` | Identifiable | Multilanguage support |
-| 10 | `NvBlockDescriptor` | NvBlockComponent | NV block descriptor |
-| 11 | `NvBlockNeeds` | ServiceNeeds | NV block configuration needs |
-| 12 | `ParameterAccess` | DataElements | Parameter access definition |
-| 13 | `PerInstanceMemory` | SwcInternalBehavior | Per-instance memory |
-| 14 | `PortAPIOption` | PortAPIOptions | Port API options |
-| 15 | `PortDefinedArgumentValue` | PortAPIOptions | Port argument value |
-| 16 | `ROperationInAtomicSwcInstanceRef` | InstanceRefs | R-port instance reference |
-| 17 | `RTEEvent` | RTEEvents | RTE event |
-| 18 | `RVariableInAtomicSwcInstanceRef` | InstanceRefs | R-variable instance reference |
-| 19 | `Referrable` | Identifiable | Referrable base class |
-| 20 | `RoleBasedDataAssignment` | ServiceMapping | Role-based data assignment |
-| 21 | `RoleBasedDataTypeAssignment` | ServiceMapping | Role-based data type assignment |
-| 22 | `RunnableEntity` | SwcInternalBehavior | Runnable entity |
-| 23 | `ServerCallPoint` | ServerCall | Server call point |
-| 24 | `ServiceNeeds` | ServiceNeeds | Service needs base class |
-| 25 | `SwcInternalBehavior` | SwcInternalBehavior | SWC internal behavior |
-| 2 6 | `SwcModeSwitchEvent` | SwcInternalBehavior | SWC mode switch event |
-| 27 | `SwcServiceDependency` | ServiceMapping | SWC service dependency |
-| 28 | `SynchronousServerCallPoint` | ServerCall | Sync server call handling |
-| 29 | `ValueSpecification` | FormulaLanguage | Value specification |
-| 30 | `VariableAccess` | DataElements | Variable access definition |
-| 31 | `VariableInAtomicSWCTypeInstanceRef` | InstanceRefs | Variable instance reference |
+### 8.2 Draft Elements Summary
 
-### 8.2 Enumerations Review Items (1 enumeration)
+| Type | Count | Percentage |
+|------|-------|------------|
+| **Classes** | 1,401 | 86.3% |
+| **Enumerations** | 250 | 94.3% |
+| **Primitives** | 48 | 96.0% |
+| **Total** | 1,699 | 87.7% |
 
-| # | Enum Name | Package | Literals |
-|---|-----------|---------|----------|
-| 1 | `RteApiReturnValueProvisionEnum` | SwcInternalBehavior | 3 literals |
+---
 
-### 8.3 Primitives Review Items (0 primitives)
-
-No primitives have been marked as "reviewed" yet.
-
-## 9. Draft Items Lists
-
-### 9.1 Classes Draft Items (Top 20 of 1,593)
-
-The following classes are in "draft" status and require review:
-
-| # | Class Name | Package | Priority Recommendation |
-|---|------------|---------|------------------------|
-| 1 | `ARElement` | ArObject | High - Core base class |
-| 2 | `ARList` | BlockElements | High - Documentation structure |
-| 3 | `ARObject` | ArObject | Critical - Root base class |
-| 4 | `ARPackage` | ARPackage | Critical - Package structure |
-| 5 | `AUTOSAR` | AutosarTopLevelStructure | Critical - Root element |
-| 6 | `AbsoluteTolerance` | TimingConstraint | Medium - Timing constraints |
-| 7 | `AbstractCanCluster` | Fibex4Can | Medium - CAN communication |
-| 8 | `AbstractCanCommunicationConnector` | Fibex4Can | Medium - CAN communication |
-| 9 | `AbstractCanCommunicationController` | Fibex4Can | Medium - CAN communication |
-| 10 | `AbstractCanCommunicationControllerAttributes` | Fibex4Can | Medium - CAN communication |
-| 11 | `AbstractCanPhysicalChannel` | Fibex4Can | Medium - CAN communication |
-| 12 | `AbstractClassTailoring` | BlueprintFormula | Low - Blueprint tailoring |
-| 13 | `AbstractCondition` | InternalBehavior | Medium - Internal behavior |
-| 14 | `AbstractDoIpLogicAddressProps` | DoIpLogicAddressProps | Low - DoIP addressing |
-| 15 | `AbstractEnumerationValueVariationPoint` | VariantHandling | Medium - Variation points |
-| 16 | `AbstractEthernetFrame` | Fibex4Ethernet | Medium - Ethernet frames |
-| 17 | `AbstractEvent` | RTEEvents | High - Event handling |
-| 18 | `AbstractGlobalTimeDomainProps` | GlobalTime | Medium - Time management |
-| 19 | `AbstractImplementationDataType` | ImplementationDataTypes | High - Data types |
-| 20 | `AbstractImplementationDataTypeElement` | ImplementationDataTypes | High - Data types |
-
-**Note:** Only showing top 20 of 1,593 draft classes alphabetically. Full list available upon request.
-
-### 9.2 Enumerations Draft Items (Top 20 of 265)
-
-The following enumerations are in "draft" status and require review:
-
-| # | Enum Name | Package | Literals | Priority Recommendation |
-|---|-----------|---------|----------|------------------------|
-| 1 | `AclScopeEnum` | RolesAndRights | 3 | Medium - Access control |
-| 2 | `AdditionalBindingTimeEnum` | ModelRestrictionTypes | 2 | Low - Binding times |
-| 3 | `AlignEnum` | DataDefProperties | 6 | Medium - Data alignment |
-| 4 | `ApiPrincipleEnum` | PortInterface | 4 | Medium - API principles |
-| 5 | `AreaEnumNohref` | InlineTextElements | 3 | Low - HTML area |
-| 6 | `AreaEnumShape` | InlineTextElements | 4 | Low - HTML area shapes |
-| 7 | `ArgumentDirectionEnum` | PrimitiveTypes | 3 | High - Argument direction |
-| 8 | `ArrayImplPolicyEnum` | Datatypes | 3 | Medium - Array implementation |
-| 9 | `ArraySizeHandlingEnum` | Datatypes | 3 | Medium - Array size handling |
-| 10 | `ArraySizeSemanticsEnum` | Datatypes | 3 | Medium - Array size semantics |
-| 11 | `AutoCollectEnum` | DataDefProperties | 3 | Medium - Data collection |
-| 12 | `BindingTimeEnum` | VariantHandling | 2 | Medium - Binding times |
-| 13 | `BswCallType` | BswBehavior | 6 | High - BSW calls |
-| 14 | `BswEntryKindEnum` | BswInterfaces | 7 | High - BSW entry types |
-| 15 | `BswEntryRelationshipEnum` | BswInterfaces | 6 | High - BSW relationships |
-| 16 | `BswExecutionContext` | BswBehavior | 5 | High - BSW execution |
-| 17 | `BswInterruptCategory` | BswBehavior | 7 | High - Interrupt categories |
-| 18 | `ByteOrderEnum` | PrimitiveTypes | 2 | High - Byte ordering |
-| 19 | `CSTransformerErrorReactionEnum` | ServiceMapping | 4 | Medium - Error handling |
-| 20 | `CalprmAxisCategoryEnum` | CalibrationParameter | 6 | Medium - Calibration |
-
-**Note:** Only showing top 20 of 265 draft enumerations alphabetically. Full list available upon request.
-
-### 9.3 Primitives Draft Items (Top 20 of 50)
-
-The following primitives are in "draft" status and require review:
-
-| # | Primitive Name | Category | Priority Recommendation |
-|---|-----------------|----------|------------------------|
-| 1 | `Address` | Other | High - Memory addressing |
-|  | | |  |
-| 2 | `AlignmentType` | String-based | High - Memory alignment |
-| 3 | `AnyServiceInstanceId` | String-based | Medium - Service IDs |
-| 4 | `AnyVersionString` | String-based | Medium - Version strings |
-| 5 | `AsamRecordLayoutSemantics` | Other | Low - Record layout |
-| 6 | `AxisIndexType` | Other | Medium - Axis indexing |
-| 7 | `BaseTypeEncodingString` | String-based | High - Base type encoding |
-| 8 | `Boolean` | Numeric | Critical - Boolean values |
-| 9 | `CIdentifier` | String-based | High - C identifiers |
-| 10 | `CIdentifierWithIndex` | String-based | High - C identifiers with index |
-| 11 | `CategoryString` | String-based | Medium - Categories |
-| 12 | `CseCodeType` | Other | Low - CSE codes |
-| 13 | `DateTime` | Other | Medium - Date/time values |
-| 14 | `DiagRequirementIdString` | String-based | Medium - Diagnostic IDs |
-| 15 | `DisplayFormatString` | String-based | Medium - Display formats |
-| 16 | `ExtIdClassEnum` | Enumeration Proxy | Low - Extended IDs |
-| 17 | `Float` | Numeric | Critical - Floating point |
-| 18 | `Identifier` | String-based | Critical - Identifiers |
-| 19 | `Integer` | Numeric | Critical - Integer values |
-| 20 | `Ip4AddressString` | String-based | High - IPv4 addresses |
-
-**Note:** Only showing top 20 of 50 draft primitives alphabetically. Full list available upon request.
+*For detailed lists of reviewed and draft items, refer to the `docs/reports/maturity-analysis.txt` file generated by `tools/analyze_maturity.py`.*
 
 ---
 
