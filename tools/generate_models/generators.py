@@ -274,6 +274,65 @@ def _generate_xml_tag_constant(class_name: str) -> str:
     return f'    _XML_TAG = "{xml_tag}"\n\n\n'
 
 
+def _extract_xml_tag_from_decorator(attr_name: str, attr_data: Dict[str, Any]) -> Optional[str]:
+    """Extract XML tag from decorator field if present.
+
+    Args:
+        attr_name: Python attribute name
+        attr_data: Attribute data from JSON (with decorator_name and decorator_params)
+
+    Returns:
+        XML tag if xml_element_name decorator present, None otherwise
+    """
+    decorator_name = attr_data.get("decorator_name", "")
+    if decorator_name == "xml_element_name":
+        # Get the XML tag from decorator_params
+        return attr_data.get("decorator_params", "")
+
+    return None
+
+
+def _generate_attribute_mappings(attribute_types: Dict[str, Dict[str, Any]]) -> str:
+    """Generate _ATTRIBUTE_XML_TAG_MAPPING only for attributes with xml_element_name decorator.
+
+    Only generates mappings for exceptional cases where the XML tag doesn't follow
+    the standard naming convention. All other attributes use NameConverter at runtime.
+
+    Args:
+        attribute_types: Dictionary of attribute information
+
+    Returns:
+        Generated code for _ATTRIBUTE_XML_TAG_MAPPING constant
+    """
+    exceptional_mappings = {}
+
+    for attr_name, attr_data in sorted(attribute_types.items()):
+        xml_tag = _extract_xml_tag_from_decorator(attr_name, attr_data)
+        if xml_tag:
+            # Use the Python identifier (snake_case with ref suffix if needed)
+            # as the key, not the original attr_name
+            python_name = get_python_identifier_with_ref(
+                attr_name,
+                attr_data.get("is_ref", False),
+                attr_data.get("multiplicity", "1"),
+                attr_data.get("kind", "attribute")
+            )
+            exceptional_mappings[python_name] = xml_tag
+
+    if not exceptional_mappings:
+        return ""  # No exceptional cases, don't generate mapping
+
+    code = "    # Pre-computed attribute name → XML tag mappings (exceptional cases only)\n"
+    code += "    # Normal attributes use NameConverter.to_xml_tag() for calculation\n"
+    code += "    _ATTRIBUTE_XML_TAG_MAPPING: ClassVar[Dict[str, str]] = {\n"
+
+    for python_name, tag in sorted(exceptional_mappings.items()):
+        code += f'        "{python_name}": "{tag}",\n'
+
+    code += "    }\n\n"
+    return code
+
+
 def _generate_dispatch_table(
     attribute_types: Dict[str, Dict[str, Any]],
     package_data: Dict[str, Dict[str, Any]],
@@ -570,6 +629,11 @@ def generate_class_code(
                     break
         if has_xml_element_name:
             decorator_import += "from armodel2.serialization.decorators import xml_element_name\n"
+            # Add ClassVar, Dict for _ATTRIBUTE_XML_TAG_MAPPING
+            if uses_any_type:
+                basic_import = "from typing import TYPE_CHECKING, Optional, Any, ClassVar, Dict\n"
+            else:
+                basic_import = "from typing import TYPE_CHECKING, Optional, ClassVar, Dict\n"
 
         # Check if this class uses atpVariation pattern via decorator key
         class_decorator = type_def.get("decorator", None)
@@ -982,6 +1046,10 @@ class {class_name}(ABC):
     # Add _XML_TAG constant for non-abstract classes
     if not is_abstract:
         code += _generate_xml_tag_constant(class_name)
+
+    # Add _ATTRIBUTE_XML_TAG_MAPPING for attributes with xml_element_name decorator
+    if attribute_types:
+        code += _generate_attribute_mappings(attribute_types)
 
     if is_splitable:
         code += f'''    is_splitable = True
