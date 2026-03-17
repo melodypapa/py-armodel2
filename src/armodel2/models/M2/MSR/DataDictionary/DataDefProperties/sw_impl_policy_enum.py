@@ -29,8 +29,6 @@ class SwImplPolicyEnum(AREnum):
         self._value_ = value
 
     CONST = "CONST"
-    BASIC = "BASIC"
-    AUTOSAR = "A-U-T-O-S-A-R"
     FIXED = "FIXED"
     MEASUREMENT_POINT = "MEASUREMENT-POINT"
     QUEUED = "QUEUED"

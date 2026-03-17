@@ -7,7 +7,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_LifeCycles.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, ClassVar, Dict
 import xml.etree.ElementTree as ET
 from armodel2.serialization.decorators import xml_element_name
 
@@ -47,6 +47,12 @@ class LifeCycleInfoSet(ARElement):
 
     _XML_TAG = "LIFE-CYCLE-INFO-SET"
 
+
+    # Pre-computed attribute name → XML tag mappings (exceptional cases only)
+    # Normal attributes use NameConverter.to_xml_tag() for calculation
+    _ATTRIBUTE_XML_TAG_MAPPING: ClassVar[Dict[str, str]] = {
+        "life_cycle_infoes": "LIFE-CYCLE-INFOS",
+    }
 
     default_lc_state_ref: ARRef
     default_period_begin: Optional[LifeCyclePeriod]

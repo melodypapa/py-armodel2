@@ -9,7 +9,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_InternalBehavior.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, ClassVar, Dict
 import xml.etree.ElementTree as ET
 from armodel2.serialization.decorators import xml_element_name
 
@@ -53,6 +53,12 @@ class ExecutableEntity(Identifiable, ABC):
             True for abstract classes
         """
         return True
+
+    # Pre-computed attribute name → XML tag mappings (exceptional cases only)
+    # Normal attributes use NameConverter.to_xml_tag() for calculation
+    _ATTRIBUTE_XML_TAG_MAPPING: ClassVar[Dict[str, str]] = {
+        "can_enter_refs": "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA-REF",
+    }
 
     activation_reasons: list[ExecutableEntityActivationReason]
     _can_enter_refs: list[ARRef]

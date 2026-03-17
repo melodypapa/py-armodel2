@@ -11,7 +11,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_SwcInternalBehavior.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, ClassVar, Dict
 import xml.etree.ElementTree as ET
 from armodel2.serialization.decorators import xml_element_name
 
@@ -76,6 +76,15 @@ class RunnableEntity(ExecutableEntity):
 
     _XML_TAG = "RUNNABLE-ENTITY"
 
+
+    # Pre-computed attribute name → XML tag mappings (exceptional cases only)
+    # Normal attributes use NameConverter.to_xml_tag() for calculation
+    _ATTRIBUTE_XML_TAG_MAPPING: ClassVar[Dict[str, str]] = {
+        "data_receive_point_by_arguments": "DATA-RECEIVE-POINT-BY-ARGUMENTS",
+        "data_write_accesses": "DATA-WRITE-ACCESSS",
+        "read_local_variables": "READ-LOCAL-VARIABLES",
+        "written_local_variables": "WRITTEN-LOCAL-VARIABLES",
+    }
 
     arguments: list[RunnableEntityArgument]
     asynchronous_server_call_result_points: list[AsynchronousServerCallResultPoint]
