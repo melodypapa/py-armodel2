@@ -1,6 +1,16 @@
 """Decorators for XML serialization edge cases."""
 
-from typing import Any, Callable, Optional
+from enum import Enum
+from typing import Any, Callable, Literal, Optional, Union
+
+
+class InstanceRefListType(Enum):
+    """List type for instance reference serialization.
+
+    Determines how list attributes are serialized in instance reference patterns.
+    """
+    SINGLE = "single"  # All items in a single wrapper element
+    MULTI = "multi"    # Each item in its own wrapper element
 
 
 def xml_attribute(func_or_name: Any = None) -> Any:
@@ -221,7 +231,10 @@ def ref_conditional(xml_tag: str) -> Callable[[Any], Any]:
     return decorator
 
 
-def instance_ref(flatten: bool = False, list_type: str = "single") -> Callable[[Any], Any]:
+def instance_ref(
+    flatten: bool = False,
+    list_type: Union[InstanceRefListType, Literal["single"], Literal["multi"]] = InstanceRefListType.SINGLE
+) -> Callable[[Any], Any]:
     """Decorator to mark an attribute as an instance reference (iref).
 
     Instance references are wrapped in a <TAG>-IREF element.
@@ -256,7 +269,7 @@ def instance_ref(flatten: bool = False, list_type: str = "single") -> Callable[[
         </INNER-PORT-IREF>
 
     Usage (multi-wrapper list - SwcToEcuMapping):
-        @instance_ref(flatten=True, list_type="multi")
+        @instance_ref(flatten=True, list_type=InstanceRefListType.MULTI)
         @property
         def component_irefs(self) -> list[ComponentInSystemInstanceRef]:
             return self._component_irefs
@@ -276,17 +289,28 @@ def instance_ref(flatten: bool = False, list_type: str = "single") -> Callable[[
     Args:
         flatten: If True, children are flattened directly into wrapper.
                 If False, the element is wrapped. Default: False
-        list_type: For list attributes only. "single" for single-wrapper behavior
-                  (all items in one wrapper), "multi" for multi-wrapper behavior
-                  (each item in its own wrapper). Default: "single"
+        list_type: For list attributes only. InstanceRefListType.SINGLE for
+                  single-wrapper behavior (all items in one wrapper),
+                  InstanceRefListType.MULTI for multi-wrapper behavior
+                  (each item in its own wrapper). Accepts enum or string
+                  literals for backward compatibility. Default: SINGLE
 
     Returns:
         Decorator that sets _is_instance_ref, _flatten, and _list_type markers on the attribute
     """
+    # Convert string to enum for backward compatibility
+    if isinstance(list_type, str):
+        try:
+            list_type = InstanceRefListType(list_type)
+        except ValueError:
+            # Invalid string value, default to SINGLE
+            list_type = InstanceRefListType.SINGLE
+
     def decorator(attr_or_func: Any) -> Any:
         attr_or_func._is_instance_ref = True  # type: ignore[union-attr]
         attr_or_func._flatten = flatten  # type: ignore[union-attr]
-        attr_or_func._list_type = list_type  # type: ignore[union-attr]
+        # Always store as string value (what consumers expect)
+        attr_or_func._list_type = list_type.value if isinstance(list_type, InstanceRefListType) else list_type  # type: ignore[union-attr]
         return attr_or_func
     return decorator
 

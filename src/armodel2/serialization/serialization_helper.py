@@ -184,72 +184,38 @@ class SerializationHelper:
         return False
 
     @staticmethod
-    def get_element_tag(attr_name: str, obj: Any = None) -> str:
+    def get_element_tag(
+        attr_name: str,
+        obj_or_cls: Union[Any, type, None] = None
+    ) -> str:
         """Get XML tag name for a class attribute/element.
 
+        Unified method that handles both object instances and class types.
+        Checks for pre-computed XML tag mappings before falling back to NameConverter.
+
         Priority:
-        1. Object's _ATTRIBUTE_XML_TAG_MAPPING (from xml_element_name decorator)
+        1. _ATTRIBUTE_XML_TAG_MAPPING (from @xml_element_name decorator)
         2. NameConverter calculation (default)
 
         Args:
             attr_name: Name of the Python attribute
-            obj: Object instance (optional, for checking pre-computed mappings)
+            obj_or_cls: Object instance or class (optional, for checking pre-computed mappings)
 
         Returns:
             XML tag name to use for this element
+
+        Examples:
+            >>> # With instance
+            >>> tag = SerializationHelper.get_element_tag("my_attr", my_obj)
+            >>> # With class
+            >>> tag = SerializationHelper.get_element_tag("my_attr", MyClass)
+            >>> # Without context (uses default conversion)
+            >>> tag = SerializationHelper.get_element_tag("my_attribute")
         """
         # Check for pre-computed mapping (from xml_element_name decorator)
-        if obj and hasattr(obj, '_ATTRIBUTE_XML_TAG_MAPPING'):
-            mapping = obj._ATTRIBUTE_XML_TAG_MAPPING
-            if attr_name in mapping:
-                return mapping[attr_name]
-
-        # Default: Calculate using NameConverter
-        return NameConverter.to_xml_tag(attr_name)
-
-    @staticmethod
-    def get_element_tag_path(attr_name: str, obj: Any = None) -> Union[str, list[str]]:
-        """Get full XML tag path for a class attribute/element.
-
-        Priority:
-        1. Object's _ATTRIBUTE_XML_TAG_MAPPING (from xml_element_name decorator)
-        2. NameConverter calculation (default)
-
-        Args:
-            attr_name: Name of the Python attribute
-            obj: Object instance (optional, for checking pre-computed mappings)
-
-        Returns:
-            XML tag as a string (single-level path only)
-        """
-        # Check for pre-computed mapping (from xml_element_name decorator)
-        if obj and hasattr(obj, '_ATTRIBUTE_XML_TAG_MAPPING'):
-            mapping = obj._ATTRIBUTE_XML_TAG_MAPPING
-            if attr_name in mapping:
-                return mapping[attr_name]
-
-        # Default: Calculate using NameConverter
-        return NameConverter.to_xml_tag(attr_name)
-
-    @staticmethod
-    def get_element_tag_path_static(cls: type, attr_name: str) -> Union[str, list[str]]:
-        """Get full XML tag path for a class attribute/element (static version).
-
-        Priority:
-        1. Class's _ATTRIBUTE_XML_TAG_MAPPING (from xml_element_name decorator)
-        2. NameConverter calculation (default)
-
-        Args:
-            cls: The class to check
-            attr_name: Name of the attribute to check
-
-        Returns:
-            XML tag path as a list for multi-level paths, or a string for single-level paths
-        """
-        # Check for pre-computed mapping (from xml_element_name decorator)
-        if hasattr(cls, '_ATTRIBUTE_XML_TAG_MAPPING'):
-            mapping = cls._ATTRIBUTE_XML_TAG_MAPPING
-            if attr_name in mapping:
+        if obj_or_cls is not None:
+            mapping = getattr(obj_or_cls, '_ATTRIBUTE_XML_TAG_MAPPING', None)
+            if mapping and attr_name in mapping:
                 return mapping[attr_name]
 
         # Default: Calculate using NameConverter

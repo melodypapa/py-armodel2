@@ -1,11 +1,17 @@
 """ARXML writing functionality."""
 
+import re
 from pathlib import Path
 from typing import Union, Optional
 import xml.etree.ElementTree as ET
 
 from armodel2.core import SchemaVersionManager
 from armodel2.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+
+# Pre-compiled regex patterns for performance
+_XML_DECL_PATTERN = re.compile(r"<\?xml version='1\.0' encoding='([^']+)'\?\>")
+_SELF_CLOSING_TAG_PATTERN = re.compile(r'<([A-Z][A-Z0-9-]*)([^>]*)/>')
+_TEXT_CONTENT_PATTERN = re.compile(r'>([^<]*?)<', flags=re.DOTALL)
 
 
 class ARXMLWriter:
@@ -102,126 +108,61 @@ class ARXMLWriter:
         if autosar is not None and autosar.encoding is not None:
             encoding = autosar.encoding
 
-        # Create tree and write
+        # Create tree and apply pretty printing
         tree = ET.ElementTree(root)
-
-        # Configure pretty printing
         if self._pretty_print:
             tree_root = tree.getroot()
             if tree_root is not None:
                 self._indent(tree_root)
 
-        tree.write(str(filepath), encoding=encoding, xml_declaration=True)
+        # Serialize to bytes with all post-processing applied in memory
+        xml_bytes = self._serialize_with_post_processing(root, encoding)
 
-        # Fix XML declaration quotes
-        self._fix_xml_declaration_quotes_file(filepath, encoding)
-
-        # Convert self-closing empty elements to separate opening and closing tags
-        # xml.etree.ElementTree serializes empty elements as <TAG /> but AUTOSAR uses <TAG></TAG>
-        self._fix_empty_elements_file(filepath)
-
-        # Preserve HTML entity encoding in text content
-        self._preserve_html_entities_file(filepath, encoding)
-
-    def _fix_empty_elements_file(self, filepath: Path) -> None:
-        """Convert self-closing empty elements to separate opening and closing tags.
-
-        Post-processes the file to convert:
-        <TAG />
-        to:
-        <TAG></TAG>
-
-        This matches the AUTOSAR file format where empty elements use separate
-        opening and closing tags instead of self-closing tags.
-
-        Args:
-            filepath: Path to the ARXML file to fix
-        """
-        with open(filepath, 'rb') as f:
-            content = f.read()
-        
-        # Convert self-closing tags to empty tags
-        # Use regex to match patterns like <TAG /> or <TAG attribute="value" />
-        # and convert them to <TAG attribute="value"></TAG>
-        import re
-        
-        # Pattern to match self-closing tags (bytes pattern)
-        # Matches: <TAG />, <TAG attr="value" />, <TAG attr1="value1" attr2="value2" />, etc.
-        pattern = rb'<([A-Z][A-Z0-9-]*)([^>]*)/>'
-        
-        def replace_self_closing(match: re.Match[bytes]) -> bytes:
-            """Replace self-closing tag with separate opening and closing tags."""
-            tag = match.group(1)
-            attrs = match.group(2)
-            # Strip trailing whitespace from attributes
-            attrs = attrs.rstrip()
-            return b'<' + tag + attrs + b'></' + tag + b'>'
-        
-        content = re.sub(pattern, replace_self_closing, content)
-
-        with open(filepath, 'wb') as f_out:
-            f_out.write(content)
-
-    def _fix_xml_declaration_quotes_file(self, filepath: Path, encoding: str) -> None:
-        """Replace single quotes with double quotes in XML declaration.
-
-        Post-processes the file to convert:
-        <?xml version='1.0' encoding='ISO-8859-1'?>
-        to:
-        <?xml version="1.0" encoding="ISO-8859-1"?>
-
-        Args:
-            filepath: Path to the ARXML file to fix
-            encoding: File encoding to use in the XML declaration
-        """
-        with open(filepath, 'rb') as f:
-            content = f.read()
-
-        # Replace the entire XML declaration at once
-        # Pattern: <?xml version='1.0' encoding='ANY_VALUE'?>
-        import re
-        pattern = rb"<\?xml version='1\.0' encoding='([^']+)'\?\>"
-        replacement = b'<?xml version="1.0" encoding="' + encoding.encode('ascii') + b'"?>'
-        content = re.sub(pattern, replacement, content)
-        
+        # Write final result to file (single write operation)
         with open(filepath, 'wb') as f:
-            f.write(content)
+            f.write(xml_bytes)
 
-    def _fix_xml_declaration_quotes_str(self, xml_str: str) -> str:
-        """Replace single quotes with double quotes in XML declaration string.
+    def _serialize_with_post_processing(self, root: ET.Element, encoding: str) -> bytes:
+        """Serialize XML element to bytes with all post-processing applied in memory.
+
+        This method combines:
+        1. XML serialization with declaration
+        2. Fix XML declaration quotes
+        3. Convert self-closing tags to empty tags
+        4. Preserve HTML entity encoding
+
+        All operations are done in memory to avoid multiple file reads/writes.
 
         Args:
-            xml_str: XML string to fix
+            root: Root XML element
+            encoding: File encoding to use
 
         Returns:
-            XML string with corrected quotes
+            Processed XML content as bytes
         """
-        xml_str = xml_str.replace("<?xml version='1.0'", '<?xml version="1.0"')
-        xml_str = xml_str.replace("encoding='UTF-8'?>", 'encoding="UTF-8"?>')
-        return xml_str
+        # Serialize to bytes
+        xml_bytes = ET.tostring(root, encoding=encoding, xml_declaration=True)
 
-    def _preserve_html_entities_file(self, filepath: Path, encoding: str) -> None:
-        """Preserve HTML entity encoding in text content.
+        # Convert to string for processing (regex works better with strings)
+        xml_str = xml_bytes.decode(encoding)
 
-        Post-processes the file to escape special characters in text content
-        to match AUTOSAR format (e.g., &quot; instead of " in text nodes).
+        # 1. Fix XML declaration quotes: ' -> "
+        # Pattern: <?xml version='1.0' encoding='ANY_VALUE'?>
+        # Replace with: <?xml version="1.0" encoding="ANY_VALUE"?>
+        replacement = f'<?xml version="1.0" encoding="{encoding}"?>'
+        xml_str = _XML_DECL_PATTERN.sub(replacement, xml_str)
 
-        Args:
-            filepath: Path to the ARXML file to process
-            encoding: File encoding to use for decoding/encoding
-        """
-        with open(filepath, 'rb') as f:
-            content = f.read()
+        # 2. Convert self-closing empty elements to separate opening and closing tags
+        # Pattern: <TAG />, <TAG attr="value" />, etc.
+        xml_str = _SELF_CLOSING_TAG_PATTERN.sub(
+            lambda m: f'<{m.group(1)}{m.group(2).rstrip()}></{m.group(1)}>',
+            xml_str
+        )
 
-        # Decode to string for processing
-        xml_str = content.decode(encoding)
-
-        # Apply HTML entity preservation
+        # 3. Preserve HTML entity encoding in text content
         xml_str = self._preserve_html_entities_str(xml_str)
 
-        # Write back
-        with open(filepath, 'wb') as f:
-            f.write(xml_str.encode(encoding))
+        return xml_str.encode(encoding)
 
     def _preserve_html_entities_str(self, xml_str: str) -> str:
         """Preserve HTML entity encoding in XML string.
@@ -237,12 +178,6 @@ class ARXMLWriter:
         Returns:
             XML string with preserved HTML entity encoding
         """
-        import re
-        
-        # Process the entire XML string at once to handle multiline text content
-        # We need to escape quotes only in text content (between > and <)
-        # and NOT in attribute values or tag names
-        
         def escape_quotes_in_text(match: re.Match[str]) -> str:
             """Escape quotes in text content between tags."""
             text = match.group(1)
@@ -250,14 +185,12 @@ class ARXMLWriter:
                 # Escape quotes in text content
                 text = text.replace('"', '&quot;')
             return f'>{text}<'
-        
+
         # Replace text content between tags
         # Use re.DOTALL flag to match across newlines
         # This regex matches >...< where ... is any text (including newlines)
         # but not another tag (which starts with <)
-        processed_str = re.sub(r'>([^<]*?)<', escape_quotes_in_text, xml_str, flags=re.DOTALL)
-
-        return processed_str
+        return _TEXT_CONTENT_PATTERN.sub(escape_quotes_in_text, xml_str)
 
     def _indent(self, elem: ET.Element, level: int = 0) -> None:
         """Add indentation to XML element for pretty printing.
@@ -296,18 +229,16 @@ class ARXMLWriter:
             autosar = AUTOSAR()
 
         root = self._serialize_to_xml(autosar)
-        tree = ET.ElementTree(root)
 
+        # Get encoding from AUTOSAR object if available
+        encoding = self._encoding
+        if autosar.encoding is not None:
+            encoding = autosar.encoding
+
+        # Apply pretty printing if needed
         if self._pretty_print:
-            tree_root = tree.getroot()
-            if tree_root is not None:
-                self._indent(tree_root)
+            self._indent(root)
 
-        # Convert to string (ET.tostring returns bytes, need to decode)
-        xml_bytes = ET.tostring(root, encoding=self._encoding, xml_declaration=True)
-        xml_str = xml_bytes.decode(self._encoding)
-        
-        # Fix XML declaration quotes
-        xml_str = self._fix_xml_declaration_quotes_str(xml_str)
-        
-        return xml_str
+        # Serialize with all post-processing in memory
+        xml_bytes = self._serialize_with_post_processing(root, encoding)
+        return xml_bytes.decode(encoding)

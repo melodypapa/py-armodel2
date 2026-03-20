@@ -24,7 +24,12 @@ class TestARObjectHelperMethods:
 
     def test_get_element_tag_auto_generated(self):
         """Test auto-generating element tag from attribute name."""
+        # Test without context (uses default conversion)
         tag = SerializationHelper.get_element_tag("my_attribute")
+        assert tag == "MY-ATTRIBUTE"
+
+        # Test with class
+        tag = SerializationHelper.get_element_tag("my_attribute", ARObject)
         assert tag == "MY-ATTRIBUTE"
 
     def test_add_text_element_with_value(self):
