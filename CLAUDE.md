@@ -55,6 +55,12 @@ python -m tools.generate_models --members --classes --enums --primitives
 
 # Regenerate armodel/models/__init__.py (after adding new classes)
 python tools/generate_models_init.py
+
+# Analyze maturity status of model elements
+python tools/analyze_maturity.py > docs/reports/maturity-analysis.txt
+
+# Identify XML tag exceptions (for debugging serialization issues)
+python tools/identify_xml_tag_exceptions.py
 ```
 
 ### Quality Checks
@@ -226,6 +232,25 @@ def provider_iref(self) -> PPortInCompositionInstanceRef:
 
 **Decorator Implementation**: All decorators are in `src/armodel2/serialization/decorators.py`
 
+### Pre-Computed XML Tag Mappings
+
+For performance optimization, model classes use pre-computed XML tag mappings (`_ATTRIBUTE_XML_TAG_MAPPING`) to avoid runtime name conversion overhead:
+
+```python
+# Generated for attributes with @xml_element_name decorator
+_ATTRIBUTE_XML_TAG_MAPPING: ClassVar[dict[str, str]] = {
+    "short_name": "SHORT-NAME",
+    "provided_client_server_entries": "PROVIDED-ENTRYS",
+}
+```
+
+**How It Works**:
+- `SerializationHelper.get_element_tag()` checks the pre-computed mapping before calling `NameConverter`
+- Code generator auto-generates mappings for classes using `@xml_element_name` decorator
+- Eliminates regex operations for exceptional cases (e.g., "PROVIDED-ENTRYS" instead of standard conversion)
+
+**When to Use**: Only needed when XML tags don't follow AUTOSAR naming conventions (e.g., "ENTRYS" instead of "ENTRIES")
+
 ### Fluent API Builder Pattern
 
 All concrete model classes include a Builder with fluent API for object construction:
@@ -349,11 +374,19 @@ ARObject
 
 Multiple AUTOSAR versions supported via `src/armodel2/cfg/schemas/config.yaml`:
 
-| Version | Namespace                                    | XSD                          |
-|---------|----------------------------------------------|------------------------------|
-| 00044   | http://autosar.org/3.0.4                    | AUTOSAR_00044.xsd            |
-| 00046   | http://autosar.org/schema/r4.0              | AUTOSAR_00046_COMPACT.xsd    |
-| 00052   | http://autosar.org/schema/r5.0              | AUTOSAR_00052.xsd            |
+| Version | Platform                      | Year | Namespace                                |
+|---------|-------------------------------|------|------------------------------------------|
+| 00042   | CP 4.3.0 / AP 17-03           | 2017 | http://autosar.org/3.0.4                 |
+| 00044   | CP 4.3.1 / AP 17-10           | 2017 | http://autosar.org/3.0.4                 |
+| 00046   | CP 4.4.0 / AP 18-10 (default) | 2018 | http://autosar.org/schema/r4.0           |
+| 00048   | Unified R19-11                | 2019 | http://autosar.org/schema/r4.0           |
+| 00049   | Unified R20-11                | 2020 | http://autosar.org/schema/r4.0           |
+| 00050   | Unified R21-11                | 2021 | http://autosar.org/schema/r4.0           |
+| 00051   | Unified R22-11                | 2022 | http://autosar.org/schema/r4.0           |
+| 00052   | Unified R23-11                | 2023 | http://autosar.org/schema/r5.0           |
+| 00053   | Unified R24-11                | 2024 | http://autosar.org/schema/r5.0           |
+| 00054   | Unified R25-11                | 2025 | http://autosar.org/schema/r5.0           |
+| 3_2_3   | Legacy 3.2.3                  | —    | http://autosar.org/3.2.3                  |
 
 **Default version**: 00046
 
@@ -620,6 +653,24 @@ Key rules from `docs/designs/design_rules.md`:
 - **Decorators**: `src/armodel2/serialization/decorators.py` - XML serialization decorators (@xml_attribute, @atp_variant, @lang_prefix, @lang_abbr, @xml_element_name, @ref_conditional, @instance_ref)
 
 ## Recent Improvements (2025-2026)
+
+### Pre-Computed XML Tag Mappings (PR #238)
+- **Performance optimization**: Auto-generated `_ATTRIBUTE_XML_TAG_MAPPING` for classes with exceptional XML tags
+- Eliminates runtime `NameConverter` overhead for non-standard naming patterns
+- New tool: `tools/identify_xml_tag_exceptions.py` scans decorator usage
+- Applied to: ExecutableEntity, LifeCycleInfoSet, RunnableEntity, CompuNominatorDenominator, ARList
+
+### Maturity Analysis Tool (PR #236)
+- **New tool**: `tools/analyze_maturity.py` analyzes model element maturity status
+- Reports reviewed vs draft classes, enums, and primitives
+- Tracks maturity by package with percentage breakdowns
+- Identifies invalid maturity values in mapping JSON files
+- Run: `python tools/analyze_maturity.py > docs/reports/maturity-analysis.txt`
+
+### BswModuleDependency Enhancement (PR #232)
+- **New attribute**: `service_items` list support added to `BswModuleDependency`
+- Polymorphic list supporting 50+ ServiceNeeds types (BswMgrNeeds, ComMgrUserNeeds, etc.)
+- Uses `@ref_conditional` decorator pattern for proper XML serialization
 
 ### Decorator Enhancements (PR #115-#129)
 - **@ref_conditional decorator** (PR #115): Handles AUTOSAR -REF-CONDITIONAL wrapper pattern for reference lists

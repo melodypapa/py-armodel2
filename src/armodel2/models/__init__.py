@@ -4,7 +4,7 @@ This package exports all AUTOSAR model classes for convenient import.
 All model classes can be imported directly from armodel2.models.
 
 Example:
-    from armodel.models import AUTOSAR, ARPackage, SwBaseType
+    from armodel2.models import AUTOSAR, ARPackage, SwBaseType
 """
 
 # Manually Maintained Classes

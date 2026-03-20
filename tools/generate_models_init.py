@@ -83,7 +83,7 @@ def generate_init_file(classes: Dict[str, str], builders: Dict[str, str]) -> str
         'All model classes can be imported directly from armodel2.models.',
         '',
         'Example:',
-        '    from armodel.models import AUTOSAR, ARPackage, SwBaseType',
+        '    from armodel2.models import AUTOSAR, ARPackage, SwBaseType',
         '"""',
         '',
     ]

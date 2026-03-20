@@ -1,5 +1,7 @@
 """Name conversion utility for Python ↔ AUTOSAR XML naming conventions."""
 
+from functools import lru_cache
+
 
 class NameConverter:
     """Convert between Python snake_case and AUTOSAR UPPER-CASE-WITH-HYPHENS naming."""
@@ -12,6 +14,7 @@ class NameConverter:
     }
 
     @staticmethod
+    @lru_cache(maxsize=4096)
     def to_xml_tag(name: str) -> str:
         """Convert Python attribute or class name to XML tag name.
 
@@ -111,6 +114,7 @@ class NameConverter:
         return '-'.join(words).upper()
 
     @staticmethod
+    @lru_cache(maxsize=4096)
     def to_python_name(tag: str) -> str:
         """Convert XML tag name to Python attribute name.
 
@@ -143,6 +147,7 @@ class NameConverter:
         return tag.lower().replace('-', '_')
 
     @staticmethod
+    @lru_cache(maxsize=1024)
     def to_singular(tag: str) -> str:
         """Convert plural XML tag to singular form.
 
@@ -164,6 +169,7 @@ class NameConverter:
         return tag
 
     @staticmethod
+    @lru_cache(maxsize=4096)
     def tag_to_class_name(tag: str) -> str:
         """Convert XML tag name to Python class name.
 
