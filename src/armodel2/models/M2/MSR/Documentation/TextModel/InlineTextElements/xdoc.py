@@ -90,85 +90,37 @@ class Xdoc(SingleLanguageReferrable):
         if self.date is not None:
             serialized = SerializationHelper.serialize_item(self.date, "DateTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATE")
 
         # Serialize number
         if self.number is not None:
             serialized = SerializationHelper.serialize_item(self.number, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NUMBER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NUMBER")
 
         # Serialize position
         if self.position is not None:
             serialized = SerializationHelper.serialize_item(self.position, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("POSITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "POSITION")
 
         # Serialize publisher
         if self.publisher is not None:
             serialized = SerializationHelper.serialize_item(self.publisher, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PUBLISHER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PUBLISHER")
 
         # Serialize state
         if self.state is not None:
             serialized = SerializationHelper.serialize_item(self.state, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STATE")
 
         # Serialize url
         if self.url is not None:
             serialized = SerializationHelper.serialize_item(self.url, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("URL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "URL")
 
         return elem
 

@@ -90,57 +90,25 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
         if self.data_length is not None:
             serialized = SerializationHelper.serialize_item(self.data_length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-LENGTH")
 
         # Serialize diagnostic_value_access
         if self.diagnostic_value_access is not None:
             serialized = SerializationHelper.serialize_item(self.diagnostic_value_access, "DiagnosticValueAccessEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-VALUE-ACCESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAGNOSTIC-VALUE-ACCESS")
 
         # Serialize fixed_length
         if self.fixed_length is not None:
             serialized = SerializationHelper.serialize_item(self.fixed_length, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIXED-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIXED-LENGTH")
 
         # Serialize processing_style
         if self.processing_style is not None:
             serialized = SerializationHelper.serialize_item(self.processing_style, "DiagnosticProcessingStyleEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROCESSING-STYLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROCESSING-STYLE")
 
         return elem
 

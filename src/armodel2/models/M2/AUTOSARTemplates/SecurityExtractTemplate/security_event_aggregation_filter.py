@@ -77,29 +77,13 @@ class SecurityEventAggregationFilter(AbstractSecurityEventFilter):
         if self.context_data is not None:
             serialized = SerializationHelper.serialize_item(self.context_data, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-DATA")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTEXT-DATA")
 
         # Serialize minimum
         if self.minimum is not None:
             serialized = SerializationHelper.serialize_item(self.minimum, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINIMUM")
 
         return elem
 

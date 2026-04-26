@@ -94,57 +94,25 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         if self.application_data_ref is not None:
             serialized = SerializationHelper.serialize_item(self.application_data_ref, "ApplicationDataType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("APPLICATION-DATA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "APPLICATION-DATA-REF")
 
         # Serialize event_needs_ref
         if self.event_needs_ref is not None:
             serialized = SerializationHelper.serialize_item(self.event_needs_ref, "DiagnosticEventNeeds")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-NEEDS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-NEEDS-REF")
 
         # Serialize unit_and_scaling_id
         if self.unit_and_scaling_id is not None:
             serialized = SerializationHelper.serialize_item(self.unit_and_scaling_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UNIT-AND-SCALING-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UNIT-AND-SCALING-ID")
 
         # Serialize update_kind
         if self.update_kind is not None:
             serialized = SerializationHelper.serialize_item(self.update_kind, "DiagnosticMonitorUpdateKindEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPDATE-KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPDATE-KIND")
 
         return elem
 

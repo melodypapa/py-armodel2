@@ -87,57 +87,25 @@ class IPduPort(CommConnectorPort):
         if self.i_pdu_signal is not None:
             serialized = SerializationHelper.serialize_item(self.i_pdu_signal, "IPduSignalProcessingEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-PDU-SIGNAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "I-PDU-SIGNAL")
 
         # Serialize rx_security
         if self.rx_security is not None:
             serialized = SerializationHelper.serialize_item(self.rx_security, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RX-SECURITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RX-SECURITY")
 
         # Serialize timestamp_rx
         if self.timestamp_rx is not None:
             serialized = SerializationHelper.serialize_item(self.timestamp_rx, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMESTAMP-RX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMESTAMP-RX")
 
         # Serialize use_auth_data
         if self.use_auth_data is not None:
             serialized = SerializationHelper.serialize_item(self.use_auth_data, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USE-AUTH-DATA")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USE-AUTH-DATA")
 
         return elem
 

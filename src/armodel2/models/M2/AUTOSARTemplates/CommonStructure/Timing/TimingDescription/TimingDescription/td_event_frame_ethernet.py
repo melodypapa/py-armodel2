@@ -90,29 +90,13 @@ class TDEventFrameEthernet(TDEventCom):
         if self.static_socket_ref is not None:
             serialized = SerializationHelper.serialize_item(self.static_socket_ref, "StaticSocketConnection")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STATIC-SOCKET-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STATIC-SOCKET-REF")
 
         # Serialize td_event_type
         if self.td_event_type is not None:
             serialized = SerializationHelper.serialize_item(self.td_event_type, "TDEventFrameEthernet")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TD-EVENT-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TD-EVENT-TYPE")
 
         # Serialize td_header_id_filters (list to container "TD-HEADER-ID-FILTERS")
         if self.td_header_id_filters:
@@ -130,14 +114,7 @@ class TDEventFrameEthernet(TDEventCom):
             for item in self.td_pdu_triggering_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
-                    child_elem = ET.Element("TD-PDU-TRIGGERING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "TD-PDU-TRIGGERING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

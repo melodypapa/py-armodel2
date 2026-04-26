@@ -81,43 +81,19 @@ class IEEE1722TpAcfLin(IEEE1722TpAcfBus):
         if self.base_frequency is not None:
             serialized = SerializationHelper.serialize_item(self.base_frequency, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE-FREQUENCY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE-FREQUENCY")
 
         # Serialize frame_sync_enabled
         if self.frame_sync_enabled is not None:
             serialized = SerializationHelper.serialize_item(self.frame_sync_enabled, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRAME-SYNC-ENABLED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FRAME-SYNC-ENABLED")
 
         # Serialize timestamp
         if self.timestamp is not None:
             serialized = SerializationHelper.serialize_item(self.timestamp, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMESTAMP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMESTAMP")
 
         return elem
 

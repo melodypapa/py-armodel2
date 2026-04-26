@@ -81,29 +81,13 @@ class CpSwClusterToDiagRoutineSubfunctionMapping(DiagnosticMapping):
         if self.cp_software_cluster_ref is not None:
             serialized = SerializationHelper.serialize_item(self.cp_software_cluster_ref, "CpSoftwareCluster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CP-SOFTWARE-CLUSTER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CP-SOFTWARE-CLUSTER-REF")
 
         # Serialize routine_ref
         if self.routine_ref is not None:
             serialized = SerializationHelper.serialize_item(self.routine_ref, "DiagnosticRoutine")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROUTINE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROUTINE-REF")
 
         return elem
 

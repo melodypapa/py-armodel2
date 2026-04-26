@@ -94,15 +94,7 @@ class SwcModeSwitchEvent(RTEEvent):
         if self.activation is not None:
             serialized = SerializationHelper.serialize_item(self.activation, "ModeActivationKind")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ACTIVATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ACTIVATION")
 
         # Serialize mode_irefs (list of instance references with multi-wrapper pattern)
         if self.mode_irefs:

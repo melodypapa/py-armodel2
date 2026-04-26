@@ -162,14 +162,7 @@ class System(ARElement):
             for item in self.client_id_definition_set_refs:
                 serialized = SerializationHelper.serialize_item(item, "ClientIdDefinitionSet")
                 if serialized is not None:
-                    child_elem = ET.Element("CLIENT-ID-DEFINITION-SET-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CLIENT-ID-DEFINITION-SET-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -177,29 +170,13 @@ class System(ARElement):
         if self.container_i_pdu_header_byte_order is not None:
             serialized = SerializationHelper.serialize_item(self.container_i_pdu_header_byte_order, "ByteOrderEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTAINER-I-PDU-HEADER-BYTE-ORDER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTAINER-I-PDU-HEADER-BYTE-ORDER")
 
         # Serialize ecu_extract_version
         if self.ecu_extract_version is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_extract_version, "RevisionLabelString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-EXTRACT-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-EXTRACT-VERSION")
 
         # Serialize fibex_element_refs (list to container "FIBEX-ELEMENTS")
         if self.fibex_element_refs:
@@ -227,14 +204,7 @@ class System(ARElement):
             for item in self.interpolation_routine_mapping_set_refs:
                 serialized = SerializationHelper.serialize_item(item, "InterpolationRoutineMappingSet")
                 if serialized is not None:
-                    child_elem = ET.Element("INTERPOLATION-ROUTINE-MAPPING-SET-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "INTERPOLATION-ROUTINE-MAPPING-SET-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -262,29 +232,13 @@ class System(ARElement):
         if self.pnc_vector_length is not None:
             serialized = SerializationHelper.serialize_item(self.pnc_vector_length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PNC-VECTOR-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PNC-VECTOR-LENGTH")
 
         # Serialize pnc_vector_offset
         if self.pnc_vector_offset is not None:
             serialized = SerializationHelper.serialize_item(self.pnc_vector_offset, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PNC-VECTOR-OFFSET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PNC-VECTOR-OFFSET")
 
         # Serialize root_software_compositions (list to container "ROOT-SOFTWARE-COMPOSITIONS")
         if self.root_software_compositions:
@@ -302,14 +256,7 @@ class System(ARElement):
             for item in self.sw_cluster_refs:
                 serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
-                    child_elem = ET.Element("SW-CLUSTER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SW-CLUSTER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -327,15 +274,7 @@ class System(ARElement):
         if self.system_version is not None:
             serialized = SerializationHelper.serialize_item(self.system_version, "RevisionLabelString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYSTEM-VERSION")
 
         return elem
 

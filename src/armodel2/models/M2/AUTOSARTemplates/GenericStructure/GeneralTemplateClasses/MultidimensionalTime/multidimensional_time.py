@@ -76,29 +76,13 @@ class MultidimensionalTime(ARObject):
         if self.cse_code is not None:
             serialized = SerializationHelper.serialize_item(self.cse_code, "CseCodeType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CSE-CODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CSE-CODE")
 
         # Serialize cse_code_factor
         if self.cse_code_factor is not None:
             serialized = SerializationHelper.serialize_item(self.cse_code_factor, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CSE-CODE-FACTOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CSE-CODE-FACTOR")
 
         return elem
 

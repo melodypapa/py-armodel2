@@ -80,43 +80,19 @@ class SomeipTpConnection(ARObject):
         if self.tp_channel_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tp_channel_ref, "SomeipTpChannel")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TP-CHANNEL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TP-CHANNEL-REF")
 
         # Serialize tp_sdu_ref
         if self.tp_sdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tp_sdu_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TP-SDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TP-SDU-REF")
 
         # Serialize transport_pdu_ref
         if self.transport_pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.transport_pdu_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSPORT-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSPORT-PDU-REF")
 
         return elem
 

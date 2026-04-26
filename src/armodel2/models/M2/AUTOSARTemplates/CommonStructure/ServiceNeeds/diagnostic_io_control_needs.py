@@ -89,57 +89,25 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
         if self.current_value_ref is not None:
             serialized = SerializationHelper.serialize_item(self.current_value_ref, "DiagnosticValueNeeds")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CURRENT-VALUE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CURRENT-VALUE-REF")
 
         # Serialize freeze_current
         if self.freeze_current is not None:
             serialized = SerializationHelper.serialize_item(self.freeze_current, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FREEZE-CURRENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FREEZE-CURRENT")
 
         # Serialize reset_to_default
         if self.reset_to_default is not None:
             serialized = SerializationHelper.serialize_item(self.reset_to_default, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESET-TO-DEFAULT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESET-TO-DEFAULT")
 
         # Serialize short_term
         if self.short_term is not None:
             serialized = SerializationHelper.serialize_item(self.short_term, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-TERM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHORT-TERM")
 
         return elem
 

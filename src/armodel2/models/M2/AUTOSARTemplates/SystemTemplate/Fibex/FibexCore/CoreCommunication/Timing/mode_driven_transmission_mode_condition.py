@@ -73,14 +73,7 @@ class ModeDrivenTransmissionModeCondition(ARObject):
             for item in self.mode_refs:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclaration")
                 if serialized is not None:
-                    child_elem = ET.Element("MODE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "MODE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

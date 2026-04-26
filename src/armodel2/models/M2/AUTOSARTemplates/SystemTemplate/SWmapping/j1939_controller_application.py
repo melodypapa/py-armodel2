@@ -81,29 +81,13 @@ class J1939ControllerApplication(ARElement):
         if self.function_id is not None:
             serialized = SerializationHelper.serialize_item(self.function_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FUNCTION-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FUNCTION-ID")
 
         # Serialize sw_component_prototype_ref
         if self.sw_component_prototype_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sw_component_prototype_ref, "SwComponentPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-COMPONENT-PROTOTYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-COMPONENT-PROTOTYPE-REF")
 
         return elem
 

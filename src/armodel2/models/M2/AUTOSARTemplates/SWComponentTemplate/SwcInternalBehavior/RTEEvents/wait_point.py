@@ -84,29 +84,13 @@ class WaitPoint(Identifiable):
         if self.timeout is not None:
             serialized = SerializationHelper.serialize_item(self.timeout, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT")
 
         # Serialize trigger_ref
         if self.trigger_ref is not None:
             serialized = SerializationHelper.serialize_item(self.trigger_ref, "RTEEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRIGGER-REF")
 
         return elem
 

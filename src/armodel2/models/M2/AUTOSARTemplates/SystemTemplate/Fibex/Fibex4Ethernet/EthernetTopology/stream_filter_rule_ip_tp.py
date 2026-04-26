@@ -82,15 +82,7 @@ class StreamFilterRuleIpTp(ARObject):
         if self.destination is not None:
             serialized = SerializationHelper.serialize_item(self.destination, "StreamFilterIpv6Address")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DESTINATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DESTINATION")
 
         # Serialize destination_ports (list to container "DESTINATION-PORTS")
         if self.destination_ports:
@@ -106,15 +98,7 @@ class StreamFilterRuleIpTp(ARObject):
         if self.source is not None:
             serialized = SerializationHelper.serialize_item(self.source, "StreamFilterIpv6Address")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOURCE")
 
         # Serialize source_ports (list to container "SOURCE-PORTS")
         if self.source_ports:

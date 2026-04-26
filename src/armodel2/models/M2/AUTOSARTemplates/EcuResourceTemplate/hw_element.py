@@ -112,14 +112,7 @@ class HwElement(HwDescriptionEntity):
             for item in self.nested_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "HwElement")
                 if serialized is not None:
-                    child_elem = ET.Element("NESTED-ELEMENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "NESTED-ELEMENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

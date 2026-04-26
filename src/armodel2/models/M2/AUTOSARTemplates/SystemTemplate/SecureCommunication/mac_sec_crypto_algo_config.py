@@ -86,57 +86,25 @@ class MacSecCryptoAlgoConfig(ARObject):
         if self.capability is not None:
             serialized = SerializationHelper.serialize_item(self.capability, "MacSecCapabilityEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAPABILITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAPABILITY")
 
         # Serialize cipher_suite
         if self.cipher_suite is not None:
             serialized = SerializationHelper.serialize_item(self.cipher_suite, "MacSecCipherSuiteConfig")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CIPHER-SUITE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CIPHER-SUITE")
 
         # Serialize confidentiality
         if self.confidentiality is not None:
             serialized = SerializationHelper.serialize_item(self.confidentiality, "MacSecConfidentialityOffsetEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONFIDENTIALITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONFIDENTIALITY")
 
         # Serialize replay_protection
         if self.replay_protection is not None:
             serialized = SerializationHelper.serialize_item(self.replay_protection, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REPLAY-PROTECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REPLAY-PROTECTION")
 
         return elem
 

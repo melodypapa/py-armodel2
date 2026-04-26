@@ -105,85 +105,37 @@ class PortElementToCommunicationResourceMapping(Identifiable):
         if self.client_server_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.client_server_instance_ref, "ClientServerOperation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-SERVER-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CLIENT-SERVER-INSTANCE-REF")
 
         # Serialize communication_ref
         if self.communication_ref is not None:
             serialized = SerializationHelper.serialize_item(self.communication_ref, "CpSoftwareCluster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMMUNICATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMMUNICATION-REF")
 
         # Serialize mode_ref
         if self.mode_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODE-REF")
 
         # Serialize parameter_data_in_system_instance_ref
         if self.parameter_data_in_system_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.parameter_data_in_system_instance_ref, "ParameterDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PARAMETER-DATA-IN-SYSTEM-INSTANCE-REF-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PARAMETER-DATA-IN-SYSTEM-INSTANCE-REF-REF")
 
         # Serialize trigger_ref
         if self.trigger_ref is not None:
             serialized = SerializationHelper.serialize_item(self.trigger_ref, "Trigger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRIGGER-REF")
 
         # Serialize variable_data_system_instance_ref
         if self.variable_data_system_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.variable_data_system_instance_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VARIABLE-DATA-SYSTEM-INSTANCE-REF-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VARIABLE-DATA-SYSTEM-INSTANCE-REF-REF")
 
         return elem
 

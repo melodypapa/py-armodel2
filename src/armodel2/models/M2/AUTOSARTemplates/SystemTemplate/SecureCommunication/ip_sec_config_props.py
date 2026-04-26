@@ -114,14 +114,7 @@ class IPSecConfigProps(ARElement):
             for item in self.ah_cipher_suites:
                 serialized = SerializationHelper.serialize_item(item, "String")
                 if serialized is not None:
-                    child_elem = ET.Element("AH-CIPHER-SUITE")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "AH-CIPHER-SUITE")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -129,29 +122,13 @@ class IPSecConfigProps(ARElement):
         if self.dpd_action is not None:
             serialized = SerializationHelper.serialize_item(self.dpd_action, "IPsecDpdActionEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DPD-ACTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DPD-ACTION")
 
         # Serialize dpd_delay
         if self.dpd_delay is not None:
             serialized = SerializationHelper.serialize_item(self.dpd_delay, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DPD-DELAY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DPD-DELAY")
 
         # Serialize esp_cipher_suites (list to container "ESP-CIPHER-SUITES")
         if self.esp_cipher_suites:
@@ -159,14 +136,7 @@ class IPSecConfigProps(ARElement):
             for item in self.esp_cipher_suites:
                 serialized = SerializationHelper.serialize_item(item, "String")
                 if serialized is not None:
-                    child_elem = ET.Element("ESP-CIPHER-SUITE")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ESP-CIPHER-SUITE")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -174,113 +144,49 @@ class IPSecConfigProps(ARElement):
         if self.ike_cipher_suite is not None:
             serialized = SerializationHelper.serialize_item(self.ike_cipher_suite, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IKE-CIPHER-SUITE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IKE-CIPHER-SUITE")
 
         # Serialize ike_over_time
         if self.ike_over_time is not None:
             serialized = SerializationHelper.serialize_item(self.ike_over_time, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IKE-OVER-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IKE-OVER-TIME")
 
         # Serialize ike_rand_time
         if self.ike_rand_time is not None:
             serialized = SerializationHelper.serialize_item(self.ike_rand_time, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IKE-RAND-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IKE-RAND-TIME")
 
         # Serialize ike_reauth_time
         if self.ike_reauth_time is not None:
             serialized = SerializationHelper.serialize_item(self.ike_reauth_time, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IKE-REAUTH-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IKE-REAUTH-TIME")
 
         # Serialize ike_rekey_time
         if self.ike_rekey_time is not None:
             serialized = SerializationHelper.serialize_item(self.ike_rekey_time, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IKE-REKEY-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IKE-REKEY-TIME")
 
         # Serialize sa_over_time
         if self.sa_over_time is not None:
             serialized = SerializationHelper.serialize_item(self.sa_over_time, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SA-OVER-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SA-OVER-TIME")
 
         # Serialize sa_rand_time
         if self.sa_rand_time is not None:
             serialized = SerializationHelper.serialize_item(self.sa_rand_time, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SA-RAND-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SA-RAND-TIME")
 
         # Serialize sa_rekey_time
         if self.sa_rekey_time is not None:
             serialized = SerializationHelper.serialize_item(self.sa_rekey_time, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SA-REKEY-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SA-REKEY-TIME")
 
         return elem
 

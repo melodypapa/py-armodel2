@@ -91,15 +91,7 @@ class ISignalGroup(FibexElement):
         if self.com_based_ref is not None:
             serialized = SerializationHelper.serialize_item(self.com_based_ref, "DataTransformation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COM-BASED-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COM-BASED-REF")
 
         # Serialize i_signal_refs (list to container "I-SIGNAL-REFS")
         if self.i_signal_refs:
@@ -107,14 +99,7 @@ class ISignalGroup(FibexElement):
             for item in self.i_signal_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignal")
                 if serialized is not None:
-                    child_elem = ET.Element("I-SIGNAL-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "I-SIGNAL-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -122,15 +107,7 @@ class ISignalGroup(FibexElement):
         if self.system_signal_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.system_signal_group_ref, "SystemSignalGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM-SIGNAL-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYSTEM-SIGNAL-GROUP-REF")
 
         # Serialize transformation_i_signals (list to container "TRANSFORMATION-I-SIGNALS")
         if self.transformation_i_signals:

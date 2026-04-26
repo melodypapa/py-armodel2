@@ -95,57 +95,25 @@ class EcuResourceEstimation(ARObject):
         if self.bsw_resource is not None:
             serialized = SerializationHelper.serialize_item(self.bsw_resource, "ResourceConsumption")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BSW-RESOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BSW-RESOURCE")
 
         # Serialize ecu_instance_ref
         if self.ecu_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-INSTANCE-REF")
 
         # Serialize introduction
         if self.introduction is not None:
             serialized = SerializationHelper.serialize_item(self.introduction, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTRODUCTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTRODUCTION")
 
         # Serialize rte_resource
         if self.rte_resource is not None:
             serialized = SerializationHelper.serialize_item(self.rte_resource, "ResourceConsumption")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RTE-RESOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RTE-RESOURCE")
 
         # Serialize sw_comp_to_ecu_refs (list to container "SW-COMP-TO-ECU-REFS")
         if self.sw_comp_to_ecu_refs:
@@ -153,14 +121,7 @@ class EcuResourceEstimation(ARObject):
             for item in self.sw_comp_to_ecu_refs:
                 serialized = SerializationHelper.serialize_item(item, "SwcToEcuMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("SW-COMP-TO-ECU-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SW-COMP-TO-ECU-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

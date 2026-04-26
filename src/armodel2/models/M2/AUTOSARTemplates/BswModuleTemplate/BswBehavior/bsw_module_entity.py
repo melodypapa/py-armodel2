@@ -232,15 +232,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
         if self.implemented_entry_ref is not None:
             serialized = SerializationHelper.serialize_item(self.implemented_entry_ref, "BswModuleEntry")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTED-ENTRY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMPLEMENTED-ENTRY-REF")
 
         # Serialize issued_trigger_refs (list to container "ISSUED-TRIGGERS")
         if self.issued_trigger_refs:
@@ -286,15 +278,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
         if self.scheduler_name_prefix_ref is not None:
             serialized = SerializationHelper.serialize_item(self.scheduler_name_prefix_ref, "BswSchedulerNamePrefix")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SCHEDULER-NAME-PREFIX-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SCHEDULER-NAME-PREFIX-REF")
 
         return elem
 

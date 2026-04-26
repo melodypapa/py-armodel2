@@ -83,29 +83,13 @@ class LabeledList(Paginateable):
         if self.indent_sample is not None:
             serialized = SerializationHelper.serialize_item(self.indent_sample, "IndentSample")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INDENT-SAMPLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INDENT-SAMPLE")
 
         # Serialize labeled_item_label
         if self.labeled_item_label is not None:
             serialized = SerializationHelper.serialize_item(self.labeled_item_label, "LabeledItem")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LABELED-ITEM-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LABELED-ITEM-LABEL")
 
         return elem
 

@@ -80,27 +80,13 @@ class TopicOrMsrQuery(ARObject):
         if self.msr_query is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query, "MsrQueryTopic1")
             if serialized is not None:
-                wrapped = ET.Element("MSR-QUERY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MSR-QUERY")
 
         # Serialize topic1 (complex type)
         if self.topic1 is not None:
             serialized = SerializationHelper.serialize_item(self.topic1, "Topic1")
             if serialized is not None:
-                wrapped = ET.Element("TOPIC1")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TOPIC1")
 
         return elem
 

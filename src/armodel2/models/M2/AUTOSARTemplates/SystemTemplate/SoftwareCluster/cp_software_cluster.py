@@ -86,15 +86,7 @@ class CpSoftwareCluster(ARElement):
         if self.software_cluster is not None:
             serialized = SerializationHelper.serialize_item(self.software_cluster, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOFTWARE-CLUSTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOFTWARE-CLUSTER")
 
         # Serialize sw_components (list to container "SW-COMPONENTS")
         if self.sw_components:
@@ -112,14 +104,7 @@ class CpSoftwareCluster(ARElement):
             for item in self.sw_composition_component_type_refs:
                 serialized = SerializationHelper.serialize_item(item, "CompositionSwComponentType")
                 if serialized is not None:
-                    child_elem = ET.Element("SW-COMPOSITION-COMPONENT-TYPE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SW-COMPOSITION-COMPONENT-TYPE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

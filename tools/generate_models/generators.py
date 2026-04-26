@@ -3897,14 +3897,7 @@ def _generate_serialize_method(
                 serialized = SerializationHelper.serialize_item(item, "{effective_type}")
                 if serialized is not None:
                     # Wrap with correct tag from @xml_element_name decorator
-                    wrapped = ET.Element("{child_tag}")
-                    if hasattr(serialized, 'attrib'):
-                        wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                    for child in serialized:
-                        wrapped.append(child)
-                    elem.append(wrapped)
+                    SerializationHelper.wrap_and_append(elem, serialized, "{child_tag}")
 '''
                         else:
                             # No wrapper, no custom tag - just append directly
@@ -3947,14 +3940,13 @@ def _generate_serialize_method(
                             elif child_tag:
                                 # Multi-level nesting: create nested wrappers for intermediate levels
                                 if inner_tags:
-                                    # Start with the innermost child element
+                                    # Start with the innermost child element using wrap_and_append pattern
                                     code += f'''                    child_elem = ET.Element("{child_tag}")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
+                    child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
                         child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
+                    for subchild in serialized:
+                        child_elem.append(subchild)
 '''
                                     # Create nested wrappers in reverse order (innermost to outermost)
                                     for tag in reversed(inner_tags):
@@ -3967,14 +3959,7 @@ def _generate_serialize_method(
 """
                                 else:
                                     # Single-level nesting
-                                    code += f'''                    child_elem = ET.Element("{child_tag}")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                                    code += f'''                    SerializationHelper.wrap_and_append(wrapper, serialized, "{child_tag}")
 '''
                             else:
                                 # Generate child tag from python_name (remove plural 's' from suffix)
@@ -3988,14 +3973,7 @@ def _generate_serialize_method(
                                 else:
                                     singular_python = python_name
                                 generated_child_tag = singular_python.upper().replace('_', '-')
-                                code += f'''                    child_elem = ET.Element("{generated_child_tag}")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                                code += f'''                    SerializationHelper.wrap_and_append(wrapper, serialized, "{generated_child_tag}")
 '''
                         elif is_primitive_type(attr_type, package_data) or is_enum_type(
                             attr_type, package_data
@@ -4006,14 +3984,7 @@ def _generate_serialize_method(
                             snake_from_xml = xml_tag.lower().replace('-', '_')
                             singular_snake = to_singular(snake_from_xml)
                             singular = singular_snake.upper().replace('_', '-')
-                            code += f'''                    child_elem = ET.Element("{singular}")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                            code += f'''                    SerializationHelper.wrap_and_append(wrapper, serialized, "{singular}")
 '''
                         else:
                             # Complex object type - append directly (already has correct tag)
@@ -4036,12 +4007,11 @@ def _generate_serialize_method(
             if serialized is not None:
                 # For lang_prefix lists, wrap each item in the lang_prefix tag
                 wrapped = ET.Element("{lang_prefix_tag}")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
+                wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for subchild in serialized:
+                    wrapped.append(subchild)
                 elem.append(wrapped)
 
 '''
@@ -4162,15 +4132,7 @@ def _generate_serialize_method(
         if self.{python_name} is not None:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("{xml_tag}")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "{xml_tag}")
 
 '''
     code += """        return elem
@@ -4391,14 +4353,7 @@ def _generate_serialize_method_for_atp_variant(
         for item in self.{python_name}:
             serialized = SerializationHelper.serialize_item(item, "{effective_type}")
             if serialized is not None:
-                wrapped = ET.Element("{lang_prefix_tag}")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "{lang_prefix_tag}")
 
 '''
                     else:
@@ -4406,14 +4361,7 @@ def _generate_serialize_method_for_atp_variant(
         for item in self.{python_name}:
             serialized = SerializationHelper.serialize_item(item, "{effective_type}")
             if serialized is not None:
-                wrapped = ET.Element("{xml_tag}")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "{xml_tag}")
 
 '''
             else:
@@ -4422,14 +4370,7 @@ def _generate_serialize_method_for_atp_variant(
         if self.{python_name} is not None:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
-                wrapped = ET.Element("{xml_tag}")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "{xml_tag}")
 
 '''
 
@@ -4984,14 +4925,7 @@ def _generate_serialize_method_for_atp_mixed(
         if self.{python_name} is not None:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
-                wrapped = ET.Element("{xml_tag}")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "{xml_tag}")
 
 '''
                 elif is_primitive_type(attr_type, package_data):
@@ -5017,14 +4951,7 @@ def _generate_serialize_method_for_atp_mixed(
         if self.{python_name} is not None:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
-                wrapped = ET.Element("{xml_tag}")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "{xml_tag}")
 
 '''
 

@@ -74,29 +74,13 @@ class PhysicalDimensionMapping(ARObject):
         if self.first_physical_ref is not None:
             serialized = SerializationHelper.serialize_item(self.first_physical_ref, "PhysicalDimension")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIRST-PHYSICAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIRST-PHYSICAL-REF")
 
         # Serialize second_physical_ref
         if self.second_physical_ref is not None:
             serialized = SerializationHelper.serialize_item(self.second_physical_ref, "PhysicalDimension")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECOND-PHYSICAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECOND-PHYSICAL-REF")
 
         return elem
 

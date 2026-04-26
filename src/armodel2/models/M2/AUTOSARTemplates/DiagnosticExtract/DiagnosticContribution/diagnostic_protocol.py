@@ -97,14 +97,7 @@ class DiagnosticProtocol(DiagnosticCommonElement):
             for item in self.diagnostic_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticConnection")
                 if serialized is not None:
-                    child_elem = ET.Element("DIAGNOSTIC-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DIAGNOSTIC-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -112,57 +105,25 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         if self.priority is not None:
             serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIORITY")
 
         # Serialize protocol_kind
         if self.protocol_kind is not None:
             serialized = SerializationHelper.serialize_item(self.protocol_kind, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROTOCOL-KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROTOCOL-KIND")
 
         # Serialize send_resp_pend
         if self.send_resp_pend is not None:
             serialized = SerializationHelper.serialize_item(self.send_resp_pend, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SEND-RESP-PEND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SEND-RESP-PEND")
 
         # Serialize service_table_ref
         if self.service_table_ref is not None:
             serialized = SerializationHelper.serialize_item(self.service_table_ref, "DiagnosticServiceTable")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SERVICE-TABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SERVICE-TABLE-REF")
 
         return elem
 

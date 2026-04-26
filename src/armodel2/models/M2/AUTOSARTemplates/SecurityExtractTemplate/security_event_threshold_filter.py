@@ -78,29 +78,13 @@ class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
         if self.interval_length is not None:
             serialized = SerializationHelper.serialize_item(self.interval_length, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTERVAL-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTERVAL-LENGTH")
 
         # Serialize threshold
         if self.threshold is not None:
             serialized = SerializationHelper.serialize_item(self.threshold, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("THRESHOLD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "THRESHOLD")
 
         return elem
 

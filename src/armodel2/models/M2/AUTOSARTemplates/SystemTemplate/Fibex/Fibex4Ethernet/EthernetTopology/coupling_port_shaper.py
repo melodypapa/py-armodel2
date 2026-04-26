@@ -81,29 +81,13 @@ class CouplingPortShaper(CouplingPortStructuralElement):
         if self.idle_slope is not None:
             serialized = SerializationHelper.serialize_item(self.idle_slope, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDLE-SLOPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDLE-SLOPE")
 
         # Serialize predecessor_fifo_ref
         if self.predecessor_fifo_ref is not None:
             serialized = SerializationHelper.serialize_item(self.predecessor_fifo_ref, "CouplingPortFifo")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PREDECESSOR-FIFO-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PREDECESSOR-FIFO-REF")
 
         return elem
 

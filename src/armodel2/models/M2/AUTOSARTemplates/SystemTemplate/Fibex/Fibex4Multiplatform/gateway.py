@@ -93,15 +93,7 @@ class Gateway(FibexElement):
         if self.ecu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_ref, "EcuInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-REF")
 
         # Serialize frame_mapping_refs (list to container "FRAME-MAPPING-REFS")
         if self.frame_mapping_refs:
@@ -109,14 +101,7 @@ class Gateway(FibexElement):
             for item in self.frame_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "FrameMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("FRAME-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "FRAME-MAPPING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -126,14 +111,7 @@ class Gateway(FibexElement):
             for item in self.i_pdu_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "IPduMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("I-PDU-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "I-PDU-MAPPING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -143,14 +121,7 @@ class Gateway(FibexElement):
             for item in self.signal_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("SIGNAL-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SIGNAL-MAPPING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

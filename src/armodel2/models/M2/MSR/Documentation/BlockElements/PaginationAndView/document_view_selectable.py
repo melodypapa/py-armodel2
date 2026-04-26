@@ -74,29 +74,13 @@ class DocumentViewSelectable(ARObject, ABC):
         if self.si is not None:
             serialized = SerializationHelper.serialize_item(self.si, "NameTokens")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SI")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SI")
 
         # Serialize view
         if self.view is not None:
             serialized = SerializationHelper.serialize_item(self.view, "ViewTokens")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VIEW")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VIEW")
 
         return elem
 

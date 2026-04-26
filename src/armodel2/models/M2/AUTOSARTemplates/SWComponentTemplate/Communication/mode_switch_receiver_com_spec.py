@@ -84,43 +84,19 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
         if self.enhanced_mode is not None:
             serialized = SerializationHelper.serialize_item(self.enhanced_mode, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENHANCED-MODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENHANCED-MODE")
 
         # Serialize mode_group_ref
         if self.mode_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroupPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODE-GROUP-REF")
 
         # Serialize supports_asynchronous_mode_switch
         if self.supports_asynchronous_mode_switch is not None:
             serialized = SerializationHelper.serialize_item(self.supports_asynchronous_mode_switch, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUPPORTS-ASYNCHRONOUS-MODE-SWITCH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUPPORTS-ASYNCHRONOUS-MODE-SWITCH")
 
         return elem
 

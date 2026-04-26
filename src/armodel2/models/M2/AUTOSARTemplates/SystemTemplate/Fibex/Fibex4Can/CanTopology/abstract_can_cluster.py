@@ -80,43 +80,19 @@ class AbstractCanCluster(CommunicationCluster, ABC):
         if self.bus_off_recovery is not None:
             serialized = SerializationHelper.serialize_item(self.bus_off_recovery, "CanClusterBusOffRecovery")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BUS-OFF-RECOVERY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BUS-OFF-RECOVERY")
 
         # Serialize can_fd_baudrate
         if self.can_fd_baudrate is not None:
             serialized = SerializationHelper.serialize_item(self.can_fd_baudrate, "PositiveUnlimitedInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-FD-BAUDRATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-FD-BAUDRATE")
 
         # Serialize can_xl_baudrate
         if self.can_xl_baudrate is not None:
             serialized = SerializationHelper.serialize_item(self.can_xl_baudrate, "PositiveUnlimitedInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-XL-BAUDRATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-XL-BAUDRATE")
 
         return elem
 

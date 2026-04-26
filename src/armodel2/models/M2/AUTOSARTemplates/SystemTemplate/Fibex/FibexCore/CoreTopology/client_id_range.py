@@ -73,29 +73,13 @@ class ClientIdRange(ARObject):
         if self.lower_limit is not None:
             serialized = SerializationHelper.serialize_item(self.lower_limit, "Limit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOWER-LIMIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOWER-LIMIT")
 
         # Serialize upper_limit
         if self.upper_limit is not None:
             serialized = SerializationHelper.serialize_item(self.upper_limit, "Limit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPPER-LIMIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPPER-LIMIT")
 
         return elem
 

@@ -90,14 +90,7 @@ class McGroup(ARElement):
             for item in self.mc_function_refs:
                 serialized = SerializationHelper.serialize_item(item, "McFunction")
                 if serialized is not None:
-                    child_elem = ET.Element("MC-FUNCTION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "MC-FUNCTION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -105,29 +98,13 @@ class McGroup(ARElement):
         if self.ref_calprm_set_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ref_calprm_set_ref, "McGroupDataRefSet")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REF-CALPRM-SET-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REF-CALPRM-SET-REF")
 
         # Serialize ref_ref
         if self.ref_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ref_ref, "McGroupDataRefSet")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REF-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REF-REF")
 
         # Serialize sub_group_refs (list to container "SUB-GROUP-REFS")
         if self.sub_group_refs:
@@ -135,14 +112,7 @@ class McGroup(ARElement):
             for item in self.sub_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "McGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("SUB-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SUB-GROUP-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

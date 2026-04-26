@@ -97,29 +97,13 @@ class HwAttributeDef(Identifiable):
         if self.is_required is not None:
             serialized = SerializationHelper.serialize_item(self.is_required, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-REQUIRED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-REQUIRED")
 
         # Serialize unit_ref
         if self.unit_ref is not None:
             serialized = SerializationHelper.serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UNIT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UNIT-REF")
 
         return elem
 

@@ -94,99 +94,43 @@ class FlexrayNmCluster(NmCluster):
         if self.nm_car_wake_up is not None:
             serialized = SerializationHelper.serialize_item(self.nm_car_wake_up, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-CAR-WAKE-UP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-CAR-WAKE-UP")
 
         # Serialize nm_data_cycle
         if self.nm_data_cycle is not None:
             serialized = SerializationHelper.serialize_item(self.nm_data_cycle, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-DATA-CYCLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-DATA-CYCLE")
 
         # Serialize nm_main
         if self.nm_main is not None:
             serialized = SerializationHelper.serialize_item(self.nm_main, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-MAIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-MAIN")
 
         # Serialize nm_remote
         if self.nm_remote is not None:
             serialized = SerializationHelper.serialize_item(self.nm_remote, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-REMOTE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-REMOTE")
 
         # Serialize nm_repeat
         if self.nm_repeat is not None:
             serialized = SerializationHelper.serialize_item(self.nm_repeat, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-REPEAT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-REPEAT")
 
         # Serialize nm_repetition
         if self.nm_repetition is not None:
             serialized = SerializationHelper.serialize_item(self.nm_repetition, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-REPETITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-REPETITION")
 
         # Serialize nm_voting_cycle
         if self.nm_voting_cycle is not None:
             serialized = SerializationHelper.serialize_item(self.nm_voting_cycle, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-VOTING-CYCLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-VOTING-CYCLE")
 
         return elem
 

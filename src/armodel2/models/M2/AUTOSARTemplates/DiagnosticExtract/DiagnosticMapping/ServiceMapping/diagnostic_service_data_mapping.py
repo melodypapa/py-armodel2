@@ -90,57 +90,25 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         if self.diagnostic_data_ref is not None:
             serialized = SerializationHelper.serialize_item(self.diagnostic_data_ref, "DiagnosticDataElement")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-DATA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAGNOSTIC-DATA-REF")
 
         # Serialize diagnostic_ref
         if self.diagnostic_ref is not None:
             serialized = SerializationHelper.serialize_item(self.diagnostic_ref, "DiagnosticParameter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAGNOSTIC-REF")
 
         # Serialize mapped_data_ref
         if self.mapped_data_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mapped_data_ref, "DataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAPPED-DATA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAPPED-DATA-REF")
 
         # Serialize parameter
         if self.parameter is not None:
             serialized = SerializationHelper.serialize_item(self.parameter, "DiagnosticParameter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PARAMETER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PARAMETER")
 
         return elem
 

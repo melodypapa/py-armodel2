@@ -77,43 +77,19 @@ class GlobalTimeCorrectionProps(ARObject):
         if self.offset_correction is not None:
             serialized = SerializationHelper.serialize_item(self.offset_correction, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OFFSET-CORRECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OFFSET-CORRECTION")
 
         # Serialize rate_correction
         if self.rate_correction is not None:
             serialized = SerializationHelper.serialize_item(self.rate_correction, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RATE-CORRECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RATE-CORRECTION")
 
         # Serialize rate_corrections
         if self.rate_corrections is not None:
             serialized = SerializationHelper.serialize_item(self.rate_corrections, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RATE-CORRECTIONS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RATE-CORRECTIONS")
 
         return elem
 

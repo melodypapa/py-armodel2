@@ -169,365 +169,169 @@ class FlexrayCommunicationController(ARObject):
         if self.accepted is not None:
             serialized = SerializationHelper.serialize_item(self.accepted, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("ACCEPTED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "ACCEPTED")
 
         # Serialize allow_halt_due_to
         if self.allow_halt_due_to is not None:
             serialized = SerializationHelper.serialize_item(self.allow_halt_due_to, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("ALLOW-HALT-DUE-TO")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "ALLOW-HALT-DUE-TO")
 
         # Serialize allow_passive_to
         if self.allow_passive_to is not None:
             serialized = SerializationHelper.serialize_item(self.allow_passive_to, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("ALLOW-PASSIVE-TO")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "ALLOW-PASSIVE-TO")
 
         # Serialize cluster_drift
         if self.cluster_drift is not None:
             serialized = SerializationHelper.serialize_item(self.cluster_drift, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("CLUSTER-DRIFT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "CLUSTER-DRIFT")
 
         # Serialize decoding
         if self.decoding is not None:
             serialized = SerializationHelper.serialize_item(self.decoding, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("DECODING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "DECODING")
 
         # Serialize delay
         if self.delay is not None:
             serialized = SerializationHelper.serialize_item(self.delay, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("DELAY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "DELAY")
 
         # Serialize external_sync
         if self.external_sync is not None:
             serialized = SerializationHelper.serialize_item(self.external_sync, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("EXTERNAL-SYNC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "EXTERNAL-SYNC")
 
         # Serialize extern_offset
         if self.extern_offset is not None:
             serialized = SerializationHelper.serialize_item(self.extern_offset, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("EXTERN-OFFSET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "EXTERN-OFFSET")
 
         # Serialize extern_rate
         if self.extern_rate is not None:
             serialized = SerializationHelper.serialize_item(self.extern_rate, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("EXTERN-RATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "EXTERN-RATE")
 
         # Serialize fall_back_internal
         if self.fall_back_internal is not None:
             serialized = SerializationHelper.serialize_item(self.fall_back_internal, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("FALL-BACK-INTERNAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "FALL-BACK-INTERNAL")
 
         # Serialize flexray_fifoes (list)
         for item in self.flexray_fifoes:
             serialized = SerializationHelper.serialize_item(item, "Any")
             if serialized is not None:
-                wrapped = ET.Element("FLEXRAY-FIFO")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "FLEXRAY-FIFO")
 
         # Serialize key_slot_id
         if self.key_slot_id is not None:
             serialized = SerializationHelper.serialize_item(self.key_slot_id, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("KEY-SLOT-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "KEY-SLOT-ID")
 
         # Serialize key_slot_only
         if self.key_slot_only is not None:
             serialized = SerializationHelper.serialize_item(self.key_slot_only, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("KEY-SLOT-ONLY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "KEY-SLOT-ONLY")
 
         # Serialize key_slot_used_for
         if self.key_slot_used_for is not None:
             serialized = SerializationHelper.serialize_item(self.key_slot_used_for, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("KEY-SLOT-USED-FOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "KEY-SLOT-USED-FOR")
 
         # Serialize latest_tx
         if self.latest_tx is not None:
             serialized = SerializationHelper.serialize_item(self.latest_tx, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("LATEST-TX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "LATEST-TX")
 
         # Serialize listen_timeout
         if self.listen_timeout is not None:
             serialized = SerializationHelper.serialize_item(self.listen_timeout, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("LISTEN-TIMEOUT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "LISTEN-TIMEOUT")
 
         # Serialize macro_initial
         if self.macro_initial is not None:
             serialized = SerializationHelper.serialize_item(self.macro_initial, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("MACRO-INITIAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MACRO-INITIAL")
 
         # Serialize maximum
         if self.maximum is not None:
             serialized = SerializationHelper.serialize_item(self.maximum, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("MAXIMUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MAXIMUM")
 
         # Serialize micro_initial
         if self.micro_initial is not None:
             serialized = SerializationHelper.serialize_item(self.micro_initial, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("MICRO-INITIAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MICRO-INITIAL")
 
         # Serialize micro_per_cycle
         if self.micro_per_cycle is not None:
             serialized = SerializationHelper.serialize_item(self.micro_per_cycle, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("MICRO-PER-CYCLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MICRO-PER-CYCLE")
 
         # Serialize microtick
         if self.microtick is not None:
             serialized = SerializationHelper.serialize_item(self.microtick, "TimeValue")
             if serialized is not None:
-                wrapped = ET.Element("MICROTICK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MICROTICK")
 
         # Serialize nm_vector_early
         if self.nm_vector_early is not None:
             serialized = SerializationHelper.serialize_item(self.nm_vector_early, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("NM-VECTOR-EARLY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "NM-VECTOR-EARLY")
 
         # Serialize offset_correction
         if self.offset_correction is not None:
             serialized = SerializationHelper.serialize_item(self.offset_correction, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("OFFSET-CORRECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "OFFSET-CORRECTION")
 
         # Serialize rate_correction
         if self.rate_correction is not None:
             serialized = SerializationHelper.serialize_item(self.rate_correction, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("RATE-CORRECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "RATE-CORRECTION")
 
         # Serialize samples_per_microtick
         if self.samples_per_microtick is not None:
             serialized = SerializationHelper.serialize_item(self.samples_per_microtick, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("SAMPLES-PER-MICROTICK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SAMPLES-PER-MICROTICK")
 
         # Serialize second_key_slot
         if self.second_key_slot is not None:
             serialized = SerializationHelper.serialize_item(self.second_key_slot, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("SECOND-KEY-SLOT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SECOND-KEY-SLOT")
 
         # Serialize two_key_slot
         if self.two_key_slot is not None:
             serialized = SerializationHelper.serialize_item(self.two_key_slot, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("TWO-KEY-SLOT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "TWO-KEY-SLOT")
 
         # Serialize wake_up_pattern
         if self.wake_up_pattern is not None:
             serialized = SerializationHelper.serialize_item(self.wake_up_pattern, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("WAKE-UP-PATTERN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "WAKE-UP-PATTERN")
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "FlexrayCommunicationController")

@@ -92,40 +92,19 @@ class TtcanCluster(ARObject):
         if self.basic_cycle_length is not None:
             serialized = SerializationHelper.serialize_item(self.basic_cycle_length, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("BASIC-CYCLE-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "BASIC-CYCLE-LENGTH")
 
         # Serialize ntu
         if self.ntu is not None:
             serialized = SerializationHelper.serialize_item(self.ntu, "TimeValue")
             if serialized is not None:
-                wrapped = ET.Element("NTU")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "NTU")
 
         # Serialize operation_mode
         if self.operation_mode is not None:
             serialized = SerializationHelper.serialize_item(self.operation_mode, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("OPERATION-MODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "OPERATION-MODE")
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "TtcanCluster")

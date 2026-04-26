@@ -78,29 +78,13 @@ class DiagnosticAuthRole(DiagnosticCommonElement):
         if self.bit_position is not None:
             serialized = SerializationHelper.serialize_item(self.bit_position, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BIT-POSITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BIT-POSITION")
 
         # Serialize is_default
         if self.is_default is not None:
             serialized = SerializationHelper.serialize_item(self.is_default, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-DEFAULT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-DEFAULT")
 
         return elem
 

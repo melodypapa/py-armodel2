@@ -87,29 +87,13 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
         if self.ecu_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-INSTANCE-REF")
 
         # Serialize machine_id
         if self.machine_id is not None:
             serialized = SerializationHelper.serialize_item(self.machine_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MACHINE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MACHINE-ID")
 
         # Serialize sw_cluster_refs (list to container "SW-CLUSTER-REFS")
         if self.sw_cluster_refs:
@@ -117,14 +101,7 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
             for item in self.sw_cluster_refs:
                 serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
-                    child_elem = ET.Element("SW-CLUSTER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SW-CLUSTER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

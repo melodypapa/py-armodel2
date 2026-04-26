@@ -94,85 +94,37 @@ class CanTpNode(Identifiable):
         if self.connector_ref is not None:
             serialized = SerializationHelper.serialize_item(self.connector_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONNECTOR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONNECTOR-REF")
 
         # Serialize max_fc_wait
         if self.max_fc_wait is not None:
             serialized = SerializationHelper.serialize_item(self.max_fc_wait, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-FC-WAIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-FC-WAIT")
 
         # Serialize st_min
         if self.st_min is not None:
             serialized = SerializationHelper.serialize_item(self.st_min, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ST-MIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ST-MIN")
 
         # Serialize timeout_ar
         if self.timeout_ar is not None:
             serialized = SerializationHelper.serialize_item(self.timeout_ar, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT-AR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT-AR")
 
         # Serialize timeout_as
         if self.timeout_as is not None:
             serialized = SerializationHelper.serialize_item(self.timeout_as, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT-AS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT-AS")
 
         # Serialize tp_address_ref
         if self.tp_address_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tp_address_ref, "CanTpAddress")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TP-ADDRESS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TP-ADDRESS-REF")
 
         return elem
 

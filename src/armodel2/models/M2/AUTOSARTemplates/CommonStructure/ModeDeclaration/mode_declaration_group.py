@@ -103,15 +103,7 @@ class ModeDeclarationGroup(ARElement):
         if self.initial_mode_ref is not None:
             serialized = SerializationHelper.serialize_item(self.initial_mode_ref, "ModeDeclaration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INITIAL-MODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INITIAL-MODE-REF")
 
         # Serialize mode_declarations (list to container "MODE-DECLARATIONS")
         if self.mode_declarations:
@@ -127,15 +119,7 @@ class ModeDeclarationGroup(ARElement):
         if self.mode_manager_error_behavior is not None:
             serialized = SerializationHelper.serialize_item(self.mode_manager_error_behavior, "ModeErrorBehavior")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-MANAGER-ERROR-BEHAVIOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODE-MANAGER-ERROR-BEHAVIOR")
 
         # Serialize mode_transitions (list to container "MODE-TRANSITIONS")
         if self.mode_transitions:
@@ -151,29 +135,13 @@ class ModeDeclarationGroup(ARElement):
         if self.mode_user_error_behavior is not None:
             serialized = SerializationHelper.serialize_item(self.mode_user_error_behavior, "ModeErrorBehavior")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-USER-ERROR-BEHAVIOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODE-USER-ERROR-BEHAVIOR")
 
         # Serialize on_transition_value
         if self.on_transition_value is not None:
             serialized = SerializationHelper.serialize_item(self.on_transition_value, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ON-TRANSITION-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ON-TRANSITION-VALUE")
 
         return elem
 

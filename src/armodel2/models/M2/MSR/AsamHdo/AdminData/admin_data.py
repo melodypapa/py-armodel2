@@ -102,15 +102,7 @@ class AdminData(ARObject):
         if self.language is not None:
             serialized = SerializationHelper.serialize_item(self.language, "LEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LANGUAGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LANGUAGE")
 
         # Serialize sdgs (list to container "SDGS")
         if self.sdgs:
@@ -126,15 +118,7 @@ class AdminData(ARObject):
         if self.used_languages is not None:
             serialized = SerializationHelper.serialize_item(self.used_languages, "MultiLanguagePlainText")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USED-LANGUAGES")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USED-LANGUAGES")
 
         return elem
 

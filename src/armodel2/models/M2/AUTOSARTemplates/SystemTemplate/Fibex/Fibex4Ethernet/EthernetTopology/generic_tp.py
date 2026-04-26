@@ -77,29 +77,13 @@ class GenericTp(TransportProtocolConfiguration):
         if self.tp_address is not None:
             serialized = SerializationHelper.serialize_item(self.tp_address, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TP-ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TP-ADDRESS")
 
         # Serialize tp_technology
         if self.tp_technology is not None:
             serialized = SerializationHelper.serialize_item(self.tp_technology, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TP-TECHNOLOGY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TP-TECHNOLOGY")
 
         return elem
 

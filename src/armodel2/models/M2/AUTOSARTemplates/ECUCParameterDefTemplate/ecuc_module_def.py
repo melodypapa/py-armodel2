@@ -93,15 +93,7 @@ class EcucModuleDef(EcucDefinitionElement):
         if self.api_service_prefix is not None:
             serialized = SerializationHelper.serialize_item(self.api_service_prefix, "CIdentifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("API-SERVICE-PREFIX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "API-SERVICE-PREFIX")
 
         # Serialize containers (list to container "CONTAINERS")
         if self.containers:
@@ -117,29 +109,13 @@ class EcucModuleDef(EcucDefinitionElement):
         if self.post_build_variant is not None:
             serialized = SerializationHelper.serialize_item(self.post_build_variant, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("POST-BUILD-VARIANT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "POST-BUILD-VARIANT")
 
         # Serialize refined_module_ref
         if self.refined_module_ref is not None:
             serialized = SerializationHelper.serialize_item(self.refined_module_ref, "EcucModuleDef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REFINED-MODULE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REFINED-MODULE-REF")
 
         # Serialize supporteds (list to container "SUPPORTEDS")
         if self.supporteds:

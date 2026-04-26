@@ -76,43 +76,19 @@ class Dhcpv6Props(ARObject):
         if self.tcp_ip_dhcp is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_dhcp, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-DHCP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-DHCP")
 
         # Serialize tcp_ip_dhcp_v6_inf
         if self.tcp_ip_dhcp_v6_inf is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_dhcp_v6_inf, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-DHCP-V6-INF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-DHCP-V6-INF")
 
         # Serialize tcp_ip_dhcp_v6_sol
         if self.tcp_ip_dhcp_v6_sol is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_dhcp_v6_sol, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-DHCP-V6-SOL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-DHCP-V6-SOL")
 
         return elem
 

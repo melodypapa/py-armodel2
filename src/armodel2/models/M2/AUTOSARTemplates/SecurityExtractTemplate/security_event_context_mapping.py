@@ -79,29 +79,13 @@ class SecurityEventContextMapping(IdsMapping, ABC):
         if self.filter_chain_ref is not None:
             serialized = SerializationHelper.serialize_item(self.filter_chain_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FILTER-CHAIN-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FILTER-CHAIN-REF")
 
         # Serialize idsm_instance_ref
         if self.idsm_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.idsm_instance_ref, "IdsmInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDSM-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDSM-INSTANCE-REF")
 
         # Serialize mapped_securities (list to container "MAPPED-SECURITYS")
         if self.mapped_securities:

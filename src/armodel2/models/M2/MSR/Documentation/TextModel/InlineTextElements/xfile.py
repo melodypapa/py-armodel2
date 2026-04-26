@@ -80,43 +80,19 @@ class Xfile(SingleLanguageReferrable):
         if self.tool is not None:
             serialized = SerializationHelper.serialize_item(self.tool, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TOOL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TOOL")
 
         # Serialize tool_version
         if self.tool_version is not None:
             serialized = SerializationHelper.serialize_item(self.tool_version, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TOOL-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TOOL-VERSION")
 
         # Serialize url
         if self.url is not None:
             serialized = SerializationHelper.serialize_item(self.url, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("URL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "URL")
 
         return elem
 

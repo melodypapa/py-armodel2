@@ -78,14 +78,7 @@ class EcucDefinitionCollection(ARElement):
             for item in self.module_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucModuleDef")
                 if serialized is not None:
-                    child_elem = ET.Element("MODULE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "MODULE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

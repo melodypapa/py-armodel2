@@ -99,71 +99,31 @@ class FlexrayFifoConfiguration(ARObject):
         if self.admit_without is not None:
             serialized = SerializationHelper.serialize_item(self.admit_without, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ADMIT-WITHOUT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ADMIT-WITHOUT")
 
         # Serialize base_cycle
         if self.base_cycle is not None:
             serialized = SerializationHelper.serialize_item(self.base_cycle, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE-CYCLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE-CYCLE")
 
         # Serialize channel_ref
         if self.channel_ref is not None:
             serialized = SerializationHelper.serialize_item(self.channel_ref, "FlexrayPhysicalChannel")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CHANNEL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CHANNEL-REF")
 
         # Serialize cycle_repetition
         if self.cycle_repetition is not None:
             serialized = SerializationHelper.serialize_item(self.cycle_repetition, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CYCLE-REPETITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CYCLE-REPETITION")
 
         # Serialize fifo_depth
         if self.fifo_depth is not None:
             serialized = SerializationHelper.serialize_item(self.fifo_depth, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIFO-DEPTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIFO-DEPTH")
 
         # Serialize fifo_ranges (list to container "FIFO-RANGES")
         if self.fifo_ranges:
@@ -179,29 +139,13 @@ class FlexrayFifoConfiguration(ARObject):
         if self.msg_id_mask is not None:
             serialized = SerializationHelper.serialize_item(self.msg_id_mask, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MSG-ID-MASK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MSG-ID-MASK")
 
         # Serialize msg_id_match
         if self.msg_id_match is not None:
             serialized = SerializationHelper.serialize_item(self.msg_id_match, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MSG-ID-MATCH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MSG-ID-MATCH")
 
         return elem
 

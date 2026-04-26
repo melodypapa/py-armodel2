@@ -79,43 +79,19 @@ class ConfidenceInterval(ARObject):
         if self.lower_bound is not None:
             serialized = SerializationHelper.serialize_item(self.lower_bound, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOWER-BOUND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOWER-BOUND")
 
         # Serialize propability
         if self.propability is not None:
             serialized = SerializationHelper.serialize_item(self.propability, "Float")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROPABILITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROPABILITY")
 
         # Serialize upper_bound
         if self.upper_bound is not None:
             serialized = SerializationHelper.serialize_item(self.upper_bound, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPPER-BOUND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPPER-BOUND")
 
         return elem
 

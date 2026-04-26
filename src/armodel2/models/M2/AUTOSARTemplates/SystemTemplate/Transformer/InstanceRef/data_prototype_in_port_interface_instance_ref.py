@@ -84,15 +84,7 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
         if self.abstract_base_ref is not None:
             serialized = SerializationHelper.serialize_item(self.abstract_base_ref, "PortInterface")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ABSTRACT-BASE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ABSTRACT-BASE-REF")
 
         # Serialize context_data_refs (list to container "CONTEXT-DATA-REFS")
         if self.context_data_refs:
@@ -100,14 +92,7 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
             for item in self.context_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTEXT-DATA-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONTEXT-DATA-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -115,29 +100,13 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
         if self.root_data_ref is not None:
             serialized = SerializationHelper.serialize_item(self.root_data_ref, "AutosarDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROOT-DATA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROOT-DATA-REF")
 
         # Serialize target_data_ref
         if self.target_data_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_data_ref, "DataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-DATA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-DATA-REF")
 
         return elem
 

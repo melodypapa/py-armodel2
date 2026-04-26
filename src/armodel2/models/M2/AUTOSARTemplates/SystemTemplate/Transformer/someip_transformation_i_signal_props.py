@@ -116,118 +116,55 @@ class SOMEIPTransformationISignalProps(ARObject):
         if self.implements is not None:
             serialized = SerializationHelper.serialize_item(self.implements, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("IMPLEMENTS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "IMPLEMENTS")
 
         # Serialize interface_version
         if self.interface_version is not None:
             serialized = SerializationHelper.serialize_item(self.interface_version, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("INTERFACE-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "INTERFACE-VERSION")
 
         # Serialize is_dynamic
         if self.is_dynamic is not None:
             serialized = SerializationHelper.serialize_item(self.is_dynamic, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("IS-DYNAMIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "IS-DYNAMIC")
 
         # Serialize message_type
         if self.message_type is not None:
             serialized = SerializationHelper.serialize_item(self.message_type, "SOMEIPMessageTypeEnum")
             if serialized is not None:
-                wrapped = ET.Element("MESSAGE-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MESSAGE-TYPE")
 
         # Serialize size_of_array
         if self.size_of_array is not None:
             serialized = SerializationHelper.serialize_item(self.size_of_array, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("SIZE-OF-ARRAY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SIZE-OF-ARRAY")
 
         # Serialize size_of_string
         if self.size_of_string is not None:
             serialized = SerializationHelper.serialize_item(self.size_of_string, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("SIZE-OF-STRING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SIZE-OF-STRING")
 
         # Serialize size_of_struct
         if self.size_of_struct is not None:
             serialized = SerializationHelper.serialize_item(self.size_of_struct, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("SIZE-OF-STRUCT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SIZE-OF-STRUCT")
 
         # Serialize size_of_union
         if self.size_of_union is not None:
             serialized = SerializationHelper.serialize_item(self.size_of_union, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("SIZE-OF-UNION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SIZE-OF-UNION")
 
         # Serialize tlv_data_id_refs (list)
         for item in self.tlv_data_id_refs:
             serialized = SerializationHelper.serialize_item(item, "TlvDataIdDefinitionSet")
             if serialized is not None:
-                wrapped = ET.Element("TLV-DATA-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "TLV-DATA-ID")
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "SOMEIPTransformationISignalProps")

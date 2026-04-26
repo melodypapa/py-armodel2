@@ -89,14 +89,7 @@ class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
             for item in self.context_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTEXT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONTEXT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -104,29 +97,13 @@ class ImplementationDataTypeElementInPortInterfaceRef(DataPrototypeReference):
         if self.root_data_ref is not None:
             serialized = SerializationHelper.serialize_item(self.root_data_ref, "AutosarDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROOT-DATA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROOT-DATA-REF")
 
         # Serialize target_ref
         if self.target_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_ref, "AbstractImplementationDataType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-REF")
 
         return elem
 

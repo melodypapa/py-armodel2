@@ -85,57 +85,25 @@ class CryptoServiceNeeds(ServiceNeeds):
         if self.algorithm_family is not None:
             serialized = SerializationHelper.serialize_item(self.algorithm_family, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALGORITHM-FAMILY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALGORITHM-FAMILY")
 
         # Serialize algorithm_mode
         if self.algorithm_mode is not None:
             serialized = SerializationHelper.serialize_item(self.algorithm_mode, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALGORITHM-MODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALGORITHM-MODE")
 
         # Serialize crypto_key
         if self.crypto_key is not None:
             serialized = SerializationHelper.serialize_item(self.crypto_key, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRYPTO-KEY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRYPTO-KEY")
 
         # Serialize maximum_key
         if self.maximum_key is not None:
             serialized = SerializationHelper.serialize_item(self.maximum_key, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAXIMUM-KEY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAXIMUM-KEY")
 
         return elem
 

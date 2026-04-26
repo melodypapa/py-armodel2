@@ -89,57 +89,25 @@ class DataExchangePoint(ARElement):
         if self.data_format is not None:
             serialized = SerializationHelper.serialize_item(self.data_format, "DataFormatTailoring")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-FORMAT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-FORMAT")
 
         # Serialize kind
         if self.kind is not None:
             serialized = SerializationHelper.serialize_item(self.kind, "DataExchangePoint")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "KIND")
 
         # Serialize referenced
         if self.referenced is not None:
             serialized = SerializationHelper.serialize_item(self.referenced, "Baseline")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REFERENCED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REFERENCED")
 
         # Serialize specification_scope
         if self.specification_scope is not None:
             serialized = SerializationHelper.serialize_item(self.specification_scope, "SpecificationScope")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SPECIFICATION-SCOPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SPECIFICATION-SCOPE")
 
         return elem
 

@@ -90,15 +90,7 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
         if self.authentication is not None:
             serialized = SerializationHelper.serialize_item(self.authentication, "DiagnosticAuthRole")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AUTHENTICATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AUTHENTICATION")
 
         # Serialize diagnostic_session_refs (list to container "DIAGNOSTIC-SESSION-REFS")
         if self.diagnostic_session_refs:
@@ -106,14 +98,7 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
             for item in self.diagnostic_session_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticSession")
                 if serialized is not None:
-                    child_elem = ET.Element("DIAGNOSTIC-SESSION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DIAGNOSTIC-SESSION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -121,15 +106,7 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
         if self.environmental_ref is not None:
             serialized = SerializationHelper.serialize_item(self.environmental_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENVIRONMENTAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENVIRONMENTAL-REF")
 
         # Serialize security_level_refs (list to container "SECURITY-LEVEL-REFS")
         if self.security_level_refs:
@@ -137,14 +114,7 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
             for item in self.security_level_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticSecurityLevel")
                 if serialized is not None:
-                    child_elem = ET.Element("SECURITY-LEVEL-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SECURITY-LEVEL-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

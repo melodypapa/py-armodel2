@@ -73,29 +73,13 @@ class DefaultValueElement(ARObject):
         if self.element_byte_value is not None:
             serialized = SerializationHelper.serialize_item(self.element_byte_value, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ELEMENT-BYTE-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ELEMENT-BYTE-VALUE")
 
         # Serialize element_position
         if self.element_position is not None:
             serialized = SerializationHelper.serialize_item(self.element_position, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ELEMENT-POSITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ELEMENT-POSITION")
 
         return elem
 

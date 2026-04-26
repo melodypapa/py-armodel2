@@ -80,43 +80,19 @@ class DiagnosticComControlSpecificChannel(ARObject):
         if self.specific_channel_ref is not None:
             serialized = SerializationHelper.serialize_item(self.specific_channel_ref, "CommunicationCluster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SPECIFIC-CHANNEL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SPECIFIC-CHANNEL-REF")
 
         # Serialize specific_physical_ref
         if self.specific_physical_ref is not None:
             serialized = SerializationHelper.serialize_item(self.specific_physical_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SPECIFIC-PHYSICAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SPECIFIC-PHYSICAL-REF")
 
         # Serialize subnet_number
         if self.subnet_number is not None:
             serialized = SerializationHelper.serialize_item(self.subnet_number, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUBNET-NUMBER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUBNET-NUMBER")
 
         return elem
 

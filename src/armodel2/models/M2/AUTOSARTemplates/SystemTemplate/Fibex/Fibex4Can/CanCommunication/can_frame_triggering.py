@@ -127,127 +127,55 @@ class CanFrameTriggering(FrameTriggering):
         if self.can_addressing_mode is not None:
             serialized = SerializationHelper.serialize_item(self.can_addressing_mode, "CanAddressingModeType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-ADDRESSING-MODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-ADDRESSING-MODE")
 
         # Serialize can_frame_rx_behavior
         if self.can_frame_rx_behavior is not None:
             serialized = SerializationHelper.serialize_item(self.can_frame_rx_behavior, "CanFrameRxBehaviorEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-FRAME-RX-BEHAVIOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-FRAME-RX-BEHAVIOR")
 
         # Serialize can_frame_tx_behavior
         if self.can_frame_tx_behavior is not None:
             serialized = SerializationHelper.serialize_item(self.can_frame_tx_behavior, "CanFrameTxBehaviorEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-FRAME-TX-BEHAVIOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-FRAME-TX-BEHAVIOR")
 
         # Serialize can_xl_frame_triggering_props
         if self.can_xl_frame_triggering_props is not None:
             serialized = SerializationHelper.serialize_item(self.can_xl_frame_triggering_props, "CanXlFrameTriggeringProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-XL-FRAME-TRIGGERING-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-XL-FRAME-TRIGGERING-PROPS")
 
         # Serialize identifier
         if self.identifier is not None:
             serialized = SerializationHelper.serialize_item(self.identifier, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDENTIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDENTIFIER")
 
         # Serialize j1939requestable
         if self.j1939requestable is not None:
             serialized = SerializationHelper.serialize_item(self.j1939requestable, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("J1939REQUESTABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "J1939REQUESTABLE")
 
         # Serialize rx_identifier_range
         if self.rx_identifier_range is not None:
             serialized = SerializationHelper.serialize_item(self.rx_identifier_range, "RxIdentifierRange")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RX-IDENTIFIER-RANGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RX-IDENTIFIER-RANGE")
 
         # Serialize rx_mask
         if self.rx_mask is not None:
             serialized = SerializationHelper.serialize_item(self.rx_mask, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RX-MASK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RX-MASK")
 
         # Serialize tx_mask
         if self.tx_mask is not None:
             serialized = SerializationHelper.serialize_item(self.tx_mask, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TX-MASK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TX-MASK")
 
         return elem
 

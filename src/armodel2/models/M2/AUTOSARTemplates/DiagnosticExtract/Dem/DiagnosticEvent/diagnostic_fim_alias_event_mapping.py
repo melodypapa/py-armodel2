@@ -78,29 +78,13 @@ class DiagnosticFimAliasEventMapping(DiagnosticMapping):
         if self.actual_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.actual_event_ref, "DiagnosticEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ACTUAL-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ACTUAL-EVENT-REF")
 
         # Serialize alias_event_event_ref
         if self.alias_event_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.alias_event_event_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALIAS-EVENT-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALIAS-EVENT-EVENT-REF")
 
         return elem
 

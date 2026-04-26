@@ -102,85 +102,37 @@ class ISignalToIPduMapping(Identifiable):
         if self.i_signal_ref is not None:
             serialized = SerializationHelper.serialize_item(self.i_signal_ref, "ISignal")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "I-SIGNAL-REF")
 
         # Serialize i_signal_group_ref
         if self.i_signal_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.i_signal_group_ref, "ISignalGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "I-SIGNAL-GROUP-REF")
 
         # Serialize packing_byte_order
         if self.packing_byte_order is not None:
             serialized = SerializationHelper.serialize_item(self.packing_byte_order, "ByteOrderEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PACKING-BYTE-ORDER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PACKING-BYTE-ORDER")
 
         # Serialize start_position
         if self.start_position is not None:
             serialized = SerializationHelper.serialize_item(self.start_position, "UnlimitedInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("START-POSITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "START-POSITION")
 
         # Serialize transfer_property
         if self.transfer_property is not None:
             serialized = SerializationHelper.serialize_item(self.transfer_property, "TransferPropertyEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSFER-PROPERTY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSFER-PROPERTY")
 
         # Serialize update_indication_bit_position
         if self.update_indication_bit_position is not None:
             serialized = SerializationHelper.serialize_item(self.update_indication_bit_position, "UnlimitedInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPDATE-INDICATION-BIT-POSITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPDATE-INDICATION-BIT-POSITION")
 
         return elem
 

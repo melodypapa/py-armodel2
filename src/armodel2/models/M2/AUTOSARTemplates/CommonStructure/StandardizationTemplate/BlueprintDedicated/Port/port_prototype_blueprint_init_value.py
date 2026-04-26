@@ -80,29 +80,13 @@ class PortPrototypeBlueprintInitValue(ARObject):
         if self.data_prototype_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_prototype_ref, "AutosarDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-PROTOTYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-PROTOTYPE-REF")
 
         # Serialize value
         if self.value is not None:
             serialized = SerializationHelper.serialize_item(self.value, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VALUE")
 
         return elem
 

@@ -78,29 +78,13 @@ class DiagnosticEcuReset(DiagnosticServiceInstance):
         if self.custom_sub is not None:
             serialized = SerializationHelper.serialize_item(self.custom_sub, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CUSTOM-SUB")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CUSTOM-SUB")
 
         # Serialize ecu_reset_class_ref
         if self.ecu_reset_class_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_reset_class_ref, "DiagnosticEcuReset")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-RESET-CLASS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-RESET-CLASS-REF")
 
         return elem
 

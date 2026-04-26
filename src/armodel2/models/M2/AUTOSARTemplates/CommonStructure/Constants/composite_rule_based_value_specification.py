@@ -110,29 +110,13 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         if self.max_size_to_fill is not None:
             serialized = SerializationHelper.serialize_item(self.max_size_to_fill, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-SIZE-TO-FILL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-SIZE-TO-FILL")
 
         # Serialize rule
         if self.rule is not None:
             serialized = SerializationHelper.serialize_item(self.rule, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RULE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RULE")
 
         return elem
 

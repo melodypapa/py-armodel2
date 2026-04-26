@@ -78,29 +78,13 @@ class FlexrayCommunicationConnector(CommunicationConnector):
         if self.nm_ready_sleep is not None:
             serialized = SerializationHelper.serialize_item(self.nm_ready_sleep, "Float")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-READY-SLEEP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-READY-SLEEP")
 
         # Serialize wake_up
         if self.wake_up is not None:
             serialized = SerializationHelper.serialize_item(self.wake_up, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WAKE-UP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WAKE-UP")
 
         return elem
 

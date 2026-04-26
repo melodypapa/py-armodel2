@@ -94,57 +94,25 @@ class CryptoKeySlot(Identifiable):
         if self.allocate_shadow_copy is not None:
             serialized = SerializationHelper.serialize_item(self.allocate_shadow_copy, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALLOCATE-SHADOW-COPY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALLOCATE-SHADOW-COPY")
 
         # Serialize crypto_alg_id
         if self.crypto_alg_id is not None:
             serialized = SerializationHelper.serialize_item(self.crypto_alg_id, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRYPTO-ALG-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRYPTO-ALG-ID")
 
         # Serialize crypto_object_type
         if self.crypto_object_type is not None:
             serialized = SerializationHelper.serialize_item(self.crypto_object_type, "CryptoObjectTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRYPTO-OBJECT-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRYPTO-OBJECT-TYPE")
 
         # Serialize key_slot_allowed_modification
         if self.key_slot_allowed_modification is not None:
             serialized = SerializationHelper.serialize_item(self.key_slot_allowed_modification, "CryptoKeySlotAllowedModification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("KEY-SLOT-ALLOWED-MODIFICATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "KEY-SLOT-ALLOWED-MODIFICATION")
 
         # Serialize key_slot_content_allowed_usages (list to container "KEY-SLOT-CONTENT-ALLOWED-USAGES")
         if self.key_slot_content_allowed_usages:
@@ -160,29 +128,13 @@ class CryptoKeySlot(Identifiable):
         if self.slot_capacity is not None:
             serialized = SerializationHelper.serialize_item(self.slot_capacity, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SLOT-CAPACITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SLOT-CAPACITY")
 
         # Serialize slot_type
         if self.slot_type is not None:
             serialized = SerializationHelper.serialize_item(self.slot_type, "CryptoKeySlotTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SLOT-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SLOT-TYPE")
 
         return elem
 

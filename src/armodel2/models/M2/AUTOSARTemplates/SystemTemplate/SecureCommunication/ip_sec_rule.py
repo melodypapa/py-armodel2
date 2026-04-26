@@ -130,43 +130,19 @@ class IPSecRule(Identifiable):
         if self.direction is not None:
             serialized = SerializationHelper.serialize_item(self.direction, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIRECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIRECTION")
 
         # Serialize header_type
         if self.header_type is not None:
             serialized = SerializationHelper.serialize_item(self.header_type, "IPsecHeaderTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HEADER-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HEADER-TYPE")
 
         # Serialize ip_protocol
         if self.ip_protocol is not None:
             serialized = SerializationHelper.serialize_item(self.ip_protocol, "IPsecIpProtocolEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IP-PROTOCOL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IP-PROTOCOL")
 
         # Serialize local_certificate_refs (list to container "LOCAL-CERTIFICATE-REFS")
         if self.local_certificate_refs:
@@ -174,14 +150,7 @@ class IPSecRule(Identifiable):
             for item in self.local_certificate_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("LOCAL-CERTIFICATE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "LOCAL-CERTIFICATE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -189,85 +158,37 @@ class IPSecRule(Identifiable):
         if self.local_id is not None:
             serialized = SerializationHelper.serialize_item(self.local_id, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOCAL-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOCAL-ID")
 
         # Serialize local_port_range
         if self.local_port_range is not None:
             serialized = SerializationHelper.serialize_item(self.local_port_range, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOCAL-PORT-RANGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOCAL-PORT-RANGE")
 
         # Serialize mode
         if self.mode is not None:
             serialized = SerializationHelper.serialize_item(self.mode, "IPsecModeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODE")
 
         # Serialize policy
         if self.policy is not None:
             serialized = SerializationHelper.serialize_item(self.policy, "IPsecPolicyEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("POLICY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "POLICY")
 
         # Serialize pre_shared_key_ref
         if self.pre_shared_key_ref is not None:
             serialized = SerializationHelper.serialize_item(self.pre_shared_key_ref, "CryptoServiceKey")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRE-SHARED-KEY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRE-SHARED-KEY-REF")
 
         # Serialize priority
         if self.priority is not None:
             serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIORITY")
 
         # Serialize remote_refs (list to container "REMOTE-REFS")
         if self.remote_refs:
@@ -275,14 +196,7 @@ class IPSecRule(Identifiable):
             for item in self.remote_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("REMOTE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "REMOTE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -290,15 +204,7 @@ class IPSecRule(Identifiable):
         if self.remote_id is not None:
             serialized = SerializationHelper.serialize_item(self.remote_id, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REMOTE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REMOTE-ID")
 
         # Serialize remote_ip_refs (list to container "REMOTE-IP-REFS")
         if self.remote_ip_refs:
@@ -306,14 +212,7 @@ class IPSecRule(Identifiable):
             for item in self.remote_ip_refs:
                 serialized = SerializationHelper.serialize_item(item, "NetworkEndpoint")
                 if serialized is not None:
-                    child_elem = ET.Element("REMOTE-IP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "REMOTE-IP-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -321,15 +220,7 @@ class IPSecRule(Identifiable):
         if self.remote_port is not None:
             serialized = SerializationHelper.serialize_item(self.remote_port, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REMOTE-PORT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REMOTE-PORT")
 
         return elem
 

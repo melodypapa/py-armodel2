@@ -79,29 +79,13 @@ class ModeTransition(Identifiable):
         if self.entered_mode_ref is not None:
             serialized = SerializationHelper.serialize_item(self.entered_mode_ref, "ModeDeclaration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENTERED-MODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENTERED-MODE-REF")
 
         # Serialize exited_mode_ref
         if self.exited_mode_ref is not None:
             serialized = SerializationHelper.serialize_item(self.exited_mode_ref, "ModeDeclaration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXITED-MODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXITED-MODE-REF")
 
         return elem
 

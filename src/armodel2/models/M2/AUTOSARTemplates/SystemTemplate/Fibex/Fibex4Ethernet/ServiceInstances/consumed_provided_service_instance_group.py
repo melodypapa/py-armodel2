@@ -77,14 +77,7 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
             for item in self.consumed_service_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("CONSUMED-SERVICE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONSUMED-SERVICE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -94,14 +87,7 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
             for item in self.provided_service_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("PROVIDED-SERVICE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "PROVIDED-SERVICE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

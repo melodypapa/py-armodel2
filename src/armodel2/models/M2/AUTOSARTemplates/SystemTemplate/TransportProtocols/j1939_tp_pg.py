@@ -87,43 +87,19 @@ class J1939TpPg(ARObject):
         if self.direct_pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.direct_pdu_ref, "NPdu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIRECT-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIRECT-PDU-REF")
 
         # Serialize pgn
         if self.pgn is not None:
             serialized = SerializationHelper.serialize_item(self.pgn, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PGN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PGN")
 
         # Serialize requestable
         if self.requestable is not None:
             serialized = SerializationHelper.serialize_item(self.requestable, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUESTABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REQUESTABLE")
 
         # Serialize sdu_refs (list to container "SDU-REFS")
         if self.sdu_refs:
@@ -131,14 +107,7 @@ class J1939TpPg(ARObject):
             for item in self.sdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "IPdu")
                 if serialized is not None:
-                    child_elem = ET.Element("SDU-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SDU-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

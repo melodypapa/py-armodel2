@@ -80,29 +80,13 @@ class EthTcpIpProps(ARElement):
         if self.tcp_props is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_props, "TcpProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-PROPS")
 
         # Serialize udp_props
         if self.udp_props is not None:
             serialized = SerializationHelper.serialize_item(self.udp_props, "UdpProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UDP-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UDP-PROPS")
 
         return elem
 

@@ -80,15 +80,7 @@ class LinPhysicalChannel(PhysicalChannel):
         if self.bus_idle_timeout is not None:
             serialized = SerializationHelper.serialize_item(self.bus_idle_timeout, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BUS-IDLE-TIMEOUT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BUS-IDLE-TIMEOUT")
 
         # Serialize schedule_tables (list to container "SCHEDULE-TABLES")
         if self.schedule_tables:

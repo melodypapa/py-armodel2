@@ -93,43 +93,19 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
         if self.pattern_jitter is not None:
             serialized = SerializationHelper.serialize_item(self.pattern_jitter, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PATTERN-JITTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PATTERN-JITTER")
 
         # Serialize pattern_length
         if self.pattern_length is not None:
             serialized = SerializationHelper.serialize_item(self.pattern_length, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PATTERN-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PATTERN-LENGTH")
 
         # Serialize pattern_period
         if self.pattern_period is not None:
             serialized = SerializationHelper.serialize_item(self.pattern_period, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PATTERN-PERIOD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PATTERN-PERIOD")
 
         return elem
 

@@ -85,29 +85,13 @@ class ModeDeclarationGroupPrototype(Identifiable):
         if self.sw_calibration_access is not None:
             serialized = SerializationHelper.serialize_item(self.sw_calibration_access, "SwCalibrationAccessEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-CALIBRATION-ACCESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-CALIBRATION-ACCESS")
 
         # Serialize type_ref
         if self.type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.type_ref, "ModeDeclarationGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TYPE-TREF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TYPE-TREF")
 
         return elem
 

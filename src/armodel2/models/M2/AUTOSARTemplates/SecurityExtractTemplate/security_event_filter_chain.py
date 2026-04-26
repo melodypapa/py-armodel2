@@ -89,57 +89,25 @@ class SecurityEventFilterChain(IdsCommonElement):
         if self.aggregation is not None:
             serialized = SerializationHelper.serialize_item(self.aggregation, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AGGREGATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AGGREGATION")
 
         # Serialize one_every_n
         if self.one_every_n is not None:
             serialized = SerializationHelper.serialize_item(self.one_every_n, "SecurityEventOneEveryNFilter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ONE-EVERY-N")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ONE-EVERY-N")
 
         # Serialize state
         if self.state is not None:
             serialized = SerializationHelper.serialize_item(self.state, "SecurityEventStateFilter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STATE")
 
         # Serialize threshold
         if self.threshold is not None:
             serialized = SerializationHelper.serialize_item(self.threshold, "SecurityEventThresholdFilter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("THRESHOLD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "THRESHOLD")
 
         return elem
 

@@ -107,29 +107,13 @@ class BswImplementation(Implementation):
         if self.ar_release_version is not None:
             serialized = SerializationHelper.serialize_item(self.ar_release_version, "RevisionLabelString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AR-RELEASE-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AR-RELEASE-VERSION")
 
         # Serialize behavior_ref
         if self.behavior_ref is not None:
             serialized = SerializationHelper.serialize_item(self.behavior_ref, "BswInternalBehavior")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BEHAVIOR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BEHAVIOR-REF")
 
         # Serialize preconfigured_configuration_refs (list to container "PRECONFIGURED-CONFIGURATION-REFS")
         if self.preconfigured_configuration_refs:
@@ -137,14 +121,7 @@ class BswImplementation(Implementation):
             for item in self.preconfigured_configuration_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucModuleConfigurationValues")
                 if serialized is not None:
-                    child_elem = ET.Element("PRECONFIGURED-CONFIGURATION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "PRECONFIGURED-CONFIGURATION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -154,14 +131,7 @@ class BswImplementation(Implementation):
             for item in self.recommended_configuration_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucModuleConfigurationValues")
                 if serialized is not None:
-                    child_elem = ET.Element("RECOMMENDED-CONFIGURATION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "RECOMMENDED-CONFIGURATION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -169,15 +139,7 @@ class BswImplementation(Implementation):
         if self.vendor_api_infix is not None:
             serialized = SerializationHelper.serialize_item(self.vendor_api_infix, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VENDOR-API-INFIX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VENDOR-API-INFIX")
 
         # Serialize vendor_specific_module_def_refs (list to container "VENDOR-SPECIFIC-MODULE-DEF-REFS")
         if self.vendor_specific_module_def_refs:
@@ -185,14 +147,7 @@ class BswImplementation(Implementation):
             for item in self.vendor_specific_module_def_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucModuleDef")
                 if serialized is not None:
-                    child_elem = ET.Element("VENDOR-SPECIFIC-MODULE-DEF-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "VENDOR-SPECIFIC-MODULE-DEF-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

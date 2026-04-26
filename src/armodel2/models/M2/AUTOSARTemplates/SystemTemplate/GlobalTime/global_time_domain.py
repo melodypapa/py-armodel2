@@ -125,29 +125,13 @@ class GlobalTimeDomain(FibexElement):
         if self.debounce_time is not None:
             serialized = SerializationHelper.serialize_item(self.debounce_time, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEBOUNCE-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEBOUNCE-TIME")
 
         # Serialize domain_id
         if self.domain_id is not None:
             serialized = SerializationHelper.serialize_item(self.domain_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DOMAIN-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DOMAIN-ID")
 
         # Serialize gatewaies (list to container "GATEWAYS")
         if self.gatewaies:
@@ -163,29 +147,13 @@ class GlobalTimeDomain(FibexElement):
         if self.global_time is not None:
             serialized = SerializationHelper.serialize_item(self.global_time, "AbstractGlobalTimeDomainProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GLOBAL-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "GLOBAL-TIME")
 
         # Serialize global_time_master
         if self.global_time_master is not None:
             serialized = SerializationHelper.serialize_item(self.global_time_master, "GlobalTimeMaster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GLOBAL-TIME-MASTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "GLOBAL-TIME-MASTER")
 
         # Serialize global_time_sub_refs (list to container "GLOBAL-TIME-SUB-REFS")
         if self.global_time_sub_refs:
@@ -193,14 +161,7 @@ class GlobalTimeDomain(FibexElement):
             for item in self.global_time_sub_refs:
                 serialized = SerializationHelper.serialize_item(item, "GlobalTimeDomain")
                 if serialized is not None:
-                    child_elem = ET.Element("GLOBAL-TIME-SUB-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "GLOBAL-TIME-SUB-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -208,43 +169,19 @@ class GlobalTimeDomain(FibexElement):
         if self.network is not None:
             serialized = SerializationHelper.serialize_item(self.network, "NetworkSegmentIdentification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NETWORK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NETWORK")
 
         # Serialize offset_time_ref
         if self.offset_time_ref is not None:
             serialized = SerializationHelper.serialize_item(self.offset_time_ref, "GlobalTimeDomain")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OFFSET-TIME-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OFFSET-TIME-REF")
 
         # Serialize pdu_triggering_ref
         if self.pdu_triggering_ref is not None:
             serialized = SerializationHelper.serialize_item(self.pdu_triggering_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDU-TRIGGERING-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDU-TRIGGERING-REF")
 
         # Serialize slaves (list to container "SLAFS")
         if self.slaves:
@@ -260,15 +197,7 @@ class GlobalTimeDomain(FibexElement):
         if self.sync_loss is not None:
             serialized = SerializationHelper.serialize_item(self.sync_loss, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYNC-LOSS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYNC-LOSS")
 
         return elem
 

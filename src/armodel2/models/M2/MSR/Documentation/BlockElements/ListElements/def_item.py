@@ -83,29 +83,13 @@ class DefItem(Paginateable):
         if self.def_ is not None:
             serialized = SerializationHelper.serialize_item(self.def_, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEF")
 
         # Serialize help_entry
         if self.help_entry is not None:
             serialized = SerializationHelper.serialize_item(self.help_entry, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HELP-ENTRY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HELP-ENTRY")
 
         return elem
 

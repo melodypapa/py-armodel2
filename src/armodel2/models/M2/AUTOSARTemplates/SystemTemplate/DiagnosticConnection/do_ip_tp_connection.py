@@ -84,43 +84,19 @@ class DoIpTpConnection(TpConnection):
         if self.do_ip_source_ref is not None:
             serialized = SerializationHelper.serialize_item(self.do_ip_source_ref, "DoIpLogicAddress")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DO-IP-SOURCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DO-IP-SOURCE-REF")
 
         # Serialize do_ip_target_ref
         if self.do_ip_target_ref is not None:
             serialized = SerializationHelper.serialize_item(self.do_ip_target_ref, "DoIpLogicAddress")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DO-IP-TARGET-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DO-IP-TARGET-REF")
 
         # Serialize tp_sdu_ref
         if self.tp_sdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tp_sdu_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TP-SDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TP-SDU-REF")
 
         return elem
 

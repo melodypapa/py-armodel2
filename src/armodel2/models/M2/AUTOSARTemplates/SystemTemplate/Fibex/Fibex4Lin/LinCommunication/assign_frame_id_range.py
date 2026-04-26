@@ -80,29 +80,13 @@ class AssignFrameIdRange(LinConfigurationEntry):
         if self.frame_pid is not None:
             serialized = SerializationHelper.serialize_item(self.frame_pid, "FramePid")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRAME-PID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FRAME-PID")
 
         # Serialize start_index
         if self.start_index is not None:
             serialized = SerializationHelper.serialize_item(self.start_index, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("START-INDEX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "START-INDEX")
 
         return elem
 

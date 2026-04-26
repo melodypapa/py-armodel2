@@ -87,43 +87,19 @@ class EOCEventRef(EOCExecutableEntityRefAbstract):
         if self.bsw_module_ref is not None:
             serialized = SerializationHelper.serialize_item(self.bsw_module_ref, "BswImplementation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BSW-MODULE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BSW-MODULE-REF")
 
         # Serialize component
         if self.component is not None:
             serialized = SerializationHelper.serialize_item(self.component, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMPONENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMPONENT")
 
         # Serialize event_ref
         if self.event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.event_ref, "AbstractEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-REF")
 
         # Serialize successor_refs (list to container "SUCCESSOR-REFS")
         if self.successor_refs:
@@ -131,14 +107,7 @@ class EOCEventRef(EOCExecutableEntityRefAbstract):
             for item in self.successor_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("SUCCESSOR-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SUCCESSOR-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

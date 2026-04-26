@@ -91,29 +91,13 @@ class SenderRecArrayTypeMapping(SenderRecCompositeTypeMapping):
         if self.sender_to_signal_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sender_to_signal_ref, "TextTableMapping")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SENDER-TO-SIGNAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SENDER-TO-SIGNAL-REF")
 
         # Serialize signal_to_ref
         if self.signal_to_ref is not None:
             serialized = SerializationHelper.serialize_item(self.signal_to_ref, "TextTableMapping")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SIGNAL-TO-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SIGNAL-TO-REF")
 
         return elem
 

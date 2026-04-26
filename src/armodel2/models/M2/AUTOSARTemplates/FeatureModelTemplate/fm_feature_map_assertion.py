@@ -71,15 +71,7 @@ class FMFeatureMapAssertion(Identifiable):
         if self.fm_syscond_and_sw_systemconsts is not None:
             serialized = SerializationHelper.serialize_item(self.fm_syscond_and_sw_systemconsts, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FM-SYSCOND-AND-SW-SYSTEMCONSTS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FM-SYSCOND-AND-SW-SYSTEMCONSTS")
 
         return elem
 

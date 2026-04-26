@@ -81,29 +81,13 @@ class VariationPoint(ARObject):
         if self.blueprint is not None:
             serialized = SerializationHelper.serialize_item(self.blueprint, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BLUEPRINT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BLUEPRINT")
 
         # Serialize sw_syscond
         if self.sw_syscond is not None:
             serialized = SerializationHelper.serialize_item(self.sw_syscond, "ConditionByFormula")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-SYSCOND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-SYSCOND")
 
         return elem
 

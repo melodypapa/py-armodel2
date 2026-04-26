@@ -80,43 +80,19 @@ class MeasuredExecutionTime(ExecutionTime):
         if self.maximum_execution_time is not None:
             serialized = SerializationHelper.serialize_item(self.maximum_execution_time, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAXIMUM-EXECUTION-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAXIMUM-EXECUTION-TIME")
 
         # Serialize minimum_execution_time
         if self.minimum_execution_time is not None:
             serialized = SerializationHelper.serialize_item(self.minimum_execution_time, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM-EXECUTION-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINIMUM-EXECUTION-TIME")
 
         # Serialize nominal_execution_time
         if self.nominal_execution_time is not None:
             serialized = SerializationHelper.serialize_item(self.nominal_execution_time, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NOMINAL-EXECUTION-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NOMINAL-EXECUTION-TIME")
 
         return elem
 

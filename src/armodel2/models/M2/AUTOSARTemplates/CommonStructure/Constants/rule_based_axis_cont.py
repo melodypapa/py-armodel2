@@ -104,29 +104,13 @@ class RuleBasedAxisCont(ARObject):
         if self.category is not None:
             serialized = SerializationHelper.serialize_item(self.category, "CalprmAxisCategoryEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CATEGORY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CATEGORY")
 
         # Serialize rule_based_values
         if self.rule_based_values is not None:
             serialized = SerializationHelper.serialize_item(self.rule_based_values, "RuleBasedValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RULE-BASED-VALUES")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RULE-BASED-VALUES")
 
         # Serialize sw_arraysize (atp_mixed - append children directly)
         if self.sw_arraysize is not None:
@@ -145,15 +129,7 @@ class RuleBasedAxisCont(ARObject):
         if self.v is not None:
             serialized = SerializationHelper.serialize_item(self.v, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("V")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "V")
 
         # Serialize vts (list to container "VTS")
         if self.vts:
@@ -161,14 +137,7 @@ class RuleBasedAxisCont(ARObject):
             for item in self.vts:
                 serialized = SerializationHelper.serialize_item(item, "Numerical")
                 if serialized is not None:
-                    child_elem = ET.Element("VT")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "VT")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -176,29 +145,13 @@ class RuleBasedAxisCont(ARObject):
         if self.sw_axis_index is not None:
             serialized = SerializationHelper.serialize_item(self.sw_axis_index, "AxisIndexType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-AXIS-INDEX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-AXIS-INDEX")
 
         # Serialize unit_ref
         if self.unit_ref is not None:
             serialized = SerializationHelper.serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UNIT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UNIT-REF")
 
         return elem
 

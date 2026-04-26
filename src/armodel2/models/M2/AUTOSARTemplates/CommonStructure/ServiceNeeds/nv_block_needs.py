@@ -147,309 +147,133 @@ class NvBlockNeeds(ServiceNeeds):
         if self.calc_ram_block_crc is not None:
             serialized = SerializationHelper.serialize_item(self.calc_ram_block_crc, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CALC-RAM-BLOCK-CRC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CALC-RAM-BLOCK-CRC")
 
         # Serialize check_static_block_id
         if self.check_static_block_id is not None:
             serialized = SerializationHelper.serialize_item(self.check_static_block_id, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CHECK-STATIC-BLOCK-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CHECK-STATIC-BLOCK-ID")
 
         # Serialize cyclic_writing_period
         if self.cyclic_writing_period is not None:
             serialized = SerializationHelper.serialize_item(self.cyclic_writing_period, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CYCLIC-WRITING-PERIOD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CYCLIC-WRITING-PERIOD")
 
         # Serialize n_data_sets
         if self.n_data_sets is not None:
             serialized = SerializationHelper.serialize_item(self.n_data_sets, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("N-DATA-SETS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "N-DATA-SETS")
 
         # Serialize n_rom_blocks
         if self.n_rom_blocks is not None:
             serialized = SerializationHelper.serialize_item(self.n_rom_blocks, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("N-ROM-BLOCKS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "N-ROM-BLOCKS")
 
         # Serialize ram_block_status_control
         if self.ram_block_status_control is not None:
             serialized = SerializationHelper.serialize_item(self.ram_block_status_control, "RamBlockStatusControlEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RAM-BLOCK-STATUS-CONTROL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RAM-BLOCK-STATUS-CONTROL")
 
         # Serialize readonly
         if self.readonly is not None:
             serialized = SerializationHelper.serialize_item(self.readonly, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("READONLY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "READONLY")
 
         # Serialize reliability
         if self.reliability is not None:
             serialized = SerializationHelper.serialize_item(self.reliability, "NvBlockNeedsReliabilityEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RELIABILITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RELIABILITY")
 
         # Serialize resistant_to_changed_sw
         if self.resistant_to_changed_sw is not None:
             serialized = SerializationHelper.serialize_item(self.resistant_to_changed_sw, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESISTANT-TO-CHANGED-SW")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESISTANT-TO-CHANGED-SW")
 
         # Serialize restore_at_start
         if self.restore_at_start is not None:
             serialized = SerializationHelper.serialize_item(self.restore_at_start, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESTORE-AT-START")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESTORE-AT-START")
 
         # Serialize select_block_for_first_init_all
         if self.select_block_for_first_init_all is not None:
             serialized = SerializationHelper.serialize_item(self.select_block_for_first_init_all, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SELECT-BLOCK-FOR-FIRST-INIT-ALL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SELECT-BLOCK-FOR-FIRST-INIT-ALL")
 
         # Serialize store_at_shutdown
         if self.store_at_shutdown is not None:
             serialized = SerializationHelper.serialize_item(self.store_at_shutdown, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STORE-AT-SHUTDOWN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STORE-AT-SHUTDOWN")
 
         # Serialize store_cyclic
         if self.store_cyclic is not None:
             serialized = SerializationHelper.serialize_item(self.store_cyclic, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STORE-CYCLIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STORE-CYCLIC")
 
         # Serialize store_emergency
         if self.store_emergency is not None:
             serialized = SerializationHelper.serialize_item(self.store_emergency, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STORE-EMERGENCY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STORE-EMERGENCY")
 
         # Serialize store_immediate
         if self.store_immediate is not None:
             serialized = SerializationHelper.serialize_item(self.store_immediate, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STORE-IMMEDIATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STORE-IMMEDIATE")
 
         # Serialize store_on_change
         if self.store_on_change is not None:
             serialized = SerializationHelper.serialize_item(self.store_on_change, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STORE-ON-CHANGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STORE-ON-CHANGE")
 
         # Serialize use_auto_validation_at_shut_down
         if self.use_auto_validation_at_shut_down is not None:
             serialized = SerializationHelper.serialize_item(self.use_auto_validation_at_shut_down, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USE-AUTO-VALIDATION-AT-SHUT-DOWN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USE-AUTO-VALIDATION-AT-SHUT-DOWN")
 
         # Serialize use_crc_comp_mechanism
         if self.use_crc_comp_mechanism is not None:
             serialized = SerializationHelper.serialize_item(self.use_crc_comp_mechanism, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USE-CRC-COMP-MECHANISM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USE-CRC-COMP-MECHANISM")
 
         # Serialize write_only_once
         if self.write_only_once is not None:
             serialized = SerializationHelper.serialize_item(self.write_only_once, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WRITE-ONLY-ONCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WRITE-ONLY-ONCE")
 
         # Serialize write_verification
         if self.write_verification is not None:
             serialized = SerializationHelper.serialize_item(self.write_verification, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WRITE-VERIFICATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WRITE-VERIFICATION")
 
         # Serialize writing_frequency
         if self.writing_frequency is not None:
             serialized = SerializationHelper.serialize_item(self.writing_frequency, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WRITING-FREQUENCY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WRITING-FREQUENCY")
 
         # Serialize writing_priority
         if self.writing_priority is not None:
             serialized = SerializationHelper.serialize_item(self.writing_priority, "NvBlockNeedsWritingPriorityEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WRITING-PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WRITING-PRIORITY")
 
         return elem
 

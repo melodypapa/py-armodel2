@@ -83,57 +83,25 @@ class AttributeValueVariationPoint(ARObject, ABC):
         if self.binding_time_enum is not None:
             serialized = SerializationHelper.serialize_item(self.binding_time_enum, "BindingTimeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BINDING-TIME-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BINDING-TIME-ENUM")
 
         # Serialize blueprint_value
         if self.blueprint_value is not None:
             serialized = SerializationHelper.serialize_item(self.blueprint_value, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BLUEPRINT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BLUEPRINT-VALUE")
 
         # Serialize sd
         if self.sd is not None:
             serialized = SerializationHelper.serialize_item(self.sd, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SD")
 
         # Serialize short_label
         if self.short_label is not None:
             serialized = SerializationHelper.serialize_item(self.short_label, "PrimitiveIdentifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHORT-LABEL")
 
         return elem
 

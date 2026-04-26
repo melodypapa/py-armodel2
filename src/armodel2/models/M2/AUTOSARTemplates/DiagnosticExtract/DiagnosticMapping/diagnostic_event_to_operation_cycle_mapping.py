@@ -78,29 +78,13 @@ class DiagnosticEventToOperationCycleMapping(DiagnosticMapping):
         if self.diagnostic_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAGNOSTIC-EVENT-REF")
 
         # Serialize operation_cycle_ref
         if self.operation_cycle_ref is not None:
             serialized = SerializationHelper.serialize_item(self.operation_cycle_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OPERATION-CYCLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OPERATION-CYCLE-REF")
 
         return elem
 

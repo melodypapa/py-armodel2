@@ -77,29 +77,13 @@ class ImplementationDataTypeSubElementRef(SubElementRef):
         if self.implementation is not None:
             serialized = SerializationHelper.serialize_item(self.implementation, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMPLEMENTATION")
 
         # Serialize parameter
         if self.parameter is not None:
             serialized = SerializationHelper.serialize_item(self.parameter, "ArParameterInImplementationDataInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PARAMETER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PARAMETER")
 
         return elem
 

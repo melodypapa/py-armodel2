@@ -86,15 +86,7 @@ class CouplingPortConnection(ARObject):
         if self.first_port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.first_port_ref, "CouplingPort")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIRST-PORT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIRST-PORT-REF")
 
         # Serialize node_port_refs (list to container "NODE-PORT-REFS")
         if self.node_port_refs:
@@ -102,14 +94,7 @@ class CouplingPortConnection(ARObject):
             for item in self.node_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "CouplingPort")
                 if serialized is not None:
-                    child_elem = ET.Element("NODE-PORT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "NODE-PORT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -117,43 +102,19 @@ class CouplingPortConnection(ARObject):
         if self.plca_local_node is not None:
             serialized = SerializationHelper.serialize_item(self.plca_local_node, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PLCA-LOCAL-NODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PLCA-LOCAL-NODE")
 
         # Serialize plca_transmit
         if self.plca_transmit is not None:
             serialized = SerializationHelper.serialize_item(self.plca_transmit, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PLCA-TRANSMIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PLCA-TRANSMIT")
 
         # Serialize second_port_ref
         if self.second_port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.second_port_ref, "CouplingPort")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECOND-PORT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECOND-PORT-REF")
 
         return elem
 

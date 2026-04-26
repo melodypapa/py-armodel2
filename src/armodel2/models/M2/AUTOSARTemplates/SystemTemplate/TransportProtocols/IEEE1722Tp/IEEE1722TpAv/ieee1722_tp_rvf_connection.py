@@ -100,113 +100,49 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
         if self.rvf_active_pixels is not None:
             serialized = SerializationHelper.serialize_item(self.rvf_active_pixels, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RVF-ACTIVE-PIXELS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RVF-ACTIVE-PIXELS")
 
         # Serialize rvf_color_space
         if self.rvf_color_space is not None:
             serialized = SerializationHelper.serialize_item(self.rvf_color_space, "IEEE1722TpRvfColorSpaceEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RVF-COLOR-SPACE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RVF-COLOR-SPACE")
 
         # Serialize rvf_event_default
         if self.rvf_event_default is not None:
             serialized = SerializationHelper.serialize_item(self.rvf_event_default, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RVF-EVENT-DEFAULT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RVF-EVENT-DEFAULT")
 
         # Serialize rvf_frame_rate
         if self.rvf_frame_rate is not None:
             serialized = SerializationHelper.serialize_item(self.rvf_frame_rate, "IEEE1722TpRvfFrameRateEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RVF-FRAME-RATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RVF-FRAME-RATE")
 
         # Serialize rvf_interlaced
         if self.rvf_interlaced is not None:
             serialized = SerializationHelper.serialize_item(self.rvf_interlaced, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RVF-INTERLACED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RVF-INTERLACED")
 
         # Serialize rvf_pixel_depth
         if self.rvf_pixel_depth is not None:
             serialized = SerializationHelper.serialize_item(self.rvf_pixel_depth, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RVF-PIXEL-DEPTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RVF-PIXEL-DEPTH")
 
         # Serialize rvf_pixel_format
         if self.rvf_pixel_format is not None:
             serialized = SerializationHelper.serialize_item(self.rvf_pixel_format, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RVF-PIXEL-FORMAT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RVF-PIXEL-FORMAT")
 
         # Serialize rvf_total_lines
         if self.rvf_total_lines is not None:
             serialized = SerializationHelper.serialize_item(self.rvf_total_lines, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RVF-TOTAL-LINES")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RVF-TOTAL-LINES")
 
         return elem
 

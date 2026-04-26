@@ -239,15 +239,7 @@ class RunnableEntity(ExecutableEntity):
         if self.can_be_invoked_concurrently is not None:
             serialized = SerializationHelper.serialize_item(self.can_be_invoked_concurrently, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-BE-INVOKED-CONCURRENTLY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-BE-INVOKED-CONCURRENTLY")
 
         # Serialize data_read_accesses (list to container "DATA-READ-ACCESSS")
         if self.data_read_accesses:
@@ -305,14 +297,7 @@ class RunnableEntity(ExecutableEntity):
             for item in self.external_triggering_point_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExternalTriggeringPoint")
                 if serialized is not None:
-                    child_elem = ET.Element("EXTERNAL-TRIGGERING-POINT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "EXTERNAL-TRIGGERING-POINT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -322,14 +307,7 @@ class RunnableEntity(ExecutableEntity):
             for item in self.internal_triggering_point_refs:
                 serialized = SerializationHelper.serialize_item(item, "InternalTriggeringPoint")
                 if serialized is not None:
-                    child_elem = ET.Element("INTERNAL-TRIGGERING-POINT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "INTERNAL-TRIGGERING-POINT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -387,15 +365,7 @@ class RunnableEntity(ExecutableEntity):
         if self.symbol is not None:
             serialized = SerializationHelper.serialize_item(self.symbol, "CIdentifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYMBOL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYMBOL")
 
         # Serialize wait_points (list to container "WAIT-POINTS")
         if self.wait_points:

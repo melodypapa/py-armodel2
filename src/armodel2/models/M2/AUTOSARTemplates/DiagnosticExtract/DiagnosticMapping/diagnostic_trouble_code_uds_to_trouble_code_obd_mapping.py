@@ -78,29 +78,13 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
         if self.trouble_code_ref is not None:
             serialized = SerializationHelper.serialize_item(self.trouble_code_ref, "DiagnosticTroubleCode")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TROUBLE-CODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TROUBLE-CODE-REF")
 
         # Serialize trouble_code_uds_ref
         if self.trouble_code_uds_ref is not None:
             serialized = SerializationHelper.serialize_item(self.trouble_code_uds_ref, "DiagnosticTroubleCode")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TROUBLE-CODE-UDS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TROUBLE-CODE-UDS-REF")
 
         return elem
 

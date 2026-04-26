@@ -153,14 +153,7 @@ class NvBlockDescriptor(Identifiable):
             for item in self.constant_value_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConstantSpecificationMappingSet")
                 if serialized is not None:
-                    child_elem = ET.Element("CONSTANT-VALUE-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONSTANT-VALUE-MAPPING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -170,14 +163,7 @@ class NvBlockDescriptor(Identifiable):
             for item in self.data_type_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
-                    child_elem = ET.Element("DATA-TYPE-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DATA-TYPE-MAPPING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -215,71 +201,31 @@ class NvBlockDescriptor(Identifiable):
         if self.nv_block_needs is not None:
             serialized = SerializationHelper.serialize_item(self.nv_block_needs, "NvBlockNeeds")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NV-BLOCK-NEEDS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NV-BLOCK-NEEDS")
 
         # Serialize ram_block
         if self.ram_block is not None:
             serialized = SerializationHelper.serialize_item(self.ram_block, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RAM-BLOCK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RAM-BLOCK")
 
         # Serialize rom_block
         if self.rom_block is not None:
             serialized = SerializationHelper.serialize_item(self.rom_block, "ParameterDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROM-BLOCK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROM-BLOCK")
 
         # Serialize support_dirty_flag
         if self.support_dirty_flag is not None:
             serialized = SerializationHelper.serialize_item(self.support_dirty_flag, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUPPORT-DIRTY-FLAG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUPPORT-DIRTY-FLAG")
 
         # Serialize timing_event_ref
         if self.timing_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.timing_event_ref, "TimingEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMING-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMING-EVENT-REF")
 
         # Serialize writing_strategies (list to container "WRITING-STRATEGYS")
         if self.writing_strategies:

@@ -91,57 +91,25 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         if self.enhanced_mode_api is not None:
             serialized = SerializationHelper.serialize_item(self.enhanced_mode_api, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENHANCED-MODE-API")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENHANCED-MODE-API")
 
         # Serialize mode_group_ref
         if self.mode_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroupPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODE-GROUP-REF")
 
         # Serialize mode_switched_ack
         if self.mode_switched_ack is not None:
             serialized = SerializationHelper.serialize_item(self.mode_switched_ack, "ModeSwitchedAckRequest")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-SWITCHED-ACK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODE-SWITCHED-ACK")
 
         # Serialize queue_length
         if self.queue_length is not None:
             serialized = SerializationHelper.serialize_item(self.queue_length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("QUEUE-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "QUEUE-LENGTH")
 
         return elem
 

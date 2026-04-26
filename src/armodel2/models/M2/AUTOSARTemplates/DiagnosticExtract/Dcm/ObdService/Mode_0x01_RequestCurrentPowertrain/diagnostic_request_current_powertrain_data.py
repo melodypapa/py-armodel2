@@ -78,29 +78,13 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         if self.pid_ref is not None:
             serialized = SerializationHelper.serialize_item(self.pid_ref, "DiagnosticParameter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PID-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PID-REF")
 
         # Serialize request_current_ref
         if self.request_current_ref is not None:
             serialized = SerializationHelper.serialize_item(self.request_current_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUEST-CURRENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REQUEST-CURRENT-REF")
 
         return elem
 

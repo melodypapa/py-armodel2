@@ -95,85 +95,37 @@ class SecurityEventContextProps(Identifiable):
         if self.context_data is not None:
             serialized = SerializationHelper.serialize_item(self.context_data, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-DATA")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTEXT-DATA")
 
         # Serialize default
         if self.default is not None:
             serialized = SerializationHelper.serialize_item(self.default, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT")
 
         # Serialize persistent
         if self.persistent is not None:
             serialized = SerializationHelper.serialize_item(self.persistent, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PERSISTENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PERSISTENT")
 
         # Serialize security_event_ref
         if self.security_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.security_event_ref, "SecurityEventDefinition")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECURITY-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECURITY-EVENT-REF")
 
         # Serialize sensor_instance
         if self.sensor_instance is not None:
             serialized = SerializationHelper.serialize_item(self.sensor_instance, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SENSOR-INSTANCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SENSOR-INSTANCE")
 
         # Serialize severity
         if self.severity is not None:
             serialized = SerializationHelper.serialize_item(self.severity, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SEVERITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SEVERITY")
 
         return elem
 

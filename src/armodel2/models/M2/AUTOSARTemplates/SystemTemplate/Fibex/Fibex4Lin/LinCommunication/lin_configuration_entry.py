@@ -79,29 +79,13 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
         if self.assigned_ref is not None:
             serialized = SerializationHelper.serialize_item(self.assigned_ref, "LinSlave")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ASSIGNED-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ASSIGNED-REF")
 
         # Serialize assigned_lin_ref
         if self.assigned_lin_ref is not None:
             serialized = SerializationHelper.serialize_item(self.assigned_lin_ref, "LinSlaveConfigIdent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ASSIGNED-LIN-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ASSIGNED-LIN-REF")
 
         return elem
 

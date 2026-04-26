@@ -81,29 +81,13 @@ class PTriggerInAtomicSwcTypeInstanceRef(TriggerInAtomicSwcInstanceRef):
         if self.context_p_port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.context_p_port_ref, "AbstractProvidedPortPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-P-PORT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTEXT-P-PORT-REF")
 
         # Serialize target_trigger_ref
         if self.target_trigger_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_trigger_ref, "Trigger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-TRIGGER-REF")
 
         return elem
 

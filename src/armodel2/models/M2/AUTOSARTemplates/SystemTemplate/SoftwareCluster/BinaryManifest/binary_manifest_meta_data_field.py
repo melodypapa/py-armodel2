@@ -78,29 +78,13 @@ class BinaryManifestMetaDataField(BinaryManifestAddressableObject):
         if self.size is not None:
             serialized = SerializationHelper.serialize_item(self.size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SIZE")
 
         # Serialize value
         if self.value is not None:
             serialized = SerializationHelper.serialize_item(self.value, "VerbatimString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VALUE")
 
         return elem
 

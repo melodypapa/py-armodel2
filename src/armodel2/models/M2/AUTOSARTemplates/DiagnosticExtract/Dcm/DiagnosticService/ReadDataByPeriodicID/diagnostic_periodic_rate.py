@@ -73,29 +73,13 @@ class DiagnosticPeriodicRate(ARObject):
         if self.period is not None:
             serialized = SerializationHelper.serialize_item(self.period, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PERIOD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PERIOD")
 
         # Serialize periodic_rate
         if self.periodic_rate is not None:
             serialized = SerializationHelper.serialize_item(self.periodic_rate, "DiagnosticPeriodicRate")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PERIODIC-RATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PERIODIC-RATE")
 
         return elem
 

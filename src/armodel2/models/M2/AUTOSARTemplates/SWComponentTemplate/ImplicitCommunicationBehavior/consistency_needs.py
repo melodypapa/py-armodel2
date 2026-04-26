@@ -93,14 +93,7 @@ class ConsistencyNeeds(Identifiable):
             for item in self.dpg_does_not_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataPrototypeGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("DPG-DOES-NOT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DPG-DOES-NOT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -110,14 +103,7 @@ class ConsistencyNeeds(Identifiable):
             for item in self.dpg_require_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataPrototypeGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("DPG-REQUIRE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DPG-REQUIRE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -127,14 +113,7 @@ class ConsistencyNeeds(Identifiable):
             for item in self.reg_does_not_refs:
                 serialized = SerializationHelper.serialize_item(item, "RunnableEntityGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("REG-DOES-NOT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "REG-DOES-NOT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -144,14 +123,7 @@ class ConsistencyNeeds(Identifiable):
             for item in self.reg_require_refs:
                 serialized = SerializationHelper.serialize_item(item, "RunnableEntityGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("REG-REQUIRE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "REG-REQUIRE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

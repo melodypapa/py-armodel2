@@ -88,71 +88,31 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
         if self.max_number_of is not None:
             serialized = SerializationHelper.serialize_item(self.max_number_of, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-NUMBER-OF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-NUMBER-OF")
 
         # Serialize max_num
         if self.max_num is not None:
             serialized = SerializationHelper.serialize_item(self.max_num, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-NUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-NUM")
 
         # Serialize max_supported
         if self.max_supported is not None:
             serialized = SerializationHelper.serialize_item(self.max_supported, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-SUPPORTED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-SUPPORTED")
 
         # Serialize response_on
         if self.response_on is not None:
             serialized = SerializationHelper.serialize_item(self.response_on, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESPONSE-ON")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESPONSE-ON")
 
         # Serialize store_event
         if self.store_event is not None:
             serialized = SerializationHelper.serialize_item(self.store_event, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STORE-EVENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STORE-EVENT")
 
         return elem
 

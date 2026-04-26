@@ -94,71 +94,31 @@ class CryptoServiceKey(ARElement):
         if self.algorithm_family is not None:
             serialized = SerializationHelper.serialize_item(self.algorithm_family, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALGORITHM-FAMILY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALGORITHM-FAMILY")
 
         # Serialize development
         if self.development is not None:
             serialized = SerializationHelper.serialize_item(self.development, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEVELOPMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEVELOPMENT")
 
         # Serialize key_generation
         if self.key_generation is not None:
             serialized = SerializationHelper.serialize_item(self.key_generation, "CryptoServiceKey")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("KEY-GENERATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "KEY-GENERATION")
 
         # Serialize key_storage_type
         if self.key_storage_type is not None:
             serialized = SerializationHelper.serialize_item(self.key_storage_type, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("KEY-STORAGE-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "KEY-STORAGE-TYPE")
 
         # Serialize length
         if self.length is not None:
             serialized = SerializationHelper.serialize_item(self.length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LENGTH")
 
         return elem
 

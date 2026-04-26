@@ -84,43 +84,19 @@ class TimingClockSyncAccuracy(Identifiable):
         if self.accuracy is not None:
             serialized = SerializationHelper.serialize_item(self.accuracy, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ACCURACY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ACCURACY")
 
         # Serialize lower_ref
         if self.lower_ref is not None:
             serialized = SerializationHelper.serialize_item(self.lower_ref, "TimingClock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOWER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOWER-REF")
 
         # Serialize upper_ref
         if self.upper_ref is not None:
             serialized = SerializationHelper.serialize_item(self.upper_ref, "TimingClock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPPER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPPER-REF")
 
         return elem
 

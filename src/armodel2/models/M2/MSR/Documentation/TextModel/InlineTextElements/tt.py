@@ -77,43 +77,19 @@ class Tt(ARObject):
         if self.term is not None:
             serialized = SerializationHelper.serialize_item(self.term, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TERM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TERM")
 
         # Serialize tex_render
         if self.tex_render is not None:
             serialized = SerializationHelper.serialize_item(self.tex_render, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TEX-RENDER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TEX-RENDER")
 
         # Serialize type
         if self.type is not None:
             serialized = SerializationHelper.serialize_item(self.type, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TYPE")
 
         return elem
 

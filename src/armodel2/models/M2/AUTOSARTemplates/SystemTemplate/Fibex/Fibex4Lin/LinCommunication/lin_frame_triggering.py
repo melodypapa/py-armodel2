@@ -80,29 +80,13 @@ class LinFrameTriggering(FrameTriggering):
         if self.identifier is not None:
             serialized = SerializationHelper.serialize_item(self.identifier, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDENTIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDENTIFIER")
 
         # Serialize lin_checksum
         if self.lin_checksum is not None:
             serialized = SerializationHelper.serialize_item(self.lin_checksum, "LinChecksumType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LIN-CHECKSUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LIN-CHECKSUM")
 
         return elem
 

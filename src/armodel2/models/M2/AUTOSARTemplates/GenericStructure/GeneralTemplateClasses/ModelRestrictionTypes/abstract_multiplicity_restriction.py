@@ -73,29 +73,13 @@ class AbstractMultiplicityRestriction(ARObject, ABC):
         if self.lower_multiplicity is not None:
             serialized = SerializationHelper.serialize_item(self.lower_multiplicity, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOWER-MULTIPLICITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOWER-MULTIPLICITY")
 
         # Serialize upper_multiplicity
         if self.upper_multiplicity is not None:
             serialized = SerializationHelper.serialize_item(self.upper_multiplicity, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPPER-MULTIPLICITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPPER-MULTIPLICITY")
 
         return elem
 

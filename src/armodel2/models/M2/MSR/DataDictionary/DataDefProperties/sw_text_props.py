@@ -89,57 +89,25 @@ class SwTextProps(ARObject):
         if self.array_size_semantics is not None:
             serialized = SerializationHelper.serialize_item(self.array_size_semantics, "ArraySizeSemanticsEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-SIZE-SEMANTICS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARRAY-SIZE-SEMANTICS")
 
         # Serialize base_type_ref
         if self.base_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.base_type_ref, "SwBaseType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE-TYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE-TYPE-REF")
 
         # Serialize sw_fill_character
         if self.sw_fill_character is not None:
             serialized = SerializationHelper.serialize_item(self.sw_fill_character, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-FILL-CHARACTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-FILL-CHARACTER")
 
         # Serialize sw_max_text_size
         if self.sw_max_text_size is not None:
             serialized = SerializationHelper.serialize_item(self.sw_max_text_size, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-MAX-TEXT-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-MAX-TEXT-SIZE")
 
         return elem
 

@@ -90,15 +90,7 @@ class SwAddrMethod(ARElement):
         if self.memory_allocation_keyword_policy is not None:
             serialized = SerializationHelper.serialize_item(self.memory_allocation_keyword_policy, "MemoryAllocationKeywordPolicyType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MEMORY-ALLOCATION-KEYWORD-POLICY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MEMORY-ALLOCATION-KEYWORD-POLICY")
 
         # Serialize options (list to container "OPTIONS")
         if self.options:
@@ -106,14 +98,7 @@ class SwAddrMethod(ARElement):
             for item in self.options:
                 serialized = SerializationHelper.serialize_item(item, "Identifier")
                 if serialized is not None:
-                    child_elem = ET.Element("OPTION")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "OPTION")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -121,29 +106,13 @@ class SwAddrMethod(ARElement):
         if self.section_initialization_policy is not None:
             serialized = SerializationHelper.serialize_item(self.section_initialization_policy, "SectionInitializationPolicyType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECTION-INITIALIZATION-POLICY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECTION-INITIALIZATION-POLICY")
 
         # Serialize section_type
         if self.section_type is not None:
             serialized = SerializationHelper.serialize_item(self.section_type, "MemorySectionType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECTION-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECTION-TYPE")
 
         return elem
 

@@ -86,43 +86,19 @@ class TDEventVfbPort(TDEventVfb, ABC):
         if self.is_external is not None:
             serialized = SerializationHelper.serialize_item(self.is_external, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-EXTERNAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-EXTERNAL")
 
         # Serialize port_ref
         if self.port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.port_ref, "PortPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PORT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PORT-REF")
 
         # Serialize port_prototype_ref
         if self.port_prototype_ref is not None:
             serialized = SerializationHelper.serialize_item(self.port_prototype_ref, "PortPrototypeBlueprint")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PORT-PROTOTYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PORT-PROTOTYPE-REF")
 
         return elem
 

@@ -87,29 +87,13 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         if self.client_server_ref is not None:
             serialized = SerializationHelper.serialize_item(self.client_server_ref, "ClientServerInterface")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-SERVER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CLIENT-SERVER-REF")
 
         # Serialize operation
         if self.operation is not None:
             serialized = SerializationHelper.serialize_item(self.operation, "ClientServerOperation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OPERATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OPERATION")
 
         # Serialize port_defined_arguments (list to container "PORT-DEFINED-ARGUMENTS")
         if self.port_defined_arguments:

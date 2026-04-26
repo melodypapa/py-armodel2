@@ -77,14 +77,7 @@ class DiagnosticDataIdentifierSet(DiagnosticCommonElement):
             for item in self.data_identifier_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticDataIdentifier")
                 if serialized is not None:
-                    child_elem = ET.Element("DATA-IDENTIFIER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DATA-IDENTIFIER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

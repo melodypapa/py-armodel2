@@ -125,14 +125,7 @@ class McSupportData(ARObject):
             for item in self.measurable_system_constant_value_refs:
                 serialized = SerializationHelper.serialize_item(item, "SwSystemconstantValueSet")
                 if serialized is not None:
-                    child_elem = ET.Element("MEASURABLE-SYSTEM-CONSTANT-VALUE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "MEASURABLE-SYSTEM-CONSTANT-VALUE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -140,15 +133,7 @@ class McSupportData(ARObject):
         if self.rpt_support_data is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_support_data, "RptSupportData")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-SUPPORT-DATA")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-SUPPORT-DATA")
 
         return elem
 

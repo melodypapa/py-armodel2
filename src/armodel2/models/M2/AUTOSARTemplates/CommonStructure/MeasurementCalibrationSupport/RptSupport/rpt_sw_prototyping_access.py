@@ -77,43 +77,19 @@ class RptSwPrototypingAccess(ARObject):
         if self.rpt_hook_access is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_hook_access, "RptAccessEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-HOOK-ACCESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-HOOK-ACCESS")
 
         # Serialize rpt_read_access
         if self.rpt_read_access is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_read_access, "RptAccessEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-READ-ACCESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-READ-ACCESS")
 
         # Serialize rpt_write_access
         if self.rpt_write_access is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_write_access, "RptAccessEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-WRITE-ACCESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-WRITE-ACCESS")
 
         return elem
 

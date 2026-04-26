@@ -96,15 +96,7 @@ class RptComponent(Identifiable):
         if self.rp_impl_policy is not None:
             serialized = SerializationHelper.serialize_item(self.rp_impl_policy, "RptImplPolicy")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RP-IMPL-POLICY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RP-IMPL-POLICY")
 
         # Serialize rpt_executable_entities (list to container "RPT-EXECUTABLE-ENTITYS")
         if self.rpt_executable_entities:

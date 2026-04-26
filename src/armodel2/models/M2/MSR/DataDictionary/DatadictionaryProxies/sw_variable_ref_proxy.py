@@ -80,29 +80,13 @@ class SwVariableRefProxy(ARObject):
         if self.autosar_variable_ref is not None:
             serialized = SerializationHelper.serialize_item(self.autosar_variable_ref, "AutosarVariableRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AUTOSAR-VARIABLE-REF-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AUTOSAR-VARIABLE-REF-REF")
 
         # Serialize mc_data_instance_ref
         if self.mc_data_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mc_data_instance_ref, "McDataInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MC-DATA-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MC-DATA-INSTANCE-REF")
 
         return elem
 

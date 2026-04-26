@@ -77,29 +77,13 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         if self.role is not None:
             serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROLE")
 
         # Serialize swc_mode_switch_event_ref
         if self.swc_mode_switch_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.swc_mode_switch_event_ref, "SwcModeSwitchEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SWC-MODE-SWITCH-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SWC-MODE-SWITCH-EVENT-REF")
 
         return elem
 

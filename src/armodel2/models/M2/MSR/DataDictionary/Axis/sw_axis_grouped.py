@@ -90,43 +90,19 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         if self.shared_axis_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.shared_axis_type_ref, "ApplicationPrimitiveDataType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHARED-AXIS-TYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHARED-AXIS-TYPE-REF")
 
         # Serialize sw_axis_index
         if self.sw_axis_index is not None:
             serialized = SerializationHelper.serialize_item(self.sw_axis_index, "AxisIndexType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-AXIS-INDEX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-AXIS-INDEX")
 
         # Serialize sw_calprm_ref_proxy_ref
         if self.sw_calprm_ref_proxy_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sw_calprm_ref_proxy_ref, "SwCalprmRefProxy")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-CALPRM-REF-PROXY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-CALPRM-REF-PROXY-REF")
 
         return elem
 

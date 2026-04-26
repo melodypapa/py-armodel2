@@ -150,15 +150,7 @@ class Implementation(ARElement, ABC):
         if self.build_action_manifest_ref is not None:
             serialized = SerializationHelper.serialize_item(self.build_action_manifest_ref, "BuildActionManifest")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BUILD-ACTION-MANIFEST-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BUILD-ACTION-MANIFEST-REF")
 
         # Serialize code_descriptors (list to container "CODE-DESCRIPTORS")
         if self.code_descriptors:
@@ -196,14 +188,7 @@ class Implementation(ARElement, ABC):
             for item in self.hw_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "HwElement")
                 if serialized is not None:
-                    child_elem = ET.Element("HW-ELEMENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "HW-ELEMENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -221,29 +206,13 @@ class Implementation(ARElement, ABC):
         if self.mc_support is not None:
             serialized = SerializationHelper.serialize_item(self.mc_support, "McSupportData")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MC-SUPPORT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MC-SUPPORT")
 
         # Serialize programming_language
         if self.programming_language is not None:
             serialized = SerializationHelper.serialize_item(self.programming_language, "ProgramminglanguageEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROGRAMMING-LANGUAGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROGRAMMING-LANGUAGE")
 
         # Serialize required_artifacts (list to container "REQUIRED-ARTIFACTS")
         if self.required_artifacts:
@@ -269,71 +238,31 @@ class Implementation(ARElement, ABC):
         if self.resource_consumption is not None:
             serialized = SerializationHelper.serialize_item(self.resource_consumption, "ResourceConsumption")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESOURCE-CONSUMPTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESOURCE-CONSUMPTION")
 
         # Serialize sw_version
         if self.sw_version is not None:
             serialized = SerializationHelper.serialize_item(self.sw_version, "RevisionLabelString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-VERSION")
 
         # Serialize swc_bsw_mapping_ref
         if self.swc_bsw_mapping_ref is not None:
             serialized = SerializationHelper.serialize_item(self.swc_bsw_mapping_ref, "SwcBswMapping")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SWC-BSW-MAPPING-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SWC-BSW-MAPPING-REF")
 
         # Serialize used_code_generator
         if self.used_code_generator is not None:
             serialized = SerializationHelper.serialize_item(self.used_code_generator, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USED-CODE-GENERATOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USED-CODE-GENERATOR")
 
         # Serialize vendor_id
         if self.vendor_id is not None:
             serialized = SerializationHelper.serialize_item(self.vendor_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VENDOR-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VENDOR-ID")
 
         return elem
 

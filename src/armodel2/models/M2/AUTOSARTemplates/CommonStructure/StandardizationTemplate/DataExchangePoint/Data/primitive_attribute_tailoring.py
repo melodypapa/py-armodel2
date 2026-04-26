@@ -83,15 +83,7 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
         if self.default_value is not None:
             serialized = SerializationHelper.serialize_item(self.default_value, "DefaultValueApplicationStrategyEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-VALUE")
 
         # Serialize sub_attributes (list to container "SUB-ATTRIBUTES")
         if self.sub_attributes:
@@ -107,15 +99,7 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
         if self.value_restriction_with_severity is not None:
             serialized = SerializationHelper.serialize_item(self.value_restriction_with_severity, "ValueRestrictionWithSeverity")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VALUE-RESTRICTION-WITH-SEVERITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VALUE-RESTRICTION-WITH-SEVERITY")
 
         return elem
 

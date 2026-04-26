@@ -92,71 +92,31 @@ class CryptoServiceCertificate(ARElement):
         if self.algorithm_family is not None:
             serialized = SerializationHelper.serialize_item(self.algorithm_family, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALGORITHM-FAMILY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALGORITHM-FAMILY")
 
         # Serialize format
         if self.format is not None:
             serialized = SerializationHelper.serialize_item(self.format, "CryptoCertificateFormatEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FORMAT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FORMAT")
 
         # Serialize maximum
         if self.maximum is not None:
             serialized = SerializationHelper.serialize_item(self.maximum, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAXIMUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAXIMUM")
 
         # Serialize next_higher_ref
         if self.next_higher_ref is not None:
             serialized = SerializationHelper.serialize_item(self.next_higher_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NEXT-HIGHER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NEXT-HIGHER-REF")
 
         # Serialize server_name
         if self.server_name is not None:
             serialized = SerializationHelper.serialize_item(self.server_name, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SERVER-NAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SERVER-NAME")
 
         return elem
 

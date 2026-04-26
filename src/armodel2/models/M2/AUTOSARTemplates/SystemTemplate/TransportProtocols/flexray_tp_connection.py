@@ -111,43 +111,19 @@ class FlexrayTpConnection(TpConnection):
         if self.bandwidth is not None:
             serialized = SerializationHelper.serialize_item(self.bandwidth, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BANDWIDTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BANDWIDTH")
 
         # Serialize direct_tp_sdu_ref
         if self.direct_tp_sdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.direct_tp_sdu_ref, "IPdu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIRECT-TP-SDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIRECT-TP-SDU-REF")
 
         # Serialize multicast_ref
         if self.multicast_ref is not None:
             serialized = SerializationHelper.serialize_item(self.multicast_ref, "TpAddress")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MULTICAST-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MULTICAST-REF")
 
         # Serialize receiver_refs (list to container "RECEIVER-REFS")
         if self.receiver_refs:
@@ -155,14 +131,7 @@ class FlexrayTpConnection(TpConnection):
             for item in self.receiver_refs:
                 serialized = SerializationHelper.serialize_item(item, "FlexrayTpNode")
                 if serialized is not None:
-                    child_elem = ET.Element("RECEIVER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "RECEIVER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -170,71 +139,31 @@ class FlexrayTpConnection(TpConnection):
         if self.reversed_tp_sdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.reversed_tp_sdu_ref, "IPdu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REVERSED-TP-SDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REVERSED-TP-SDU-REF")
 
         # Serialize rx_pdu_pool_ref
         if self.rx_pdu_pool_ref is not None:
             serialized = SerializationHelper.serialize_item(self.rx_pdu_pool_ref, "FlexrayTpPduPool")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RX-PDU-POOL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RX-PDU-POOL-REF")
 
         # Serialize tp_connection_ref
         if self.tp_connection_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tp_connection_ref, "FlexrayTpConnection")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TP-CONNECTION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TP-CONNECTION-REF")
 
         # Serialize transmitter_ref
         if self.transmitter_ref is not None:
             serialized = SerializationHelper.serialize_item(self.transmitter_ref, "FlexrayTpNode")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSMITTER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSMITTER-REF")
 
         # Serialize tx_pdu_pool_ref
         if self.tx_pdu_pool_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tx_pdu_pool_ref, "FlexrayTpPduPool")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TX-PDU-POOL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TX-PDU-POOL-REF")
 
         return elem
 

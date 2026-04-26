@@ -98,29 +98,13 @@ class AutosarVariableRef(ARObject):
         if self.autosar_variable_in_impl_datatype is not None:
             serialized = SerializationHelper.serialize_item(self.autosar_variable_in_impl_datatype, "ArVariableInImplementationDataInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AUTOSAR-VARIABLE-IN-IMPL-DATATYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AUTOSAR-VARIABLE-IN-IMPL-DATATYPE")
 
         # Serialize local_variable_ref
         if self.local_variable_ref is not None:
             serialized = SerializationHelper.serialize_item(self.local_variable_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOCAL-VARIABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOCAL-VARIABLE-REF")
 
         return elem
 

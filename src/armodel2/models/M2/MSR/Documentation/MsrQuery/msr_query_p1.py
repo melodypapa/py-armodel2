@@ -95,15 +95,7 @@ class MsrQueryP1(Paginateable):
         if self.msr_query_props is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query_props, "MsrQueryProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MSR-QUERY-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MSR-QUERY-PROPS")
 
         # Serialize msr_query_result (atp_mixed - append children directly)
         if self.msr_query_result is not None:
@@ -122,43 +114,19 @@ class MsrQueryP1(Paginateable):
         if self.block_level is not None:
             serialized = SerializationHelper.serialize_item(self.block_level, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BLOCK-LEVEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BLOCK-LEVEL")
 
         # Serialize table
         if self.table is not None:
             serialized = SerializationHelper.serialize_item(self.table, "Table")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TABLE")
 
         # Serialize traceable_table
         if self.traceable_table is not None:
             serialized = SerializationHelper.serialize_item(self.traceable_table, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRACEABLE-TABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRACEABLE-TABLE")
 
         return elem
 

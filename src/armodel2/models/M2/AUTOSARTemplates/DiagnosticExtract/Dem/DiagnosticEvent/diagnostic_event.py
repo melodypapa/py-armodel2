@@ -104,43 +104,19 @@ class DiagnosticEvent(DiagnosticCommonElement):
         if self.associated is not None:
             serialized = SerializationHelper.serialize_item(self.associated, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ASSOCIATED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ASSOCIATED")
 
         # Serialize clear_event
         if self.clear_event is not None:
             serialized = SerializationHelper.serialize_item(self.clear_event, "DiagnosticClearEventAllowedBehaviorEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CLEAR-EVENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CLEAR-EVENT")
 
         # Serialize confirmation
         if self.confirmation is not None:
             serialized = SerializationHelper.serialize_item(self.confirmation, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONFIRMATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONFIRMATION")
 
         # Serialize connecteds (list to container "CONNECTEDS")
         if self.connecteds:
@@ -156,71 +132,31 @@ class DiagnosticEvent(DiagnosticCommonElement):
         if self.event_clear is not None:
             serialized = SerializationHelper.serialize_item(self.event_clear, "DiagnosticEventClearAllowedEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-CLEAR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-CLEAR")
 
         # Serialize event_kind
         if self.event_kind is not None:
             serialized = SerializationHelper.serialize_item(self.event_kind, "DiagnosticEventKindEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-KIND")
 
         # Serialize prestorage
         if self.prestorage is not None:
             serialized = SerializationHelper.serialize_item(self.prestorage, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRESTORAGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRESTORAGE")
 
         # Serialize prestored
         if self.prestored is not None:
             serialized = SerializationHelper.serialize_item(self.prestored, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRESTORED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRESTORED")
 
         # Serialize recoverable_in
         if self.recoverable_in is not None:
             serialized = SerializationHelper.serialize_item(self.recoverable_in, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RECOVERABLE-IN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RECOVERABLE-IN")
 
         return elem
 

@@ -78,29 +78,13 @@ class DiagnosticRequestControlOfOnBoardDevice(DiagnosticServiceInstance):
         if self.request_control_ref is not None:
             serialized = SerializationHelper.serialize_item(self.request_control_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUEST-CONTROL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REQUEST-CONTROL-REF")
 
         # Serialize test_id_identifier_ref
         if self.test_id_identifier_ref is not None:
             serialized = SerializationHelper.serialize_item(self.test_id_identifier_ref, "DiagnosticTestRoutineIdentifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TEST-ID-IDENTIFIER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TEST-ID-IDENTIFIER-REF")
 
         return elem
 

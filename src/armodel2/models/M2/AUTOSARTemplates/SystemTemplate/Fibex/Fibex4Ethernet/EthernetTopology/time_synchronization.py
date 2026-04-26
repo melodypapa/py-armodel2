@@ -76,29 +76,13 @@ class TimeSynchronization(ARObject):
         if self.time_sync_client_configuration is not None:
             serialized = SerializationHelper.serialize_item(self.time_sync_client_configuration, "TimeSyncClientConfiguration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-SYNC-CLIENT-CONFIGURATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-SYNC-CLIENT-CONFIGURATION")
 
         # Serialize time_sync_server_configuration
         if self.time_sync_server_configuration is not None:
             serialized = SerializationHelper.serialize_item(self.time_sync_server_configuration, "TimeSyncServerConfiguration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-SYNC-SERVER-CONFIGURATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-SYNC-SERVER-CONFIGURATION")
 
         return elem
 

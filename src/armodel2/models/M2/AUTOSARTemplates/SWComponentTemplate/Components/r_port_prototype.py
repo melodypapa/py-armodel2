@@ -85,29 +85,13 @@ class RPortPrototype(AbstractRequiredPortPrototype):
         if self.may_be_unconnected is not None:
             serialized = SerializationHelper.serialize_item(self.may_be_unconnected, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAY-BE-UNCONNECTED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAY-BE-UNCONNECTED")
 
         # Serialize required_interface_ref
         if self.required_interface_ref is not None:
             serialized = SerializationHelper.serialize_item(self.required_interface_ref, "PortInterface")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUIRED-INTERFACE-TREF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REQUIRED-INTERFACE-TREF")
 
         return elem
 

@@ -94,57 +94,25 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
         if self.computed is not None:
             serialized = SerializationHelper.serialize_item(self.computed, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMPUTED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMPUTED")
 
         # Serialize data_element_ref
         if self.data_element_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_element_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-ELEMENT-REF")
 
         # Serialize limit_kind
         if self.limit_kind is not None:
             serialized = SerializationHelper.serialize_item(self.limit_kind, "DataLimitKindEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LIMIT-KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LIMIT-KIND")
 
         # Serialize processing_kind_enum
         if self.processing_kind_enum is not None:
             serialized = SerializationHelper.serialize_item(self.processing_kind_enum, "ProcessingKindEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROCESSING-KIND-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROCESSING-KIND-ENUM")
 
         return elem
 

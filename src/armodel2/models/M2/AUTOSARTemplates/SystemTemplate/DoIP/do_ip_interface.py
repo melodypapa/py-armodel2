@@ -125,29 +125,13 @@ class DoIpInterface(Identifiable):
         if self.alive_check is not None:
             serialized = SerializationHelper.serialize_item(self.alive_check, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALIVE-CHECK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALIVE-CHECK")
 
         # Serialize doip_channel_ref
         if self.doip_channel_ref is not None:
             serialized = SerializationHelper.serialize_item(self.doip_channel_ref, "DoIpTpConfig")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DOIP-CHANNEL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DOIP-CHANNEL-REF")
 
         # Serialize doip_connection_refs (list to container "DOIP-CONNECTION-REFS")
         if self.doip_connection_refs:
@@ -155,14 +139,7 @@ class DoIpInterface(Identifiable):
             for item in self.doip_connection_refs:
                 serialized = SerializationHelper.serialize_item(item, "SocketConnection")
                 if serialized is not None:
-                    child_elem = ET.Element("DOIP-CONNECTION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DOIP-CONNECTION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -180,71 +157,31 @@ class DoIpInterface(Identifiable):
         if self.general_inactivity is not None:
             serialized = SerializationHelper.serialize_item(self.general_inactivity, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GENERAL-INACTIVITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "GENERAL-INACTIVITY")
 
         # Serialize initial_inactivity
         if self.initial_inactivity is not None:
             serialized = SerializationHelper.serialize_item(self.initial_inactivity, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INITIAL-INACTIVITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INITIAL-INACTIVITY")
 
         # Serialize initial_vehicle
         if self.initial_vehicle is not None:
             serialized = SerializationHelper.serialize_item(self.initial_vehicle, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INITIAL-VEHICLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INITIAL-VEHICLE")
 
         # Serialize is_activation_line
         if self.is_activation_line is not None:
             serialized = SerializationHelper.serialize_item(self.is_activation_line, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-ACTIVATION-LINE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-ACTIVATION-LINE")
 
         # Serialize max_tester
         if self.max_tester is not None:
             serialized = SerializationHelper.serialize_item(self.max_tester, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-TESTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-TESTER")
 
         # Serialize socket_refs (list to container "SOCKET-REFS")
         if self.socket_refs:
@@ -252,14 +189,7 @@ class DoIpInterface(Identifiable):
             for item in self.socket_refs:
                 serialized = SerializationHelper.serialize_item(item, "StaticSocketConnection")
                 if serialized is not None:
-                    child_elem = ET.Element("SOCKET-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SOCKET-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -267,43 +197,19 @@ class DoIpInterface(Identifiable):
         if self.use_mac_address is not None:
             serialized = SerializationHelper.serialize_item(self.use_mac_address, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USE-MAC-ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USE-MAC-ADDRESS")
 
         # Serialize use_vehicle
         if self.use_vehicle is not None:
             serialized = SerializationHelper.serialize_item(self.use_vehicle, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USE-VEHICLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USE-VEHICLE")
 
         # Serialize vehicle
         if self.vehicle is not None:
             serialized = SerializationHelper.serialize_item(self.vehicle, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VEHICLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VEHICLE")
 
         return elem
 

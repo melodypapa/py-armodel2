@@ -82,43 +82,19 @@ class BuildEngineeringObject(EngineeringObject):
         if self.file_type is not None:
             serialized = SerializationHelper.serialize_item(self.file_type, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FILE-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FILE-TYPE")
 
         # Serialize file_type_pattern
         if self.file_type_pattern is not None:
             serialized = SerializationHelper.serialize_item(self.file_type_pattern, "RegularExpression")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FILE-TYPE-PATTERN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FILE-TYPE-PATTERN")
 
         # Serialize intended
         if self.intended is not None:
             serialized = SerializationHelper.serialize_item(self.intended, "UriString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTENDED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTENDED")
 
         return elem
 

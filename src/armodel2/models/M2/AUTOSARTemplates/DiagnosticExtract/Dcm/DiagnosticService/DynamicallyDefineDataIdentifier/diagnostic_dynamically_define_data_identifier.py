@@ -84,43 +84,19 @@ class DiagnosticDynamicallyDefineDataIdentifier(DiagnosticServiceInstance):
         if self.data_identifier_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_identifier_ref, "DiagnosticDynamicDataIdentifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-IDENTIFIER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-IDENTIFIER-REF")
 
         # Serialize dynamically_ref
         if self.dynamically_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dynamically_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DYNAMICALLY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DYNAMICALLY-REF")
 
         # Serialize max_source
         if self.max_source is not None:
             serialized = SerializationHelper.serialize_item(self.max_source, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-SOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-SOURCE")
 
         return elem
 

@@ -88,15 +88,7 @@ class ISignalTriggering(Identifiable):
         if self.i_signal_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.i_signal_group_ref, "ISignalGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "I-SIGNAL-GROUP-REF")
 
         # Serialize i_signal_port_refs (list to container "I-SIGNAL-PORT-REFS")
         if self.i_signal_port_refs:
@@ -104,14 +96,7 @@ class ISignalTriggering(Identifiable):
             for item in self.i_signal_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalPort")
                 if serialized is not None:
-                    child_elem = ET.Element("I-SIGNAL-PORT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "I-SIGNAL-PORT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -119,15 +104,7 @@ class ISignalTriggering(Identifiable):
         if self.i_signal_ref is not None:
             serialized = SerializationHelper.serialize_item(self.i_signal_ref, "ISignal")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "I-SIGNAL-REF")
 
         return elem
 

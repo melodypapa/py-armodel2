@@ -80,29 +80,13 @@ class EventControlledTiming(Describable):
         if self.number_of_repetitions is not None:
             serialized = SerializationHelper.serialize_item(self.number_of_repetitions, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NUMBER-OF-REPETITIONS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NUMBER-OF-REPETITIONS")
 
         # Serialize repetition_period
         if self.repetition_period is not None:
             serialized = SerializationHelper.serialize_item(self.repetition_period, "TimeRangeType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REPETITION-PERIOD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REPETITION-PERIOD")
 
         return elem
 

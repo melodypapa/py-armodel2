@@ -75,15 +75,7 @@ class ReferenceValueSpecification(ValueSpecification):
         if self.reference_value_ref is not None:
             serialized = SerializationHelper.serialize_item(self.reference_value_ref, "DataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REFERENCE-VALUE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REFERENCE-VALUE-REF")
 
         return elem
 

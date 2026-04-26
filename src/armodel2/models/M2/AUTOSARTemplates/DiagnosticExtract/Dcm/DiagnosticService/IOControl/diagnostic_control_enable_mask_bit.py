@@ -77,15 +77,7 @@ class DiagnosticControlEnableMaskBit(ARObject):
         if self.bit_number is not None:
             serialized = SerializationHelper.serialize_item(self.bit_number, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BIT-NUMBER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BIT-NUMBER")
 
         # Serialize controlled_data_refs (list to container "CONTROLLED-DATA-REFS")
         if self.controlled_data_refs:
@@ -93,14 +85,7 @@ class DiagnosticControlEnableMaskBit(ARObject):
             for item in self.controlled_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticDataElement")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTROLLED-DATA-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONTROLLED-DATA-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

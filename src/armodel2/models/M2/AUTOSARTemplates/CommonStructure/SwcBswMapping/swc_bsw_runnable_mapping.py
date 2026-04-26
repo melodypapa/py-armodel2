@@ -77,29 +77,13 @@ class SwcBswRunnableMapping(ARObject):
         if self.bsw_entity_ref is not None:
             serialized = SerializationHelper.serialize_item(self.bsw_entity_ref, "BswModuleEntity")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BSW-ENTITY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BSW-ENTITY-REF")
 
         # Serialize swc_runnable_ref
         if self.swc_runnable_ref is not None:
             serialized = SerializationHelper.serialize_item(self.swc_runnable_ref, "RunnableEntity")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SWC-RUNNABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SWC-RUNNABLE-REF")
 
         return elem
 

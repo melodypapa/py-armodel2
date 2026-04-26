@@ -76,29 +76,13 @@ class DdsReliability(ARObject):
         if self.reliability_kind is not None:
             serialized = SerializationHelper.serialize_item(self.reliability_kind, "DdsReliabilityKindEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RELIABILITY-KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RELIABILITY-KIND")
 
         # Serialize reliability_max
         if self.reliability_max is not None:
             serialized = SerializationHelper.serialize_item(self.reliability_max, "Float")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RELIABILITY-MAX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RELIABILITY-MAX")
 
         return elem
 

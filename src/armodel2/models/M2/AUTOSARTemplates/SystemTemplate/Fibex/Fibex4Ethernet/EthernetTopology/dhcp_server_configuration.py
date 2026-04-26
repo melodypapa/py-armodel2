@@ -76,29 +76,13 @@ class DhcpServerConfiguration(ARObject):
         if self.ipv4_dhcp_server is not None:
             serialized = SerializationHelper.serialize_item(self.ipv4_dhcp_server, "Ipv4DhcpServerConfiguration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IPV4-DHCP-SERVER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IPV4-DHCP-SERVER")
 
         # Serialize ipv6_dhcp_server
         if self.ipv6_dhcp_server is not None:
             serialized = SerializationHelper.serialize_item(self.ipv6_dhcp_server, "Ipv6DhcpServerConfiguration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IPV6-DHCP-SERVER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IPV6-DHCP-SERVER")
 
         return elem
 

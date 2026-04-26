@@ -73,29 +73,13 @@ class SwBitRepresentation(ARObject):
         if self.bit_position is not None:
             serialized = SerializationHelper.serialize_item(self.bit_position, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BIT-POSITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BIT-POSITION")
 
         # Serialize number_of_bits
         if self.number_of_bits is not None:
             serialized = SerializationHelper.serialize_item(self.number_of_bits, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NUMBER-OF-BITS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NUMBER-OF-BITS")
 
         return elem
 

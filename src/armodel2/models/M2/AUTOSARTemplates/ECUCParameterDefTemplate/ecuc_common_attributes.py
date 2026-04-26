@@ -101,43 +101,19 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
         if self.origin is not None:
             serialized = SerializationHelper.serialize_item(self.origin, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ORIGIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ORIGIN")
 
         # Serialize post_build_variant
         if self.post_build_variant is not None:
             serialized = SerializationHelper.serialize_item(self.post_build_variant, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("POST-BUILD-VARIANT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "POST-BUILD-VARIANT")
 
         # Serialize requires_index
         if self.requires_index is not None:
             serialized = SerializationHelper.serialize_item(self.requires_index, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUIRES-INDEX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REQUIRES-INDEX")
 
         # Serialize value_configs (list to container "VALUE-CONFIGS")
         if self.value_configs:

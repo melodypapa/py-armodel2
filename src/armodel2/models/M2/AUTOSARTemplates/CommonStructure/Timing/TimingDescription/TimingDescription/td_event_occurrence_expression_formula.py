@@ -86,57 +86,25 @@ class TDEventOccurrenceExpressionFormula(ARObject):
         if self.argument_ref is not None:
             serialized = SerializationHelper.serialize_item(self.argument_ref, "AutosarOperationArgumentInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARGUMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARGUMENT-REF")
 
         # Serialize event_ref
         if self.event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.event_ref, "TimingDescriptionEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-REF")
 
         # Serialize mode_ref
         if self.mode_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mode_ref, "TimingModeInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODE-REF")
 
         # Serialize variable_ref
         if self.variable_ref is not None:
             serialized = SerializationHelper.serialize_item(self.variable_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VARIABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VARIABLE-REF")
 
         return elem
 

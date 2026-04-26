@@ -142,15 +142,7 @@ class PortPrototype(Identifiable, ABC):
         if self.delegated_port_annotation is not None:
             serialized = SerializationHelper.serialize_item(self.delegated_port_annotation, "DelegatedPortAnnotation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DELEGATED-PORT-ANNOTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DELEGATED-PORT-ANNOTATION")
 
         # Serialize io_hw_abstraction_server_annotations (list to container "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS")
         if self.io_hw_abstraction_server_annotations:

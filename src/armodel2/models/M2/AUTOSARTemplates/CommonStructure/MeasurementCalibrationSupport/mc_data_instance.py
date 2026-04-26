@@ -136,71 +136,31 @@ class McDataInstance(Identifiable):
         if self.array_size is not None:
             serialized = SerializationHelper.serialize_item(self.array_size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARRAY-SIZE")
 
         # Serialize display_identifier
         if self.display_identifier is not None:
             serialized = SerializationHelper.serialize_item(self.display_identifier, "McdIdentifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DISPLAY-IDENTIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DISPLAY-IDENTIFIER")
 
         # Serialize flat_map_entry_ref
         if self.flat_map_entry_ref is not None:
             serialized = SerializationHelper.serialize_item(self.flat_map_entry_ref, "FlatInstanceDescriptor")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FLAT-MAP-ENTRY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FLAT-MAP-ENTRY-REF")
 
         # Serialize instance_in_memory
         if self.instance_in_memory is not None:
             serialized = SerializationHelper.serialize_item(self.instance_in_memory, "ImplementationElementInParameterInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INSTANCE-IN-MEMORY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INSTANCE-IN-MEMORY")
 
         # Serialize mc_data_access_details
         if self.mc_data_access_details is not None:
             serialized = SerializationHelper.serialize_item(self.mc_data_access_details, "McDataAccessDetails")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MC-DATA-ACCESS-DETAILS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MC-DATA-ACCESS-DETAILS")
 
         # Serialize mc_data_assignments (list to container "MC-DATA-ASSIGNMENTS")
         if self.mc_data_assignments:
@@ -216,57 +176,25 @@ class McDataInstance(Identifiable):
         if self.resulting_properties is not None:
             serialized = SerializationHelper.serialize_item(self.resulting_properties, "SwDataDefProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESULTING-PROPERTIES")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESULTING-PROPERTIES")
 
         # Serialize resulting_rpt_sw_prototyping_access
         if self.resulting_rpt_sw_prototyping_access is not None:
             serialized = SerializationHelper.serialize_item(self.resulting_rpt_sw_prototyping_access, "RptSwPrototypingAccess")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESULTING-RPT-SW-PROTOTYPING-ACCESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESULTING-RPT-SW-PROTOTYPING-ACCESS")
 
         # Serialize role
         if self.role is not None:
             serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROLE")
 
         # Serialize rpt_impl_policy
         if self.rpt_impl_policy is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_impl_policy, "RptImplPolicy")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-IMPL-POLICY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-IMPL-POLICY")
 
         # Serialize sub_elements (list to container "SUB-ELEMENTS")
         if self.sub_elements:
@@ -282,15 +210,7 @@ class McDataInstance(Identifiable):
         if self.symbol is not None:
             serialized = SerializationHelper.serialize_item(self.symbol, "SymbolString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYMBOL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYMBOL")
 
         return elem
 

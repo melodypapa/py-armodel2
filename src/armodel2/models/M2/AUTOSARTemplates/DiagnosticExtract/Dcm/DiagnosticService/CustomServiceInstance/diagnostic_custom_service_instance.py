@@ -72,15 +72,7 @@ class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
         if self.custom_service_ref is not None:
             serialized = SerializationHelper.serialize_item(self.custom_service_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CUSTOM-SERVICE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CUSTOM-SERVICE-REF")
 
         return elem
 

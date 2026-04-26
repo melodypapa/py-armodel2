@@ -73,15 +73,7 @@ class IPdu(Pdu, ABC):
         if self.contained_i_pdu_props is not None:
             serialized = SerializationHelper.serialize_item(self.contained_i_pdu_props, "ContainedIPduProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTAINED-I-PDU-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTAINED-I-PDU-PROPS")
 
         return elem
 

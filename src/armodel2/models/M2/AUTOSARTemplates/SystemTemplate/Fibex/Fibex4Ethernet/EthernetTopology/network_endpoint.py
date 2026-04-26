@@ -96,43 +96,19 @@ class NetworkEndpoint(Identifiable):
         if self.fully_qualified is not None:
             serialized = SerializationHelper.serialize_item(self.fully_qualified, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FULLY-QUALIFIED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FULLY-QUALIFIED")
 
         # Serialize infrastructure_services
         if self.infrastructure_services is not None:
             serialized = SerializationHelper.serialize_item(self.infrastructure_services, "InfrastructureServices")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INFRASTRUCTURE-SERVICES")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INFRASTRUCTURE-SERVICES")
 
         # Serialize ip_sec_config
         if self.ip_sec_config is not None:
             serialized = SerializationHelper.serialize_item(self.ip_sec_config, "IPSecConfig")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IP-SEC-CONFIG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IP-SEC-CONFIG")
 
         # Serialize network_endpoints (list to container "NETWORK-ENDPOINTS")
         if self.network_endpoints:
@@ -148,15 +124,7 @@ class NetworkEndpoint(Identifiable):
         if self.priority is not None:
             serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIORITY")
 
         return elem
 

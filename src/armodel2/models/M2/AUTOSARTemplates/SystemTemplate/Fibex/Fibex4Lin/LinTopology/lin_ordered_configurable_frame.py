@@ -77,29 +77,13 @@ class LinOrderedConfigurableFrame(ARObject):
         if self.frame_ref is not None:
             serialized = SerializationHelper.serialize_item(self.frame_ref, "LinFrame")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRAME-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FRAME-REF")
 
         # Serialize index
         if self.index is not None:
             serialized = SerializationHelper.serialize_item(self.index, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INDEX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INDEX")
 
         return elem
 

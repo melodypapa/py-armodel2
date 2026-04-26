@@ -80,57 +80,25 @@ class VlanMembership(ARObject):
         if self.default_priority is not None:
             serialized = SerializationHelper.serialize_item(self.default_priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-PRIORITY")
 
         # Serialize dhcp_address
         if self.dhcp_address is not None:
             serialized = SerializationHelper.serialize_item(self.dhcp_address, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DHCP-ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DHCP-ADDRESS")
 
         # Serialize send_activity
         if self.send_activity is not None:
             serialized = SerializationHelper.serialize_item(self.send_activity, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SEND-ACTIVITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SEND-ACTIVITY")
 
         # Serialize vlan_ref
         if self.vlan_ref is not None:
             serialized = SerializationHelper.serialize_item(self.vlan_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VLAN-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VLAN-REF")
 
         return elem
 

@@ -115,43 +115,19 @@ class LifeCycleInfoSet(ARElement):
         if self.default_lc_state_ref is not None:
             serialized = SerializationHelper.serialize_item(self.default_lc_state_ref, "LifeCycleState")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-LC-STATE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-LC-STATE-REF")
 
         # Serialize default_period_begin
         if self.default_period_begin is not None:
             serialized = SerializationHelper.serialize_item(self.default_period_begin, "LifeCyclePeriod")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-PERIOD-BEGIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-PERIOD-BEGIN")
 
         # Serialize default_period_end
         if self.default_period_end is not None:
             serialized = SerializationHelper.serialize_item(self.default_period_end, "LifeCyclePeriod")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-PERIOD-END")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-PERIOD-END")
 
         # Serialize life_cycle_infoes (list to container "LIFE-CYCLE-INFOS")
         if self.life_cycle_infoes:
@@ -167,15 +143,7 @@ class LifeCycleInfoSet(ARElement):
         if self.used_life_cycle_state_definition_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.used_life_cycle_state_definition_group_ref, "LifeCycleStateDefinitionGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF")
 
         return elem
 

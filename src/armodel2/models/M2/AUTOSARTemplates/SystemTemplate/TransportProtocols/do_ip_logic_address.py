@@ -80,29 +80,13 @@ class DoIpLogicAddress(Identifiable):
         if self.address is not None:
             serialized = SerializationHelper.serialize_item(self.address, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ADDRESS")
 
         # Serialize do_ip_logic
         if self.do_ip_logic is not None:
             serialized = SerializationHelper.serialize_item(self.do_ip_logic, "AbstractDoIpLogicAddressProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DO-IP-LOGIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DO-IP-LOGIC")
 
         return elem
 

@@ -96,113 +96,49 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
         if self.iidc_channel is not None:
             serialized = SerializationHelper.serialize_item(self.iidc_channel, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IIDC-CHANNEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IIDC-CHANNEL")
 
         # Serialize iidc_data_block
         if self.iidc_data_block is not None:
             serialized = SerializationHelper.serialize_item(self.iidc_data_block, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IIDC-DATA-BLOCK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IIDC-DATA-BLOCK")
 
         # Serialize iidc_fraction
         if self.iidc_fraction is not None:
             serialized = SerializationHelper.serialize_item(self.iidc_fraction, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IIDC-FRACTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IIDC-FRACTION")
 
         # Serialize iidc_source
         if self.iidc_source is not None:
             serialized = SerializationHelper.serialize_item(self.iidc_source, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IIDC-SOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IIDC-SOURCE")
 
         # Serialize iidc_stream
         if self.iidc_stream is not None:
             serialized = SerializationHelper.serialize_item(self.iidc_stream, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IIDC-STREAM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IIDC-STREAM")
 
         # Serialize iidc_sy
         if self.iidc_sy is not None:
             serialized = SerializationHelper.serialize_item(self.iidc_sy, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IIDC-SY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IIDC-SY")
 
         # Serialize iidc_tag
         if self.iidc_tag is not None:
             serialized = SerializationHelper.serialize_item(self.iidc_tag, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IIDC-TAG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IIDC-TAG")
 
         # Serialize iidc_t_code
         if self.iidc_t_code is not None:
             serialized = SerializationHelper.serialize_item(self.iidc_t_code, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IIDC-T-CODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IIDC-T-CODE")
 
         return elem
 

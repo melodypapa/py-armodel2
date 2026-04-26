@@ -80,29 +80,13 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
         if self.nrc_value is not None:
             serialized = SerializationHelper.serialize_item(self.nrc_value, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NRC-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NRC-VALUE")
 
         # Serialize op
         if self.op is not None:
             serialized = SerializationHelper.serialize_item(self.op, "DiagnosticLogicalOperatorEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OP")
 
         return elem
 

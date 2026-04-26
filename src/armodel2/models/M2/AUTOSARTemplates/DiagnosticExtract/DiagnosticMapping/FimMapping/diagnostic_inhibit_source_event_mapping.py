@@ -84,43 +84,19 @@ class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
         if self.diagnostic_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAGNOSTIC-EVENT-REF")
 
         # Serialize event_group_group_ref
         if self.event_group_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.event_group_group_ref, "DiagnosticFimEventGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-GROUP-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-GROUP-GROUP-REF")
 
         # Serialize inhibition_source_ref
         if self.inhibition_source_ref is not None:
             serialized = SerializationHelper.serialize_item(self.inhibition_source_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INHIBITION-SOURCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INHIBITION-SOURCE-REF")
 
         return elem
 

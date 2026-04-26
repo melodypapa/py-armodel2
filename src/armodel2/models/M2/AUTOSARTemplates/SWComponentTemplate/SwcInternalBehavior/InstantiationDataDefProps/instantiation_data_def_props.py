@@ -86,43 +86,19 @@ class InstantiationDataDefProps(ARObject):
         if self.parameter_ref is not None:
             serialized = SerializationHelper.serialize_item(self.parameter_ref, "AutosarParameterRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PARAMETER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PARAMETER-REF")
 
         # Serialize sw_data_def
         if self.sw_data_def is not None:
             serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-DATA-DEF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-DATA-DEF")
 
         # Serialize variable_instance_ref
         if self.variable_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.variable_instance_ref, "AutosarVariableRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VARIABLE-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VARIABLE-INSTANCE-REF")
 
         return elem
 

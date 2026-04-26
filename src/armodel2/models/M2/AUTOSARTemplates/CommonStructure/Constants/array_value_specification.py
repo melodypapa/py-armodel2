@@ -95,15 +95,7 @@ class ArrayValueSpecification(CompositeValueSpecification):
         if self.intended_partial_initialization_count is not None:
             serialized = SerializationHelper.serialize_item(self.intended_partial_initialization_count, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTENDED-PARTIAL-INITIALIZATION-COUNT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTENDED-PARTIAL-INITIALIZATION-COUNT")
 
         return elem
 

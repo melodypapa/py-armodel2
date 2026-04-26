@@ -76,29 +76,13 @@ class Paginateable(DocumentViewSelectable, ABC):
         if self.break_ is not None:
             serialized = SerializationHelper.serialize_item(self.break_, "ChapterEnumBreak")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BREAK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BREAK")
 
         # Serialize keep_with
         if self.keep_with is not None:
             serialized = SerializationHelper.serialize_item(self.keep_with, "KeepWithPreviousEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("KEEP-WITH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "KEEP-WITH")
 
         return elem
 

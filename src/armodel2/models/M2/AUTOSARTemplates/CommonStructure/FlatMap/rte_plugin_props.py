@@ -74,29 +74,13 @@ class RtePluginProps(ARObject):
         if self.associated_ref is not None:
             serialized = SerializationHelper.serialize_item(self.associated_ref, "EcucContainerValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ASSOCIATED-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ASSOCIATED-REF")
 
         # Serialize associated_rte_ref
         if self.associated_rte_ref is not None:
             serialized = SerializationHelper.serialize_item(self.associated_rte_ref, "EcucContainerValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ASSOCIATED-RTE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ASSOCIATED-RTE-REF")
 
         return elem
 

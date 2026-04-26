@@ -81,14 +81,7 @@ class FMFeatureModel(ARElement):
             for item in self.feature_refs:
                 serialized = SerializationHelper.serialize_item(item, "FMFeature")
                 if serialized is not None:
-                    child_elem = ET.Element("FEATURE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "FEATURE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -96,15 +89,7 @@ class FMFeatureModel(ARElement):
         if self.root_ref is not None:
             serialized = SerializationHelper.serialize_item(self.root_ref, "FMFeature")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROOT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROOT-REF")
 
         return elem
 

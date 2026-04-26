@@ -115,155 +115,67 @@ class Xref(ARObject):
         if self.label1 is not None:
             serialized = SerializationHelper.serialize_item(self.label1, "SingleLanguageLongName")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LABEL1")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LABEL1")
 
         # Serialize referrable_ref
         if self.referrable_ref is not None:
             serialized = SerializationHelper.serialize_item(self.referrable_ref, "Referrable")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REFERRABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REFERRABLE-REF")
 
         # Serialize resolution_policy_enum
         if self.resolution_policy_enum is not None:
             serialized = SerializationHelper.serialize_item(self.resolution_policy_enum, "ResolutionPolicyEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESOLUTION-POLICY-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESOLUTION-POLICY-ENUM")
 
         # Serialize show_content_enum
         if self.show_content_enum is not None:
             serialized = SerializationHelper.serialize_item(self.show_content_enum, "ShowContentEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHOW-CONTENT-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHOW-CONTENT-ENUM")
 
         # Serialize show_resource_alias
         if self.show_resource_alias is not None:
             serialized = SerializationHelper.serialize_item(self.show_resource_alias, "ShowResourceAliasNameEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHOW-RESOURCE-ALIAS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHOW-RESOURCE-ALIAS")
 
         # Serialize show_resource
         if self.show_resource is not None:
             serialized = SerializationHelper.serialize_item(self.show_resource, "ShowResourceTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHOW-RESOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHOW-RESOURCE")
 
         # Serialize show_resource_long
         if self.show_resource_long is not None:
             serialized = SerializationHelper.serialize_item(self.show_resource_long, "ShowResourceLongNameEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHOW-RESOURCE-LONG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHOW-RESOURCE-LONG")
 
         # Serialize show_resource_number
         if self.show_resource_number is not None:
             serialized = SerializationHelper.serialize_item(self.show_resource_number, "ShowResourceNumberEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHOW-RESOURCE-NUMBER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHOW-RESOURCE-NUMBER")
 
         # Serialize show_resource_page
         if self.show_resource_page is not None:
             serialized = SerializationHelper.serialize_item(self.show_resource_page, "ShowResourcePageEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHOW-RESOURCE-PAGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHOW-RESOURCE-PAGE")
 
         # Serialize show_resource_short
         if self.show_resource_short is not None:
             serialized = SerializationHelper.serialize_item(self.show_resource_short, "ShowResourceShortNameEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHOW-RESOURCE-SHORT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHOW-RESOURCE-SHORT")
 
         # Serialize show_see
         if self.show_see is not None:
             serialized = SerializationHelper.serialize_item(self.show_see, "ShowSeeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHOW-SEE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHOW-SEE")
 
         return elem
 

@@ -84,29 +84,13 @@ class ROperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
         if self.context_r_port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.context_r_port_ref, "AbstractRequiredPortPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-R-PORT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTEXT-R-PORT-REF")
 
         # Serialize target_required_operation_ref
         if self.target_required_operation_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_required_operation_ref, "ClientServerOperation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-REQUIRED-OPERATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-REQUIRED-OPERATION-REF")
 
         return elem
 

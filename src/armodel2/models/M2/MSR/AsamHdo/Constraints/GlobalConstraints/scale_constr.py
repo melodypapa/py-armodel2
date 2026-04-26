@@ -86,71 +86,31 @@ class ScaleConstr(ARObject):
         if self.desc is not None:
             serialized = SerializationHelper.serialize_item(self.desc, "MultiLanguageOverviewParagraph")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DESC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DESC")
 
         # Serialize lower_limit
         if self.lower_limit is not None:
             serialized = SerializationHelper.serialize_item(self.lower_limit, "Limit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOWER-LIMIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOWER-LIMIT")
 
         # Serialize short_label
         if self.short_label is not None:
             serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHORT-LABEL")
 
         # Serialize upper_limit
         if self.upper_limit is not None:
             serialized = SerializationHelper.serialize_item(self.upper_limit, "Limit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPPER-LIMIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPPER-LIMIT")
 
         # Serialize validity
         if self.validity is not None:
             serialized = SerializationHelper.serialize_item(self.validity, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VALIDITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VALIDITY")
 
         return elem
 

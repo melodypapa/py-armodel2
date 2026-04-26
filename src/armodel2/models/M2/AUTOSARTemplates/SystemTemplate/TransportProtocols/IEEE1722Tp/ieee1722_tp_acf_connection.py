@@ -94,29 +94,13 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
         if self.collection is not None:
             serialized = SerializationHelper.serialize_item(self.collection, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COLLECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COLLECTION")
 
         # Serialize mixed_bus_type
         if self.mixed_bus_type is not None:
             serialized = SerializationHelper.serialize_item(self.mixed_bus_type, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIXED-BUS-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MIXED-BUS-TYPE")
 
         return elem
 

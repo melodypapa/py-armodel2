@@ -76,29 +76,13 @@ class TransmissionModeTiming(ARObject):
         if self.cyclic_timing is not None:
             serialized = SerializationHelper.serialize_item(self.cyclic_timing, "CyclicTiming")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CYCLIC-TIMING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CYCLIC-TIMING")
 
         # Serialize event_controlled_timing
         if self.event_controlled_timing is not None:
             serialized = SerializationHelper.serialize_item(self.event_controlled_timing, "EventControlledTiming")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-CONTROLLED-TIMING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-CONTROLLED-TIMING")
 
         return elem
 

@@ -111,85 +111,37 @@ class RuleBasedValueSpecification(ARObject):
         if self.v is not None:
             serialized = SerializationHelper.serialize_item(self.v, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("V")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "V")
 
         # Serialize vf
         if self.vf is not None:
             serialized = SerializationHelper.serialize_item(self.vf, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VF")
 
         # Serialize vt
         if self.vt is not None:
             serialized = SerializationHelper.serialize_item(self.vt, "VerbatimString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VT")
 
         # Serialize vtf
         if self.vtf is not None:
             serialized = SerializationHelper.serialize_item(self.vtf, "NumericalOrText")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VTF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VTF")
 
         # Serialize max_size_to_fill
         if self.max_size_to_fill is not None:
             serialized = SerializationHelper.serialize_item(self.max_size_to_fill, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-SIZE-TO-FILL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-SIZE-TO-FILL")
 
         # Serialize rule
         if self.rule is not None:
             serialized = SerializationHelper.serialize_item(self.rule, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RULE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RULE")
 
         return elem
 

@@ -92,71 +92,31 @@ class TimingConditionFormula(ARObject):
         if self.timing_argument_argument_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.timing_argument_argument_instance_ref, "AutosarOperationArgumentInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF")
 
         # Serialize timing_condition_ref
         if self.timing_condition_ref is not None:
             serialized = SerializationHelper.serialize_item(self.timing_condition_ref, "TimingCondition")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMING-CONDITION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMING-CONDITION-REF")
 
         # Serialize timing_event_ref
         if self.timing_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.timing_event_ref, "TimingDescriptionEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMING-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMING-EVENT-REF")
 
         # Serialize timing_mode_ref
         if self.timing_mode_ref is not None:
             serialized = SerializationHelper.serialize_item(self.timing_mode_ref, "TimingModeInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMING-MODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMING-MODE-REF")
 
         # Serialize timing_variable_instance_ref
         if self.timing_variable_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.timing_variable_instance_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMING-VARIABLE-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMING-VARIABLE-INSTANCE-REF")
 
         return elem
 

@@ -78,29 +78,13 @@ class DiagnosticSessionControl(DiagnosticServiceInstance):
         if self.diagnostic_session_session_ref is not None:
             serialized = SerializationHelper.serialize_item(self.diagnostic_session_session_ref, "DiagnosticSession")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-SESSION-SESSION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAGNOSTIC-SESSION-SESSION-REF")
 
         # Serialize session_control_ref
         if self.session_control_ref is not None:
             serialized = SerializationHelper.serialize_item(self.session_control_ref, "DiagnosticSession")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SESSION-CONTROL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SESSION-CONTROL-REF")
 
         return elem
 

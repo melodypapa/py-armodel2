@@ -77,14 +77,7 @@ class DiagnosticFimEventGroup(DiagnosticCommonElement):
             for item in self.event_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticEvent")
                 if serialized is not None:
-                    child_elem = ET.Element("EVENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "EVENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

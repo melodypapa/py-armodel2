@@ -85,71 +85,31 @@ class StreamFilterRuleDataLinkLayer(ARObject):
         if self.destination_mac is not None:
             serialized = SerializationHelper.serialize_item(self.destination_mac, "StreamFilterMACAddress")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DESTINATION-MAC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DESTINATION-MAC")
 
         # Serialize ether_type
         if self.ether_type is not None:
             serialized = SerializationHelper.serialize_item(self.ether_type, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ETHER-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ETHER-TYPE")
 
         # Serialize source_mac
         if self.source_mac is not None:
             serialized = SerializationHelper.serialize_item(self.source_mac, "StreamFilterMACAddress")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-MAC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOURCE-MAC")
 
         # Serialize vlan_id
         if self.vlan_id is not None:
             serialized = SerializationHelper.serialize_item(self.vlan_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VLAN-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VLAN-ID")
 
         # Serialize vlan_priority
         if self.vlan_priority is not None:
             serialized = SerializationHelper.serialize_item(self.vlan_priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VLAN-PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VLAN-PRIORITY")
 
         return elem
 

@@ -144,127 +144,55 @@ class ReceiverComSpec(RPortComSpec, ABC):
         if self.data_element_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_element_ref, "AutosarDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-ELEMENT-REF")
 
         # Serialize handle_out_of_range
         if self.handle_out_of_range is not None:
             serialized = SerializationHelper.serialize_item(self.handle_out_of_range, "HandleOutOfRangeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HANDLE-OUT-OF-RANGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HANDLE-OUT-OF-RANGE")
 
         # Serialize handle_out_of_range_status
         if self.handle_out_of_range_status is not None:
             serialized = SerializationHelper.serialize_item(self.handle_out_of_range_status, "HandleOutOfRangeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HANDLE-OUT-OF-RANGE-STATUS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HANDLE-OUT-OF-RANGE-STATUS")
 
         # Serialize max_delta_counter_init
         if self.max_delta_counter_init is not None:
             serialized = SerializationHelper.serialize_item(self.max_delta_counter_init, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-DELTA-COUNTER-INIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-DELTA-COUNTER-INIT")
 
         # Serialize max_no_new_or_repeated_data
         if self.max_no_new_or_repeated_data is not None:
             serialized = SerializationHelper.serialize_item(self.max_no_new_or_repeated_data, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-NO-NEW-OR-REPEATED-DATA")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-NO-NEW-OR-REPEATED-DATA")
 
         # Serialize network_representation
         if self.network_representation is not None:
             serialized = SerializationHelper.serialize_item(self.network_representation, "SwDataDefProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NETWORK-REPRESENTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NETWORK-REPRESENTATION")
 
         # Serialize reception_props
         if self.reception_props is not None:
             serialized = SerializationHelper.serialize_item(self.reception_props, "ReceptionComSpecProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RECEPTION-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RECEPTION-PROPS")
 
         # Serialize replace_with
         if self.replace_with is not None:
             serialized = SerializationHelper.serialize_item(self.replace_with, "VariableAccess")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REPLACE-WITH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REPLACE-WITH")
 
         # Serialize sync_counter_init
         if self.sync_counter_init is not None:
             serialized = SerializationHelper.serialize_item(self.sync_counter_init, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYNC-COUNTER-INIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYNC-COUNTER-INIT")
 
         # Serialize transformation_com_spec_propses (list to container "TRANSFORMATION-COM-SPEC-PROPSS")
         if self.transformation_com_spec_propses:
@@ -280,15 +208,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
         if self.uses_end_to_end_protection is not None:
             serialized = SerializationHelper.serialize_item(self.uses_end_to_end_protection, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USES-END-TO-END-PROTECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USES-END-TO-END-PROTECTION")
 
         return elem
 

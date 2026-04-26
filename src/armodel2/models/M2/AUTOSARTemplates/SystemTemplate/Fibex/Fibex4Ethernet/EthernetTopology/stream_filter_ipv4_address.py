@@ -70,15 +70,7 @@ class StreamFilterIpv4Address(ARObject):
         if self.ipv4_address is not None:
             serialized = SerializationHelper.serialize_item(self.ipv4_address, "Ip4AddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IPV4-ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IPV4-ADDRESS")
 
         return elem
 

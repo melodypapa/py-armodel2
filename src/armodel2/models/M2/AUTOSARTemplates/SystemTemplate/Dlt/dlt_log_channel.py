@@ -115,14 +115,7 @@ class DltLogChannel(Identifiable):
             for item in self.application_refs:
                 serialized = SerializationHelper.serialize_item(item, "DltContext")
                 if serialized is not None:
-                    child_elem = ET.Element("APPLICATION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "APPLICATION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -130,15 +123,7 @@ class DltLogChannel(Identifiable):
         if self.default_trace is not None:
             serialized = SerializationHelper.serialize_item(self.default_trace, "DltDefaultTraceStateEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-TRACE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-TRACE")
 
         # Serialize dlt_message_refs (list to container "DLT-MESSAGE-REFS")
         if self.dlt_message_refs:
@@ -146,14 +131,7 @@ class DltLogChannel(Identifiable):
             for item in self.dlt_message_refs:
                 serialized = SerializationHelper.serialize_item(item, "DltMessage")
                 if serialized is not None:
-                    child_elem = ET.Element("DLT-MESSAGE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DLT-MESSAGE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -161,85 +139,37 @@ class DltLogChannel(Identifiable):
         if self.log_channel_id is not None:
             serialized = SerializationHelper.serialize_item(self.log_channel_id, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOG-CHANNEL-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOG-CHANNEL-ID")
 
         # Serialize log_trace_default_log
         if self.log_trace_default_log is not None:
             serialized = SerializationHelper.serialize_item(self.log_trace_default_log, "LogTraceDefaultLogLevelEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOG-TRACE-DEFAULT-LOG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOG-TRACE-DEFAULT-LOG")
 
         # Serialize non_verbose
         if self.non_verbose is not None:
             serialized = SerializationHelper.serialize_item(self.non_verbose, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NON-VERBOSE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NON-VERBOSE")
 
         # Serialize rx_pdu_triggering_channel_ref
         if self.rx_pdu_triggering_channel_ref is not None:
             serialized = SerializationHelper.serialize_item(self.rx_pdu_triggering_channel_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RX-PDU-TRIGGERING-CHANNEL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RX-PDU-TRIGGERING-CHANNEL-REF")
 
         # Serialize segmentation
         if self.segmentation is not None:
             serialized = SerializationHelper.serialize_item(self.segmentation, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SEGMENTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SEGMENTATION")
 
         # Serialize tx_pdu_triggering_ref
         if self.tx_pdu_triggering_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tx_pdu_triggering_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TX-PDU-TRIGGERING-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TX-PDU-TRIGGERING-REF")
 
         return elem
 

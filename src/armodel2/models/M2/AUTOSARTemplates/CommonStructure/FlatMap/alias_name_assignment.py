@@ -90,57 +90,25 @@ class AliasNameAssignment(ARObject):
         if self.flat_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.flat_instance_ref, "FlatInstanceDescriptor")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FLAT-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FLAT-INSTANCE-REF")
 
         # Serialize identifiable_ref
         if self.identifiable_ref is not None:
             serialized = SerializationHelper.serialize_item(self.identifiable_ref, "Identifiable")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDENTIFIABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDENTIFIABLE-REF")
 
         # Serialize label
         if self.label is not None:
             serialized = SerializationHelper.serialize_item(self.label, "MultilanguageLongName")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LABEL")
 
         # Serialize short_label
         if self.short_label is not None:
             serialized = SerializationHelper.serialize_item(self.short_label, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHORT-LABEL")
 
         return elem
 

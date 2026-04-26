@@ -86,43 +86,19 @@ class HeapUsage(Identifiable, ABC):
         if self.hardware is not None:
             serialized = SerializationHelper.serialize_item(self.hardware, "HardwareConfiguration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HARDWARE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HARDWARE")
 
         # Serialize hw_element_ref
         if self.hw_element_ref is not None:
             serialized = SerializationHelper.serialize_item(self.hw_element_ref, "HwElement")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HW-ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HW-ELEMENT-REF")
 
         # Serialize software_context
         if self.software_context is not None:
             serialized = SerializationHelper.serialize_item(self.software_context, "SoftwareContext")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOFTWARE-CONTEXT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOFTWARE-CONTEXT")
 
         return elem
 

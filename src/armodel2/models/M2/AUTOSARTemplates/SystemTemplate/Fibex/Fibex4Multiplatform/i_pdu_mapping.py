@@ -92,71 +92,31 @@ class IPduMapping(ARObject):
         if self.introduction is not None:
             serialized = SerializationHelper.serialize_item(self.introduction, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTRODUCTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTRODUCTION")
 
         # Serialize pdu_max_length
         if self.pdu_max_length is not None:
             serialized = SerializationHelper.serialize_item(self.pdu_max_length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDU-MAX-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDU-MAX-LENGTH")
 
         # Serialize pdur_tp_chunk
         if self.pdur_tp_chunk is not None:
             serialized = SerializationHelper.serialize_item(self.pdur_tp_chunk, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDUR-TP-CHUNK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDUR-TP-CHUNK")
 
         # Serialize source_i_pdu_ref
         if self.source_i_pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.source_i_pdu_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-I-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOURCE-I-PDU-REF")
 
         # Serialize target_i_pdu_ref
         if self.target_i_pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_i_pdu_ref, "TargetIPduRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-I-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-I-PDU-REF")
 
         return elem
 

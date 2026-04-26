@@ -75,29 +75,13 @@ class FMFormulaByFeaturesAndAttributes(ARObject, ABC):
         if self.attribute_ref is not None:
             serialized = SerializationHelper.serialize_item(self.attribute_ref, "FMAttributeDef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ATTRIBUTE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ATTRIBUTE-REF")
 
         # Serialize feature_ref
         if self.feature_ref is not None:
             serialized = SerializationHelper.serialize_item(self.feature_ref, "FMFeature")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FEATURE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FEATURE-REF")
 
         return elem
 

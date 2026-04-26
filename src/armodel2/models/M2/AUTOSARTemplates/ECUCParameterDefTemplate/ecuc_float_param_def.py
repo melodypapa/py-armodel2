@@ -82,43 +82,19 @@ class EcucFloatParamDef(EcucParameterDef):
         if self.default_value is not None:
             serialized = SerializationHelper.serialize_item(self.default_value, "Float")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-VALUE")
 
         # Serialize max
         if self.max is not None:
             serialized = SerializationHelper.serialize_item(self.max, "Limit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX")
 
         # Serialize min
         if self.min is not None:
             serialized = SerializationHelper.serialize_item(self.min, "Limit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MIN")
 
         return elem
 

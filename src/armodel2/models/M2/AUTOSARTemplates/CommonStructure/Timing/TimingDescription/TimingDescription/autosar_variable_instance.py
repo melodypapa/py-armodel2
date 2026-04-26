@@ -75,15 +75,7 @@ class AutosarVariableInstance(Identifiable):
         if self.variable_instance_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.variable_instance_instance_ref, "DataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VARIABLE-INSTANCE-INSTANCE-REF-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VARIABLE-INSTANCE-INSTANCE-REF-REF")
 
         return elem
 

@@ -77,43 +77,19 @@ class LifeCyclePeriod(ARObject):
         if self.ar_release_version is not None:
             serialized = SerializationHelper.serialize_item(self.ar_release_version, "RevisionLabelString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AR-RELEASE-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AR-RELEASE-VERSION")
 
         # Serialize date
         if self.date is not None:
             serialized = SerializationHelper.serialize_item(self.date, "DateTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATE")
 
         # Serialize product_release
         if self.product_release is not None:
             serialized = SerializationHelper.serialize_item(self.product_release, "RevisionLabelString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRODUCT-RELEASE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRODUCT-RELEASE")
 
         return elem
 

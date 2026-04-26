@@ -91,27 +91,13 @@ class EthernetCluster(ARObject):
         if self.coupling_port is not None:
             serialized = SerializationHelper.serialize_item(self.coupling_port, "TimeValue")
             if serialized is not None:
-                wrapped = ET.Element("COUPLING-PORT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "COUPLING-PORT")
 
         # Serialize mac_multicast_group_refs (list)
         for item in self.mac_multicast_group_refs:
             serialized = SerializationHelper.serialize_item(item, "MacMulticastGroup")
             if serialized is not None:
-                wrapped = ET.Element("MAC-MULTICAST-GROUP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MAC-MULTICAST-GROUP")
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "EthernetCluster")

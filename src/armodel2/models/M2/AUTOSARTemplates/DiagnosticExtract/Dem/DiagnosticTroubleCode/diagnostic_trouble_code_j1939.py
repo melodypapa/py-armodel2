@@ -93,71 +93,31 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         if self.dtc_props_props_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dtc_props_props_ref, "DiagnosticTroubleCode")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DTC-PROPS-PROPS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DTC-PROPS-PROPS-REF")
 
         # Serialize fmi
         if self.fmi is not None:
             serialized = SerializationHelper.serialize_item(self.fmi, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FMI")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FMI")
 
         # Serialize kind
         if self.kind is not None:
             serialized = SerializationHelper.serialize_item(self.kind, "DiagnosticTroubleCode")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "KIND")
 
         # Serialize node_ref
         if self.node_ref is not None:
             serialized = SerializationHelper.serialize_item(self.node_ref, "DiagnosticJ1939Node")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NODE-REF")
 
         # Serialize spn_ref
         if self.spn_ref is not None:
             serialized = SerializationHelper.serialize_item(self.spn_ref, "DiagnosticJ1939Spn")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SPN-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SPN-REF")
 
         return elem
 

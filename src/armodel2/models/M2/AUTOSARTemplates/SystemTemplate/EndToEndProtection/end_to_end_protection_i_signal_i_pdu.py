@@ -84,43 +84,19 @@ class EndToEndProtectionISignalIPdu(ARObject):
         if self.data_offset is not None:
             serialized = SerializationHelper.serialize_item(self.data_offset, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-OFFSET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-OFFSET")
 
         # Serialize i_signal_group_ref
         if self.i_signal_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.i_signal_group_ref, "ISignalGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "I-SIGNAL-GROUP-REF")
 
         # Serialize i_signal_i_pdu_ref
         if self.i_signal_i_pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.i_signal_i_pdu_ref, "ISignalIPdu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-I-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "I-SIGNAL-I-PDU-REF")
 
         return elem
 

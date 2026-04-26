@@ -80,29 +80,13 @@ class ClientIdDefinition(Identifiable):
         if self.client_id is not None:
             serialized = SerializationHelper.serialize_item(self.client_id, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CLIENT-ID")
 
         # Serialize client_server_instance_ref
         if self.client_server_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.client_server_instance_ref, "ClientServerOperation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-SERVER-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CLIENT-SERVER-INSTANCE-REF")
 
         return elem
 

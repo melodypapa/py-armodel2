@@ -80,15 +80,7 @@ class InstanceEventInCompositionInstanceRef(ARObject):
         if self.base_ref is not None:
             serialized = SerializationHelper.serialize_item(self.base_ref, "CompositionSwComponentType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE-REF")
 
         # Serialize context_prototype_refs (list to container "CONTEXT-PROTOTYPE-REFS")
         if self.context_prototype_refs:
@@ -96,14 +88,7 @@ class InstanceEventInCompositionInstanceRef(ARObject):
             for item in self.context_prototype_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTEXT-PROTOTYPE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONTEXT-PROTOTYPE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -111,15 +96,7 @@ class InstanceEventInCompositionInstanceRef(ARObject):
         if self.target_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_event_ref, "RTEEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-EVENT-REF")
 
         return elem
 

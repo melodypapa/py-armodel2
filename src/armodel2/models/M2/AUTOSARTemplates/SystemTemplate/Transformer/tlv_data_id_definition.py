@@ -89,57 +89,25 @@ class TlvDataIdDefinition(ARObject):
         if self.id is not None:
             serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ID")
 
         # Serialize tlv_argument_ref
         if self.tlv_argument_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tlv_argument_ref, "ArgumentDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TLV-ARGUMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TLV-ARGUMENT-REF")
 
         # Serialize tlv_ref
         if self.tlv_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tlv_ref, "AbstractImplementationDataType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TLV-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TLV-REF")
 
         # Serialize tlv_record_ref
         if self.tlv_record_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tlv_record_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TLV-RECORD-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TLV-RECORD-REF")
 
         return elem
 

@@ -81,15 +81,7 @@ class BswVariableAccess(Referrable):
         if self.accessed_variable_ref is not None:
             serialized = SerializationHelper.serialize_item(self.accessed_variable_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ACCESSED-VARIABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ACCESSED-VARIABLE-REF")
 
         # Serialize context_limitation_refs (list to container "CONTEXT-LIMITATION-REFS")
         if self.context_limitation_refs:
@@ -97,14 +89,7 @@ class BswVariableAccess(Referrable):
             for item in self.context_limitation_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswDistinguishedPartition")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTEXT-LIMITATION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONTEXT-LIMITATION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

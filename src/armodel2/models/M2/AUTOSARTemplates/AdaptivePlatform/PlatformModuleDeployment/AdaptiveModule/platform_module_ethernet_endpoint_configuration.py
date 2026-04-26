@@ -85,43 +85,19 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
         if self.communication_connector_ref is not None:
             serialized = SerializationHelper.serialize_item(self.communication_connector_ref, "EthernetCommunicationConnector")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMMUNICATION-CONNECTOR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMMUNICATION-CONNECTOR-REF")
 
         # Serialize ipv4_multicast_ip_address
         if self.ipv4_multicast_ip_address is not None:
             serialized = SerializationHelper.serialize_item(self.ipv4_multicast_ip_address, "Ip4AddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IPV4-MULTICAST-IP-ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IPV4-MULTICAST-IP-ADDRESS")
 
         # Serialize ipv6_multicast_ip_address
         if self.ipv6_multicast_ip_address is not None:
             serialized = SerializationHelper.serialize_item(self.ipv6_multicast_ip_address, "Ip6AddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IPV6-MULTICAST-IP-ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IPV6-MULTICAST-IP-ADDRESS")
 
         return elem
 

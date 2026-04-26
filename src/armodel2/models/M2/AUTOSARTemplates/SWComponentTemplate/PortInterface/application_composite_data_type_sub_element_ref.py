@@ -71,15 +71,7 @@ class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
         if self.application is not None:
             serialized = SerializationHelper.serialize_item(self.application, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("APPLICATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "APPLICATION")
 
         return elem
 

@@ -88,43 +88,19 @@ class TextTableMapping(ARObject):
         if self.bitfield_text_table is not None:
             serialized = SerializationHelper.serialize_item(self.bitfield_text_table, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BITFIELD-TEXT-TABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BITFIELD-TEXT-TABLE")
 
         # Serialize identical
         if self.identical is not None:
             serialized = SerializationHelper.serialize_item(self.identical, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDENTICAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDENTICAL")
 
         # Serialize mapping_ref
         if self.mapping_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mapping_ref, "MappingDirectionEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAPPING-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAPPING-REF")
 
         # Serialize value_pairs (list to container "VALUE-PAIRS")
         if self.value_pairs:

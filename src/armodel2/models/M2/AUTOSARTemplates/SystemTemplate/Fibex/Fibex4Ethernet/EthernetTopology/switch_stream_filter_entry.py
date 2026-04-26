@@ -100,85 +100,37 @@ class SwitchStreamFilterEntry(Identifiable):
         if self.asynchronous_ref is not None:
             serialized = SerializationHelper.serialize_item(self.asynchronous_ref, "CouplingPort")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ASYNCHRONOUS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ASYNCHRONOUS-REF")
 
         # Serialize filter_priority
         if self.filter_priority is not None:
             serialized = SerializationHelper.serialize_item(self.filter_priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FILTER-PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FILTER-PRIORITY")
 
         # Serialize flow_metering_ref
         if self.flow_metering_ref is not None:
             serialized = SerializationHelper.serialize_item(self.flow_metering_ref, "SwitchFlowMeteringEntry")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FLOW-METERING-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FLOW-METERING-REF")
 
         # Serialize max_sdu_size
         if self.max_sdu_size is not None:
             serialized = SerializationHelper.serialize_item(self.max_sdu_size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-SDU-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-SDU-SIZE")
 
         # Serialize stream_gate_ref
         if self.stream_gate_ref is not None:
             serialized = SerializationHelper.serialize_item(self.stream_gate_ref, "SwitchStreamGateEntry")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STREAM-GATE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STREAM-GATE-REF")
 
         # Serialize stream
         if self.stream is not None:
             serialized = SerializationHelper.serialize_item(self.stream, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STREAM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STREAM")
 
         return elem
 

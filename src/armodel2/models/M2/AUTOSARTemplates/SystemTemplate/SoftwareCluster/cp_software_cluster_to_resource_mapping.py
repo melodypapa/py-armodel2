@@ -81,15 +81,7 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         if self.provider_ref is not None:
             serialized = SerializationHelper.serialize_item(self.provider_ref, "CpSoftwareCluster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROVIDER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROVIDER-REF")
 
         # Serialize requester_refs (list to container "REQUESTER-REFS")
         if self.requester_refs:
@@ -97,14 +89,7 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
             for item in self.requester_refs:
                 serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
-                    child_elem = ET.Element("REQUESTER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "REQUESTER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -112,15 +97,7 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         if self.service_ref is not None:
             serialized = SerializationHelper.serialize_item(self.service_ref, "CpSoftwareCluster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SERVICE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SERVICE-REF")
 
         return elem
 

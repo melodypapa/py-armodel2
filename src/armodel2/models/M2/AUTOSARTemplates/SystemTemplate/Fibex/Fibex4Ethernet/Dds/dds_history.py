@@ -76,29 +76,13 @@ class DdsHistory(ARObject):
         if self.history_kind is not None:
             serialized = SerializationHelper.serialize_item(self.history_kind, "DdsHistoryKindEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HISTORY-KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HISTORY-KIND")
 
         # Serialize history_order
         if self.history_order is not None:
             serialized = SerializationHelper.serialize_item(self.history_order, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HISTORY-ORDER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HISTORY-ORDER")
 
         return elem
 

@@ -74,29 +74,13 @@ class TriggerMapping(ARObject):
         if self.first_trigger_ref is not None:
             serialized = SerializationHelper.serialize_item(self.first_trigger_ref, "Trigger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIRST-TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIRST-TRIGGER-REF")
 
         # Serialize second_trigger_ref
         if self.second_trigger_ref is not None:
             serialized = SerializationHelper.serialize_item(self.second_trigger_ref, "Trigger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECOND-TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECOND-TRIGGER-REF")
 
         return elem
 

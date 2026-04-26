@@ -77,14 +77,7 @@ class TriggerInterfaceMapping(PortInterfaceMapping):
             for item in self.trigger_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "TriggerMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("TRIGGER-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "TRIGGER-MAPPING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

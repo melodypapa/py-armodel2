@@ -73,29 +73,13 @@ class Modification(ARObject):
         if self.change is not None:
             serialized = SerializationHelper.serialize_item(self.change, "MultiLanguageOverviewParagraph")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CHANGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CHANGE")
 
         # Serialize reason
         if self.reason is not None:
             serialized = SerializationHelper.serialize_item(self.reason, "MultiLanguageOverviewParagraph")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REASON")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REASON")
 
         return elem
 

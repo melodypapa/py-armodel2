@@ -77,29 +77,13 @@ class J1939NmCluster(NmCluster):
         if self.address_claim is not None:
             serialized = SerializationHelper.serialize_item(self.address_claim, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ADDRESS-CLAIM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ADDRESS-CLAIM")
 
         # Serialize uses_dynamic
         if self.uses_dynamic is not None:
             serialized = SerializationHelper.serialize_item(self.uses_dynamic, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USES-DYNAMIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USES-DYNAMIC")
 
         return elem
 

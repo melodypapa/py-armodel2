@@ -88,57 +88,25 @@ class DiagnosticTestResult(DiagnosticCommonElement):
         if self.diagnostic_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAGNOSTIC-EVENT-REF")
 
         # Serialize monitored_ref
         if self.monitored_ref is not None:
             serialized = SerializationHelper.serialize_item(self.monitored_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MONITORED-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MONITORED-REF")
 
         # Serialize test_identifier
         if self.test_identifier is not None:
             serialized = SerializationHelper.serialize_item(self.test_identifier, "DiagnosticTestIdentifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TEST-IDENTIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TEST-IDENTIFIER")
 
         # Serialize update_kind
         if self.update_kind is not None:
             serialized = SerializationHelper.serialize_item(self.update_kind, "DiagnosticTestResult")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPDATE-KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPDATE-KIND")
 
         return elem
 

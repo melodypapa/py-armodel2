@@ -125,29 +125,13 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
         if self.mirror_source_lin is not None:
             serialized = SerializationHelper.serialize_item(self.mirror_source_lin, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIRROR-SOURCE-LIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MIRROR-SOURCE-LIN")
 
         # Serialize mirror_status
         if self.mirror_status is not None:
             serialized = SerializationHelper.serialize_item(self.mirror_status, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIRROR-STATUS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MIRROR-STATUS")
 
         return elem
 

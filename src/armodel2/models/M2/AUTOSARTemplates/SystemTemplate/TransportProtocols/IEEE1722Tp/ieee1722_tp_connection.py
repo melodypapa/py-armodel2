@@ -92,85 +92,37 @@ class IEEE1722TpConnection(ARElement, ABC):
         if self.destination_mac is not None:
             serialized = SerializationHelper.serialize_item(self.destination_mac, "MacAddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DESTINATION-MAC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DESTINATION-MAC")
 
         # Serialize mac_address_string
         if self.mac_address_string is not None:
             serialized = SerializationHelper.serialize_item(self.mac_address_string, "MacAddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAC-ADDRESS-STRING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAC-ADDRESS-STRING")
 
         # Serialize pdu_ref
         if self.pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.pdu_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDU-REF")
 
         # Serialize unique_stream_id
         if self.unique_stream_id is not None:
             serialized = SerializationHelper.serialize_item(self.unique_stream_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UNIQUE-STREAM-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UNIQUE-STREAM-ID")
 
         # Serialize version
         if self.version is not None:
             serialized = SerializationHelper.serialize_item(self.version, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VERSION")
 
         # Serialize vlan_priority
         if self.vlan_priority is not None:
             serialized = SerializationHelper.serialize_item(self.vlan_priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VLAN-PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VLAN-PRIORITY")
 
         return elem
 

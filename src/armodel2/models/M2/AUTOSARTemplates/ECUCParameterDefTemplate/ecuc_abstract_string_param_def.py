@@ -80,57 +80,25 @@ class EcucAbstractStringParamDef(ARObject, ABC):
         if self.default_value is not None:
             serialized = SerializationHelper.serialize_item(self.default_value, "VerbatimString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-VALUE")
 
         # Serialize max_length
         if self.max_length is not None:
             serialized = SerializationHelper.serialize_item(self.max_length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-LENGTH")
 
         # Serialize min_length
         if self.min_length is not None:
             serialized = SerializationHelper.serialize_item(self.min_length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIN-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MIN-LENGTH")
 
         # Serialize regular
         if self.regular is not None:
             serialized = SerializationHelper.serialize_item(self.regular, "RegularExpression")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REGULAR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REGULAR")
 
         return elem
 

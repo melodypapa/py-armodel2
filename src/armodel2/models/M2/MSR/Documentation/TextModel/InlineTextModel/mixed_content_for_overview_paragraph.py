@@ -120,141 +120,61 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
         if self.br is not None:
             serialized = SerializationHelper.serialize_item(self.br, "Br")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BR")
 
         # Serialize e
         if self.e is not None:
             serialized = SerializationHelper.serialize_item(self.e, "EmphasisText")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("E")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "E")
 
         # Serialize ft
         if self.ft is not None:
             serialized = SerializationHelper.serialize_item(self.ft, "SlOverviewParagraph")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FT")
 
         # Serialize ie
         if self.ie is not None:
             serialized = SerializationHelper.serialize_item(self.ie, "IndexEntry")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IE")
 
         # Serialize sub
         if self.sub is not None:
             serialized = SerializationHelper.serialize_item(self.sub, "Superscript")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUB")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUB")
 
         # Serialize sup
         if self.sup is not None:
             serialized = SerializationHelper.serialize_item(self.sup, "Superscript")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUP")
 
         # Serialize trace_ref
         if self.trace_ref is not None:
             serialized = SerializationHelper.serialize_item(self.trace_ref, "Traceable")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRACE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRACE-REF")
 
         # Serialize tt
         if self.tt is not None:
             serialized = SerializationHelper.serialize_item(self.tt, "Tt")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TT")
 
         # Serialize xref
         if self.xref is not None:
             serialized = SerializationHelper.serialize_item(self.xref, "Xref")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("XREF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "XREF")
 
         # Serialize xref_target
         if self.xref_target is not None:
             serialized = SerializationHelper.serialize_item(self.xref_target, "XrefTarget")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("XREF-TARGET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "XREF-TARGET")
 
         return elem
 

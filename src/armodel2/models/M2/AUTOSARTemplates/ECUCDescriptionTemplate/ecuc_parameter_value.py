@@ -97,29 +97,13 @@ class EcucParameterValue(EcucIndexableValue, ABC):
         if self.definition_ref is not None:
             serialized = SerializationHelper.serialize_item(self.definition_ref, "EcucParameterDef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFINITION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFINITION-REF")
 
         # Serialize is_auto_value
         if self.is_auto_value is not None:
             serialized = SerializationHelper.serialize_item(self.is_auto_value, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-AUTO-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-AUTO-VALUE")
 
         return elem
 

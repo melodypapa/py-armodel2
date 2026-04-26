@@ -90,57 +90,25 @@ class SoConIPduIdentifier(Referrable):
         if self.header_id is not None:
             serialized = SerializationHelper.serialize_item(self.header_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HEADER-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HEADER-ID")
 
         # Serialize pdu_collection_ref
         if self.pdu_collection_ref is not None:
             serialized = SerializationHelper.serialize_item(self.pdu_collection_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDU-COLLECTION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDU-COLLECTION-REF")
 
         # Serialize pdu_collection_trigger_ref
         if self.pdu_collection_trigger_ref is not None:
             serialized = SerializationHelper.serialize_item(self.pdu_collection_trigger_ref, "PduCollectionTriggerEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDU-COLLECTION-TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDU-COLLECTION-TRIGGER-REF")
 
         # Serialize pdu_triggering_ref
         if self.pdu_triggering_ref is not None:
             serialized = SerializationHelper.serialize_item(self.pdu_triggering_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDU-TRIGGERING-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDU-TRIGGERING-REF")
 
         return elem
 

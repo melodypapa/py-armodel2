@@ -129,14 +129,7 @@ class StructuredReq(Paginateable):
             for item in self.applies_toes:
                 serialized = SerializationHelper.serialize_item(item, "StandardNameEnum")
                 if serialized is not None:
-                    child_elem = ET.Element("APPLIES-TO")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "APPLIES-TO")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -144,127 +137,55 @@ class StructuredReq(Paginateable):
         if self.conflicts is not None:
             serialized = SerializationHelper.serialize_item(self.conflicts, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONFLICTS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONFLICTS")
 
         # Serialize date
         if self.date is not None:
             serialized = SerializationHelper.serialize_item(self.date, "DateTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATE")
 
         # Serialize dependencies
         if self.dependencies is not None:
             serialized = SerializationHelper.serialize_item(self.dependencies, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEPENDENCIES")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEPENDENCIES")
 
         # Serialize description
         if self.description is not None:
             serialized = SerializationHelper.serialize_item(self.description, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DESCRIPTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DESCRIPTION")
 
         # Serialize importance
         if self.importance is not None:
             serialized = SerializationHelper.serialize_item(self.importance, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMPORTANCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMPORTANCE")
 
         # Serialize issued_by
         if self.issued_by is not None:
             serialized = SerializationHelper.serialize_item(self.issued_by, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ISSUED-BY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ISSUED-BY")
 
         # Serialize rationale
         if self.rationale is not None:
             serialized = SerializationHelper.serialize_item(self.rationale, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RATIONALE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RATIONALE")
 
         # Serialize remark
         if self.remark is not None:
             serialized = SerializationHelper.serialize_item(self.remark, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REMARK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REMARK")
 
         # Serialize supporting
         if self.supporting is not None:
             serialized = SerializationHelper.serialize_item(self.supporting, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUPPORTING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUPPORTING")
 
         # Serialize tested_item_refs (list to container "TESTED-ITEM-REFS")
         if self.tested_item_refs:
@@ -272,14 +193,7 @@ class StructuredReq(Paginateable):
             for item in self.tested_item_refs:
                 serialized = SerializationHelper.serialize_item(item, "Traceable")
                 if serialized is not None:
-                    child_elem = ET.Element("TESTED-ITEM-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "TESTED-ITEM-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -287,29 +201,13 @@ class StructuredReq(Paginateable):
         if self.type is not None:
             serialized = SerializationHelper.serialize_item(self.type, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TYPE")
 
         # Serialize use_case
         if self.use_case is not None:
             serialized = SerializationHelper.serialize_item(self.use_case, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USE-CASE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USE-CASE")
 
         return elem
 

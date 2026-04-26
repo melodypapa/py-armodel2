@@ -92,27 +92,13 @@ class McFunctionDataRefSet(ARObject):
         for item in self.flat_map_entry_refs:
             serialized = SerializationHelper.serialize_item(item, "FlatInstanceDescriptor")
             if serialized is not None:
-                wrapped = ET.Element("FLAT-MAP-ENTRY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "FLAT-MAP-ENTRY")
 
         # Serialize mc_data_instance_refs (list)
         for item in self.mc_data_instance_refs:
             serialized = SerializationHelper.serialize_item(item, "McDataInstance")
             if serialized is not None:
-                wrapped = ET.Element("MC-DATA-INSTANCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MC-DATA-INSTANCE")
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "McFunctionDataRefSet")

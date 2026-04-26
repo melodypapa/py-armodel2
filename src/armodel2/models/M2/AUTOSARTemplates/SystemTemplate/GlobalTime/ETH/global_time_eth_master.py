@@ -86,43 +86,19 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
         if self.crc_secured is not None:
             serialized = SerializationHelper.serialize_item(self.crc_secured, "GlobalTimeCrcSupportEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRC-SECURED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRC-SECURED")
 
         # Serialize hold_over_time
         if self.hold_over_time is not None:
             serialized = SerializationHelper.serialize_item(self.hold_over_time, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HOLD-OVER-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HOLD-OVER-TIME")
 
         # Serialize sub_tlv_config
         if self.sub_tlv_config is not None:
             serialized = SerializationHelper.serialize_item(self.sub_tlv_config, "EthTSynSubTlvConfig")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUB-TLV-CONFIG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUB-TLV-CONFIG")
 
         return elem
 

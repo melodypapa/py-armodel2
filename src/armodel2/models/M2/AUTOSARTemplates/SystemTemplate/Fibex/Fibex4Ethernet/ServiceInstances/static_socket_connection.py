@@ -98,14 +98,7 @@ class StaticSocketConnection(Identifiable):
             for item in self.i_pdu_identifier_refs:
                 serialized = SerializationHelper.serialize_item(item, "SoConIPduIdentifier")
                 if serialized is not None:
-                    child_elem = ET.Element("I-PDU-IDENTIFIER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "I-PDU-IDENTIFIER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -113,43 +106,19 @@ class StaticSocketConnection(Identifiable):
         if self.remote_address_ref is not None:
             serialized = SerializationHelper.serialize_item(self.remote_address_ref, "SocketAddress")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REMOTE-ADDRESS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REMOTE-ADDRESS-REF")
 
         # Serialize tcp_connect
         if self.tcp_connect is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_connect, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-CONNECT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-CONNECT")
 
         # Serialize tcp_role
         if self.tcp_role is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_role, "TcpRoleEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-ROLE")
 
         return elem
 

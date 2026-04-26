@@ -100,57 +100,25 @@ class PhysConstrs(ARObject):
         if self.lower_limit is not None:
             serialized = SerializationHelper.serialize_item(self.lower_limit, "Limit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOWER-LIMIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOWER-LIMIT")
 
         # Serialize max_diff
         if self.max_diff is not None:
             serialized = SerializationHelper.serialize_item(self.max_diff, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-DIFF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-DIFF")
 
         # Serialize max_gradient
         if self.max_gradient is not None:
             serialized = SerializationHelper.serialize_item(self.max_gradient, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-GRADIENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-GRADIENT")
 
         # Serialize monotony
         if self.monotony is not None:
             serialized = SerializationHelper.serialize_item(self.monotony, "MonotonyEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MONOTONY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MONOTONY")
 
         # Serialize scale_constrs (list to container "SCALE-CONSTRS")
         if self.scale_constrs:
@@ -166,29 +134,13 @@ class PhysConstrs(ARObject):
         if self.upper_limit is not None:
             serialized = SerializationHelper.serialize_item(self.upper_limit, "Limit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPPER-LIMIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPPER-LIMIT")
 
         # Serialize unit_ref
         if self.unit_ref is not None:
             serialized = SerializationHelper.serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UNIT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UNIT-REF")
 
         return elem
 

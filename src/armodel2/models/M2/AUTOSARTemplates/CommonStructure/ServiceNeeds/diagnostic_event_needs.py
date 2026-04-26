@@ -97,14 +97,7 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
             for item in self.deferring_fid_refs:
                 serialized = SerializationHelper.serialize_item(item, "FunctionInhibitionNeeds")
                 if serialized is not None:
-                    child_elem = ET.Element("DEFERRING-FID-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DEFERRING-FID-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -112,29 +105,13 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         if self.diag_event_debounce is not None:
             serialized = SerializationHelper.serialize_item(self.diag_event_debounce, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAG-EVENT-DEBOUNCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAG-EVENT-DEBOUNCE")
 
         # Serialize inhibiting_fid_ref
         if self.inhibiting_fid_ref is not None:
             serialized = SerializationHelper.serialize_item(self.inhibiting_fid_ref, "FunctionInhibitionNeeds")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INHIBITING-FID-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INHIBITING-FID-REF")
 
         # Serialize inhibiting_refs (list to container "INHIBITING-REFS")
         if self.inhibiting_refs:
@@ -142,14 +119,7 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
             for item in self.inhibiting_refs:
                 serialized = SerializationHelper.serialize_item(item, "FunctionInhibitionNeeds")
                 if serialized is not None:
-                    child_elem = ET.Element("INHIBITING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "INHIBITING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -157,29 +127,13 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         if self.prestored is not None:
             serialized = SerializationHelper.serialize_item(self.prestored, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRESTORED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRESTORED")
 
         # Serialize uses_monitor
         if self.uses_monitor is not None:
             serialized = SerializationHelper.serialize_item(self.uses_monitor, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USES-MONITOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USES-MONITOR")
 
         return elem
 

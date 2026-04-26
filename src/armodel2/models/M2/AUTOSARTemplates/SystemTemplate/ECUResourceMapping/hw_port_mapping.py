@@ -77,29 +77,13 @@ class HwPortMapping(ARObject):
         if self.communication_connector_ref is not None:
             serialized = SerializationHelper.serialize_item(self.communication_connector_ref, "CommunicationConnector")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMMUNICATION-CONNECTOR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMMUNICATION-CONNECTOR-REF")
 
         # Serialize hw_pin_group_ref
         if self.hw_pin_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.hw_pin_group_ref, "HwPinGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HW-PIN-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HW-PIN-GROUP-REF")
 
         return elem
 

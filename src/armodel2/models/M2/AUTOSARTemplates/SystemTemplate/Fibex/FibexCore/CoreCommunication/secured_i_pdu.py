@@ -99,99 +99,43 @@ class SecuredIPdu(IPdu):
         if self.authentication_ref is not None:
             serialized = SerializationHelper.serialize_item(self.authentication_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AUTHENTICATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AUTHENTICATION-REF")
 
         # Serialize dynamic
         if self.dynamic is not None:
             serialized = SerializationHelper.serialize_item(self.dynamic, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DYNAMIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DYNAMIC")
 
         # Serialize freshness_props_ref
         if self.freshness_props_ref is not None:
             serialized = SerializationHelper.serialize_item(self.freshness_props_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRESHNESS-PROPS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FRESHNESS-PROPS-REF")
 
         # Serialize payload_ref
         if self.payload_ref is not None:
             serialized = SerializationHelper.serialize_item(self.payload_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PAYLOAD-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PAYLOAD-REF")
 
         # Serialize secure
         if self.secure is not None:
             serialized = SerializationHelper.serialize_item(self.secure, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECURE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECURE")
 
         # Serialize use_as
         if self.use_as is not None:
             serialized = SerializationHelper.serialize_item(self.use_as, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USE-AS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USE-AS")
 
         # Serialize use_secured_pdu
         if self.use_secured_pdu is not None:
             serialized = SerializationHelper.serialize_item(self.use_secured_pdu, "SecuredPduHeaderEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USE-SECURED-PDU")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USE-SECURED-PDU")
 
         return elem
 

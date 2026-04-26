@@ -96,57 +96,25 @@ class DataPrototypeMapping(ARObject):
         if self.first_data_ref is not None:
             serialized = SerializationHelper.serialize_item(self.first_data_ref, "AutosarDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIRST-DATA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIRST-DATA-REF")
 
         # Serialize first_to_second_ref
         if self.first_to_second_ref is not None:
             serialized = SerializationHelper.serialize_item(self.first_to_second_ref, "DataTransformation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIRST-TO-SECOND-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIRST-TO-SECOND-REF")
 
         # Serialize second_data_ref
         if self.second_data_ref is not None:
             serialized = SerializationHelper.serialize_item(self.second_data_ref, "AutosarDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECOND-DATA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECOND-DATA-REF")
 
         # Serialize second_to_first_ref
         if self.second_to_first_ref is not None:
             serialized = SerializationHelper.serialize_item(self.second_to_first_ref, "DataTransformation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECOND-TO-FIRST-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECOND-TO-FIRST-REF")
 
         # Serialize sub_element_refs (list to container "SUB-ELEMENT-REFS")
         if self.sub_element_refs:
@@ -154,14 +122,7 @@ class DataPrototypeMapping(ARObject):
             for item in self.sub_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "SubElementMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("SUB-ELEMENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SUB-ELEMENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -169,15 +130,7 @@ class DataPrototypeMapping(ARObject):
         if self.text_table_ref is not None:
             serialized = SerializationHelper.serialize_item(self.text_table_ref, "TextTableMapping")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TEXT-TABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TEXT-TABLE-REF")
 
         return elem
 

@@ -80,43 +80,19 @@ class CouplingPortCreditBasedShaper(Identifiable):
         if self.idle_slope is not None:
             serialized = SerializationHelper.serialize_item(self.idle_slope, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDLE-SLOPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDLE-SLOPE")
 
         # Serialize lower_boundary
         if self.lower_boundary is not None:
             serialized = SerializationHelper.serialize_item(self.lower_boundary, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOWER-BOUNDARY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOWER-BOUNDARY")
 
         # Serialize upper_boundary
         if self.upper_boundary is not None:
             serialized = SerializationHelper.serialize_item(self.upper_boundary, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPPER-BOUNDARY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPPER-BOUNDARY")
 
         return elem
 

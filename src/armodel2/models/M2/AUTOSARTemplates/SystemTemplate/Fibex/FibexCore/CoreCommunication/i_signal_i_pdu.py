@@ -107,15 +107,7 @@ class ISignalIPdu(IPdu):
         if self.unused_bit_pattern is not None:
             serialized = SerializationHelper.serialize_item(self.unused_bit_pattern, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UNUSED-BIT-PATTERN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UNUSED-BIT-PATTERN")
 
         return elem
 

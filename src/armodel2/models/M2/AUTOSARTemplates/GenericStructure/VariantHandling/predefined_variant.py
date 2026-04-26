@@ -85,14 +85,7 @@ class PredefinedVariant(ARElement):
             for item in self.included_variant_refs:
                 serialized = SerializationHelper.serialize_item(item, "PredefinedVariant")
                 if serialized is not None:
-                    child_elem = ET.Element("INCLUDED-VARIANT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "INCLUDED-VARIANT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -102,14 +95,7 @@ class PredefinedVariant(ARElement):
             for item in self.post_build_variant_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("POST-BUILD-VARIANT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "POST-BUILD-VARIANT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -119,14 +105,7 @@ class PredefinedVariant(ARElement):
             for item in self.sw_refs:
                 serialized = SerializationHelper.serialize_item(item, "SwSystemconstantValueSet")
                 if serialized is not None:
-                    child_elem = ET.Element("SW-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SW-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

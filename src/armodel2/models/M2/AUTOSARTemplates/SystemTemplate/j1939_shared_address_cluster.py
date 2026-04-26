@@ -77,14 +77,7 @@ class J1939SharedAddressCluster(Identifiable):
             for item in self.participating_refs:
                 serialized = SerializationHelper.serialize_item(item, "J1939Cluster")
                 if serialized is not None:
-                    child_elem = ET.Element("PARTICIPATING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "PARTICIPATING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

@@ -74,15 +74,7 @@ class VlanConfig(Identifiable):
         if self.vlan_identifier is not None:
             serialized = SerializationHelper.serialize_item(self.vlan_identifier, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VLAN-IDENTIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VLAN-IDENTIFIER")
 
         return elem
 

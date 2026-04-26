@@ -93,40 +93,19 @@ class LinMaster(ARObject):
         for item in self.lin_slaves:
             serialized = SerializationHelper.serialize_item(item, "LinSlaveConfig")
             if serialized is not None:
-                wrapped = ET.Element("LIN-SLAF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "LIN-SLAF")
 
         # Serialize time_base
         if self.time_base is not None:
             serialized = SerializationHelper.serialize_item(self.time_base, "TimeValue")
             if serialized is not None:
-                wrapped = ET.Element("TIME-BASE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "TIME-BASE")
 
         # Serialize time_base_jitter
         if self.time_base_jitter is not None:
             serialized = SerializationHelper.serialize_item(self.time_base_jitter, "TimeValue")
             if serialized is not None:
-                wrapped = ET.Element("TIME-BASE-JITTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "TIME-BASE-JITTER")
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "LinMaster")

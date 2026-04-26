@@ -83,57 +83,25 @@ class MacSecProps(ARObject):
         if self.auto_start is not None:
             serialized = SerializationHelper.serialize_item(self.auto_start, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AUTO-START")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AUTO-START")
 
         # Serialize mac_sec_kay
         if self.mac_sec_kay is not None:
             serialized = SerializationHelper.serialize_item(self.mac_sec_kay, "MacSecLocalKayProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAC-SEC-KAY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAC-SEC-KAY")
 
         # Serialize on_fail
         if self.on_fail is not None:
             serialized = SerializationHelper.serialize_item(self.on_fail, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ON-FAIL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ON-FAIL")
 
         # Serialize sak_rekey_time
         if self.sak_rekey_time is not None:
             serialized = SerializationHelper.serialize_item(self.sak_rekey_time, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SAK-REKEY-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SAK-REKEY-TIME")
 
         return elem
 

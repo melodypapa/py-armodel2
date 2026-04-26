@@ -75,29 +75,13 @@ class BswDataReceptionPolicy(ARObject, ABC):
         if self.enable_take_address is not None:
             serialized = SerializationHelper.serialize_item(self.enable_take_address, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENABLE-TAKE-ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENABLE-TAKE-ADDRESS")
 
         # Serialize received_data_ref
         if self.received_data_ref is not None:
             serialized = SerializationHelper.serialize_item(self.received_data_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RECEIVED-DATA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RECEIVED-DATA-REF")
 
         return elem
 

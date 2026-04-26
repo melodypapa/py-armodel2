@@ -84,43 +84,19 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
         if self.committed_burst is not None:
             serialized = SerializationHelper.serialize_item(self.committed_burst, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMMITTED-BURST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMMITTED-BURST")
 
         # Serialize committed
         if self.committed is not None:
             serialized = SerializationHelper.serialize_item(self.committed, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMMITTED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMMITTED")
 
         # Serialize traffic_shaper_ref
         if self.traffic_shaper_ref is not None:
             serialized = SerializationHelper.serialize_item(self.traffic_shaper_ref, "SwitchAsynchronousTrafficShaperGroupEntry")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRAFFIC-SHAPER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRAFFIC-SHAPER-REF")
 
         return elem
 

@@ -77,29 +77,13 @@ class EcucEnumerationLiteralDef(Identifiable):
         if self.ecuc_cond is not None:
             serialized = SerializationHelper.serialize_item(self.ecuc_cond, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECUC-COND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECUC-COND")
 
         # Serialize origin
         if self.origin is not None:
             serialized = SerializationHelper.serialize_item(self.origin, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ORIGIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ORIGIN")
 
         return elem
 

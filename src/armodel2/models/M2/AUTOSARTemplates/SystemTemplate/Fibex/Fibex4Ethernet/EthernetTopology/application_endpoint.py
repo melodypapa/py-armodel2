@@ -112,43 +112,19 @@ class ApplicationEndpoint(Identifiable):
         if self.max_number_of is not None:
             serialized = SerializationHelper.serialize_item(self.max_number_of, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-NUMBER-OF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-NUMBER-OF")
 
         # Serialize network_endpoint_endpoint_ref
         if self.network_endpoint_endpoint_ref is not None:
             serialized = SerializationHelper.serialize_item(self.network_endpoint_endpoint_ref, "NetworkEndpoint")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NETWORK-ENDPOINT-ENDPOINT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NETWORK-ENDPOINT-ENDPOINT-REF")
 
         # Serialize priority
         if self.priority is not None:
             serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIORITY")
 
         # Serialize provided_services (list to container "PROVIDED-SERVICES")
         if self.provided_services:
@@ -164,29 +140,13 @@ class ApplicationEndpoint(Identifiable):
         if self.tls_crypto_service_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tls_crypto_service_ref, "TlsCryptoServiceMapping")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TLS-CRYPTO-SERVICE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TLS-CRYPTO-SERVICE-REF")
 
         # Serialize tp_configuration_configuration
         if self.tp_configuration_configuration is not None:
             serialized = SerializationHelper.serialize_item(self.tp_configuration_configuration, "TransportProtocolConfiguration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TP-CONFIGURATION-CONFIGURATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TP-CONFIGURATION-CONFIGURATION")
 
         return elem
 

@@ -76,29 +76,13 @@ class FlexrayAbsolutelyScheduledTiming(ARObject):
         if self.communication_cycle_cycle is not None:
             serialized = SerializationHelper.serialize_item(self.communication_cycle_cycle, "CommunicationCycle")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMMUNICATION-CYCLE-CYCLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMMUNICATION-CYCLE-CYCLE")
 
         # Serialize slot_id
         if self.slot_id is not None:
             serialized = SerializationHelper.serialize_item(self.slot_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SLOT-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SLOT-ID")
 
         return elem
 

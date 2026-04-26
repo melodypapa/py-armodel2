@@ -73,29 +73,13 @@ class TDHeaderIdRange(ARObject):
         if self.max_header_id is not None:
             serialized = SerializationHelper.serialize_item(self.max_header_id, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-HEADER-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-HEADER-ID")
 
         # Serialize min_header_id
         if self.min_header_id is not None:
             serialized = SerializationHelper.serialize_item(self.min_header_id, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIN-HEADER-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MIN-HEADER-ID")
 
         return elem
 

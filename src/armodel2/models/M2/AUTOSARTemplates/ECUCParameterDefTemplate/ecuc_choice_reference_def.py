@@ -78,14 +78,7 @@ class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
             for item in self.destination_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucContainerDef")
                 if serialized is not None:
-                    child_elem = ET.Element("DESTINATION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DESTINATION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

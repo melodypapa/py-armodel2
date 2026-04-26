@@ -80,29 +80,13 @@ class Row(Paginateable):
         if self.rowsep is not None:
             serialized = SerializationHelper.serialize_item(self.rowsep, "TableSeparatorString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROWSEP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROWSEP")
 
         # Serialize valign
         if self.valign is not None:
             serialized = SerializationHelper.serialize_item(self.valign, "ValignEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VALIGN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VALIGN")
 
         return elem
 

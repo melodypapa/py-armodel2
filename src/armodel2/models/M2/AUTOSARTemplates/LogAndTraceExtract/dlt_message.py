@@ -107,71 +107,31 @@ class DltMessage(Identifiable):
         if self.message_id is not None:
             serialized = SerializationHelper.serialize_item(self.message_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MESSAGE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MESSAGE-ID")
 
         # Serialize message_line
         if self.message_line is not None:
             serialized = SerializationHelper.serialize_item(self.message_line, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MESSAGE-LINE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MESSAGE-LINE")
 
         # Serialize message_source
         if self.message_source is not None:
             serialized = SerializationHelper.serialize_item(self.message_source, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MESSAGE-SOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MESSAGE-SOURCE")
 
         # Serialize message_type_info
         if self.message_type_info is not None:
             serialized = SerializationHelper.serialize_item(self.message_type_info, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MESSAGE-TYPE-INFO")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MESSAGE-TYPE-INFO")
 
         # Serialize privacy_level
         if self.privacy_level is not None:
             serialized = SerializationHelper.serialize_item(self.privacy_level, "PrivacyLevel")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIVACY-LEVEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIVACY-LEVEL")
 
         return elem
 

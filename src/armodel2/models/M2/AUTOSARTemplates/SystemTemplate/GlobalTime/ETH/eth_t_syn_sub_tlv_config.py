@@ -79,57 +79,25 @@ class EthTSynSubTlvConfig(ARObject):
         if self.ofs_sub_tlv is not None:
             serialized = SerializationHelper.serialize_item(self.ofs_sub_tlv, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OFS-SUB-TLV")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OFS-SUB-TLV")
 
         # Serialize status_sub_tlv
         if self.status_sub_tlv is not None:
             serialized = SerializationHelper.serialize_item(self.status_sub_tlv, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STATUS-SUB-TLV")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STATUS-SUB-TLV")
 
         # Serialize time_sub_tlv
         if self.time_sub_tlv is not None:
             serialized = SerializationHelper.serialize_item(self.time_sub_tlv, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-SUB-TLV")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-SUB-TLV")
 
         # Serialize user_data_sub_tlv
         if self.user_data_sub_tlv is not None:
             serialized = SerializationHelper.serialize_item(self.user_data_sub_tlv, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USER-DATA-SUB-TLV")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USER-DATA-SUB-TLV")
 
         return elem
 

@@ -92,99 +92,43 @@ class PhysicalDimension(ARElement):
         if self.length_exp is not None:
             serialized = SerializationHelper.serialize_item(self.length_exp, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LENGTH-EXP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LENGTH-EXP")
 
         # Serialize luminous_intensity_exp
         if self.luminous_intensity_exp is not None:
             serialized = SerializationHelper.serialize_item(self.luminous_intensity_exp, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LUMINOUS-INTENSITY-EXP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LUMINOUS-INTENSITY-EXP")
 
         # Serialize mass_exp
         if self.mass_exp is not None:
             serialized = SerializationHelper.serialize_item(self.mass_exp, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MASS-EXP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MASS-EXP")
 
         # Serialize molar_amount_exp
         if self.molar_amount_exp is not None:
             serialized = SerializationHelper.serialize_item(self.molar_amount_exp, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MOLAR-AMOUNT-EXP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MOLAR-AMOUNT-EXP")
 
         # Serialize temperature_exp
         if self.temperature_exp is not None:
             serialized = SerializationHelper.serialize_item(self.temperature_exp, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TEMPERATURE-EXP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TEMPERATURE-EXP")
 
         # Serialize time_exp
         if self.time_exp is not None:
             serialized = SerializationHelper.serialize_item(self.time_exp, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-EXP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-EXP")
 
         # Serialize current_exp
         if self.current_exp is not None:
             serialized = SerializationHelper.serialize_item(self.current_exp, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CURRENT-EXP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CURRENT-EXP")
 
         return elem
 

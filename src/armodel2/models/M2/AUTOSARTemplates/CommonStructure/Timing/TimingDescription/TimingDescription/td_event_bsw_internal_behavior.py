@@ -78,29 +78,13 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         if self.bsw_module_entity_entity_ref is not None:
             serialized = SerializationHelper.serialize_item(self.bsw_module_entity_entity_ref, "BswModuleEntity")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BSW-MODULE-ENTITY-ENTITY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BSW-MODULE-ENTITY-ENTITY-REF")
 
         # Serialize td_event_bsw_behavior_type
         if self.td_event_bsw_behavior_type is not None:
             serialized = SerializationHelper.serialize_item(self.td_event_bsw_behavior_type, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TD-EVENT-BSW-BEHAVIOR-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TD-EVENT-BSW-BEHAVIOR-TYPE")
 
         return elem
 

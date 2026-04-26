@@ -101,29 +101,13 @@ class AbstractServiceInstance(Identifiable, ABC):
         if self.major_version is not None:
             serialized = SerializationHelper.serialize_item(self.major_version, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAJOR-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAJOR-VERSION")
 
         # Serialize method
         if self.method is not None:
             serialized = SerializationHelper.serialize_item(self.method, "PduActivationRoutingGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("METHOD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "METHOD")
 
         # Serialize routing_group_refs (list to container "ROUTING-GROUP-REFS")
         if self.routing_group_refs:
@@ -131,14 +115,7 @@ class AbstractServiceInstance(Identifiable, ABC):
             for item in self.routing_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "SoAdRoutingGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("ROUTING-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ROUTING-GROUP-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

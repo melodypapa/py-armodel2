@@ -80,43 +80,19 @@ class TlsPskIdentity(ARObject):
         if self.pre_shared_key_ref is not None:
             serialized = SerializationHelper.serialize_item(self.pre_shared_key_ref, "CryptoServiceKey")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRE-SHARED-KEY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRE-SHARED-KEY-REF")
 
         # Serialize psk_identity
         if self.psk_identity is not None:
             serialized = SerializationHelper.serialize_item(self.psk_identity, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PSK-IDENTITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PSK-IDENTITY")
 
         # Serialize psk_identity_hint
         if self.psk_identity_hint is not None:
             serialized = SerializationHelper.serialize_item(self.psk_identity_hint, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PSK-IDENTITY-HINT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PSK-IDENTITY-HINT")
 
         return elem
 

@@ -77,29 +77,13 @@ class CyclicTiming(Describable):
         if self.time_offset is not None:
             serialized = SerializationHelper.serialize_item(self.time_offset, "TimeRangeType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-OFFSET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-OFFSET")
 
         # Serialize time_period
         if self.time_period is not None:
             serialized = SerializationHelper.serialize_item(self.time_period, "TimeRangeType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-PERIOD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-PERIOD")
 
         return elem
 

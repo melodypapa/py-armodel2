@@ -107,113 +107,49 @@ class SwRecordLayoutV(ARObject):
         if self.short_label is not None:
             serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHORT-LABEL")
 
         # Serialize base_type_ref
         if self.base_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.base_type_ref, "SwBaseType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE-TYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE-TYPE-REF")
 
         # Serialize desc
         if self.desc is not None:
             serialized = SerializationHelper.serialize_item(self.desc, "MultiLanguageOverviewParagraph")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DESC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DESC")
 
         # Serialize sw_generic_axis_param_type_ref
         if self.sw_generic_axis_param_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sw_generic_axis_param_type_ref, "SwGenericAxisParamType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-GENERIC-AXIS-PARAM-TYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-GENERIC-AXIS-PARAM-TYPE-REF")
 
         # Serialize sw_record_layout_v_axis
         if self.sw_record_layout_v_axis is not None:
             serialized = SerializationHelper.serialize_item(self.sw_record_layout_v_axis, "AxisIndexType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD-LAYOUT-V-AXIS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-RECORD-LAYOUT-V-AXIS")
 
         # Serialize sw_record_layout_v_fix_value
         if self.sw_record_layout_v_fix_value is not None:
             serialized = SerializationHelper.serialize_item(self.sw_record_layout_v_fix_value, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD-LAYOUT-V-FIX-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-RECORD-LAYOUT-V-FIX-VALUE")
 
         # Serialize sw_record_layout_v_index
         if self.sw_record_layout_v_index is not None:
             serialized = SerializationHelper.serialize_item(self.sw_record_layout_v_index, "NameTokens")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD-LAYOUT-V-INDEX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-RECORD-LAYOUT-V-INDEX")
 
         # Serialize sw_record_layout_v_prop
         if self.sw_record_layout_v_prop is not None:
             serialized = SerializationHelper.serialize_item(self.sw_record_layout_v_prop, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD-LAYOUT-V-PROP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-RECORD-LAYOUT-V-PROP")
 
         return elem
 

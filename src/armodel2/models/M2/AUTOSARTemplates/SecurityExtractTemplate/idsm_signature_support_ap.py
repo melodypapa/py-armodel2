@@ -77,29 +77,13 @@ class IdsmSignatureSupportAp(ARObject):
         if self.crypto_primitive is not None:
             serialized = SerializationHelper.serialize_item(self.crypto_primitive, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRYPTO-PRIMITIVE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRYPTO-PRIMITIVE")
 
         # Serialize key_slot_ref
         if self.key_slot_ref is not None:
             serialized = SerializationHelper.serialize_item(self.key_slot_ref, "CryptoKeySlot")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("KEY-SLOT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "KEY-SLOT-REF")
 
         return elem
 

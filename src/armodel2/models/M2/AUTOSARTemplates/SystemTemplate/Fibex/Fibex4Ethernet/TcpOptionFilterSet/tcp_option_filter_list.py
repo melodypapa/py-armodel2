@@ -76,14 +76,7 @@ class TcpOptionFilterList(Identifiable):
             for item in self.allowed_tcp_options:
                 serialized = SerializationHelper.serialize_item(item, "PositiveInteger")
                 if serialized is not None:
-                    child_elem = ET.Element("ALLOWED-TCP-OPTION")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ALLOWED-TCP-OPTION")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

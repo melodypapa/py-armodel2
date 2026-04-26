@@ -80,15 +80,7 @@ class IPSecConfig(ARObject):
         if self.ip_sec_config_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ip_sec_config_ref, "IPSecConfigProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IP-SEC-CONFIG-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IP-SEC-CONFIG-REF")
 
         # Serialize ip_sec_rules (list to container "IP-SEC-RULES")
         if self.ip_sec_rules:

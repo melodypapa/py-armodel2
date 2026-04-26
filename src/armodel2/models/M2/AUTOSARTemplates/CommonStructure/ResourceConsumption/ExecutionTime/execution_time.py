@@ -110,57 +110,25 @@ class ExecutionTime(Identifiable, ABC):
         if self.exclusive_area_ref is not None:
             serialized = SerializationHelper.serialize_item(self.exclusive_area_ref, "ExclusiveArea")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXCLUSIVE-AREA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXCLUSIVE-AREA-REF")
 
         # Serialize executable_entity_ref
         if self.executable_entity_ref is not None:
             serialized = SerializationHelper.serialize_item(self.executable_entity_ref, "ExecutableEntity")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXECUTABLE-ENTITY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXECUTABLE-ENTITY-REF")
 
         # Serialize hardware
         if self.hardware is not None:
             serialized = SerializationHelper.serialize_item(self.hardware, "HardwareConfiguration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HARDWARE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HARDWARE")
 
         # Serialize hw_element_ref
         if self.hw_element_ref is not None:
             serialized = SerializationHelper.serialize_item(self.hw_element_ref, "HwElement")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HW-ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HW-ELEMENT-REF")
 
         # Serialize included_library_refs (list to container "INCLUDED-LIBRARY-REFS")
         if self.included_library_refs:
@@ -168,14 +136,7 @@ class ExecutionTime(Identifiable, ABC):
             for item in self.included_library_refs:
                 serialized = SerializationHelper.serialize_item(item, "DependencyOnArtifact")
                 if serialized is not None:
-                    child_elem = ET.Element("INCLUDED-LIBRARY-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "INCLUDED-LIBRARY-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -193,15 +154,7 @@ class ExecutionTime(Identifiable, ABC):
         if self.software_context is not None:
             serialized = SerializationHelper.serialize_item(self.software_context, "SoftwareContext")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOFTWARE-CONTEXT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOFTWARE-CONTEXT")
 
         return elem
 

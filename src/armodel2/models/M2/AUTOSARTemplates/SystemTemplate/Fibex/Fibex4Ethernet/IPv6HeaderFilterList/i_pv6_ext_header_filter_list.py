@@ -76,14 +76,7 @@ class IPv6ExtHeaderFilterList(Identifiable):
             for item in self.allowed_i_pv6_exts:
                 serialized = SerializationHelper.serialize_item(item, "PositiveInteger")
                 if serialized is not None:
-                    child_elem = ET.Element("ALLOWED-I-PV6-EXT")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ALLOWED-I-PV6-EXT")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

@@ -92,14 +92,7 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
             for item in self.diagnostic_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticConnection")
                 if serialized is not None:
-                    child_elem = ET.Element("DIAGNOSTIC-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DIAGNOSTIC-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -107,29 +100,13 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         if self.ecu_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-INSTANCE-REF")
 
         # Serialize protocol_kind
         if self.protocol_kind is not None:
             serialized = SerializationHelper.serialize_item(self.protocol_kind, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROTOCOL-KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROTOCOL-KIND")
 
         # Serialize service_instance_refs (list to container "SERVICE-INSTANCE-REFS")
         if self.service_instance_refs:
@@ -137,14 +114,7 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
             for item in self.service_instance_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("SERVICE-INSTANCE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SERVICE-INSTANCE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

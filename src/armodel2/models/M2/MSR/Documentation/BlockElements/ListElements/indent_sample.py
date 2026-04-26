@@ -76,29 +76,13 @@ class IndentSample(ARObject):
         if self.item_label_pos_enum is not None:
             serialized = SerializationHelper.serialize_item(self.item_label_pos_enum, "ItemLabelPosEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ITEM-LABEL-POS-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ITEM-LABEL-POS-ENUM")
 
         # Serialize l2
         if self.l2 is not None:
             serialized = SerializationHelper.serialize_item(self.l2, "LOverviewParagraph")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("L2")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "L2")
 
         return elem
 

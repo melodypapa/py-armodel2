@@ -114,211 +114,91 @@ class TcpProps(ARObject):
         if self.tcp_congestion is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_congestion, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-CONGESTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-CONGESTION")
 
         # Serialize tcp_delayed_ack
         if self.tcp_delayed_ack is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_delayed_ack, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-DELAYED-ACK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-DELAYED-ACK")
 
         # Serialize tcp_fast_recovery
         if self.tcp_fast_recovery is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_fast_recovery, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-FAST-RECOVERY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-FAST-RECOVERY")
 
         # Serialize tcp_fast
         if self.tcp_fast is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_fast, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-FAST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-FAST")
 
         # Serialize tcp_fin
         if self.tcp_fin is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_fin, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-FIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-FIN")
 
         # Serialize tcp_keep_alive
         if self.tcp_keep_alive is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_keep_alive, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-KEEP-ALIVE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-KEEP-ALIVE")
 
         # Serialize tcp_max_rtx
         if self.tcp_max_rtx is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_max_rtx, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-MAX-RTX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-MAX-RTX")
 
         # Serialize tcp_msl
         if self.tcp_msl is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_msl, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-MSL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-MSL")
 
         # Serialize tcp_nagle
         if self.tcp_nagle is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_nagle, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-NAGLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-NAGLE")
 
         # Serialize tcp_receive_window_max
         if self.tcp_receive_window_max is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_receive_window_max, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-RECEIVE-WINDOW-MAX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-RECEIVE-WINDOW-MAX")
 
         # Serialize tcp
         if self.tcp is not None:
             serialized = SerializationHelper.serialize_item(self.tcp, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP")
 
         # Serialize tcp_slow_start
         if self.tcp_slow_start is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_slow_start, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-SLOW-START")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-SLOW-START")
 
         # Serialize tcp_syn_max_rtx
         if self.tcp_syn_max_rtx is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_syn_max_rtx, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-SYN-MAX-RTX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-SYN-MAX-RTX")
 
         # Serialize tcp_syn_received
         if self.tcp_syn_received is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_syn_received, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-SYN-RECEIVED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-SYN-RECEIVED")
 
         # Serialize tcp_ttl
         if self.tcp_ttl is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ttl, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-TTL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-TTL")
 
         return elem
 

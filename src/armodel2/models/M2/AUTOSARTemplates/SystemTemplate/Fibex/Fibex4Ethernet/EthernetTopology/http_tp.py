@@ -90,71 +90,31 @@ class HttpTp(TransportProtocolConfiguration):
         if self.content_type is not None:
             serialized = SerializationHelper.serialize_item(self.content_type, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTENT-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTENT-TYPE")
 
         # Serialize protocol_version
         if self.protocol_version is not None:
             serialized = SerializationHelper.serialize_item(self.protocol_version, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROTOCOL-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROTOCOL-VERSION")
 
         # Serialize request_method_enum
         if self.request_method_enum is not None:
             serialized = SerializationHelper.serialize_item(self.request_method_enum, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUEST-METHOD-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REQUEST-METHOD-ENUM")
 
         # Serialize tcp_tp_config
         if self.tcp_tp_config is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_tp_config, "TcpTp")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-TP-CONFIG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-TP-CONFIG")
 
         # Serialize uri
         if self.uri is not None:
             serialized = SerializationHelper.serialize_item(self.uri, "UriString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("URI")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "URI")
 
         return elem
 

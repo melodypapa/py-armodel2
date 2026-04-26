@@ -83,43 +83,19 @@ class DataConstrRule(ARObject):
         if self.constr_level is not None:
             serialized = SerializationHelper.serialize_item(self.constr_level, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONSTR-LEVEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONSTR-LEVEL")
 
         # Serialize internal_constrs
         if self.internal_constrs is not None:
             serialized = SerializationHelper.serialize_item(self.internal_constrs, "InternalConstrs")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTERNAL-CONSTRS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTERNAL-CONSTRS")
 
         # Serialize phys_constrs
         if self.phys_constrs is not None:
             serialized = SerializationHelper.serialize_item(self.phys_constrs, "PhysConstrs")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PHYS-CONSTRS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PHYS-CONSTRS")
 
         return elem
 

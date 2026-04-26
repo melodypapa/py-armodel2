@@ -79,15 +79,7 @@ class MsrQueryProps(ARObject):
         if self.comment is not None:
             serialized = SerializationHelper.serialize_item(self.comment, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMMENT")
 
         # Serialize msr_query_args (list to container "MSR-QUERY-ARGS")
         if self.msr_query_args:
@@ -103,15 +95,7 @@ class MsrQueryProps(ARObject):
         if self.msr_query_name is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query_name, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MSR-QUERY-NAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MSR-QUERY-NAME")
 
         return elem
 

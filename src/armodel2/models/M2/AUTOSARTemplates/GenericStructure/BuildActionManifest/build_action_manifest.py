@@ -101,14 +101,7 @@ class BuildActionManifest(ARElement):
             for item in self.dynamic_action_refs:
                 serialized = SerializationHelper.serialize_item(item, "BuildAction")
                 if serialized is not None:
-                    child_elem = ET.Element("DYNAMIC-ACTION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DYNAMIC-ACTION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -118,14 +111,7 @@ class BuildActionManifest(ARElement):
             for item in self.start_action_refs:
                 serialized = SerializationHelper.serialize_item(item, "BuildAction")
                 if serialized is not None:
-                    child_elem = ET.Element("START-ACTION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "START-ACTION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -135,14 +121,7 @@ class BuildActionManifest(ARElement):
             for item in self.tear_down_action_refs:
                 serialized = SerializationHelper.serialize_item(item, "BuildAction")
                 if serialized is not None:
-                    child_elem = ET.Element("TEAR-DOWN-ACTION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "TEAR-DOWN-ACTION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

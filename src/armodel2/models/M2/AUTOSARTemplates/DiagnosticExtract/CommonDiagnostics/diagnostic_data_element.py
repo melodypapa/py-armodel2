@@ -93,57 +93,25 @@ class DiagnosticDataElement(Identifiable):
         if self.array_size_semantics is not None:
             serialized = SerializationHelper.serialize_item(self.array_size_semantics, "ArraySizeSemanticsEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-SIZE-SEMANTICS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARRAY-SIZE-SEMANTICS")
 
         # Serialize max_number_of_elements
         if self.max_number_of_elements is not None:
             serialized = SerializationHelper.serialize_item(self.max_number_of_elements, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-NUMBER-OF-ELEMENTS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-NUMBER-OF-ELEMENTS")
 
         # Serialize scaling_info_size
         if self.scaling_info_size is not None:
             serialized = SerializationHelper.serialize_item(self.scaling_info_size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SCALING-INFO-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SCALING-INFO-SIZE")
 
         # Serialize sw_data_def_props
         if self.sw_data_def_props is not None:
             serialized = SerializationHelper.serialize_item(self.sw_data_def_props, "SwDataDefProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-DATA-DEF-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-DATA-DEF-PROPS")
 
         return elem
 

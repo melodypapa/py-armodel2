@@ -106,141 +106,61 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         if self.aaf_aes3_data is not None:
             serialized = SerializationHelper.serialize_item(self.aaf_aes3_data, "IEEE1722TpAafAes3DataTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AAF-AES3-DATA")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AAF-AES3-DATA")
 
         # Serialize aaf_format_enum
         if self.aaf_format_enum is not None:
             serialized = SerializationHelper.serialize_item(self.aaf_format_enum, "IEEE1722TpAafFormatEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AAF-FORMAT-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AAF-FORMAT-ENUM")
 
         # Serialize aaf_nominal_rate
         if self.aaf_nominal_rate is not None:
             serialized = SerializationHelper.serialize_item(self.aaf_nominal_rate, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AAF-NOMINAL-RATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AAF-NOMINAL-RATE")
 
         # Serialize aes3_data_type_h
         if self.aes3_data_type_h is not None:
             serialized = SerializationHelper.serialize_item(self.aes3_data_type_h, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AES3-DATA-TYPE-H")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AES3-DATA-TYPE-H")
 
         # Serialize aes3_data_type_l
         if self.aes3_data_type_l is not None:
             serialized = SerializationHelper.serialize_item(self.aes3_data_type_l, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AES3-DATA-TYPE-L")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AES3-DATA-TYPE-L")
 
         # Serialize channels_per
         if self.channels_per is not None:
             serialized = SerializationHelper.serialize_item(self.channels_per, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CHANNELS-PER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CHANNELS-PER")
 
         # Serialize event_default
         if self.event_default is not None:
             serialized = SerializationHelper.serialize_item(self.event_default, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-DEFAULT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-DEFAULT")
 
         # Serialize pcm_bit_depth
         if self.pcm_bit_depth is not None:
             serialized = SerializationHelper.serialize_item(self.pcm_bit_depth, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PCM-BIT-DEPTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PCM-BIT-DEPTH")
 
         # Serialize sparse
         if self.sparse is not None:
             serialized = SerializationHelper.serialize_item(self.sparse, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SPARSE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SPARSE")
 
         # Serialize streams_per
         if self.streams_per is not None:
             serialized = SerializationHelper.serialize_item(self.streams_per, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STREAMS-PER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STREAMS-PER")
 
         return elem
 

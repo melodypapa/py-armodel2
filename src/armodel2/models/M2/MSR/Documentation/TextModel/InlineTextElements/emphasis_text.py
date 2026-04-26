@@ -95,85 +95,37 @@ class EmphasisText(ARObject):
         if self.color is not None:
             serialized = SerializationHelper.serialize_item(self.color, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COLOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COLOR")
 
         # Serialize font
         if self.font is not None:
             serialized = SerializationHelper.serialize_item(self.font, "EEnumFont")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FONT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FONT")
 
         # Serialize sub
         if self.sub is not None:
             serialized = SerializationHelper.serialize_item(self.sub, "Superscript")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUB")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUB")
 
         # Serialize sup
         if self.sup is not None:
             serialized = SerializationHelper.serialize_item(self.sup, "Superscript")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUP")
 
         # Serialize tt
         if self.tt is not None:
             serialized = SerializationHelper.serialize_item(self.tt, "Tt")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TT")
 
         # Serialize type
         if self.type is not None:
             serialized = SerializationHelper.serialize_item(self.type, "EEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TYPE")
 
         return elem
 

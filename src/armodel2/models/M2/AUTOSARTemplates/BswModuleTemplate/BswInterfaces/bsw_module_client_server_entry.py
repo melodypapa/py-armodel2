@@ -84,43 +84,19 @@ class BswModuleClientServerEntry(Referrable):
         if self.encapsulated_entry_ref is not None:
             serialized = SerializationHelper.serialize_item(self.encapsulated_entry_ref, "BswModuleEntry")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENCAPSULATED-ENTRY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENCAPSULATED-ENTRY-REF")
 
         # Serialize is_reentrant
         if self.is_reentrant is not None:
             serialized = SerializationHelper.serialize_item(self.is_reentrant, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-REENTRANT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-REENTRANT")
 
         # Serialize is_synchronous
         if self.is_synchronous is not None:
             serialized = SerializationHelper.serialize_item(self.is_synchronous, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-SYNCHRONOUS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-SYNCHRONOUS")
 
         return elem
 

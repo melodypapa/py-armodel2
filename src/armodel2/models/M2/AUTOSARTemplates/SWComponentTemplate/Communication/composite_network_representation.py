@@ -91,15 +91,7 @@ class CompositeNetworkRepresentation(ARObject):
         if self.network_representation is not None:
             serialized = SerializationHelper.serialize_item(self.network_representation, "SwDataDefProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NETWORK-REPRESENTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NETWORK-REPRESENTATION")
 
         return elem
 

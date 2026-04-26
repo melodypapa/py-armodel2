@@ -80,14 +80,7 @@ class FlexrayTpNode(Identifiable):
             for item in self.connector_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("CONNECTOR-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONNECTOR-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -95,15 +88,7 @@ class FlexrayTpNode(Identifiable):
         if self.tp_address_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tp_address_ref, "TpAddress")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TP-ADDRESS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TP-ADDRESS-REF")
 
         return elem
 

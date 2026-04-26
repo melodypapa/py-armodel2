@@ -72,15 +72,7 @@ class TDEventVfbReference(TDEventVfb):
         if self.referenced_td_event_vfb_ref is not None:
             serialized = SerializationHelper.serialize_item(self.referenced_td_event_vfb_ref, "TDEventVfb")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REFERENCED-TD-EVENT-VFB-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REFERENCED-TD-EVENT-VFB-REF")
 
         return elem
 

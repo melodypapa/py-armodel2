@@ -70,15 +70,7 @@ class DdsOwnership(ARObject):
         if self.ownership_kind is not None:
             serialized = SerializationHelper.serialize_item(self.ownership_kind, "DdsOwnershipKindEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OWNERSHIP-KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OWNERSHIP-KIND")
 
         return elem
 

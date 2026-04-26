@@ -84,43 +84,19 @@ class MacSecKayParticipant(Identifiable):
         if self.ckn_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ckn_ref, "CryptoServiceKey")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CKN-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CKN-REF")
 
         # Serialize crypto_algo
         if self.crypto_algo is not None:
             serialized = SerializationHelper.serialize_item(self.crypto_algo, "MacSecCryptoAlgoConfig")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRYPTO-ALGO")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRYPTO-ALGO")
 
         # Serialize sak_ref
         if self.sak_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sak_ref, "CryptoServiceKey")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SAK-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SAK-REF")
 
         return elem
 

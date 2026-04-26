@@ -75,15 +75,7 @@ class DiagnosticJ1939FreezeFrame(DiagnosticCommonElement):
         if self.node_ref is not None:
             serialized = SerializationHelper.serialize_item(self.node_ref, "DiagnosticJ1939Node")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NODE-REF")
 
         return elem
 

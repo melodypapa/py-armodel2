@@ -86,57 +86,25 @@ class MixedContentForVerbatim(ARObject, ABC):
         if self.br is not None:
             serialized = SerializationHelper.serialize_item(self.br, "Br")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BR")
 
         # Serialize e
         if self.e is not None:
             serialized = SerializationHelper.serialize_item(self.e, "EmphasisText")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("E")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "E")
 
         # Serialize tt
         if self.tt is not None:
             serialized = SerializationHelper.serialize_item(self.tt, "Tt")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TT")
 
         # Serialize xref
         if self.xref is not None:
             serialized = SerializationHelper.serialize_item(self.xref, "Xref")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("XREF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "XREF")
 
         return elem
 

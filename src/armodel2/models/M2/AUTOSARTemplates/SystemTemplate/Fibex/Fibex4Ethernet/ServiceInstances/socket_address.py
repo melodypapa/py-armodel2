@@ -125,85 +125,37 @@ class SocketAddress(Identifiable):
         if self.allowed_i_pv6_ext_ref is not None:
             serialized = SerializationHelper.serialize_item(self.allowed_i_pv6_ext_ref, "IPv6ExtHeaderFilterList")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALLOWED-I-PV6-EXT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALLOWED-I-PV6-EXT-REF")
 
         # Serialize allowed_tcp_ref
         if self.allowed_tcp_ref is not None:
             serialized = SerializationHelper.serialize_item(self.allowed_tcp_ref, "TcpOptionFilterList")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALLOWED-TCP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALLOWED-TCP-REF")
 
         # Serialize application_endpoint_endpoint
         if self.application_endpoint_endpoint is not None:
             serialized = SerializationHelper.serialize_item(self.application_endpoint_endpoint, "ApplicationEndpoint")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("APPLICATION-ENDPOINT-ENDPOINT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "APPLICATION-ENDPOINT-ENDPOINT")
 
         # Serialize connector_ref
         if self.connector_ref is not None:
             serialized = SerializationHelper.serialize_item(self.connector_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONNECTOR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONNECTOR-REF")
 
         # Serialize differentiated
         if self.differentiated is not None:
             serialized = SerializationHelper.serialize_item(self.differentiated, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIFFERENTIATED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIFFERENTIATED")
 
         # Serialize flow_label
         if self.flow_label is not None:
             serialized = SerializationHelper.serialize_item(self.flow_label, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FLOW-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FLOW-LABEL")
 
         # Serialize multicast_refs (list to container "MULTICAST-REFS")
         if self.multicast_refs:
@@ -211,14 +163,7 @@ class SocketAddress(Identifiable):
             for item in self.multicast_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("MULTICAST-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "MULTICAST-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -226,29 +171,13 @@ class SocketAddress(Identifiable):
         if self.path_mtu is not None:
             serialized = SerializationHelper.serialize_item(self.path_mtu, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PATH-MTU")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PATH-MTU")
 
         # Serialize pdu_collection
         if self.pdu_collection is not None:
             serialized = SerializationHelper.serialize_item(self.pdu_collection, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDU-COLLECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDU-COLLECTION")
 
         # Serialize static_sockets (list to container "STATIC-SOCKETS")
         if self.static_sockets:
@@ -264,15 +193,7 @@ class SocketAddress(Identifiable):
         if self.udp_checksum is not None:
             serialized = SerializationHelper.serialize_item(self.udp_checksum, "UdpChecksumCalculationEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UDP-CHECKSUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UDP-CHECKSUM")
 
         return elem
 

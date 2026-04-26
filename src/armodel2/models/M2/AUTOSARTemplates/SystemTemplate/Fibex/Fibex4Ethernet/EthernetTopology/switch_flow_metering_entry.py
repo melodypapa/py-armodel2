@@ -93,85 +93,37 @@ class SwitchFlowMeteringEntry(Identifiable):
         if self.color_mode is not None:
             serialized = SerializationHelper.serialize_item(self.color_mode, "FlowMeteringColorModeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COLOR-MODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COLOR-MODE")
 
         # Serialize committed_burst
         if self.committed_burst is not None:
             serialized = SerializationHelper.serialize_item(self.committed_burst, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMMITTED-BURST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMMITTED-BURST")
 
         # Serialize committed
         if self.committed is not None:
             serialized = SerializationHelper.serialize_item(self.committed, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMMITTED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMMITTED")
 
         # Serialize coupling_flag
         if self.coupling_flag is not None:
             serialized = SerializationHelper.serialize_item(self.coupling_flag, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COUPLING-FLAG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COUPLING-FLAG")
 
         # Serialize excess_burst
         if self.excess_burst is not None:
             serialized = SerializationHelper.serialize_item(self.excess_burst, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXCESS-BURST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXCESS-BURST")
 
         # Serialize excess
         if self.excess is not None:
             serialized = SerializationHelper.serialize_item(self.excess, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXCESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXCESS")
 
         return elem
 

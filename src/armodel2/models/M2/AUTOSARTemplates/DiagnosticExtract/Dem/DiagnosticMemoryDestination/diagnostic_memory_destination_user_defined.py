@@ -83,14 +83,7 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
             for item in self.auth_role_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticAuthRole")
                 if serialized is not None:
-                    child_elem = ET.Element("AUTH-ROLE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "AUTH-ROLE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -98,15 +91,7 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
         if self.memory_id is not None:
             serialized = SerializationHelper.serialize_item(self.memory_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MEMORY-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MEMORY-ID")
 
         return elem
 

@@ -77,15 +77,7 @@ class FirewallRuleProps(ARObject):
         if self.action is not None:
             serialized = SerializationHelper.serialize_item(self.action, "FirewallActionEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ACTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ACTION")
 
         # Serialize matching_egress_rule_refs (list to container "MATCHING-EGRESS-RULE-REFS")
         if self.matching_egress_rule_refs:
@@ -93,14 +85,7 @@ class FirewallRuleProps(ARObject):
             for item in self.matching_egress_rule_refs:
                 serialized = SerializationHelper.serialize_item(item, "FirewallRule")
                 if serialized is not None:
-                    child_elem = ET.Element("MATCHING-EGRESS-RULE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "MATCHING-EGRESS-RULE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -110,14 +95,7 @@ class FirewallRuleProps(ARObject):
             for item in self.matching_ingress_rule_refs:
                 serialized = SerializationHelper.serialize_item(item, "FirewallRule")
                 if serialized is not None:
-                    child_elem = ET.Element("MATCHING-INGRESS-RULE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "MATCHING-INGRESS-RULE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

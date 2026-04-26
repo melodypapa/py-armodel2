@@ -74,15 +74,7 @@ class MacMulticastGroup(Identifiable):
         if self.mac_multicast is not None:
             serialized = SerializationHelper.serialize_item(self.mac_multicast, "MacAddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAC-MULTICAST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAC-MULTICAST")
 
         return elem
 

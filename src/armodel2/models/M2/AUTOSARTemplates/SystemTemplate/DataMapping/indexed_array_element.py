@@ -77,43 +77,19 @@ class IndexedArrayElement(ARObject):
         if self.application_array_ref is not None:
             serialized = SerializationHelper.serialize_item(self.application_array_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("APPLICATION-ARRAY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "APPLICATION-ARRAY-REF")
 
         # Serialize implementation_ref
         if self.implementation_ref is not None:
             serialized = SerializationHelper.serialize_item(self.implementation_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMPLEMENTATION-REF")
 
         # Serialize index
         if self.index is not None:
             serialized = SerializationHelper.serialize_item(self.index, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INDEX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INDEX")
 
         return elem
 

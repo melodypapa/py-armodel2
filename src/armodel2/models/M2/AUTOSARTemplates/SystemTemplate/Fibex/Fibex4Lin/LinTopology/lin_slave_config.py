@@ -111,57 +111,25 @@ class LinSlaveConfig(ARObject):
         if self.configured_nad is not None:
             serialized = SerializationHelper.serialize_item(self.configured_nad, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONFIGURED-NAD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONFIGURED-NAD")
 
         # Serialize function_id
         if self.function_id is not None:
             serialized = SerializationHelper.serialize_item(self.function_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FUNCTION-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FUNCTION-ID")
 
         # Serialize ident
         if self.ident is not None:
             serialized = SerializationHelper.serialize_item(self.ident, "LinSlaveConfigIdent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDENT")
 
         # Serialize initial_nad
         if self.initial_nad is not None:
             serialized = SerializationHelper.serialize_item(self.initial_nad, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INITIAL-NAD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INITIAL-NAD")
 
         # Serialize lin_configurable_frames (list to container "LIN-CONFIGURABLE-FRAMES")
         if self.lin_configurable_frames:
@@ -177,15 +145,7 @@ class LinSlaveConfig(ARObject):
         if self.lin_error_response is not None:
             serialized = SerializationHelper.serialize_item(self.lin_error_response, "LinErrorResponse")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LIN-ERROR-RESPONSE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LIN-ERROR-RESPONSE")
 
         # Serialize lin_ordereds (list to container "LIN-ORDEREDS")
         if self.lin_ordereds:
@@ -201,43 +161,19 @@ class LinSlaveConfig(ARObject):
         if self.protocol_version is not None:
             serialized = SerializationHelper.serialize_item(self.protocol_version, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROTOCOL-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROTOCOL-VERSION")
 
         # Serialize supplier_id
         if self.supplier_id is not None:
             serialized = SerializationHelper.serialize_item(self.supplier_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUPPLIER-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUPPLIER-ID")
 
         # Serialize variant_id
         if self.variant_id is not None:
             serialized = SerializationHelper.serialize_item(self.variant_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VARIANT-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VARIANT-ID")
 
         return elem
 

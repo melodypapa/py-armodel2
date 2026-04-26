@@ -106,15 +106,7 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         if self.let_data_exchange is not None:
             serialized = SerializationHelper.serialize_item(self.let_data_exchange, "LetDataExchangeParadigmEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LET-DATA-EXCHANGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LET-DATA-EXCHANGE")
 
         # Serialize let_interval_refs (list to container "LET-INTERVAL-REFS")
         if self.let_interval_refs:
@@ -122,14 +114,7 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
             for item in self.let_interval_refs:
                 serialized = SerializationHelper.serialize_item(item, "TimingDescriptionEvent")
                 if serialized is not None:
-                    child_elem = ET.Element("LET-INTERVAL-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "LET-INTERVAL-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -137,57 +122,25 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         if self.max_cycle is not None:
             serialized = SerializationHelper.serialize_item(self.max_cycle, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-CYCLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-CYCLE")
 
         # Serialize max_cycles
         if self.max_cycles is not None:
             serialized = SerializationHelper.serialize_item(self.max_cycles, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-CYCLES")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-CYCLES")
 
         # Serialize max_slots
         if self.max_slots is not None:
             serialized = SerializationHelper.serialize_item(self.max_slots, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-SLOTS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-SLOTS")
 
         # Serialize max_slots_per
         if self.max_slots_per is not None:
             serialized = SerializationHelper.serialize_item(self.max_slots_per, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-SLOTS-PER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-SLOTS-PER")
 
         # Serialize nested_element_refs (list to container "NESTED-ELEMENT-REFS")
         if self.nested_element_refs:
@@ -195,14 +148,7 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
             for item in self.nested_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("NESTED-ELEMENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "NESTED-ELEMENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -212,14 +158,7 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
             for item in self.successor_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("SUCCESSOR-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SUCCESSOR-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -227,15 +166,7 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         if self.triggering_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.triggering_event_ref, "TimingDescriptionEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRIGGERING-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRIGGERING-EVENT-REF")
 
         return elem
 

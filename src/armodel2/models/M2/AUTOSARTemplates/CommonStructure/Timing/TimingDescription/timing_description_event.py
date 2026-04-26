@@ -76,29 +76,13 @@ class TimingDescriptionEvent(TimingDescription, ABC):
         if self.clock_reference_ref is not None:
             serialized = SerializationHelper.serialize_item(self.clock_reference_ref, "TimingClock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CLOCK-REFERENCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CLOCK-REFERENCE-REF")
 
         # Serialize occurrence
         if self.occurrence is not None:
             serialized = SerializationHelper.serialize_item(self.occurrence, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OCCURRENCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OCCURRENCE")
 
         return elem
 

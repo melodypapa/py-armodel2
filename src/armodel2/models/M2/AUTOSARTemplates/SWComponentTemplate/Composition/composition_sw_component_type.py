@@ -136,14 +136,7 @@ class CompositionSwComponentType(SwComponentType):
             for item in self.constant_value_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConstantSpecificationMappingSet")
                 if serialized is not None:
-                    child_elem = ET.Element("CONSTANT-VALUE-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONSTANT-VALUE-MAPPING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -153,14 +146,7 @@ class CompositionSwComponentType(SwComponentType):
             for item in self.data_type_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
-                    child_elem = ET.Element("DATA-TYPE-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DATA-TYPE-MAPPING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -178,15 +164,7 @@ class CompositionSwComponentType(SwComponentType):
         if self.physical_dimension_mapping_ref is not None:
             serialized = SerializationHelper.serialize_item(self.physical_dimension_mapping_ref, "PhysicalDimensionMappingSet")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PHYSICAL-DIMENSION-MAPPING-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PHYSICAL-DIMENSION-MAPPING-REF")
 
         return elem
 

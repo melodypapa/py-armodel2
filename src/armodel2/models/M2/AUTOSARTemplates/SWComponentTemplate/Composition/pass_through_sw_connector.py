@@ -82,29 +82,13 @@ class PassThroughSwConnector(SwConnector):
         if self.provided_outer_ref is not None:
             serialized = SerializationHelper.serialize_item(self.provided_outer_ref, "AbstractProvidedPortPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROVIDED-OUTER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROVIDED-OUTER-REF")
 
         # Serialize required_outer_ref
         if self.required_outer_ref is not None:
             serialized = SerializationHelper.serialize_item(self.required_outer_ref, "AbstractRequiredPortPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUIRED-OUTER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REQUIRED-OUTER-REF")
 
         return elem
 

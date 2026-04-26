@@ -96,43 +96,19 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         if self.crc_flags is not None:
             serialized = SerializationHelper.serialize_item(self.crc_flags, "EthTSynCrcFlags")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRC-FLAGS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRC-FLAGS")
 
         # Serialize destination
         if self.destination is not None:
             serialized = SerializationHelper.serialize_item(self.destination, "MacAddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DESTINATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DESTINATION")
 
         # Serialize fup_data_id_list
         if self.fup_data_id_list is not None:
             serialized = SerializationHelper.serialize_item(self.fup_data_id_list, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FUP-DATA-ID-LIST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FUP-DATA-ID-LIST")
 
         # Serialize manageds (list to container "MANAGEDS")
         if self.manageds:
@@ -148,29 +124,13 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         if self.message is not None:
             serialized = SerializationHelper.serialize_item(self.message, "EthGlobalTimeMessageFormatEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MESSAGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MESSAGE")
 
         # Serialize vlan_priority
         if self.vlan_priority is not None:
             serialized = SerializationHelper.serialize_item(self.vlan_priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VLAN-PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VLAN-PRIORITY")
 
         return elem
 

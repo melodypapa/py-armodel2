@@ -77,29 +77,13 @@ class MetaDataItem(ARObject):
         if self.length is not None:
             serialized = SerializationHelper.serialize_item(self.length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LENGTH")
 
         # Serialize meta_data_item
         if self.meta_data_item is not None:
             serialized = SerializationHelper.serialize_item(self.meta_data_item, "TextValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("META-DATA-ITEM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "META-DATA-ITEM")
 
         return elem
 

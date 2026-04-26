@@ -101,71 +101,31 @@ class FirewallRule(ARElement):
         if self.bucket_size is not None:
             serialized = SerializationHelper.serialize_item(self.bucket_size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BUCKET-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BUCKET-SIZE")
 
         # Serialize data_link_layer_rule
         if self.data_link_layer_rule is not None:
             serialized = SerializationHelper.serialize_item(self.data_link_layer_rule, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-LINK-LAYER-RULE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-LINK-LAYER-RULE")
 
         # Serialize dds_rule
         if self.dds_rule is not None:
             serialized = SerializationHelper.serialize_item(self.dds_rule, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DDS-RULE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DDS-RULE")
 
         # Serialize do_ip_rule
         if self.do_ip_rule is not None:
             serialized = SerializationHelper.serialize_item(self.do_ip_rule, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DO-IP-RULE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DO-IP-RULE")
 
         # Serialize network_layer_rule
         if self.network_layer_rule is not None:
             serialized = SerializationHelper.serialize_item(self.network_layer_rule, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NETWORK-LAYER-RULE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NETWORK-LAYER-RULE")
 
         # Serialize payload_byte_patterns (list to container "PAYLOAD-BYTE-PATTERNS")
         if self.payload_byte_patterns:
@@ -181,57 +141,25 @@ class FirewallRule(ARElement):
         if self.refill_amount is not None:
             serialized = SerializationHelper.serialize_item(self.refill_amount, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REFILL-AMOUNT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REFILL-AMOUNT")
 
         # Serialize someip_rule
         if self.someip_rule is not None:
             serialized = SerializationHelper.serialize_item(self.someip_rule, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOMEIP-RULE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOMEIP-RULE")
 
         # Serialize someip_sd_rule
         if self.someip_sd_rule is not None:
             serialized = SerializationHelper.serialize_item(self.someip_sd_rule, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOMEIP-SD-RULE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOMEIP-SD-RULE")
 
         # Serialize transport_layer_rule
         if self.transport_layer_rule is not None:
             serialized = SerializationHelper.serialize_item(self.transport_layer_rule, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSPORT-LAYER-RULE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSPORT-LAYER-RULE")
 
         return elem
 

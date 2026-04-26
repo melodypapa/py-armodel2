@@ -83,43 +83,19 @@ class SomeipSdClientEventGroupTimingConfig(ARElement):
         if self.request is not None:
             serialized = SerializationHelper.serialize_item(self.request, "RequestResponseDelay")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUEST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REQUEST")
 
         # Serialize subscribe
         if self.subscribe is not None:
             serialized = SerializationHelper.serialize_item(self.subscribe, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUBSCRIBE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUBSCRIBE")
 
         # Serialize time_to_live
         if self.time_to_live is not None:
             serialized = SerializationHelper.serialize_item(self.time_to_live, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-TO-LIVE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-TO-LIVE")
 
         return elem
 

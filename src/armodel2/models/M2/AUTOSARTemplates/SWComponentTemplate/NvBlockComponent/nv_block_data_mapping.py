@@ -86,71 +86,31 @@ class NvBlockDataMapping(ARObject):
         if self.bitfield_text_table is not None:
             serialized = SerializationHelper.serialize_item(self.bitfield_text_table, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BITFIELD-TEXT-TABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BITFIELD-TEXT-TABLE")
 
         # Serialize nv_ram_block_ref
         if self.nv_ram_block_ref is not None:
             serialized = SerializationHelper.serialize_item(self.nv_ram_block_ref, "AutosarVariableRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NV-RAM-BLOCK-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NV-RAM-BLOCK-REF")
 
         # Serialize read_nv_data_ref
         if self.read_nv_data_ref is not None:
             serialized = SerializationHelper.serialize_item(self.read_nv_data_ref, "AutosarVariableRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("READ-NV-DATA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "READ-NV-DATA-REF")
 
         # Serialize written_nv_data_ref
         if self.written_nv_data_ref is not None:
             serialized = SerializationHelper.serialize_item(self.written_nv_data_ref, "AutosarVariableRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WRITTEN-NV-DATA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WRITTEN-NV-DATA-REF")
 
         # Serialize written_read_nv_ref
         if self.written_read_nv_ref is not None:
             serialized = SerializationHelper.serialize_item(self.written_read_nv_ref, "AutosarVariableRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WRITTEN-READ-NV-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WRITTEN-READ-NV-REF")
 
         return elem
 

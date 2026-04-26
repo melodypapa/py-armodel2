@@ -140,169 +140,73 @@ class DdsCpQosProfile(Identifiable):
         if self.deadline is not None:
             serialized = SerializationHelper.serialize_item(self.deadline, "DdsDeadline")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEADLINE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEADLINE")
 
         # Serialize destination_order
         if self.destination_order is not None:
             serialized = SerializationHelper.serialize_item(self.destination_order, "DdsDestinationOrder")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DESTINATION-ORDER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DESTINATION-ORDER")
 
         # Serialize durability
         if self.durability is not None:
             serialized = SerializationHelper.serialize_item(self.durability, "DdsDurabilityService")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DURABILITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DURABILITY")
 
         # Serialize history
         if self.history is not None:
             serialized = SerializationHelper.serialize_item(self.history, "DdsHistory")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HISTORY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HISTORY")
 
         # Serialize latency_budget
         if self.latency_budget is not None:
             serialized = SerializationHelper.serialize_item(self.latency_budget, "DdsLatencyBudget")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LATENCY-BUDGET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LATENCY-BUDGET")
 
         # Serialize lifespan
         if self.lifespan is not None:
             serialized = SerializationHelper.serialize_item(self.lifespan, "DdsLifespan")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LIFESPAN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LIFESPAN")
 
         # Serialize liveliness
         if self.liveliness is not None:
             serialized = SerializationHelper.serialize_item(self.liveliness, "DdsLiveliness")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LIVELINESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LIVELINESS")
 
         # Serialize ownership
         if self.ownership is not None:
             serialized = SerializationHelper.serialize_item(self.ownership, "DdsOwnershipStrength")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OWNERSHIP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OWNERSHIP")
 
         # Serialize reliability
         if self.reliability is not None:
             serialized = SerializationHelper.serialize_item(self.reliability, "DdsReliability")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RELIABILITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RELIABILITY")
 
         # Serialize resource_limits
         if self.resource_limits is not None:
             serialized = SerializationHelper.serialize_item(self.resource_limits, "DdsResourceLimits")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESOURCE-LIMITS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESOURCE-LIMITS")
 
         # Serialize topic_data
         if self.topic_data is not None:
             serialized = SerializationHelper.serialize_item(self.topic_data, "DdsTopicData")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TOPIC-DATA")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TOPIC-DATA")
 
         # Serialize transport_priority
         if self.transport_priority is not None:
             serialized = SerializationHelper.serialize_item(self.transport_priority, "DdsTransportPriority")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSPORT-PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSPORT-PRIORITY")
 
         return elem
 

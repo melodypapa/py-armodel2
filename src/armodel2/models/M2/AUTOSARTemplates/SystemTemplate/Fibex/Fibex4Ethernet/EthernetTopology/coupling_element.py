@@ -102,29 +102,13 @@ class CouplingElement(FibexElement):
         if self.communication_ref is not None:
             serialized = SerializationHelper.serialize_item(self.communication_ref, "EthernetCluster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMMUNICATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMMUNICATION-REF")
 
         # Serialize coupling
         if self.coupling is not None:
             serialized = SerializationHelper.serialize_item(self.coupling, "CouplingElement")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COUPLING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COUPLING")
 
         # Serialize coupling_ports (list to container "COUPLING-PORTS")
         if self.coupling_ports:
@@ -140,29 +124,13 @@ class CouplingElement(FibexElement):
         if self.coupling_type is not None:
             serialized = SerializationHelper.serialize_item(self.coupling_type, "CouplingElementEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COUPLING-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COUPLING-TYPE")
 
         # Serialize ecu_instance_ref
         if self.ecu_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-INSTANCE-REF")
 
         # Serialize firewall_rule_refs (list to container "FIREWALL-RULE-REFS")
         if self.firewall_rule_refs:
@@ -170,14 +138,7 @@ class CouplingElement(FibexElement):
             for item in self.firewall_rule_refs:
                 serialized = SerializationHelper.serialize_item(item, "StateDependentFirewall")
                 if serialized is not None:
-                    child_elem = ET.Element("FIREWALL-RULE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "FIREWALL-RULE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

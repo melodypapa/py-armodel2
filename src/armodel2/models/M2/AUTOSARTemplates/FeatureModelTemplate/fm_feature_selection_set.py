@@ -86,14 +86,7 @@ class FMFeatureSelectionSet(ARElement):
             for item in self.feature_model_refs:
                 serialized = SerializationHelper.serialize_item(item, "FMFeatureModel")
                 if serialized is not None:
-                    child_elem = ET.Element("FEATURE-MODEL-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "FEATURE-MODEL-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -103,14 +96,7 @@ class FMFeatureSelectionSet(ARElement):
             for item in self.include_refs:
                 serialized = SerializationHelper.serialize_item(item, "FMFeatureSelectionSet")
                 if serialized is not None:
-                    child_elem = ET.Element("INCLUDE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "INCLUDE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

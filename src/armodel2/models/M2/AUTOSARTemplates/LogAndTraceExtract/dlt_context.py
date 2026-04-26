@@ -85,29 +85,13 @@ class DltContext(ARElement):
         if self.context is not None:
             serialized = SerializationHelper.serialize_item(self.context, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTEXT")
 
         # Serialize context_id
         if self.context_id is not None:
             serialized = SerializationHelper.serialize_item(self.context_id, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTEXT-ID")
 
         # Serialize dlt_message_refs (list to container "DLT-MESSAGE-REFS")
         if self.dlt_message_refs:
@@ -115,14 +99,7 @@ class DltContext(ARElement):
             for item in self.dlt_message_refs:
                 serialized = SerializationHelper.serialize_item(item, "DltMessage")
                 if serialized is not None:
-                    child_elem = ET.Element("DLT-MESSAGE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DLT-MESSAGE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

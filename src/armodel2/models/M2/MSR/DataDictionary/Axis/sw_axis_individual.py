@@ -117,85 +117,37 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         if self.compu_method_ref is not None:
             serialized = SerializationHelper.serialize_item(self.compu_method_ref, "CompuMethod")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMPU-METHOD-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMPU-METHOD-REF")
 
         # Serialize data_constr_ref
         if self.data_constr_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_constr_ref, "DataConstr")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-CONSTR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-CONSTR-REF")
 
         # Serialize input_variable_ref
         if self.input_variable_ref is not None:
             serialized = SerializationHelper.serialize_item(self.input_variable_ref, "ApplicationPrimitiveDataType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INPUT-VARIABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INPUT-VARIABLE-REF")
 
         # Serialize sw_axis_generic
         if self.sw_axis_generic is not None:
             serialized = SerializationHelper.serialize_item(self.sw_axis_generic, "SwAxisGeneric")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-AXIS-GENERIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-AXIS-GENERIC")
 
         # Serialize sw_max_axis
         if self.sw_max_axis is not None:
             serialized = SerializationHelper.serialize_item(self.sw_max_axis, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-MAX-AXIS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-MAX-AXIS")
 
         # Serialize sw_min_axis
         if self.sw_min_axis is not None:
             serialized = SerializationHelper.serialize_item(self.sw_min_axis, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-MIN-AXIS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-MIN-AXIS")
 
         # Serialize sw_variable_ref_proxy_refs (list to container "SW-VARIABLE-REF-PROXY-REFS")
         if self.sw_variable_ref_proxy_refs:
@@ -203,14 +155,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
             for item in self.sw_variable_ref_proxy_refs:
                 serialized = SerializationHelper.serialize_item(item, "SwVariableRefProxy")
                 if serialized is not None:
-                    child_elem = ET.Element("SW-VARIABLE-REF-PROXY-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SW-VARIABLE-REF-PROXY-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -218,15 +163,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         if self.unit_ref is not None:
             serialized = SerializationHelper.serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UNIT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UNIT-REF")
 
         return elem
 

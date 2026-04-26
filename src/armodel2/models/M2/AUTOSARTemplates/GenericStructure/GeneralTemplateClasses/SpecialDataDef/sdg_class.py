@@ -102,29 +102,13 @@ class SdgClass(SdgElementWithGid):
         if self.caption is not None:
             serialized = SerializationHelper.serialize_item(self.caption, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAPTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAPTION")
 
         # Serialize extends_meta
         if self.extends_meta is not None:
             serialized = SerializationHelper.serialize_item(self.extends_meta, "MetaClassName")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXTENDS-META")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXTENDS-META")
 
         # Serialize sdg_constraint_refs (list to container "SDG-CONSTRAINT-REFS")
         if self.sdg_constraint_refs:
@@ -132,14 +116,7 @@ class SdgClass(SdgElementWithGid):
             for item in self.sdg_constraint_refs:
                 serialized = SerializationHelper.serialize_item(item, "TraceableText")
                 if serialized is not None:
-                    child_elem = ET.Element("SDG-CONSTRAINT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SDG-CONSTRAINT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

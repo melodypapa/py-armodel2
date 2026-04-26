@@ -93,57 +93,25 @@ class RoleBasedDataAssignment(ARObject):
         if self.role is not None:
             serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROLE")
 
         # Serialize used_data_element
         if self.used_data_element is not None:
             serialized = SerializationHelper.serialize_item(self.used_data_element, "AutosarVariableRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USED-DATA-ELEMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USED-DATA-ELEMENT")
 
         # Serialize used_parameter_element
         if self.used_parameter_element is not None:
             serialized = SerializationHelper.serialize_item(self.used_parameter_element, "AutosarParameterRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USED-PARAMETER-ELEMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USED-PARAMETER-ELEMENT")
 
         # Serialize used_pim_ref
         if self.used_pim_ref is not None:
             serialized = SerializationHelper.serialize_item(self.used_pim_ref, "PerInstanceMemory")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USED-PIM-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USED-PIM-REF")
 
         return elem
 
