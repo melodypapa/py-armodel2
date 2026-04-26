@@ -195,14 +195,7 @@ class EcuInstance(FibexElement):
             for item in self.associated_com_i_pdu_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("ASSOCIATED-COM-I-PDU-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ASSOCIATED-COM-I-PDU-GROUP-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -212,14 +205,7 @@ class EcuInstance(FibexElement):
             for item in self.associated_consumed_provided_service_instance_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConsumedProvidedServiceInstanceGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ASSOCIATED-CONSUMED-PROVIDED-SERVICE-INSTANCE-GROUP-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -229,14 +215,7 @@ class EcuInstance(FibexElement):
             for item in self.associated_pdur_i_pdu_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "PdurIPduGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("ASSOCIATED-PDUR-I-PDU-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ASSOCIATED-PDUR-I-PDU-GROUP-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -244,85 +223,37 @@ class EcuInstance(FibexElement):
         if self.channel_synchronous_wakeup is not None:
             serialized = SerializationHelper.serialize_item(self.channel_synchronous_wakeup, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CHANNEL-SYNCHRONOUS-WAKEUP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CHANNEL-SYNCHRONOUS-WAKEUP")
 
         # Serialize client_id_range
         if self.client_id_range is not None:
             serialized = SerializationHelper.serialize_item(self.client_id_range, "ClientIdRange")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-ID-RANGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CLIENT-ID-RANGE")
 
         # Serialize com_configuration_gw_time_base
         if self.com_configuration_gw_time_base is not None:
             serialized = SerializationHelper.serialize_item(self.com_configuration_gw_time_base, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COM-CONFIGURATION-GW-TIME-BASE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COM-CONFIGURATION-GW-TIME-BASE")
 
         # Serialize com_configuration_rx_time_base
         if self.com_configuration_rx_time_base is not None:
             serialized = SerializationHelper.serialize_item(self.com_configuration_rx_time_base, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COM-CONFIGURATION-RX-TIME-BASE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COM-CONFIGURATION-RX-TIME-BASE")
 
         # Serialize com_configuration_tx_time_base
         if self.com_configuration_tx_time_base is not None:
             serialized = SerializationHelper.serialize_item(self.com_configuration_tx_time_base, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COM-CONFIGURATION-TX-TIME-BASE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COM-CONFIGURATION-TX-TIME-BASE")
 
         # Serialize com_enable_mdt_for_cyclic_transmission
         if self.com_enable_mdt_for_cyclic_transmission is not None:
             serialized = SerializationHelper.serialize_item(self.com_enable_mdt_for_cyclic_transmission, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COM-ENABLE-MDT-FOR-CYCLIC-TRANSMISSION")
 
         # Serialize comm_controllers (list to container "COMM-CONTROLLERS")
         if self.comm_controllers:
@@ -348,29 +279,13 @@ class EcuInstance(FibexElement):
         if self.dlt_config is not None:
             serialized = SerializationHelper.serialize_item(self.dlt_config, "DltConfig")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DLT-CONFIG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DLT-CONFIG")
 
         # Serialize do_ip_config
         if self.do_ip_config is not None:
             serialized = SerializationHelper.serialize_item(self.do_ip_config, "DoIpConfig")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DO-IP-CONFIG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DO-IP-CONFIG")
 
         # Serialize ecu_task_proxy_refs (list to container "ECU-TASK-PROXY-REFS")
         if self.ecu_task_proxy_refs:
@@ -378,14 +293,7 @@ class EcuInstance(FibexElement):
             for item in self.ecu_task_proxy_refs:
                 serialized = SerializationHelper.serialize_item(item, "OsTaskProxy")
                 if serialized is not None:
-                    child_elem = ET.Element("ECU-TASK-PROXY-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ECU-TASK-PROXY-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -393,15 +301,7 @@ class EcuInstance(FibexElement):
         if self.eth_switch_port_group_derivation is not None:
             serialized = SerializationHelper.serialize_item(self.eth_switch_port_group_derivation, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ETH-SWITCH-PORT-GROUP-DERIVATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ETH-SWITCH-PORT-GROUP-DERIVATION")
 
         # Serialize firewall_rule_refs (list to container "FIREWALL-RULE-REFS")
         if self.firewall_rule_refs:
@@ -409,14 +309,7 @@ class EcuInstance(FibexElement):
             for item in self.firewall_rule_refs:
                 serialized = SerializationHelper.serialize_item(item, "StateDependentFirewall")
                 if serialized is not None:
-                    child_elem = ET.Element("FIREWALL-RULE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "FIREWALL-RULE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -434,127 +327,55 @@ class EcuInstance(FibexElement):
         if self.pnc_nm_request is not None:
             serialized = SerializationHelper.serialize_item(self.pnc_nm_request, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PNC-NM-REQUEST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PNC-NM-REQUEST")
 
         # Serialize pnc_prepare_sleep_timer
         if self.pnc_prepare_sleep_timer is not None:
             serialized = SerializationHelper.serialize_item(self.pnc_prepare_sleep_timer, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PNC-PREPARE-SLEEP-TIMER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PNC-PREPARE-SLEEP-TIMER")
 
         # Serialize pnc_synchronous_wakeup
         if self.pnc_synchronous_wakeup is not None:
             serialized = SerializationHelper.serialize_item(self.pnc_synchronous_wakeup, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PNC-SYNCHRONOUS-WAKEUP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PNC-SYNCHRONOUS-WAKEUP")
 
         # Serialize pn_reset_time
         if self.pn_reset_time is not None:
             serialized = SerializationHelper.serialize_item(self.pn_reset_time, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PN-RESET-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PN-RESET-TIME")
 
         # Serialize sleep_mode_supported
         if self.sleep_mode_supported is not None:
             serialized = SerializationHelper.serialize_item(self.sleep_mode_supported, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SLEEP-MODE-SUPPORTED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SLEEP-MODE-SUPPORTED")
 
         # Serialize tcp_ip_icmp_props_ref
         if self.tcp_ip_icmp_props_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_icmp_props_ref, "EthTcpIpIcmpProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-ICMP-PROPS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-ICMP-PROPS-REF")
 
         # Serialize tcp_ip_props_ref
         if self.tcp_ip_props_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_props_ref, "EthTcpIpProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-PROPS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-PROPS-REF")
 
         # Serialize v2x_supported
         if self.v2x_supported is not None:
             serialized = SerializationHelper.serialize_item(self.v2x_supported, "V2xSupportEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("V2X-SUPPORTED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "V2X-SUPPORTED")
 
         # Serialize wake_up_over_bus_supported
         if self.wake_up_over_bus_supported is not None:
             serialized = SerializationHelper.serialize_item(self.wake_up_over_bus_supported, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WAKE-UP-OVER-BUS-SUPPORTED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WAKE-UP-OVER-BUS-SUPPORTED")
 
         return elem
 

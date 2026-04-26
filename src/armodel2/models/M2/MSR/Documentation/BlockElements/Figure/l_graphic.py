@@ -80,29 +80,13 @@ class LGraphic(LanguageSpecific):
         if self.graphic is not None:
             serialized = SerializationHelper.serialize_item(self.graphic, "Graphic")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GRAPHIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "GRAPHIC")
 
         # Serialize map
         if self.map is not None:
             serialized = SerializationHelper.serialize_item(self.map, "Map")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAP")
 
         return elem
 

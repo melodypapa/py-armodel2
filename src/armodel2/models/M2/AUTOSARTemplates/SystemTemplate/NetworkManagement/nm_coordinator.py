@@ -88,43 +88,19 @@ class NmCoordinator(ARObject):
         if self.index is not None:
             serialized = SerializationHelper.serialize_item(self.index, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INDEX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INDEX")
 
         # Serialize nm_coord_sync
         if self.nm_coord_sync is not None:
             serialized = SerializationHelper.serialize_item(self.nm_coord_sync, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-COORD-SYNC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-COORD-SYNC")
 
         # Serialize nm_global
         if self.nm_global is not None:
             serialized = SerializationHelper.serialize_item(self.nm_global, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-GLOBAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-GLOBAL")
 
         # Serialize nm_node_refs (list to container "NM-NODE-REFS")
         if self.nm_node_refs:
@@ -132,14 +108,7 @@ class NmCoordinator(ARObject):
             for item in self.nm_node_refs:
                 serialized = SerializationHelper.serialize_item(item, "NmNode")
                 if serialized is not None:
-                    child_elem = ET.Element("NM-NODE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "NM-NODE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

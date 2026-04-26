@@ -78,29 +78,13 @@ class IdsmTrafficLimitation(Identifiable):
         if self.max_bytes_in is not None:
             serialized = SerializationHelper.serialize_item(self.max_bytes_in, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-BYTES-IN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-BYTES-IN")
 
         # Serialize time_interval
         if self.time_interval is not None:
             serialized = SerializationHelper.serialize_item(self.time_interval, "Float")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-INTERVAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-INTERVAL")
 
         return elem
 

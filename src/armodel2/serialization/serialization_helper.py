@@ -982,3 +982,35 @@ class SerializationHelper:
         else:
             # For complex objects, serialize directly
             return value.serialize()
+
+    @staticmethod
+    def wrap_and_append(parent: ET.Element, child: ET.Element, tag: str) -> None:
+        """Wrap child element with tag and append to parent.
+
+        This helper consolidates the repetitive wrapper pattern used in
+        generated serialize() methods. It copies all attributes, text,
+        and children from the child element to a wrapper element with
+        the specified tag, then appends the wrapper to the parent.
+
+        Args:
+            parent: Parent XML element to append wrapped child to
+            child: Child XML element to wrap
+            tag: XML tag name for the wrapper element
+
+        Example:
+            >>> parent = ET.Element("ROOT")
+            >>> child = ET.Element("SERIALIZED")
+            >>> child.text = "value"
+            >>> SerializationHelper.wrap_and_append(parent, child, "ATTRIBUTE-NAME")
+            >>> parent[0].tag  # "ATTRIBUTE-NAME"
+        """
+        wrapped = ET.Element(tag)
+        # Copy attributes from child to wrapper
+        wrapped.attrib.update(child.attrib)
+        # Copy text from child to wrapper
+        if child.text:
+            wrapped.text = child.text
+        # Copy all children from child to wrapper
+        for subchild in child:
+            wrapped.append(subchild)
+        parent.append(wrapped)

@@ -77,29 +77,13 @@ class LinConfigurableFrame(ARObject):
         if self.frame_ref is not None:
             serialized = SerializationHelper.serialize_item(self.frame_ref, "LinFrame")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRAME-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FRAME-REF")
 
         # Serialize message_id
         if self.message_id is not None:
             serialized = SerializationHelper.serialize_item(self.message_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MESSAGE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MESSAGE-ID")
 
         return elem
 

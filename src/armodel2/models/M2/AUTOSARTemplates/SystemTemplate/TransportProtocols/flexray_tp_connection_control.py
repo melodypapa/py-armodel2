@@ -111,169 +111,73 @@ class FlexrayTpConnectionControl(Identifiable):
         if self.ack_type is not None:
             serialized = SerializationHelper.serialize_item(self.ack_type, "FrArTpAckType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ACK-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ACK-TYPE")
 
         # Serialize max_fc_wait
         if self.max_fc_wait is not None:
             serialized = SerializationHelper.serialize_item(self.max_fc_wait, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-FC-WAIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-FC-WAIT")
 
         # Serialize max_number_of
         if self.max_number_of is not None:
             serialized = SerializationHelper.serialize_item(self.max_number_of, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-NUMBER-OF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-NUMBER-OF")
 
         # Serialize max_retries
         if self.max_retries is not None:
             serialized = SerializationHelper.serialize_item(self.max_retries, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-RETRIES")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-RETRIES")
 
         # Serialize separation_cycle
         if self.separation_cycle is not None:
             serialized = SerializationHelper.serialize_item(self.separation_cycle, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SEPARATION-CYCLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SEPARATION-CYCLE")
 
         # Serialize time_br
         if self.time_br is not None:
             serialized = SerializationHelper.serialize_item(self.time_br, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-BR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-BR")
 
         # Serialize time_buffer
         if self.time_buffer is not None:
             serialized = SerializationHelper.serialize_item(self.time_buffer, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-BUFFER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-BUFFER")
 
         # Serialize time_cs
         if self.time_cs is not None:
             serialized = SerializationHelper.serialize_item(self.time_cs, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-CS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-CS")
 
         # Serialize timeout_ar
         if self.timeout_ar is not None:
             serialized = SerializationHelper.serialize_item(self.timeout_ar, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT-AR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT-AR")
 
         # Serialize timeout_as
         if self.timeout_as is not None:
             serialized = SerializationHelper.serialize_item(self.timeout_as, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT-AS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT-AS")
 
         # Serialize timeout_bs
         if self.timeout_bs is not None:
             serialized = SerializationHelper.serialize_item(self.timeout_bs, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT-BS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT-BS")
 
         # Serialize timeout_cr
         if self.timeout_cr is not None:
             serialized = SerializationHelper.serialize_item(self.timeout_cr, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT-CR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT-CR")
 
         return elem
 

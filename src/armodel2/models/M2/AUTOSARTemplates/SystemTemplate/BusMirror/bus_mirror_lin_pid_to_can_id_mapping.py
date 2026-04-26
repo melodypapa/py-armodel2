@@ -77,29 +77,13 @@ class BusMirrorLinPidToCanIdMapping(ARObject):
         if self.remapped_can_id is not None:
             serialized = SerializationHelper.serialize_item(self.remapped_can_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REMAPPED-CAN-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REMAPPED-CAN-ID")
 
         # Serialize source_lin_pid_ref
         if self.source_lin_pid_ref is not None:
             serialized = SerializationHelper.serialize_item(self.source_lin_pid_ref, "LinFrameTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-LIN-PID-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOURCE-LIN-PID-REF")
 
         return elem
 

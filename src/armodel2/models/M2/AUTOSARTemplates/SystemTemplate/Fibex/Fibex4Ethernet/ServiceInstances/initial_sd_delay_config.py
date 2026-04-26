@@ -77,43 +77,19 @@ class InitialSdDelayConfig(ARObject):
         if self.initial_delay_max is not None:
             serialized = SerializationHelper.serialize_item(self.initial_delay_max, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INITIAL-DELAY-MAX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INITIAL-DELAY-MAX")
 
         # Serialize initial_delay_min
         if self.initial_delay_min is not None:
             serialized = SerializationHelper.serialize_item(self.initial_delay_min, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INITIAL-DELAY-MIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INITIAL-DELAY-MIN")
 
         # Serialize initial
         if self.initial is not None:
             serialized = SerializationHelper.serialize_item(self.initial, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INITIAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INITIAL")
 
         return elem
 

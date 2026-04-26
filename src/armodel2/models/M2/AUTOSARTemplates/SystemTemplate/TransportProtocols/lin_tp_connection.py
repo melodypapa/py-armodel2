@@ -111,57 +111,25 @@ class LinTpConnection(TpConnection):
         if self.data_pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_pdu_ref, "NPdu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-PDU-REF")
 
         # Serialize flow_control_ref
         if self.flow_control_ref is not None:
             serialized = SerializationHelper.serialize_item(self.flow_control_ref, "NPdu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FLOW-CONTROL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FLOW-CONTROL-REF")
 
         # Serialize lin_tp_n_sdu_ref
         if self.lin_tp_n_sdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.lin_tp_n_sdu_ref, "IPdu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LIN-TP-N-SDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LIN-TP-N-SDU-REF")
 
         # Serialize multicast_ref
         if self.multicast_ref is not None:
             serialized = SerializationHelper.serialize_item(self.multicast_ref, "TpAddress")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MULTICAST-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MULTICAST-REF")
 
         # Serialize receiver_refs (list to container "RECEIVER-REFS")
         if self.receiver_refs:
@@ -169,14 +137,7 @@ class LinTpConnection(TpConnection):
             for item in self.receiver_refs:
                 serialized = SerializationHelper.serialize_item(item, "LinTpNode")
                 if serialized is not None:
-                    child_elem = ET.Element("RECEIVER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "RECEIVER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -184,57 +145,25 @@ class LinTpConnection(TpConnection):
         if self.timeout_as is not None:
             serialized = SerializationHelper.serialize_item(self.timeout_as, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT-AS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT-AS")
 
         # Serialize timeout_cr
         if self.timeout_cr is not None:
             serialized = SerializationHelper.serialize_item(self.timeout_cr, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT-CR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT-CR")
 
         # Serialize timeout_cs
         if self.timeout_cs is not None:
             serialized = SerializationHelper.serialize_item(self.timeout_cs, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT-CS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT-CS")
 
         # Serialize transmitter_ref
         if self.transmitter_ref is not None:
             serialized = SerializationHelper.serialize_item(self.transmitter_ref, "LinTpNode")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSMITTER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSMITTER-REF")
 
         return elem
 

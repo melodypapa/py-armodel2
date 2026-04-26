@@ -84,43 +84,19 @@ class CalibrationParameterValue(ARObject):
         if self.appl_init_value is not None:
             serialized = SerializationHelper.serialize_item(self.appl_init_value, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("APPL-INIT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "APPL-INIT-VALUE")
 
         # Serialize impl_init_value
         if self.impl_init_value is not None:
             serialized = SerializationHelper.serialize_item(self.impl_init_value, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMPL-INIT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMPL-INIT-VALUE")
 
         # Serialize initialized_ref
         if self.initialized_ref is not None:
             serialized = SerializationHelper.serialize_item(self.initialized_ref, "FlatInstanceDescriptor")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INITIALIZED-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INITIALIZED-REF")
 
         return elem
 

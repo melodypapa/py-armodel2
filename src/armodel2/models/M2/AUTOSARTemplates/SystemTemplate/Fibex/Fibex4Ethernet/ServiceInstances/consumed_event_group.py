@@ -113,43 +113,19 @@ class ConsumedEventGroup(Identifiable):
         if self.application_endpoint_ref is not None:
             serialized = SerializationHelper.serialize_item(self.application_endpoint_ref, "ApplicationEndpoint")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("APPLICATION-ENDPOINT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "APPLICATION-ENDPOINT-REF")
 
         # Serialize auto_require
         if self.auto_require is not None:
             serialized = SerializationHelper.serialize_item(self.auto_require, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AUTO-REQUIRE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AUTO-REQUIRE")
 
         # Serialize event_group
         if self.event_group is not None:
             serialized = SerializationHelper.serialize_item(self.event_group, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-GROUP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-GROUP")
 
         # Serialize event_multicast_refs (list to container "EVENT-MULTICAST-REFS")
         if self.event_multicast_refs:
@@ -157,14 +133,7 @@ class ConsumedEventGroup(Identifiable):
             for item in self.event_multicast_refs:
                 serialized = SerializationHelper.serialize_item(item, "ApplicationEndpoint")
                 if serialized is not None:
-                    child_elem = ET.Element("EVENT-MULTICAST-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "EVENT-MULTICAST-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -182,15 +151,7 @@ class ConsumedEventGroup(Identifiable):
         if self.priority is not None:
             serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIORITY")
 
         # Serialize routing_group_refs (list to container "ROUTING-GROUP-REFS")
         if self.routing_group_refs:
@@ -198,14 +159,7 @@ class ConsumedEventGroup(Identifiable):
             for item in self.routing_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "SoAdRoutingGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("ROUTING-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ROUTING-GROUP-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -213,29 +167,13 @@ class ConsumedEventGroup(Identifiable):
         if self.sd_client_config is not None:
             serialized = SerializationHelper.serialize_item(self.sd_client_config, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SD-CLIENT-CONFIG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SD-CLIENT-CONFIG")
 
         # Serialize sd_client_timer_ref
         if self.sd_client_timer_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sd_client_timer_ref, "SomeipSdClientEventGroupTimingConfig")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SD-CLIENT-TIMER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SD-CLIENT-TIMER-REF")
 
         return elem
 

@@ -77,29 +77,13 @@ class AnalyzedExecutionTime(ExecutionTime):
         if self.best_case is not None:
             serialized = SerializationHelper.serialize_item(self.best_case, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BEST-CASE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BEST-CASE")
 
         # Serialize worst_case
         if self.worst_case is not None:
             serialized = SerializationHelper.serialize_item(self.worst_case, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WORST-CASE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WORST-CASE")
 
         return elem
 

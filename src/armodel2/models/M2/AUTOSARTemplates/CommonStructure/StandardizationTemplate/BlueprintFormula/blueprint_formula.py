@@ -77,29 +77,13 @@ class BlueprintFormula(ARObject):
         if self.ecuc_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecuc_ref, "EcucDefinitionElement")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECUC-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECUC-REF")
 
         # Serialize verbatim
         if self.verbatim is not None:
             serialized = SerializationHelper.serialize_item(self.verbatim, "MultiLanguageVerbatim")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VERBATIM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VERBATIM")
 
         return elem
 

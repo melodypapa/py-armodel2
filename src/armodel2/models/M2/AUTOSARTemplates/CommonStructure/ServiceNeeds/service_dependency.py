@@ -89,43 +89,19 @@ class ServiceDependency(Identifiable, ABC):
         if self.assigned_data is not None:
             serialized = SerializationHelper.serialize_item(self.assigned_data, "RoleBasedDataTypeAssignment")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ASSIGNED-DATA")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ASSIGNED-DATA")
 
         # Serialize diagnostic
         if self.diagnostic is not None:
             serialized = SerializationHelper.serialize_item(self.diagnostic, "ServiceDiagnosticRelevanceEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAGNOSTIC")
 
         # Serialize symbolic_name_props
         if self.symbolic_name_props is not None:
             serialized = SerializationHelper.serialize_item(self.symbolic_name_props, "SymbolicNameProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYMBOLIC-NAME-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYMBOLIC-NAME-PROPS")
 
         return elem
 

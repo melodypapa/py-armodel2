@@ -77,29 +77,13 @@ class OrderedMaster(ARObject):
         if self.index is not None:
             serialized = SerializationHelper.serialize_item(self.index, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INDEX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INDEX")
 
         # Serialize time_sync_server_configuration_ref
         if self.time_sync_server_configuration_ref is not None:
             serialized = SerializationHelper.serialize_item(self.time_sync_server_configuration_ref, "TimeSyncServerConfiguration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-SYNC-SERVER-CONFIGURATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-SYNC-SERVER-CONFIGURATION-REF")
 
         return elem
 

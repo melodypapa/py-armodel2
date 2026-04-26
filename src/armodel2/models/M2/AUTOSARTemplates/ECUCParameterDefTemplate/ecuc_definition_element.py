@@ -104,15 +104,7 @@ class EcucDefinitionElement(Identifiable, ABC):
         if self.ecuc_cond is not None:
             serialized = SerializationHelper.serialize_item(self.ecuc_cond, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECUC-COND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECUC-COND")
 
         # Serialize ecuc_validations (list to container "ECUC-VALIDATIONS")
         if self.ecuc_validations:
@@ -128,57 +120,25 @@ class EcucDefinitionElement(Identifiable, ABC):
         if self.lower_multiplicity is not None:
             serialized = SerializationHelper.serialize_item(self.lower_multiplicity, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOWER-MULTIPLICITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOWER-MULTIPLICITY")
 
         # Serialize related_trace_ref
         if self.related_trace_ref is not None:
             serialized = SerializationHelper.serialize_item(self.related_trace_ref, "Traceable")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RELATED-TRACE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RELATED-TRACE-REF")
 
         # Serialize scope
         if self.scope is not None:
             serialized = SerializationHelper.serialize_item(self.scope, "EcucScopeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SCOPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SCOPE")
 
         # Serialize upper_multiplicity
         if self.upper_multiplicity is not None:
             serialized = SerializationHelper.serialize_item(self.upper_multiplicity, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPPER-MULTIPLICITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPPER-MULTIPLICITY")
 
         return elem
 

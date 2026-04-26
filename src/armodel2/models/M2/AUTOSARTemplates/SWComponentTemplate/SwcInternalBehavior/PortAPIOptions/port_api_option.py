@@ -106,43 +106,19 @@ class PortAPIOption(ARObject):
         if self.enable_take_address is not None:
             serialized = SerializationHelper.serialize_item(self.enable_take_address, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENABLE-TAKE-ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENABLE-TAKE-ADDRESS")
 
         # Serialize error_handling
         if self.error_handling is not None:
             serialized = SerializationHelper.serialize_item(self.error_handling, "DataTransformationErrorHandlingEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ERROR-HANDLING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ERROR-HANDLING")
 
         # Serialize indirect_api
         if self.indirect_api is not None:
             serialized = SerializationHelper.serialize_item(self.indirect_api, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INDIRECT-API")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INDIRECT-API")
 
         # Serialize port_arg_values (list to container "PORT-ARG-VALUES")
         if self.port_arg_values:
@@ -158,15 +134,7 @@ class PortAPIOption(ARObject):
         if self.port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.port_ref, "PortPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PORT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PORT-REF")
 
         # Serialize supported_features (list to container "SUPPORTED-FEATURES")
         if self.supported_features:
@@ -182,15 +150,7 @@ class PortAPIOption(ARObject):
         if self.transformer_status_forwarding is not None:
             serialized = SerializationHelper.serialize_item(self.transformer_status_forwarding, "DataTransformationStatusForwardingEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSFORMER-STATUS-FORWARDING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSFORMER-STATUS-FORWARDING")
 
         return elem
 

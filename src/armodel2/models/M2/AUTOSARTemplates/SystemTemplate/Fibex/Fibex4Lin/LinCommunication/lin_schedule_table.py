@@ -84,29 +84,13 @@ class LinScheduleTable(Identifiable):
         if self.resume_position is not None:
             serialized = SerializationHelper.serialize_item(self.resume_position, "ResumePosition")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESUME-POSITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESUME-POSITION")
 
         # Serialize run_mode
         if self.run_mode is not None:
             serialized = SerializationHelper.serialize_item(self.run_mode, "RunMode")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RUN-MODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RUN-MODE")
 
         # Serialize table_entries (list to container "TABLE-ENTRYS")
         if self.table_entries:

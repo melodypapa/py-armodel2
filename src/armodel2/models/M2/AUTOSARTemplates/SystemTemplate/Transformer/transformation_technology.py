@@ -103,99 +103,43 @@ class TransformationTechnology(Identifiable):
         if self.buffer_properties is not None:
             serialized = SerializationHelper.serialize_item(self.buffer_properties, "BufferProperties")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BUFFER-PROPERTIES")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BUFFER-PROPERTIES")
 
         # Serialize has_internal
         if self.has_internal is not None:
             serialized = SerializationHelper.serialize_item(self.has_internal, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HAS-INTERNAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HAS-INTERNAL")
 
         # Serialize needs_original
         if self.needs_original is not None:
             serialized = SerializationHelper.serialize_item(self.needs_original, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NEEDS-ORIGINAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NEEDS-ORIGINAL")
 
         # Serialize protocol
         if self.protocol is not None:
             serialized = SerializationHelper.serialize_item(self.protocol, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROTOCOL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROTOCOL")
 
         # Serialize transformation_description
         if self.transformation_description is not None:
             serialized = SerializationHelper.serialize_item(self.transformation_description, "TransformationDescription")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSFORMATION-DESCRIPTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSFORMATION-DESCRIPTION")
 
         # Serialize transformer
         if self.transformer is not None:
             serialized = SerializationHelper.serialize_item(self.transformer, "TransformerClassEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSFORMER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSFORMER")
 
         # Serialize version
         if self.version is not None:
             serialized = SerializationHelper.serialize_item(self.version, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VERSION")
 
         return elem
 

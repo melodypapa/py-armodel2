@@ -73,29 +73,13 @@ class PlcaProps(ARObject):
         if self.plca_local_node is not None:
             serialized = SerializationHelper.serialize_item(self.plca_local_node, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PLCA-LOCAL-NODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PLCA-LOCAL-NODE")
 
         # Serialize plca_max_burst
         if self.plca_max_burst is not None:
             serialized = SerializationHelper.serialize_item(self.plca_max_burst, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PLCA-MAX-BURST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PLCA-MAX-BURST")
 
         return elem
 

@@ -73,29 +73,13 @@ class CompuRationalCoeffs(ARObject):
         if self.compu_numerator is not None:
             serialized = SerializationHelper.serialize_item(self.compu_numerator, "CompuNominatorDenominator")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMPU-NUMERATOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMPU-NUMERATOR")
 
         # Serialize compu_denominator
         if self.compu_denominator is not None:
             serialized = SerializationHelper.serialize_item(self.compu_denominator, "CompuNominatorDenominator")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMPU-DENOMINATOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMPU-DENOMINATOR")
 
         return elem
 

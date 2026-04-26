@@ -78,15 +78,7 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
         if self.port_scheduler_scheduler_enum is not None:
             serialized = SerializationHelper.serialize_item(self.port_scheduler_scheduler_enum, "EthernetCouplingPortSchedulerEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PORT-SCHEDULER-SCHEDULER-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PORT-SCHEDULER-SCHEDULER-ENUM")
 
         # Serialize predecessor_refs (list to container "PREDECESSOR-REFS")
         if self.predecessor_refs:
@@ -94,14 +86,7 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
             for item in self.predecessor_refs:
                 serialized = SerializationHelper.serialize_item(item, "CouplingPortStructuralElement")
                 if serialized is not None:
-                    child_elem = ET.Element("PREDECESSOR-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "PREDECESSOR-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

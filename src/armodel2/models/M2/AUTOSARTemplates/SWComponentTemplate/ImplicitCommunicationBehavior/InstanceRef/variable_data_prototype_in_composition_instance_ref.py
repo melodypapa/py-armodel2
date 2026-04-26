@@ -86,29 +86,13 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
         if self.base_ref is not None:
             serialized = SerializationHelper.serialize_item(self.base_ref, "CompositionSwComponentType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE-REF")
 
         # Serialize context_port_ref
         if self.context_port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.context_port_ref, "PortPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-PORT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTEXT-PORT-REF")
 
         # Serialize context_sw_refs (list to container "CONTEXT-SW-REFS")
         if self.context_sw_refs:
@@ -116,14 +100,7 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
             for item in self.context_sw_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTEXT-SW-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONTEXT-SW-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -131,15 +108,7 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
         if self.target_variable_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_variable_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-VARIABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-VARIABLE-REF")
 
         return elem
 

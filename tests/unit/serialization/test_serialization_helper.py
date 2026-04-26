@@ -105,3 +105,68 @@ class TestDeserializePolymorphic:
         # which gets wrapped by deserialize_polymorphic's ValueError
         with pytest.raises((ValueError, ImportError)):
             SerializationHelper.deserialize_polymorphic(wrapper, "ValueSpecification")
+
+
+class TestWrapAndAppend:
+    """Test wrap_and_append method for generated serialize code."""
+
+    def test_wrap_and_append_basic(self):
+        """Test basic wrap_and_append functionality."""
+        parent = ET.Element("PARENT")
+        child = ET.Element("CHILD")
+        child.text = "content"
+        child.attrib["attr"] = "value"
+
+        SerializationHelper.wrap_and_append(parent, child, "WRAPPER")
+
+        # Parent should have one child
+        assert len(parent) == 1
+        # Wrapper should have correct tag
+        wrapper = parent[0]
+        assert wrapper.tag == "WRAPPER"
+        # Wrapper should have child's text
+        assert wrapper.text == "content"
+        # Wrapper should have child's attributes
+        assert wrapper.attrib.get("attr") == "value"
+
+    def test_wrap_and_append_with_nested_children(self):
+        """Test wrap_and_append with nested children."""
+        parent = ET.Element("PARENT")
+        child = ET.Element("CHILD")
+        subchild = ET.Element("SUBCHILD")
+        subchild.text = "nested"
+        child.append(subchild)
+
+        SerializationHelper.wrap_and_append(parent, child, "WRAPPER")
+
+        wrapper = parent[0]
+        assert len(wrapper) == 1
+        assert wrapper[0].tag == "SUBCHILD"
+        assert wrapper[0].text == "nested"
+
+    def test_wrap_and_append_empty_child(self):
+        """Test wrap_and_append with empty child."""
+        parent = ET.Element("PARENT")
+        child = ET.Element("CHILD")
+
+        SerializationHelper.wrap_and_append(parent, child, "WRAPPER")
+
+        wrapper = parent[0]
+        assert wrapper.tag == "WRAPPER"
+        assert wrapper.text is None
+        assert len(wrapper.attrib) == 0
+
+    def test_wrap_and_append_preserves_all_attributes(self):
+        """Test wrap_and_append preserves multiple attributes."""
+        parent = ET.Element("PARENT")
+        child = ET.Element("CHILD")
+        child.attrib["attr1"] = "value1"
+        child.attrib["attr2"] = "value2"
+        child.attrib["DEST"] = "SomeType"
+
+        SerializationHelper.wrap_and_append(parent, child, "WRAPPER")
+
+        wrapper = parent[0]
+        assert wrapper.attrib.get("attr1") == "value1"
+        assert wrapper.attrib.get("attr2") == "value2"
+        assert wrapper.attrib.get("DEST") == "SomeType"

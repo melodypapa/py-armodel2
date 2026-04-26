@@ -92,71 +92,31 @@ class GlobalTimeMaster(Identifiable, ABC):
         if self.communication_connector_ref is not None:
             serialized = SerializationHelper.serialize_item(self.communication_connector_ref, "CommunicationConnector")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMMUNICATION-CONNECTOR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMMUNICATION-CONNECTOR-REF")
 
         # Serialize icv_secured
         if self.icv_secured is not None:
             serialized = SerializationHelper.serialize_item(self.icv_secured, "GlobalTimeIcvSupportEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ICV-SECURED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ICV-SECURED")
 
         # Serialize immediate
         if self.immediate is not None:
             serialized = SerializationHelper.serialize_item(self.immediate, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMMEDIATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMMEDIATE")
 
         # Serialize is_system_wide
         if self.is_system_wide is not None:
             serialized = SerializationHelper.serialize_item(self.is_system_wide, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-SYSTEM-WIDE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-SYSTEM-WIDE")
 
         # Serialize sync_period
         if self.sync_period is not None:
             serialized = SerializationHelper.serialize_item(self.sync_period, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYNC-PERIOD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYNC-PERIOD")
 
         return elem
 

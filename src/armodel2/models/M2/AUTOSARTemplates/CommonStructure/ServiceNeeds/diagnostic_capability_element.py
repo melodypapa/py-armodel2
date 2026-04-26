@@ -85,14 +85,7 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
             for item in self.audiences:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticAudienceEnum")
                 if serialized is not None:
-                    child_elem = ET.Element("AUDIENCE")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "AUDIENCE")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -100,29 +93,13 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
         if self.diag is not None:
             serialized = SerializationHelper.serialize_item(self.diag, "DiagRequirementIdString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAG")
 
         # Serialize security_access
         if self.security_access is not None:
             serialized = SerializationHelper.serialize_item(self.security_access, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECURITY-ACCESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECURITY-ACCESS")
 
         return elem
 

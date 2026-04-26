@@ -86,43 +86,19 @@ class SwitchStreamFilterRule(Identifiable):
         if self.data_link_layer is not None:
             serialized = SerializationHelper.serialize_item(self.data_link_layer, "StreamFilterRuleDataLinkLayer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-LINK-LAYER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-LINK-LAYER")
 
         # Serialize ieee1722_tp
         if self.ieee1722_tp is not None:
             serialized = SerializationHelper.serialize_item(self.ieee1722_tp, "StreamFilterIEEE1722Tp")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IEEE1722-TP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IEEE1722-TP")
 
         # Serialize ip_tp_rule
         if self.ip_tp_rule is not None:
             serialized = SerializationHelper.serialize_item(self.ip_tp_rule, "StreamFilterRuleIpTp")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IP-TP-RULE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IP-TP-RULE")
 
         return elem
 

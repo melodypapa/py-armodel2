@@ -132,57 +132,25 @@ class Graphic(EngineeringObject):
         if self.editfit is not None:
             serialized = SerializationHelper.serialize_item(self.editfit, "GraphicFitEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EDITFIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EDITFIT")
 
         # Serialize edit_height
         if self.edit_height is not None:
             serialized = SerializationHelper.serialize_item(self.edit_height, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EDIT-HEIGHT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EDIT-HEIGHT")
 
         # Serialize editscale
         if self.editscale is not None:
             serialized = SerializationHelper.serialize_item(self.editscale, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EDITSCALE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EDITSCALE")
 
         # Serialize edit_width
         if self.edit_width is not None:
             serialized = SerializationHelper.serialize_item(self.edit_width, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EDIT-WIDTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EDIT-WIDTH")
 
         # Serialize filename as XML attribute
         if self.filename is not None:
@@ -192,141 +160,61 @@ class Graphic(EngineeringObject):
         if self.fit is not None:
             serialized = SerializationHelper.serialize_item(self.fit, "GraphicFitEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIT")
 
         # Serialize generator
         if self.generator is not None:
             serialized = SerializationHelper.serialize_item(self.generator, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GENERATOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "GENERATOR")
 
         # Serialize height
         if self.height is not None:
             serialized = SerializationHelper.serialize_item(self.height, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HEIGHT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HEIGHT")
 
         # Serialize html_fit
         if self.html_fit is not None:
             serialized = SerializationHelper.serialize_item(self.html_fit, "GraphicFitEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HTML-FIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HTML-FIT")
 
         # Serialize html_height
         if self.html_height is not None:
             serialized = SerializationHelper.serialize_item(self.html_height, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HTML-HEIGHT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HTML-HEIGHT")
 
         # Serialize html_scale
         if self.html_scale is not None:
             serialized = SerializationHelper.serialize_item(self.html_scale, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HTML-SCALE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HTML-SCALE")
 
         # Serialize html_width
         if self.html_width is not None:
             serialized = SerializationHelper.serialize_item(self.html_width, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HTML-WIDTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HTML-WIDTH")
 
         # Serialize notation
         if self.notation is not None:
             serialized = SerializationHelper.serialize_item(self.notation, "GraphicNotationEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NOTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NOTATION")
 
         # Serialize scale
         if self.scale is not None:
             serialized = SerializationHelper.serialize_item(self.scale, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SCALE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SCALE")
 
         # Serialize width
         if self.width is not None:
             serialized = SerializationHelper.serialize_item(self.width, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WIDTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WIDTH")
 
         return elem
 

@@ -74,15 +74,7 @@ class DiagnosticStorageConditionNeeds(DiagnosticCapabilityElement):
         if self.initial_status is not None:
             serialized = SerializationHelper.serialize_item(self.initial_status, "StorageConditionStatusEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INITIAL-STATUS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INITIAL-STATUS")
 
         return elem
 

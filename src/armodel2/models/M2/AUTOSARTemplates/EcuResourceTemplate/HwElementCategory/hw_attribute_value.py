@@ -87,57 +87,25 @@ class HwAttributeValue(ARObject):
         if self.annotation is not None:
             serialized = SerializationHelper.serialize_item(self.annotation, "Annotation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ANNOTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ANNOTATION")
 
         # Serialize hw_attribute_def_ref
         if self.hw_attribute_def_ref is not None:
             serialized = SerializationHelper.serialize_item(self.hw_attribute_def_ref, "HwAttributeDef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HW-ATTRIBUTE-DEF-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HW-ATTRIBUTE-DEF-REF")
 
         # Serialize v
         if self.v is not None:
             serialized = SerializationHelper.serialize_item(self.v, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("V")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "V")
 
         # Serialize vt
         if self.vt is not None:
             serialized = SerializationHelper.serialize_item(self.vt, "VerbatimString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VT")
 
         return elem
 

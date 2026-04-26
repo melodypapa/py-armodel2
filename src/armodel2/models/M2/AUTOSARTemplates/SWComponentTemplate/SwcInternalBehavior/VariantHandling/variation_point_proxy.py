@@ -88,43 +88,19 @@ class VariationPointProxy(Identifiable):
         if self.condition_access is not None:
             serialized = SerializationHelper.serialize_item(self.condition_access, "ConditionByFormula")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONDITION-ACCESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONDITION-ACCESS")
 
         # Serialize implementation_ref
         if self.implementation_ref is not None:
             serialized = SerializationHelper.serialize_item(self.implementation_ref, "AbstractImplementationDataType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMPLEMENTATION-REF")
 
         # Serialize post_build_value_ref
         if self.post_build_value_ref is not None:
             serialized = SerializationHelper.serialize_item(self.post_build_value_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("POST-BUILD-VALUE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "POST-BUILD-VALUE-REF")
 
         return elem
 

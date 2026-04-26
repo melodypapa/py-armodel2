@@ -81,29 +81,13 @@ class DiagnosticIumpr(DiagnosticCommonElement):
         if self.event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.event_ref, "DiagnosticEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-REF")
 
         # Serialize ratio_kind
         if self.ratio_kind is not None:
             serialized = SerializationHelper.serialize_item(self.ratio_kind, "DiagnosticIumprKindEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RATIO-KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RATIO-KIND")
 
         return elem
 

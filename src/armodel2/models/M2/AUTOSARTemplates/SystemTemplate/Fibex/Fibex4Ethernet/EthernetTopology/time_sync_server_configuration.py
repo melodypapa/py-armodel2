@@ -88,57 +88,25 @@ class TimeSyncServerConfiguration(Referrable):
         if self.priority is not None:
             serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIORITY")
 
         # Serialize sync_interval
         if self.sync_interval is not None:
             serialized = SerializationHelper.serialize_item(self.sync_interval, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYNC-INTERVAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYNC-INTERVAL")
 
         # Serialize time_sync_server_identifier
         if self.time_sync_server_identifier is not None:
             serialized = SerializationHelper.serialize_item(self.time_sync_server_identifier, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-SYNC-SERVER-IDENTIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-SYNC-SERVER-IDENTIFIER")
 
         # Serialize time_sync
         if self.time_sync is not None:
             serialized = SerializationHelper.serialize_item(self.time_sync, "TimeSyncTechnologyEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-SYNC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-SYNC")
 
         return elem
 

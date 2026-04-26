@@ -79,14 +79,7 @@ class IncludedModeDeclarationGroupSet(ARObject):
             for item in self.mode_declaration_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("MODE-DECLARATION-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "MODE-DECLARATION-GROUP-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -94,15 +87,7 @@ class IncludedModeDeclarationGroupSet(ARObject):
         if self.prefix is not None:
             serialized = SerializationHelper.serialize_item(self.prefix, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PREFIX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PREFIX")
 
         return elem
 

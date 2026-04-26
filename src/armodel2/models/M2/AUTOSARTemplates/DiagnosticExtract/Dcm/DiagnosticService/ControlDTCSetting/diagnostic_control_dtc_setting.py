@@ -72,15 +72,7 @@ class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
         if self.dtc_setting_class_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dtc_setting_class_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DTC-SETTING-CLASS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DTC-SETTING-CLASS-REF")
 
         return elem
 

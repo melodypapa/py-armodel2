@@ -175,15 +175,7 @@ class BswModuleDescription(ARElement):
         if self.module_id is not None:
             serialized = SerializationHelper.serialize_item(self.module_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODULE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODULE-ID")
 
         # Serialize provided_entry_refs (list to container "PROVIDED-ENTRYS")
         if self.provided_entry_refs:
@@ -259,15 +251,7 @@ class BswModuleDescription(ARElement):
         if self.bsw_module_documentation is not None:
             serialized = SerializationHelper.serialize_item(self.bsw_module_documentation, "SwComponentDocumentation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BSW-MODULE-DOCUMENTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BSW-MODULE-DOCUMENTATION")
 
         # Serialize expected_entry_refs (list to container "EXPECTED-ENTRY-REFS")
         if self.expected_entry_refs:
@@ -275,14 +259,7 @@ class BswModuleDescription(ARElement):
             for item in self.expected_entry_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
-                    child_elem = ET.Element("EXPECTED-ENTRY-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "EXPECTED-ENTRY-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -292,14 +269,7 @@ class BswModuleDescription(ARElement):
             for item in self.implemented_entry_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
-                    child_elem = ET.Element("IMPLEMENTED-ENTRY-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "IMPLEMENTED-ENTRY-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

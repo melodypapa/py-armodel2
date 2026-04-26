@@ -87,43 +87,19 @@ class GlobalTimeGateway(Identifiable):
         if self.host_ref is not None:
             serialized = SerializationHelper.serialize_item(self.host_ref, "EcuInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HOST-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HOST-REF")
 
         # Serialize master_ref
         if self.master_ref is not None:
             serialized = SerializationHelper.serialize_item(self.master_ref, "GlobalTimeMaster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MASTER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MASTER-REF")
 
         # Serialize slave_ref
         if self.slave_ref is not None:
             serialized = SerializationHelper.serialize_item(self.slave_ref, "GlobalTimeSlave")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SLAVE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SLAVE-REF")
 
         return elem
 

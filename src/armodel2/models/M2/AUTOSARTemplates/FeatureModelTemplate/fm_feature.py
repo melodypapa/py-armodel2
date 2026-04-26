@@ -122,29 +122,13 @@ class FMFeature(ARElement):
         if self.maximum is not None:
             serialized = SerializationHelper.serialize_item(self.maximum, "BindingTimeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAXIMUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAXIMUM")
 
         # Serialize minimum
         if self.minimum is not None:
             serialized = SerializationHelper.serialize_item(self.minimum, "BindingTimeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINIMUM")
 
         # Serialize relations (list to container "RELATIONS")
         if self.relations:

@@ -81,15 +81,7 @@ class MacSecParticipantSet(ARElement):
         if self.ethernet_cluster_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ethernet_cluster_ref, "EthernetCluster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ETHERNET-CLUSTER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ETHERNET-CLUSTER-REF")
 
         # Serialize mka_participants (list to container "MKA-PARTICIPANTS")
         if self.mka_participants:

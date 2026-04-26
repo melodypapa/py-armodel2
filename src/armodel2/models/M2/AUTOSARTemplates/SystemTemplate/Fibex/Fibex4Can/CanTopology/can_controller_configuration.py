@@ -83,57 +83,25 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
         if self.prop_seg is not None:
             serialized = SerializationHelper.serialize_item(self.prop_seg, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROP-SEG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROP-SEG")
 
         # Serialize sync_jump_width
         if self.sync_jump_width is not None:
             serialized = SerializationHelper.serialize_item(self.sync_jump_width, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYNC-JUMP-WIDTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYNC-JUMP-WIDTH")
 
         # Serialize time_seg1
         if self.time_seg1 is not None:
             serialized = SerializationHelper.serialize_item(self.time_seg1, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-SEG1")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-SEG1")
 
         # Serialize time_seg2
         if self.time_seg2 is not None:
             serialized = SerializationHelper.serialize_item(self.time_seg2, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-SEG2")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-SEG2")
 
         return elem
 

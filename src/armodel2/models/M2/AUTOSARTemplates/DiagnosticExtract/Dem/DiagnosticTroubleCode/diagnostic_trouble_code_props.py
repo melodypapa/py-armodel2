@@ -118,29 +118,13 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         if self.aging_ref is not None:
             serialized = SerializationHelper.serialize_item(self.aging_ref, "DiagnosticAging")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AGING-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AGING-REF")
 
         # Serialize diagnostic_memory_ref
         if self.diagnostic_memory_ref is not None:
             serialized = SerializationHelper.serialize_item(self.diagnostic_memory_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-MEMORY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAGNOSTIC-MEMORY-REF")
 
         # Serialize extended_data_refs (list to container "EXTENDED-DATA-REFS")
         if self.extended_data_refs:
@@ -148,14 +132,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
             for item in self.extended_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticExtendedDataRecord")
                 if serialized is not None:
-                    child_elem = ET.Element("EXTENDED-DATA-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "EXTENDED-DATA-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -165,14 +142,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
             for item in self.freeze_frame_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticFreezeFrame")
                 if serialized is not None:
-                    child_elem = ET.Element("FREEZE-FRAME-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "FREEZE-FRAME-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -180,85 +150,37 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         if self.immediate_nv is not None:
             serialized = SerializationHelper.serialize_item(self.immediate_nv, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMMEDIATE-NV")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMMEDIATE-NV")
 
         # Serialize legislated_ref
         if self.legislated_ref is not None:
             serialized = SerializationHelper.serialize_item(self.legislated_ref, "DiagnosticDataIdentifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LEGISLATED-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LEGISLATED-REF")
 
         # Serialize max_number
         if self.max_number is not None:
             serialized = SerializationHelper.serialize_item(self.max_number, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-NUMBER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-NUMBER")
 
         # Serialize priority
         if self.priority is not None:
             serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIORITY")
 
         # Serialize significance
         if self.significance is not None:
             serialized = SerializationHelper.serialize_item(self.significance, "DiagnosticSignificanceEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SIGNIFICANCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SIGNIFICANCE")
 
         # Serialize snapshot_ref
         if self.snapshot_ref is not None:
             serialized = SerializationHelper.serialize_item(self.snapshot_ref, "DiagnosticDataIdentifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SNAPSHOT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SNAPSHOT-REF")
 
         return elem
 

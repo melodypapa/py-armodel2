@@ -102,14 +102,7 @@ class AclPermission(ARElement):
             for item in self.acl_contexts:
                 serialized = SerializationHelper.serialize_item(item, "NameToken")
                 if serialized is not None:
-                    child_elem = ET.Element("ACL-CONTEXT")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ACL-CONTEXT")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -119,14 +112,7 @@ class AclPermission(ARElement):
             for item in self.acl_object_set_refs:
                 serialized = SerializationHelper.serialize_item(item, "AclObjectSet")
                 if serialized is not None:
-                    child_elem = ET.Element("ACL-OBJECT-SET-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ACL-OBJECT-SET-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -136,14 +122,7 @@ class AclPermission(ARElement):
             for item in self.acl_operation_refs:
                 serialized = SerializationHelper.serialize_item(item, "AclOperation")
                 if serialized is not None:
-                    child_elem = ET.Element("ACL-OPERATION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ACL-OPERATION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -153,14 +132,7 @@ class AclPermission(ARElement):
             for item in self.acl_role_refs:
                 serialized = SerializationHelper.serialize_item(item, "AclRole")
                 if serialized is not None:
-                    child_elem = ET.Element("ACL-ROLE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ACL-ROLE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -168,15 +140,7 @@ class AclPermission(ARElement):
         if self.acl_scope is not None:
             serialized = SerializationHelper.serialize_item(self.acl_scope, "AclScopeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ACL-SCOPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ACL-SCOPE")
 
         return elem
 

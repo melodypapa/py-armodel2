@@ -80,43 +80,19 @@ class FrameMapping(ARObject):
         if self.introduction is not None:
             serialized = SerializationHelper.serialize_item(self.introduction, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTRODUCTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTRODUCTION")
 
         # Serialize source_frame_ref
         if self.source_frame_ref is not None:
             serialized = SerializationHelper.serialize_item(self.source_frame_ref, "FrameTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-FRAME-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOURCE-FRAME-REF")
 
         # Serialize target_frame_ref
         if self.target_frame_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_frame_ref, "FrameTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-FRAME-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-FRAME-REF")
 
         return elem
 

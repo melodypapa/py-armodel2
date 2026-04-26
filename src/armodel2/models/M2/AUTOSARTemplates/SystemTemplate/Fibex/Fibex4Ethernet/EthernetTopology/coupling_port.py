@@ -135,71 +135,31 @@ class CouplingPort(Identifiable):
         if self.connection is not None:
             serialized = SerializationHelper.serialize_item(self.connection, "EthernetConnectionNegotiationEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONNECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONNECTION")
 
         # Serialize coupling_port_details
         if self.coupling_port_details is not None:
             serialized = SerializationHelper.serialize_item(self.coupling_port_details, "CouplingPortDetails")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COUPLING-PORT-DETAILS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COUPLING-PORT-DETAILS")
 
         # Serialize coupling_port_role_enum
         if self.coupling_port_role_enum is not None:
             serialized = SerializationHelper.serialize_item(self.coupling_port_role_enum, "CouplingPortRoleEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COUPLING-PORT-ROLE-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COUPLING-PORT-ROLE-ENUM")
 
         # Serialize default_vlan_ref
         if self.default_vlan_ref is not None:
             serialized = SerializationHelper.serialize_item(self.default_vlan_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-VLAN-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-VLAN-REF")
 
         # Serialize mac_layer_type_enum
         if self.mac_layer_type_enum is not None:
             serialized = SerializationHelper.serialize_item(self.mac_layer_type_enum, "EthernetMacLayerTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAC-LAYER-TYPE-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAC-LAYER-TYPE-ENUM")
 
         # Serialize mac_multicast_group_refs (list to container "MAC-MULTICAST-GROUP-REFS")
         if self.mac_multicast_group_refs:
@@ -207,14 +167,7 @@ class CouplingPort(Identifiable):
             for item in self.mac_multicast_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "MacMulticastGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("MAC-MULTICAST-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "MAC-MULTICAST-GROUP-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -232,29 +185,13 @@ class CouplingPort(Identifiable):
         if self.physical_layer is not None:
             serialized = SerializationHelper.serialize_item(self.physical_layer, "EthernetPhysicalLayerTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PHYSICAL-LAYER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PHYSICAL-LAYER")
 
         # Serialize plca_props
         if self.plca_props is not None:
             serialized = SerializationHelper.serialize_item(self.plca_props, "PlcaProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PLCA-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PLCA-PROPS")
 
         # Serialize pnc_mapping_ident_refs (list to container "PNC-MAPPING-IDENT-REFS")
         if self.pnc_mapping_ident_refs:
@@ -262,14 +199,7 @@ class CouplingPort(Identifiable):
             for item in self.pnc_mapping_ident_refs:
                 serialized = SerializationHelper.serialize_item(item, "PncMappingIdent")
                 if serialized is not None:
-                    child_elem = ET.Element("PNC-MAPPING-IDENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "PNC-MAPPING-IDENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -277,15 +207,7 @@ class CouplingPort(Identifiable):
         if self.receive_activity is not None:
             serialized = SerializationHelper.serialize_item(self.receive_activity, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RECEIVE-ACTIVITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RECEIVE-ACTIVITY")
 
         # Serialize vlans (list to container "VLANS")
         if self.vlans:
@@ -301,29 +223,13 @@ class CouplingPort(Identifiable):
         if self.vlan_modifier_ref is not None:
             serialized = SerializationHelper.serialize_item(self.vlan_modifier_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VLAN-MODIFIER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VLAN-MODIFIER-REF")
 
         # Serialize wakeup_sleep_ref
         if self.wakeup_sleep_ref is not None:
             serialized = SerializationHelper.serialize_item(self.wakeup_sleep_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WAKEUP-SLEEP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WAKEUP-SLEEP-REF")
 
         return elem
 

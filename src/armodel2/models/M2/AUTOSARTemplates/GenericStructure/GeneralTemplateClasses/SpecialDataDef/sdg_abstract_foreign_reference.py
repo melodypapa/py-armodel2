@@ -72,15 +72,7 @@ class SdgAbstractForeignReference(SdgElementWithGid, ABC):
         if self.dest_meta_class is not None:
             serialized = SerializationHelper.serialize_item(self.dest_meta_class, "MetaClassName")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEST-META-CLASS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEST-META-CLASS")
 
         return elem
 

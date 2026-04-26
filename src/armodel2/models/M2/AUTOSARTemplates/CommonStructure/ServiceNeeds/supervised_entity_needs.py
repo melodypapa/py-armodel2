@@ -96,15 +96,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
         if self.activate_at_start is not None:
             serialized = SerializationHelper.serialize_item(self.activate_at_start, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ACTIVATE-AT-START")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ACTIVATE-AT-START")
 
         # Serialize checkpoint_refs (list to container "CHECKPOINTS-REFS")
         if self.checkpoint_refs:
@@ -112,14 +104,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
             for item in self.checkpoint_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("CHECKPOINT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CHECKPOINT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -127,71 +112,31 @@ class SupervisedEntityNeeds(ServiceNeeds):
         if self.enable is not None:
             serialized = SerializationHelper.serialize_item(self.enable, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENABLE")
 
         # Serialize expected_alive
         if self.expected_alive is not None:
             serialized = SerializationHelper.serialize_item(self.expected_alive, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXPECTED-ALIVE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXPECTED-ALIVE")
 
         # Serialize max_alive_cycle
         if self.max_alive_cycle is not None:
             serialized = SerializationHelper.serialize_item(self.max_alive_cycle, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-ALIVE-CYCLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-ALIVE-CYCLE")
 
         # Serialize min_alive_cycle
         if self.min_alive_cycle is not None:
             serialized = SerializationHelper.serialize_item(self.min_alive_cycle, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIN-ALIVE-CYCLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MIN-ALIVE-CYCLE")
 
         # Serialize tolerated_failed
         if self.tolerated_failed is not None:
             serialized = SerializationHelper.serialize_item(self.tolerated_failed, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TOLERATED-FAILED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TOLERATED-FAILED")
 
         return elem
 

@@ -90,57 +90,25 @@ class Unit(ARElement):
         if self.display_name is not None:
             serialized = SerializationHelper.serialize_item(self.display_name, "SingleLanguageUnitNames")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DISPLAY-NAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DISPLAY-NAME")
 
         # Serialize factor_si_to_unit
         if self.factor_si_to_unit is not None:
             serialized = SerializationHelper.serialize_item(self.factor_si_to_unit, "Float")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FACTOR-SI-TO-UNIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FACTOR-SI-TO-UNIT")
 
         # Serialize offset_si_to_unit
         if self.offset_si_to_unit is not None:
             serialized = SerializationHelper.serialize_item(self.offset_si_to_unit, "Float")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OFFSET-SI-TO-UNIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OFFSET-SI-TO-UNIT")
 
         # Serialize physical_dimension_ref
         if self.physical_dimension_ref is not None:
             serialized = SerializationHelper.serialize_item(self.physical_dimension_ref, "physicalDimension")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PHYSICAL-DIMENSION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PHYSICAL-DIMENSION-REF")
 
         return elem
 

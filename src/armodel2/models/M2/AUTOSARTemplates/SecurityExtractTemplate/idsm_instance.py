@@ -122,99 +122,43 @@ class IdsmInstance(IdsCommonElement):
         if self.ecu_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-INSTANCE-REF")
 
         # Serialize idsm_instance_id
         if self.idsm_instance_id is not None:
             serialized = SerializationHelper.serialize_item(self.idsm_instance_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDSM-INSTANCE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDSM-INSTANCE-ID")
 
         # Serialize idsm_module_ref
         if self.idsm_module_ref is not None:
             serialized = SerializationHelper.serialize_item(self.idsm_module_ref, "IdsmModuleInstantiation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDSM-MODULE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDSM-MODULE-REF")
 
         # Serialize rate_limitation_ref
         if self.rate_limitation_ref is not None:
             serialized = SerializationHelper.serialize_item(self.rate_limitation_ref, "IdsmRateLimitation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RATE-LIMITATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RATE-LIMITATION-REF")
 
         # Serialize signature
         if self.signature is not None:
             serialized = SerializationHelper.serialize_item(self.signature, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SIGNATURE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SIGNATURE")
 
         # Serialize timestamp
         if self.timestamp is not None:
             serialized = SerializationHelper.serialize_item(self.timestamp, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMESTAMP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMESTAMP")
 
         # Serialize traffic_limitation_ref
         if self.traffic_limitation_ref is not None:
             serialized = SerializationHelper.serialize_item(self.traffic_limitation_ref, "IdsmTrafficLimitation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRAFFIC-LIMITATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRAFFIC-LIMITATION-REF")
 
         return elem
 

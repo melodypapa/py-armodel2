@@ -96,29 +96,13 @@ class MlFormula(Paginateable):
         if self.formula_caption is not None:
             serialized = SerializationHelper.serialize_item(self.formula_caption, "Caption")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FORMULA-CAPTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FORMULA-CAPTION")
 
         # Serialize generic_math
         if self.generic_math is not None:
             serialized = SerializationHelper.serialize_item(self.generic_math, "MultiLanguagePlainText")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GENERIC-MATH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "GENERIC-MATH")
 
         # Serialize l_graphics (list to container "L-GRAPHICS")
         if self.l_graphics:
@@ -134,29 +118,13 @@ class MlFormula(Paginateable):
         if self.tex_math is not None:
             serialized = SerializationHelper.serialize_item(self.tex_math, "MultiLanguagePlainText")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TEX-MATH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TEX-MATH")
 
         # Serialize verbatim
         if self.verbatim is not None:
             serialized = SerializationHelper.serialize_item(self.verbatim, "MultiLanguageVerbatim")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VERBATIM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VERBATIM")
 
         return elem
 

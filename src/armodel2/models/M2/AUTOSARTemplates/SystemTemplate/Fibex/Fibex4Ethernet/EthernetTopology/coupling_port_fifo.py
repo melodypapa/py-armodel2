@@ -80,43 +80,19 @@ class CouplingPortFifo(CouplingPortStructuralElement):
         if self.assigned_traffic is not None:
             serialized = SerializationHelper.serialize_item(self.assigned_traffic, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ASSIGNED-TRAFFIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ASSIGNED-TRAFFIC")
 
         # Serialize minimum_fifo
         if self.minimum_fifo is not None:
             serialized = SerializationHelper.serialize_item(self.minimum_fifo, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM-FIFO")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINIMUM-FIFO")
 
         # Serialize shaper
         if self.shaper is not None:
             serialized = SerializationHelper.serialize_item(self.shaper, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHAPER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHAPER")
 
         return elem
 

@@ -87,43 +87,19 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
         if self.connection_type is not None:
             serialized = SerializationHelper.serialize_item(self.connection_type, "ObdRatioConnectionKindEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONNECTION-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONNECTION-TYPE")
 
         # Serialize rate_based_monitored_event_ref
         if self.rate_based_monitored_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.rate_based_monitored_event_ref, "DiagnosticEventNeeds")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RATE-BASED-MONITORED-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RATE-BASED-MONITORED-EVENT-REF")
 
         # Serialize used_fid_ref
         if self.used_fid_ref is not None:
             serialized = SerializationHelper.serialize_item(self.used_fid_ref, "FunctionInhibitionNeeds")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USED-FID-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USED-FID-REF")
 
         return elem
 

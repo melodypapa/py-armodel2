@@ -83,43 +83,19 @@ class DdsCpServiceInstanceEvent(ARObject):
         if self.dds_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dds_event_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DDS-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DDS-EVENT-REF")
 
         # Serialize dds_event_qos_ref
         if self.dds_event_qos_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dds_event_qos_ref, "DdsCpQosProfile")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DDS-EVENT-QOS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DDS-EVENT-QOS-REF")
 
         # Serialize dds_event_topic_ref
         if self.dds_event_topic_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dds_event_topic_ref, "DdsCpTopic")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DDS-EVENT-TOPIC-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DDS-EVENT-TOPIC-REF")
 
         return elem
 

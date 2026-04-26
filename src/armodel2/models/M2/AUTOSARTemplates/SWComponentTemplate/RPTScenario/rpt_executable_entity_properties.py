@@ -86,57 +86,25 @@ class RptExecutableEntityProperties(ARObject):
         if self.max_rpt_event_id is not None:
             serialized = SerializationHelper.serialize_item(self.max_rpt_event_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-RPT-EVENT-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-RPT-EVENT-ID")
 
         # Serialize min_rpt_event_id
         if self.min_rpt_event_id is not None:
             serialized = SerializationHelper.serialize_item(self.min_rpt_event_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIN-RPT-EVENT-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MIN-RPT-EVENT-ID")
 
         # Serialize rpt_execution_control
         if self.rpt_execution_control is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_execution_control, "RptExecutionControlEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-EXECUTION-CONTROL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-EXECUTION-CONTROL")
 
         # Serialize rpt_service_point_enum
         if self.rpt_service_point_enum is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_service_point_enum, "RptServicePointEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-SERVICE-POINT-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-SERVICE-POINT-ENUM")
 
         return elem
 

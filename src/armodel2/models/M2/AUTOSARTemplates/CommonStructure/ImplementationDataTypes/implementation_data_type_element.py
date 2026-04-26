@@ -109,71 +109,31 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         if self.array_impl_policy is not None:
             serialized = SerializationHelper.serialize_item(self.array_impl_policy, "ArrayImplPolicyEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-IMPL-POLICY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARRAY-IMPL-POLICY")
 
         # Serialize array_size
         if self.array_size is not None:
             serialized = SerializationHelper.serialize_item(self.array_size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARRAY-SIZE")
 
         # Serialize array_size_handling
         if self.array_size_handling is not None:
             serialized = SerializationHelper.serialize_item(self.array_size_handling, "ArraySizeHandlingEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-SIZE-HANDLING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARRAY-SIZE-HANDLING")
 
         # Serialize array_size_semantics
         if self.array_size_semantics is not None:
             serialized = SerializationHelper.serialize_item(self.array_size_semantics, "ArraySizeSemanticsEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-SIZE-SEMANTICS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARRAY-SIZE-SEMANTICS")
 
         # Serialize is_optional
         if self.is_optional is not None:
             serialized = SerializationHelper.serialize_item(self.is_optional, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-OPTIONAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-OPTIONAL")
 
         # Serialize sub_elements (list to container "SUB-ELEMENTS")
         if self.sub_elements:
@@ -189,15 +149,7 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         if self.sw_data_def_props is not None:
             serialized = SerializationHelper.serialize_item(self.sw_data_def_props, "SwDataDefProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-DATA-DEF-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-DATA-DEF-PROPS")
 
         return elem
 

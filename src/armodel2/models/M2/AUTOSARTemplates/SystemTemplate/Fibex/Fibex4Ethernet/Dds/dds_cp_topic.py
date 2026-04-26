@@ -81,29 +81,13 @@ class DdsCpTopic(Identifiable):
         if self.dds_partition_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dds_partition_ref, "DdsCpPartition")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DDS-PARTITION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DDS-PARTITION-REF")
 
         # Serialize topic_name
         if self.topic_name is not None:
             serialized = SerializationHelper.serialize_item(self.topic_name, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TOPIC-NAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TOPIC-NAME")
 
         return elem
 

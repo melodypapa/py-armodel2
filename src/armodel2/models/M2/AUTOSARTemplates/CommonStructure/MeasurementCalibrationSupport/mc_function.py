@@ -90,71 +90,31 @@ class McFunction(ARElement):
         if self.def_calprm_set is not None:
             serialized = SerializationHelper.serialize_item(self.def_calprm_set, "McFunctionDataRefSet")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEF-CALPRM-SET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEF-CALPRM-SET")
 
         # Serialize in_measurement_set
         if self.in_measurement_set is not None:
             serialized = SerializationHelper.serialize_item(self.in_measurement_set, "McFunctionDataRefSet")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IN-MEASUREMENT-SET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IN-MEASUREMENT-SET")
 
         # Serialize loc_measurement_set
         if self.loc_measurement_set is not None:
             serialized = SerializationHelper.serialize_item(self.loc_measurement_set, "McFunctionDataRefSet")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOC-MEASUREMENT-SET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOC-MEASUREMENT-SET")
 
         # Serialize out_measurement_set
         if self.out_measurement_set is not None:
             serialized = SerializationHelper.serialize_item(self.out_measurement_set, "McFunctionDataRefSet")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OUT-MEASUREMENT-SET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OUT-MEASUREMENT-SET")
 
         # Serialize ref_calprm_set
         if self.ref_calprm_set is not None:
             serialized = SerializationHelper.serialize_item(self.ref_calprm_set, "McFunctionDataRefSet")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REF-CALPRM-SET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REF-CALPRM-SET")
 
         # Serialize sub_function_refs (list to container "SUB-FUNCTION-REFS")
         if self.sub_function_refs:
@@ -162,14 +122,7 @@ class McFunction(ARElement):
             for item in self.sub_function_refs:
                 serialized = SerializationHelper.serialize_item(item, "McFunction")
                 if serialized is not None:
-                    child_elem = ET.Element("SUB-FUNCTION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SUB-FUNCTION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

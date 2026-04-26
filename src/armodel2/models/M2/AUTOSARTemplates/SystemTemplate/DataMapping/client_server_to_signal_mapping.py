@@ -84,43 +84,19 @@ class ClientServerToSignalMapping(DataMapping):
         if self.call_signal_ref is not None:
             serialized = SerializationHelper.serialize_item(self.call_signal_ref, "SystemSignal")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CALL-SIGNAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CALL-SIGNAL-REF")
 
         # Serialize client_server
         if self.client_server is not None:
             serialized = SerializationHelper.serialize_item(self.client_server, "ClientServerOperation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-SERVER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CLIENT-SERVER")
 
         # Serialize return_signal_ref
         if self.return_signal_ref is not None:
             serialized = SerializationHelper.serialize_item(self.return_signal_ref, "SystemSignal")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RETURN-SIGNAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RETURN-SIGNAL-REF")
 
         return elem
 

@@ -106,105 +106,49 @@ class TtcanCommunicationController(ARObject):
         if self.appl_watchdog is not None:
             serialized = SerializationHelper.serialize_item(self.appl_watchdog, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("APPL-WATCHDOG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "APPL-WATCHDOG")
 
         # Serialize expected_tx
         if self.expected_tx is not None:
             serialized = SerializationHelper.serialize_item(self.expected_tx, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("EXPECTED-TX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "EXPECTED-TX")
 
         # Serialize external_clock
         if self.external_clock is not None:
             serialized = SerializationHelper.serialize_item(self.external_clock, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("EXTERNAL-CLOCK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "EXTERNAL-CLOCK")
 
         # Serialize initial_ref_offset
         if self.initial_ref_offset is not None:
             serialized = SerializationHelper.serialize_item(self.initial_ref_offset, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("INITIAL-REF-OFFSET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "INITIAL-REF-OFFSET")
 
         # Serialize master
         if self.master is not None:
             serialized = SerializationHelper.serialize_item(self.master, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("MASTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MASTER")
 
         # Serialize time_master
         if self.time_master is not None:
             serialized = SerializationHelper.serialize_item(self.time_master, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("TIME-MASTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "TIME-MASTER")
 
         # Serialize time_triggered
         if self.time_triggered is not None:
             serialized = SerializationHelper.serialize_item(self.time_triggered, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("TIME-TRIGGERED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "TIME-TRIGGERED")
 
         # Serialize tx_enable
         if self.tx_enable is not None:
             serialized = SerializationHelper.serialize_item(self.tx_enable, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("TX-ENABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "TX-ENABLE")
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "TtcanCommunicationController")

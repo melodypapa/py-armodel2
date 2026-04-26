@@ -94,71 +94,31 @@ class SwCalprmAxis(ARObject):
         if self.category is not None:
             serialized = SerializationHelper.serialize_item(self.category, "CalprmAxisCategoryEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CATEGORY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CATEGORY")
 
         # Serialize display_format_string
         if self.display_format_string is not None:
             serialized = SerializationHelper.serialize_item(self.display_format_string, "DisplayFormatString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DISPLAY-FORMAT-STRING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DISPLAY-FORMAT-STRING")
 
         # Serialize sw_axis_index
         if self.sw_axis_index is not None:
             serialized = SerializationHelper.serialize_item(self.sw_axis_index, "AxisIndexType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-AXIS-INDEX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-AXIS-INDEX")
 
         # Serialize sw_calibration_access
         if self.sw_calibration_access is not None:
             serialized = SerializationHelper.serialize_item(self.sw_calibration_access, "SwCalibrationAccessEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-CALIBRATION-ACCESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-CALIBRATION-ACCESS")
 
         # Serialize sw_calprm_axis
         if self.sw_calprm_axis is not None:
             serialized = SerializationHelper.serialize_item(self.sw_calprm_axis, "SwCalprmAxisTypeProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-CALPRM-AXIS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-CALPRM-AXIS")
 
         return elem
 

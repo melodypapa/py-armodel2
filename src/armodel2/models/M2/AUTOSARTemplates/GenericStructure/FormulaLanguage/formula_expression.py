@@ -76,14 +76,7 @@ class FormulaExpression(ARObject, ABC):
             for item in self.atp_reference_refs:
                 serialized = SerializationHelper.serialize_item(item, "Referrable")
                 if serialized is not None:
-                    child_elem = ET.Element("ATP-REFERENCE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ATP-REFERENCE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -93,14 +86,7 @@ class FormulaExpression(ARObject, ABC):
             for item in self.atp_string_refs:
                 serialized = SerializationHelper.serialize_item(item, "Referrable")
                 if serialized is not None:
-                    child_elem = ET.Element("ATP-STRING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ATP-STRING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

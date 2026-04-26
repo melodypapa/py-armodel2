@@ -80,43 +80,19 @@ class ISignalMapping(ARObject):
         if self.introduction is not None:
             serialized = SerializationHelper.serialize_item(self.introduction, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTRODUCTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTRODUCTION")
 
         # Serialize source_signal_ref
         if self.source_signal_ref is not None:
             serialized = SerializationHelper.serialize_item(self.source_signal_ref, "ISignalTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-SIGNAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOURCE-SIGNAL-REF")
 
         # Serialize target_signal_ref
         if self.target_signal_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_signal_ref, "ISignalTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-SIGNAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-SIGNAL-REF")
 
         return elem
 

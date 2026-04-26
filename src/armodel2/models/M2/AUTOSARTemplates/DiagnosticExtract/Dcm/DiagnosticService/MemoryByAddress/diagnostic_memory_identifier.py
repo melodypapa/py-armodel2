@@ -88,57 +88,25 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
         if self.access_ref is not None:
             serialized = SerializationHelper.serialize_item(self.access_ref, "DiagnosticAccessPermission")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ACCESS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ACCESS-REF")
 
         # Serialize id
         if self.id is not None:
             serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ID")
 
         # Serialize memory_high
         if self.memory_high is not None:
             serialized = SerializationHelper.serialize_item(self.memory_high, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MEMORY-HIGH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MEMORY-HIGH")
 
         # Serialize memory_low
         if self.memory_low is not None:
             serialized = SerializationHelper.serialize_item(self.memory_low, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MEMORY-LOW")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MEMORY-LOW")
 
         return elem
 

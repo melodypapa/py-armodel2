@@ -80,29 +80,13 @@ class RtpTp(TransportProtocolConfiguration):
         if self.ssrc is not None:
             serialized = SerializationHelper.serialize_item(self.ssrc, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SSRC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SSRC")
 
         # Serialize tcp_udp_config
         if self.tcp_udp_config is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_udp_config, "TcpUdpConfig")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-UDP-CONFIG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-UDP-CONFIG")
 
         return elem
 

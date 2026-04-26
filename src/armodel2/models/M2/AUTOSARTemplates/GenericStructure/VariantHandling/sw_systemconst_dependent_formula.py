@@ -74,29 +74,13 @@ class SwSystemconstDependentFormula(ARObject, ABC):
         if self.sysc_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sysc_ref, "SwSystemconst")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYSC-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYSC-REF")
 
         # Serialize sysc_string_ref
         if self.sysc_string_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sysc_string_ref, "SwSystemconst")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYSC-STRING-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYSC-STRING-REF")
 
         return elem
 

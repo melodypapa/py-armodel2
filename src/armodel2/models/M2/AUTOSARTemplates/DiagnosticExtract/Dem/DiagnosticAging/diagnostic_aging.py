@@ -78,29 +78,13 @@ class DiagnosticAging(DiagnosticCommonElement):
         if self.aging_cycle_ref is not None:
             serialized = SerializationHelper.serialize_item(self.aging_cycle_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AGING-CYCLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AGING-CYCLE-REF")
 
         # Serialize threshold
         if self.threshold is not None:
             serialized = SerializationHelper.serialize_item(self.threshold, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("THRESHOLD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "THRESHOLD")
 
         return elem
 

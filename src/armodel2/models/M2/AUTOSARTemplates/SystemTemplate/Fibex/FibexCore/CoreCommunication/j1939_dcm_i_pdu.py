@@ -78,29 +78,13 @@ class J1939DcmIPdu(IPdu):
         if self.diagnostic is not None:
             serialized = SerializationHelper.serialize_item(self.diagnostic, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAGNOSTIC")
 
         # Serialize message_type
         if self.message_type is not None:
             serialized = SerializationHelper.serialize_item(self.message_type, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MESSAGE-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MESSAGE-TYPE")
 
         return elem
 

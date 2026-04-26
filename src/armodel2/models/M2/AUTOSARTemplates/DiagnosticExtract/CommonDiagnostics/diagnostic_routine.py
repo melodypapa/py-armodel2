@@ -92,71 +92,31 @@ class DiagnosticRoutine(DiagnosticCommonElement):
         if self.id is not None:
             serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ID")
 
         # Serialize request_result
         if self.request_result is not None:
             serialized = SerializationHelper.serialize_item(self.request_result, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUEST-RESULT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REQUEST-RESULT")
 
         # Serialize routine_info
         if self.routine_info is not None:
             serialized = SerializationHelper.serialize_item(self.routine_info, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROUTINE-INFO")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROUTINE-INFO")
 
         # Serialize start
         if self.start is not None:
             serialized = SerializationHelper.serialize_item(self.start, "DiagnosticStartRoutine")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("START")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "START")
 
         # Serialize stop
         if self.stop is not None:
             serialized = SerializationHelper.serialize_item(self.stop, "DiagnosticStopRoutine")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STOP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STOP")
 
         return elem
 

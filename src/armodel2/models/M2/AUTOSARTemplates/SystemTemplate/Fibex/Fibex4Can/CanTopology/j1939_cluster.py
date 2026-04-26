@@ -92,40 +92,19 @@ class J1939Cluster(ARObject):
         if self.network_id is not None:
             serialized = SerializationHelper.serialize_item(self.network_id, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("NETWORK-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "NETWORK-ID")
 
         # Serialize request2_support
         if self.request2_support is not None:
             serialized = SerializationHelper.serialize_item(self.request2_support, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("REQUEST2-SUPPORT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "REQUEST2-SUPPORT")
 
         # Serialize uses_address
         if self.uses_address is not None:
             serialized = SerializationHelper.serialize_item(self.uses_address, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("USES-ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "USES-ADDRESS")
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "J1939Cluster")

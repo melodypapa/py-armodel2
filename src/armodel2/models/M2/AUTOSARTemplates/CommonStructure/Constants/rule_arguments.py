@@ -106,14 +106,7 @@ class RuleArguments(ARObject):
         if self.vtf is not None:
             serialized = SerializationHelper.serialize_item(self.vtf, "NumericalOrText")
             if serialized is not None:
-                wrapped = ET.Element("VTF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VTF")
 
         return elem
 

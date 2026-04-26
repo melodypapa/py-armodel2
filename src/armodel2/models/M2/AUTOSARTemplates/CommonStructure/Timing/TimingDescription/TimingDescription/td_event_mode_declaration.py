@@ -87,57 +87,25 @@ class TDEventModeDeclaration(TDEventVfbPort):
         if self.entry_mode_ref is not None:
             serialized = SerializationHelper.serialize_item(self.entry_mode_ref, "ModeDeclaration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENTRY-MODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENTRY-MODE-REF")
 
         # Serialize exit_mode_ref
         if self.exit_mode_ref is not None:
             serialized = SerializationHelper.serialize_item(self.exit_mode_ref, "ModeDeclaration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXIT-MODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXIT-MODE-REF")
 
         # Serialize mode_ref
         if self.mode_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODE-REF")
 
         # Serialize td_event_mode
         if self.td_event_mode is not None:
             serialized = SerializationHelper.serialize_item(self.td_event_mode, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TD-EVENT-MODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TD-EVENT-MODE")
 
         return elem
 

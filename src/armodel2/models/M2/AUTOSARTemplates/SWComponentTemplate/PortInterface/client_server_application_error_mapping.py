@@ -74,29 +74,13 @@ class ClientServerApplicationErrorMapping(ARObject):
         if self.first_application_ref is not None:
             serialized = SerializationHelper.serialize_item(self.first_application_ref, "ApplicationError")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIRST-APPLICATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIRST-APPLICATION-REF")
 
         # Serialize second_ref
         if self.second_ref is not None:
             serialized = SerializationHelper.serialize_item(self.second_ref, "ApplicationError")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECOND-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECOND-REF")
 
         return elem
 

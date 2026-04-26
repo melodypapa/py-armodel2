@@ -82,43 +82,19 @@ class Ipv4Props(ARObject):
         if self.arp_props is not None:
             serialized = SerializationHelper.serialize_item(self.arp_props, "Ipv4ArpProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARP-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARP-PROPS")
 
         # Serialize auto_ip_props
         if self.auto_ip_props is not None:
             serialized = SerializationHelper.serialize_item(self.auto_ip_props, "Ipv4AutoIpProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AUTO-IP-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AUTO-IP-PROPS")
 
         # Serialize fragmentation
         if self.fragmentation is not None:
             serialized = SerializationHelper.serialize_item(self.fragmentation, "Ipv4FragmentationProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRAGMENTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FRAGMENTATION")
 
         return elem
 

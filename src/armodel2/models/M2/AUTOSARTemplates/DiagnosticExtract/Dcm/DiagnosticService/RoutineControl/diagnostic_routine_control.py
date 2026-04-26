@@ -78,29 +78,13 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
         if self.routine_ref is not None:
             serialized = SerializationHelper.serialize_item(self.routine_ref, "DiagnosticRoutine")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROUTINE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROUTINE-REF")
 
         # Serialize routine_control_ref
         if self.routine_control_ref is not None:
             serialized = SerializationHelper.serialize_item(self.routine_control_ref, "DiagnosticRoutine")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROUTINE-CONTROL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROUTINE-CONTROL-REF")
 
         return elem
 

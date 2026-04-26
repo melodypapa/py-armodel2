@@ -97,57 +97,25 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
         if self.array_size_handling is not None:
             serialized = SerializationHelper.serialize_item(self.array_size_handling, "ArraySizeHandlingEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-SIZE-HANDLING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARRAY-SIZE-HANDLING")
 
         # Serialize array_size_semantics
         if self.array_size_semantics is not None:
             serialized = SerializationHelper.serialize_item(self.array_size_semantics, "ArraySizeSemanticsEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-SIZE-SEMANTICS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARRAY-SIZE-SEMANTICS")
 
         # Serialize index_data_type_ref
         if self.index_data_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.index_data_type_ref, "ApplicationPrimitiveDataType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INDEX-DATA-TYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INDEX-DATA-TYPE-REF")
 
         # Serialize max_number_of_elements
         if self.max_number_of_elements is not None:
             serialized = SerializationHelper.serialize_item(self.max_number_of_elements, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-NUMBER-OF-ELEMENTS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-NUMBER-OF-ELEMENTS")
 
         return elem
 

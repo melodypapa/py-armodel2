@@ -113,15 +113,7 @@ class PortPrototypeBlueprint(ARElement):
         if self.interface_ref is not None:
             serialized = SerializationHelper.serialize_item(self.interface_ref, "PortInterface")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTERFACE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTERFACE-REF")
 
         # Serialize provided_coms (list to container "PROVIDED-COMS")
         if self.provided_coms:

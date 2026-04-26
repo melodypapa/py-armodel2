@@ -106,15 +106,7 @@ class MemorySection(Identifiable):
         if self.alignment is not None:
             serialized = SerializationHelper.serialize_item(self.alignment, "AlignmentType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALIGNMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALIGNMENT")
 
         # Serialize executable_entity_refs (list to container "EXECUTABLE-ENTITY-REFS")
         if self.executable_entity_refs:
@@ -122,14 +114,7 @@ class MemorySection(Identifiable):
             for item in self.executable_entity_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExecutableEntity")
                 if serialized is not None:
-                    child_elem = ET.Element("EXECUTABLE-ENTITY-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "EXECUTABLE-ENTITY-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -139,14 +124,7 @@ class MemorySection(Identifiable):
             for item in self.options:
                 serialized = SerializationHelper.serialize_item(item, "Identifier")
                 if serialized is not None:
-                    child_elem = ET.Element("OPTION")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "OPTION")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -154,57 +132,25 @@ class MemorySection(Identifiable):
         if self.prefix_ref is not None:
             serialized = SerializationHelper.serialize_item(self.prefix_ref, "SectionNamePrefix")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PREFIX-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PREFIX-REF")
 
         # Serialize size
         if self.size is not None:
             serialized = SerializationHelper.serialize_item(self.size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SIZE")
 
         # Serialize sw_addrmethod_ref
         if self.sw_addrmethod_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sw_addrmethod_ref, "SwAddrMethod")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-ADDRMETHOD-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-ADDRMETHOD-REF")
 
         # Serialize symbol
         if self.symbol is not None:
             serialized = SerializationHelper.serialize_item(self.symbol, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYMBOL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYMBOL")
 
         return elem
 

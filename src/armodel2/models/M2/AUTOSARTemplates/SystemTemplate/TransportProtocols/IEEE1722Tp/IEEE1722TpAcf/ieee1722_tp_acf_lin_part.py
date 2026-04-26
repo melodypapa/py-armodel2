@@ -81,29 +81,13 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
         if self.lin_identifier is not None:
             serialized = SerializationHelper.serialize_item(self.lin_identifier, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LIN-IDENTIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LIN-IDENTIFIER")
 
         # Serialize sdu_ref
         if self.sdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sdu_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SDU-REF")
 
         return elem
 

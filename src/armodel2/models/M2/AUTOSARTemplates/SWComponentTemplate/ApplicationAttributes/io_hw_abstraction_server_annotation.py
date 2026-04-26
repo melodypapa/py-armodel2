@@ -118,113 +118,49 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         if self.age is not None:
             serialized = SerializationHelper.serialize_item(self.age, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AGE")
 
         # Serialize argument_ref
         if self.argument_ref is not None:
             serialized = SerializationHelper.serialize_item(self.argument_ref, "ArgumentDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARGUMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARGUMENT-REF")
 
         # Serialize bsw_resolution
         if self.bsw_resolution is not None:
             serialized = SerializationHelper.serialize_item(self.bsw_resolution, "Float")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BSW-RESOLUTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BSW-RESOLUTION")
 
         # Serialize data_element_ref
         if self.data_element_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_element_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-ELEMENT-REF")
 
         # Serialize failure_ref
         if self.failure_ref is not None:
             serialized = SerializationHelper.serialize_item(self.failure_ref, "PortPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FAILURE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FAILURE-REF")
 
         # Serialize filtering
         if self.filtering is not None:
             serialized = SerializationHelper.serialize_item(self.filtering, "FilterDebouncingEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FILTERING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FILTERING")
 
         # Serialize pulse_test
         if self.pulse_test is not None:
             serialized = SerializationHelper.serialize_item(self.pulse_test, "PulseTestEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PULSE-TEST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PULSE-TEST")
 
         # Serialize trigger_ref
         if self.trigger_ref is not None:
             serialized = SerializationHelper.serialize_item(self.trigger_ref, "Trigger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRIGGER-REF")
 
         return elem
 

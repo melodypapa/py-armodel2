@@ -101,15 +101,7 @@ class SwcBswMapping(ARElement):
         if self.bsw_behavior_ref is not None:
             serialized = SerializationHelper.serialize_item(self.bsw_behavior_ref, "BswInternalBehavior")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BSW-BEHAVIOR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BSW-BEHAVIOR-REF")
 
         # Serialize runnable_mappings (list to container "RUNNABLE-MAPPINGS")
         if self.runnable_mappings:
@@ -125,15 +117,7 @@ class SwcBswMapping(ARElement):
         if self.swc_behavior_ref is not None:
             serialized = SerializationHelper.serialize_item(self.swc_behavior_ref, "SwcInternalBehavior")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SWC-BEHAVIOR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SWC-BEHAVIOR-REF")
 
         # Serialize synchronized_mode_groups (list to container "SYNCHRONIZED-MODE-GROUPS")
         if self.synchronized_mode_groups:

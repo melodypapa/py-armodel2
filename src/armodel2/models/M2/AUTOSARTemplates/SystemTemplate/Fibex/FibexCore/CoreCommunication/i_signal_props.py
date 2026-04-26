@@ -67,15 +67,7 @@ class ISignalProps(ARObject):
         if self.handle_out_of_range is not None:
             serialized = SerializationHelper.serialize_item(self.handle_out_of_range, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HANDLE-OUT-OF-RANGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HANDLE-OUT-OF-RANGE")
 
         return elem
 

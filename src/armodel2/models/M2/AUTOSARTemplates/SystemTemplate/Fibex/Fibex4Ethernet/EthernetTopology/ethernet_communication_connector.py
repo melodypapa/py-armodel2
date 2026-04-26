@@ -92,71 +92,31 @@ class EthernetCommunicationConnector(CommunicationConnector):
         if self.eth_ip_props_ref is not None:
             serialized = SerializationHelper.serialize_item(self.eth_ip_props_ref, "EthIpProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ETH-IP-PROPS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ETH-IP-PROPS-REF")
 
         # Serialize maximum
         if self.maximum is not None:
             serialized = SerializationHelper.serialize_item(self.maximum, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAXIMUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAXIMUM")
 
         # Serialize neighbor_cache
         if self.neighbor_cache is not None:
             serialized = SerializationHelper.serialize_item(self.neighbor_cache, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NEIGHBOR-CACHE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NEIGHBOR-CACHE")
 
         # Serialize path_mtu
         if self.path_mtu is not None:
             serialized = SerializationHelper.serialize_item(self.path_mtu, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PATH-MTU")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PATH-MTU")
 
         # Serialize path_mtu_timeout
         if self.path_mtu_timeout is not None:
             serialized = SerializationHelper.serialize_item(self.path_mtu_timeout, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PATH-MTU-TIMEOUT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PATH-MTU-TIMEOUT")
 
         return elem
 

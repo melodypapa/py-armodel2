@@ -89,43 +89,19 @@ class Note(Paginateable):
         if self.label is not None:
             serialized = SerializationHelper.serialize_item(self.label, "MultilanguageLongName")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LABEL")
 
         # Serialize note_text
         if self.note_text is not None:
             serialized = SerializationHelper.serialize_item(self.note_text, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NOTE-TEXT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NOTE-TEXT")
 
         # Serialize note_type
         if self.note_type is not None:
             serialized = SerializationHelper.serialize_item(self.note_type, "NoteTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NOTE-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NOTE-TYPE")
 
         return elem
 

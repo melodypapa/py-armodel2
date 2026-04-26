@@ -102,14 +102,7 @@ class AclObjectSet(ARElement):
             for item in self.acl_object_clas_refs:
                 serialized = SerializationHelper.serialize_item(item, "ReferrableSubtypesEnum")
                 if serialized is not None:
-                    child_elem = ET.Element("ACL-OBJECT-CLAS-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ACL-OBJECT-CLAS-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -117,29 +110,13 @@ class AclObjectSet(ARElement):
         if self.acl_scope is not None:
             serialized = SerializationHelper.serialize_item(self.acl_scope, "AclScopeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ACL-SCOPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ACL-SCOPE")
 
         # Serialize collection_ref
         if self.collection_ref is not None:
             serialized = SerializationHelper.serialize_item(self.collection_ref, "Collection")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COLLECTION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COLLECTION-REF")
 
         # Serialize derived_from_refs (list to container "DERIVED-FROM-REFS")
         if self.derived_from_refs:
@@ -147,14 +124,7 @@ class AclObjectSet(ARElement):
             for item in self.derived_from_refs:
                 serialized = SerializationHelper.serialize_item(item, "AtpBlueprint")
                 if serialized is not None:
-                    child_elem = ET.Element("DERIVED-FROM-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DERIVED-FROM-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

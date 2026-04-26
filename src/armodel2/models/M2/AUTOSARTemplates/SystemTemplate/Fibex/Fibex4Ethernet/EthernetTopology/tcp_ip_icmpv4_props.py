@@ -74,29 +74,13 @@ class TcpIpIcmpv4Props(ARObject):
         if self.tcp_ip_icmp is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_icmp, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-ICMP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-ICMP")
 
         # Serialize tcp_ip_icmp_v4_ttl
         if self.tcp_ip_icmp_v4_ttl is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_icmp_v4_ttl, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-ICMP-V4-TTL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-ICMP-V4-TTL")
 
         return elem
 

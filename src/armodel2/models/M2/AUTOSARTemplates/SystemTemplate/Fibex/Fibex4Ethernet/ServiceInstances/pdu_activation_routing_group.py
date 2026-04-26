@@ -81,15 +81,7 @@ class PduActivationRoutingGroup(Identifiable):
         if self.event_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.event_group_ref, "EventGroupControlTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-GROUP-REF")
 
         # Serialize i_pdu_identifier_refs (list to container "I-PDU-IDENTIFIER-REFS")
         if self.i_pdu_identifier_refs:
@@ -97,14 +89,7 @@ class PduActivationRoutingGroup(Identifiable):
             for item in self.i_pdu_identifier_refs:
                 serialized = SerializationHelper.serialize_item(item, "SoConIPduIdentifier")
                 if serialized is not None:
-                    child_elem = ET.Element("I-PDU-IDENTIFIER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "I-PDU-IDENTIFIER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

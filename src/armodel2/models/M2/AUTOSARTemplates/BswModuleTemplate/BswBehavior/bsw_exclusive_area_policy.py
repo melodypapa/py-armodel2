@@ -77,29 +77,13 @@ class BswExclusiveAreaPolicy(ARObject):
         if self.api_principle is not None:
             serialized = SerializationHelper.serialize_item(self.api_principle, "ApiPrincipleEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("API-PRINCIPLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "API-PRINCIPLE")
 
         # Serialize exclusive_area_ref
         if self.exclusive_area_ref is not None:
             serialized = SerializationHelper.serialize_item(self.exclusive_area_ref, "ExclusiveArea")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXCLUSIVE-AREA-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXCLUSIVE-AREA-REF")
 
         return elem
 

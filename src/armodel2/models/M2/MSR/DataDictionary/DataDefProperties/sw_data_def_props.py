@@ -245,391 +245,181 @@ class SwDataDefProps(ARObject):
         if self.additional_native_type_qualifier is not None:
             serialized = SerializationHelper.serialize_item(self.additional_native_type_qualifier, "NativeDeclarationString")
             if serialized is not None:
-                wrapped = ET.Element("ADDITIONAL-NATIVE-TYPE-QUALIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "ADDITIONAL-NATIVE-TYPE-QUALIFIER")
 
         # Serialize annotations (list)
         for item in self.annotations:
             serialized = SerializationHelper.serialize_item(item, "Annotation")
             if serialized is not None:
-                wrapped = ET.Element("ANNOTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "ANNOTATION")
 
         # Serialize base_type_ref
         if self.base_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.base_type_ref, "SwBaseType")
             if serialized is not None:
-                wrapped = ET.Element("BASE-TYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "BASE-TYPE-REF")
 
         # Serialize sw_bit_representation
         if self.sw_bit_representation is not None:
             serialized = SerializationHelper.serialize_item(self.sw_bit_representation, "SwBitRepresentation")
             if serialized is not None:
-                wrapped = ET.Element("SW-BIT-REPRESENTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-BIT-REPRESENTATION")
 
         # Serialize sw_calibration_access
         if self.sw_calibration_access is not None:
             serialized = SerializationHelper.serialize_item(self.sw_calibration_access, "SwCalibrationAccessEnum")
             if serialized is not None:
-                wrapped = ET.Element("SW-CALIBRATION-ACCESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-CALIBRATION-ACCESS")
 
         # Serialize compu_method_ref
         if self.compu_method_ref is not None:
             serialized = SerializationHelper.serialize_item(self.compu_method_ref, "CompuMethod")
             if serialized is not None:
-                wrapped = ET.Element("COMPU-METHOD-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "COMPU-METHOD-REF")
 
         # Serialize data_constr_ref
         if self.data_constr_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_constr_ref, "DataConstr")
             if serialized is not None:
-                wrapped = ET.Element("DATA-CONSTR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "DATA-CONSTR-REF")
 
         # Serialize display_format
         if self.display_format is not None:
             serialized = SerializationHelper.serialize_item(self.display_format, "DisplayFormatString")
             if serialized is not None:
-                wrapped = ET.Element("DISPLAY-FORMAT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "DISPLAY-FORMAT")
 
         # Serialize display_presentation
         if self.display_presentation is not None:
             serialized = SerializationHelper.serialize_item(self.display_presentation, "DisplayPresentationEnum")
             if serialized is not None:
-                wrapped = ET.Element("DISPLAY-PRESENTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "DISPLAY-PRESENTATION")
 
         # Serialize implementation_data_type_ref
         if self.implementation_data_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.implementation_data_type_ref, "AbstractImplementationDataType")
             if serialized is not None:
-                wrapped = ET.Element("IMPLEMENTATION-DATA-TYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "IMPLEMENTATION-DATA-TYPE-REF")
 
         # Serialize invalid_value
         if self.invalid_value is not None:
             serialized = SerializationHelper.serialize_item(self.invalid_value, "ValueSpecification")
             if serialized is not None:
-                wrapped = ET.Element("INVALID-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "INVALID-VALUE")
 
         # Serialize step_size
         if self.step_size is not None:
             serialized = SerializationHelper.serialize_item(self.step_size, "Float")
             if serialized is not None:
-                wrapped = ET.Element("STEP-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "STEP-SIZE")
 
         # Serialize sw_addr_method_ref
         if self.sw_addr_method_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sw_addr_method_ref, "SwAddrMethod")
             if serialized is not None:
-                wrapped = ET.Element("SW-ADDR-METHOD-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-ADDR-METHOD-REF")
 
         # Serialize sw_alignment
         if self.sw_alignment is not None:
             serialized = SerializationHelper.serialize_item(self.sw_alignment, "AlignmentType")
             if serialized is not None:
-                wrapped = ET.Element("SW-ALIGNMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-ALIGNMENT")
 
         # Serialize sw_calprm_axis_set
         if self.sw_calprm_axis_set is not None:
             serialized = SerializationHelper.serialize_item(self.sw_calprm_axis_set, "SwCalprmAxisSet")
             if serialized is not None:
-                wrapped = ET.Element("SW-CALPRM-AXIS-SET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-CALPRM-AXIS-SET")
 
         # Serialize sw_comparison_variables (list)
         for item in self.sw_comparison_variables:
             serialized = SerializationHelper.serialize_item(item, "SwVariableRefProxy")
             if serialized is not None:
-                wrapped = ET.Element("SW-COMPARISON-VARIABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-COMPARISON-VARIABLE")
 
         # Serialize sw_data_dependency
         if self.sw_data_dependency is not None:
             serialized = SerializationHelper.serialize_item(self.sw_data_dependency, "SwDataDependency")
             if serialized is not None:
-                wrapped = ET.Element("SW-DATA-DEPENDENCY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-DATA-DEPENDENCY")
 
         # Serialize sw_host_variable
         if self.sw_host_variable is not None:
             serialized = SerializationHelper.serialize_item(self.sw_host_variable, "SwVariableRefProxy")
             if serialized is not None:
-                wrapped = ET.Element("SW-HOST-VARIABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-HOST-VARIABLE")
 
         # Serialize sw_impl_policy
         if self.sw_impl_policy is not None:
             serialized = SerializationHelper.serialize_item(self.sw_impl_policy, "SwImplPolicyEnum")
             if serialized is not None:
-                wrapped = ET.Element("SW-IMPL-POLICY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-IMPL-POLICY")
 
         # Serialize sw_intended_resolution
         if self.sw_intended_resolution is not None:
             serialized = SerializationHelper.serialize_item(self.sw_intended_resolution, "Numerical")
             if serialized is not None:
-                wrapped = ET.Element("SW-INTENDED-RESOLUTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-INTENDED-RESOLUTION")
 
         # Serialize sw_interpolation_method
         if self.sw_interpolation_method is not None:
             serialized = SerializationHelper.serialize_item(self.sw_interpolation_method, "Identifier")
             if serialized is not None:
-                wrapped = ET.Element("SW-INTERPOLATION-METHOD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-INTERPOLATION-METHOD")
 
         # Serialize sw_is_virtual
         if self.sw_is_virtual is not None:
             serialized = SerializationHelper.serialize_item(self.sw_is_virtual, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("SW-IS-VIRTUAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-IS-VIRTUAL")
 
         # Serialize sw_pointer_target_props
         if self.sw_pointer_target_props is not None:
             serialized = SerializationHelper.serialize_item(self.sw_pointer_target_props, "SwPointerTargetProps")
             if serialized is not None:
-                wrapped = ET.Element("SW-POINTER-TARGET-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-POINTER-TARGET-PROPS")
 
         # Serialize sw_record_layout_ref
         if self.sw_record_layout_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sw_record_layout_ref, "SwRecordLayout")
             if serialized is not None:
-                wrapped = ET.Element("SW-RECORD-LAYOUT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-RECORD-LAYOUT-REF")
 
         # Serialize sw_refresh_timing
         if self.sw_refresh_timing is not None:
             serialized = SerializationHelper.serialize_item(self.sw_refresh_timing, "MultidimensionalTime")
             if serialized is not None:
-                wrapped = ET.Element("SW-REFRESH-TIMING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-REFRESH-TIMING")
 
         # Serialize sw_text_props
         if self.sw_text_props is not None:
             serialized = SerializationHelper.serialize_item(self.sw_text_props, "SwTextProps")
             if serialized is not None:
-                wrapped = ET.Element("SW-TEXT-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-TEXT-PROPS")
 
         # Serialize sw_value_block_size
         if self.sw_value_block_size is not None:
             serialized = SerializationHelper.serialize_item(self.sw_value_block_size, "Numerical")
             if serialized is not None:
-                wrapped = ET.Element("SW-VALUE-BLOCK-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-VALUE-BLOCK-SIZE")
 
         # Serialize sw_value_block_size_mults (list)
         for item in self.sw_value_block_size_mults:
             serialized = SerializationHelper.serialize_item(item, "Numerical")
             if serialized is not None:
-                wrapped = ET.Element("SW-VALUE-BLOCK-SIZE-MULT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SW-VALUE-BLOCK-SIZE-MULT")
 
         # Serialize unit_ref
         if self.unit_ref is not None:
             serialized = SerializationHelper.serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
-                wrapped = ET.Element("UNIT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "UNIT-REF")
 
         # Serialize value_axis_data_type_ref
         if self.value_axis_data_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.value_axis_data_type_ref, "ApplicationPrimitiveDataType")
             if serialized is not None:
-                wrapped = ET.Element("VALUE-AXIS-DATA-TYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "VALUE-AXIS-DATA-TYPE-REF")
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "SwDataDefProps")

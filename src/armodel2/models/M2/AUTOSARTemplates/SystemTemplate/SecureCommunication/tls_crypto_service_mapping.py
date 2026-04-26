@@ -92,14 +92,7 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
             for item in self.key_exchange_refs:
                 serialized = SerializationHelper.serialize_item(item, "CryptoServicePrimitive")
                 if serialized is not None:
-                    child_elem = ET.Element("KEY-EXCHANGE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "KEY-EXCHANGE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -117,29 +110,13 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         if self.use_client is not None:
             serialized = SerializationHelper.serialize_item(self.use_client, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USE-CLIENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USE-CLIENT")
 
         # Serialize use_security
         if self.use_security is not None:
             serialized = SerializationHelper.serialize_item(self.use_security, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USE-SECURITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USE-SECURITY")
 
         return elem
 

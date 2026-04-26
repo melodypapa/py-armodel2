@@ -125,85 +125,37 @@ class SenderComSpec(PPortComSpec, ABC):
         if self.data_element_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_element_ref, "AutosarDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-ELEMENT-REF")
 
         # Serialize handle_out_of_range
         if self.handle_out_of_range is not None:
             serialized = SerializationHelper.serialize_item(self.handle_out_of_range, "HandleOutOfRangeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HANDLE-OUT-OF-RANGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HANDLE-OUT-OF-RANGE")
 
         # Serialize network_representation
         if self.network_representation is not None:
             serialized = SerializationHelper.serialize_item(self.network_representation, "SwDataDefProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NETWORK-REPRESENTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NETWORK-REPRESENTATION")
 
         # Serialize transmission_acknowledge
         if self.transmission_acknowledge is not None:
             serialized = SerializationHelper.serialize_item(self.transmission_acknowledge, "TransmissionAcknowledgementRequest")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSMISSION-ACKNOWLEDGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSMISSION-ACKNOWLEDGE")
 
         # Serialize transmission_props
         if self.transmission_props is not None:
             serialized = SerializationHelper.serialize_item(self.transmission_props, "TransmissionComSpecProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSMISSION-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSMISSION-PROPS")
 
         # Serialize uses_end_to_end_protection
         if self.uses_end_to_end_protection is not None:
             serialized = SerializationHelper.serialize_item(self.uses_end_to_end_protection, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USES-END-TO-END-PROTECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USES-END-TO-END-PROTECTION")
 
         return elem
 

@@ -78,43 +78,19 @@ class GenericModelReference(ARObject):
         if self.base is not None:
             serialized = SerializationHelper.serialize_item(self.base, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE")
 
         # Serialize dest
         if self.dest is not None:
             serialized = SerializationHelper.serialize_item(self.dest, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEST")
 
         # Serialize ref_ref
         if self.ref_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ref_ref, "Ref")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REF-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REF-REF")
 
         return elem
 

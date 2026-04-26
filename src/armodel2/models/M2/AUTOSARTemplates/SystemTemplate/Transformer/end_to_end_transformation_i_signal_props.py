@@ -93,53 +93,25 @@ class EndToEndTransformationISignalProps(ARObject):
         if self.data_length is not None:
             serialized = SerializationHelper.serialize_item(self.data_length, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("DATA-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "DATA-LENGTH")
 
         # Serialize max_data_length
         if self.max_data_length is not None:
             serialized = SerializationHelper.serialize_item(self.max_data_length, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("MAX-DATA-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MAX-DATA-LENGTH")
 
         # Serialize min_data_length
         if self.min_data_length is not None:
             serialized = SerializationHelper.serialize_item(self.min_data_length, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("MIN-DATA-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MIN-DATA-LENGTH")
 
         # Serialize source_id
         if self.source_id is not None:
             serialized = SerializationHelper.serialize_item(self.source_id, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("SOURCE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SOURCE-ID")
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "EndToEndTransformationISignalProps")

@@ -77,29 +77,13 @@ class TargetIPduRef(ARObject):
         if self.default_value_ref is not None:
             serialized = SerializationHelper.serialize_item(self.default_value_ref, "PduMappingDefaultValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-VALUE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-VALUE-REF")
 
         # Serialize target_i_pdu_ref
         if self.target_i_pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_i_pdu_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-I-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-I-PDU-REF")
 
         return elem
 

@@ -94,127 +94,55 @@ class J1939NodeName(ARObject):
         if self.arbitrary_address is not None:
             serialized = SerializationHelper.serialize_item(self.arbitrary_address, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARBITRARY-ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARBITRARY-ADDRESS")
 
         # Serialize ecu_instance
         if self.ecu_instance is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_instance, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-INSTANCE")
 
         # Serialize function
         if self.function is not None:
             serialized = SerializationHelper.serialize_item(self.function, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FUNCTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FUNCTION")
 
         # Serialize function_instance
         if self.function_instance is not None:
             serialized = SerializationHelper.serialize_item(self.function_instance, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FUNCTION-INSTANCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FUNCTION-INSTANCE")
 
         # Serialize identitiy_number
         if self.identitiy_number is not None:
             serialized = SerializationHelper.serialize_item(self.identitiy_number, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDENTITIY-NUMBER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDENTITIY-NUMBER")
 
         # Serialize industry_group
         if self.industry_group is not None:
             serialized = SerializationHelper.serialize_item(self.industry_group, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INDUSTRY-GROUP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INDUSTRY-GROUP")
 
         # Serialize manufacturer_code
         if self.manufacturer_code is not None:
             serialized = SerializationHelper.serialize_item(self.manufacturer_code, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MANUFACTURER-CODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MANUFACTURER-CODE")
 
         # Serialize vehicle_system
         if self.vehicle_system is not None:
             serialized = SerializationHelper.serialize_item(self.vehicle_system, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VEHICLE-SYSTEM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VEHICLE-SYSTEM")
 
         # Serialize vehicle_system_instance
         if self.vehicle_system_instance is not None:
             serialized = SerializationHelper.serialize_item(self.vehicle_system_instance, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VEHICLE-SYSTEM-INSTANCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VEHICLE-SYSTEM-INSTANCE")
 
         return elem
 

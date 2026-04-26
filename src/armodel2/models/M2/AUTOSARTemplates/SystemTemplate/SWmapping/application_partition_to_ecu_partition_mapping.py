@@ -83,14 +83,7 @@ class ApplicationPartitionToEcuPartitionMapping(Identifiable):
             for item in self.application_refs:
                 serialized = SerializationHelper.serialize_item(item, "ApplicationPartition")
                 if serialized is not None:
-                    child_elem = ET.Element("APPLICATION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "APPLICATION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -98,15 +91,7 @@ class ApplicationPartitionToEcuPartitionMapping(Identifiable):
         if self.ecu_partition_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_partition_ref, "EcuPartition")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-PARTITION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-PARTITION-REF")
 
         return elem
 

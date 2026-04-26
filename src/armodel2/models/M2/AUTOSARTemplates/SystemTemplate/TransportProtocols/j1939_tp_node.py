@@ -78,29 +78,13 @@ class J1939TpNode(Identifiable):
         if self.connector_ref is not None:
             serialized = SerializationHelper.serialize_item(self.connector_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONNECTOR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONNECTOR-REF")
 
         # Serialize tp_address_ref
         if self.tp_address_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tp_address_ref, "TpAddress")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TP-ADDRESS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TP-ADDRESS-REF")
 
         return elem
 

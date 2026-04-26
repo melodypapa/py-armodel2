@@ -71,15 +71,7 @@ class FMFeatureMapCondition(Identifiable):
         if self.fm_cond_and_attributes is not None:
             serialized = SerializationHelper.serialize_item(self.fm_cond_and_attributes, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FM-COND-AND-ATTRIBUTES")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FM-COND-AND-ATTRIBUTES")
 
         return elem
 

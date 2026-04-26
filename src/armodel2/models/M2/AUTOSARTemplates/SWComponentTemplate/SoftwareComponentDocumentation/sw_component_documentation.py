@@ -103,99 +103,43 @@ class SwComponentDocumentation(ARObject):
         if self.sw_calibration is not None:
             serialized = SerializationHelper.serialize_item(self.sw_calibration, "Chapter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-CALIBRATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-CALIBRATION")
 
         # Serialize sw_carb_doc
         if self.sw_carb_doc is not None:
             serialized = SerializationHelper.serialize_item(self.sw_carb_doc, "Chapter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-CARB-DOC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-CARB-DOC")
 
         # Serialize sw_diagnostics
         if self.sw_diagnostics is not None:
             serialized = SerializationHelper.serialize_item(self.sw_diagnostics, "Chapter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-DIAGNOSTICS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-DIAGNOSTICS")
 
         # Serialize sw_feature_def
         if self.sw_feature_def is not None:
             serialized = SerializationHelper.serialize_item(self.sw_feature_def, "Chapter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-FEATURE-DEF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-FEATURE-DEF")
 
         # Serialize sw_feature_desc
         if self.sw_feature_desc is not None:
             serialized = SerializationHelper.serialize_item(self.sw_feature_desc, "Chapter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-FEATURE-DESC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-FEATURE-DESC")
 
         # Serialize sw_maintenance
         if self.sw_maintenance is not None:
             serialized = SerializationHelper.serialize_item(self.sw_maintenance, "Chapter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-MAINTENANCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-MAINTENANCE")
 
         # Serialize sw_test_desc
         if self.sw_test_desc is not None:
             serialized = SerializationHelper.serialize_item(self.sw_test_desc, "Chapter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-TEST-DESC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-TEST-DESC")
 
         return elem
 

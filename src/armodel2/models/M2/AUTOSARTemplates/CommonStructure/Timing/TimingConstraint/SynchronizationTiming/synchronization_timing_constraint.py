@@ -94,15 +94,7 @@ class SynchronizationTimingConstraint(TimingConstraint):
         if self.event is not None:
             serialized = SerializationHelper.serialize_item(self.event, "EventOccurrenceKindEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT")
 
         # Serialize scope_refs (list to container "SCOPE-REFS")
         if self.scope_refs:
@@ -110,14 +102,7 @@ class SynchronizationTimingConstraint(TimingConstraint):
             for item in self.scope_refs:
                 serialized = SerializationHelper.serialize_item(item, "TimingDescriptionEvent")
                 if serialized is not None:
-                    child_elem = ET.Element("SCOPE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SCOPE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -127,14 +112,7 @@ class SynchronizationTimingConstraint(TimingConstraint):
             for item in self.scope_event_refs:
                 serialized = SerializationHelper.serialize_item(item, "TimingDescriptionEvent")
                 if serialized is not None:
-                    child_elem = ET.Element("SCOPE-EVENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SCOPE-EVENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -142,29 +120,13 @@ class SynchronizationTimingConstraint(TimingConstraint):
         if self.synchronization is not None:
             serialized = SerializationHelper.serialize_item(self.synchronization, "SynchronizationTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYNCHRONIZATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYNCHRONIZATION")
 
         # Serialize tolerance
         if self.tolerance is not None:
             serialized = SerializationHelper.serialize_item(self.tolerance, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TOLERANCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TOLERANCE")
 
         return elem
 

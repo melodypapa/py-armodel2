@@ -104,141 +104,61 @@ class UdpNmCluster(NmCluster):
         if self.nm_cbv_position is not None:
             serialized = SerializationHelper.serialize_item(self.nm_cbv_position, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-CBV-POSITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-CBV-POSITION")
 
         # Serialize nm_immediate
         if self.nm_immediate is not None:
             serialized = SerializationHelper.serialize_item(self.nm_immediate, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-IMMEDIATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-IMMEDIATE")
 
         # Serialize nm_message
         if self.nm_message is not None:
             serialized = SerializationHelper.serialize_item(self.nm_message, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-MESSAGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-MESSAGE")
 
         # Serialize nm_msg_cycle
         if self.nm_msg_cycle is not None:
             serialized = SerializationHelper.serialize_item(self.nm_msg_cycle, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-MSG-CYCLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-MSG-CYCLE")
 
         # Serialize nm_network
         if self.nm_network is not None:
             serialized = SerializationHelper.serialize_item(self.nm_network, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-NETWORK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-NETWORK")
 
         # Serialize nm_nid_position
         if self.nm_nid_position is not None:
             serialized = SerializationHelper.serialize_item(self.nm_nid_position, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-NID-POSITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-NID-POSITION")
 
         # Serialize nm_remote
         if self.nm_remote is not None:
             serialized = SerializationHelper.serialize_item(self.nm_remote, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-REMOTE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-REMOTE")
 
         # Serialize nm_repeat
         if self.nm_repeat is not None:
             serialized = SerializationHelper.serialize_item(self.nm_repeat, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-REPEAT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-REPEAT")
 
         # Serialize nm_wait_bus
         if self.nm_wait_bus is not None:
             serialized = SerializationHelper.serialize_item(self.nm_wait_bus, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-WAIT-BUS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-WAIT-BUS")
 
         # Serialize vlan_ref
         if self.vlan_ref is not None:
             serialized = SerializationHelper.serialize_item(self.vlan_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VLAN-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VLAN-REF")
 
         return elem
 

@@ -81,29 +81,13 @@ class DiagnosticEventToTroubleCodeJ1939Mapping(DiagnosticMapping):
         if self.diagnostic_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAGNOSTIC-EVENT-REF")
 
         # Serialize trouble_code_ref
         if self.trouble_code_ref is not None:
             serialized = SerializationHelper.serialize_item(self.trouble_code_ref, "DiagnosticTroubleCode")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TROUBLE-CODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TROUBLE-CODE-REF")
 
         return elem
 

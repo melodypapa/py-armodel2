@@ -115,71 +115,31 @@ class EcucModuleConfigurationValues(ARElement):
         if self.definition_ref is not None:
             serialized = SerializationHelper.serialize_item(self.definition_ref, "EcucModuleDef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFINITION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFINITION-REF")
 
         # Serialize ecuc_def_edition
         if self.ecuc_def_edition is not None:
             serialized = SerializationHelper.serialize_item(self.ecuc_def_edition, "RevisionLabelString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECUC-DEF-EDITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECUC-DEF-EDITION")
 
         # Serialize implementation
         if self.implementation is not None:
             serialized = SerializationHelper.serialize_item(self.implementation, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMPLEMENTATION")
 
         # Serialize module_ref
         if self.module_ref is not None:
             serialized = SerializationHelper.serialize_item(self.module_ref, "BswImplementation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODULE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODULE-REF")
 
         # Serialize post_build_variant
         if self.post_build_variant is not None:
             serialized = SerializationHelper.serialize_item(self.post_build_variant, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("POST-BUILD-VARIANT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "POST-BUILD-VARIANT")
 
         return elem
 

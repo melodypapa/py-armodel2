@@ -102,14 +102,7 @@ class SwitchStreamIdentification(Identifiable):
             for item in self.egress_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "CouplingPort")
                 if serialized is not None:
-                    child_elem = ET.Element("EGRESS-PORT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "EGRESS-PORT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -117,57 +110,25 @@ class SwitchStreamIdentification(Identifiable):
         if self.filter_action_block is not None:
             serialized = SerializationHelper.serialize_item(self.filter_action_block, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FILTER-ACTION-BLOCK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FILTER-ACTION-BLOCK")
 
         # Serialize filter_action_dest
         if self.filter_action_dest is not None:
             serialized = SerializationHelper.serialize_item(self.filter_action_dest, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FILTER-ACTION-DEST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FILTER-ACTION-DEST")
 
         # Serialize filter_action_drop
         if self.filter_action_drop is not None:
             serialized = SerializationHelper.serialize_item(self.filter_action_drop, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FILTER-ACTION-DROP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FILTER-ACTION-DROP")
 
         # Serialize filter_action_vlan
         if self.filter_action_vlan is not None:
             serialized = SerializationHelper.serialize_item(self.filter_action_vlan, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FILTER-ACTION-VLAN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FILTER-ACTION-VLAN")
 
         # Serialize ingress_port_refs (list to container "INGRESS-PORT-REFS")
         if self.ingress_port_refs:
@@ -175,14 +136,7 @@ class SwitchStreamIdentification(Identifiable):
             for item in self.ingress_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "CouplingPort")
                 if serialized is not None:
-                    child_elem = ET.Element("INGRESS-PORT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "INGRESS-PORT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -190,15 +144,7 @@ class SwitchStreamIdentification(Identifiable):
         if self.stream_filter is not None:
             serialized = SerializationHelper.serialize_item(self.stream_filter, "SwitchStreamFilterRule")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STREAM-FILTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STREAM-FILTER")
 
         return elem
 

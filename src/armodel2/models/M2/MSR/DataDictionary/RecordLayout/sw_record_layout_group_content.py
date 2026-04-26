@@ -87,40 +87,19 @@ class SwRecordLayoutGroupContent(ARObject):
         if self.sw_record_layout_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sw_record_layout_ref, "SwRecordLayout")
             if serialized is not None:
-                wrapped = ET.Element("SW-RECORD-LAYOUT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-RECORD-LAYOUT-REF")
 
         # Serialize sw_record_layout_group (complex type)
         if self.sw_record_layout_group is not None:
             serialized = SerializationHelper.serialize_item(self.sw_record_layout_group, "SwRecordLayoutGroup")
             if serialized is not None:
-                wrapped = ET.Element("SW-RECORD-LAYOUT-GROUP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-RECORD-LAYOUT-GROUP")
 
         # Serialize sw_record_layout_v (complex type)
         if self.sw_record_layout_v is not None:
             serialized = SerializationHelper.serialize_item(self.sw_record_layout_v, "SwRecordLayoutV")
             if serialized is not None:
-                wrapped = ET.Element("SW-RECORD-LAYOUT-V")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-RECORD-LAYOUT-V")
 
         return elem
 

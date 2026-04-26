@@ -91,15 +91,7 @@ class RapidPrototypingScenario(ARElement):
         if self.host_system_ref is not None:
             serialized = SerializationHelper.serialize_item(self.host_system_ref, "System")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HOST-SYSTEM-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HOST-SYSTEM-REF")
 
         # Serialize rpt_containers (list to container "RPT-CONTAINERS")
         if self.rpt_containers:
@@ -125,15 +117,7 @@ class RapidPrototypingScenario(ARElement):
         if self.rpt_system_ref is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_system_ref, "System")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-SYSTEM-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-SYSTEM-REF")
 
         return elem
 

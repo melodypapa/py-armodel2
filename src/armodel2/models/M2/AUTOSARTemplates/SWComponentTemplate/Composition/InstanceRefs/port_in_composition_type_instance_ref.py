@@ -81,43 +81,19 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
         if self.abstract_context_component_ref is not None:
             serialized = SerializationHelper.serialize_item(self.abstract_context_component_ref, "SwComponentPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ABSTRACT-CONTEXT-COMPONENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ABSTRACT-CONTEXT-COMPONENT-REF")
 
         # Serialize base_ref
         if self.base_ref is not None:
             serialized = SerializationHelper.serialize_item(self.base_ref, "CompositionSwComponentType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE-REF")
 
         # Serialize target_port_ref
         if self.target_port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_port_ref, "PortPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-PORT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-PORT-REF")
 
         return elem
 

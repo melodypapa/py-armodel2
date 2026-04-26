@@ -89,14 +89,7 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
             for item in self.sending_node_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticJ1939Node")
                 if serialized is not None:
-                    child_elem = ET.Element("SENDING-NODE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SENDING-NODE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -104,29 +97,13 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
         if self.spn_ref is not None:
             serialized = SerializationHelper.serialize_item(self.spn_ref, "DiagnosticJ1939Spn")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SPN-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SPN-REF")
 
         # Serialize system_signal_ref
         if self.system_signal_ref is not None:
             serialized = SerializationHelper.serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM-SIGNAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYSTEM-SIGNAL-REF")
 
         return elem
 

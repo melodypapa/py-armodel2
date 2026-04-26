@@ -87,12 +87,11 @@ class MultiLanguageOverviewParagraph(ARObject):
             if serialized is not None:
                 # For lang_prefix lists, wrap each item in the lang_prefix tag
                 wrapped = ET.Element("L-2")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
+                wrapped.attrib.update(serialized.attrib)
+                if serialized.text:
+                    wrapped.text = serialized.text
+                for subchild in serialized:
+                    wrapped.append(subchild)
                 elem.append(wrapped)
 
         return elem

@@ -93,71 +93,31 @@ class ExecutionTimeConstraint(TimingConstraint):
         if self.component is not None:
             serialized = SerializationHelper.serialize_item(self.component, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMPONENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMPONENT")
 
         # Serialize executable_entity_ref
         if self.executable_entity_ref is not None:
             serialized = SerializationHelper.serialize_item(self.executable_entity_ref, "ExecutableEntity")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXECUTABLE-ENTITY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXECUTABLE-ENTITY-REF")
 
         # Serialize execution_time
         if self.execution_time is not None:
             serialized = SerializationHelper.serialize_item(self.execution_time, "ExecutionTimeTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXECUTION-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXECUTION-TIME")
 
         # Serialize maximum
         if self.maximum is not None:
             serialized = SerializationHelper.serialize_item(self.maximum, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAXIMUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAXIMUM")
 
         # Serialize minimum
         if self.minimum is not None:
             serialized = SerializationHelper.serialize_item(self.minimum, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINIMUM")
 
         return elem
 

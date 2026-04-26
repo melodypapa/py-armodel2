@@ -80,29 +80,13 @@ class EthIpProps(ARElement):
         if self.ipv4_props is not None:
             serialized = SerializationHelper.serialize_item(self.ipv4_props, "Ipv4Props")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IPV4-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IPV4-PROPS")
 
         # Serialize ipv6_props
         if self.ipv6_props is not None:
             serialized = SerializationHelper.serialize_item(self.ipv6_props, "Ipv6Props")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IPV6-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IPV6-PROPS")
 
         return elem
 

@@ -90,15 +90,7 @@ class EcucContainerValue(Identifiable):
         if self.definition_ref is not None:
             serialized = SerializationHelper.serialize_item(self.definition_ref, "EcucContainerDef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFINITION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFINITION-REF")
 
         # Serialize parameter_values (list to container "PARAMETER-VALUES")
         if self.parameter_values:
@@ -116,14 +108,7 @@ class EcucContainerValue(Identifiable):
             for item in self.reference_value_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("REFERENCE-VALUE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "REFERENCE-VALUE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

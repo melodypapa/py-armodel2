@@ -71,29 +71,13 @@ class EcucAbstractConfigurationClass(ARObject, ABC):
         if self.config_class is not None:
             serialized = SerializationHelper.serialize_item(self.config_class, "EcucConfigurationClassEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONFIG-CLASS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONFIG-CLASS")
 
         # Serialize config_variant
         if self.config_variant is not None:
             serialized = SerializationHelper.serialize_item(self.config_variant, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONFIG-VARIANT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONFIG-VARIANT")
 
         return elem
 

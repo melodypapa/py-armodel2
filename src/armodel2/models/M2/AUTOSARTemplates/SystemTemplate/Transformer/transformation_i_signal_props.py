@@ -78,15 +78,7 @@ class TransformationISignalProps(ARObject, ABC):
         if self.cs_error_reaction is not None:
             serialized = SerializationHelper.serialize_item(self.cs_error_reaction, "CSTransformerErrorReactionEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CS-ERROR-REACTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CS-ERROR-REACTION")
 
         # Serialize data_prototype_refs (list to container "DATA-PROTOTYPE-REFS")
         if self.data_prototype_refs:
@@ -94,14 +86,7 @@ class TransformationISignalProps(ARObject, ABC):
             for item in self.data_prototype_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataPrototype")
                 if serialized is not None:
-                    child_elem = ET.Element("DATA-PROTOTYPE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DATA-PROTOTYPE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -109,15 +94,7 @@ class TransformationISignalProps(ARObject, ABC):
         if self.transformer_ref is not None:
             serialized = SerializationHelper.serialize_item(self.transformer_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSFORMER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSFORMER-REF")
 
         return elem
 

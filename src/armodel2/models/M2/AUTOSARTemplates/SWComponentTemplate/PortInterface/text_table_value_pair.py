@@ -73,29 +73,13 @@ class TextTableValuePair(ARObject):
         if self.first_value is not None:
             serialized = SerializationHelper.serialize_item(self.first_value, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIRST-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIRST-VALUE")
 
         # Serialize second_value
         if self.second_value is not None:
             serialized = SerializationHelper.serialize_item(self.second_value, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECOND-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECOND-VALUE")
 
         return elem
 

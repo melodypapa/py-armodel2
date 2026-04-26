@@ -116,43 +116,19 @@ class PerInstanceMemory(Identifiable):
         if self.sw_data_def_props is not None:
             serialized = SerializationHelper.serialize_item(self.sw_data_def_props, "SwDataDefProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-DATA-DEF-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-DATA-DEF-PROPS")
 
         # Serialize type
         if self.type is not None:
             serialized = SerializationHelper.serialize_item(self.type, "CIdentifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TYPE")
 
         # Serialize type_definition
         if self.type_definition is not None:
             serialized = SerializationHelper.serialize_item(self.type_definition, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TYPE-DEFINITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TYPE-DEFINITION")
 
         return elem
 

@@ -81,43 +81,19 @@ class CanCommunicationConnector(AbstractCanCommunicationConnector):
         if self.pnc_wakeup_can is not None:
             serialized = SerializationHelper.serialize_item(self.pnc_wakeup_can, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PNC-WAKEUP-CAN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PNC-WAKEUP-CAN")
 
         # Serialize pnc_wakeup
         if self.pnc_wakeup is not None:
             serialized = SerializationHelper.serialize_item(self.pnc_wakeup, "PositiveUnlimitedInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PNC-WAKEUP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PNC-WAKEUP")
 
         # Serialize pnc_wakeup_dlc
         if self.pnc_wakeup_dlc is not None:
             serialized = SerializationHelper.serialize_item(self.pnc_wakeup_dlc, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PNC-WAKEUP-DLC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PNC-WAKEUP-DLC")
 
         return elem
 

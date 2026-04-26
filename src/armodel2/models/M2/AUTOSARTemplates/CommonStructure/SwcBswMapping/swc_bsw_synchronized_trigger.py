@@ -74,29 +74,13 @@ class SwcBswSynchronizedTrigger(ARObject):
         if self.bsw_trigger_ref is not None:
             serialized = SerializationHelper.serialize_item(self.bsw_trigger_ref, "Trigger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BSW-TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BSW-TRIGGER-REF")
 
         # Serialize swc_trigger_ref
         if self.swc_trigger_ref is not None:
             serialized = SerializationHelper.serialize_item(self.swc_trigger_ref, "Trigger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SWC-TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SWC-TRIGGER-REF")
 
         return elem
 

@@ -209,15 +209,7 @@ class SwcInternalBehavior(InternalBehavior):
         if self.handle_termination_and_restart is not None:
             serialized = SerializationHelper.serialize_item(self.handle_termination_and_restart, "HandleTerminationAndRestartEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HANDLE-TERMINATION-AND-RESTART")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HANDLE-TERMINATION-AND-RESTART")
 
         # Serialize implicit_inter_runnable_variables (list to container "IMPLICIT-INTER-RUNNABLE-VARIABLES")
         if self.implicit_inter_runnable_variables:
@@ -323,15 +315,7 @@ class SwcInternalBehavior(InternalBehavior):
         if self.supports_multiple_instantiation is not None:
             serialized = SerializationHelper.serialize_item(self.supports_multiple_instantiation, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUPPORTS-MULTIPLE-INSTANTIATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUPPORTS-MULTIPLE-INSTANTIATION")
 
         # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXYS")
         if self.variation_point_proxies:

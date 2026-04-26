@@ -78,29 +78,13 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
         if self.master_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.master_event_ref, "DiagnosticEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MASTER-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MASTER-EVENT-REF")
 
         # Serialize slave_event_ref
         if self.slave_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.slave_event_ref, "DiagnosticEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SLAVE-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SLAVE-EVENT-REF")
 
         return elem
 

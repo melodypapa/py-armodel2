@@ -76,43 +76,19 @@ class BusMirrorCanIdRangeMapping(ARObject):
         if self.destination_base is not None:
             serialized = SerializationHelper.serialize_item(self.destination_base, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DESTINATION-BASE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DESTINATION-BASE")
 
         # Serialize source_can_id_code
         if self.source_can_id_code is not None:
             serialized = SerializationHelper.serialize_item(self.source_can_id_code, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-CAN-ID-CODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOURCE-CAN-ID-CODE")
 
         # Serialize source_can_id
         if self.source_can_id is not None:
             serialized = SerializationHelper.serialize_item(self.source_can_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-CAN-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOURCE-CAN-ID")
 
         return elem
 

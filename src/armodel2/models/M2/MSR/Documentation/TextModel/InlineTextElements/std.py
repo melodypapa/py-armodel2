@@ -87,71 +87,31 @@ class Std(SingleLanguageReferrable):
         if self.date is not None:
             serialized = SerializationHelper.serialize_item(self.date, "DateTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATE")
 
         # Serialize position
         if self.position is not None:
             serialized = SerializationHelper.serialize_item(self.position, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("POSITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "POSITION")
 
         # Serialize state
         if self.state is not None:
             serialized = SerializationHelper.serialize_item(self.state, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STATE")
 
         # Serialize subtitle
         if self.subtitle is not None:
             serialized = SerializationHelper.serialize_item(self.subtitle, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUBTITLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUBTITLE")
 
         # Serialize url
         if self.url is not None:
             serialized = SerializationHelper.serialize_item(self.url, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("URL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "URL")
 
         return elem
 

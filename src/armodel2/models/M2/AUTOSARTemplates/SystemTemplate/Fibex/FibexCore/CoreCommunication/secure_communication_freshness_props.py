@@ -81,43 +81,19 @@ class SecureCommunicationFreshnessProps(Identifiable):
         if self.freshness is not None:
             serialized = SerializationHelper.serialize_item(self.freshness, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRESHNESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FRESHNESS")
 
         # Serialize freshness_value
         if self.freshness_value is not None:
             serialized = SerializationHelper.serialize_item(self.freshness_value, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRESHNESS-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FRESHNESS-VALUE")
 
         # Serialize use_freshness
         if self.use_freshness is not None:
             serialized = SerializationHelper.serialize_item(self.use_freshness, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("USE-FRESHNESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "USE-FRESHNESS")
 
         return elem
 

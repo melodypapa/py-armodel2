@@ -111,57 +111,25 @@ class CouplingPortDetails(ARObject):
         if self.ethernet_priority is not None:
             serialized = SerializationHelper.serialize_item(self.ethernet_priority, "EthernetPriorityRegeneration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ETHERNET-PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ETHERNET-PRIORITY")
 
         # Serialize ethernet_traffic
         if self.ethernet_traffic is not None:
             serialized = SerializationHelper.serialize_item(self.ethernet_traffic, "CouplingPortTrafficClassAssignment")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ETHERNET-TRAFFIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ETHERNET-TRAFFIC")
 
         # Serialize global_time_coupling
         if self.global_time_coupling is not None:
             serialized = SerializationHelper.serialize_item(self.global_time_coupling, "GlobalTimeCouplingPortProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GLOBAL-TIME-COUPLING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "GLOBAL-TIME-COUPLING")
 
         # Serialize last_egress_ref
         if self.last_egress_ref is not None:
             serialized = SerializationHelper.serialize_item(self.last_egress_ref, "CouplingPortScheduler")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LAST-EGRESS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LAST-EGRESS-REF")
 
         # Serialize rate_policies (list to container "RATE-POLICYS")
         if self.rate_policies:

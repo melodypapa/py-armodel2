@@ -76,15 +76,7 @@ class SectionNamePrefix(ImplementationProps):
         if self.implemented_in_ref is not None:
             serialized = SerializationHelper.serialize_item(self.implemented_in_ref, "DependencyOnArtifact")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTED-IN-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMPLEMENTED-IN-REF")
 
         return elem
 

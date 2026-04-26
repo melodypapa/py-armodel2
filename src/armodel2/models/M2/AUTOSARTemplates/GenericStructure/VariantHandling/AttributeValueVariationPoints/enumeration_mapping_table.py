@@ -74,14 +74,7 @@ class EnumerationMappingTable(PackageableElement):
             for item in self.entry_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("ENTRY-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ENTRY-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

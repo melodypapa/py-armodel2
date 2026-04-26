@@ -86,71 +86,31 @@ class SOMEIPTransformationProps(TransformationProps):
         if self.alignment is not None:
             serialized = SerializationHelper.serialize_item(self.alignment, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALIGNMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALIGNMENT")
 
         # Serialize size_of_array
         if self.size_of_array is not None:
             serialized = SerializationHelper.serialize_item(self.size_of_array, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SIZE-OF-ARRAY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SIZE-OF-ARRAY")
 
         # Serialize size_of_string
         if self.size_of_string is not None:
             serialized = SerializationHelper.serialize_item(self.size_of_string, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SIZE-OF-STRING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SIZE-OF-STRING")
 
         # Serialize size_of_struct
         if self.size_of_struct is not None:
             serialized = SerializationHelper.serialize_item(self.size_of_struct, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SIZE-OF-STRUCT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SIZE-OF-STRUCT")
 
         # Serialize size_of_union
         if self.size_of_union is not None:
             serialized = SerializationHelper.serialize_item(self.size_of_union, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SIZE-OF-UNION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SIZE-OF-UNION")
 
         return elem
 

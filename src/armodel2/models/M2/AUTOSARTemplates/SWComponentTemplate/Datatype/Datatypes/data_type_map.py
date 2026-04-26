@@ -81,29 +81,13 @@ class DataTypeMap(ARObject):
         if self.application_data_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.application_data_type_ref, "ApplicationDataType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("APPLICATION-DATA-TYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "APPLICATION-DATA-TYPE-REF")
 
         # Serialize implementation_data_type_ref
         if self.implementation_data_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.implementation_data_type_ref, "AbstractImplementationDataType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTATION-DATA-TYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMPLEMENTATION-DATA-TYPE-REF")
 
         return elem
 

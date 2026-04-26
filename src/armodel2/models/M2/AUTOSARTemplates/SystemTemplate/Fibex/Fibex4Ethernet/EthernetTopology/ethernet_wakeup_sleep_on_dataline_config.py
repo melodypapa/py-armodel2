@@ -94,99 +94,43 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
         if self.sleep_mode is not None:
             serialized = SerializationHelper.serialize_item(self.sleep_mode, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SLEEP-MODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SLEEP-MODE")
 
         # Serialize sleep_repetition
         if self.sleep_repetition is not None:
             serialized = SerializationHelper.serialize_item(self.sleep_repetition, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SLEEP-REPETITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SLEEP-REPETITION")
 
         # Serialize sleep
         if self.sleep is not None:
             serialized = SerializationHelper.serialize_item(self.sleep, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SLEEP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SLEEP")
 
         # Serialize wakeup_forward
         if self.wakeup_forward is not None:
             serialized = SerializationHelper.serialize_item(self.wakeup_forward, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WAKEUP-FORWARD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WAKEUP-FORWARD")
 
         # Serialize wakeup_local
         if self.wakeup_local is not None:
             serialized = SerializationHelper.serialize_item(self.wakeup_local, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WAKEUP-LOCAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WAKEUP-LOCAL")
 
         # Serialize wakeup_remote
         if self.wakeup_remote is not None:
             serialized = SerializationHelper.serialize_item(self.wakeup_remote, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WAKEUP-REMOTE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WAKEUP-REMOTE")
 
         # Serialize wakeup
         if self.wakeup is not None:
             serialized = SerializationHelper.serialize_item(self.wakeup, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WAKEUP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WAKEUP")
 
         return elem
 

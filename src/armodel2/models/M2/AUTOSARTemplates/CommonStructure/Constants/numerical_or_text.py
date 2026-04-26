@@ -75,29 +75,13 @@ class NumericalOrText(ARObject):
         if self.vf is not None:
             serialized = SerializationHelper.serialize_item(self.vf, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VF")
 
         # Serialize vt
         if self.vt is not None:
             serialized = SerializationHelper.serialize_item(self.vt, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VT")
 
         return elem
 

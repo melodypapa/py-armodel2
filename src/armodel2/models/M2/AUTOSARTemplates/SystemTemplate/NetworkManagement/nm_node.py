@@ -110,85 +110,37 @@ class NmNode(Identifiable, ABC):
         if self.controller_ref is not None:
             serialized = SerializationHelper.serialize_item(self.controller_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTROLLER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTROLLER-REF")
 
         # Serialize nm_coord_cluster
         if self.nm_coord_cluster is not None:
             serialized = SerializationHelper.serialize_item(self.nm_coord_cluster, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-COORD-CLUSTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-COORD-CLUSTER")
 
         # Serialize nm_coordinator_role
         if self.nm_coordinator_role is not None:
             serialized = SerializationHelper.serialize_item(self.nm_coordinator_role, "NmCoordinatorRoleEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-COORDINATOR-ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-COORDINATOR-ROLE")
 
         # Serialize nm_if_ecu_ref
         if self.nm_if_ecu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.nm_if_ecu_ref, "NmEcu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-IF-ECU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-IF-ECU-REF")
 
         # Serialize nm_node_id
         if self.nm_node_id is not None:
             serialized = SerializationHelper.serialize_item(self.nm_node_id, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-NODE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-NODE-ID")
 
         # Serialize nm_passive
         if self.nm_passive is not None:
             serialized = SerializationHelper.serialize_item(self.nm_passive, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-PASSIVE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-PASSIVE")
 
         # Serialize rx_nm_pdu_refs (list to container "RX-NM-PDU-REFS")
         if self.rx_nm_pdu_refs:
@@ -196,14 +148,7 @@ class NmNode(Identifiable, ABC):
             for item in self.rx_nm_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "NmPdu")
                 if serialized is not None:
-                    child_elem = ET.Element("RX-NM-PDU-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "RX-NM-PDU-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -213,14 +158,7 @@ class NmNode(Identifiable, ABC):
             for item in self.tx_nm_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "NmPdu")
                 if serialized is not None:
-                    child_elem = ET.Element("TX-NM-PDU-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "TX-NM-PDU-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

@@ -78,29 +78,13 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
         if self.info_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.info_type_ref, "DiagnosticInfoType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INFO-TYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INFO-TYPE-REF")
 
         # Serialize request_vehicle_ref
         if self.request_vehicle_ref is not None:
             serialized = SerializationHelper.serialize_item(self.request_vehicle_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUEST-VEHICLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REQUEST-VEHICLE-REF")
 
         return elem
 

@@ -87,43 +87,19 @@ class NvProvideComSpec(PPortComSpec):
         if self.ram_block_init_value is not None:
             serialized = SerializationHelper.serialize_item(self.ram_block_init_value, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RAM-BLOCK-INIT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RAM-BLOCK-INIT-VALUE")
 
         # Serialize rom_block_init_value
         if self.rom_block_init_value is not None:
             serialized = SerializationHelper.serialize_item(self.rom_block_init_value, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROM-BLOCK-INIT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROM-BLOCK-INIT-VALUE")
 
         # Serialize variable_ref
         if self.variable_ref is not None:
             serialized = SerializationHelper.serialize_item(self.variable_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VARIABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VARIABLE-REF")
 
         return elem
 

@@ -80,43 +80,19 @@ class SubElementMapping(ARObject):
         if self.first_element_ref is not None:
             serialized = SerializationHelper.serialize_item(self.first_element_ref, "SubElementRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIRST-ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIRST-ELEMENT-REF")
 
         # Serialize second_element_ref
         if self.second_element_ref is not None:
             serialized = SerializationHelper.serialize_item(self.second_element_ref, "SubElementRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECOND-ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECOND-ELEMENT-REF")
 
         # Serialize text_table_ref
         if self.text_table_ref is not None:
             serialized = SerializationHelper.serialize_item(self.text_table_ref, "TextTableMapping")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TEXT-TABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TEXT-TABLE-REF")
 
         return elem
 

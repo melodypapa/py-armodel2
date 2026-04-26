@@ -81,15 +81,7 @@ class DiagnosticContributionSet(ARElement):
         if self.common is not None:
             serialized = SerializationHelper.serialize_item(self.common, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMMON")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMMON")
 
         # Serialize element_refs (list to container "ELEMENT-REFS")
         if self.element_refs:
@@ -97,14 +89,7 @@ class DiagnosticContributionSet(ARElement):
             for item in self.element_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("ELEMENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ELEMENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -114,14 +99,7 @@ class DiagnosticContributionSet(ARElement):
             for item in self.service_table_refs:
                 serialized = SerializationHelper.serialize_item(item, "DiagnosticServiceTable")
                 if serialized is not None:
-                    child_elem = ET.Element("SERVICE-TABLE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SERVICE-TABLE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

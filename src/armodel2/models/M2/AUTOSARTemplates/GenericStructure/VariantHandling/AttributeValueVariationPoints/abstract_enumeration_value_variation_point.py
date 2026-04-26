@@ -73,29 +73,13 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
         if self.base is not None:
             serialized = SerializationHelper.serialize_item(self.base, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE")
 
         # Serialize enum_table_ref
         if self.enum_table_ref is not None:
             serialized = SerializationHelper.serialize_item(self.enum_table_ref, "Ref")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENUM-TABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENUM-TABLE-REF")
 
         return elem
 

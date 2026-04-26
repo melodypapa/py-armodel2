@@ -85,14 +85,7 @@ class Baseline(ARObject):
             for item in self.custom_sdg_def_refs:
                 serialized = SerializationHelper.serialize_item(item, "SdgDef")
                 if serialized is not None:
-                    child_elem = ET.Element("CUSTOM-SDG-DEF-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CUSTOM-SDG-DEF-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -102,14 +95,7 @@ class Baseline(ARObject):
             for item in self.custom_refs:
                 serialized = SerializationHelper.serialize_item(item, "Documentation")
                 if serialized is not None:
-                    child_elem = ET.Element("CUSTOM-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CUSTOM-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -119,14 +105,7 @@ class Baseline(ARObject):
             for item in self.standards:
                 serialized = SerializationHelper.serialize_item(item, "String")
                 if serialized is not None:
-                    child_elem = ET.Element("STANDARD")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "STANDARD")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

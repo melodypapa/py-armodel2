@@ -78,43 +78,19 @@ class DiagnosticOperationCyclePortMapping(DiagnosticSwMapping):
         if self.operation_cycle_ref is not None:
             serialized = SerializationHelper.serialize_item(self.operation_cycle_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OPERATION-CYCLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OPERATION-CYCLE-REF")
 
         # Serialize swc_flat_service_ref
         if self.swc_flat_service_ref is not None:
             serialized = SerializationHelper.serialize_item(self.swc_flat_service_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SWC-FLAT-SERVICE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SWC-FLAT-SERVICE-REF")
 
         # Serialize swc_service
         if self.swc_service is not None:
             serialized = SerializationHelper.serialize_item(self.swc_service, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SWC-SERVICE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SWC-SERVICE")
 
         return elem
 

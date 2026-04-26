@@ -87,43 +87,19 @@ class TDEventIPdu(TDEventCom):
         if self.i_pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.i_pdu_ref, "IPdu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "I-PDU-REF")
 
         # Serialize physical_channel_ref
         if self.physical_channel_ref is not None:
             serialized = SerializationHelper.serialize_item(self.physical_channel_ref, "PhysicalChannel")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PHYSICAL-CHANNEL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PHYSICAL-CHANNEL-REF")
 
         # Serialize td_event_type
         if self.td_event_type is not None:
             serialized = SerializationHelper.serialize_item(self.td_event_type, "TDEventIPduTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TD-EVENT-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TD-EVENT-TYPE")
 
         return elem
 

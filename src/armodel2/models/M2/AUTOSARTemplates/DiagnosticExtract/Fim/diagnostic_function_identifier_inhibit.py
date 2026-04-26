@@ -81,29 +81,13 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         if self.function_ref is not None:
             serialized = SerializationHelper.serialize_item(self.function_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FUNCTION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FUNCTION-REF")
 
         # Serialize inhibition_mask
         if self.inhibition_mask is not None:
             serialized = SerializationHelper.serialize_item(self.inhibition_mask, "DiagnosticInhibitionMaskEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INHIBITION-MASK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INHIBITION-MASK")
 
         # Serialize inhibit_sources (list to container "INHIBIT-SOURCES")
         if self.inhibit_sources:

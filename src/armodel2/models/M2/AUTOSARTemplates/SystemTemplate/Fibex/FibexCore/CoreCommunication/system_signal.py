@@ -85,29 +85,13 @@ class SystemSignal(ARElement):
         if self.dynamic_length is not None:
             serialized = SerializationHelper.serialize_item(self.dynamic_length, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DYNAMIC-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DYNAMIC-LENGTH")
 
         # Serialize physical_props
         if self.physical_props is not None:
             serialized = SerializationHelper.serialize_item(self.physical_props, "SwDataDefProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PHYSICAL-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PHYSICAL-PROPS")
 
         return elem
 

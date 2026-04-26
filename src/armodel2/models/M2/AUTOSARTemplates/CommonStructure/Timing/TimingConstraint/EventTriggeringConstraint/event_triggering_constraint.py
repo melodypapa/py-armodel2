@@ -73,15 +73,7 @@ class EventTriggeringConstraint(TimingConstraint, ABC):
         if self.event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.event_ref, "TimingDescriptionEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-REF")
 
         return elem
 

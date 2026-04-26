@@ -84,43 +84,19 @@ class OsTaskProxy(ARElement):
         if self.period is not None:
             serialized = SerializationHelper.serialize_item(self.period, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PERIOD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PERIOD")
 
         # Serialize preemptability
         if self.preemptability is not None:
             serialized = SerializationHelper.serialize_item(self.preemptability, "OsTaskPreemptabilityEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PREEMPTABILITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PREEMPTABILITY")
 
         # Serialize priority
         if self.priority is not None:
             serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIORITY")
 
         return elem
 

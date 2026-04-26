@@ -81,29 +81,13 @@ class J1939NmNode(NmNode):
         if self.address is not None:
             serialized = SerializationHelper.serialize_item(self.address, "J1939NmAddressConfigurationCapabilityEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ADDRESS")
 
         # Serialize node_name
         if self.node_name is not None:
             serialized = SerializationHelper.serialize_item(self.node_name, "J1939NodeName")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NODE-NAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NODE-NAME")
 
         return elem
 

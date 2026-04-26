@@ -125,127 +125,55 @@ class BswModuleEntry(ARElement):
         if self.service_id is not None:
             serialized = SerializationHelper.serialize_item(self.service_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SERVICE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SERVICE-ID")
 
         # Serialize is_reentrant
         if self.is_reentrant is not None:
             serialized = SerializationHelper.serialize_item(self.is_reentrant, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-REENTRANT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-REENTRANT")
 
         # Serialize is_synchronous
         if self.is_synchronous is not None:
             serialized = SerializationHelper.serialize_item(self.is_synchronous, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-SYNCHRONOUS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-SYNCHRONOUS")
 
         # Serialize call_type
         if self.call_type is not None:
             serialized = SerializationHelper.serialize_item(self.call_type, "BswCallType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CALL-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CALL-TYPE")
 
         # Serialize execution_context
         if self.execution_context is not None:
             serialized = SerializationHelper.serialize_item(self.execution_context, "BswExecutionContext")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXECUTION-CONTEXT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXECUTION-CONTEXT")
 
         # Serialize function_prototype_emitter
         if self.function_prototype_emitter is not None:
             serialized = SerializationHelper.serialize_item(self.function_prototype_emitter, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FUNCTION-PROTOTYPE-EMITTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FUNCTION-PROTOTYPE-EMITTER")
 
         # Serialize sw_service_impl_policy
         if self.sw_service_impl_policy is not None:
             serialized = SerializationHelper.serialize_item(self.sw_service_impl_policy, "SwServiceImplPolicyEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-SERVICE-IMPL-POLICY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-SERVICE-IMPL-POLICY")
 
         # Serialize bsw_entry_kind
         if self.bsw_entry_kind is not None:
             serialized = SerializationHelper.serialize_item(self.bsw_entry_kind, "BswEntryKindEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BSW-ENTRY-KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BSW-ENTRY-KIND")
 
         # Serialize return_type
         if self.return_type is not None:
             serialized = SerializationHelper.serialize_item(self.return_type, "SwServiceArg")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RETURN-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RETURN-TYPE")
 
         # Serialize arguments (list to container "ARGUMENTS")
         if self.arguments:
@@ -261,15 +189,7 @@ class BswModuleEntry(ARElement):
         if self.role is not None:
             serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROLE")
 
         return elem
 

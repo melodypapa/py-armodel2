@@ -74,15 +74,7 @@ class CompuConstFormulaContent(CompuConstContent):
         if self.vf is not None:
             serialized = SerializationHelper.serialize_item(self.vf, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VF")
 
         return elem
 

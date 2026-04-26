@@ -83,71 +83,31 @@ class AbstractValueRestriction(ARObject, ABC):
         if self.max is not None:
             serialized = SerializationHelper.serialize_item(self.max, "Limit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX")
 
         # Serialize max_length
         if self.max_length is not None:
             serialized = SerializationHelper.serialize_item(self.max_length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-LENGTH")
 
         # Serialize min
         if self.min is not None:
             serialized = SerializationHelper.serialize_item(self.min, "Limit")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MIN")
 
         # Serialize min_length
         if self.min_length is not None:
             serialized = SerializationHelper.serialize_item(self.min_length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIN-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MIN-LENGTH")
 
         # Serialize pattern
         if self.pattern is not None:
             serialized = SerializationHelper.serialize_item(self.pattern, "RegularExpression")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PATTERN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PATTERN")
 
         return elem
 

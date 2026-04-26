@@ -83,71 +83,31 @@ class CanClusterBusOffRecovery(ARObject):
         if self.bor_counter_l1_to is not None:
             serialized = SerializationHelper.serialize_item(self.bor_counter_l1_to, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BOR-COUNTER-L1-TO")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BOR-COUNTER-L1-TO")
 
         # Serialize bor_time_l1
         if self.bor_time_l1 is not None:
             serialized = SerializationHelper.serialize_item(self.bor_time_l1, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BOR-TIME-L1")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BOR-TIME-L1")
 
         # Serialize bor_time_l2
         if self.bor_time_l2 is not None:
             serialized = SerializationHelper.serialize_item(self.bor_time_l2, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BOR-TIME-L2")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BOR-TIME-L2")
 
         # Serialize bor_time_tx
         if self.bor_time_tx is not None:
             serialized = SerializationHelper.serialize_item(self.bor_time_tx, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BOR-TIME-TX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BOR-TIME-TX")
 
         # Serialize main_function
         if self.main_function is not None:
             serialized = SerializationHelper.serialize_item(self.main_function, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAIN-FUNCTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAIN-FUNCTION")
 
         return elem
 

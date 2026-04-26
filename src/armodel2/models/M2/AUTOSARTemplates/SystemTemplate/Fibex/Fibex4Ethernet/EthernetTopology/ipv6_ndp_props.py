@@ -108,183 +108,79 @@ class Ipv6NdpProps(ARObject):
         if self.tcp_ip_ndp_default is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_default, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP-DEFAULT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP-DEFAULT")
 
         # Serialize tcp_ip_ndp_default_router_list_size
         if self.tcp_ip_ndp_default_router_list_size is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_default_router_list_size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP-DEFAULT-ROUTER-LIST-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP-DEFAULT-ROUTER-LIST-SIZE")
 
         # Serialize tcp_ip_ndp
         if self.tcp_ip_ndp is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP")
 
         # Serialize tcp_ip_ndp_delay_first_probe_time_value
         if self.tcp_ip_ndp_delay_first_probe_time_value is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_delay_first_probe_time_value, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP-DELAY-FIRST-PROBE-TIME-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP-DELAY-FIRST-PROBE-TIME-VALUE")
 
         # Serialize tcp_ip_ndp_max_random_factor
         if self.tcp_ip_ndp_max_random_factor is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_max_random_factor, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP-MAX-RANDOM-FACTOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP-MAX-RANDOM-FACTOR")
 
         # Serialize tcp_ip_ndp_max_rtr
         if self.tcp_ip_ndp_max_rtr is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_max_rtr, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP-MAX-RTR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP-MAX-RTR")
 
         # Serialize tcp_ip_ndp_min_random_factor
         if self.tcp_ip_ndp_min_random_factor is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_min_random_factor, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP-MIN-RANDOM-FACTOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP-MIN-RANDOM-FACTOR")
 
         # Serialize tcp_ip_ndp_num
         if self.tcp_ip_ndp_num is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_num, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP-NUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP-NUM")
 
         # Serialize tcp_ip_ndp_packet
         if self.tcp_ip_ndp_packet is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_packet, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP-PACKET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP-PACKET")
 
         # Serialize tcp_ip_ndp_prefix
         if self.tcp_ip_ndp_prefix is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_prefix, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP-PREFIX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP-PREFIX")
 
         # Serialize tcp_ip_ndp_rnd_rtr
         if self.tcp_ip_ndp_rnd_rtr is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_rnd_rtr, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP-RND-RTR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP-RND-RTR")
 
         # Serialize tcp_ip_ndp_rtr
         if self.tcp_ip_ndp_rtr is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_rtr, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP-RTR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP-RTR")
 
         # Serialize tcp_ip_ndp_slaac
         if self.tcp_ip_ndp_slaac is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_slaac, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-NDP-SLAAC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-IP-NDP-SLAAC")
 
         return elem
 

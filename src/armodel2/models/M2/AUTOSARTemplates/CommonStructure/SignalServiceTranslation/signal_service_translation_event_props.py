@@ -97,43 +97,19 @@ class SignalServiceTranslationEventProps(Identifiable):
         if self.safe_translation is not None:
             serialized = SerializationHelper.serialize_item(self.safe_translation, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SAFE-TRANSLATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SAFE-TRANSLATION")
 
         # Serialize secure
         if self.secure is not None:
             serialized = SerializationHelper.serialize_item(self.secure, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECURE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECURE")
 
         # Serialize translation_ref
         if self.translation_ref is not None:
             serialized = SerializationHelper.serialize_item(self.translation_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSLATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSLATION-REF")
 
         return elem
 

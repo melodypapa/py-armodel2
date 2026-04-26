@@ -70,15 +70,7 @@ class DdsLifespan(ARObject):
         if self.lifespan_duration is not None:
             serialized = SerializationHelper.serialize_item(self.lifespan_duration, "Float")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LIFESPAN-DURATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LIFESPAN-DURATION")
 
         return elem
 

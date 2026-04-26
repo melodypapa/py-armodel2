@@ -139,14 +139,7 @@ class ExecutableEntity(Identifiable, ABC):
             for item in self.can_enter_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExclusiveArea")
                 if serialized is not None:
-                    child_elem = ET.Element("CAN-ENTER-EXCLUSIVE-AREA-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CAN-ENTER-EXCLUSIVE-AREA-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -156,14 +149,7 @@ class ExecutableEntity(Identifiable, ABC):
             for item in self.exclusive_area_nesting_order_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExclusiveAreaNestingOrder")
                 if serialized is not None:
-                    child_elem = ET.Element("EXCLUSIVE-AREA-NESTING-ORDER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "EXCLUSIVE-AREA-NESTING-ORDER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -171,29 +157,13 @@ class ExecutableEntity(Identifiable, ABC):
         if self.minimum_start_interval is not None:
             serialized = SerializationHelper.serialize_item(self.minimum_start_interval, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM-START-INTERVAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINIMUM-START-INTERVAL")
 
         # Serialize reentrancy_level
         if self.reentrancy_level is not None:
             serialized = SerializationHelper.serialize_item(self.reentrancy_level, "ReentrancyLevelEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REENTRANCY-LEVEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REENTRANCY-LEVEL")
 
         # Serialize runs_inside_refs (list to container "RUNS-INSIDE-REFS")
         if self.runs_inside_refs:
@@ -201,14 +171,7 @@ class ExecutableEntity(Identifiable, ABC):
             for item in self.runs_inside_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExclusiveArea")
                 if serialized is not None:
-                    child_elem = ET.Element("RUNS-INSIDE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "RUNS-INSIDE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -216,15 +179,7 @@ class ExecutableEntity(Identifiable, ABC):
         if self.sw_addr_method_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sw_addr_method_ref, "SwAddrMethod")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SW-ADDR-METHOD-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-ADDR-METHOD-REF")
 
         return elem
 

@@ -77,15 +77,7 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
         if self.context_root_sw_ref is not None:
             serialized = SerializationHelper.serialize_item(self.context_root_sw_ref, "RootSwCompositionPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-ROOT-SW-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTEXT-ROOT-SW-REF")
 
         # Serialize context_sw_prototype_refs (list to container "CONTEXT-SW-PROTOTYPE-REFS")
         if self.context_sw_prototype_refs:
@@ -93,14 +85,7 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
             for item in self.context_sw_prototype_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTEXT-SW-PROTOTYPE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONTEXT-SW-PROTOTYPE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -108,15 +93,7 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
         if self.target_swc_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_swc_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-SWC-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-SWC-REF")
 
         return elem
 

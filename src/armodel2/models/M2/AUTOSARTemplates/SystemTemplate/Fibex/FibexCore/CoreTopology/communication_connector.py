@@ -99,43 +99,19 @@ class CommunicationConnector(Identifiable, ABC):
         if self.comm_controller_ref is not None:
             serialized = SerializationHelper.serialize_item(self.comm_controller_ref, "CommunicationController")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMM-CONTROLLER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMM-CONTROLLER-REF")
 
         # Serialize create_ecu_wakeup_source
         if self.create_ecu_wakeup_source is not None:
             serialized = SerializationHelper.serialize_item(self.create_ecu_wakeup_source, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CREATE-ECU-WAKEUP-SOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CREATE-ECU-WAKEUP-SOURCE")
 
         # Serialize dynamic_pnc_to_channel_mapping_enabled
         if self.dynamic_pnc_to_channel_mapping_enabled is not None:
             serialized = SerializationHelper.serialize_item(self.dynamic_pnc_to_channel_mapping_enabled, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED")
 
         # Serialize ecu_comm_port_instances (list to container "ECU-COMM-PORT-INSTANCES")
         if self.ecu_comm_port_instances:
@@ -153,14 +129,7 @@ class CommunicationConnector(Identifiable, ABC):
             for item in self.pnc_filter_array_masks:
                 serialized = SerializationHelper.serialize_item(item, "PositiveInteger")
                 if serialized is not None:
-                    child_elem = ET.Element("PNC-FILTER-ARRAY-MASK")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "PNC-FILTER-ARRAY-MASK")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -168,15 +137,7 @@ class CommunicationConnector(Identifiable, ABC):
         if self.pnc_gateway_type is not None:
             serialized = SerializationHelper.serialize_item(self.pnc_gateway_type, "PncGatewayTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PNC-GATEWAY-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PNC-GATEWAY-TYPE")
 
         return elem
 

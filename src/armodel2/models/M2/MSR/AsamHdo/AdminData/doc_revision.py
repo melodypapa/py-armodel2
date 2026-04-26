@@ -95,29 +95,13 @@ class DocRevision(ARObject):
         if self.date is not None:
             serialized = SerializationHelper.serialize_item(self.date, "DateTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATE")
 
         # Serialize issued_by
         if self.issued_by is not None:
             serialized = SerializationHelper.serialize_item(self.issued_by, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ISSUED-BY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ISSUED-BY")
 
         # Serialize modifications (list to container "MODIFICATIONS")
         if self.modifications:
@@ -133,57 +117,25 @@ class DocRevision(ARObject):
         if self.revision_label_string is not None:
             serialized = SerializationHelper.serialize_item(self.revision_label_string, "RevisionLabelString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REVISION-LABEL-STRING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REVISION-LABEL-STRING")
 
         # Serialize revision_label_p1
         if self.revision_label_p1 is not None:
             serialized = SerializationHelper.serialize_item(self.revision_label_p1, "RevisionLabelString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REVISION-LABEL-P1")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REVISION-LABEL-P1")
 
         # Serialize revision_label_p2
         if self.revision_label_p2 is not None:
             serialized = SerializationHelper.serialize_item(self.revision_label_p2, "RevisionLabelString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REVISION-LABEL-P2")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REVISION-LABEL-P2")
 
         # Serialize state
         if self.state is not None:
             serialized = SerializationHelper.serialize_item(self.state, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STATE")
 
         return elem
 

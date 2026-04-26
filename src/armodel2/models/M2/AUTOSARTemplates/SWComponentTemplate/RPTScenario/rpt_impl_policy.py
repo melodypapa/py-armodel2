@@ -75,29 +75,13 @@ class RptImplPolicy(ARObject):
         if self.rpt_enabler_impl is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_enabler_impl, "RptEnablerImplTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-ENABLER-IMPL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-ENABLER-IMPL")
 
         # Serialize rpt_preparation_enum
         if self.rpt_preparation_enum is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_preparation_enum, "RptPreparationEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-PREPARATION-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-PREPARATION-ENUM")
 
         return elem
 

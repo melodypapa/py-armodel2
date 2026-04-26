@@ -84,43 +84,19 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
         if self.app_task_proxy_ref is not None:
             serialized = SerializationHelper.serialize_item(self.app_task_proxy_ref, "OsTaskProxy")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("APP-TASK-PROXY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "APP-TASK-PROXY-REF")
 
         # Serialize ecu_task_proxy_ref
         if self.ecu_task_proxy_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_task_proxy_ref, "OsTaskProxy")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-TASK-PROXY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-TASK-PROXY-REF")
 
         # Serialize offset
         if self.offset is not None:
             serialized = SerializationHelper.serialize_item(self.offset, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OFFSET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OFFSET")
 
         return elem
 

@@ -111,105 +111,49 @@ class LinSlave(ARObject):
         if self.assign_nad is not None:
             serialized = SerializationHelper.serialize_item(self.assign_nad, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("ASSIGN-NAD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "ASSIGN-NAD")
 
         # Serialize configured_nad
         if self.configured_nad is not None:
             serialized = SerializationHelper.serialize_item(self.configured_nad, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("CONFIGURED-NAD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "CONFIGURED-NAD")
 
         # Serialize function_id
         if self.function_id is not None:
             serialized = SerializationHelper.serialize_item(self.function_id, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("FUNCTION-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "FUNCTION-ID")
 
         # Serialize initial_nad
         if self.initial_nad is not None:
             serialized = SerializationHelper.serialize_item(self.initial_nad, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("INITIAL-NAD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "INITIAL-NAD")
 
         # Serialize lin_error_response
         if self.lin_error_response is not None:
             serialized = SerializationHelper.serialize_item(self.lin_error_response, "LinErrorResponse")
             if serialized is not None:
-                wrapped = ET.Element("LIN-ERROR-RESPONSE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "LIN-ERROR-RESPONSE")
 
         # Serialize nas_timeout
         if self.nas_timeout is not None:
             serialized = SerializationHelper.serialize_item(self.nas_timeout, "TimeValue")
             if serialized is not None:
-                wrapped = ET.Element("NAS-TIMEOUT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "NAS-TIMEOUT")
 
         # Serialize supplier_id
         if self.supplier_id is not None:
             serialized = SerializationHelper.serialize_item(self.supplier_id, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("SUPPLIER-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SUPPLIER-ID")
 
         # Serialize variant_id
         if self.variant_id is not None:
             serialized = SerializationHelper.serialize_item(self.variant_id, "PositiveInteger")
             if serialized is not None:
-                wrapped = ET.Element("VARIANT-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "VARIANT-ID")
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "LinSlave")

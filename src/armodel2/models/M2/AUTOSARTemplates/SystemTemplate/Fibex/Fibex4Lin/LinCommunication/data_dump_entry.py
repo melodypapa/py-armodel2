@@ -76,14 +76,7 @@ class DataDumpEntry(LinConfigurationEntry):
             for item in self.byte_values:
                 serialized = SerializationHelper.serialize_item(item, "Integer")
                 if serialized is not None:
-                    child_elem = ET.Element("BYTE-VALUE")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "BYTE-VALUE")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

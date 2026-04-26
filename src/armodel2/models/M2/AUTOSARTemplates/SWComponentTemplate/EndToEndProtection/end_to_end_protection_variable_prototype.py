@@ -83,14 +83,7 @@ class EndToEndProtectionVariablePrototype(ARObject):
             for item in self.receiver_refs:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    child_elem = ET.Element("RECEIVER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "RECEIVER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -98,29 +91,13 @@ class EndToEndProtectionVariablePrototype(ARObject):
         if self.sender_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sender_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SENDER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SENDER-REF")
 
         # Serialize short_label
         if self.short_label is not None:
             serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHORT-LABEL")
 
         return elem
 

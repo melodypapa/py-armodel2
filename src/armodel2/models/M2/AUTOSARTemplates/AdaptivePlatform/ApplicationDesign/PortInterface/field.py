@@ -80,43 +80,19 @@ class Field(AutosarDataPrototype):
         if self.has_getter is not None:
             serialized = SerializationHelper.serialize_item(self.has_getter, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HAS-GETTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HAS-GETTER")
 
         # Serialize has_notifier
         if self.has_notifier is not None:
             serialized = SerializationHelper.serialize_item(self.has_notifier, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HAS-NOTIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HAS-NOTIFIER")
 
         # Serialize has_setter
         if self.has_setter is not None:
             serialized = SerializationHelper.serialize_item(self.has_setter, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HAS-SETTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HAS-SETTER")
 
         return elem
 

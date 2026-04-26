@@ -80,43 +80,19 @@ class PerInstanceMemorySize(ARObject):
         if self.alignment is not None:
             serialized = SerializationHelper.serialize_item(self.alignment, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALIGNMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALIGNMENT")
 
         # Serialize per_instance_memory_memory_ref
         if self.per_instance_memory_memory_ref is not None:
             serialized = SerializationHelper.serialize_item(self.per_instance_memory_memory_ref, "PerInstanceMemory")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PER-INSTANCE-MEMORY-MEMORY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PER-INSTANCE-MEMORY-MEMORY-REF")
 
         # Serialize size
         if self.size is not None:
             serialized = SerializationHelper.serialize_item(self.size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SIZE")
 
         return elem
 

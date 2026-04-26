@@ -77,29 +77,13 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
         if self.assigned_entry_ref is not None:
             serialized = SerializationHelper.serialize_item(self.assigned_entry_ref, "BswModuleEntry")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ASSIGNED-ENTRY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ASSIGNED-ENTRY-REF")
 
         # Serialize role
         if self.role is not None:
             serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROLE")
 
         return elem
 

@@ -87,43 +87,19 @@ class SignalServiceTranslationElementProps(Identifiable):
         if self.element_ref is not None:
             serialized = SerializationHelper.serialize_item(self.element_ref, "DataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ELEMENT-REF")
 
         # Serialize filter
         if self.filter is not None:
             serialized = SerializationHelper.serialize_item(self.filter, "DataFilter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FILTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FILTER")
 
         # Serialize transmission
         if self.transmission is not None:
             serialized = SerializationHelper.serialize_item(self.transmission, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSMISSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSMISSION")
 
         return elem
 

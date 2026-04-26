@@ -76,29 +76,13 @@ class InfrastructureServices(ARObject):
         if self.do_ip_entity is not None:
             serialized = SerializationHelper.serialize_item(self.do_ip_entity, "DoIpEntity")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DO-IP-ENTITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DO-IP-ENTITY")
 
         # Serialize time
         if self.time is not None:
             serialized = SerializationHelper.serialize_item(self.time, "TimeSynchronization")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME")
 
         return elem
 

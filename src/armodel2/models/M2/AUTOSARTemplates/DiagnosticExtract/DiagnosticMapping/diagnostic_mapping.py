@@ -76,29 +76,13 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
         if self.provider_ref is not None:
             serialized = SerializationHelper.serialize_item(self.provider_ref, "CpSoftwareCluster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROVIDER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROVIDER-REF")
 
         # Serialize requester_ref
         if self.requester_ref is not None:
             serialized = SerializationHelper.serialize_item(self.requester_ref, "CpSoftwareCluster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUESTER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REQUESTER-REF")
 
         return elem
 

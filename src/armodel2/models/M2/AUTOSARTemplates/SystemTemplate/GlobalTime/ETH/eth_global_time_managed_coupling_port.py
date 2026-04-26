@@ -96,99 +96,43 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         if self.coupling_port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.coupling_port_ref, "CouplingPort")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COUPLING-PORT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COUPLING-PORT-REF")
 
         # Serialize global_time_port_role
         if self.global_time_port_role is not None:
             serialized = SerializationHelper.serialize_item(self.global_time_port_role, "GlobalTimePortRoleEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GLOBAL-TIME-PORT-ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "GLOBAL-TIME-PORT-ROLE")
 
         # Serialize global_time_tx_period
         if self.global_time_tx_period is not None:
             serialized = SerializationHelper.serialize_item(self.global_time_tx_period, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GLOBAL-TIME-TX-PERIOD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "GLOBAL-TIME-TX-PERIOD")
 
         # Serialize pdelay_latency
         if self.pdelay_latency is not None:
             serialized = SerializationHelper.serialize_item(self.pdelay_latency, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDELAY-LATENCY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDELAY-LATENCY")
 
         # Serialize pdelay_request
         if self.pdelay_request is not None:
             serialized = SerializationHelper.serialize_item(self.pdelay_request, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDELAY-REQUEST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDELAY-REQUEST")
 
         # Serialize pdelay_resp_and
         if self.pdelay_resp_and is not None:
             serialized = SerializationHelper.serialize_item(self.pdelay_resp_and, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDELAY-RESP-AND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDELAY-RESP-AND")
 
         # Serialize pdelay
         if self.pdelay is not None:
             serialized = SerializationHelper.serialize_item(self.pdelay, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDELAY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDELAY")
 
         return elem
 

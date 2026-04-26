@@ -100,29 +100,13 @@ class Ipv4Configuration(NetworkEndpointAddress):
         if self.assignment is not None:
             serialized = SerializationHelper.serialize_item(self.assignment, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ASSIGNMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ASSIGNMENT")
 
         # Serialize default_gateway
         if self.default_gateway is not None:
             serialized = SerializationHelper.serialize_item(self.default_gateway, "Ip4AddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-GATEWAY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-GATEWAY")
 
         # Serialize dns_servers (list to container "DNS-SERVERS")
         if self.dns_servers:
@@ -130,14 +114,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
             for item in self.dns_servers:
                 serialized = SerializationHelper.serialize_item(item, "Ip4AddressString")
                 if serialized is not None:
-                    child_elem = ET.Element("DNS-SERVER")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DNS-SERVER")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -145,71 +122,31 @@ class Ipv4Configuration(NetworkEndpointAddress):
         if self.ip_address_keep_enum is not None:
             serialized = SerializationHelper.serialize_item(self.ip_address_keep_enum, "IpAddressKeepEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IP-ADDRESS-KEEP-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IP-ADDRESS-KEEP-ENUM")
 
         # Serialize ipv4_address
         if self.ipv4_address is not None:
             serialized = SerializationHelper.serialize_item(self.ipv4_address, "Ip4AddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IPV4-ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IPV4-ADDRESS")
 
         # Serialize ipv4_address_source
         if self.ipv4_address_source is not None:
             serialized = SerializationHelper.serialize_item(self.ipv4_address_source, "Ipv4AddressSourceEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IPV4-ADDRESS-SOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IPV4-ADDRESS-SOURCE")
 
         # Serialize network_mask
         if self.network_mask is not None:
             serialized = SerializationHelper.serialize_item(self.network_mask, "Ip4AddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NETWORK-MASK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NETWORK-MASK")
 
         # Serialize ttl
         if self.ttl is not None:
             serialized = SerializationHelper.serialize_item(self.ttl, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TTL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TTL")
 
         return elem
 

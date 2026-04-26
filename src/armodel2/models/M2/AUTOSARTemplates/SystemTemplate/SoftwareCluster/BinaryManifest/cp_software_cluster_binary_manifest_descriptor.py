@@ -102,15 +102,7 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         if self.cp_software_cluster_ref is not None:
             serialized = SerializationHelper.serialize_item(self.cp_software_cluster_ref, "CpSoftwareCluster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CP-SOFTWARE-CLUSTER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CP-SOFTWARE-CLUSTER-REF")
 
         # Serialize meta_data_fields (list to container "META-DATA-FIELDS")
         if self.meta_data_fields:
@@ -156,15 +148,7 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         if self.software_cluster is not None:
             serialized = SerializationHelper.serialize_item(self.software_cluster, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOFTWARE-CLUSTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOFTWARE-CLUSTER")
 
         return elem
 

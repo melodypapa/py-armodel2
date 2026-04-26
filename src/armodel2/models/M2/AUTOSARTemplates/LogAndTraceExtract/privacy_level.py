@@ -77,29 +77,13 @@ class PrivacyLevel(ARObject):
         if self.compu_method_ref is not None:
             serialized = SerializationHelper.serialize_item(self.compu_method_ref, "CompuMethod")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COMPU-METHOD-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COMPU-METHOD-REF")
 
         # Serialize privacy_level
         if self.privacy_level is not None:
             serialized = SerializationHelper.serialize_item(self.privacy_level, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIVACY-LEVEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIVACY-LEVEL")
 
         return elem
 

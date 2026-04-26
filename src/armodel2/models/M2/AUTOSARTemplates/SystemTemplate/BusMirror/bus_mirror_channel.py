@@ -77,29 +77,13 @@ class BusMirrorChannel(ARObject):
         if self.bus_mirror is not None:
             serialized = SerializationHelper.serialize_item(self.bus_mirror, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BUS-MIRROR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BUS-MIRROR")
 
         # Serialize channel_ref
         if self.channel_ref is not None:
             serialized = SerializationHelper.serialize_item(self.channel_ref, "PhysicalChannel")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CHANNEL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CHANNEL-REF")
 
         return elem
 

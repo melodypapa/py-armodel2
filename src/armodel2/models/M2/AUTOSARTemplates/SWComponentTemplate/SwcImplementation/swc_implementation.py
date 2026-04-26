@@ -89,15 +89,7 @@ class SwcImplementation(Implementation):
         if self.behavior_ref is not None:
             serialized = SerializationHelper.serialize_item(self.behavior_ref, "SwcInternalBehavior")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BEHAVIOR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BEHAVIOR-REF")
 
         # Serialize per_instance_memory_sizes (list to container "PER-INSTANCE-MEMORY-SIZES")
         if self.per_instance_memory_sizes:
@@ -113,15 +105,7 @@ class SwcImplementation(Implementation):
         if self.required_rte_vendor is not None:
             serialized = SerializationHelper.serialize_item(self.required_rte_vendor, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUIRED-RTE-VENDOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REQUIRED-RTE-VENDOR")
 
         return elem
 

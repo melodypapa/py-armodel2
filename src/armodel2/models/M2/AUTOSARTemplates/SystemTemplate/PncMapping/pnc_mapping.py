@@ -136,14 +136,7 @@ class PncMapping(Describable):
             for item in self.dynamic_pnc_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("DYNAMIC-PNC-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DYNAMIC-PNC-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -151,15 +144,7 @@ class PncMapping(Describable):
         if self.ident_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ident_ref, "PncMappingIdent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDENT-REF")
 
         # Serialize physical_channel_refs (list to container "PHYSICAL-CHANNEL-REFS")
         if self.physical_channel_refs:
@@ -167,14 +152,7 @@ class PncMapping(Describable):
             for item in self.physical_channel_refs:
                 serialized = SerializationHelper.serialize_item(item, "PhysicalChannel")
                 if serialized is not None:
-                    child_elem = ET.Element("PHYSICAL-CHANNEL-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "PHYSICAL-CHANNEL-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -184,14 +162,7 @@ class PncMapping(Describable):
             for item in self.pnc_consumed_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConsumedProvidedServiceInstanceGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("PNC-CONSUMED-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "PNC-CONSUMED-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -201,14 +172,7 @@ class PncMapping(Describable):
             for item in self.pnc_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("PNC-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "PNC-GROUP-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -216,15 +180,7 @@ class PncMapping(Describable):
         if self.pnc_identifier is not None:
             serialized = SerializationHelper.serialize_item(self.pnc_identifier, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PNC-IDENTIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PNC-IDENTIFIER")
 
         # Serialize pnc_pdur_group_refs (list to container "PNC-PDUR-GROUP-REFS")
         if self.pnc_pdur_group_refs:
@@ -232,14 +188,7 @@ class PncMapping(Describable):
             for item in self.pnc_pdur_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "PdurIPduGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("PNC-PDUR-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "PNC-PDUR-GROUP-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -247,15 +196,7 @@ class PncMapping(Describable):
         if self.pnc_wakeup is not None:
             serialized = SerializationHelper.serialize_item(self.pnc_wakeup, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PNC-WAKEUP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PNC-WAKEUP")
 
         # Serialize relevant_for_refs (list to container "RELEVANT-FOR-REFS")
         if self.relevant_for_refs:
@@ -263,14 +204,7 @@ class PncMapping(Describable):
             for item in self.relevant_for_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcuInstance")
                 if serialized is not None:
-                    child_elem = ET.Element("RELEVANT-FOR-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "RELEVANT-FOR-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -278,15 +212,7 @@ class PncMapping(Describable):
         if self.short_label is not None:
             serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHORT-LABEL")
 
         # Serialize vfc_refs (list to container "VFC-REFS")
         if self.vfc_refs:
@@ -294,14 +220,7 @@ class PncMapping(Describable):
             for item in self.vfc_refs:
                 serialized = SerializationHelper.serialize_item(item, "PortGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("VFC-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "VFC-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -311,14 +230,7 @@ class PncMapping(Describable):
             for item in self.wakeup_frame_refs:
                 serialized = SerializationHelper.serialize_item(item, "FrameTriggering")
                 if serialized is not None:
-                    child_elem = ET.Element("WAKEUP-FRAME-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "WAKEUP-FRAME-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

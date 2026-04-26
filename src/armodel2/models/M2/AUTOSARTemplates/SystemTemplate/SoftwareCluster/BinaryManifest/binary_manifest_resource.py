@@ -80,43 +80,19 @@ class BinaryManifestResource(Identifiable, ABC):
         if self.global_resource is not None:
             serialized = SerializationHelper.serialize_item(self.global_resource, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GLOBAL-RESOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "GLOBAL-RESOURCE")
 
         # Serialize resource_ref
         if self.resource_ref is not None:
             serialized = SerializationHelper.serialize_item(self.resource_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESOURCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESOURCE-REF")
 
         # Serialize resource_guard
         if self.resource_guard is not None:
             serialized = SerializationHelper.serialize_item(self.resource_guard, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESOURCE-GUARD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESOURCE-GUARD")
 
         return elem
 

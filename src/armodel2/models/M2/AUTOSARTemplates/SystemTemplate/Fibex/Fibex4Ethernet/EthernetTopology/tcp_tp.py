@@ -97,99 +97,43 @@ class TcpTp(TcpUdpConfig):
         if self.keep_alive is not None:
             serialized = SerializationHelper.serialize_item(self.keep_alive, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("KEEP-ALIVE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "KEEP-ALIVE")
 
         # Serialize keep_alives
         if self.keep_alives is not None:
             serialized = SerializationHelper.serialize_item(self.keep_alives, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("KEEP-ALIVES")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "KEEP-ALIVES")
 
         # Serialize keep_alive_time
         if self.keep_alive_time is not None:
             serialized = SerializationHelper.serialize_item(self.keep_alive_time, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("KEEP-ALIVE-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "KEEP-ALIVE-TIME")
 
         # Serialize nagles_algorithm
         if self.nagles_algorithm is not None:
             serialized = SerializationHelper.serialize_item(self.nagles_algorithm, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NAGLES-ALGORITHM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NAGLES-ALGORITHM")
 
         # Serialize receive_window_min
         if self.receive_window_min is not None:
             serialized = SerializationHelper.serialize_item(self.receive_window_min, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RECEIVE-WINDOW-MIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RECEIVE-WINDOW-MIN")
 
         # Serialize tcp
         if self.tcp is not None:
             serialized = SerializationHelper.serialize_item(self.tcp, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP")
 
         # Serialize tcp_tp_port
         if self.tcp_tp_port is not None:
             serialized = SerializationHelper.serialize_item(self.tcp_tp_port, "TpPort")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TCP-TP-PORT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TCP-TP-PORT")
 
         return elem
 

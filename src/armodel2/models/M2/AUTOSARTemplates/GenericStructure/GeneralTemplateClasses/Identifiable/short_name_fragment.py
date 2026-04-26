@@ -74,29 +74,13 @@ class ShortNameFragment(ARObject):
         if self.fragment is not None:
             serialized = SerializationHelper.serialize_item(self.fragment, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRAGMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FRAGMENT")
 
         # Serialize role
         if self.role is not None:
             serialized = SerializationHelper.serialize_item(self.role, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROLE")
 
         return elem
 

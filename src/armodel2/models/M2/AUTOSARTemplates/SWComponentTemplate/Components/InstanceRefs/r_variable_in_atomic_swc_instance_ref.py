@@ -81,29 +81,13 @@ class RVariableInAtomicSwcInstanceRef(VariableInAtomicSwcInstanceRef):
         if self.context_r_port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.context_r_port_ref, "AbstractRequiredPortPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-R-PORT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTEXT-R-PORT-REF")
 
         # Serialize target_data_element_ref
         if self.target_data_element_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_data_element_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-DATA-ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-DATA-ELEMENT-REF")
 
         return elem
 

@@ -93,57 +93,25 @@ class ExecutionOrderConstraint(TimingConstraint):
         if self.base_ref is not None:
             serialized = SerializationHelper.serialize_item(self.base_ref, "CompositionSwComponentType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE-REF")
 
         # Serialize execution_order
         if self.execution_order is not None:
             serialized = SerializationHelper.serialize_item(self.execution_order, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EXECUTION-ORDER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EXECUTION-ORDER")
 
         # Serialize ignore_order
         if self.ignore_order is not None:
             serialized = SerializationHelper.serialize_item(self.ignore_order, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IGNORE-ORDER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IGNORE-ORDER")
 
         # Serialize is_event
         if self.is_event is not None:
             serialized = SerializationHelper.serialize_item(self.is_event, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-EVENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-EVENT")
 
         # Serialize ordered_elements (list to container "ORDERED-ELEMENTS")
         if self.ordered_elements:
@@ -159,15 +127,7 @@ class ExecutionOrderConstraint(TimingConstraint):
         if self.permit_multiple is not None:
             serialized = SerializationHelper.serialize_item(self.permit_multiple, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PERMIT-MULTIPLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PERMIT-MULTIPLE")
 
         return elem
 

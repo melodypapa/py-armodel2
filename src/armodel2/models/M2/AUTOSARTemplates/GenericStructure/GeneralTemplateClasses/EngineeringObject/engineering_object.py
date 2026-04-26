@@ -79,43 +79,19 @@ class EngineeringObject(ARObject, ABC):
         if self.short_label is not None:
             serialized = SerializationHelper.serialize_item(self.short_label, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHORT-LABEL")
 
         # Serialize category
         if self.category is not None:
             serialized = SerializationHelper.serialize_item(self.category, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CATEGORY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CATEGORY")
 
         # Serialize domain
         if self.domain is not None:
             serialized = SerializationHelper.serialize_item(self.domain, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DOMAIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DOMAIN")
 
         # Serialize revision_labels (list to container "REVISION-LABELS")
         if self.revision_labels:
@@ -123,14 +99,7 @@ class EngineeringObject(ARObject, ABC):
             for item in self.revision_labels:
                 serialized = SerializationHelper.serialize_item(item, "RevisionLabelString")
                 if serialized is not None:
-                    child_elem = ET.Element("REVISION-LABEL")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "REVISION-LABEL")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

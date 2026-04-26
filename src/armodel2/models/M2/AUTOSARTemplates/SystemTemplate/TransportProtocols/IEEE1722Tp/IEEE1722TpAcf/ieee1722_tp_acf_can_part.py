@@ -97,71 +97,31 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         if self.can_addressing is not None:
             serialized = SerializationHelper.serialize_item(self.can_addressing, "CanAddressingModeType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-ADDRESSING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-ADDRESSING")
 
         # Serialize can_bit_rate_switch
         if self.can_bit_rate_switch is not None:
             serialized = SerializationHelper.serialize_item(self.can_bit_rate_switch, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-BIT-RATE-SWITCH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-BIT-RATE-SWITCH")
 
         # Serialize can_frame_tx_behavior
         if self.can_frame_tx_behavior is not None:
             serialized = SerializationHelper.serialize_item(self.can_frame_tx_behavior, "CanFrameTxBehaviorEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-FRAME-TX-BEHAVIOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-FRAME-TX-BEHAVIOR")
 
         # Serialize can_identifier
         if self.can_identifier is not None:
             serialized = SerializationHelper.serialize_item(self.can_identifier, "RxIdentifierRange")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-IDENTIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-IDENTIFIER")
 
         # Serialize sdu_ref
         if self.sdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sdu_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SDU-REF")
 
         return elem
 

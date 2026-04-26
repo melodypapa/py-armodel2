@@ -74,29 +74,13 @@ class MsrQueryArg(ARObject):
         if self.arg is not None:
             serialized = SerializationHelper.serialize_item(self.arg, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARG")
 
         # Serialize si
         if self.si is not None:
             serialized = SerializationHelper.serialize_item(self.si, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SI")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SI")
 
         return elem
 

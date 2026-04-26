@@ -75,29 +75,13 @@ class DiagnosticFunctionInhibitSource(Identifiable):
         if self.event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.event_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-REF")
 
         # Serialize event_group_ref
         if self.event_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.event_group_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-GROUP-REF")
 
         return elem
 

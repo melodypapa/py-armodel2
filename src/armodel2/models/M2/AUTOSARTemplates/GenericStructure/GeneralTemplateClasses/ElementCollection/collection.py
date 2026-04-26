@@ -129,15 +129,7 @@ class Collection(ARElement):
         if self.auto_collect is not None:
             serialized = SerializationHelper.serialize_item(self.auto_collect, "AutoCollectEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AUTO-COLLECT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AUTO-COLLECT")
 
         # Serialize collected_instance_irefs (list of instance references with wrapper "COLLECTED-INSTANCES-IREF")
         if self.collected_instance_irefs:
@@ -154,29 +146,13 @@ class Collection(ARElement):
         if self.collection_semantics is not None:
             serialized = SerializationHelper.serialize_item(self.collection_semantics, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COLLECTION-SEMANTICS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COLLECTION-SEMANTICS")
 
         # Serialize element_role
         if self.element_role is not None:
             serialized = SerializationHelper.serialize_item(self.element_role, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ELEMENT-ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ELEMENT-ROLE")
 
         # Serialize element_refs (list to container "ELEMENT-REFS")
         if self.element_refs:
@@ -184,14 +160,7 @@ class Collection(ARElement):
             for item in self.element_refs:
                 serialized = SerializationHelper.serialize_item(item, "Identifiable")
                 if serialized is not None:
-                    child_elem = ET.Element("ELEMENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ELEMENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -201,14 +170,7 @@ class Collection(ARElement):
             for item in self.source_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "Identifiable")
                 if serialized is not None:
-                    child_elem = ET.Element("SOURCE-ELEMENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SOURCE-ELEMENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

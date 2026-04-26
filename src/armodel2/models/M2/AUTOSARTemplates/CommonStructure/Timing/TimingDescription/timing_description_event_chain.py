@@ -87,29 +87,13 @@ class TimingDescriptionEventChain(TimingDescription):
         if self.is_pipelining is not None:
             serialized = SerializationHelper.serialize_item(self.is_pipelining, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-PIPELINING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-PIPELINING")
 
         # Serialize response_ref
         if self.response_ref is not None:
             serialized = SerializationHelper.serialize_item(self.response_ref, "TimingDescriptionEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RESPONSE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RESPONSE-REF")
 
         # Serialize segment_refs (list to container "SEGMENT-REFS")
         if self.segment_refs:
@@ -117,14 +101,7 @@ class TimingDescriptionEventChain(TimingDescription):
             for item in self.segment_refs:
                 serialized = SerializationHelper.serialize_item(item, "TimingDescriptionEvent")
                 if serialized is not None:
-                    child_elem = ET.Element("SEGMENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SEGMENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -132,15 +109,7 @@ class TimingDescriptionEventChain(TimingDescription):
         if self.stimulus_ref is not None:
             serialized = SerializationHelper.serialize_item(self.stimulus_ref, "TimingDescriptionEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STIMULUS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STIMULUS-REF")
 
         return elem
 

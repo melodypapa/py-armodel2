@@ -91,85 +91,37 @@ class Colspec(ARObject):
         if self.align is not None:
             serialized = SerializationHelper.serialize_item(self.align, "AlignEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALIGN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALIGN")
 
         # Serialize colname
         if self.colname is not None:
             serialized = SerializationHelper.serialize_item(self.colname, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COLNAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COLNAME")
 
         # Serialize colnum
         if self.colnum is not None:
             serialized = SerializationHelper.serialize_item(self.colnum, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COLNUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COLNUM")
 
         # Serialize colsep
         if self.colsep is not None:
             serialized = SerializationHelper.serialize_item(self.colsep, "TableSeparatorString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COLSEP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COLSEP")
 
         # Serialize colwidth
         if self.colwidth is not None:
             serialized = SerializationHelper.serialize_item(self.colwidth, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COLWIDTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COLWIDTH")
 
         # Serialize rowsep
         if self.rowsep is not None:
             serialized = SerializationHelper.serialize_item(self.rowsep, "TableSeparatorString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROWSEP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROWSEP")
 
         return elem
 

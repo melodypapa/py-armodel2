@@ -75,15 +75,7 @@ class ModeSwitchInterface(PortInterface):
         if self.mode_group is not None:
             serialized = SerializationHelper.serialize_item(self.mode_group, "ModeDeclarationGroupPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-GROUP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODE-GROUP")
 
         return elem
 

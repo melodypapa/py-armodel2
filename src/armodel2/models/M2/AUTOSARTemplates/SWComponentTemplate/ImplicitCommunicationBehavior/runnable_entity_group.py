@@ -94,14 +94,7 @@ class RunnableEntityGroup(Identifiable):
             for item in self.runnable_entity_group_group_in_composition_instance_ref:
                 serialized = SerializationHelper.serialize_item(item, "RunnableEntityGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

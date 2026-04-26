@@ -97,14 +97,7 @@ class SignalServiceTranslationProps(Identifiable):
             for item in self.control_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConsumedEventGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTROL-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONTROL-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -114,14 +107,7 @@ class SignalServiceTranslationProps(Identifiable):
             for item in self.control_pnc_refs:
                 serialized = SerializationHelper.serialize_item(item, "PncMappingIdent")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTROL-PNC-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONTROL-PNC-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -131,14 +117,7 @@ class SignalServiceTranslationProps(Identifiable):
             for item in self.control_provided_refs:
                 serialized = SerializationHelper.serialize_item(item, "EventHandler")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTROL-PROVIDED-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONTROL-PROVIDED-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -146,15 +125,7 @@ class SignalServiceTranslationProps(Identifiable):
         if self.service_control is not None:
             serialized = SerializationHelper.serialize_item(self.service_control, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SERVICE-CONTROL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SERVICE-CONTROL")
 
         # Serialize signal_service_event_propses (list to container "SIGNAL-SERVICE-EVENT-PROPSS")
         if self.signal_service_event_propses:

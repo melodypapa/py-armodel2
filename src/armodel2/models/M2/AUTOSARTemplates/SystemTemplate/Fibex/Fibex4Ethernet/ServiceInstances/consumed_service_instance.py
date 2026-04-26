@@ -135,14 +135,7 @@ class ConsumedServiceInstance(AbstractServiceInstance):
             for item in self.allowed_service_refs:
                 serialized = SerializationHelper.serialize_item(item, "NetworkEndpoint")
                 if serialized is not None:
-                    child_elem = ET.Element("ALLOWED-SERVICE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ALLOWED-SERVICE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -150,15 +143,7 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         if self.auto_require is not None:
             serialized = SerializationHelper.serialize_item(self.auto_require, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AUTO-REQUIRE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AUTO-REQUIRE")
 
         # Serialize blocklisteds (list to container "BLOCKLISTEDS")
         if self.blocklisteds:
@@ -176,14 +161,7 @@ class ConsumedServiceInstance(AbstractServiceInstance):
             for item in self.consumed_event_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ConsumedEventGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("CONSUMED-EVENT-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONSUMED-EVENT-GROUP-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -191,141 +169,61 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         if self.event_multicast_ref is not None:
             serialized = SerializationHelper.serialize_item(self.event_multicast_ref, "ApplicationEndpoint")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-MULTICAST-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-MULTICAST-REF")
 
         # Serialize instance
         if self.instance is not None:
             serialized = SerializationHelper.serialize_item(self.instance, "AnyServiceInstanceId")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INSTANCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INSTANCE")
 
         # Serialize local_unicast
         if self.local_unicast is not None:
             serialized = SerializationHelper.serialize_item(self.local_unicast, "ApplicationEndpoint")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOCAL-UNICAST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOCAL-UNICAST")
 
         # Serialize minor_version
         if self.minor_version is not None:
             serialized = SerializationHelper.serialize_item(self.minor_version, "AnyVersionString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINOR-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINOR-VERSION")
 
         # Serialize provided_service_ref
         if self.provided_service_ref is not None:
             serialized = SerializationHelper.serialize_item(self.provided_service_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROVIDED-SERVICE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROVIDED-SERVICE-REF")
 
         # Serialize remote_unicast
         if self.remote_unicast is not None:
             serialized = SerializationHelper.serialize_item(self.remote_unicast, "ApplicationEndpoint")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REMOTE-UNICAST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REMOTE-UNICAST")
 
         # Serialize sd_client_config
         if self.sd_client_config is not None:
             serialized = SerializationHelper.serialize_item(self.sd_client_config, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SD-CLIENT-CONFIG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SD-CLIENT-CONFIG")
 
         # Serialize sd_client_timer_ref
         if self.sd_client_timer_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sd_client_timer_ref, "SomeipSdClientServiceInstanceConfig")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SD-CLIENT-TIMER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SD-CLIENT-TIMER-REF")
 
         # Serialize service_identifier
         if self.service_identifier is not None:
             serialized = SerializationHelper.serialize_item(self.service_identifier, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SERVICE-IDENTIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SERVICE-IDENTIFIER")
 
         # Serialize version_driven
         if self.version_driven is not None:
             serialized = SerializationHelper.serialize_item(self.version_driven, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VERSION-DRIVEN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VERSION-DRIVEN")
 
         return elem
 

@@ -87,43 +87,19 @@ class RteEventInSystemToOsTaskProxyMapping(Identifiable):
         if self.offset is not None:
             serialized = SerializationHelper.serialize_item(self.offset, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OFFSET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OFFSET")
 
         # Serialize os_task_proxy_ref
         if self.os_task_proxy_ref is not None:
             serialized = SerializationHelper.serialize_item(self.os_task_proxy_ref, "OsTaskProxy")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OS-TASK-PROXY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OS-TASK-PROXY-REF")
 
         # Serialize rte_event_instance_ref
         if self.rte_event_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.rte_event_instance_ref, "RTEEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RTE-EVENT-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RTE-EVENT-INSTANCE-REF")
 
         return elem
 

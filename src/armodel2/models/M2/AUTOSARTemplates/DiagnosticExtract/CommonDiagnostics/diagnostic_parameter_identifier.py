@@ -99,43 +99,19 @@ class DiagnosticParameterIdentifier(DiagnosticCommonElement):
         if self.id is not None:
             serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ID")
 
         # Serialize pid_size
         if self.pid_size is not None:
             serialized = SerializationHelper.serialize_item(self.pid_size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PID-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PID-SIZE")
 
         # Serialize support_info_byte
         if self.support_info_byte is not None:
             serialized = SerializationHelper.serialize_item(self.support_info_byte, "DiagnosticSupportInfoByte")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUPPORT-INFO-BYTE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUPPORT-INFO-BYTE")
 
         return elem
 

@@ -81,29 +81,13 @@ class ModeRequestTypeMap(ARObject):
         if self.implementation_data_type_ref is not None:
             serialized = SerializationHelper.serialize_item(self.implementation_data_type_ref, "AbstractImplementationDataType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTATION-DATA-TYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMPLEMENTATION-DATA-TYPE-REF")
 
         # Serialize mode_group_ref
         if self.mode_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODE-GROUP-REF")
 
         return elem
 

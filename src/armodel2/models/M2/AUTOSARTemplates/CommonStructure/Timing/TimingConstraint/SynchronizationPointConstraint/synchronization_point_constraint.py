@@ -86,14 +86,7 @@ class SynchronizationPointConstraint(TimingConstraint):
             for item in self.source_eec_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("SOURCE-EEC-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SOURCE-EEC-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -103,14 +96,7 @@ class SynchronizationPointConstraint(TimingConstraint):
             for item in self.source_event_refs:
                 serialized = SerializationHelper.serialize_item(item, "AbstractEvent")
                 if serialized is not None:
-                    child_elem = ET.Element("SOURCE-EVENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SOURCE-EVENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -120,14 +106,7 @@ class SynchronizationPointConstraint(TimingConstraint):
             for item in self.target_eec_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("TARGET-EEC-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "TARGET-EEC-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -137,14 +116,7 @@ class SynchronizationPointConstraint(TimingConstraint):
             for item in self.target_event_refs:
                 serialized = SerializationHelper.serialize_item(item, "AbstractEvent")
                 if serialized is not None:
-                    child_elem = ET.Element("TARGET-EVENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "TARGET-EVENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

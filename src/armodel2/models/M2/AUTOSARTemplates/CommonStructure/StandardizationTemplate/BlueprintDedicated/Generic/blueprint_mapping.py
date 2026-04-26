@@ -77,29 +77,13 @@ class BlueprintMapping(ARObject):
         if self.blueprint_ref is not None:
             serialized = SerializationHelper.serialize_item(self.blueprint_ref, "AtpBlueprint")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BLUEPRINT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BLUEPRINT-REF")
 
         # Serialize derived_object_ref
         if self.derived_object_ref is not None:
             serialized = SerializationHelper.serialize_item(self.derived_object_ref, "AtpBlueprintable")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DERIVED-OBJECT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DERIVED-OBJECT-REF")
 
         return elem
 

@@ -88,14 +88,7 @@ class ClientServerOperationMapping(ARObject):
             for item in self.argument_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataPrototypeMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("ARGUMENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ARGUMENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -103,43 +96,19 @@ class ClientServerOperationMapping(ARObject):
         if self.first_operation_ref is not None:
             serialized = SerializationHelper.serialize_item(self.first_operation_ref, "ClientServerOperation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIRST-OPERATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIRST-OPERATION-REF")
 
         # Serialize first_to_second_ref
         if self.first_to_second_ref is not None:
             serialized = SerializationHelper.serialize_item(self.first_to_second_ref, "DataTransformation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIRST-TO-SECOND-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIRST-TO-SECOND-REF")
 
         # Serialize second_ref
         if self.second_ref is not None:
             serialized = SerializationHelper.serialize_item(self.second_ref, "ClientServerOperation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECOND-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECOND-REF")
 
         return elem
 

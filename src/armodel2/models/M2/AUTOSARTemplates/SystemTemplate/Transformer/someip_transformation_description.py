@@ -83,43 +83,19 @@ class SOMEIPTransformationDescription(TransformationDescription):
         if self.alignment is not None:
             serialized = SerializationHelper.serialize_item(self.alignment, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALIGNMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALIGNMENT")
 
         # Serialize byte_order
         if self.byte_order is not None:
             serialized = SerializationHelper.serialize_item(self.byte_order, "ByteOrderEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BYTE-ORDER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BYTE-ORDER")
 
         # Serialize interface_version
         if self.interface_version is not None:
             serialized = SerializationHelper.serialize_item(self.interface_version, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTERFACE-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTERFACE-VERSION")
 
         return elem
 

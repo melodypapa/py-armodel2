@@ -68,29 +68,13 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
         if self.can_controller_fd is not None:
             serialized = SerializationHelper.serialize_item(self.can_controller_fd, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-CONTROLLER-FD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-CONTROLLER-FD")
 
         # Serialize can_controller_xl
         if self.can_controller_xl is not None:
             serialized = SerializationHelper.serialize_item(self.can_controller_xl, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CAN-CONTROLLER-XL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CAN-CONTROLLER-XL")
 
         return elem
 

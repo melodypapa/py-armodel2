@@ -77,14 +77,7 @@ class IPv6ExtHeaderFilterSet(ARElement):
             for item in self.ext_header_filter_refs:
                 serialized = SerializationHelper.serialize_item(item, "IPv6ExtHeaderFilterList")
                 if serialized is not None:
-                    child_elem = ET.Element("EXT-HEADER-FILTER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "EXT-HEADER-FILTER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

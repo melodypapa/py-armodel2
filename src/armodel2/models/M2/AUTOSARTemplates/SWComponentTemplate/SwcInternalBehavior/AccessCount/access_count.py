@@ -77,29 +77,13 @@ class AccessCount(ARObject):
         if self.access_point_ref is not None:
             serialized = SerializationHelper.serialize_item(self.access_point_ref, "AbstractAccessPoint")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ACCESS-POINT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ACCESS-POINT-REF")
 
         # Serialize value
         if self.value is not None:
             serialized = SerializationHelper.serialize_item(self.value, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VALUE")
 
         return elem
 

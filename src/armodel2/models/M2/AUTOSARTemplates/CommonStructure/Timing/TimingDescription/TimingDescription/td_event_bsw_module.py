@@ -78,29 +78,13 @@ class TDEventBswModule(TDEventBsw):
         if self.bsw_module_entry_entry_ref is not None:
             serialized = SerializationHelper.serialize_item(self.bsw_module_entry_entry_ref, "BswModuleEntry")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BSW-MODULE-ENTRY-ENTRY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BSW-MODULE-ENTRY-ENTRY-REF")
 
         # Serialize td_event_bsw
         if self.td_event_bsw is not None:
             serialized = SerializationHelper.serialize_item(self.td_event_bsw, "TDEventBswModule")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TD-EVENT-BSW")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TD-EVENT-BSW")
 
         return elem
 

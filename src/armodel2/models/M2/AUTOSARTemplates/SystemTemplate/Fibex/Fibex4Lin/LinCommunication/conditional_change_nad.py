@@ -87,71 +87,31 @@ class ConditionalChangeNad(LinConfigurationEntry):
         if self.byte is not None:
             serialized = SerializationHelper.serialize_item(self.byte, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BYTE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BYTE")
 
         # Serialize id
         if self.id is not None:
             serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ID")
 
         # Serialize invert
         if self.invert is not None:
             serialized = SerializationHelper.serialize_item(self.invert, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INVERT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INVERT")
 
         # Serialize mask
         if self.mask is not None:
             serialized = SerializationHelper.serialize_item(self.mask, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MASK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MASK")
 
         # Serialize new_nad
         if self.new_nad is not None:
             serialized = SerializationHelper.serialize_item(self.new_nad, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NEW-NAD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NEW-NAD")
 
         return elem
 

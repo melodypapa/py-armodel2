@@ -84,57 +84,25 @@ class CouplingPortRatePolicy(ARObject):
         if self.data_length is not None:
             serialized = SerializationHelper.serialize_item(self.data_length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-LENGTH")
 
         # Serialize policy_action
         if self.policy_action is not None:
             serialized = SerializationHelper.serialize_item(self.policy_action, "CouplingPortRatePolicy")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("POLICY-ACTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "POLICY-ACTION")
 
         # Serialize priority
         if self.priority is not None:
             serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIORITY")
 
         # Serialize time_interval
         if self.time_interval is not None:
             serialized = SerializationHelper.serialize_item(self.time_interval, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-INTERVAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-INTERVAL")
 
         # Serialize v_lan_refs (list to container "V-LAN-REFS")
         if self.v_lan_refs:
@@ -142,14 +110,7 @@ class CouplingPortRatePolicy(ARObject):
             for item in self.v_lan_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("V-LAN-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "V-LAN-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

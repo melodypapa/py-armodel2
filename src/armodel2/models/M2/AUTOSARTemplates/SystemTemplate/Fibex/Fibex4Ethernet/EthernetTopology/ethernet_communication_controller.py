@@ -112,92 +112,43 @@ class EthernetCommunicationController(ARObject):
         if self.can_xl_config_ref is not None:
             serialized = SerializationHelper.serialize_item(self.can_xl_config_ref, "Any")
             if serialized is not None:
-                wrapped = ET.Element("CAN-XL-CONFIG-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "CAN-XL-CONFIG-REF")
 
         # Serialize coupling_ports (list)
         for item in self.coupling_ports:
             serialized = SerializationHelper.serialize_item(item, "CouplingPort")
             if serialized is not None:
-                wrapped = ET.Element("COUPLING-PORT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "COUPLING-PORT")
 
         # Serialize mac_layer_type
         if self.mac_layer_type is not None:
             serialized = SerializationHelper.serialize_item(self.mac_layer_type, "EthernetMacLayerTypeEnum")
             if serialized is not None:
-                wrapped = ET.Element("MAC-LAYER-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MAC-LAYER-TYPE")
 
         # Serialize mac_unicast
         if self.mac_unicast is not None:
             serialized = SerializationHelper.serialize_item(self.mac_unicast, "MacAddressString")
             if serialized is not None:
-                wrapped = ET.Element("MAC-UNICAST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MAC-UNICAST")
 
         # Serialize maximum
         if self.maximum is not None:
             serialized = SerializationHelper.serialize_item(self.maximum, "Integer")
             if serialized is not None:
-                wrapped = ET.Element("MAXIMUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "MAXIMUM")
 
         # Serialize slave_act_as
         if self.slave_act_as is not None:
             serialized = SerializationHelper.serialize_item(self.slave_act_as, "Boolean")
             if serialized is not None:
-                wrapped = ET.Element("SLAVE-ACT-AS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SLAVE-ACT-AS")
 
         # Serialize slave_qualified
         if self.slave_qualified is not None:
             serialized = SerializationHelper.serialize_item(self.slave_qualified, "TimeValue")
             if serialized is not None:
-                wrapped = ET.Element("SLAVE-QUALIFIED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                inner_elem.append(wrapped)
+                SerializationHelper.wrap_and_append(inner_elem, serialized, "SLAVE-QUALIFIED")
 
         # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
         wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "EthernetCommunicationController")

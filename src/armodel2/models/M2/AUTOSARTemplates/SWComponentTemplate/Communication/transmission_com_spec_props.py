@@ -80,43 +80,19 @@ class TransmissionComSpecProps(ARObject):
         if self.data_update_period is not None:
             serialized = SerializationHelper.serialize_item(self.data_update_period, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-UPDATE-PERIOD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-UPDATE-PERIOD")
 
         # Serialize minimum_send_interval
         if self.minimum_send_interval is not None:
             serialized = SerializationHelper.serialize_item(self.minimum_send_interval, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM-SEND-INTERVAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINIMUM-SEND-INTERVAL")
 
         # Serialize transmission_mode
         if self.transmission_mode is not None:
             serialized = SerializationHelper.serialize_item(self.transmission_mode, "TransmissionModeDefinitionEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSMISSION-MODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSMISSION-MODE")
 
         return elem
 

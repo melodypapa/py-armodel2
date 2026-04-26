@@ -70,15 +70,7 @@ class ValueSpecification(ARObject, ABC):
         if self.short_label is not None:
             serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHORT-LABEL")
 
         return elem
 

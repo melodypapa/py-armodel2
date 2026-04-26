@@ -93,29 +93,13 @@ class CpSoftwareClusterResource(Identifiable, ABC):
         if self.global_resource is not None:
             serialized = SerializationHelper.serialize_item(self.global_resource, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GLOBAL-RESOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "GLOBAL-RESOURCE")
 
         # Serialize is_mandatory
         if self.is_mandatory is not None:
             serialized = SerializationHelper.serialize_item(self.is_mandatory, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-MANDATORY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-MANDATORY")
 
         return elem
 

@@ -83,29 +83,13 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
         if self.check_per is not None:
             serialized = SerializationHelper.serialize_item(self.check_per, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CHECK-PER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CHECK-PER")
 
         # Serialize configuration
         if self.configuration is not None:
             serialized = SerializationHelper.serialize_item(self.configuration, "DiagnosticHandleDDDIConfigurationEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONFIGURATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONFIGURATION")
 
         # Serialize subfunctions (list to container "SUBFUNCTIONS")
         if self.subfunctions:

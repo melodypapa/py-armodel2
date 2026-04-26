@@ -89,29 +89,13 @@ class McSwEmulationMethodSupport(ARObject):
         if self.base_reference_ref is not None:
             serialized = SerializationHelper.serialize_item(self.base_reference_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE-REFERENCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE-REFERENCE-REF")
 
         # Serialize category
         if self.category is not None:
             serialized = SerializationHelper.serialize_item(self.category, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CATEGORY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CATEGORY")
 
         # Serialize element_groups (list to container "ELEMENT-GROUPS")
         if self.element_groups:
@@ -127,29 +111,13 @@ class McSwEmulationMethodSupport(ARObject):
         if self.reference_table_ref is not None:
             serialized = SerializationHelper.serialize_item(self.reference_table_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REFERENCE-TABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REFERENCE-TABLE-REF")
 
         # Serialize short_label
         if self.short_label is not None:
             serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHORT-LABEL")
 
         return elem
 

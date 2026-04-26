@@ -80,29 +80,13 @@ class MsrQueryTopic1(Paginateable):
         if self.msr_query_props is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query_props, "MsrQueryProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MSR-QUERY-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MSR-QUERY-PROPS")
 
         # Serialize msr_query_result_topic1
         if self.msr_query_result_topic1 is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query_result_topic1, "MsrQueryResultTopic1")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MSR-QUERY-RESULT-TOPIC1")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MSR-QUERY-RESULT-TOPIC1")
 
         return elem
 

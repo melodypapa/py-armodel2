@@ -77,14 +77,7 @@ class TcpOptionFilterSet(ARElement):
             for item in self.tcp_option_filter_list_refs:
                 serialized = SerializationHelper.serialize_item(item, "TcpOptionFilterList")
                 if serialized is not None:
-                    child_elem = ET.Element("TCP-OPTION-FILTER-LIST-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "TCP-OPTION-FILTER-LIST-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

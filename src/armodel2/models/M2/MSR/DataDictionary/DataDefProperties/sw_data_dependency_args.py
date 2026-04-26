@@ -83,27 +83,13 @@ class SwDataDependencyArgs(ARObject):
         if self.sw_calprm_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sw_calprm_ref, "SwCalprmRefProxy")
             if serialized is not None:
-                wrapped = ET.Element("SW-CALPRM-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-CALPRM-REF")
 
         # Serialize sw_variable (complex type)
         if self.sw_variable is not None:
             serialized = SerializationHelper.serialize_item(self.sw_variable, "SwVariableRefProxy")
             if serialized is not None:
-                wrapped = ET.Element("SW-VARIABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SW-VARIABLE")
 
         return elem
 

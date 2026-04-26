@@ -78,29 +78,13 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
         if self.data is not None:
             serialized = SerializationHelper.serialize_item(self.data, "DataConsistencyPolicyEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA")
 
         # Serialize send_indication_enum
         if self.send_indication_enum is not None:
             serialized = SerializationHelper.serialize_item(self.send_indication_enum, "SendIndicationEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SEND-INDICATION-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SEND-INDICATION-ENUM")
 
         return elem
 

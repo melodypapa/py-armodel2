@@ -123,15 +123,7 @@ class ChapterModel(ARObject):
         if self.msr_query_chapter is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query_chapter, "MsrQueryChapter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MSR-QUERY-CHAPTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MSR-QUERY-CHAPTER")
 
         # Serialize chapter_content (atp_mixed - append children directly)
         if self.chapter_content is not None:
@@ -150,15 +142,7 @@ class ChapterModel(ARObject):
         if self.prms is not None:
             serialized = SerializationHelper.serialize_item(self.prms, "Prms")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRMS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRMS")
 
         # Serialize topic_content_or_msr (atp_mixed - append children directly)
         if self.topic_content_or_msr is not None:
@@ -190,15 +174,7 @@ class ChapterModel(ARObject):
         if self.msr_query is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query, "MsrQueryTopic1")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MSR-QUERY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MSR-QUERY")
 
         return elem
 

@@ -73,29 +73,13 @@ class RxIdentifierRange(ARObject):
         if self.lower_can_id is not None:
             serialized = SerializationHelper.serialize_item(self.lower_can_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOWER-CAN-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOWER-CAN-ID")
 
         # Serialize upper_can_id
         if self.upper_can_id is not None:
             serialized = SerializationHelper.serialize_item(self.upper_can_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPPER-CAN-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPPER-CAN-ID")
 
         return elem
 

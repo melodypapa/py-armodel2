@@ -86,43 +86,19 @@ class RptHook(ARObject):
         if self.code_label is not None:
             serialized = SerializationHelper.serialize_item(self.code_label, "CIdentifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CODE-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CODE-LABEL")
 
         # Serialize mcd_identifier
         if self.mcd_identifier is not None:
             serialized = SerializationHelper.serialize_item(self.mcd_identifier, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MCD-IDENTIFIER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MCD-IDENTIFIER")
 
         # Serialize rpt_ar_hook
         if self.rpt_ar_hook is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_ar_hook, "AtpFeature")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-AR-HOOK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-AR-HOOK")
 
         # Serialize sdgs (list to container "SDGS")
         if self.sdgs:

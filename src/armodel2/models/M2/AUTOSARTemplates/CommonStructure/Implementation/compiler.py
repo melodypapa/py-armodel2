@@ -85,57 +85,25 @@ class Compiler(Identifiable):
         if self.name is not None:
             serialized = SerializationHelper.serialize_item(self.name, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NAME")
 
         # Serialize options
         if self.options is not None:
             serialized = SerializationHelper.serialize_item(self.options, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OPTIONS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OPTIONS")
 
         # Serialize vendor
         if self.vendor is not None:
             serialized = SerializationHelper.serialize_item(self.vendor, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VENDOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VENDOR")
 
         # Serialize version
         if self.version is not None:
             serialized = SerializationHelper.serialize_item(self.version, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VERSION")
 
         return elem
 

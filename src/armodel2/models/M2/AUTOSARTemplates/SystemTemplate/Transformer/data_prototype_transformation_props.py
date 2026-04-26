@@ -86,43 +86,19 @@ class DataPrototypeTransformationProps(ARObject):
         if self.data_prototype_in_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_prototype_in_ref, "DataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-PROTOTYPE-IN-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-PROTOTYPE-IN-REF")
 
         # Serialize network
         if self.network is not None:
             serialized = SerializationHelper.serialize_item(self.network, "SwDataDefProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NETWORK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NETWORK")
 
         # Serialize transformation_props_ref
         if self.transformation_props_ref is not None:
             serialized = SerializationHelper.serialize_item(self.transformation_props_ref, "TransformationProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSFORMATION-PROPS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSFORMATION-PROPS-REF")
 
         return elem
 

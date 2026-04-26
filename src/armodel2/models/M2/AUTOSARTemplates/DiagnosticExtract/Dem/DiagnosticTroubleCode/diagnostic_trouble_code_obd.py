@@ -88,57 +88,25 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
         if self.consider_pto is not None:
             serialized = SerializationHelper.serialize_item(self.consider_pto, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONSIDER-PTO")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONSIDER-PTO")
 
         # Serialize dtc_props_props_ref
         if self.dtc_props_props_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dtc_props_props_ref, "DiagnosticTroubleCode")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DTC-PROPS-PROPS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DTC-PROPS-PROPS-REF")
 
         # Serialize event_readiness
         if self.event_readiness is not None:
             serialized = SerializationHelper.serialize_item(self.event_readiness, "EventObdReadinessGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-READINESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-READINESS")
 
         # Serialize obd_dtc_value
         if self.obd_dtc_value is not None:
             serialized = SerializationHelper.serialize_item(self.obd_dtc_value, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OBD-DTC-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OBD-DTC-VALUE")
 
         return elem
 

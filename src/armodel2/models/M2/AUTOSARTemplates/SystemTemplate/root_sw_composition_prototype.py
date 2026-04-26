@@ -92,14 +92,7 @@ class RootSwCompositionPrototype(Identifiable):
             for item in self.calibration_parameter_value_set_refs:
                 serialized = SerializationHelper.serialize_item(item, "CalibrationParameterValueSet")
                 if serialized is not None:
-                    child_elem = ET.Element("CALIBRATION-PARAMETER-VALUE-SET-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CALIBRATION-PARAMETER-VALUE-SET-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -107,29 +100,13 @@ class RootSwCompositionPrototype(Identifiable):
         if self.flat_map_ref is not None:
             serialized = SerializationHelper.serialize_item(self.flat_map_ref, "FlatMap")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FLAT-MAP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FLAT-MAP-REF")
 
         # Serialize software_composition_ref
         if self.software_composition_ref is not None:
             serialized = SerializationHelper.serialize_item(self.software_composition_ref, "CompositionSwComponentType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOFTWARE-COMPOSITION-TREF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOFTWARE-COMPOSITION-TREF")
 
         return elem
 

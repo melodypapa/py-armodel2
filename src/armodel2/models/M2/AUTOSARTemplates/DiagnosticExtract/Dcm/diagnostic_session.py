@@ -87,57 +87,25 @@ class DiagnosticSession(DiagnosticCommonElement):
         if self.id is not None:
             serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ID")
 
         # Serialize jump_to_boot
         if self.jump_to_boot is not None:
             serialized = SerializationHelper.serialize_item(self.jump_to_boot, "DiagnosticJumpToBootLoaderEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("JUMP-TO-BOOT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "JUMP-TO-BOOT")
 
         # Serialize p2_server_max
         if self.p2_server_max is not None:
             serialized = SerializationHelper.serialize_item(self.p2_server_max, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("P2-SERVER-MAX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "P2-SERVER-MAX")
 
         # Serialize p2_star_server
         if self.p2_star_server is not None:
             serialized = SerializationHelper.serialize_item(self.p2_star_server, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("P2-STAR-SERVER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "P2-STAR-SERVER")
 
         return elem
 

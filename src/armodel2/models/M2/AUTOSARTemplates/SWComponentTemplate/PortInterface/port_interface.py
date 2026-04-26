@@ -83,29 +83,13 @@ class PortInterface(ARElement, ABC):
         if self.is_service is not None:
             serialized = SerializationHelper.serialize_item(self.is_service, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-SERVICE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-SERVICE")
 
         # Serialize service_kind
         if self.service_kind is not None:
             serialized = SerializationHelper.serialize_item(self.service_kind, "ServiceProviderEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SERVICE-KIND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SERVICE-KIND")
 
         return elem
 

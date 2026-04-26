@@ -144,29 +144,13 @@ class ISignal(FibexElement):
         if self.data_transformation_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_transformation_ref, "DataTransformation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-TRANSFORMATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-TRANSFORMATION-REF")
 
         # Serialize data_type_policy
         if self.data_type_policy is not None:
             serialized = SerializationHelper.serialize_item(self.data_type_policy, "DataTypePolicyEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-TYPE-POLICY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-TYPE-POLICY")
 
         # Serialize init_value (polymorphic wrapper "INIT-VALUE")
         if self.init_value is not None:
@@ -181,85 +165,37 @@ class ISignal(FibexElement):
         if self.i_signal_props is not None:
             serialized = SerializationHelper.serialize_item(self.i_signal_props, "ISignalProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "I-SIGNAL-PROPS")
 
         # Serialize i_signal_type
         if self.i_signal_type is not None:
             serialized = SerializationHelper.serialize_item(self.i_signal_type, "ISignalTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "I-SIGNAL-TYPE")
 
         # Serialize length
         if self.length is not None:
             serialized = SerializationHelper.serialize_item(self.length, "UnlimitedInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LENGTH")
 
         # Serialize network_representation_props
         if self.network_representation_props is not None:
             serialized = SerializationHelper.serialize_item(self.network_representation_props, "SwDataDefProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NETWORK-REPRESENTATION-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NETWORK-REPRESENTATION-PROPS")
 
         # Serialize system_signal_ref
         if self.system_signal_ref is not None:
             serialized = SerializationHelper.serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM-SIGNAL-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYSTEM-SIGNAL-REF")
 
         # Serialize timeout_substitution_value
         if self.timeout_substitution_value is not None:
             serialized = SerializationHelper.serialize_item(self.timeout_substitution_value, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT-SUBSTITUTION-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT-SUBSTITUTION-VALUE")
 
         # Serialize transformation_i_signal_props (list to container "TRANSFORMATION-I-SIGNAL-PROPS")
         if self.transformation_i_signal_props:

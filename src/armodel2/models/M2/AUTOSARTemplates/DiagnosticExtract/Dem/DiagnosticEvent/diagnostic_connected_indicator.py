@@ -87,57 +87,25 @@ class DiagnosticConnectedIndicator(Identifiable):
         if self.behavior_indicator_behavior_enum is not None:
             serialized = SerializationHelper.serialize_item(self.behavior_indicator_behavior_enum, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BEHAVIOR-INDICATOR-BEHAVIOR-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BEHAVIOR-INDICATOR-BEHAVIOR-ENUM")
 
         # Serialize healing_cycle
         if self.healing_cycle is not None:
             serialized = SerializationHelper.serialize_item(self.healing_cycle, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HEALING-CYCLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HEALING-CYCLE")
 
         # Serialize indicator_ref
         if self.indicator_ref is not None:
             serialized = SerializationHelper.serialize_item(self.indicator_ref, "DiagnosticIndicator")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INDICATOR-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INDICATOR-REF")
 
         # Serialize indicator_failure
         if self.indicator_failure is not None:
             serialized = SerializationHelper.serialize_item(self.indicator_failure, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INDICATOR-FAILURE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INDICATOR-FAILURE")
 
         return elem
 

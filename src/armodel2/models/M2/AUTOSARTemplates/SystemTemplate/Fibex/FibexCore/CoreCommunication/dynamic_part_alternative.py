@@ -81,43 +81,19 @@ class DynamicPartAlternative(ARObject):
         if self.initial_dynamic is not None:
             serialized = SerializationHelper.serialize_item(self.initial_dynamic, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INITIAL-DYNAMIC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INITIAL-DYNAMIC")
 
         # Serialize i_pdu_ref
         if self.i_pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.i_pdu_ref, "ISignalIPdu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "I-PDU-REF")
 
         # Serialize selector_field
         if self.selector_field is not None:
             serialized = SerializationHelper.serialize_item(self.selector_field, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SELECTOR-FIELD")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SELECTOR-FIELD")
 
         return elem
 

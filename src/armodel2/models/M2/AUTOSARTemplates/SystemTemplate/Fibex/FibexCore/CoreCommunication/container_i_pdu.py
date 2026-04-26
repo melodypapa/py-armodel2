@@ -126,14 +126,7 @@ class ContainerIPdu(IPdu):
             for item in self.contained_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
-                    child_elem = ET.Element("CONTAINED-PDU-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "CONTAINED-PDU-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -141,113 +134,49 @@ class ContainerIPdu(IPdu):
         if self.container is not None:
             serialized = SerializationHelper.serialize_item(self.container, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTAINER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTAINER")
 
         # Serialize container_trigger_ref
         if self.container_trigger_ref is not None:
             serialized = SerializationHelper.serialize_item(self.container_trigger_ref, "ContainerIPduTriggerEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTAINER-TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTAINER-TRIGGER-REF")
 
         # Serialize header_type
         if self.header_type is not None:
             serialized = SerializationHelper.serialize_item(self.header_type, "ContainerIPduHeaderTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HEADER-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HEADER-TYPE")
 
         # Serialize minimum_rx
         if self.minimum_rx is not None:
             serialized = SerializationHelper.serialize_item(self.minimum_rx, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM-RX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINIMUM-RX")
 
         # Serialize minimum_tx
         if self.minimum_tx is not None:
             serialized = SerializationHelper.serialize_item(self.minimum_tx, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM-TX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINIMUM-TX")
 
         # Serialize rx_accept
         if self.rx_accept is not None:
             serialized = SerializationHelper.serialize_item(self.rx_accept, "RxAcceptContainedIPduEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RX-ACCEPT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RX-ACCEPT")
 
         # Serialize threshold_size
         if self.threshold_size is not None:
             serialized = SerializationHelper.serialize_item(self.threshold_size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("THRESHOLD-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "THRESHOLD-SIZE")
 
         # Serialize unused_bit
         if self.unused_bit is not None:
             serialized = SerializationHelper.serialize_item(self.unused_bit, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UNUSED-BIT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UNUSED-BIT")
 
         return elem
 

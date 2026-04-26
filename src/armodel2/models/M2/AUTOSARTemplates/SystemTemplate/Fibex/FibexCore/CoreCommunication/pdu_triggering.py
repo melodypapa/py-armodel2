@@ -103,14 +103,7 @@ class PduTriggering(Identifiable):
             for item in self.i_pdu_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "IPduPort")
                 if serialized is not None:
-                    child_elem = ET.Element("I-PDU-PORT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "I-PDU-PORT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -118,15 +111,7 @@ class PduTriggering(Identifiable):
         if self.i_pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.i_pdu_ref, "Pdu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("I-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "I-PDU-REF")
 
         # Serialize i_signal_refs (list to container "I-SIGNAL-REFS")
         if self.i_signal_refs:
@@ -134,14 +119,7 @@ class PduTriggering(Identifiable):
             for item in self.i_signal_refs:
                 serialized = SerializationHelper.serialize_item(item, "ISignalTriggering")
                 if serialized is not None:
-                    child_elem = ET.Element("I-SIGNAL-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "I-SIGNAL-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -149,15 +127,7 @@ class PduTriggering(Identifiable):
         if self.sec_oc_crypto_service_ref is not None:
             serialized = SerializationHelper.serialize_item(self.sec_oc_crypto_service_ref, "SecOcCryptoServiceMapping")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SEC-OC-CRYPTO-SERVICE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SEC-OC-CRYPTO-SERVICE-REF")
 
         # Serialize trigger_i_pdu_send_refs (list to container "TRIGGER-I-PDU-SEND-REFS")
         if self.trigger_i_pdu_send_refs:
@@ -165,14 +135,7 @@ class PduTriggering(Identifiable):
             for item in self.trigger_i_pdu_send_refs:
                 serialized = SerializationHelper.serialize_item(item, "TriggerIPduSendCondition")
                 if serialized is not None:
-                    child_elem = ET.Element("TRIGGER-I-PDU-SEND-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "TRIGGER-I-PDU-SEND-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

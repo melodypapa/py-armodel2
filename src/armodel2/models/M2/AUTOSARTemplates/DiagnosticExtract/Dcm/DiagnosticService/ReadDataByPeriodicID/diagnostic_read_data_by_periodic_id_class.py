@@ -83,15 +83,7 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
         if self.max_periodic_did is not None:
             serialized = SerializationHelper.serialize_item(self.max_periodic_did, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-PERIODIC-DID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-PERIODIC-DID")
 
         # Serialize periodic_rates (list to container "PERIODIC-RATES")
         if self.periodic_rates:
@@ -107,15 +99,7 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
         if self.scheduler_max is not None:
             serialized = SerializationHelper.serialize_item(self.scheduler_max, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SCHEDULER-MAX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SCHEDULER-MAX")
 
         return elem
 

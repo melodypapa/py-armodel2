@@ -83,57 +83,25 @@ class CanGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         if self.fup_data_id_list is not None:
             serialized = SerializationHelper.serialize_item(self.fup_data_id_list, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FUP-DATA-ID-LIST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FUP-DATA-ID-LIST")
 
         # Serialize ofns_data_id_list
         if self.ofns_data_id_list is not None:
             serialized = SerializationHelper.serialize_item(self.ofns_data_id_list, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OFNS-DATA-ID-LIST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OFNS-DATA-ID-LIST")
 
         # Serialize ofs_data_id_list
         if self.ofs_data_id_list is not None:
             serialized = SerializationHelper.serialize_item(self.ofs_data_id_list, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OFS-DATA-ID-LIST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OFS-DATA-ID-LIST")
 
         # Serialize sync_data_id_list
         if self.sync_data_id_list is not None:
             serialized = SerializationHelper.serialize_item(self.sync_data_id_list, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYNC-DATA-ID-LIST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYNC-DATA-ID-LIST")
 
         return elem
 

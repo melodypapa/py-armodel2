@@ -74,29 +74,13 @@ class ConstantSpecificationMapping(ARObject):
         if self.appl_constant_ref is not None:
             serialized = SerializationHelper.serialize_item(self.appl_constant_ref, "ConstantSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("APPL-CONSTANT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "APPL-CONSTANT-REF")
 
         # Serialize impl_constant_ref
         if self.impl_constant_ref is not None:
             serialized = SerializationHelper.serialize_item(self.impl_constant_ref, "ConstantSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IMPL-CONSTANT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IMPL-CONSTANT-REF")
 
         return elem
 

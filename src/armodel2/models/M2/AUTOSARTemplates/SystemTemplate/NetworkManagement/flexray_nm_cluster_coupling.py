@@ -83,14 +83,7 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
             for item in self.coupled_cluster_refs:
                 serialized = SerializationHelper.serialize_item(item, "FlexrayNmCluster")
                 if serialized is not None:
-                    child_elem = ET.Element("COUPLED-CLUSTER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "COUPLED-CLUSTER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -98,15 +91,7 @@ class FlexrayNmClusterCoupling(NmClusterCoupling):
         if self.nm_schedule is not None:
             serialized = SerializationHelper.serialize_item(self.nm_schedule, "FlexrayNmScheduleVariant")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-SCHEDULE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-SCHEDULE")
 
         return elem
 

@@ -74,14 +74,7 @@ class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
             for item in self.enable_condition_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("ENABLE-CONDITION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ENABLE-CONDITION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

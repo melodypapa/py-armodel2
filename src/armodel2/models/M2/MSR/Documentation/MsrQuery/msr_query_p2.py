@@ -79,29 +79,13 @@ class MsrQueryP2(ARObject):
         if self.msr_query_props is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query_props, "MsrQueryProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MSR-QUERY-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MSR-QUERY-PROPS")
 
         # Serialize msr_query_result
         if self.msr_query_result is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query_result, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MSR-QUERY-RESULT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MSR-QUERY-RESULT")
 
         return elem
 

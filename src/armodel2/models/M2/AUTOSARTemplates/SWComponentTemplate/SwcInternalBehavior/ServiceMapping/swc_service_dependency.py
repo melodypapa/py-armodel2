@@ -129,15 +129,7 @@ class SwcServiceDependency(ServiceDependency):
         if self.represented_port_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.represented_port_group_ref, "PortGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REPRESENTED-PORT-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REPRESENTED-PORT-GROUP-REF")
 
         # Serialize service_needs (polymorphic wrapper "SERVICE-NEEDS")
         if self.service_needs is not None:

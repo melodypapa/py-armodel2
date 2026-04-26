@@ -100,15 +100,7 @@ class Sd(ARObject):
         if self.xml_space is not None:
             serialized = SerializationHelper.serialize_item(self.xml_space, "XmlSpaceEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("XML-SPACE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "XML-SPACE")
 
         return elem
 

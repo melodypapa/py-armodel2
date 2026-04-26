@@ -125,127 +125,55 @@ class NmEcu(Identifiable):
         if self.ecu_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-INSTANCE-REF")
 
         # Serialize nm_bus_synchronization
         if self.nm_bus_synchronization is not None:
             serialized = SerializationHelper.serialize_item(self.nm_bus_synchronization, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-BUS-SYNCHRONIZATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-BUS-SYNCHRONIZATION")
 
         # Serialize nm_com_control_enabled
         if self.nm_com_control_enabled is not None:
             serialized = SerializationHelper.serialize_item(self.nm_com_control_enabled, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-COM-CONTROL-ENABLED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-COM-CONTROL-ENABLED")
 
         # Serialize nm_coordinator
         if self.nm_coordinator is not None:
             serialized = SerializationHelper.serialize_item(self.nm_coordinator, "NmCoordinator")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-COORDINATOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-COORDINATOR")
 
         # Serialize nm_cycletime
         if self.nm_cycletime is not None:
             serialized = SerializationHelper.serialize_item(self.nm_cycletime, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-CYCLETIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-CYCLETIME")
 
         # Serialize nm_pdu_rx_indication
         if self.nm_pdu_rx_indication is not None:
             serialized = SerializationHelper.serialize_item(self.nm_pdu_rx_indication, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-PDU-RX-INDICATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-PDU-RX-INDICATION")
 
         # Serialize nm_remote_sleep_ind
         if self.nm_remote_sleep_ind is not None:
             serialized = SerializationHelper.serialize_item(self.nm_remote_sleep_ind, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-REMOTE-SLEEP-IND")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-REMOTE-SLEEP-IND")
 
         # Serialize nm_state_change
         if self.nm_state_change is not None:
             serialized = SerializationHelper.serialize_item(self.nm_state_change, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-STATE-CHANGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-STATE-CHANGE")
 
         # Serialize nm_user_data_enabled
         if self.nm_user_data_enabled is not None:
             serialized = SerializationHelper.serialize_item(self.nm_user_data_enabled, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NM-USER-DATA-ENABLED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NM-USER-DATA-ENABLED")
 
         return elem
 

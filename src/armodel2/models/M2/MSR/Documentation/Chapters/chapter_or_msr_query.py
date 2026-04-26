@@ -83,27 +83,13 @@ class ChapterOrMsrQuery(ARObject):
         if self.chapter is not None:
             serialized = SerializationHelper.serialize_item(self.chapter, "Chapter")
             if serialized is not None:
-                wrapped = ET.Element("CHAPTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CHAPTER")
 
         # Serialize msr_query_chapter (complex type)
         if self.msr_query_chapter is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query_chapter, "MsrQueryChapter")
             if serialized is not None:
-                wrapped = ET.Element("MSR-QUERY-CHAPTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MSR-QUERY-CHAPTER")
 
         return elem
 

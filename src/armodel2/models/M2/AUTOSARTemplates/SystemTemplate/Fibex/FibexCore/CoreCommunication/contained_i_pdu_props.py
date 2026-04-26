@@ -102,127 +102,55 @@ class ContainedIPduProps(ARObject):
         if self.collection is not None:
             serialized = SerializationHelper.serialize_item(self.collection, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COLLECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COLLECTION")
 
         # Serialize contained_pdu_ref
         if self.contained_pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.contained_pdu_ref, "PduTriggering")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTAINED-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTAINED-PDU-REF")
 
         # Serialize header_id_long
         if self.header_id_long is not None:
             serialized = SerializationHelper.serialize_item(self.header_id_long, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HEADER-ID-LONG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HEADER-ID-LONG")
 
         # Serialize header_id_short
         if self.header_id_short is not None:
             serialized = SerializationHelper.serialize_item(self.header_id_short, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HEADER-ID-SHORT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HEADER-ID-SHORT")
 
         # Serialize offset
         if self.offset is not None:
             serialized = SerializationHelper.serialize_item(self.offset, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OFFSET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OFFSET")
 
         # Serialize priority
         if self.priority is not None:
             serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIORITY")
 
         # Serialize timeout
         if self.timeout is not None:
             serialized = SerializationHelper.serialize_item(self.timeout, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT")
 
         # Serialize trigger_ref
         if self.trigger_ref is not None:
             serialized = SerializationHelper.serialize_item(self.trigger_ref, "PduCollectionTriggerEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRIGGER-REF")
 
         # Serialize update
         if self.update is not None:
             serialized = SerializationHelper.serialize_item(self.update, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPDATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPDATE")
 
         return elem
 

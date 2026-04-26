@@ -88,57 +88,25 @@ class DiagnosticFreezeFrame(DiagnosticCommonElement):
         if self.custom_trigger is not None:
             serialized = SerializationHelper.serialize_item(self.custom_trigger, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CUSTOM-TRIGGER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CUSTOM-TRIGGER")
 
         # Serialize record_number
         if self.record_number is not None:
             serialized = SerializationHelper.serialize_item(self.record_number, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RECORD-NUMBER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RECORD-NUMBER")
 
         # Serialize trigger
         if self.trigger is not None:
             serialized = SerializationHelper.serialize_item(self.trigger, "DiagnosticRecordTriggerEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRIGGER")
 
         # Serialize update
         if self.update is not None:
             serialized = SerializationHelper.serialize_item(self.update, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UPDATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "UPDATE")
 
         return elem
 

@@ -75,15 +75,7 @@ class TDEventTTCanCycleStart(TDEventCycleStart):
         if self.tt_can_cluster_ref is not None:
             serialized = SerializationHelper.serialize_item(self.tt_can_cluster_ref, "TtcanCluster")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TT-CAN-CLUSTER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TT-CAN-CLUSTER-REF")
 
         return elem
 

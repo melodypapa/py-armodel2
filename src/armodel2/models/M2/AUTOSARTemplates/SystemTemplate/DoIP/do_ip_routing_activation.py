@@ -77,14 +77,7 @@ class DoIpRoutingActivation(Identifiable):
             for item in self.do_ip_target_refs:
                 serialized = SerializationHelper.serialize_item(item, "DoIpLogicTargetAddressProps")
                 if serialized is not None:
-                    child_elem = ET.Element("DO-IP-TARGET-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DO-IP-TARGET-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

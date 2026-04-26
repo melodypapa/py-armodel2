@@ -74,15 +74,7 @@ class CanTpChannel(Identifiable):
         if self.channel_id is not None:
             serialized = SerializationHelper.serialize_item(self.channel_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CHANNEL-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CHANNEL-ID")
 
         return elem
 

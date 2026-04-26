@@ -77,29 +77,13 @@ class Pdu(FibexElement, ABC):
         if self.has_dynamic_length is not None:
             serialized = SerializationHelper.serialize_item(self.has_dynamic_length, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HAS-DYNAMIC-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HAS-DYNAMIC-LENGTH")
 
         # Serialize length
         if self.length is not None:
             serialized = SerializationHelper.serialize_item(self.length, "UnlimitedInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LENGTH")
 
         return elem
 

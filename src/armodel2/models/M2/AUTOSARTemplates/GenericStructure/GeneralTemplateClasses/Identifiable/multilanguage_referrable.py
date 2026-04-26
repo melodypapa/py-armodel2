@@ -78,15 +78,7 @@ class MultilanguageReferrable(Referrable, ABC):
         if self.long_name is not None:
             serialized = SerializationHelper.serialize_item(self.long_name, "MultilanguageLongName")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LONG-NAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LONG-NAME")
 
         return elem
 

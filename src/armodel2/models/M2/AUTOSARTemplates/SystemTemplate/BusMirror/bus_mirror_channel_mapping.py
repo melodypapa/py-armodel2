@@ -88,43 +88,19 @@ class BusMirrorChannelMapping(FibexElement, ABC):
         if self.mirroring is not None:
             serialized = SerializationHelper.serialize_item(self.mirroring, "MirroringProtocolEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIRRORING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MIRRORING")
 
         # Serialize source_channel
         if self.source_channel is not None:
             serialized = SerializationHelper.serialize_item(self.source_channel, "BusMirrorChannel")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-CHANNEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOURCE-CHANNEL")
 
         # Serialize target_channel
         if self.target_channel is not None:
             serialized = SerializationHelper.serialize_item(self.target_channel, "BusMirrorChannel")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-CHANNEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-CHANNEL")
 
         # Serialize target_pdu_refs (list to container "TARGET-PDU-REFS")
         if self.target_pdu_refs:
@@ -132,14 +108,7 @@ class BusMirrorChannelMapping(FibexElement, ABC):
             for item in self.target_pdu_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
-                    child_elem = ET.Element("TARGET-PDU-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "TARGET-PDU-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

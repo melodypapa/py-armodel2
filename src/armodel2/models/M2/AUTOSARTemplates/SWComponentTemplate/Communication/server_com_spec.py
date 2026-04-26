@@ -87,29 +87,13 @@ class ServerComSpec(PPortComSpec):
         if self.operation_ref is not None:
             serialized = SerializationHelper.serialize_item(self.operation_ref, "ClientServerOperation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("OPERATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "OPERATION-REF")
 
         # Serialize queue_length
         if self.queue_length is not None:
             serialized = SerializationHelper.serialize_item(self.queue_length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("QUEUE-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "QUEUE-LENGTH")
 
         # Serialize transformation_com_spec_propses (list to container "TRANSFORMATION-COM-SPEC-PROPSS")
         if self.transformation_com_spec_propses:

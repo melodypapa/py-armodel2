@@ -89,15 +89,7 @@ class CommunicationCluster(ARElement, ABC):
         if self.baudrate is not None:
             serialized = SerializationHelper.serialize_item(self.baudrate, "PositiveUnlimitedInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BAUDRATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BAUDRATE")
 
         # Serialize physical_channels (list to container "PHYSICAL-CHANNELS")
         if self.physical_channels:
@@ -113,43 +105,19 @@ class CommunicationCluster(ARElement, ABC):
         if self.protocol_name is not None:
             serialized = SerializationHelper.serialize_item(self.protocol_name, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROTOCOL-NAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROTOCOL-NAME")
 
         # Serialize protocol_version
         if self.protocol_version is not None:
             serialized = SerializationHelper.serialize_item(self.protocol_version, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROTOCOL-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROTOCOL-VERSION")
 
         # Serialize speed
         if self.speed is not None:
             serialized = SerializationHelper.serialize_item(self.speed, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SPEED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SPEED")
 
         return elem
 

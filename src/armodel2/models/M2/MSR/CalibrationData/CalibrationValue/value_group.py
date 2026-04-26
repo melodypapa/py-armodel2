@@ -101,15 +101,7 @@ class ValueGroup(ARObject):
         if self.label is not None:
             serialized = SerializationHelper.serialize_item(self.label, "MultilanguageLongName")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LABEL")
 
         # Serialize vg_contents (atp_mixed - append children directly)
         if self.vg_contents is not None:
@@ -128,71 +120,31 @@ class ValueGroup(ARObject):
         if self.v is not None:
             serialized = SerializationHelper.serialize_item(self.v, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("V")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "V")
 
         # Serialize vf
         if self.vf is not None:
             serialized = SerializationHelper.serialize_item(self.vf, "Numerical")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VF")
 
         # Serialize vg
         if self.vg is not None:
             serialized = SerializationHelper.serialize_item(self.vg, "ValueGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VG")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VG")
 
         # Serialize vt
         if self.vt is not None:
             serialized = SerializationHelper.serialize_item(self.vt, "VerbatimString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VT")
 
         # Serialize vtf
         if self.vtf is not None:
             serialized = SerializationHelper.serialize_item(self.vtf, "NumericalOrText")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VTF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VTF")
 
         return elem
 

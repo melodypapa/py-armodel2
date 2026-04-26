@@ -78,43 +78,19 @@ class ScheduleTableEntry(ARObject, ABC):
         if self.delay is not None:
             serialized = SerializationHelper.serialize_item(self.delay, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DELAY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DELAY")
 
         # Serialize introduction
         if self.introduction is not None:
             serialized = SerializationHelper.serialize_item(self.introduction, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTRODUCTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTRODUCTION")
 
         # Serialize position_in_table
         if self.position_in_table is not None:
             serialized = SerializationHelper.serialize_item(self.position_in_table, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("POSITION-IN-TABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "POSITION-IN-TABLE")
 
         return elem
 

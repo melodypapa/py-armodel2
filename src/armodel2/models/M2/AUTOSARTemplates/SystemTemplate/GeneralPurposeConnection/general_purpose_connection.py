@@ -77,14 +77,7 @@ class GeneralPurposeConnection(ARElement):
             for item in self.pdu_triggering_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
-                    child_elem = ET.Element("PDU-TRIGGERING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "PDU-TRIGGERING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

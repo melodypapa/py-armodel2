@@ -71,15 +71,7 @@ class GlobalTimeEthSlave(GlobalTimeSlave):
         if self.crc_validated is not None:
             serialized = SerializationHelper.serialize_item(self.crc_validated, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRC-VALIDATED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRC-VALIDATED")
 
         return elem
 

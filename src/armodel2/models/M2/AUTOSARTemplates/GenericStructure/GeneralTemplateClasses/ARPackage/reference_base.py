@@ -97,71 +97,31 @@ class ReferenceBase(ARObject):
         if self.short_label is not None:
             serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHORT-LABEL")
 
         # Serialize is_default
         if self.is_default is not None:
             serialized = SerializationHelper.serialize_item(self.is_default, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-DEFAULT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-DEFAULT")
 
         # Serialize is_global
         if self.is_global is not None:
             serialized = SerializationHelper.serialize_item(self.is_global, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-GLOBAL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-GLOBAL")
 
         # Serialize base_is_this_package
         if self.base_is_this_package is not None:
             serialized = SerializationHelper.serialize_item(self.base_is_this_package, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE-IS-THIS-PACKAGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE-IS-THIS-PACKAGE")
 
         # Serialize package_ref
         if self.package_ref is not None:
             serialized = SerializationHelper.serialize_item(self.package_ref, "ARPackage")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PACKAGE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PACKAGE-REF")
 
         # Serialize global_element_refs (list to container "GLOBAL-ELEMENT-REFS")
         if self.global_element_refs:
@@ -169,14 +129,7 @@ class ReferenceBase(ARObject):
             for item in self.global_element_refs:
                 serialized = SerializationHelper.serialize_item(item, "ReferrableSubtypesEnum")
                 if serialized is not None:
-                    child_elem = ET.Element("GLOBAL-ELEMENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "GLOBAL-ELEMENT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -186,14 +139,7 @@ class ReferenceBase(ARObject):
             for item in self.global_in_package_refs:
                 serialized = SerializationHelper.serialize_item(item, "ARPackage")
                 if serialized is not None:
-                    child_elem = ET.Element("GLOBAL-IN-PACKAGE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "GLOBAL-IN-PACKAGE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

@@ -82,43 +82,19 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
         if self.time_based_fdc is not None:
             serialized = SerializationHelper.serialize_item(self.time_based_fdc, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-BASED-FDC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-BASED-FDC")
 
         # Serialize time_failed
         if self.time_failed is not None:
             serialized = SerializationHelper.serialize_item(self.time_failed, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-FAILED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-FAILED")
 
         # Serialize time_passed
         if self.time_passed is not None:
             serialized = SerializationHelper.serialize_item(self.time_passed, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIME-PASSED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIME-PASSED")
 
         return elem
 

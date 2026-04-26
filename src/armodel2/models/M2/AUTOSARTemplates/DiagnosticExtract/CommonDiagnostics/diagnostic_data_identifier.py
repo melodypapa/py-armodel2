@@ -100,43 +100,19 @@ class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
         if self.did_size is not None:
             serialized = SerializationHelper.serialize_item(self.did_size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DID-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DID-SIZE")
 
         # Serialize represents_vin
         if self.represents_vin is not None:
             serialized = SerializationHelper.serialize_item(self.represents_vin, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REPRESENTS-VIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REPRESENTS-VIN")
 
         # Serialize support_info_byte
         if self.support_info_byte is not None:
             serialized = SerializationHelper.serialize_item(self.support_info_byte, "DiagnosticSupportInfoByte")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SUPPORT-INFO-BYTE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SUPPORT-INFO-BYTE")
 
         return elem
 

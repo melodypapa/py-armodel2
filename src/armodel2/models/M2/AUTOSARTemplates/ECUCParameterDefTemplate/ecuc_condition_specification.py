@@ -82,15 +82,7 @@ class EcucConditionSpecification(ARObject):
         if self.condition is not None:
             serialized = SerializationHelper.serialize_item(self.condition, "EcucConditionFormula")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONDITION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONDITION")
 
         # Serialize ecuc_queries (list to container "ECUC-QUERYS")
         if self.ecuc_queries:
@@ -106,15 +98,7 @@ class EcucConditionSpecification(ARObject):
         if self.informal_formula is not None:
             serialized = SerializationHelper.serialize_item(self.informal_formula, "MlFormula")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INFORMAL-FORMULA")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INFORMAL-FORMULA")
 
         return elem
 

@@ -90,99 +90,43 @@ class EndToEndDescription(ARObject):
         if self.category is not None:
             serialized = SerializationHelper.serialize_item(self.category, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CATEGORY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CATEGORY")
 
         # Serialize counter_offset
         if self.counter_offset is not None:
             serialized = SerializationHelper.serialize_item(self.counter_offset, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COUNTER-OFFSET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COUNTER-OFFSET")
 
         # Serialize crc_offset
         if self.crc_offset is not None:
             serialized = SerializationHelper.serialize_item(self.crc_offset, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRC-OFFSET")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRC-OFFSET")
 
         # Serialize data_id_mode
         if self.data_id_mode is not None:
             serialized = SerializationHelper.serialize_item(self.data_id_mode, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-ID-MODE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-ID-MODE")
 
         # Serialize data_id_nibble
         if self.data_id_nibble is not None:
             serialized = SerializationHelper.serialize_item(self.data_id_nibble, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-ID-NIBBLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-ID-NIBBLE")
 
         # Serialize data_length
         if self.data_length is not None:
             serialized = SerializationHelper.serialize_item(self.data_length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-LENGTH")
 
         # Serialize max_delta
         if self.max_delta is not None:
             serialized = SerializationHelper.serialize_item(self.max_delta, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-DELTA")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-DELTA")
 
         return elem
 

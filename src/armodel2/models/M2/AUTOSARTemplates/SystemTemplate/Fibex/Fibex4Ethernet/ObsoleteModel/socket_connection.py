@@ -104,43 +104,19 @@ class SocketConnection(Describable):
         if self.client_ip_addr is not None:
             serialized = SerializationHelper.serialize_item(self.client_ip_addr, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-IP-ADDR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CLIENT-IP-ADDR")
 
         # Serialize client_port_ref
         if self.client_port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.client_port_ref, "SocketAddress")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-PORT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CLIENT-PORT-REF")
 
         # Serialize client_port_from
         if self.client_port_from is not None:
             serialized = SerializationHelper.serialize_item(self.client_port_from, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-PORT-FROM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CLIENT-PORT-FROM")
 
         # Serialize pdus (list to container "PDUS")
         if self.pdus:
@@ -156,57 +132,25 @@ class SocketConnection(Describable):
         if self.pdu_collection is not None:
             serialized = SerializationHelper.serialize_item(self.pdu_collection, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PDU-COLLECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PDU-COLLECTION")
 
         # Serialize runtime_ip
         if self.runtime_ip is not None:
             serialized = SerializationHelper.serialize_item(self.runtime_ip, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RUNTIME-IP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RUNTIME-IP")
 
         # Serialize runtime_port
         if self.runtime_port is not None:
             serialized = SerializationHelper.serialize_item(self.runtime_port, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RUNTIME-PORT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RUNTIME-PORT")
 
         # Serialize short_label
         if self.short_label is not None:
             serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SHORT-LABEL")
 
         return elem
 

@@ -107,14 +107,7 @@ class RptExecutableEntityEvent(Identifiable):
             for item in self.execution_refs:
                 serialized = SerializationHelper.serialize_item(item, "RptExecutionContext")
                 if serialized is not None:
-                    child_elem = ET.Element("EXECUTION-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "EXECUTION-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -132,43 +125,19 @@ class RptExecutableEntityEvent(Identifiable):
         if self.rpt_event_id is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_event_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-EVENT-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-EVENT-ID")
 
         # Serialize rpt_executable_entity
         if self.rpt_executable_entity is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_executable_entity, "RptExecutableEntity")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-EXECUTABLE-ENTITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-EXECUTABLE-ENTITY")
 
         # Serialize rpt_impl_policy
         if self.rpt_impl_policy is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_impl_policy, "RptImplPolicy")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-IMPL-POLICY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-IMPL-POLICY")
 
         # Serialize rpt_service_point_refs (list to container "RPT-SERVICE-POINT-REFS")
         if self.rpt_service_point_refs:
@@ -176,14 +145,7 @@ class RptExecutableEntityEvent(Identifiable):
             for item in self.rpt_service_point_refs:
                 serialized = SerializationHelper.serialize_item(item, "RptServicePoint")
                 if serialized is not None:
-                    child_elem = ET.Element("RPT-SERVICE-POINT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "RPT-SERVICE-POINT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

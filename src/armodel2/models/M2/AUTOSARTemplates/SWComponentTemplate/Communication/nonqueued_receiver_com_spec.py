@@ -122,85 +122,37 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         if self.alive_timeout is not None:
             serialized = SerializationHelper.serialize_item(self.alive_timeout, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ALIVE-TIMEOUT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ALIVE-TIMEOUT")
 
         # Serialize enable_update
         if self.enable_update is not None:
             serialized = SerializationHelper.serialize_item(self.enable_update, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENABLE-UPDATE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENABLE-UPDATE")
 
         # Serialize filter
         if self.filter is not None:
             serialized = SerializationHelper.serialize_item(self.filter, "DataFilter")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FILTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FILTER")
 
         # Serialize handle_data_status
         if self.handle_data_status is not None:
             serialized = SerializationHelper.serialize_item(self.handle_data_status, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HANDLE-DATA-STATUS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HANDLE-DATA-STATUS")
 
         # Serialize handle_never_received
         if self.handle_never_received is not None:
             serialized = SerializationHelper.serialize_item(self.handle_never_received, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HANDLE-NEVER-RECEIVED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HANDLE-NEVER-RECEIVED")
 
         # Serialize handle_timeout_type
         if self.handle_timeout_type is not None:
             serialized = SerializationHelper.serialize_item(self.handle_timeout_type, "HandleTimeoutEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HANDLE-TIMEOUT-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HANDLE-TIMEOUT-TYPE")
 
         # Serialize init_value (polymorphic wrapper "INIT-VALUE")
         if self.init_value is not None:
@@ -215,15 +167,7 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         if self.timeout_substitution_value is not None:
             serialized = SerializationHelper.serialize_item(self.timeout_substitution_value, "ValueSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TIMEOUT-SUBSTITUTION-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TIMEOUT-SUBSTITUTION-VALUE")
 
         return elem
 

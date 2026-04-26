@@ -84,14 +84,7 @@ class DataPrototypeGroup(Identifiable):
             for item in self.data_prototype_group_group_in_composition_instance_ref:
                 serialized = SerializationHelper.serialize_item(item, "DataPrototypeGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -101,14 +94,7 @@ class DataPrototypeGroup(Identifiable):
             for item in self.implicit_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    child_elem = ET.Element("IMPLICIT-DATA-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "IMPLICIT-DATA-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

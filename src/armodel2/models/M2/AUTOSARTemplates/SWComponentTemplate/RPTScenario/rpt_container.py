@@ -120,14 +120,7 @@ class RptContainer(Identifiable):
             for item in self.explicit_rpt_refs:
                 serialized = SerializationHelper.serialize_item(item, "RptProfile")
                 if serialized is not None:
-                    child_elem = ET.Element("EXPLICIT-RPT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "EXPLICIT-RPT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -145,57 +138,25 @@ class RptContainer(Identifiable):
         if self.rpt_executable_entity is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_executable_entity, "RptExecutableEntity")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-EXECUTABLE-ENTITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-EXECUTABLE-ENTITY")
 
         # Serialize rpt_hook
         if self.rpt_hook is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_hook, "RptHook")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-HOOK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-HOOK")
 
         # Serialize rpt_impl_policy
         if self.rpt_impl_policy is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_impl_policy, "RptImplPolicy")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-IMPL-POLICY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-IMPL-POLICY")
 
         # Serialize rpt_sw
         if self.rpt_sw is not None:
             serialized = SerializationHelper.serialize_item(self.rpt_sw, "RptSwPrototypingAccess")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RPT-SW")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RPT-SW")
 
         return elem
 

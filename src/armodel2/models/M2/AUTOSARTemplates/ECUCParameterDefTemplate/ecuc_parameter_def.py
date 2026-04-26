@@ -82,43 +82,19 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
         if self.derivation is not None:
             serialized = SerializationHelper.serialize_item(self.derivation, "EcucDerivationSpecification")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DERIVATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DERIVATION")
 
         # Serialize symbolic_name
         if self.symbolic_name is not None:
             serialized = SerializationHelper.serialize_item(self.symbolic_name, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYMBOLIC-NAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYMBOLIC-NAME")
 
         # Serialize with_auto
         if self.with_auto is not None:
             serialized = SerializationHelper.serialize_item(self.with_auto, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("WITH-AUTO")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "WITH-AUTO")
 
         return elem
 

@@ -77,14 +77,7 @@ class SecurityEventStateFilter(AbstractSecurityEventFilter):
             for item in self.block_if_state_refs:
                 serialized = SerializationHelper.serialize_item(item, "BlockState")
                 if serialized is not None:
-                    child_elem = ET.Element("BLOCK-IF-STATE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "BLOCK-IF-STATE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

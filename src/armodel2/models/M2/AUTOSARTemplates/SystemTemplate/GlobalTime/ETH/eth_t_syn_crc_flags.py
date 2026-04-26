@@ -85,85 +85,37 @@ class EthTSynCrcFlags(ARObject):
         if self.crc_correction is not None:
             serialized = SerializationHelper.serialize_item(self.crc_correction, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRC-CORRECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRC-CORRECTION")
 
         # Serialize crc_domain
         if self.crc_domain is not None:
             serialized = SerializationHelper.serialize_item(self.crc_domain, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRC-DOMAIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRC-DOMAIN")
 
         # Serialize crc_message
         if self.crc_message is not None:
             serialized = SerializationHelper.serialize_item(self.crc_message, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRC-MESSAGE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRC-MESSAGE")
 
         # Serialize crc_precise
         if self.crc_precise is not None:
             serialized = SerializationHelper.serialize_item(self.crc_precise, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRC-PRECISE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRC-PRECISE")
 
         # Serialize crc_sequence_id
         if self.crc_sequence_id is not None:
             serialized = SerializationHelper.serialize_item(self.crc_sequence_id, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRC-SEQUENCE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRC-SEQUENCE-ID")
 
         # Serialize crc_source_port
         if self.crc_source_port is not None:
             serialized = SerializationHelper.serialize_item(self.crc_source_port, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRC-SOURCE-PORT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRC-SOURCE-PORT")
 
         return elem
 

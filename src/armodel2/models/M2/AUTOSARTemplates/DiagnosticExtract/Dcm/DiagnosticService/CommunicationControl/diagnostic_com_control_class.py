@@ -89,14 +89,7 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
             for item in self.all_channel_refs:
                 serialized = SerializationHelper.serialize_item(item, "CommunicationCluster")
                 if serialized is not None:
-                    child_elem = ET.Element("ALL-CHANNEL-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ALL-CHANNEL-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -106,14 +99,7 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
             for item in self.all_physical_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("ALL-PHYSICAL-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ALL-PHYSICAL-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

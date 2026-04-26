@@ -75,15 +75,7 @@ class MacMulticastConfiguration(NetworkEndpointAddress):
         if self.mac_multicast_group_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mac_multicast_group_group_ref, "MacMulticastGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAC-MULTICAST-GROUP-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAC-MULTICAST-GROUP-GROUP-REF")
 
         return elem
 

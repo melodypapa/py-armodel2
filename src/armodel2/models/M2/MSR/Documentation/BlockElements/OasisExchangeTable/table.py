@@ -109,127 +109,55 @@ class Table(Paginateable):
         if self.colsep is not None:
             serialized = SerializationHelper.serialize_item(self.colsep, "TableSeparatorString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("COLSEP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "COLSEP")
 
         # Serialize float
         if self.float is not None:
             serialized = SerializationHelper.serialize_item(self.float, "FloatEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FLOAT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FLOAT")
 
         # Serialize frame
         if self.frame is not None:
             serialized = SerializationHelper.serialize_item(self.frame, "FrameEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FRAME")
 
         # Serialize help_entry
         if self.help_entry is not None:
             serialized = SerializationHelper.serialize_item(self.help_entry, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HELP-ENTRY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HELP-ENTRY")
 
         # Serialize orient
         if self.orient is not None:
             serialized = SerializationHelper.serialize_item(self.orient, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ORIENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ORIENT")
 
         # Serialize pgwide
         if self.pgwide is not None:
             serialized = SerializationHelper.serialize_item(self.pgwide, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PGWIDE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PGWIDE")
 
         # Serialize rowsep
         if self.rowsep is not None:
             serialized = SerializationHelper.serialize_item(self.rowsep, "TableSeparatorString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROWSEP")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROWSEP")
 
         # Serialize table_caption
         if self.table_caption is not None:
             serialized = SerializationHelper.serialize_item(self.table_caption, "Caption")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TABLE-CAPTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TABLE-CAPTION")
 
         # Serialize tabstyle
         if self.tabstyle is not None:
             serialized = SerializationHelper.serialize_item(self.tabstyle, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TABSTYLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TABSTYLE")
 
         return elem
 

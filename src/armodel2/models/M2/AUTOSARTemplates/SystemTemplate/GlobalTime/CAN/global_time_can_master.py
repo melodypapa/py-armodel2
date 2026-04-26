@@ -80,29 +80,13 @@ class GlobalTimeCanMaster(GlobalTimeMaster):
         if self.crc_secured is not None:
             serialized = SerializationHelper.serialize_item(self.crc_secured, "GlobalTimeCrcSupportEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRC-SECURED")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRC-SECURED")
 
         # Serialize sync
         if self.sync is not None:
             serialized = SerializationHelper.serialize_item(self.sync, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYNC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYNC")
 
         return elem
 

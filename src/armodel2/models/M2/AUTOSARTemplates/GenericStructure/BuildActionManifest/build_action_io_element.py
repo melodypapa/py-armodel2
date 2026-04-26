@@ -87,43 +87,19 @@ class BuildActionIoElement(ARObject):
         if self.category is not None:
             serialized = SerializationHelper.serialize_item(self.category, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CATEGORY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CATEGORY")
 
         # Serialize ecuc_definition_ref
         if self.ecuc_definition_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecuc_definition_ref, "EcucDefinitionElement")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECUC-DEFINITION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECUC-DEFINITION-REF")
 
         # Serialize role
         if self.role is not None:
             serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROLE")
 
         # Serialize sdgs (list to container "SDGS")
         if self.sdgs:

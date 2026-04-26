@@ -87,43 +87,19 @@ class SenderReceiverToSignalGroupMapping(DataMapping):
         if self.data_element_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_element_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-ELEMENT-REF")
 
         # Serialize signal_group_ref
         if self.signal_group_ref is not None:
             serialized = SerializationHelper.serialize_item(self.signal_group_ref, "SystemSignalGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SIGNAL-GROUP-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SIGNAL-GROUP-REF")
 
         # Serialize type_mapping
         if self.type_mapping is not None:
             serialized = SerializationHelper.serialize_item(self.type_mapping, "SenderRecCompositeTypeMapping")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TYPE-MAPPING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TYPE-MAPPING")
 
         return elem
 

@@ -94,15 +94,7 @@ class ViewMap(Identifiable):
         if self.role is not None:
             serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROLE")
 
         # Serialize second_elements (list to container "SECOND-ELEMENTS")
         if self.second_elements:

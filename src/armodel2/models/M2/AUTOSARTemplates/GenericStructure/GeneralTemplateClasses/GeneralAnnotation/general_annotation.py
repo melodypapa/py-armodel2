@@ -81,43 +81,19 @@ class GeneralAnnotation(ARObject, ABC):
         if self.annotation is not None:
             serialized = SerializationHelper.serialize_item(self.annotation, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ANNOTATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ANNOTATION")
 
         # Serialize annotation_text
         if self.annotation_text is not None:
             serialized = SerializationHelper.serialize_item(self.annotation_text, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ANNOTATION-TEXT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ANNOTATION-TEXT")
 
         # Serialize label
         if self.label is not None:
             serialized = SerializationHelper.serialize_item(self.label, "MultilanguageLongName")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LABEL")
 
         return elem
 

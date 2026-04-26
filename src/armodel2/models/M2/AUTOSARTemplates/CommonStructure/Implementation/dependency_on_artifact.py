@@ -81,15 +81,7 @@ class DependencyOnArtifact(Identifiable):
         if self.artifact_descriptor is not None:
             serialized = SerializationHelper.serialize_item(self.artifact_descriptor, "AutosarEngineeringObject")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ARTIFACT-DESCRIPTOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ARTIFACT-DESCRIPTOR")
 
         # Serialize usages (list to container "USAGES")
         if self.usages:
@@ -97,14 +89,7 @@ class DependencyOnArtifact(Identifiable):
             for item in self.usages:
                 serialized = SerializationHelper.serialize_item(item, "DependencyUsageEnum")
                 if serialized is not None:
-                    child_elem = ET.Element("USAGE")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "USAGE")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

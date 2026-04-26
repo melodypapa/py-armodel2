@@ -81,43 +81,19 @@ class SomeipTpChannel(Identifiable):
         if self.burst_size is not None:
             serialized = SerializationHelper.serialize_item(self.burst_size, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BURST-SIZE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BURST-SIZE")
 
         # Serialize rx_timeout_time
         if self.rx_timeout_time is not None:
             serialized = SerializationHelper.serialize_item(self.rx_timeout_time, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RX-TIMEOUT-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RX-TIMEOUT-TIME")
 
         # Serialize separation_time
         if self.separation_time is not None:
             serialized = SerializationHelper.serialize_item(self.separation_time, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SEPARATION-TIME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SEPARATION-TIME")
 
         return elem
 

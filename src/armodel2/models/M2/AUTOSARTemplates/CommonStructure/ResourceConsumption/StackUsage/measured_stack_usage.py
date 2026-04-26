@@ -84,57 +84,25 @@ class MeasuredStackUsage(StackUsage):
         if self.average_memory_consumption is not None:
             serialized = SerializationHelper.serialize_item(self.average_memory_consumption, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AVERAGE-MEMORY-CONSUMPTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AVERAGE-MEMORY-CONSUMPTION")
 
         # Serialize maximum_memory_consumption
         if self.maximum_memory_consumption is not None:
             serialized = SerializationHelper.serialize_item(self.maximum_memory_consumption, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAXIMUM-MEMORY-CONSUMPTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAXIMUM-MEMORY-CONSUMPTION")
 
         # Serialize minimum_memory_consumption
         if self.minimum_memory_consumption is not None:
             serialized = SerializationHelper.serialize_item(self.minimum_memory_consumption, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM-MEMORY-CONSUMPTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINIMUM-MEMORY-CONSUMPTION")
 
         # Serialize test_pattern
         if self.test_pattern is not None:
             serialized = SerializationHelper.serialize_item(self.test_pattern, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TEST-PATTERN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TEST-PATTERN")
 
         return elem
 

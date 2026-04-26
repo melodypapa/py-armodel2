@@ -97,43 +97,19 @@ class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
         if self.local_unicast_ref is not None:
             serialized = SerializationHelper.serialize_item(self.local_unicast_ref, "ApplicationEndpoint")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LOCAL-UNICAST-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LOCAL-UNICAST-REF")
 
         # Serialize minor_version
         if self.minor_version is not None:
             serialized = SerializationHelper.serialize_item(self.minor_version, "AnyVersionString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINOR-VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINOR-VERSION")
 
         # Serialize static_remote_ref
         if self.static_remote_ref is not None:
             serialized = SerializationHelper.serialize_item(self.static_remote_ref, "ApplicationEndpoint")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STATIC-REMOTE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STATIC-REMOTE-REF")
 
         return elem
 

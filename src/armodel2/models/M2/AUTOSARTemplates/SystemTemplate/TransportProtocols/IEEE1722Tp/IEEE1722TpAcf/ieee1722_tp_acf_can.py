@@ -71,15 +71,7 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
         if self.message_type_message_type_enum is not None:
             serialized = SerializationHelper.serialize_item(self.message_type_message_type_enum, "IEEE1722TpAcfCan")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MESSAGE-TYPE-MESSAGE-TYPE-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MESSAGE-TYPE-MESSAGE-TYPE-ENUM")
 
         return elem
 

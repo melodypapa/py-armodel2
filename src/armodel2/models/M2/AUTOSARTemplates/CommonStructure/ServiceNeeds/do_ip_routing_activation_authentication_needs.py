@@ -78,29 +78,13 @@ class DoIpRoutingActivationAuthenticationNeeds(DoIpServiceNeeds):
         if self.data_length is not None:
             serialized = SerializationHelper.serialize_item(self.data_length, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-LENGTH")
 
         # Serialize routing
         if self.routing is not None:
             serialized = SerializationHelper.serialize_item(self.routing, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROUTING")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROUTING")
 
         return elem
 

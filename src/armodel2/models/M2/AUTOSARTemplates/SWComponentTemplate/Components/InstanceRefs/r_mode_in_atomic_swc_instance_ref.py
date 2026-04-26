@@ -92,57 +92,25 @@ class RModeInAtomicSwcInstanceRef(ARObject):
         if self.base_ref is not None:
             serialized = SerializationHelper.serialize_item(self.base_ref, "AtomicSwComponentType")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BASE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BASE-REF")
 
         # Serialize context_port_ref
         if self.context_port_ref is not None:
             serialized = SerializationHelper.serialize_item(self.context_port_ref, "AbstractRequiredPortPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-PORT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTEXT-PORT-REF")
 
         # Serialize context_mode_declaration_group_prototype_ref
         if self.context_mode_declaration_group_prototype_ref is not None:
             serialized = SerializationHelper.serialize_item(self.context_mode_declaration_group_prototype_ref, "ModeDeclarationGroupPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF")
 
         # Serialize target_mode_declaration_ref
         if self.target_mode_declaration_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_mode_declaration_ref, "ModeDeclaration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-MODE-DECLARATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-MODE-DECLARATION-REF")
 
         return elem
 

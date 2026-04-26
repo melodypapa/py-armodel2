@@ -89,43 +89,19 @@ class LabeledItem(Paginateable):
         if self.help_entry is not None:
             serialized = SerializationHelper.serialize_item(self.help_entry, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HELP-ENTRY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HELP-ENTRY")
 
         # Serialize item_contents
         if self.item_contents is not None:
             serialized = SerializationHelper.serialize_item(self.item_contents, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ITEM-CONTENTS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ITEM-CONTENTS")
 
         # Serialize item_label
         if self.item_label is not None:
             serialized = SerializationHelper.serialize_item(self.item_label, "MultiLanguageOverviewParagraph")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ITEM-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ITEM-LABEL")
 
         return elem
 

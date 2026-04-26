@@ -118,113 +118,49 @@ class J1939TpConnection(TpConnection):
         if self.broadcast is not None:
             serialized = SerializationHelper.serialize_item(self.broadcast, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BROADCAST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BROADCAST")
 
         # Serialize buffer_ratio
         if self.buffer_ratio is not None:
             serialized = SerializationHelper.serialize_item(self.buffer_ratio, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BUFFER-RATIO")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BUFFER-RATIO")
 
         # Serialize cancellation
         if self.cancellation is not None:
             serialized = SerializationHelper.serialize_item(self.cancellation, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CANCELLATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CANCELLATION")
 
         # Serialize data_pdu_ref
         if self.data_pdu_ref is not None:
             serialized = SerializationHelper.serialize_item(self.data_pdu_ref, "NPdu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DATA-PDU-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DATA-PDU-REF")
 
         # Serialize dynamic_bs
         if self.dynamic_bs is not None:
             serialized = SerializationHelper.serialize_item(self.dynamic_bs, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DYNAMIC-BS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DYNAMIC-BS")
 
         # Serialize flow_control_pdu
         if self.flow_control_pdu is not None:
             serialized = SerializationHelper.serialize_item(self.flow_control_pdu, "NPdu")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FLOW-CONTROL-PDU")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FLOW-CONTROL-PDU")
 
         # Serialize max_bs
         if self.max_bs is not None:
             serialized = SerializationHelper.serialize_item(self.max_bs, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-BS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-BS")
 
         # Serialize max_exp_bs
         if self.max_exp_bs is not None:
             serialized = SerializationHelper.serialize_item(self.max_exp_bs, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-EXP-BS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-EXP-BS")
 
         # Serialize receiver_refs (list to container "RECEIVER-REFS")
         if self.receiver_refs:
@@ -232,14 +168,7 @@ class J1939TpConnection(TpConnection):
             for item in self.receiver_refs:
                 serialized = SerializationHelper.serialize_item(item, "J1939TpNode")
                 if serialized is not None:
-                    child_elem = ET.Element("RECEIVER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "RECEIVER-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -247,15 +176,7 @@ class J1939TpConnection(TpConnection):
         if self.retry is not None:
             serialized = SerializationHelper.serialize_item(self.retry, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RETRY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RETRY")
 
         # Serialize tp_pgs (list to container "TP-PGS")
         if self.tp_pgs:
@@ -271,15 +192,7 @@ class J1939TpConnection(TpConnection):
         if self.transmitter_ref is not None:
             serialized = SerializationHelper.serialize_item(self.transmitter_ref, "J1939TpNode")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSMITTER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSMITTER-REF")
 
         return elem
 

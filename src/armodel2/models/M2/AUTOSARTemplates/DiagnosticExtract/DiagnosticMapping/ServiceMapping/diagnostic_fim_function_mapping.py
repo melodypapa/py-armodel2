@@ -81,57 +81,25 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
         if self.mapped_bsw_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mapped_bsw_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAPPED-BSW-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAPPED-BSW-REF")
 
         # Serialize mapped_flat_swc_ref
         if self.mapped_flat_swc_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mapped_flat_swc_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAPPED-FLAT-SWC-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAPPED-FLAT-SWC-REF")
 
         # Serialize mapped_ref
         if self.mapped_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mapped_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAPPED-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAPPED-REF")
 
         # Serialize mapped_swc
         if self.mapped_swc is not None:
             serialized = SerializationHelper.serialize_item(self.mapped_swc, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAPPED-SWC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAPPED-SWC")
 
         return elem
 

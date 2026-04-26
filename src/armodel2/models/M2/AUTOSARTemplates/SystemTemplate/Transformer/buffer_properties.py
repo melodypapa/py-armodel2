@@ -75,29 +75,13 @@ class BufferProperties(ARObject):
         if self.header_length is not None:
             serialized = SerializationHelper.serialize_item(self.header_length, "Integer")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HEADER-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HEADER-LENGTH")
 
         # Serialize in_place
         if self.in_place is not None:
             serialized = SerializationHelper.serialize_item(self.in_place, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IN-PLACE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IN-PLACE")
 
         return elem
 

@@ -87,43 +87,19 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
         if self.authentication_ref is not None:
             serialized = SerializationHelper.serialize_item(self.authentication_ref, "CryptoServicePrimitive")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AUTHENTICATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AUTHENTICATION-REF")
 
         # Serialize crypto_service_key_ref
         if self.crypto_service_key_ref is not None:
             serialized = SerializationHelper.serialize_item(self.crypto_service_key_ref, "CryptoServiceKey")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRYPTO-SERVICE-KEY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRYPTO-SERVICE-KEY-REF")
 
         # Serialize crypto_service_queue_ref
         if self.crypto_service_queue_ref is not None:
             serialized = SerializationHelper.serialize_item(self.crypto_service_queue_ref, "CryptoServiceQueue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CRYPTO-SERVICE-QUEUE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CRYPTO-SERVICE-QUEUE-REF")
 
         return elem
 

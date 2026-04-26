@@ -114,43 +114,19 @@ class MlFigure(Paginateable):
         if self.figure_caption is not None:
             serialized = SerializationHelper.serialize_item(self.figure_caption, "Caption")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIGURE-CAPTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIGURE-CAPTION")
 
         # Serialize frame
         if self.frame is not None:
             serialized = SerializationHelper.serialize_item(self.frame, "FrameEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FRAME")
 
         # Serialize help_entry
         if self.help_entry is not None:
             serialized = SerializationHelper.serialize_item(self.help_entry, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HELP-ENTRY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HELP-ENTRY")
 
         # Serialize l_graphics (list of direct "L-GRAPHIC" children, no container)
         if self.l_graphics:
@@ -158,41 +134,18 @@ class MlFigure(Paginateable):
                 serialized = SerializationHelper.serialize_item(item, "LGraphic")
                 if serialized is not None:
                     # Wrap with correct tag from @xml_element_name decorator
-                    wrapped = ET.Element("L-GRAPHIC")
-                    if hasattr(serialized, 'attrib'):
-                        wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                    for child in serialized:
-                        wrapped.append(child)
-                    elem.append(wrapped)
+                    SerializationHelper.wrap_and_append(elem, serialized, "L-GRAPHIC")
         # Serialize pgwide
         if self.pgwide is not None:
             serialized = SerializationHelper.serialize_item(self.pgwide, "PgwideEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PGWIDE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PGWIDE")
 
         # Serialize verbatim
         if self.verbatim is not None:
             serialized = SerializationHelper.serialize_item(self.verbatim, "MultiLanguageVerbatim")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VERBATIM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VERBATIM")
 
         return elem
 

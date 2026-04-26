@@ -120,43 +120,19 @@ class SwcToEcuMapping(Identifiable):
         if self.controlled_hw_element_ref is not None:
             serialized = SerializationHelper.serialize_item(self.controlled_hw_element_ref, "HwElement")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CONTROLLED-HW-ELEMENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CONTROLLED-HW-ELEMENT-REF")
 
         # Serialize ecu_instance_ref
         if self.ecu_instance_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-INSTANCE-REF")
 
         # Serialize processing_unit_ref
         if self.processing_unit_ref is not None:
             serialized = SerializationHelper.serialize_item(self.processing_unit_ref, "HwElement")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROCESSING-UNIT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROCESSING-UNIT-REF")
 
         return elem
 

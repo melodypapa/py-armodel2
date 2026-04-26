@@ -84,43 +84,19 @@ class TDEventSwcInternalBehavior(TDEventSwc):
         if self.runnable_ref is not None:
             serialized = SerializationHelper.serialize_item(self.runnable_ref, "RunnableEntity")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("RUNNABLE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "RUNNABLE-REF")
 
         # Serialize td_event_swc_behavior_type
         if self.td_event_swc_behavior_type is not None:
             serialized = SerializationHelper.serialize_item(self.td_event_swc_behavior_type, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TD-EVENT-SWC-BEHAVIOR-TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TD-EVENT-SWC-BEHAVIOR-TYPE")
 
         # Serialize variable_access_ref
         if self.variable_access_ref is not None:
             serialized = SerializationHelper.serialize_item(self.variable_access_ref, "VariableAccess")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VARIABLE-ACCESS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VARIABLE-ACCESS-REF")
 
         return elem
 

@@ -127,57 +127,25 @@ class TlsCryptoCipherSuite(Identifiable):
         if self.authentication_ref is not None:
             serialized = SerializationHelper.serialize_item(self.authentication_ref, "CryptoServicePrimitive")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("AUTHENTICATION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "AUTHENTICATION-REF")
 
         # Serialize certificate_ref
         if self.certificate_ref is not None:
             serialized = SerializationHelper.serialize_item(self.certificate_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CERTIFICATE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CERTIFICATE-REF")
 
         # Serialize cipher_suite_id
         if self.cipher_suite_id is not None:
             serialized = SerializationHelper.serialize_item(self.cipher_suite_id, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CIPHER-SUITE-ID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CIPHER-SUITE-ID")
 
         # Serialize cipher_suite
         if self.cipher_suite is not None:
             serialized = SerializationHelper.serialize_item(self.cipher_suite, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CIPHER-SUITE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CIPHER-SUITE")
 
         # Serialize elliptic_curf_refs (list to container "ELLIPTIC-CURF-REFS")
         if self.elliptic_curf_refs:
@@ -185,14 +153,7 @@ class TlsCryptoCipherSuite(Identifiable):
             for item in self.elliptic_curf_refs:
                 serialized = SerializationHelper.serialize_item(item, "CryptoEllipticCurveProps")
                 if serialized is not None:
-                    child_elem = ET.Element("ELLIPTIC-CURF-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ELLIPTIC-CURF-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -200,15 +161,7 @@ class TlsCryptoCipherSuite(Identifiable):
         if self.encryption_ref is not None:
             serialized = SerializationHelper.serialize_item(self.encryption_ref, "CryptoServicePrimitive")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENCRYPTION-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENCRYPTION-REF")
 
         # Serialize key_exchange_refs (list to container "KEY-EXCHANGE-REFS")
         if self.key_exchange_refs:
@@ -216,14 +169,7 @@ class TlsCryptoCipherSuite(Identifiable):
             for item in self.key_exchange_refs:
                 serialized = SerializationHelper.serialize_item(item, "CryptoServicePrimitive")
                 if serialized is not None:
-                    child_elem = ET.Element("KEY-EXCHANGE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "KEY-EXCHANGE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -231,57 +177,25 @@ class TlsCryptoCipherSuite(Identifiable):
         if self.priority is not None:
             serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PRIORITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PRIORITY")
 
         # Serialize props
         if self.props is not None:
             serialized = SerializationHelper.serialize_item(self.props, "TlsCryptoCipherSuite")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROPS")
 
         # Serialize psk_identity
         if self.psk_identity is not None:
             serialized = SerializationHelper.serialize_item(self.psk_identity, "TlsPskIdentity")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PSK-IDENTITY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PSK-IDENTITY")
 
         # Serialize remote_ref
         if self.remote_ref is not None:
             serialized = SerializationHelper.serialize_item(self.remote_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REMOTE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REMOTE-REF")
 
         # Serialize signature_refs (list to container "SIGNATURE-REFS")
         if self.signature_refs:
@@ -289,14 +203,7 @@ class TlsCryptoCipherSuite(Identifiable):
             for item in self.signature_refs:
                 serialized = SerializationHelper.serialize_item(item, "CryptoSignatureScheme")
                 if serialized is not None:
-                    child_elem = ET.Element("SIGNATURE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "SIGNATURE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -304,15 +211,7 @@ class TlsCryptoCipherSuite(Identifiable):
         if self.version is not None:
             serialized = SerializationHelper.serialize_item(self.version, "TlsVersionEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VERSION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "VERSION")
 
         return elem
 

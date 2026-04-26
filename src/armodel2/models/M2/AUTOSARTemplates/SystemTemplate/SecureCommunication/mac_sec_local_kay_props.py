@@ -96,43 +96,19 @@ class MacSecLocalKayProps(ARObject):
         if self.destination_mac is not None:
             serialized = SerializationHelper.serialize_item(self.destination_mac, "MacAddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DESTINATION-MAC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DESTINATION-MAC")
 
         # Serialize global_kay_props_ref
         if self.global_kay_props_ref is not None:
             serialized = SerializationHelper.serialize_item(self.global_kay_props_ref, "MacSecGlobalKayProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GLOBAL-KAY-PROPS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "GLOBAL-KAY-PROPS-REF")
 
         # Serialize key_server
         if self.key_server is not None:
             serialized = SerializationHelper.serialize_item(self.key_server, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("KEY-SERVER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "KEY-SERVER")
 
         # Serialize mka_participant_refs (list to container "MKA-PARTICIPANT-REFS")
         if self.mka_participant_refs:
@@ -140,14 +116,7 @@ class MacSecLocalKayProps(ARObject):
             for item in self.mka_participant_refs:
                 serialized = SerializationHelper.serialize_item(item, "MacSecKayParticipant")
                 if serialized is not None:
-                    child_elem = ET.Element("MKA-PARTICIPANT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "MKA-PARTICIPANT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -155,29 +124,13 @@ class MacSecLocalKayProps(ARObject):
         if self.role is not None:
             serialized = SerializationHelper.serialize_item(self.role, "MacSecRoleEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ROLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ROLE")
 
         # Serialize source_mac
         if self.source_mac is not None:
             serialized = SerializationHelper.serialize_item(self.source_mac, "MacAddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-MAC")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOURCE-MAC")
 
         return elem
 

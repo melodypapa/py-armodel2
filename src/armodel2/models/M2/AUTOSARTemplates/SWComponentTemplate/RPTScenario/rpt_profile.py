@@ -87,57 +87,25 @@ class RptProfile(Identifiable):
         if self.max_service is not None:
             serialized = SerializationHelper.serialize_item(self.max_service, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-SERVICE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAX-SERVICE")
 
         # Serialize min_service_point
         if self.min_service_point is not None:
             serialized = SerializationHelper.serialize_item(self.min_service_point, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIN-SERVICE-POINT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MIN-SERVICE-POINT")
 
         # Serialize service_point
         if self.service_point is not None:
             serialized = SerializationHelper.serialize_item(self.service_point, "CIdentifier")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SERVICE-POINT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SERVICE-POINT")
 
         # Serialize stim_enabler
         if self.stim_enabler is not None:
             serialized = SerializationHelper.serialize_item(self.stim_enabler, "RptEnablerImplTypeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("STIM-ENABLER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "STIM-ENABLER")
 
         return elem
 

@@ -96,71 +96,31 @@ class LifeCycleInfo(ARObject):
         if self.lc_object_ref is not None:
             serialized = SerializationHelper.serialize_item(self.lc_object_ref, "Referrable")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LC-OBJECT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LC-OBJECT-REF")
 
         # Serialize lc_state_ref
         if self.lc_state_ref is not None:
             serialized = SerializationHelper.serialize_item(self.lc_state_ref, "LifeCycleState")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LC-STATE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "LC-STATE-REF")
 
         # Serialize period_begin
         if self.period_begin is not None:
             serialized = SerializationHelper.serialize_item(self.period_begin, "LifeCyclePeriod")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PERIOD-BEGIN")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PERIOD-BEGIN")
 
         # Serialize period_end
         if self.period_end is not None:
             serialized = SerializationHelper.serialize_item(self.period_end, "LifeCyclePeriod")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PERIOD-END")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PERIOD-END")
 
         # Serialize remark
         if self.remark is not None:
             serialized = SerializationHelper.serialize_item(self.remark, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REMARK")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "REMARK")
 
         # Serialize use_instead_refs (list to container "USE-INSTEAD-REFS")
         if self.use_instead_refs:
@@ -168,14 +128,7 @@ class LifeCycleInfo(ARObject):
             for item in self.use_instead_refs:
                 serialized = SerializationHelper.serialize_item(item, "Referrable")
                 if serialized is not None:
-                    child_elem = ET.Element("USE-INSTEAD-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "USE-INSTEAD-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

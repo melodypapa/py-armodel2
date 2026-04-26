@@ -74,29 +74,13 @@ class EnumerationMappingEntry(ARObject):
         if self.enumerator is not None:
             serialized = SerializationHelper.serialize_item(self.enumerator, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENUMERATOR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENUMERATOR")
 
         # Serialize numerical_value
         if self.numerical_value is not None:
             serialized = SerializationHelper.serialize_item(self.numerical_value, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("NUMERICAL-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "NUMERICAL-VALUE")
 
         return elem
 

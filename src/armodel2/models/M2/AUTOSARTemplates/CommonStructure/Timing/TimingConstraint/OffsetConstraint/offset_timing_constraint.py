@@ -87,57 +87,25 @@ class OffsetTimingConstraint(TimingConstraint):
         if self.maximum is not None:
             serialized = SerializationHelper.serialize_item(self.maximum, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAXIMUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MAXIMUM")
 
         # Serialize minimum
         if self.minimum is not None:
             serialized = SerializationHelper.serialize_item(self.minimum, "MultidimensionalTime")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINIMUM")
 
         # Serialize source_ref
         if self.source_ref is not None:
             serialized = SerializationHelper.serialize_item(self.source_ref, "TimingDescriptionEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOURCE-REF")
 
         # Serialize target_ref
         if self.target_ref is not None:
             serialized = SerializationHelper.serialize_item(self.target_ref, "TimingDescriptionEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TARGET-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TARGET-REF")
 
         return elem
 

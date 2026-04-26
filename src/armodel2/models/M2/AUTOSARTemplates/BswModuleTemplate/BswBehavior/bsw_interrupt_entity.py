@@ -81,29 +81,13 @@ class BswInterruptEntity(BswModuleEntity):
         if self.interrupt_category is not None:
             serialized = SerializationHelper.serialize_item(self.interrupt_category, "BswInterruptCategory")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTERRUPT-CATEGORY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTERRUPT-CATEGORY")
 
         # Serialize interrupt_source
         if self.interrupt_source is not None:
             serialized = SerializationHelper.serialize_item(self.interrupt_source, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INTERRUPT-SOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "INTERRUPT-SOURCE")
 
         return elem
 

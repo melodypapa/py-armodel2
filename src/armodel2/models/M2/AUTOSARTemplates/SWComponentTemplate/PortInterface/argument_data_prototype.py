@@ -85,29 +85,13 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         if self.direction is not None:
             serialized = SerializationHelper.serialize_item(self.direction, "ArgumentDirectionEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIRECTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIRECTION")
 
         # Serialize server_argument_impl_policy
         if self.server_argument_impl_policy is not None:
             serialized = SerializationHelper.serialize_item(self.server_argument_impl_policy, "ServerArgumentImplPolicyEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SERVER-ARGUMENT-IMPL-POLICY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SERVER-ARGUMENT-IMPL-POLICY")
 
         return elem
 

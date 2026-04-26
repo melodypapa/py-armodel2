@@ -78,29 +78,13 @@ class DiagnosticEventToSecurityEventMapping(DiagnosticMapping):
         if self.diagnostic_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DIAGNOSTIC-EVENT-REF")
 
         # Serialize security_event_context_ref
         if self.security_event_context_ref is not None:
             serialized = SerializationHelper.serialize_item(self.security_event_context_ref, "Any")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECURITY-EVENT-CONTEXT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECURITY-EVENT-CONTEXT-REF")
 
         return elem
 

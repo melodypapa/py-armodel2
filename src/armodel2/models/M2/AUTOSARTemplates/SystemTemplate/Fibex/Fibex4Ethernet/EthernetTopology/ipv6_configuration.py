@@ -104,29 +104,13 @@ class Ipv6Configuration(NetworkEndpointAddress):
         if self.assignment is not None:
             serialized = SerializationHelper.serialize_item(self.assignment, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ASSIGNMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ASSIGNMENT")
 
         # Serialize default_router
         if self.default_router is not None:
             serialized = SerializationHelper.serialize_item(self.default_router, "Ip6AddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-ROUTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-ROUTER")
 
         # Serialize dns_servers (list to container "DNS-SERVERS")
         if self.dns_servers:
@@ -134,14 +118,7 @@ class Ipv6Configuration(NetworkEndpointAddress):
             for item in self.dns_servers:
                 serialized = SerializationHelper.serialize_item(item, "Ip6AddressString")
                 if serialized is not None:
-                    child_elem = ET.Element("DNS-SERVER")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "DNS-SERVER")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -149,85 +126,37 @@ class Ipv6Configuration(NetworkEndpointAddress):
         if self.enable_anycast is not None:
             serialized = SerializationHelper.serialize_item(self.enable_anycast, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENABLE-ANYCAST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ENABLE-ANYCAST")
 
         # Serialize hop_count
         if self.hop_count is not None:
             serialized = SerializationHelper.serialize_item(self.hop_count, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("HOP-COUNT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "HOP-COUNT")
 
         # Serialize ip_address_keep_enum
         if self.ip_address_keep_enum is not None:
             serialized = SerializationHelper.serialize_item(self.ip_address_keep_enum, "IpAddressKeepEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IP-ADDRESS-KEEP-ENUM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IP-ADDRESS-KEEP-ENUM")
 
         # Serialize ip_address_prefix
         if self.ip_address_prefix is not None:
             serialized = SerializationHelper.serialize_item(self.ip_address_prefix, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IP-ADDRESS-PREFIX")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IP-ADDRESS-PREFIX")
 
         # Serialize ipv6_address
         if self.ipv6_address is not None:
             serialized = SerializationHelper.serialize_item(self.ipv6_address, "Ip6AddressString")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IPV6-ADDRESS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IPV6-ADDRESS")
 
         # Serialize ipv6_address_source
         if self.ipv6_address_source is not None:
             serialized = SerializationHelper.serialize_item(self.ipv6_address_source, "Ipv6AddressSourceEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IPV6-ADDRESS-SOURCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IPV6-ADDRESS-SOURCE")
 
         return elem
 

@@ -80,43 +80,19 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         if self.first_mode_group_prototype_ref is not None:
             serialized = SerializationHelper.serialize_item(self.first_mode_group_prototype_ref, "ModeDeclarationGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FIRST-MODE-GROUP-PROTOTYPE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FIRST-MODE-GROUP-PROTOTYPE-REF")
 
         # Serialize mode_ref
         if self.mode_ref is not None:
             serialized = SerializationHelper.serialize_item(self.mode_ref, "ModeDeclaration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MODE-REF")
 
         # Serialize second_mode_ref
         if self.second_mode_ref is not None:
             serialized = SerializationHelper.serialize_item(self.second_mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SECOND-MODE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SECOND-MODE-REF")
 
         return elem
 

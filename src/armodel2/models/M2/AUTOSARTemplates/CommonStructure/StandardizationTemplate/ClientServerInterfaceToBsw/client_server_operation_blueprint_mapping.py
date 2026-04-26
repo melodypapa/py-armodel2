@@ -83,43 +83,19 @@ class ClientServerOperationBlueprintMapping(ARObject):
         if self.blueprint is not None:
             serialized = SerializationHelper.serialize_item(self.blueprint, "DocumentationBlock")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BLUEPRINT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BLUEPRINT")
 
         # Serialize bsw_module_entry_ref
         if self.bsw_module_entry_ref is not None:
             serialized = SerializationHelper.serialize_item(self.bsw_module_entry_ref, "BswModuleEntry")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BSW-MODULE-ENTRY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BSW-MODULE-ENTRY-REF")
 
         # Serialize client_server_ref
         if self.client_server_ref is not None:
             serialized = SerializationHelper.serialize_item(self.client_server_ref, "ClientServerOperation")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-SERVER-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "CLIENT-SERVER-REF")
 
         return elem
 

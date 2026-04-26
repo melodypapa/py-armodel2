@@ -67,15 +67,7 @@ class DiagnosticEventWindow(ARObject):
         if self.event_window is not None:
             serialized = SerializationHelper.serialize_item(self.event_window, "DiagnosticEventWindow")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("EVENT-WINDOW")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "EVENT-WINDOW")
 
         return elem
 

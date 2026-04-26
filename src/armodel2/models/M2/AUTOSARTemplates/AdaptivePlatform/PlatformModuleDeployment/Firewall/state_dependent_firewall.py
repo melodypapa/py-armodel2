@@ -84,15 +84,7 @@ class StateDependentFirewall(ARElement):
         if self.default_action is not None:
             serialized = SerializationHelper.serialize_item(self.default_action, "FirewallActionEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-ACTION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DEFAULT-ACTION")
 
         # Serialize firewall_rule_propses (list to container "FIREWALL-RULE-PROPSS")
         if self.firewall_rule_propses:
@@ -110,14 +102,7 @@ class StateDependentFirewall(ARElement):
             for item in self.firewall_state_refs:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclaration")
                 if serialized is not None:
-                    child_elem = ET.Element("FIREWALL-STATE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "FIREWALL-STATE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

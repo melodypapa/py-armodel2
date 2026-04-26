@@ -77,29 +77,13 @@ class MemorySectionLocation(ARObject):
         if self.provided_memory_ref is not None:
             serialized = SerializationHelper.serialize_item(self.provided_memory_ref, "HwElement")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROVIDED-MEMORY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "PROVIDED-MEMORY-REF")
 
         # Serialize software_ref
         if self.software_ref is not None:
             serialized = SerializationHelper.serialize_item(self.software_ref, "MemorySection")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SOFTWARE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SOFTWARE-REF")
 
         return elem
 

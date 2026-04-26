@@ -80,29 +80,13 @@ class IPduTiming(Describable):
         if self.minimum_delay is not None:
             serialized = SerializationHelper.serialize_item(self.minimum_delay, "TimeValue")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM-DELAY")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "MINIMUM-DELAY")
 
         # Serialize transmission_mode_declaration
         if self.transmission_mode_declaration is not None:
             serialized = SerializationHelper.serialize_item(self.transmission_mode_declaration, "TransmissionModeDeclaration")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TRANSMISSION-MODE-DECLARATION")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TRANSMISSION-MODE-DECLARATION")
 
         return elem
 

@@ -93,15 +93,7 @@ class ModeAccessPoint(ARObject):
         if self.ident is not None:
             serialized = SerializationHelper.serialize_item(self.ident, "ModeAccessPointIdent")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IDENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IDENT")
 
         # Serialize mode_group_iref (polymorphic wrapper "MODE-GROUP-IREF")
         if self.mode_group_iref is not None:

@@ -104,29 +104,13 @@ class ImplementationDataType(AbstractImplementationDataType):
         if self.dynamic_array_size_profile is not None:
             serialized = SerializationHelper.serialize_item(self.dynamic_array_size_profile, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DYNAMIC-ARRAY-SIZE-PROFILE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DYNAMIC-ARRAY-SIZE-PROFILE")
 
         # Serialize is_struct_with_optional_element
         if self.is_struct_with_optional_element is not None:
             serialized = SerializationHelper.serialize_item(self.is_struct_with_optional_element, "Boolean")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-STRUCT-WITH-OPTIONAL-ELEMENT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "IS-STRUCT-WITH-OPTIONAL-ELEMENT")
 
         # Serialize sub_elements (list to container "SUB-ELEMENTS")
         if self.sub_elements:
@@ -142,29 +126,13 @@ class ImplementationDataType(AbstractImplementationDataType):
         if self.symbol_props is not None:
             serialized = SerializationHelper.serialize_item(self.symbol_props, "SymbolProps")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SYMBOL-PROPS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SYMBOL-PROPS")
 
         # Serialize type_emitter
         if self.type_emitter is not None:
             serialized = SerializationHelper.serialize_item(self.type_emitter, "NameToken")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TYPE-EMITTER")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "TYPE-EMITTER")
 
         return elem
 

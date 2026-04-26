@@ -95,85 +95,37 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
         if self.dds_field_reply_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dds_field_reply_ref, "DdsCpTopic")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DDS-FIELD-REPLY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DDS-FIELD-REPLY-REF")
 
         # Serialize dds_field_ref
         if self.dds_field_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dds_field_ref, "DdsCpTopic")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DDS-FIELD-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DDS-FIELD-REF")
 
         # Serialize dds_method_ref
         if self.dds_method_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dds_method_ref, "DdsCpTopic")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DDS-METHOD-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DDS-METHOD-REF")
 
         # Serialize dds_service_qos_ref
         if self.dds_service_qos_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dds_service_qos_ref, "DdsCpQosProfile")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DDS-SERVICE-QOS-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "DDS-SERVICE-QOS-REF")
 
         # Serialize service_instance
         if self.service_instance is not None:
             serialized = SerializationHelper.serialize_item(self.service_instance, "PositiveInteger")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SERVICE-INSTANCE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SERVICE-INSTANCE")
 
         # Serialize service_interface
         if self.service_interface is not None:
             serialized = SerializationHelper.serialize_item(self.service_interface, "String")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SERVICE-INTERFACE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SERVICE-INTERFACE")
 
         return elem
 

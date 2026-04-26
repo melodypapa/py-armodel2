@@ -89,14 +89,7 @@ class FrameTriggering(Identifiable, ABC):
             for item in self.frame_port_refs:
                 serialized = SerializationHelper.serialize_item(item, "FramePort")
                 if serialized is not None:
-                    child_elem = ET.Element("FRAME-PORT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "FRAME-PORT-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -104,15 +97,7 @@ class FrameTriggering(Identifiable, ABC):
         if self.frame_ref is not None:
             serialized = SerializationHelper.serialize_item(self.frame_ref, "Frame")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FRAME-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "FRAME-REF")
 
         # Serialize pdu_triggering_refs (list to container "PDU-TRIGGERING-REFS")
         if self.pdu_triggering_refs:
@@ -120,14 +105,7 @@ class FrameTriggering(Identifiable, ABC):
             for item in self.pdu_triggering_refs:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
-                    child_elem = ET.Element("PDU-TRIGGERING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "PDU-TRIGGERING-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 

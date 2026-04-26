@@ -82,14 +82,7 @@ class EcucValueCollection(ARElement):
             for item in self.ecuc_value_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
-                    child_elem = ET.Element("ECUC-VALUE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "ECUC-VALUE-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -97,15 +90,7 @@ class EcucValueCollection(ARElement):
         if self.ecu_extract_ref is not None:
             serialized = SerializationHelper.serialize_item(self.ecu_extract_ref, "System")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ECU-EXTRACT-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ECU-EXTRACT-REF")
 
         return elem
 

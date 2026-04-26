@@ -86,29 +86,13 @@ class VariableAccess(AbstractAccessPoint):
         if self.accessed_variable is not None:
             serialized = SerializationHelper.serialize_item(self.accessed_variable, "AutosarVariableRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ACCESSED-VARIABLE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "ACCESSED-VARIABLE")
 
         # Serialize scope
         if self.scope is not None:
             serialized = SerializationHelper.serialize_item(self.scope, "VariableAccessScopeEnum")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SCOPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "SCOPE")
 
         return elem
 

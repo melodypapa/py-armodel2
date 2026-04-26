@@ -81,15 +81,7 @@ class BulkNvDataDescriptor(Identifiable):
         if self.bulk_nv_block_ref is not None:
             serialized = SerializationHelper.serialize_item(self.bulk_nv_block_ref, "VariableDataPrototype")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BULK-NV-BLOCK-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                if serialized.text:
-                    wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                SerializationHelper.wrap_and_append(elem, serialized, "BULK-NV-BLOCK-REF")
 
         # Serialize nv_block_data_refs (list to container "NV-BLOCK-DATA-REFS")
         if self.nv_block_data_refs:
@@ -97,14 +89,7 @@ class BulkNvDataDescriptor(Identifiable):
             for item in self.nv_block_data_refs:
                 serialized = SerializationHelper.serialize_item(item, "NvBlockDataMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("NV-BLOCK-DATA-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    SerializationHelper.wrap_and_append(wrapper, serialized, "NV-BLOCK-DATA-REF")
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
